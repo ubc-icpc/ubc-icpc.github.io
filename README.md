@@ -1,2 +1,2 @@
 # ubc-icpc.github.io
-ubc-icpc website
+Website of UBC ICPC.
