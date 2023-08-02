@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;utility&gt;
+
+using namespace std;
+
+int main (void) {
+  int T;
+  cin &gt;&gt; T;
+  while(T--) {
+    int M,N;
+    cin &gt;&gt; M;
+    cin &gt;&gt; N;
+    
+    int start[2] = {0,0};
+    vector&lt;pair&lt;int, int&gt; &gt; blocks;
+    char in;
+    for ( int i = 0; i&lt;M; i++ ) {
+      for( int k = 0; k&lt;N; k++ ) {
+
+	cin &gt;&gt; in;
+	if(in == 'B') {
+	  pair&lt;int, int&gt; temp(i , k);
+	  blocks.push_back(temp);
+	} else if( in == 'S' ) {
+	  start[0] = i;
+	  start[1] = k;
+	}
+
+      }
+    }
+    int res = 0;
+    for( int n = 0; n &lt; blocks.size(); n++ ) {
+      int dx = blocks[n].first - start[0];
+      if(dx &lt; 0) dx = -dx;
+
+      int dy = blocks[n].second - start[1];
+      if(dy &lt; 0) dy = -dy;
+
+      res += 2*(dx + dy);
+    }
+    cout &lt;&lt; res &lt;&lt; &quot; seconds to blocks get!&quot; &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

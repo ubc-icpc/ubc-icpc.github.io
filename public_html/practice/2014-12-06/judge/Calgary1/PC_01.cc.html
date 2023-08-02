@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int H, K, hs[1000];
+
+bool tr(int l, int d) {
+	int hdr = 0, i = 0;
+	for (;;) {
+		hdr++;
+		if (hdr &gt; K) return false;
+		int j = i;
+		for (;;) {
+			j = ((j+d) % H + H) % H;
+			if (j == 0) return true;
+			int dt = (d &gt; 0) ? hs[j] - hs[i] : hs[i] - hs[j];
+			dt = (dt % 1000000 + 1000000) % 1000000;
+			if (dt &gt; l) break;
+		}
+		i = j;
+	}
+}
+
+int main() {
+	cin &gt;&gt; H;
+	for (int h = 0; h &lt; H; h++) cin &gt;&gt; hs[h];
+	sort(hs, hs+H);
+	cin &gt;&gt; K;
+	int a = 0, b = 600000; // range [a,b]
+	while (b != a) {
+		int l = (a+b)/2;
+		if (tr(2*l, 1) || tr(2*l, -1)) {
+			b = l;
+		} else {
+			a = l+1;
+		}
+	}
+	cout &lt;&lt; a &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

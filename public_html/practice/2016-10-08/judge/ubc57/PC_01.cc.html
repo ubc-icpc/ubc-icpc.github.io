@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef vector&lt;vector&lt;ll&gt;&gt; mat;
+
+int mod;
+mat mult(mat &amp;a, mat &amp;b){
+    int n=a.size(); 
+    mat M;
+    for (int i=0;i&lt;n;i++){
+        vector&lt;ll&gt; v; for (int j=0;j&lt;n;j++) v.push_back(0);
+        M.push_back(v);
+    }
+    for (int i=0;i&lt;n;i++) for (int j=0;j&lt;n;j++) for (int k=0;k&lt;n;k++) M[i][j]=(M[i][j]+a[i][k]*b[k][j])%mod;
+    return M;
+}
+mat power(mat B, int e){
+    if (e==1) return B;
+    int n=B.size();
+    if (e==0){
+        mat M;
+        for (int i=0;i&lt;n;i++){
+            vector&lt;ll&gt; v; for (int j=0;j&lt;n;j++) v.push_back(0);
+            M.push_back(v);
+        }
+        for (int i=0;i&lt;n;i++) M[i][i]=1;
+        return M;
+    }
+    mat each=power(B,e/2);
+    mat res=mult(each,each);
+    if (e%2==1) res=mult(res,B);
+    return res;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    int n,a,b,c,t;
+    while (cin&gt;&gt;n&gt;&gt;mod&gt;&gt;a&gt;&gt;b&gt;&gt;c&gt;&gt;t){
+        if (n==0) break;
+        mat M;
+        for (int i=0;i&lt;n;i++){
+            vector&lt;ll&gt; v; for (int j=0;j&lt;n;j++) v.push_back(0);
+            M.push_back(v);
+        }
+        //build M
+        for (int i=0;i&lt;n;i++){
+            if (i!=0) M[i][i-1]=a;
+            M[i][i]=b;
+            if (i!=n-1) M[i][i+1]=c;
+        }
+        M=power(M,t);
+        vector&lt;ll&gt; init;
+        for (int i=0;i&lt;n;i++){
+            ll x; cin&gt;&gt;x; init.push_back(x);
+        }
+        for (int i=0;i&lt;n;i++){
+            ll tot=0;
+            for (int j=0;j&lt;n;j++) tot=(tot+M[i][j]*init[j])%mod;
+            cout&lt;&lt;tot; 
+            if (i==n-1) cout&lt;&lt;endl;
+            else cout&lt;&lt;' ';
+        }
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

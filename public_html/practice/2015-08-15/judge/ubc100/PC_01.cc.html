@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;string.h&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+
+int dp[51];
+
+int main (void) {
+  
+  int n; cin &gt;&gt; n;
+  
+
+  for(int i=1; i&lt;=n; i++) {
+    cout &lt;&lt; &quot;Day #&quot; &lt;&lt; i &lt;&lt; endl;
+    int cells, jump; cin &gt;&gt; cells &gt;&gt; jump;
+    cout &lt;&lt; cells &lt;&lt; &quot; &quot; &lt;&lt; jump &lt;&lt; endl;
+    string str; cin &gt;&gt; str;
+    cout &lt;&lt; str &lt;&lt; endl;
+    for(int t=1; t&lt;cells; t++) dp[t]=-1;
+    for(int j=1; j&lt;cells; j++) {
+      bool flag=true;
+      if(str[j] == 'X')continue;
+
+      for(int k=j-1; k&gt;=0; k--) {
+	if( (j-k) &gt; jump+1) break;
+	
+	if(str[k]=='.' &amp;&amp; dp[k]&gt;=0) {
+	  if(flag) {
+	    dp[j] = dp[k]+1;
+	    flag = false;
+	  } else {
+	    dp[j] = min(dp[k]+1,dp[j]);
+	  }
+	}
+      }
+
+     
+    }
+    if(dp[cells-1]&gt;=0)
+      cout &lt;&lt; dp[cells-1] &lt;&lt; endl;
+    else 
+      cout &lt;&lt; 0 &lt;&lt; endl;
+    if(i!=n) cout &lt;&lt; endl;
+  }
+  
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

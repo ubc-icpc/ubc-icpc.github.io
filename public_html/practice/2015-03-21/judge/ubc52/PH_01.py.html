@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+T=int(raw_input())
+for t in range(T):
+	N=int(raw_input())
+	p=map(int,raw_input().split())
+	p.sort(reverse=True)
+	discount=0
+	for i in range(len(p)/3):
+		discount+=p[(3*i)+2]
+	print discount
+
+
+&quot;&quot;&quot;
+
+1
+6
+400 100 200 350 300 250
+&quot;&quot;&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

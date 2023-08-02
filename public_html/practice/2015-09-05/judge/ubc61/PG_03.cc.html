@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main() {
+	int n; cin &gt;&gt; n;
+
+	vector&lt;int&gt; primes;
+	vector&lt;int&gt; sieve (11000,0);
+
+	for (int i=2; i&lt;sieve.size(); i++) {
+		if (!sieve[i]) {
+			int p = i;
+			primes.push_back(p);
+			for (int j=p; j&lt;sieve.size(); j+=p) {
+				sieve[j] = 1;
+			}
+		}
+	}
+
+	while(n--) {
+		int v; cin &gt;&gt; v;
+		cout &lt;&lt; &quot;Input value: &quot; &lt;&lt; v &lt;&lt; endl;
+		if (find(primes.begin(),primes.end(),v) != primes.end()) {
+			cout &lt;&lt; &quot;Would you believe it; it is a prime!&quot; &lt;&lt; endl;
+		} else {
+			int nextindx = lower_bound(primes.begin(),primes.end(),v)-primes.begin();
+			int prev = primes[nextindx-1];
+			int next = primes[nextindx];
+			int diff = min(abs(v-next),abs(v-prev));
+			cout &lt;&lt; &quot;Missed it by that much (&quot; &lt;&lt; diff &lt;&lt; &quot;)!&quot; &lt;&lt; endl;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

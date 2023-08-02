@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">/*
+ID: skipian1
+PROB: 
+LANG: C++11
+*/
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+#define INF = 2000000000
+#define sz(a) int((a).size())
+#define pb push_back
+#define mp make_pair
+#define all(c) (c).begin(),(c).end()
+#define X first
+#define Y second
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  int T, p, w, q;
+  double x, y, z;
+  string str, str1, str2;
+  map&lt;int, string&gt; planet;
+  map&lt;string, int&gt; key;
+  map&lt;string, pair&lt;double, pair&lt;double, double&gt; &gt; &gt; coords;
+  cin &gt;&gt; T;
+  for (int a = 0; a &lt; T; a++) {
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; a+1 &lt;&lt; &quot;:&quot; &lt;&lt; &quot;\n&quot;;
+    coords.clear();
+    planet.clear();
+    key.clear();
+    cin &gt;&gt; p;
+    for (int i = 0; i &lt; p; i++) {
+      cin &gt;&gt; str &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+      planet.insert(mp(i, str));
+      key.insert(mp(str, i));
+      coords.insert(mp(str, mp(x, mp(y, z))));
+    }
+    double distance[p][p];
+    for (int i = 0; i &lt; p; i++) {
+      distance[i][i] = 0;
+      for (int j = i+1; j &lt; p; j++) {
+	distance[i][j] = sqrt(pow(coords[planet[i]].X-coords[planet[j]].X, 2)+pow(coords[planet[i]].Y.X-coords[planet[j]].Y.X, 2)+pow(coords[planet[i]].Y.Y-coords[planet[j]].Y.Y, 2));
+	distance[j][i] = distance[i][j];
+      }
+    }
+    cin &gt;&gt; w;
+    for (int i = 0; i &lt; w; i++) {
+      cin &gt;&gt; str1 &gt;&gt; str2;
+      distance[key[str1]][key[str2]] = 0;
+    }
+    for (int k = 0; k &lt; p; k++) {
+      for (int i = 0; i &lt; p; i++) {
+	for (int j = 0; j &lt; p; j++) {
+	  distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j]);
+	}
+      }
+    }
+    cin &gt;&gt; q;
+    for (int i = 0; i &lt; q; i++) {
+      cin &gt;&gt; str1 &gt;&gt; str2;
+      cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; str1 &lt;&lt; &quot; to &quot; &lt;&lt; str2 &lt;&lt; &quot; is &quot;;
+      cout &lt;&lt; fixed &lt;&lt; setprecision(0) &lt;&lt; distance[key[str1]][key[str2]] &lt;&lt; &quot; parsecs.&quot; &lt;&lt; &quot;\n&quot;;
+    }
+  }
+}
+</code>
+</pre>
+</body>
+</html>

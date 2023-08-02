@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;algorithm&gt;
+
+#define ll long long
+
+ll clamp(ll x)
+{
+    return (x &lt; 0L) ? 0L : (x &gt; 100000L) ? 100000L : x;
+}
+
+int main()
+{
+    int n;
+    scanf(&quot;%d&quot;, &amp;n);
+    while (n--)
+    {
+        ll cost, max, regen, res, boost;
+        scanf(&quot;%lld %lld %lld %lld %lld&quot;, &amp;cost, &amp;max, &amp;regen, &amp;res, &amp;boost);
+        double vasymp = (cost - regen) / (boost);
+        ll above = clamp((ll)floor(vasymp + (double)1.0f));
+        ll below = clamp((ll)ceil(vasymp - (double)1.0f));
+        ll a = (max - regen - (boost + res) * above) / (cost - regen - boost * above);
+        ll b = (max - regen - (boost + res) * below) / (cost - regen - boost * below);
+        ll c = (max - regen - (boost + res) * 0L) / (cost - regen - boost * 0L);
+        ll d = (max - regen - (boost + res) * 100000L) / (cost - regen - boost * 100000L);
+        printf(&quot;%lld\n&quot;, std::max(std::max(a, b), std::max(c, d)));
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+vector&lt;int&gt; g[100005];
+int grp[100005], deg[100005];
+int bad(int v) {
+    int cnt = 0;
+    for (int w : g[v]) {
+        cnt += grp[w] == grp[v];
+    }
+    return cnt &gt; 1;
+}
+
+int main() {
+    int n, m, md = 0; cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        int x, y; cin &gt;&gt; x &gt;&gt; y;
+        g[x].push_back(y);
+        g[y].push_back(x);
+        deg[x]++;
+        deg[y]++;
+        md = max(md, max(deg[x], deg[y]));
+    }
+    
+    if (md == 1) {
+        cout &lt;&lt; 1 &lt;&lt; endl;
+        for (int i = 1; i &lt;= n; i++) {
+            cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+        return 0;
+    } else {
+        cout &lt;&lt; 2 &lt;&lt; endl;
+        vector&lt;int&gt; gr[2];
+        for (int i = 1; i &lt;= n; i++) {
+            grp[i] = 0;
+            queue&lt;int&gt; q({i});
+            while (!q.empty()) {
+                int u = q.front(); q.pop();
+                if (bad(u)) {
+                    grp[u] ^= 1;
+                    for (int w : g[u]) {
+                        if (bad(w)) q.push(w);
+                    }
+                }
+            }
+        }
+    
+        for (int i = 1; i &lt;= n; i++) {
+            gr[grp[i]].push_back(i);
+        }
+        
+        for (int k = 0; k &lt; 2; k++) {
+            for (int v : gr[k]) {
+                cout &lt;&lt; v &lt;&lt; &quot; &quot;;
+            }
+            cout &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

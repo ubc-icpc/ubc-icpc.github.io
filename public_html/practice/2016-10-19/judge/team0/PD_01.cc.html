@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+char b[205][205];
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+// N, E, S, W
+int main() {
+	ios::sync_with_stdio(0);
+	int r, c; cin &gt;&gt; r &gt;&gt; c;
+	for (int i = 0; i &lt; r; i++) {
+		for (int j = 0; j &lt; c; j++) {
+			cin &gt;&gt; b[i][j];
+		}
+	}
+	
+	map&lt;char, int&gt; m({{'N', 0}, {'E', 1}, {'S', 2}, {'W', 3}});
+	int i = 0, j = 0, d = 0;
+	while (b[i][j] != 'T' &amp;&amp; d &lt;= r * c) {
+		//cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; endl;
+		int z = m[b[i][j]];
+		i += dx[z];
+		j += dy[z];
+		d++;
+		if (i &gt;= r || j &gt;= c || i &lt; 0 || j &lt; 0) {
+			cout &lt;&lt; &quot;Out&quot; &lt;&lt; endl;
+			return 0;
+		}
+	}
+	if (d &gt;= r*c) cout &lt;&lt; &quot;Lost&quot; &lt;&lt; endl;
+	else cout &lt;&lt; d &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

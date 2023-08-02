@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;iomanip&gt;
+#include&lt;algorithm&gt;
+#include&lt;cstring&gt;
+#include&lt;limits&gt;
+using namespace std;
+typedef long double ld;
+typedef long long ll;
+
+ll table[65][65];
+ll memo[65][65];
+vector&lt;int&gt; vec;
+const int INF=numeric_limits&lt;int&gt;::max();
+
+// void choose() {
+//   for (int i=0; i&lt;65; i++)
+//     table[i][0]=1;
+//   for (int i=0; i&lt;65; i++)
+//     table[i][i]=1;
+//   for (int i=1; i&lt;65; i++) {
+//     for (int j=1; j&lt;65; j++) {
+//       if (j&gt;i) table[i][j]=0;
+//       if (i==j) continue;
+//       table[i][j] = table[i-1][j] + table[i-1][j-1];
+//     }
+//   }
+// }
+
+ll binom(int i, int j) {
+  if (i&lt;j) return 0;
+  if (j==0) return 1;
+  if (table[i][j]!=-1) return table[i][j];
+  return table[i][j] = binom(i-1,j) + binom(i-1,j-1);
+}
+
+ll dp(int i, int j) {
+  if (j&lt;0 &amp;&amp; i==0) return 1;
+  if (j&lt;0) return 0;
+  if (memo[i][j]!=-1) return memo[i][j];
+  ll res=0;
+  for (int k=1; k&lt;=min(i,vec[j]); k++) {
+    res+=(dp(i-k,j-1)*binom(vec[j],k));
+  }
+  return memo[i][j]=res;
+}
+
+int main() {
+  //choose();
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    memset(table,-1,sizeof table);
+    memset(memo,-1,sizeof memo);
+    int c,b; cin &gt;&gt; c &gt;&gt; b;
+    vec.clear();
+    int n=0;
+    for (int i=0; i&lt;c; i++) {
+      int x; cin &gt;&gt; x; vec.push_back(x); n+=x; 
+    }
+    // ld res=0.0;
+    // dp[0][0]=0;
+    // for (int i=1; i&lt;=b; i++) {
+    //   for (int j=0; j&lt;c; j++) {
+    // 	for (int k=1; k&lt;=min(i,vec[j]); k++) {
+    // 	  if (j==0) {
+    // 	    dp[i][j]+=table[vec[j]][k];
+    // 	  }
+    // 	  else {
+    // 	    dp[i][j]+=(dp[i-k][j-1]*table[vec[j]][k]);
+    // 	  }
+    // 	}
+    //   }
+    // }
+    // res=ld(dp[b][c-1])/ld(table[n][b]);
+    ld res=0.0;
+    res=ld(dp(b,c-1))/ld(binom(n,b));
+    cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; res &lt;&lt; endl;
+  }
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

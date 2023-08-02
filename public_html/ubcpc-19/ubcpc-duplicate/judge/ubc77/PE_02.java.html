@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class E {
+    public static void main(String[] args) {
+        Scanner reader = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        
+        String line = reader.nextLine();
+        int scenes = Integer.parseInt(line.split(&quot; &quot;)[0]);
+        int acts = Integer.parseInt(line.split(&quot; &quot;)[1]);
+        
+        String numbers = reader.nextLine();
+        System.out.println(Arrays.stream(numbers.split(&quot; &quot;)).map(Integer::parseInt).sorted((a, b) -&gt; b - a).limit(acts).reduce(0, Integer::sum));
+    }
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, A[6], K;
+
+int main () {
+    cin &gt;&gt; N;
+    while (N--) {
+        for (int i = 0; i &lt; 6; ++i) {
+            cin &gt;&gt; A[i];
+            cout &lt;&lt; A[i] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; &quot;\n&quot;;
+        K = 0;
+        if (A[0] + A[1] + A[2] &gt; A[3] + A[4] + A[5])
+            K |= 1;
+        if (A[0] &lt; A[3] || (A[0] == A[3] &amp;&amp; A[1] &lt; A[4]) || (A[0] == A[3] &amp;&amp; A[1] == A[4] &amp;&amp; A[2] &lt;= A[5])){}
+        else K |= 2;
+        switch (K) {
+            case 0: cout &lt;&lt; &quot;none&quot;; break;
+            case 1: cout &lt;&lt; &quot;count&quot;; break;
+            case 2: cout &lt;&lt; &quot;color&quot;; break;
+            case 3: cout &lt;&lt; &quot;both&quot;; break;
+        }
+        cout &lt;&lt; &quot;\n\n&quot;;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

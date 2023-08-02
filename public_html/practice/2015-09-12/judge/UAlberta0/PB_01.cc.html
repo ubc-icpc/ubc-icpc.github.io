@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+const string medals[2] = {&quot;count&quot;, &quot;color&quot;};
+
+int main() {
+        int T, c1, c2, in, flag;
+        int counts[2][3];
+        
+        cin &gt;&gt; T;
+        while(T--) {
+                flag = c1 = c2 = 0;
+                for(int i = 0; i &lt; 6; ++i) {
+                        cin &gt;&gt; in;
+                        c1 += i &gt; 2 ? 0 : in;
+                        c2 += i &gt; 2 ? in : 0;
+                        counts[i/3][i % 3] = in;
+                        cout &lt;&lt; in;
+                        if (i != 5) {
+                                cout &lt;&lt; ' ';
+                        }
+                }
+
+                if (c1 &gt; c2) {
+                        flag |= 1;
+                }
+                for(int i = 0; i &lt; 3; ++i) {
+                        if (counts[0][i] &gt; counts[1][i]) {
+                                flag |= 2;
+                                break;
+                        } else if (counts[0][i] &lt; counts[1][i]) {
+                                break;
+                        }
+                }
+
+                cout &lt;&lt; endl;
+                if (flag == 3) {
+                        cout &lt;&lt; &quot;both&quot;;
+                } else if (flag == 0) {
+                        cout &lt;&lt; &quot;none&quot;;
+                } else {
+                        cout &lt;&lt; medals[flag - 1];
+                }
+                cout &lt;&lt; endl &lt;&lt; endl;
+        }
+        
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

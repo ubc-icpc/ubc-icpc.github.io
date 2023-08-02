@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+struct pcomp {
+    bool operator() (pair&lt;int, int&gt; first, pair&lt;int, int&gt; second) {
+        if (first.second &gt; second.second)
+            return true;
+        if (first.second &lt; second.second)
+            return false;
+        return first.first &lt; second.first;
+    }
+};
+
+int main() {
+    string s; getline(cin, s); istringstream ss(s); int t; ss &gt;&gt; t;
+    int i = 0;
+    while (t--) {
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++i &lt;&lt; endl;
+        map&lt;int, long long int&gt; perms;
+        map&lt;int, long long int&gt; files;
+        map&lt;long long int, pair&lt;int, int&gt; &gt; groups; //first: uid, second: n
+        vector&lt;pair&lt;int, int&gt; &gt; rev;
+        
+        while (true) {
+            getline(cin, s);
+            ss.str(s);
+            ss.clear();
+            int fid; ss &gt;&gt; fid;
+            if (fid &lt;= 0)
+                break;
+        
+            if (!files[fid])
+                files[fid] = 1LL &lt;&lt; files.size();
+                
+            int c; 
+            while (ss &gt;&gt; c)
+                perms[c] |= files[fid];
+        }
+        
+        /*
+        for (pair&lt;int, long long int&gt; u : perms) {
+            cout &lt;&lt; u.first &lt;&lt; &quot; &quot; &lt;&lt; u.second &lt;&lt; endl;
+        }
+        */
+            
+        for (pair&lt;int, long long int&gt; p : perms) {
+            if (!groups[p.second].first)
+                groups[p.second].first = p.first;
+            groups[p.second].second++;
+        }
+        
+        for (pair&lt;long long int, pair&lt;int, int&gt; &gt; p : groups) {
+            if (p.second.second &gt; 1)
+                rev.push_back(p.second);
+        }
+        
+        if (rev.size() &gt; 0) {
+            sort(rev.begin(), rev.end(), pcomp());
+            
+            for (pair&lt;int, int&gt; p : rev) {
+                cout &lt;&lt; p.second &lt;&lt; &quot; &quot; &lt;&lt; p.first &lt;&lt; endl;
+            }
+        }
+        else
+            cout &lt;&lt; &quot;no prototypes found&quot; &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

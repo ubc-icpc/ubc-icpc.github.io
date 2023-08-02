@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+s = raw_input()
+days = 0
+
+for i, c in enumerate(s):
+	if i % 3 == 0 and c != 'P':
+		days += 1
+	elif i % 3 == 1 and c != 'E':
+		days += 1
+	elif i % 3 == 2 and c != 'R':
+		days += 1
+
+print days</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

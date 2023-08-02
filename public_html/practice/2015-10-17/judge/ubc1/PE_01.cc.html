@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef long long ll;
+const int N = 1e5 + 10;
+int n, k;
+ll x[N];
+
+bool f(ll len) {
+	long long ans = 0, i = 0, last = x[0];
+	while (i &lt; n) {
+		while (i &lt; n &amp;&amp; x[i] &lt;= last+len) i++;
+		ans++;
+		last = x[i];
+	}
+	return ans &lt;= k;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	
+	while (t--) {
+		cin &gt;&gt; n &gt;&gt; k;
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; x[i];
+			x[i] *= 2;
+		}
+		
+		long long l = 0, r = 10000000000;
+		while (r-l &gt; 1) {
+			int m = (l+r)/2;
+			if (f(2*m)) {
+				r = m;
+			} else {
+				l = m+1;
+			}
+		}
+		
+		if (f(2*l)) cout &lt;&lt; l/2 &lt;&lt; '.' &lt;&lt; (l%2 ? '5' : '0') &lt;&lt; endl;
+		else cout &lt;&lt; r/2 &lt;&lt; '.' &lt;&lt; (r%2 ? '5' : '0') &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

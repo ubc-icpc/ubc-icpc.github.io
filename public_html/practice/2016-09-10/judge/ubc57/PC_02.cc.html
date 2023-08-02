@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+ll x,y; 
+
+ll egcd(ll a, ll b, ll&amp; x, ll &amp;y) {
+  if (!b) {x=1;y=0;return abs(a);}
+  ll d = egcd(b, a%b, y, x); y -= x * (a/b); return d; }
+  
+int main(){
+    ios::sync_with_stdio(0);
+    int t; cin&gt;&gt;t;
+    while (t--){
+        ll k,c; cin&gt;&gt;k&gt;&gt;c;
+        if (egcd(c,k,x,y)!=1) cout&lt;&lt;&quot;IMPOSSIBLE&quot;&lt;&lt;endl;
+        else if (k!=1) cout&lt;&lt;(x+k)%k&lt;&lt;endl;
+        else{
+            if (c==1) cout&lt;&lt;2&lt;&lt;endl;
+            else cout&lt;&lt;1&lt;&lt;endl;
+        }
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

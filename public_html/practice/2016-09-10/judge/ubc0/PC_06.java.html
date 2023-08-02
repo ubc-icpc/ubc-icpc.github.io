@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class Main {
+	static int k, c;
+	
+	public static void main(String[] args){
+		Scanner in = new Scanner(System.in);
+		int tests = in.nextInt();
+		
+		for(int i = 0; i &lt; tests; i += 1){
+			k = in.nextInt();
+			c = in.nextInt();
+			
+			//if there are bags with only 1 candy, then we need k+1 bags
+			if(c == 1){
+				System.out.println(k + 1);
+				continue;
+			}
+			
+			//if there is only 1 kid, then 1 bag suffices
+			if (k == 1){
+				System.out.println(1);
+				continue;
+			}
+			
+			//more bags than candies
+			if(k &lt; c){
+				if(c % k == 0){
+					System.out.println(&quot;IMPOSSIBLE&quot;);
+					continue;
+				}
+			}
+			
+			if(k % c == 0){
+				System.out.println(&quot;IMPOSSIBLE&quot;);
+				continue;
+			}
+			
+			//array that contains results from extended gcd method.
+			//array[0] is the gcd.
+			//array[1] is the coefficient that should be printed.
+			int[] array = extended_euclidian(-k, c);
+			
+			if(array[0] == 1){
+				System.out.println(array[1]);
+			}
+			//brute force (exceeds time limit allowed)
+			//increment m until (m * k + 1) % c == 0
+			else if(array[0] == -1){
+				/*long m = 0;
+				long n = 0;
+				
+				while(true){
+					
+					if((m * k + 1) % c == 0){
+						n = (m * k + 1) / c;
+						break;
+					}
+					else{
+						m += 1;
+						continue;
+					}
+				}
+				System.out.println(n);*/
+				System.out.println(k - array[1]);
+			}
+			else{
+				System.out.println(&quot;IMPOSSIBLE&quot;);
+			}
+		}
+		in.close();
+		
+	}
+	
+	//returns an array containing the gcd and the coefficient that should be printed
+	static int[] extended_euclidian(int a, int b){
+		int switcher = 0, s = 0, old_s = 1, t = 1, old_t = 0, r = b, old_r = a, quotient = 0;
+		
+		while(r != 0){
+			quotient = old_r / r;
+			
+			switcher = r;
+			r = old_r - quotient * r;
+			old_r = switcher; 
+			
+			switcher = s;
+			s = old_s - quotient * s;
+			old_s = switcher; 
+			
+			switcher = t;
+			t = old_t - quotient * t;
+			old_t = switcher; 
+		}
+		
+		//old_r is the gcd, and old_t is the coefficient that will be printed
+		// (the coefficients are old_s and old_t)
+		int[] array = {old_r, old_t};
+		return array;
+	}
+	
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

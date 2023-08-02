@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int low[2000],vis[2000],scomp[2000],scomp2000um,I;
+vector&lt;int&gt; adj[2000]; stack&lt;int&gt; verts;
+void scc(int u) { low[u] = vis[u] = ++I; verts.push(u);
+  for (int v : adj[u]) {
+    if (!vis[v]) scc(v);
+    if (scomp[v] == -1) low[u] = min(low[u], low[v]); }
+  if (vis[u] &lt;= low[u]) { int v;
+    do { v=verts.top(); verts.pop(); scomp[v]=scomp2000um; } while (v != u);
+    ++scomp2000um; }}
+void get_scc(int n) { memset(vis,0,sizeof vis); memset(scomp,-1,sizeof scomp);
+  scomp2000um=I=0; for (int i=0; i&lt;n; ++i) if (!vis[i]) scc(i); }
+bool truth[2000/2]; // 2000 must be at least 2 times the number of variables
+// the clause a || b becomes !a =&gt; b and !b =&gt; a in the implication graph
+void add_clause(int a, int b) {
+    adj[a^1].push_back(b);
+    adj[b^1].push_back(a);
+}
+bool two_sat(int n) { get_scc(n);
+  for (int i = 0; i &lt; n; i += 2) { if (scomp[i] == scomp[i^1]) return false;
+  	truth[i/2] = (scomp[i] &lt; scomp[i^1]); } return true; }
+
+
+int main() {
+    pair&lt;int, int&gt; lamps[2000];
+    int n, r, k, ii, jj;
+    cin &gt;&gt; n &gt;&gt; r &gt;&gt; k;
+    for (int i = 0; i &lt; k; ++i)
+        cin &gt;&gt; lamps[i].first &gt;&gt; lamps[i].second;
+
+    for (int i = 0; i &lt; 2 * k; ++i)
+        adj[i].clear();
+
+    for (int i = 0; i &lt; k; ++i) {
+        for (int j = i + 1; j &lt; k; ++j) {
+            pair&lt;int, int&gt; l1 = lamps[i];
+            pair&lt;int, int&gt; l2 = lamps[j];
+            if (l1.first == l2.first &amp;&amp; abs(l1.second - l2.second) &lt; 2 * r) {
+                add_clause(2*i^1, 2*j^1);
+            }
+            if (l1.second == l2.second &amp;&amp; abs(l1.first - l2.first) &lt; 2 * r) {
+                add_clause(2*i, 2*j);
+                add_clause(2*j, 2*i);
+            }
+        }
+    }
+
+    if (two_sat(2 * k)) cout &lt;&lt; &quot;1\n&quot;;
+    else cout &lt;&lt; &quot;0\n&quot;;
+    return 0;
+}
+
+// usage:   for (int i = 0; i &lt; 2*num_vars; ++i) adj[i].clear();
+//      	add_clause(2*x, 2*y^1); // example for x || !y
+//			if (two_sat(2*num_vars)) // truth[] contains a satisfying assignment
+//          else // no satisfying assignment exists
+//*!
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

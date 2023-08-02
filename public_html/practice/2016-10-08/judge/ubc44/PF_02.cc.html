@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+//#include&lt;boost/functional/hash.hpp&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+
+int parent[100001];
+int size[100001];
+
+int find (int vx) {
+	int curr = vx;
+	while (parent[curr]!= curr)
+		curr = parent[curr];
+	return curr;
+}
+
+void set_union(int vx1, int vx2) { //NOTE: union-find is UNDIRECTED connected comps; directed connected comps??[how to find]
+	int par1 = find(vx1);
+	int par2 = find(vx2);
+	int newsize = size[par1]+size[par2];
+
+	if (par1 != par2) { //could be precondition
+		if (size[par1] &gt; size[par2]) { //TODO: bug: union-find in WRONG direction; [merge small into large CC!, few nodes inc height!]
+			parent[par2] = par1;
+			size[par1] += size[par2];
+		} else {
+			parent[par1] = par2; //heuristic good??
+			size[par2] += size[par1];
+		}
+	}
+}
+
+struct query {
+	bool set; //'set' or get difference query
+	int a; int b;
+	
+	query (int a, int b, bool set) : a(a), b(b), set(set) {}
+};
+
+void dfs(int vx, int root_dist, vector&lt;vector&lt;pii&gt; &gt;&amp; DAG, vector&lt;bool&gt;&amp; visited, vector&lt;int&gt;&amp; root_diff) {
+	if (!visited[vx]) { //assume no inconsistencies in orderings, avoid traversing redundant info
+		visited[vx] = true;
+		root_diff[vx] = root_dist;
+		for (pii next : DAG[vx]) {
+			dfs(next.first, root_diff[vx]+next.second, DAG, visited, root_diff);
+		}
+	}
+}
+
+int main() {
+	int N, M;
+	cin &gt;&gt; N &gt;&gt; M;
+	
+	while ( N||M ) {
+		vector&lt;query&gt; queries;
+		vector&lt;vector&lt;pii &gt; &gt; order_graph(N+1, vector&lt;pii&gt;()); //1.indexed; pii=={toNode, wt}, directed
+
+		vector&lt;bool&gt; visited( N+1, false);
+		vector&lt;int&gt; root_diff(N+1, 0);
+		for (int i=1; i&lt;=N; i++) {
+			parent[i] = i; //init union-find parent ptrs		
+			size[i] = 1;
+		}
+		char type; int a, b, w;				
+		while (M--) {
+			cin &gt;&gt; type;
+			if (type == '?') {
+				cin &gt;&gt; a &gt;&gt; b;
+				queries.push_back(query(a, b, false));
+			} else { // type == '!'
+				cin &gt;&gt; a &gt;&gt; b &gt;&gt; w;
+				queries.push_back(query(a, b, true));
+				order_graph[a].push_back(pii(b, w) );
+				order_graph[b].push_back(pii(a, -w) ); //TODO: BUG! unionfind requires undirected underlying graph.
+			}
+		}
+		//get order differences
+		for (int i=1; i&lt;=N; i++) {
+			if (!visited[i]) {
+				dfs(i, 0, order_graph, visited, root_diff);
+			}
+		}
+
+		for (query q : queries) {
+			if ( q.set ) {
+				set_union(q.a, q.b);
+			} else { //query get
+				if (find(q.a) != find(q.b) ) { //won't know b-a difference yet
+					cout &lt;&lt; &quot;UNKNOWN&quot; &lt;&lt; endl;
+				} else {
+					cout &lt;&lt; root_diff[q.b]-root_diff[q.a] &lt;&lt; endl;
+				}
+			}
+		}
+
+		cin &gt;&gt; N &gt;&gt; M;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

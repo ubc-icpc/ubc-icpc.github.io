@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;map&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+
+map&lt;pii, int&gt; mapa;
+
+bool check(int p, int q){
+
+  int x = max(abs(p), abs(q));
+
+  if(mapa.count(make_pair(p, q))) return mapa[make_pair(p, q)];
+
+  for(int i = -x;i &lt;= x;i++)
+  for(int j = -x;j &lt;= x;j++){
+      int n1 = i*i + j*j;
+      int n2 = i*p + j*q;
+      int n3 = i*q - j*p;
+
+      if(n1 &lt;= 1) continue;
+      if(i == p &amp;&amp; j == q) continue;
+      if(i == -q &amp;&amp; j == p) continue;
+      if(i == -p &amp;&amp; j == -q) continue;
+      if(i == q || j == -p) continue;
+
+      if(n3 % n1 == 0 &amp;&amp; n2 % n1 == 0) return mapa[pii(p, q)] = 1;
+  }
+
+  return mapa[pii(p, q)] = 0;
+}
+
+int main(){
+
+  int cases;
+  scanf(&quot;%d&quot;, &amp;cases);
+
+  while(cases--){
+
+    int p, q;
+    scanf(&quot;%d %d&quot;, &amp;p, &amp;q);
+
+    //p = abs(p);
+    //q = abs(q);
+
+    printf(&quot;%s\n&quot;, (check(p, q))?&quot;C&quot;:&quot;P&quot;);
+
+  }
+
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

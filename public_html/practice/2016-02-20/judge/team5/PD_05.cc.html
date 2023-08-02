@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;unordered_set&gt;
+#include&lt;unordered_map&gt;
+#include&lt;string&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+int stot(string s) {
+    return s[4]*60 + 
+            s[3]*10*60 +
+            s[1]*3600 +
+            s[0]*10*3600;
+}
+
+int main(void) {
+    int t; cin &gt;&gt; t;
+    while(t--) {
+        int n,to; cin &gt;&gt; n &gt;&gt; to;
+        to*=60;
+        unordered_map&lt;string,int&gt; lin;
+        unordered_set&lt;string&gt; us;
+        int ans = 0;
+        for(int i=0; i&lt;n; i++) {
+            string ltime; cin &gt;&gt; ltime;
+            int sec = stot(ltime);
+            string e; cin &gt;&gt; e;
+            if(e==&quot;SERVER&quot;) {
+                string x; cin &gt;&gt; x;
+                lin.clear();
+            } else {
+                string name; cin &gt;&gt; name;
+                us.insert(name);
+                string lg; cin &gt;&gt; lg;
+                if(lg == &quot;LOG_IN&quot;) {
+                    // cout &lt;&lt; name &lt;&lt; endl;
+                    lin[name] = sec;
+                    int count = 0;
+                    for(auto x:lin) {
+                        // cout &lt;&lt; x.second &lt;&lt; &quot; &quot; &lt;&lt; x.second+to &lt;&lt;&quot; &quot; &lt;&lt; sec &lt;&lt; endl;
+                        if(x.second + to &gt; sec) {
+                            count++;
+                        }
+                    }
+                    ans = max(ans, count);
+                } else {
+                    auto x = lin.find(name);
+                    if(x!=lin.end()) {
+                        lin.erase(x);
+                    }
+                }
+            }
+        }
+        cout &lt;&lt; us.size() &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

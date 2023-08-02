@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+map&lt;int, map&lt;int, vector&lt;int&gt; &gt; &gt; face_adj;
+map&lt;int, map&lt;int, int&gt; &gt; cost;
+
+struct edge {
+	int u, v, w;
+	edge() {}
+	edge(int u, int v, int w) : u(u), v(v), w(w) {}
+};
+
+vector&lt;edge&gt; g[105];
+int dist[105], seen[105];
+
+struct comp {
+	const bool operator()(const int&amp; l, const int&amp; r) const {
+		if (dist[l] == dist[r]) return l &lt; r;
+		return dist[l] &lt; dist[r];
+	}
+};
+
+int main() {
+	int f; cin &gt;&gt; f;
+	vector&lt;pii&gt; edges;
+	for (int i = 0; i &lt; f; i++) {
+		int e; cin &gt;&gt; e;
+		vector&lt;int&gt; v(e);
+		for (int j = 0; j &lt; e; j++) {
+			cin &gt;&gt; v[j];
+		}
+		
+		for (int j = 0; j &lt; e; j++) {
+			int c; cin &gt;&gt; c;
+			cost[v[j]][v[(j+1)%e]] = cost[v[(j+1)%e]][v[j]] = c;
+			face_adj[v[j]][v[(j+1)%e]].push_back(i);
+			face_adj[v[(j+1)%e]][v[j]].push_back(i);
+			edges.push_back(make_pair(v[j], v[(j+1)%e]));
+		}
+	}
+	
+	for (auto e : edges) {
+		if (face_adj[e.first][e.second].size() == 1) continue;
+		assert(face_adj[e.first][e.second].size() == 2);
+		//face_adj[e.first][e.second].push_back(f);
+		int a = face_adj[e.first][e.second][0];
+		int b = face_adj[e.first][e.second][1];
+		g[a].push_back(edge(a,b,cost[e.first][e.second]));
+		g[b].push_back(edge(b,a,cost[e.first][e.second]));
+	}
+	
+	memset(dist, 0x3f, sizeof dist);
+	memset(seen, 0, sizeof seen);
+	set&lt;int, comp&gt; s;
+	dist[0] = 0;
+	s.insert(0);
+	int ans0 = 0, nseen = 0;
+	while (!s.empty()) {
+		int u = *s.begin(); s.erase(s.begin());
+		if (seen[u]) continue;
+		seen[u] = 1;
+		ans0 += dist[u];
+		nseen++;
+		for (edge uv : g[u]) {
+			if (dist[uv.v] &gt; uv.w &amp;&amp; !seen[uv.v]) {
+				s.erase(uv.v);
+				dist[uv.v] = uv.w;
+				s.insert(uv.v);
+			}
+		}
+	}
+	if (nseen != f) ans0 = 0x3f3f3f3f;
+	for (int i = 0; i &lt;= f; i++) g[i].clear();
+	
+	for (auto e : edges) {
+		if (face_adj[e.first][e.second].size() == 1) face_adj[e.first][e.second].push_back(f);
+		int a = face_adj[e.first][e.second][0];
+		int b = face_adj[e.first][e.second][1];
+		g[a].push_back(edge(a,b,cost[e.first][e.second]));
+		g[b].push_back(edge(b,a,cost[e.first][e.second]));
+	}
+	
+	memset(dist, 0x3f, sizeof dist);
+	memset(seen, 0, sizeof seen);
+	s.clear();
+	dist[f] = 0;
+	s.insert(f);
+	int ans1 = 0;
+	while (!s.empty()) {
+		int u = *s.begin(); s.erase(s.begin());
+		if (seen[u]) continue;
+		seen[u] = 1;
+		ans1 += dist[u];
+		for (edge uv : g[u]) {
+			if (dist[uv.v] &gt; uv.w &amp;&amp; !seen[uv.v]) {
+				s.erase(uv.v);
+				dist[uv.v] = uv.w;
+				s.insert(uv.v);
+			}
+		}
+	}
+	cout &lt;&lt; min(ans0, ans1) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

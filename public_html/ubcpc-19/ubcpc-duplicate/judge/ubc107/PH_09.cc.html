@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define _USE_MATH_DEFINES
+
+#include &lt;ext/pb_ds/assoc_container.hpp&gt;
+#include &lt;ext/pb_ds/tree_policy.hpp&gt;
+using namespace __gnu_pbds;
+template &lt;typename T&gt;
+using ordered_set = tree&lt;T, null_type, less&lt;T&gt;, rb_tree_tag, tree_order_statistics_node_update&gt;;
+
+// DON'T USE THESE MACROS DURING ICPC PRACTICE
+#define For(i,n) for (int i=0; i&lt;n; i++)
+#define FOR(i,a,b) for (int i=a; i&lt;=b; i++)
+#define Down(i,n) for (int i=n-1; i&gt;=0; i--)
+#define DOWN(i,a,b) for (int i=b; i&gt;=a; i--)
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;ll,ll&gt; pll;
+typedef pair&lt;ld,ld&gt; pdd;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+typedef vector&lt;int&gt; vi;
+
+const char nl = '\n';
+const int INF = 0x3f3f3f3f;
+const ll INFLL = 0x3f3f3f3f3f3f3f3f;
+const ll MOD = 1e9+7;
+const ld EPS = 1e-10;
+mt19937 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
+
+
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0); cout.tie(0);
+	cout &lt;&lt; fixed &lt;&lt; setprecision(10);
+
+	ll n;
+	cin&gt;&gt;n;
+	ll o = 1;
+	for(ll i=2;i%100||clock()&lt;0.9*CLOCKS_PER_SEC;i++) {
+		while(n%(i*i)==0) {
+			n /= i*i;
+		}
+		while(n%i==0) {
+			n /= i;
+			o *= i;
+		}
+	}
+	ll s = llround(sqrt(n));
+	if(s*s==n) {
+		cout&lt;&lt;o&lt;&lt;nl;
+	} else {
+		cout&lt;&lt;o*n&lt;&lt;nl;
+	}
+
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

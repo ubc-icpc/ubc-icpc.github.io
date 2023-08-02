@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;bits/stdc++.h&gt;
+#include&lt;iostream&gt;
+using namespace std;
+
+int main() {
+  vector&lt;string&gt; notes = { &quot;A&quot;, &quot;A#&quot;, &quot;B&quot;,&quot;C&quot;, &quot;C#&quot;, &quot;D&quot;, &quot;D#&quot;, &quot;E&quot;, &quot;F&quot;, &quot;F#&quot;, &quot;G&quot;, &quot;G#&quot;};
+  int p, q;
+  cin &gt;&gt; p &gt;&gt; q;
+  double ratio = (double)q / p;
+  while (ratio &gt; 2) ratio /= 2;
+  while (ratio &lt; 1) ratio *= 2;
+  double cents = 1200.0 * log(ratio) / log(2);
+  int note = (cents+50) / 100;
+  int res = abs(cents - note*100) + 0.5;
+  bool inward = (note*100 &gt; cents);
+  int s1 = res/2 * (inward?1:-1);
+  int s2 = (res-abs(s1)) * (inward?-1:1);
+  cout &lt;&lt; notes[0] &lt;&lt; &quot; &quot; &lt;&lt; s1 &lt;&lt; endl;
+  cout &lt;&lt; notes[note] &lt;&lt; &quot; &quot; &lt;&lt; s2 &lt;&lt; endl;
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

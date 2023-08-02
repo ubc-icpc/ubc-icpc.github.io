@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// Apr.25 D.cpp : Defines the entry point for the console application.
+//
+
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+using namespace std;
+
+void dfs_tall(int v);
+void dfs_short(int v);
+bool seen_tall[1000000];
+bool seen_short[1000000];
+int setup_short[1000000];
+int setup_tall[1000000];
+map&lt;long long,vector&lt;long long&gt; &gt; Taller,Shorter;
+long long dest;
+bool tall=false;
+bool sho_rt=false;
+int main()
+{
+	long long n,m;
+	cin&gt;&gt;n&gt;&gt;m;
+	for (int i=1;i&lt;=m;i++){
+		long long a,b;
+		cin&gt;&gt;a&gt;&gt;b;
+		Taller[a].push_back(b);
+		setup_tall[a-1]++;
+		Shorter[b].push_back(a);
+		setup_short[b-1]++;
+	}
+	long long start;
+	cin&gt;&gt;start&gt;&gt;dest;
+	string answer=&quot;unknown&quot;;
+	dfs_tall(start);
+	dfs_short(start);
+	if (tall) answer=&quot;yes&quot;;
+	if (sho_rt) answer=&quot;no&quot;;
+	cout &lt;&lt; answer;
+	return 0;
+}   
+
+void dfs_tall(int v){
+	seen_tall[v-1]=true;
+	for (int i=0;i&lt;setup_tall[v-1];i++){
+		long long u=Taller[v][i];
+		if (u==dest) tall=true; 
+		if(!seen_tall[u-1]) dfs_tall(u);
+	}
+}
+void dfs_short(int v){
+	seen_short[v-1]=true;
+	for (int i=0;i&lt;setup_short[v-1];i++){
+		long long u=Shorter[v][i];
+		if (u==dest) sho_rt=true;
+		if(!seen_short[u-1]) dfs_short(u);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

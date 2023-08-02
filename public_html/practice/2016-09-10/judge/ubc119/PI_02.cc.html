@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+typedef struct
+{
+	std::string word;
+	int dist;
+} pair;
+
+int getIndex(char letter)
+{
+	char alphabet[] = &quot;qwertyuiopasdfghjklzxcvbnm&quot;;
+	
+	int index=0;
+	for(int i = 0; i &lt; 26; i++)
+	{
+		if(letter == alphabet[i])
+		{
+			index = i;
+			break;
+		}
+	}
+	
+	if(index &gt;= 19 &amp;&amp; index &lt; 26)
+	{
+		//std::cout &lt;&lt; 1;
+		return index - 19;
+	}
+	else if(index &gt;=10 &amp;&amp; index &lt; 19)
+	{
+//		std::cout &lt;&lt; 2;
+		return index - 10;
+	}
+//		std::cout &lt;&lt; 3;
+	return index;
+}
+
+int getHeight(char letter)
+{
+	char alphabet[] = &quot;qwertyuiopasdfghjklzxcvbnm&quot;;
+	
+	int index=0;
+	for(int i = 0; i &lt; 26; i++)
+	{
+		if(letter == alphabet[i])
+		{
+			index = i;
+			break;
+		}
+	}
+	
+	if(index &gt;= 19 &amp;&amp; index &lt; 26)
+	{
+		//std::cout &lt;&lt; 1;
+		return 2;
+	}
+	else if(index &gt;=10 &amp;&amp; index &lt; 19)
+	{
+//		std::cout &lt;&lt; 2;
+		return 1;
+	}
+//		std::cout &lt;&lt; 3;
+	return 0;
+}
+
+int getDist(char letter1, char letter2)
+{
+	int index1 = getIndex(letter1);
+	int index2 = getIndex(letter2);
+	
+	int height1 = getHeight(letter1);
+	int height2 = getHeight(letter2);
+	return std::abs(index1 - index2) + std::abs(height1 - height2);
+}
+
+bool comparePair(pair lhs, pair rhs)
+{
+	if(lhs.dist == rhs.dist)
+	{
+		return lhs.word &lt; rhs.word;
+	}
+	return lhs.dist &lt; rhs.dist;
+}
+
+int main()
+{
+	int n;
+	//get initial data
+	std::cin &gt;&gt; n;
+	
+	for(int i = 0; i &lt; n; i++) //read in pairs
+	{
+		std::string mainWord;
+		int altWordCount = 0;
+		std::cin &gt;&gt; mainWord &gt;&gt; altWordCount;
+		
+		std::string altWordArray[altWordCount];
+		int altWordDist[altWordCount];
+		for(int j = 0; j &lt; altWordCount; j++) //read in pairs
+		{
+			std::cin &gt;&gt; altWordArray[j];
+			altWordDist[j] = 0;
+			for (int k = 0; k &lt; (int)mainWord.length(); k++)
+			{
+				altWordDist[j] += getDist(mainWord[k], altWordArray[j][k]);
+			}
+		}
+		
+		pair altWordPairArray[altWordCount];
+		
+		for(int j = 0; j &lt; altWordCount; j++) //read in pairs
+		{
+			altWordPairArray[j].word = altWordArray[j];
+			altWordPairArray[j].dist = altWordDist[j];
+		}
+		
+		std::sort(altWordPairArray, altWordPairArray+altWordCount, comparePair);
+		
+		for(int j = 0; j &lt; altWordCount; j++) //read in pairs
+		{
+			std::cout &lt;&lt; altWordPairArray[j].word &lt;&lt; &quot; &quot; &lt;&lt; altWordPairArray[j].dist &lt;&lt; std::endl;
+		}
+	}
+
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

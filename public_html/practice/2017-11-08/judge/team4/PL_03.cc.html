@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);
+
+	unordered_map&lt;char,char&gt; next;
+
+	//vim op
+	next.emplace('a','e');
+	next.emplace('A','E');
+	next.emplace('i','o');
+	next.emplace('I','O');
+	next.emplace('y','u');
+	next.emplace('Y','U');
+	next.emplace('e','a');
+	next.emplace('E','A');
+	next.emplace('o','i');
+	next.emplace('O','I');
+	next.emplace('u','y');
+	next.emplace('U','Y');
+	next.emplace('b','p');
+	next.emplace('B','P');
+	next.emplace('k','v');
+	next.emplace('K','V');
+	next.emplace('x','j');
+	next.emplace('X','J');
+	next.emplace('z','q');
+	next.emplace('Z','Q');
+	next.emplace('n','t');
+	next.emplace('N','T');
+	next.emplace('h','s');
+	next.emplace('H','S');
+	next.emplace('d','r');
+	next.emplace('D','R');
+	next.emplace('c','l');
+	next.emplace('C','L');
+	next.emplace('w','m');
+	next.emplace('W','M');
+	next.emplace('g','f');
+	next.emplace('G','F');
+	next.emplace('p','b');
+	next.emplace('P','B');
+	next.emplace('v','k');
+	next.emplace('V','K');
+	next.emplace('j','x');
+	next.emplace('J','X');
+	next.emplace('q','z');
+	next.emplace('Q','Z');
+	next.emplace('t','n');
+	next.emplace('T','N');
+	next.emplace('s','h');
+	next.emplace('S','H');
+	next.emplace('r','d');
+	next.emplace('R','D');
+	next.emplace('l','c');
+	next.emplace('L','C');
+	next.emplace('m','w');
+	next.emplace('M','W');
+	next.emplace('f','g');
+	next.emplace('F','G');
+	string s;
+	while (getline(cin,s))
+	{
+		//string s;
+		
+		//getline(cin,s);
+		//if (s.empty())
+			//break;
+		for (char c : s) {
+			auto it2 = next.find(c);
+			if (it2 != next.end())
+				cout &lt;&lt; it2-&gt;second;
+			else
+				cout &lt;&lt; c;
+		}
+		cout &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

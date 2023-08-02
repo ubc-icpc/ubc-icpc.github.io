@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+const double PI = 3.1415926535;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	while(n--) {
+		double r,d; cin &gt;&gt; r &gt;&gt; d;
+		double h = abs(r-d);
+		double vcut = PI*h*h/3.0*(3.0*r-h);
+		double v = 4.0/3.0*PI*r*r*r;
+		cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; v-vcut &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

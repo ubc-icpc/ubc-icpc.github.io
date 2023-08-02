@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef long long ll;
+
+ll tint[2005][2005];
+int main() {
+	int n; cin &gt;&gt; n;
+	ll thresh; cin &gt;&gt; thresh;
+	set&lt;ll&gt; xvals;
+	set&lt;ll&gt; yvals;
+	ll xx1[n];
+	ll xx2[n];
+	ll yy1[n];
+	ll yy2[n];
+	ll blah[n];
+	for (int i = 0; i &lt; n; i++) {
+		ll x1, y1, x2, y2, t;
+		cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2 &gt;&gt; t;
+		xvals.insert(x1);
+		xvals.insert(x2);
+		yvals.insert(y1);
+		yvals.insert(y2);
+		xx1[i] = x1;
+		xx2[i] = x2;
+		yy1[i] = y1;
+		yy2[i] = y2;
+		blah[i] = t;
+	}
+
+	int nx = xvals.size();
+	int ny = yvals.size();
+	ll xvals2[nx];
+	ll yvals2[ny];
+	memset(tint, 0, sizeof tint);
+	set&lt;ll&gt;::iterator it;
+	int ii = 0;
+	for (it = xvals.begin(); it != xvals.end(); ++it) {
+		xvals2[ii] = *it; ii++;
+	}
+	ii = 0;
+	for (it = yvals.begin(); it != yvals.end(); ++it) {
+		yvals2[ii] = *it; ii++;
+	}
+
+	for (int i = 0; i &lt; n; i++) {
+		int i1 = 0;
+		while (xvals2[i1] != xx1[i]) i1++;
+		int i2 = i1+1;
+		while (i2 &lt; nx &amp;&amp; xvals2[i2] &lt; xx2[i]) i2++;
+		int j1 = 0;
+		while (yvals2[j1] != yy1[i]) j1++;
+		int j2 = j1+1;
+		while (j2 &lt; ny &amp;&amp; yvals2[j2] &lt; yy2[i]) j2++;
+		for (int x = i1; x &lt; i2; x++) {
+			for (int y = j1; y &lt; j2; y++) {
+				tint[x][y] += blah[i];
+			}
+		}
+	}
+
+	ll ans = 0;
+	for (int i = 0; i+1 &lt; nx; i++) {
+		for (int j = 0; j+1 &lt; ny; j++) {
+			if (tint[i][j] &gt;= thresh) {
+				ans += (xvals2[i+1] - xvals2[i]) *
+					   (yvals2[j+1] - yvals2[j]);
+			}
+		}
+	}
+	cout &lt;&lt; ans &lt;&lt; endl;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef pair&lt;int,int&gt; pii;
+typedef long long ll;
+typedef tuple&lt;int,int,int&gt; tii;
+
+tii box[10];
+int DP[10][3][1100];
+int n;
+int dp(int b, int t, int m){
+    if (DP[b][t][m]!=-1) return DP[b][t][m];
+    int x,y;
+    if (t==0) x=get&lt;1&gt;(box[b]),y=get&lt;2&gt;(box[b]); 
+    if (t==1) x=get&lt;0&gt;(box[b]),y=get&lt;2&gt;(box[b]); 
+    if (t==2) x=get&lt;0&gt;(box[b]),y=get&lt;1&gt;(box[b]); 
+    int ans=1;
+    for (int k=0;k&lt;n;k++) if ((m&amp;(1&lt;&lt;k))==0){ //not already used
+        for (int j=0;j&lt;3;j++){
+            int c,d; 
+            if (j==0) c=get&lt;1&gt;(box[k]),d=get&lt;2&gt;(box[k]);
+            if (j==1) c=get&lt;0&gt;(box[k]),d=get&lt;2&gt;(box[k]);
+            if (j==2) c=get&lt;0&gt;(box[k]),d=get&lt;1&gt;(box[k]);
+            bool fit=false;
+            if ((x&gt;=c)&amp;&amp;(y&gt;=d)) fit=true;
+            if ((x&gt;=d)&amp;&amp;(y&gt;=c)) fit=true;
+            if (fit) ans=max(ans,dp(k,j,m+(1&lt;&lt;k))+1);
+        }
+    }
+    return DP[b][t][m]=ans;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    int ca=1;
+    while (cin&gt;&gt;n){
+        memset(DP,-1,sizeof DP);
+        if (n==0) break;
+        vector&lt;pii&gt; v;
+        for (int i=0;i&lt;n;i++){
+            int a,b,c; cin&gt;&gt;a&gt;&gt;b&gt;&gt;c; 
+            box[i]=make_tuple(a,b,c);
+        }
+        int ans=1;
+        for (int i=0;i&lt;n;i++) for (int j=0;j&lt;3;j++) ans=max(ans,dp(i,j,1&lt;&lt;i));
+        cout&lt;&lt;&quot;Case &quot;&lt;&lt;ca&lt;&lt;&quot;: &quot;&lt;&lt;ans&lt;&lt;endl;
+        ca++;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

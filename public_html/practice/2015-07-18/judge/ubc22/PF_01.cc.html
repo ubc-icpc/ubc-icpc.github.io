@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+#define DEBUG false
+#define DEBUGVAL 43.75
+
+
+int T, W, P, N;
+priority_queue&lt;double, vector&lt;double&gt;, greater&lt;double&gt; &gt; A;
+double R, LO, HI, MI;
+const double eps = 1e-8;
+
+double calc (priority_queue&lt;double, vector&lt;double&gt;, greater&lt;double&gt; &gt; q, double i = -1) {
+    if (i != -1) q.push(i);
+    while (q.size() &gt; 1) {
+        double a, b;
+        a = q.top(); q.pop();
+        b = q.top(); q.pop();
+        if (DEBUG &amp;&amp; LO == DEBUGVAL) cout &lt;&lt; &quot;--&gt; &quot; &lt;&lt; a &lt;&lt; &quot;&amp;&quot; &lt;&lt; b &lt;&lt; &quot; =&gt; &quot; &lt;&lt; (a + b) / P * 100 &lt;&lt; endl;
+        a = (a + b) / P * 100;
+        q.push(a);
+    }
+    return q.top();
+}
+
+int main () {
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; W &gt;&gt; P &gt;&gt; N;
+        P = 100 - P;
+        A = priority_queue&lt;double, vector&lt;double&gt;, greater&lt;double&gt; &gt;();
+        for (int i = 0; i &lt; N; ++i) { int t; cin &gt;&gt; t; A.push(t); }
+        if (calc(A) - eps &gt; W) { cout &lt;&lt; -1 &lt;&lt; endl; continue; }
+        LO = 0; HI = W;
+        while (HI - LO &gt; eps) {
+            MI = (LO + HI) / 2;
+            R = calc(A, MI);
+            if (DEBUG) cout &lt;&lt; LO &lt;&lt; &quot;/&quot; &lt;&lt; HI &lt;&lt; &quot; : &quot; &lt;&lt; R &lt;&lt; endl;
+            if (R - eps &gt; W) HI = MI;
+            else LO = MI;
+        }
+        cout &lt;&lt; fixed &lt;&lt; setprecision(8) &lt;&lt; LO &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

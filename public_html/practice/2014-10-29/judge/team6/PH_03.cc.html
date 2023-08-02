@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+
+using namespace std;
+typedef long long ll;
+
+ll pow10[100];
+
+ll rev(ll a) {
+	ll b = 0;
+	while (a &gt; 0) {
+		b = b * 10 + (a % 10);
+		a = a / 10;
+	}
+	return b;
+}
+
+int numd(ll a) {
+	int res = 0;
+	while (a &gt; 0) {
+		res++;
+		a /= 10;
+	}
+	return res;
+}
+
+ll digit(ll a, int n) {
+	n--; ll p = pow10[n]; return (a % (p*10)) / p;
+}
+
+ll test(ll a) {
+	int ans = 0;
+	for (int i = 1; i &lt; a; i++) {
+		if (i + rev(i) == a) {
+			ans++;
+		}
+	}
+	return ans;
+}
+
+typedef pair&lt;ll, int&gt; pp1;
+typedef pair&lt;int, bool&gt; pp2;
+typedef pair&lt;pp1, pp2&gt; ppp;
+map&lt;ppp, ll&gt; memo;
+
+inline ll debug(ll x, int nd, int ni, bool zero, ll a) {
+	//cerr &lt;&lt; &quot;Input: &quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; nd &lt;&lt; &quot; &quot; &lt;&lt; ni &lt;&lt; &quot; &quot; &lt;&lt; zero &lt;&lt; endl;
+	//cerr &lt;&lt; &quot;Output: &quot; &lt;&lt; a &lt;&lt; endl;
+	memo[ppp(pp1(x, nd), pp2(ni, zero))] = a;
+	return a;
+}
+
+ll solve(ll x, int nd, int ni, bool zero) {
+	ppp index = ppp(pp1(x, nd), pp2(ni, zero));
+	if (memo.count(index) &gt; 0) return memo[index];
+	if (x &lt; 0) return debug(x, nd, ni, zero, 0);
+	if (ni == 2) {
+		ll ans = 0;
+		for (int a = 0; a &lt;= 9; a++) {
+			if (!zero &amp;&amp; a == 0) continue;
+			for (int b = 0; b &lt;= 9; b++) {
+				int x1 = a*10+b;
+				int x2 = b*10+a;
+				if (x1+x2 == x) ans++;
+			}
+		}
+		return debug(x, nd, ni, zero, ans);
+	}
+	if (ni == 1) {
+		if (x % 2 == 0 &amp;&amp; x &lt; 20) {
+			return debug(x, nd, ni, zero, 1);
+		}
+		return debug(x, nd, ni, zero, 0);
+	}
+	ll firstd = digit(x, nd);
+	ll lastd = x % 10;
+	ll ans = 0;
+	if (nd == ni) {
+		ll nextx = (x - lastd * pow10[nd - 1]) / 10;
+		if (firstd == lastd) {
+			for (int a = 0; a &lt;= lastd; a++) {
+				if (a == 0 &amp;&amp; !zero) continue;
+				int b = lastd - a;
+				ans += solve(nextx, nd-2, ni-2, true);
+			}
+		} else if (firstd == lastd + 1) {
+			for (int a = 0; a &lt;= lastd; a++) {
+				if (a == 0 &amp;&amp; !zero) continue;
+				int b = lastd - a;
+				ans += solve(nextx, nd-1, ni-2, true);
+			}
+		}
+	} else if (nd == ni + 1) {
+		ll nextx = (x - (10 + lastd) * pow10[nd-2] - (10 + lastd)) / 10;
+		ll nextx2 = (x - lastd * pow10[nd-2] - lastd) / 10;
+		int secondd = digit(x, nd-1);
+		if (firstd == 1) {
+			for (int a = 0; a &lt;= 9; a++) {
+				if (a == 0 &amp;&amp; !zero) continue;
+				int b = lastd + 10 - a;
+				if (b &gt;= 0 &amp;&amp; b &lt;= 9) {
+					ans += solve(nextx, nd-2, ni-2, true);
+				}
+				b = lastd - a;
+				if (b &gt;= 0 &amp;&amp; b &lt;= 9 &amp;&amp; secondd == 0) {
+					ans += solve(nextx2, nd-2, ni-2, true);
+				}
+			}
+		} else if (firstd == 0) {
+			ans += solve(x, nd-1, ni, true);
+		}
+	}
+	return debug(x, nd, ni, zero, ans);
+}
+
+ll solve2(ll y) {
+	if (y &lt; 10) return solve(y, 1, 1, false);
+	int nd = numd(y);
+	return solve(y, nd, nd, false) + solve(y, nd, nd-1, false);
+}
+
+int main() {
+	ll tmp = 1;
+	for (int i = 0; i &lt; 19; i++) {
+		pow10[i] = tmp; tmp *= 10;
+	}
+	/*
+	cerr &lt;&lt; rev(123) &lt;&lt; endl;
+	cerr &lt;&lt; rev(1000) &lt;&lt; endl;
+	for (int i = 1; i &lt; 10000; i++) {
+		int nd = numd(i);
+		ll ans = test(i);
+		ll a = solve2(i);
+		if (ans != a) {
+			cerr &lt;&lt; &quot;Wrong: &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; endl;
+		}
+	}
+	cerr &lt;&lt; &quot;end testing&quot;  &lt;&lt; endl;
+	*/
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		ll y; cin &gt;&gt; y;
+		int nd = numd(y);
+		cout &lt;&lt; solve2(y) &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

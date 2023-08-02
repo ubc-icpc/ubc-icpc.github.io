@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+def f(n,k):
+  r = 1
+  for i in xrange(k+1,n+1):
+    r *= i
+  for i in xrange(2,n-k+1):
+    r /= i
+  return r
+
+n = int(raw_input())
+n -= 1
+b = bin(n)[2:]
+t = 0
+c = 0
+for i in xrange(len(b)-1):
+  if b[i] == '1':
+    for j in xrange(len(b)-i):
+      t += 2**(j+c)*f(len(b)-i-1,j)
+    c += 1
+t += 2**c
+if b[-1] == '1':
+  t += 2**(c+1)
+print t
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

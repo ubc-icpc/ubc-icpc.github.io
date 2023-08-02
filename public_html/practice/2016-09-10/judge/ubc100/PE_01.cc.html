@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;set&gt;
+#include&lt;utility&gt;
+#include&lt;algorithm&gt;
+#include&lt;map&gt;
+
+
+#define pss pair&lt;string, string&gt;
+
+using namespace std;
+
+
+
+struct comp {
+    bool operator() (const pss &amp;a, const pss &amp;b) const {
+        if(a.first.compare(b.first) == 0) {
+            return a.second.compare(b.second) &lt; 0;
+        }
+        return a.first.compare(b.first) &lt; 0;
+    }
+};
+
+
+int main(void) {
+    int T; cin &gt;&gt; T;
+    while(T--) {
+        int n; cin &gt;&gt; n;
+        map&lt;string,set&lt;string&gt;&gt; m,_m;
+        
+        for(int i=0; i&lt;n; i++) {
+            string asdf; cin &gt;&gt; asdf;
+            int j; cin &gt;&gt;j;
+            vector&lt;string&gt; vec, _vec;
+            for(int x=0; x&lt;j; x++) {
+                string s; cin &gt;&gt; s;
+                vec.push_back(s);
+            }
+            int k; cin &gt;&gt; k;
+            for(int x=0; x&lt;k; x++) {
+                string s; cin &gt;&gt; s;
+                _vec.push_back(s);
+            }
+            
+            
+            for(string s:vec) {
+                if(m.find(s) == m.end()) {
+                    for(string ss:_vec) m[s].insert(ss);
+                } else {
+                    set&lt;string&gt; sstr;
+                    for(string ss:_vec) {
+                        if(m[s].find(ss) != m[s].end()) {
+                            sstr.insert(ss);
+                        }
+                    }
+                    m[s].swap(sstr);
+                }
+            }
+            
+            for(string s:_vec) {
+                if(_m.find(s) == _m.end()) {
+                    for(string ss:vec) _m[s].insert(ss);
+                } else {
+                    set&lt;string&gt; sstr;
+                    for(string ss:vec) {
+                        if(_m[s].find(ss) != _m[s].end()) {
+                            sstr.insert(ss);
+                        }
+                    }
+                    _m[s].swap(sstr);
+                }
+            }
+        }
+        set&lt;pss, comp&gt; ans,_ans;
+        
+        for(auto x:m) {
+            for(auto y:x.second) {
+                ans.insert({x.first,y});
+            } 
+        }
+        
+        for(auto x:_m) {
+            for(auto y:x.second) {
+                _ans.insert({y,x.first});
+            } 
+        }
+        for(auto x:ans) {
+            if(_ans.find(x) != _ans.end()) {
+                cout &lt;&lt; &quot;(&quot; &lt;&lt; x.first &lt;&lt; &quot;, &quot; &lt;&lt; x.second &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+    
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

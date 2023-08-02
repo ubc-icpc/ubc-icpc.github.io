@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+#define mp3(a,b,c) make_pair(a,make_pair(b,c))
+
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;int,pii&gt; p3i;
+
+const int dx[4] = {1,-1,0,0};
+const int dy[4] = {0,0,1,-1};
+
+int mn[125][125], c[125][125];
+bool vis[125][125];
+
+int main() {
+  ios::sync_with_stdio(0);
+  int n, T = 1;
+  while (cin &gt;&gt; n &amp;&amp; n) {
+    memset(vis, 0, sizeof vis);
+    cout &lt;&lt; &quot;Problem &quot; &lt;&lt; T++ &lt;&lt; &quot;: &quot;;
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = 0; j &lt; n; j++) {
+        cin &gt;&gt; c[i][j];
+        mn[i][j] = 0x3f3f3f3f;
+      }
+    }
+    mn[0][0] = c[0][0];
+    priority_queue&lt;p3i&gt; pq;
+    pq.push(mp3(-c[0][0],0,0));
+    while (pq.size()) {
+      p3i t = pq.top();
+      pq.pop();
+      int C = t.first, x = t.second.first, y = t.second.second;
+      if (vis[x][y])
+        continue;
+      for (int i = 0; i &lt; 4; i++) {
+        int X = x+dx[i], Y = y+dy[i];
+        if (0 &lt;= X &amp;&amp; X &lt; n &amp;&amp; 0 &lt;= Y &amp;&amp; Y &lt; n &amp;&amp; !vis[X][Y] &amp;&amp; mn[X][Y] &gt; -C+c[X][Y]) {
+          mn[X][Y] = -C+c[X][Y];
+          pq.push(mp3(-mn[X][Y],X,Y));
+        }
+      }
+    }
+    cout &lt;&lt; mn[n-1][n-1] &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">// Practice.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+#include &lt;string&gt;
+using namespace std;
+
+
+int main()
+{
+	char e_or_d;
+	cin &gt;&gt; e_or_d;
+	bool e = e_or_d == 'E';
+	int s;
+	cin &gt;&gt; s;
+	string w;
+	cin &gt;&gt; w;
+	if (e) {
+		// ADD s
+		for (int i = 0; i &lt; w.length(); ++i){
+			// get &quot;number&quot; of the char
+			int num = w[i] - 97;
+			// add s to num
+			num += s;
+			// % 26 to wrap around
+			num %= 26;
+			// add 97 to get char
+			num += 97;
+			w[i] = (char) num;
+		}
+	} else {
+		// decode, SUBTRACT s
+		for (int i = 0; i &lt; w.length(); ++i){
+			int num = w[i] - 97;
+			// add 26 to num
+			num += 26;
+			// sub s from num
+			num -= s;
+			// % 26 to get final num
+			num %= 26;
+			// add 97 to get char
+			num += 97;
+			w[i] = (char) num;
+		}
+	}
+
+	cout &lt;&lt; w;
+}
+
+// Run program: Ctrl + F5 or Debug &gt; Start Without Debugging menu
+// Debug program: F5 or Debug &gt; Start Debugging menu
+
+// Tips for Getting Started: 
+//   1. Use the Solution Explorer window to add/manage files
+//   2. Use the Team Explorer window to connect to source control
+//   3. Use the Output window to see build output and other messages
+//   4. Use the Error List window to view errors
+//   5. Go to Project &gt; Add New Item to create new code files, or Project &gt; Add Existing Item to add existing code files to the project
+//   6. In the future, to open this project again, go to File &gt; Open &gt; Project and select the .sln file
+</code>
+</pre>
+</body>
+</html>

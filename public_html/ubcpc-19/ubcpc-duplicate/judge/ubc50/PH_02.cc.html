@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+using namespace std;
+typedef long long ll;
+
+const int maxn=3e6;
+bool vis[maxn+10];
+int P[maxn],tot=0;
+void findprime()
+{
+    vis[1] = 1;
+    for (int i = 2; i &lt; maxn; ++i)
+    {
+        if (!vis[i])
+            P[++tot] = i;
+        for (int j = 1; j &lt;= tot &amp;&amp;  i * P[j] &lt; maxn; ++j)
+        {
+            vis[i*P[j]] = 1;
+            if (i % P[j] == 0)
+                break;
+        }
+    }
+}
+
+int main()
+{
+	/*ll y=1;
+	for (int i=1;i&lt;=62;i++) y=y*2;
+	printf(&quot;%lld\n&quot;,y);
+	printf(&quot;1&quot;);
+	for (int i=1;i&lt;=18;i++) printf(&quot;0&quot;);*/
+	findprime();
+	ll x;
+	int i;
+	scanf(&quot;%lld&quot;,&amp;x);
+	ll ans=1;
+	for (i=1;i&lt;=tot;i++)
+	{
+		if (x%P[i]!=0) continue;
+		int k=0;
+		while (x%P[i]==0)
+		{
+			k++;
+			x/=P[i];
+		}
+		if (k%2==1) ans*=P[i];
+	}
+	ll t=ll(sqrt(x));
+	bool flag=0;
+	for (int j=-1;j&lt;=1;j++)
+	  if ((t+j)*(t+j)==x)
+	  {
+	  	flag=1;
+	  }
+	if (flag) {printf(&quot;%lld\n&quot;,ans);return 0;}
+	ans=ans*x;
+	printf(&quot;%lld\n&quot;,ans);
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html><head>
+
+
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="Andy Harrington"><title>Problem H: Shrine Maintenance</title>
+  
+
+  
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style></head><body>
+<h1>Problem H: Shrine Maintenance<br>
+</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <span style="font-family: monospace;">shrine</span><tt>.</tt>{<tt>c</tt>,
+      <tt>cpp</tt>, <tt>java</tt>} </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>shrine.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<p>A religious sect has holy sites with shrines placed around a circle of
+radius 1000.&nbsp; The circle is split into N equal length arcs and the
+endpoints are numbered in order, 1 through N.&nbsp; The first figure
+shows a circle where N is 12, with 12 gray tick marks like on a 12-hour
+analog clock.&nbsp; We can imagine the marks numbered, as on a clock, with 12
+at the top.&nbsp; Each circle has one or more <span style="font-style: italic;">sacred numbers</span> associated
+with it.&nbsp;&nbsp; The sacred numbers for the circle in the first
+figure are 2 and 3.&nbsp; A shrine, indicated by a black dot in the figure, is
+placed at each mark whose number is a multiple of at least one of the
+sacred numbers, so in this case the shrines are at positions 2, 3, 4,
+6, 8, 9, 10, and 12.&nbsp;&nbsp;</p>
+
+
+<center>
+<table style="text-align: center; width: 406px; height: 204px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><img style="width: 200px;" alt="optimal paths" src="fig1.png"><br>
+      </td>
+      <td><img style="width: 225px;" alt="optimal paths" src="fig3.png"><br>
+      </td>
+      <td><img style="width: 215px;" alt="optimal paths" src="fig4.png"><br>
+      </td>
+	  <!--
+      <td><img style="width: 205px;" alt="optimal paths" src="fig2.png"><br>
+	  -->
+      </td>
+    </tr>
+    <tr>
+      <td>Figure 1</td>
+      <td>Figure 2</td>
+      <td>Figure 3</td>
+	  <!--
+      <td>Figure 4</td>
+	  -->
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<br>
+
+<p>
+When it comes time to inspect and repair the shrines at a given
+site, the area is closed and a team of workers simultaneously fan out
+from a maintenance shed, located in the center of the circle, so that
+each shrine is visited by at least one worker. Once all workers have
+returned to the shed, the site is reopened to the public. Because
+these sites are in great demand, it is important that they be closed
+as briefly as possible. In order to minimize this time, they 
+must figure out how to apportion the shrines among the current
+number of workers, so the maximum distance traveled by any one worker
+is as small as possible.&nbsp; Figure 1 shows one choice for the optimal solution paths for 3
+workers.&nbsp; The lower left path has darker lines, to indicate that it is one
+with the longest length, which in this case is approximately 3517.6. <br>
+</p>
+
+<p>
+This sect has many circular sites with multiple shrines.&nbsp; The number of available workers at a site, W, the
+value of the number equal arcs, N, and the sacred numbers vary between
+sites.&nbsp;
+The sacred numbers are always divisors of N.&nbsp;&nbsp;
+
+Your job is to help figure out how much time is required for
+maintenance.&nbsp; Figures 2 and 3
+show optimal solutions for other sites.&nbsp;
+</p>
+
+<br>
+<p><b>Input:</b>&nbsp; The input consists of one or more data
+sets.&nbsp; Each data set is on a single line and consists entirely of
+positive integers.&nbsp; The first three entries are W, the number of
+workers, N, the number of equal arcs around the circle, and D, the
+number of sacred divisors of N.&nbsp; At the end come the D divisors of
+N.&nbsp; W is no more than the total number of shrines;
+<nobr>N &le; 8600</nobr>,
+and <nobr>D &le; 6</nobr>; each listed divisor of N is smaller than&nbsp;N.</p>
+
+<p>A single zero, 0, will be placed on the last line to indicate the
+end of the input.
+</p>
+
+
+<p><b>Output:</b>&nbsp;&nbsp; The output is a single line for each
+dataset:&nbsp; the maximum distance a worker must travel with an
+optimal assignment of the shrines.&nbsp; This number is displayed so
+that it is rounded to one decimal place, and always shows that decimal place,
+even if it is 0.&nbsp; To ensure unique answers with double arithmetic,
+the datasets are chosen so that if your answer is anywhere within .005
+of the exact minimum distance, then the answer rounded to one decimal
+place will be the same.
+</p>
+
+<p>The first three sample datasets correspond to the three figures.</p>
+<p>Caution:&nbsp; Be careful with your algorithm so it finishes rapidly.<br>
+</p>
+
+<table class="example">
+
+  <thead><tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>3 12 2 2 3<br>
+
+7 70 3 14 10 35<br>
+
+2 84 3 3 4 14<br>
+
+4 35 2 7 5<br>
+
+3 20 2 5 4<br>
+
+3 6 1 1<br>
+
+4 6 1 1<br>
+
+1 6 1 1<br>8600 8600 3 1 10 100<br>
+      <kbd>
+0<br>
+      </kbd> </td>
+      <td>3517.6<br>
+
+2624.3<br>
+
+4987.7<br>
+
+3224.9<br>
+
+3488.4<br>
+
+3000.0<br>
+
+3000.0<br>
+
+7000.0<br>
+
+2000.0<kbd><br>
+      <br>
+      </kbd> </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+
+<br>
+
+</body></html>

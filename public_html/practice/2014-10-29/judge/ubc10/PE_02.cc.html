@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+using namespace std;
+typedef long long ll;
+int dr[4] = {-1, 1, 0, 0};
+int dc[4] = {0, 0, -1, 1};
+struct P {
+	int r; int c; ll cost;
+	P(){}
+	P(int lr, int lc, ll lcost) {
+		r = lr; c = lc; cost = lcost;
+	}
+};
+
+struct cmpP {
+	bool operator() (const P &amp;p1, const P &amp;p2) const {
+		return p1.cost &gt; p2.cost;
+	}
+};
+ll grid[1000][1000];
+bool visited[1000][1000];
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		int k, w, h; cin &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+		ll costs[26];
+		for (int i = 0; i &lt; k; i++) {
+			char c; ll cc; cin &gt;&gt; c &gt;&gt; cc;
+			costs[(int)(c - 'A')] = cc;
+		}
+		int sr, sc;
+		for (int i = 0; i &lt; h; i++) {
+			for (int j = 0; j &lt; w; j++) {
+				char c; cin &gt;&gt; c;
+				if (c == 'E') {
+					grid[i][j] = 0;
+					sr = i; sc = j;
+				} else {
+					grid[i][j] = costs[(int)(c - 'A')];
+				}
+			}
+		}
+		priority_queue&lt;P, vector&lt;P&gt;, cmpP&gt; q;
+		q.push(P(sr, sc, 0));
+		memset(visited, 0, sizeof visited);
+		while (!q.empty()) {
+			P curr = q.top();
+			q.pop();
+			//cerr &lt;&lt; curr.r &lt;&lt; &quot; &quot; &lt;&lt; curr.c &lt;&lt; &quot; &quot; &lt;&lt; curr.cost &lt;&lt; endl;
+			if (curr.r &lt; 0 || curr.r &gt;= h || curr.c &lt; 0 || curr.c &gt;= w) {
+				cout &lt;&lt; curr.cost &lt;&lt; endl;
+				break;
+			}
+			if (visited[curr.r][curr.c]) continue;
+			visited[curr.r][curr.c] = true;
+			for (int i = 0; i &lt; 4; i++) {
+				int nr = curr.r + dr[i];
+				int nc = curr.c + dc[i];
+				//cerr &lt;&lt; &quot;add: &quot; &lt;&lt; nr &lt;&lt; &quot; &quot; &lt;&lt; nc &lt;&lt; &quot; &quot; &lt;&lt; curr.cost + grid[curr.r][curr.c] &lt;&lt; endl;
+				q.push(P(nr, nc, curr.cost + grid[curr.r][curr.c]));
+			}
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

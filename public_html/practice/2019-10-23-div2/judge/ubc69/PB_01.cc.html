@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+
+int n, m;
+vector&lt;vector&lt;ll&gt;&gt; path;
+vector&lt;vector&lt;char&gt;&gt; grid;
+unordered_map&lt;char, int&gt; cost;
+vector&lt;pair&lt;int, int&gt;&gt; dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+
+bool in_range(int i, int j, int a, int b) {
+   return i &gt;= 0 &amp;&amp; j &gt;= 0 &amp;&amp; i &lt; a &amp;&amp; j &lt; b;
+}
+
+struct cmp {
+   bool operator() (pair&lt;pair&lt;int, int&gt;, long long&gt; p1, pair&lt;pair&lt;int, int&gt;, long long&gt; p2) {
+      return p1.second &gt; p2.second;
+   }
+};
+
+int main() {
+   int t;
+   cin &gt;&gt; t;
+
+   while (t--) {
+      int k, a, b;
+      cin &gt;&gt; k &gt;&gt; b &gt;&gt; a;
+      cost = unordered_map&lt;char, int&gt;();
+      path = vector&lt;vector&lt;ll&gt;&gt; (a, vector&lt;ll&gt;(b, LLONG_MAX));
+      grid = vector&lt;vector&lt;char&gt;&gt; (a, vector&lt;char&gt;(b));
+      for (int i = 0; i &lt; k; i++) {
+         char c;
+         cin &gt;&gt; c;
+         int cc;
+         cin &gt;&gt; cc;
+         cost[c] = cc;
+      }
+      pair&lt;int, int&gt; start;
+      for (int i = 0; i &lt; a; i++) {
+         for (int j = 0; j &lt; b; j++) {
+            cin &gt;&gt; grid[i][j];
+            if (grid[i][j] == 'E') {
+               start.first = i;
+               start.second = j;
+            }
+         }
+      }
+      priority_queue&lt;pair&lt;pair&lt;int, int&gt;, ll&gt;, vector&lt;pair&lt;pair&lt;int, int&gt;, ll&gt;&gt;, cmp&gt; q;
+      q.push({start, 0});
+      path[start.first][start.second] = 0;
+      while (!q.empty()) {
+         pair&lt;pair&lt;int, int&gt;, ll&gt; curr = q.top();
+         pair&lt;int, int&gt; currP = curr.first;
+         q.pop();
+         for (int i = 0; i &lt; dir.size(); i++) {
+            pair&lt;int, int&gt; next = {currP.first + dir[i].first, currP.second + dir[i].second};
+            if (in_range(next.first, next.second, a, b) &amp;&amp; path[next.first][next.second] &gt; cost[grid[next.first][next.second]] + curr.second) {
+               path[next.first][next.second] = cost[grid[next.first][next.second]] + curr.second;
+               q.push({next, path[next.first][next.second]});
+            }
+         }
+      }
+      ll minm = LLONG_MAX;
+      for (int i = 0; i &lt; a; i++) {
+         minm = min(minm, path[i][0]);
+         minm = min(minm, path[i][b-1]);
+      }
+      for (int i = 0; i &lt; b; i++) {
+         minm = min(minm, path[0][i]);
+         minm = min(minm, path[a-1][i]);
+      }
+      cout &lt;&lt; minm &lt;&lt; endl;
+   }
+}
+
+
+
+
+
+
+
+
+</code>
+</pre>
+</body>
+</html>

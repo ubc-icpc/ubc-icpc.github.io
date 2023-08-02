@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+double win, loss, strength;
+
+double prob(int a, int b, double s)
+{
+   double p = s/(s+strength);
+   if(a==4)
+      return 1.0;
+   if(b==4)
+      return 0.0;
+   
+   return p*prob(a+1, b, 20+win) + (1-p)*prob(a, b+1, 20-loss);
+
+}
+      
+
+
+
+int main()
+{
+   int n;
+   string s;
+   cin &gt;&gt; n;
+
+   for(int i=0; i &lt; n; i++)
+   {
+      getline(cin, s);
+      getline(cin, s);
+      cin &gt;&gt; strength &gt;&gt; win &gt;&gt; loss;
+      cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; prob(0, 0, 20) &lt;&lt; endl;
+   }
+
+   return 0;
+}
+   
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+
+struct rec {
+  int x,y,pos;
+  bool used;
+  rec *p1,*p2;
+};
+//a&lt;b
+bool sortY(rec * a, rec * b) {
+  if(a-&gt;y == b-&gt;y) {
+	return a-&gt;x &lt; b-&gt;x;
+  }
+  return a-&gt;y &lt; b-&gt;y;
+}
+
+bool sortX(rec * a, rec * b) {
+  if(a-&gt;x == b-&gt;x) {
+	return a-&gt;y &lt; b-&gt;y;
+  }
+  return a-&gt;x &lt; b-&gt;x;
+}
+
+int main (void) {
+  int cnt = 1;
+  while(true) {
+	int t; cin &gt;&gt; t;
+	if(t==0)break;
+	cout &lt;&lt; &quot;Polygon #&quot; &lt;&lt; cnt &lt;&lt; &quot;: &quot; ;
+	vector&lt;rec *&gt; v;
+	rec rs[t];
+	
+	for(int i=0; i&lt;t; i++) {
+	  int x,y; cin &gt;&gt;x &gt;&gt;y;
+	  rs[i].x=x; rs[i].y=y; rs[i].pos=i+1;
+	  v.push_back(&amp;rs[i]);
+	}
+    
+	sort(v.begin(),v.end(),&amp;sortY);
+	
+	rec *start = v[0];
+	
+	for(int i=0; i&lt;t; i+=2) {
+		v[i]-&gt;p1 = v[i+1];
+		v[i+1]-&gt;p1 = v[i];
+	}
+	/*
+	for(int i=0; i&lt;t; i++) {
+	  cout &lt;&lt;v[i].x &lt;&lt; &quot; &quot;&lt;&lt; v[i].y &lt;&lt; endl;
+	  cout &lt;&lt; &quot;\t&quot; &lt;&lt; &quot;p1 &quot; &lt;&lt; v[i].p1-&gt;x &lt;&lt; &quot; &quot; &lt;&lt; v[i].p1-&gt;y &lt;&lt; endl;
+	}
+	*/
+	sort(v.begin(),v.end(),&amp;sortX);
+	
+	for(int i=0; i&lt;t; i+=2) {
+		v[i]-&gt;p2 = v[i+1];
+		v[i+1]-&gt;p2 = v[i];
+	}
+	
+	
+	
+	rec* prev = 0;
+	int start_pos = start-&gt;pos;
+	do {
+	  cout &lt;&lt; start-&gt;pos &lt;&lt; &quot; &quot;;
+	  //prev = start;
+	  if(prev == 0) {
+		if( start-&gt;p1-&gt;x &gt; start-&gt;p2-&gt;x ) {
+		  //rec * temp = start;
+		  prev = start;
+		  start = start-&gt;p1;
+		} else {
+		  prev = start;
+		  start = start-&gt;p2;
+		}
+		continue;
+	  }
+	  rec* temp = start;
+	  if(start-&gt;p1-&gt;pos == prev-&gt;pos)
+		start = start-&gt;p2;
+	  else
+		start = start-&gt;p1;
+	  prev = temp;
+	}while(start-&gt;pos != start_pos);
+	cout &lt;&lt; endl;
+	cnt++;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef long long ll;
+int main() {
+	int ts; cin &gt;&gt; ts;
+	for(int i = 0; i &lt; ts; i++) {
+		int k; string ss; cin &gt;&gt; k &gt;&gt; ss;
+		ll top, down;
+		int j = 0;
+		string tm;
+		for(; j &lt; ss.length(); j++) {
+			if( ss[j] == '/') break;
+			tm +=ss[j];
+		}
+		top = stol(tm);
+		tm = &quot;&quot;;
+		for( j = j+1; j&lt; ss.length(); j++) tm += ss[j];
+		down = stol(tm);
+		//cout &lt;&lt; top &lt;&lt; &quot; &quot; &lt;&lt; down &lt;&lt; endl;
+		stack&lt;char&gt; st;
+		while(top != 1 || down != 1) {
+			if(top &gt;down) {
+				st.push('r');
+				top = top - down;
+			} else {
+				st.push('l');
+				down = down - top;
+			}
+		}
+		unsigned long long res = 1;
+		while(!st.empty()) {
+			char cur = st.top(); st.pop();
+			if(cur =='r') res = res*2 +1;
+			else res = 2* res;
+		}
+		cout &lt;&lt;k &lt;&lt; &quot; &quot; &lt;&lt;res &lt;&lt; endl;
+
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

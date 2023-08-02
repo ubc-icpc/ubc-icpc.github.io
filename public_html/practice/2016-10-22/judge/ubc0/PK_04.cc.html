@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;deque&gt;
+#include &lt;cassert&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;bitset&gt;
+#include &lt;climits&gt;
+#include &lt;iomanip&gt;
+#include &lt;sstream&gt;
+using namespace std;
+
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+typedef double T;
+typedef vector&lt;T&gt; VT;
+typedef vector&lt;VT&gt; VVT;
+
+double distance(pair&lt;double, double&gt; p1, pair&lt;double, double&gt; p2){
+    return sqrt(1.0 * (p1.first - p2.first) * (p1.first - p2.first) + 1.0 * (p1.second - p2.second) * (p1.second - p2.second));
+}
+
+double eval(double xa, double x1, double xb, double x2, double ya, double y1, double yb, double y2, double t){
+    double term1 = xa + x1 * t - xb - x2 * t;
+    double term2 = ya + y1 * t - yb - y2 * t;
+    return sqrt(term1 * term1 + term2 * term2);
+}
+
+double closest(pair&lt;double, double&gt; p1, pair&lt;double, double&gt; p2, pair&lt;double, double&gt; d1, pair&lt;double, double&gt; d2){
+    double xa = p1.first, x1 = p2.first - p1.first, xb = d1.first, x2 = d2.first - d1.first;
+    double ya = p1.second, y1 = p2.second - p1.second, yb = d1.second, y2 = d2.second - d1.second;
+    
+    double t = 0;
+    
+    double numX = x2 * xa + x1 * xb - x1 * xa - x2 * xb;
+    double numY = y2 * ya + y1 * yb - y1 * ya - y2 * yb;
+    double num = numX + numY;
+    double denom = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    
+    if(denom != 0.0)
+        t = num / denom;
+    
+    double val = eval(xa, x1, xb, x2, ya, y1, yb, y2, 0);
+    val = min(val, eval(xa, x1, xb, x2, ya, y1, yb, y2, 1));
+    
+    if(denom != 0.0 &amp;&amp; t &gt; 0 &amp;&amp; t &lt; 1)
+        val = min(val, eval(xa, x1, xb, x2, ya, y1, yb, y2, t));
+    
+    return val;
+}
+
+int main(){
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    
+    int n, m;
+    cin &gt;&gt; n;
+    vector&lt;pair&lt;double, double&gt; &gt; shadow(n);
+    
+    for(int i = 0; i &lt; n; i++)
+        cin &gt;&gt; shadow[i].first &gt;&gt; shadow[i].second;
+    
+    cin &gt;&gt; m;
+    vector&lt;pair&lt;double, double&gt; &gt; lydia(m);
+    
+    for(int i = 0; i &lt; m; i++)
+        cin &gt;&gt; lydia[i].first &gt;&gt; lydia[i].second;
+    
+    pair&lt;double, double&gt; sCurr = shadow[0];
+    pair&lt;double, double&gt; lCurr = lydia[0];
+    int si = 1;
+    int li = 1;
+    
+    double ans = INT_MAX;
+    
+    while(si &lt; shadow.size() &amp;&amp; li &lt; lydia.size()){
+        double ds = distance(sCurr, shadow[si]);
+        double dl = distance(lCurr, lydia[li]);
+        double ratio = min(ds, dl) / max(ds, dl);
+        
+        if(ds &lt; dl){
+            pair&lt;double, double&gt; lFinal;
+            lFinal.first = lCurr.first + (lydia[li].first - lCurr.first) * ratio;
+            lFinal.second = lCurr.second + (lydia[li].second - lCurr.second) * ratio;
+            ans = min(ans, closest(sCurr, shadow[si], lCurr, lFinal));
+            sCurr = shadow[si];
+            lCurr = lFinal;
+            si++;
+        }
+        else if(dl &lt; ds){
+            pair&lt;double, double&gt; sFinal;
+            sFinal.first = sCurr.first + (shadow[si].first - sCurr.first) * ratio;
+            sFinal.second = sCurr.second + (shadow[si].second - sCurr.second) * ratio;
+            ans = min(ans, closest(sCurr, sFinal, lCurr, lydia[li]));
+            sCurr = sFinal;
+            lCurr = lydia[li];
+            li++;
+        }
+        else{
+            ans = min(ans, closest(sCurr, shadow[si], lCurr, lydia[li]));
+            sCurr = shadow[si];
+            lCurr = lydia[li];
+            si++, li++;
+        }
+    }
+    cout.precision(10);
+    cout &lt;&lt; fixed;
+    cout &lt;&lt; ans &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+typedef long double ld;
+
+const ld pi = 3.1415926535897932384626433832795L, eps = 1e-8;
+
+ld h, v, l, s;
+
+inline ld d(ld a) {
+  ld A = -5, B = v*sin(a), C = h;
+  ld td = (-B-sqrt(B*B-4*A*C))/2/A;
+  return td*v*cos(a);
+}
+
+inline ld dp(ld a) {
+  ld A = -5, B = v*sin(a), C = h;
+  ld td = (-B-sqrt(B*B-4*A*C))/2/A;
+  return l+s*td;
+}
+
+inline ld diff(ld a) {
+  return abs(d(a)-dp(a));
+}
+
+int main() {
+  cout &lt;&lt; fixed &lt;&lt; setprecision(3);
+  while (cin &gt;&gt; h &gt;&gt; v &gt;&gt; l &gt;&gt; s) {
+    ld lo = 0, hi = pi/2;
+    while (hi-lo &gt; eps) {
+      ld m1 = lo+(hi-lo)/3, m2 = lo+(hi-lo)*2/3;
+      ld d1 = d(m1), d2 = d(m2);
+      if (d1 &lt; d2)
+        lo = m1;
+      else if (d1 &gt; d2)
+        hi = m2;
+      else {
+        lo = m1;
+        hi = m2;
+      }
+    }
+    if (d(lo) &lt; l) {
+      cout &lt;&lt; &quot;BAD THROW\n&quot;;
+      continue;
+    }
+    if (d(lo) &lt; dp(lo)) {
+      cout &lt;&lt; d(lo) &lt;&lt; &quot;\n&quot;;
+      continue;
+    }
+    hi = pi/2;
+    while (hi-lo &gt; eps) {
+      ld m1 = lo+(hi-lo)/3, m2 = lo+(hi-lo)*2/3;
+      ld d1 = diff(m1), d2 = diff(m2);
+      if (d1 &lt; d2)
+        hi = m2;
+      else if (d1 &gt; d2)
+        lo = m1;
+      else {
+        lo = m1;
+        hi = m2;
+      }
+    }
+    cout &lt;&lt; d(lo) &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

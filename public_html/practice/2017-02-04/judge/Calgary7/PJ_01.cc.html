@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; VI;
+#define xx first
+#define yy second
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+#define FORB(i,a,b) for(int i=int(b)-1;i&gt;=int(a);i--)
+
+ll dp[51]; //dp[i] = V[i] is on to
+VI V;
+
+ll f(int h) {
+	if (dp[h] != -1) return dp[h];
+	if (h == 0) return 0;
+	if (V[h]==V[h-1]) return dp[h] = f(h-1);
+	
+	ll ret = 0;
+	FOR(i,0,h)
+		ret += 1+f(i);
+	return dp[h] = ret;
+}
+
+int main() {
+	ios::sync_with_stdio(false);
+	fill(dp, dp+51, -1);
+	int T; cin &gt;&gt; T;
+	while (T--) {
+		int n; cin &gt;&gt; n; 
+		V.clear(), V.resize(n+1);
+		FOR(i,0,n) cin &gt;&gt; V[i];
+		V[n] = 1001;
+		bool flag = false;
+		ll ans = 0;
+		do {
+			flag = false;
+			FOR(i,0,n-1) {
+				if (V[i] &gt; V[i+1]) {
+					fill(dp, dp+51, -1);
+					flag = true;
+					VI tmp(V.begin(), V.begin()+i+1);
+					V[0] = V[i+1];
+					FOR(j,1,i+2) V[j] = tmp[j-1];
+					ans++;
+					int j = 0;
+					while (V[j+1] &lt; V[0]) j++;
+					sort(V.begin(), V.begin()+j);
+					ans += f(j-1);
+					break;
+				}
+			}
+		} while (flag);
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

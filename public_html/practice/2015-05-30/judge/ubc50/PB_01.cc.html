@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int n, m, p;
+vector&lt;int&gt; liked;
+vector&lt;int&gt; hated;
+bool seen[100001];
+
+int main() {
+  memset(seen, false, sizeof seen);
+  cin &gt;&gt; n &gt;&gt; m &gt;&gt; p;
+  for (int i=0; i&lt;n; i++) {
+    int l, h; cin &gt;&gt; l &gt;&gt; h;
+    liked.push_back(l); hated.push_back(h);
+  }
+  bool flag = true;
+  int ans = 0;
+  int ch = p;
+  while (flag) {
+    auto it = find(hated.begin(), hated.end(), ch);
+    int offset = it - hated.begin();
+    if (seen[offset]) {
+      ans = -1;
+      flag = false;
+    }
+    else if (it != hated.end()) {
+      seen[offset] = true;
+      ch = liked[offset];
+      ans++;
+    }
+    else
+      flag = false;
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

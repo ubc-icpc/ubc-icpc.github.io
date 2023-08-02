@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+const int MOD = 1e9 + 7;
+
+vector&lt;vector&lt;int&gt;&gt; graph;
+map&lt;pair&lt;int, int&gt;, ll&gt; cost;
+vector&lt;bool&gt; pref, bad;
+vector&lt;int&gt; parent;
+vector&lt;pair&lt;int, int&gt;&gt; sol;
+int n;
+
+ll solve(int cur) {
+	ll ans = 0;
+	for (int i : graph[cur]) {
+		if (i != parent[cur]) {
+			parent[i] = cur;
+			ans += solve(i);
+		}
+	}
+	if (bad[cur]) {
+		if (parent[cur] == -1) {
+			cout &lt;&lt; &quot;bad&quot; &lt;&lt; endl;
+		}
+		sol.push_back({min(cur, parent[cur]), max(cur, parent[cur])});
+		bad[cur] = 0;
+		bad[parent[cur]] = !bad[parent[cur]];
+		ans += cost[{parent[cur], cur}];
+	}
+	return ans;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cin &gt;&gt; n;
+	graph = vector&lt;vector&lt;int&gt;&gt;(n);
+	for (int i = 0; i &lt; n; i++) {
+		bool b; cin &gt;&gt; b;
+		pref.push_back(b);
+	}
+	for (int i = 0; i &lt; n-1; i++) {
+		int u, v; ll c; cin &gt;&gt; u &gt;&gt; v &gt;&gt; c;
+		graph[u].push_back(v);
+		graph[v].push_back(u);
+		cost[{u, v}] = c;
+		cost[{v, u}] = c;
+	}
+	
+	bad = vector&lt;bool&gt;(n);
+	bool badCount = 0;
+	for (int i = 0; i &lt; n; i++) {
+		if (pref[i] != graph[i].size() % 2) {
+			bad[i] = 1;
+			badCount = !badCount;
+		}
+	}
+	if (badCount) {
+		cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+		return 0;
+	}
+	parent = vector&lt;int&gt;(n, -1);
+	ll ans = solve(0);
+	cout &lt;&lt; ans &lt;&lt; &quot; &quot; &lt;&lt; sol.size() &lt;&lt; endl;
+	sort(sol.begin(), sol.end());
+	for (pair&lt;int, int&gt; p : sol)
+		cout &lt;&lt; p.first &lt;&lt; &quot; &quot; &lt;&lt; p.second &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

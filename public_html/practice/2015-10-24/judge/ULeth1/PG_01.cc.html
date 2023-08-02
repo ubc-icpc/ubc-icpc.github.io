@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+int main() {
+   int g;
+   cin &gt;&gt; g;
+   pii goblins[100005];
+
+   for(int i=0; i&lt;g; i++) {
+      int x, y;
+      cin&gt;&gt;x&gt;&gt;y;
+      goblins[i]=pii(x,y);
+   }
+
+   int m;
+   cin&gt;&gt;m;
+
+   pii sprinklers[20005];
+   int sRad[20005];
+   for(int i=0; i&lt;m; i++) {
+      int x, y;
+      cin&gt;&gt;x&gt;&gt;y;
+      sprinklers[i] = pii(x, y);
+      cin&gt;&gt;sRad[i];
+   }
+
+   bool seen[100005]={false};
+   
+   sort(goblins, goblins+g);
+
+   for(int i=0; i&lt;m; i++) {
+      int left = sprinklers[i].first-sRad[i];
+      int right = sprinklers[i].first+sRad[i];
+
+      for(int j = left; j&lt;=right; j++) {
+	 auto bottom = lower_bound(goblins, goblins+g, pii(j, sprinklers[i].second-sRad[i]));
+	 auto top = upper_bound(goblins, goblins+g, pii(j, sprinklers[i].second+sRad[i]));
+
+	 for(auto k = bottom; k!=top; k++) {
+	    if((k-&gt;first-sprinklers[i].first)*(k-&gt;first-sprinklers[i].first)+
+	       (k-&gt;second-sprinklers[i].second)*(k-&gt;second-sprinklers[i].second)&lt;=sRad[i]*sRad[i])
+	       seen[(k-goblins)]=true;
+	 }
+	 
+      }
+   }
+
+   int sum=0;
+   for(int i=0; i&lt;g; i++)
+      if(seen[i]==false)
+	 sum++;
+
+   cout &lt;&lt; sum &lt;&lt; endl;
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+//#define printf(...);
+#define I(x) x; cin &gt;&gt; x;
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define L0(qq,ss,m) for (int qq=ss;qq&lt;(m);qq++)
+
+struct pos {int x; int y;};
+struct spr {int x; int y; int r2;};
+
+inline double sqr(int x) { return x*x; }
+int main() {
+  int I(g);
+  pos* gs = new pos[g];
+  L(i, g)
+    cin &gt;&gt; gs[i].x &gt;&gt; gs[i].y;
+
+  int I(m);
+  spr* cs = new spr[g];
+  L(i, m) {
+    cin &gt;&gt; cs[i].x &gt;&gt; cs[i].y;
+    int I(r);
+    cs[i].r2 = r*r;
+  }
+
+  int zz = 0;
+  L(i, g) {
+    L(j, m) {
+      if (sqr(gs[i].x - cs[j].x) + sqr(gs[i].y - cs[j].y) &lt;= (double) cs[j].r2) {
+        zz ++;
+        break;
+      }
+    }
+  }
+  cout &lt;&lt; g - zz &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

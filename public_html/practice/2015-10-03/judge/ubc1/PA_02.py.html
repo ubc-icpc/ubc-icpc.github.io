@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+t = int(raw_input())
+
+def convert(s, b):
+    s = s.strip()
+    try:
+        if b == 1:
+            for i in range(len(s)):
+                if s[i] != '1':
+                    x = 1/0
+            return len(s)
+        else:
+            return int(s, b)
+    except:
+        raise
+            
+base = '123456789abcdefghijklmnopqrstuvwxyz0'
+for k in range(t):
+    line = raw_input().split()
+    lst = []
+    for i in range(1, 37):
+        try:
+            x, y, z = convert(line[0], i), convert(line[2], i), convert(line[4], i)
+            good = False
+            if line[1] == '+':
+                good = x+y == z
+            elif line[1] == '-':
+                good = x-y == z
+            elif line[1] == '/':
+                if x%y == 0:
+                    good = x/y == z
+            elif line[1] == '*':
+                good = x*y == z
+            
+            if good:
+                lst.append(base[i-1])
+        except:
+            pass
+    
+    if len(lst) == 0:
+        print 'invalid'
+    else:
+        print &quot;&quot;.join(lst)</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

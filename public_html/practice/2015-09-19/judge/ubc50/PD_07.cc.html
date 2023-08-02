@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;utility&gt;
+#include&lt;cstring&gt;
+using namespace std;
+typedef pair&lt;float, float&gt; pff;
+
+int rise[405][405], run[405][405];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int te=1; te&lt;=t; te++) {
+    int res=0;
+    vector&lt;pff&gt; v;
+    memset(rise,0,sizeof rise);
+    memset(run,0,sizeof run);
+    int n; cin &gt;&gt; n;
+    for (int i=0; i&lt;n; i++) {
+      float x,y; cin &gt;&gt; x &gt;&gt; y; v.push_back(make_pair(x,y));
+    }
+    if (n&lt;=2) res=n;
+    else {
+      for (int i=0; i&lt;n; i++) {
+	for (int j=0; j&lt;n; j++) {
+	  if (i==j) continue;
+	  rise[i][j]=(v[j].second-v[i].second);
+	  run[i][j]=(v[j].first-v[i].first);
+	}
+      }
+
+      for (int i=0; i&lt;n; i++) {
+	for (int j=i+1; j&lt;n; j++) {
+	  int tmp=2;
+	  for (int k=j+1; k&lt;n; k++) {
+	    if (rise[i][j]*run[i][k]==run[i][j]*rise[i][k])
+	      tmp++;
+	  }
+	  res=max(res,tmp);
+	}
+      }
+    }
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; te &lt;&lt; &quot;: &quot; &lt;&lt; res &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

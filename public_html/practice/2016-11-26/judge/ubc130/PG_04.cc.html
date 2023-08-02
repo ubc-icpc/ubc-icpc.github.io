@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+typedef long long ll;
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int r, c; cin &gt;&gt; r &gt;&gt; c;
+	vector&lt;string&gt; grid;
+	for (int i = 0; i &lt; r; i++) {
+		string s; cin &gt;&gt; s;
+		grid.push_back(s);
+	}
+	vector&lt;vector&lt;bool&gt;&gt; visited(r, vector&lt;bool&gt;(c, 0));
+	queue&lt;pair&lt;int, int&gt;&gt; seen; //nodes to visit
+	bool done = 0;
+	for (int i = 0; i &lt; r; i++) {
+		for (int j = 0; j &lt; c; j++) {
+			if (grid[i][j] == 'L') {
+				seen.push({i,j});
+				done = 1;
+				break;
+			}
+		}
+		if (done)
+			break;
+	}
+	if (seen.empty()) {
+		cout &lt;&lt; 0 &lt;&lt; endl;
+		return 0;
+	}
+	int num = 0;
+	while (!seen.empty()) {
+		pair&lt;int, int&gt; cur = seen.front(); seen.pop();
+		int a = cur.first; int b = cur.second;
+//		cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+		if (visited[a][b]) goto skip;
+		visited[a][b] = 1;
+		if (a &gt; 0 &amp;&amp; !visited[a - 1][b]
+			&amp;&amp; (grid[a-1][b] == 'L' || grid[a-1][b] == 'C'))
+			seen.push({a-1, b});
+		if (a &lt; r-1 &amp;&amp; !visited[a+1][b]
+			&amp;&amp; (grid[a+1][b] == 'L' || grid[a+1][b] == 'C'))
+			seen.push({a+1, b});
+		if (b &gt; 0 &amp;&amp; !visited[a][b-1]
+			&amp;&amp; (grid[a][b-1] == 'L' || grid[a][b-1] == 'C'))
+			seen.push({a, b-1});
+		if (b &lt; c-1 &amp;&amp; !visited[a][b+1]
+			&amp;&amp; (grid[a][b+1] == 'L' || grid[a][b+1] == 'C'))
+			seen.push({a, b+1});
+		skip: if (seen.empty()) {
+			num++;
+			done = 0;
+			for (int i = 0; i &lt; r; i++) {
+				for (int j = 0; j &lt; c; j++) {
+					if (!visited[i][j] &amp;&amp; grid[i][j] == 'L') {
+						seen.push({i,j});
+						done = 1;
+						break;
+					}
+				}
+				if (done)
+					break;
+			}
+		}
+	}
+	cout &lt;&lt; num &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+int a[100005];
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		multiset&lt;int, greater&lt;int&gt; &gt; s;
+		int n, u; cin &gt;&gt; n &gt;&gt; u;
+		
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; a[i];
+			s.insert(a[i]);
+		}
+
+		ld tot = 0, cnt = 0;
+		for (int i = 0; i &lt; n; i++) {
+			int x; cin &gt;&gt; x;
+			u -= x;
+			if (x) {
+				s.erase(s.find(a[i]));
+				tot += a[i];
+				cnt++;
+			}
+		}
+
+		while (u &gt; 0 || *s.begin() &gt; tot/cnt) {
+			u--;
+			tot += *s.begin();
+			cnt++;
+			s.erase(s.begin());
+		}
+
+		cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; tot/cnt &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

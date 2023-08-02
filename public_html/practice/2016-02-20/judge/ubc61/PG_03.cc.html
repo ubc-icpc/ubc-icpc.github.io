@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int board[205][205];
+
+pii s[7]; 
+//  0   1  2 3 4 5
+// top bot N E S W
+//  1   6  3 2 4 5
+
+
+void push(char dir) {
+	if (dir == 'N') {
+		pii tmp = s[0];
+		s[0] = s[4];
+		s[4] = s[1];
+		s[1] = s[2];
+		s[2] = tmp;
+	}
+	if (dir == 'S') {
+		pii tmp = s[0];
+		s[0] = s[2];
+		s[2] = s[1];
+		s[1] = s[4];
+		s[4] = tmp;
+	}
+	if (dir == 'E') {
+		pii tmp = s[0];
+		s[0] = s[5];
+		s[5] = s[1];
+		s[1] = s[3];
+		s[3] = tmp;
+	}
+	if (dir == 'W') {
+		pii tmp = s[0];
+		s[0] = s[3];
+		s[3] = s[1];
+		s[1] = s[5];
+		s[5] = tmp;
+	}
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n,m,p;
+	cin &gt;&gt; n &gt;&gt; m &gt;&gt; p;
+	memset(board,0,sizeof(board));
+	for (int i=0; i&lt;m; i++) {
+		int x,y,t;
+		cin &gt;&gt; x &gt;&gt; y &gt;&gt; t;
+		board[x][y] = t;
+	}
+	string path; cin &gt;&gt; path;
+	s[0].second = 1;
+	s[1].second = 6;
+	s[2].second = 3;
+	s[3].second = 2;
+	s[4].second = 4;
+	s[5].second = 5;
+	int x = 1;
+	int y = 1;
+	bool valid = true;
+	for (int i=0; i&lt;p; i++) {
+		push(path[i]);
+		if (path[i] == 'N') y++;
+		if (path[i] == 'S') y--;
+		if (path[i] == 'E') x++;
+		if (path[i] == 'W') x--;
+		if (x&lt;1 || y&lt;1 || x&gt;n || y&gt;n) {
+			valid = false;
+			break;
+		}
+		if (board[x][y] != 0) {
+			if (s[1].first == 0 || s[1].first == board[x][y]) 
+				s[1].first = board[x][y];
+			else {
+				valid = false;
+				break;
+			}
+		}
+		bool done = true;
+		for (int j=0; j&lt;6; j++) {
+			if (s[j].first == 0) done = false;
+		}
+		if (done) break;
+	}
+
+	for (int j=0; j&lt;6; j++) {
+		if (s[j].first == 0) valid = false;
+	}
+
+	if (valid) {
+		for (int i=0; i&lt;6; i++) {
+			if (s[i].second == 1) cout &lt;&lt; s[i].first &lt;&lt; &quot; &quot;;
+		}
+		for (int i=0; i&lt;6; i++) {
+			if (s[i].second == 2) cout &lt;&lt; s[i].first &lt;&lt; &quot; &quot;;
+		}
+		for (int i=0; i&lt;6; i++) {
+			if (s[i].second == 3) cout &lt;&lt; s[i].first &lt;&lt; &quot; &quot;;
+		}
+		for (int i=0; i&lt;6; i++) {
+			if (s[i].second == 4) cout &lt;&lt; s[i].first &lt;&lt; &quot; &quot;;
+		}
+		for (int i=0; i&lt;6; i++) {
+			if (s[i].second == 5) cout &lt;&lt; s[i].first &lt;&lt; &quot; &quot;;
+		}
+		for (int i=0; i&lt;6; i++) {
+			if (s[i].second == 6) cout &lt;&lt; s[i].first &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl;
+	} else {
+		cout &lt;&lt; &quot;0 0 0 0 0 0&quot; &lt;&lt; endl;
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+
+using namespace std;
+
+int m[10001][10001];
+long long total;
+
+int dfs(vector&lt;int&gt; *v, int n, int cn, int c) {
+  int ret = 0;
+  for( int i=0; i&lt;v[cn].size(); i++ ) {
+	if( v[cn][i] != c ) {
+	  ret += dfs(v,n,v[cn][i],cn);
+	}
+  }
+  if(ret == 0) {
+	total = total + m[cn][c] * (n-1);
+	return 1;
+  }
+  if(c &gt;= 0) {
+	total = total + m[cn][c] * ( n - ret - 1 ) * ( ret + 1 );
+  }
+  
+  return ret + 1;
+}
+
+int main (void) {
+  int t; cin &gt;&gt; t;
+  
+  while( t-- ) {
+	int n; cin &gt;&gt; n;
+	vector&lt;int&gt; v[n];
+	for( int i=0; i&lt;n-1; i++ ) {
+	  int a,b,c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+	  m[a][b] = c;
+	  m[b][a] = c;
+	  v[b].push_back(a);
+	  v[a].push_back(b);
+	}
+	total = 0;
+	dfs(v,n,0,-1);
+	int c = n*(n-1)/2;
+	//	std::cout &lt;&lt; std::fixed &lt;&lt; std::setprecision(6) &lt;&lt; total/c;
+	cout.precision(6);
+	cout &lt;&lt; (double)total/c &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

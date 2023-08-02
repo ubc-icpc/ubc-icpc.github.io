@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define _USE_MATH_DEFINES
+
+//#define DEBUG
+
+#define ll long long
+#define pii pair&lt;int,int&gt;
+#define pdd pair&lt;ldouble,ldouble&gt;
+#define ldouble long double
+#define pt complex&lt;ldouble&gt;
+#define ld ldouble
+#define nl '\n'
+const ll MOD = 1e9+7;
+const int INF = 0x3f3f3f3f;
+const ll INFLL = 0x3f3f3f3f3f3f3f3f;
+const ldouble EPS = 1e-14;
+
+struct Frac {
+	ll n, d;
+	Frac(int n): n(n), d(1) {}
+	Frac(int a=0, int b=1) {
+		if (a == 0 &amp;&amp; b == 0) {
+			n = 0; d = 1;
+		} else {
+			int g = __gcd(a,b);
+			n = a/g;
+			d = b/g;
+			if (d &lt; 0) n = -n, d = -d;
+			if (d == 0) n = 1;
+			if (n == 0) d = 1;
+		}
+	}
+	Frac(const Frac&amp; other) {
+		n = other.n;
+		d = other.d;
+	}
+	bool operator &lt; (const Frac&amp; other) const {
+		return n*other.d &lt; other.n*d;
+	}
+	bool operator &gt; (const Frac&amp; other) const {
+		return other &lt; (*this);
+	}
+	bool operator &gt;= (const Frac&amp; other) const {
+		return !((*this) &lt; other);
+	}
+	bool operator == (const Frac&amp; other) const {
+		return n*other.d == other.n*d;
+	}
+};
+
+struct Point {
+	int x, y;
+	Point (int a=-2, int b=-2): x(a), y(b) {
+	}
+	bool operator &lt; (const Point&amp; other) const {
+		if (y != other.y) return y &lt; other.y;
+		else return x &lt; other.x;
+	}
+	Point operator - (const Point&amp; other) {
+		return Point(x-other.x, y-other.y);
+	}
+	Frac slope(const Point&amp; c) {
+		return Frac(y-c.y, x-c.x);
+	}
+};
+
+Point center;
+bool cmpangle(const Point&amp; a, const Point&amp; b) {
+	Frac zero(0,1);
+	Frac inf(1,0);
+	Frac sla = Frac(a.y-center.y, a.x-center.x);
+	Frac slb = Frac(b.y-center.y, b.x-center.x);
+	if (sla == slb) {
+		return a &lt; b;
+	} else {
+		if (sla &lt; zero &amp;&amp; slb &lt; zero)
+			return sla &lt; slb;
+		else if (sla &gt;= zero &amp;&amp; slb &gt;= zero)
+			return sla &lt; slb;
+		else {
+			if (sla == inf || slb == inf) {
+				if (sla &lt; zero || slb &lt; zero) {
+					return sla == inf;
+				} else {
+					return slb == inf;
+				}
+			} else {
+				return sla &gt; slb;
+			}
+		}
+	}
+}
+
+int main() {
+	ios::sync_with_stdio(0); 
+	cin.tie(0); cout.tie(0);
+	cout &lt;&lt; fixed &lt;&lt; setprecision(0);
+
+	int n, w, h;
+	int x,y;
+	vector&lt;Point&gt; points;
+	set&lt;Point&gt; half;
+
+	for (;;) {
+		cin &gt;&gt; n &gt;&gt; w &gt;&gt; h;
+		if ((n|w|h) == 0) {
+			break;
+		}
+
+		////////cerr &lt;&lt; &quot;nwh: &quot; &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; w &lt;&lt; &quot; &quot; &lt;&lt; h &lt;&lt; nl;
+		center = Point(w, h);
+		////cerr &lt;&lt; &quot;CENTER: &quot; &lt;&lt; center.x &lt;&lt; &quot; &quot; &lt;&lt; center.y &lt;&lt; nl;
+		////////cerr &lt;&lt; &quot;center: &quot; &lt;&lt; center &lt;&lt; nl;
+		bool has_center = false;
+		points.clear();
+		half.clear();
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; x &gt;&gt; y;
+			x *= 2;
+			y *= 2;
+			if (x == center.x &amp;&amp; y == center.y) {
+				has_center = true;
+			} else {
+				//cerr &lt;&lt; &quot;push &quot; &lt;&lt; x &lt;&lt; y &lt;&lt; nl;
+				points.push_back(Point(x,y));
+				//cerr &lt;&lt; &quot;added poitn &quot; &lt;&lt; points.back().x &lt;&lt; &quot; &quot; &lt;&lt; points.back().y &lt;&lt; nl;
+				if (y &gt; h || (y == h &amp;&amp; x &gt; w))
+					half.insert(Point(x,y));
+			}
+		}
+		sort(points.begin(), points.end(), cmpangle);
+		for (int i = 0; i &lt; n - has_center; i++) {
+			int start = i;
+			int end;
+			////cerr &lt;&lt; &quot;half: &quot; &lt;&lt; endl; for (auto &amp;p : half)
+				////cerr &lt;&lt; p.x &lt;&lt; &quot; &quot; &lt;&lt; p.y &lt;&lt; endl;
+			////cerr &lt;&lt; endl;
+			////cerr &lt;&lt; &quot;points: &quot; &lt;&lt; endl;
+			////cerr &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; points[i].slope(center).n &lt;&lt; &quot;/&quot; &lt;&lt; points[i].slope(center).d &lt;&lt; nl;
+			while (i &lt; n-1 - has_center &amp;&amp; points[i].slope(center) == points[i+1].slope(center)) {
+				////cerr &lt;&lt; points[i].x &lt;&lt; &quot; &quot; &lt;&lt; points[i].y &lt;&lt; endl;
+				half.erase(points[i]);
+				i++;
+			}
+			half.erase(points[i]);
+			////cerr &lt;&lt; &quot;hsize: &quot; &lt;&lt; half.size() &lt;&lt; endl;
+			end = i;
+
+			vector&lt;Point&gt; extra;
+			for (int j = start; j &lt;= end; j++) {
+				if (half.size() == n/2)
+					break;
+				if (points[j] &lt; center) {
+					//cerr &lt;&lt; &quot;add point &quot; &lt;&lt; j &lt;&lt; &quot;: &quot; &lt;&lt; points[j].x &lt;&lt; &quot;,&quot; &lt;&lt; points[j].y&lt;&lt; nl;
+					half.insert(points[j]);
+				} else {
+					extra.push_back(points[j]);
+				}
+			}
+			if (half.size() + extra.size() + has_center &gt;= n/2 &amp;&amp; half.size() &lt;= n/2) {
+				//cerr &lt;&lt; &quot;found half&quot; &lt;&lt; nl;
+				while (half.size() &lt; n/2) {
+					if (extra.empty()) {
+						//cerr &lt;&lt; &quot;add center: &quot; &lt;&lt; center.x &lt;&lt; &quot; &quot; &lt;&lt; center.y &lt;&lt; nl;
+						half.insert(center);
+					} else {
+						//cerr &lt;&lt; &quot;add extra: &quot; &lt;&lt; extra.back().x &lt;&lt; &quot; &quot; &lt;&lt; extra.back().y &lt;&lt; nl;
+						half.insert(extra.back());
+						extra.pop_back();
+					}
+				}
+				break;
+			}
+		}
+		//////cerr &lt;&lt; &quot;half: &quot; &lt;&lt; half.size() &lt;&lt; nl;
+		for (const Point&amp; p : half) {
+			//cerr &lt;&lt; p.x &lt;&lt; &quot; &quot; &lt;&lt; p.y &lt;&lt; nl;
+			cout &lt;&lt; p.x/2 &lt;&lt; &quot; &quot; &lt;&lt; p.y/2 &lt;&lt; nl;
+		}
+		////cerr &lt;&lt; endl;
+		assert(half.size() == n/2);
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

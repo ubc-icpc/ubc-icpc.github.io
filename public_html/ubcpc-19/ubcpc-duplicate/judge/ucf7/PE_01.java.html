@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class e {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		int scene = s.nextInt();
+		int act = s.nextInt();
+		int[] scenes = new int[scene];
+		int[] max = new int[act];
+		int maxi = 0;
+		int excite = 0;
+		
+		for(int i = 0; i&lt;scene; i++)
+		{
+			scenes[i] = s.nextInt();
+		}
+		
+		for(int i = 0; i&lt; act; i++)
+		{
+			for(int j = 0; j&lt;scene; j++)
+			{
+				if(scenes[maxi]&lt; scenes[j])
+				{
+					maxi = j;
+					
+				}
+			}
+			
+			max[i] = scenes[maxi];
+			scenes[maxi] = -1;
+
+		}
+		
+		for(int i = 0; i&lt; max.length; i++)
+		{
+			excite = excite+ max[i];
+			
+		}
+		
+		System.out.println(excite);
+		
+		
+	}
+
+}
+</code>
+</pre>
+</body>
+</html>

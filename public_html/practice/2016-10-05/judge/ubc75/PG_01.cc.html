@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+using namespace std;
+#include &lt;bits/stdc++.h&gt;
+#define rep(i,n) for(auto i=0; i&lt;(n); i++)
+#define mem(x,val) memset((x),(val),sizeof(x));
+#define write(x) freopen(x,&quot;w&quot;,stdout);
+#define read(x) freopen(x,&quot;r&quot;,stdin);
+#define all(x) x.begin(),x.end()
+#define sz(x) ((int)x.size())
+#define sqr(x) ((x)*(x))
+#define pb push_back
+#define clr clear()
+#define inf (1&lt;&lt;30)
+#define ins insert
+#define xx first
+#define yy second
+#define eps 1e-9
+typedef long long ll;
+typedef unsigned long long ull;
+typedef string st;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;ll&gt; vll;
+typedef vector&lt;st&gt; vs;
+typedef map&lt;int,int&gt; mii;
+typedef map&lt;st,int&gt; msi;
+typedef set&lt;int&gt; si;
+typedef set&lt;st&gt; ss;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;pii&gt; vpii;
+
+double side(double x1, double x2, double y1, double y2){
+	return pow(pow(x1-y1,2) + pow(x2-y2,2),0.5);
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    double a1,a2,b1,b2,c1,c2;
+
+    cin &gt;&gt; a1 &gt;&gt; a2 &gt;&gt; b1 &gt;&gt; b2 &gt;&gt; c1 &gt;&gt; c2;
+    double a, b, c;
+    a = side(a1,a2,b1,b2);
+    b = side(b1,b2,c1,c2);
+    c = side(a1,a2,c1,c2);
+    double A, rp;
+    A = 0.25*pow(4*a*a*b*b - pow((a*a + b*b - c*c),2),0.5);
+    double r;
+    cin &gt;&gt; r;
+    rp = A*(2.0/(a+b+c));
+    
+    cout &lt;&lt; fixed &lt;&lt; setprecision(3);
+    cout &lt;&lt; 100.0*(rp - r)/r &lt;&lt; endl;
+
+    return 0;
+
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

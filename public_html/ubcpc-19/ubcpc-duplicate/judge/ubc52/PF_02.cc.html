@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = double;
+using pt = complex&lt;int&gt;;
+using pol = vector&lt;pt&gt;;
+const int N = 202;
+const ld EPS = 0;
+
+ll sgn(int x) { return (x &gt; 0) - (x &lt; 0); }
+ll cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ll dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+inline bool on_segment(const pt &amp;a, const pt &amp;b, const pt &amp;p) {
+  return abs(cp(b-a, p-a)) &lt;= EPS &amp;&amp; dp(b-a, p-a) &gt; 0 &amp;&amp; dp(a-b, p-b) &gt; 0; }
+
+ld area(const pol &amp;v) { ld s = 0; int n = v.size();
+  for(int i = n-1, j = 0; j &lt; n; i = j++) s += cp(v[i], v[j]); return abs(s)/2;}
+
+ld ans[N];
+ld prob[N];
+
+void pre() {
+  //prob[0] = 1./6 + 1./6;
+  //prob[1] = 1./12;
+  for (int cnt = 0; cnt+3 &lt; N; cnt++) {
+    prob[cnt] = 2.L / (cnt+1) / (cnt+2) / (cnt+3);
+    //cerr &lt;&lt; cnt &lt;&lt; &quot; &quot; &lt;&lt; prob[cnt] &lt;&lt; nl;
+  }
+  /*
+  for (int cnt = 1; cnt &lt;= n-3; cnt++) {
+    for (int i = 3; i &lt;= n; i++) {
+      ld cur = 1.L / 6 / (n - i + 1);
+      for (int j = 1; j &lt; i; j++) {
+        cur *= (ld) (n - j + 1 - cnt - 1) / (n - j + 1);
+      }
+      //cerr &lt;&lt; cnt &lt;&lt; &quot; &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; cur &lt;&lt; nl;
+      prob[cnt] += cur;
+    }
+  }*/
+}
+
+int cnt[N][N]; // # of things left of i -&gt; j
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  pre();
+  int n; cin &gt;&gt; n;
+  vector&lt;pt&gt; p;
+  for (int i = 0; i &lt; n; i++) {
+    int x, y; cin &gt;&gt; x &gt;&gt; y;
+    p.emplace_back(x, y);
+  }
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+      if (i == j) continue;
+      for (int k = 0; k &lt; n; k++) {
+        if (i == k || j == k) continue;
+        //if (i == 0 &amp;&amp; j == 2 &amp;&amp; k == 1) cerr &lt;&lt; cp(p[j]-p[i], p[k]-p[j]) &lt;&lt; nl;
+        if (cp(p[j]-p[i], p[k]-p[j]) &gt; 0) cnt[i][j]++;
+        else cnt[i][j] += on_segment(p[i], p[j], p[k]);
+      }
+      //cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; cnt[i][j] &lt;&lt; nl;
+    }
+  }
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+      for (int k = j+1; k &lt; n; k++) {
+        if (i == j || i == k || j == k) continue;
+        // probability of triangle {i, j, k} being added with i
+        // look at j -&gt; k
+        if (cp(p[j]-p[k], p[i]-p[k]) == 0) continue;
+        ld a = abs(cp(p[i]-p[k], p[j]-p[k]))/2.L;
+        if (cp(p[k]-p[j], p[i]-p[k]) &gt; 0) {
+          //cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot;  &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; cnt[j][k]-1 &lt;&lt; nl;
+          ans[i] += a * prob[cnt[j][k]-1];
+        } else {
+          //cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot;  &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; cnt[k][j]-1 &lt;&lt; nl;
+          ans[i] += a * prob[cnt[k][j]-1];
+        }
+      }
+    }
+  }
+  for (int i = 0; i &lt; n; i++) {
+    cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; ans[i] &lt;&lt; nl;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

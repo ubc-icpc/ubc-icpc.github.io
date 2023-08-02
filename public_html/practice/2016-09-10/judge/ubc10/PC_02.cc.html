@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+typedef long long ll;
+
+// Find x,y such that ax + by = d = gcd(a,b)
+// * a^-1 (mod m): if (egcd(a,m,x,y) == 1) return (x+m)%m; else ERROR;
+ll egcd(ll a, ll b, ll&amp; x, ll &amp;y) {
+  if (!b) {x = 1; y = 0; return a;}//to ensure d&gt;=0: x=sgn(a);y=0;return abs(a);
+  ll d = egcd(b, a%b, y, x); y -= x * (a/b); return d; }
+////////////////////////////////////////////////////////////////////////////////
+// Extended GCD in canonical form
+////////////////////////////////////////////////////////////////////////////////
+// Assuming a != 0, find smallest y &gt;= 0 such that ax + by = c (if possible)
+bool canon_egcd(ll a, ll b, ll c, ll&amp; x, ll&amp; y) {
+  ll d = egcd(a, b, x, y), z = abs(a/d); if (c%d) return false;
+  y = (y*(c/d)%z + z)%z, x = (c - b*y)/a; return true; }
+
+ll gcd(ll a, ll b) {
+	a = abs(a); b = abs(b);
+	if (a &lt; b) swap(a, b);
+	while (b != 0) {
+		a = a%b;
+		swap(a, b);
+	}
+	return a;
+}
+
+int main() {
+	int ncase; cin &gt;&gt; ncase;
+	for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+		ll k, c; cin &gt;&gt; k &gt;&gt; c;
+		ll x, y;
+		if (canon_egcd(-k, c, 1, x, y)) {
+			if (y == 0) {
+				ll g = gcd(k, c);
+				y += k/g;
+			}
+			if (y &gt; 1000000000) {
+				cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+			} else {
+				cout &lt;&lt; y &lt;&lt; endl;
+			}
+		} else {
+			cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

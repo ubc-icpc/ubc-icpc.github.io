@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+import java.util.List;
+import java.util.*;
+
+public class Test {
+    public static void main(String[] args) {
+      Scanner scanner = new Scanner( System.in );
+
+      String firstString = scanner.nextLine();
+      //System.out.println(&quot;first line is&quot; + firstString);
+      boolean isForward = isForwardOrBackward(firstString);
+
+      String booleanForward = Boolean.toString(isForward);
+      //System.out.println(&quot;boolean is&quot; + booleanForward);
+
+
+      String secondString = scanner.nextLine();
+      //System.out.println(&quot;second line is&quot; + secondString);
+      int shift = Integer.parseInt(secondString);
+
+      String thirdString = scanner.nextLine();
+      //System.out.println(&quot;third line is&quot; + thirdString);
+
+      char[] alphabets = createCharList();
+      String alphabetsString = new String(alphabets);
+      //System.out.println(&quot;output char list is&quot; + alphabetsString);
+
+      String outputString = new String(shiftLetter(thirdString, shift, isForward, alphabets));
+      System.out.println(outputString);
+    }
+
+    public static boolean isForwardOrBackward(String s){
+      boolean forward = true;
+      if(s.equals(&quot;E&quot;)){
+        forward = true;
+      }
+      else if(s.equals(&quot;D&quot;)){
+        forward = false;
+      }
+      return forward;
+    }
+
+    public static char[] createCharList(){
+      char[] alphabets = new char[26];
+      int index =0;
+      for (int i = 'a'; i &lt;= 'z'; i++){
+        alphabets[index] = (char)i;
+        index++;
+      }
+      return alphabets;
+    }
+
+    public static int handleBoundary (int target) {
+      int result = 0;
+      if(target &gt;= 26){
+        result = target%26;
+      }
+      else if(target &lt; 0){
+        result = 26- ((-target)%26);
+      }else{
+        result = target;
+      }
+      return result;
+    }
+
+    public static char[] shiftLetter (String s, int shift, boolean forward, char[] alphabets) {
+      char[] chars = s.toCharArray();
+      char[] resultChars = new char[chars.length];
+      for(int i =0; i &lt; chars.length; i++){
+        int val = new String(alphabets).indexOf(chars[i]);
+
+        String index = String.valueOf(val);
+
+        int newIndex = 0;
+        if(forward){
+          newIndex = val+shift;
+        }else{
+          newIndex = val-shift;
+        }
+        resultChars[i] = alphabets[handleBoundary(newIndex)];
+
+      }
+      return resultChars;
+    }
+}
+</code>
+</pre>
+</body>
+</html>

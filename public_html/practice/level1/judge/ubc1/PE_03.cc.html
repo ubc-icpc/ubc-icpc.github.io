@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+set&lt;int&gt; dfs(vector&lt;int&gt; good) {
+	if (good.size() == 1) {
+		return set&lt;int&gt;({good[0]});
+	}
+	// split the set into two, then combine the two sets of numbers returned
+	set&lt;int&gt; res;
+	//cerr &lt;&lt; &quot;state: &quot;;
+	//for (int x : good) cerr &lt;&lt; x &lt;&lt; &quot; &quot;;
+	//cerr &lt;&lt; endl;
+	for (int i = 0; i &lt; (1&lt;&lt;good.size()); i++) {
+		vector&lt;int&gt; left, right;
+		for (int j = 0; j &lt; good.size(); j++) {
+			if ((1&lt;&lt;j)&amp;i) left.push_back(good[j]);
+			else right.push_back(good[j]);
+		}
+		if (left.empty() || right.empty()) continue;
+		set&lt;int&gt; s = dfs(left);
+		set&lt;int&gt; t = dfs(right);
+		
+		for (int x : s) {
+			for (int y : t) {
+				// add *
+				res.insert(x*y);
+				// add +
+				res.insert(x+y);
+				// add -
+				res.insert(x-y);
+				// add /
+				if (y != 0 &amp;&amp; x%y == 0) {
+					res.insert(x/y);
+				}
+			}
+		}
+	}
+	//cerr &lt;&lt; &quot;res: &quot;;
+	//for (int x : res) cerr &lt;&lt; x &lt;&lt; &quot; &quot;;
+	//cerr &lt;&lt; endl;
+	return res;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int a, b, c, d;
+	while (cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d) {
+		if (a+b+c+d == 0) break;
+		vector&lt;int&gt; good({a, b, c, d});
+		set&lt;int&gt; poss = dfs(good);
+		
+		int best = 0, last = 0xc0c0c0c0, cur = 0, st = -1, en = -1, bst, ben;
+		for (int x : poss) {
+			if (x == last+1) {
+				cur++;
+				en = x;
+			} else {
+				cur = 1;
+				st = en = x;
+			}
+			last = x;
+			if (cur &gt;= best) {
+				bst = st;
+				ben = en;
+				best = cur;
+			}
+		}
+		
+		static int ca = 0;
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot; &lt;&lt; bst &lt;&lt; &quot; to &quot; &lt;&lt; ben &lt;&lt; endl;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

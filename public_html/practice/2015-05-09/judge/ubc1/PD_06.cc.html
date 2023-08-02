@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+char board[105][105];
+int main() {
+    int n, m; cin &gt;&gt; n &gt;&gt; m;
+    int pb = 0, pw = 0;
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; m; j++) {
+            cin &gt;&gt; board[i][j];
+            if ((i+j)%2) pb += (board[i][j] == 'X');
+            else pw += (board[i][j] == 'X');
+        }
+    }
+    
+    if (pb + pw == 0) cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+    else if ((pw + pb)%2) cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+    else {
+        if (min(n,m) == 1) {
+            bool yes = true;
+            if (n == 1) {
+                for (int i = 0; i &lt; m; i++) {
+                    if (board[0][i] == 'X') {
+                        for (int j = 0; j &lt; 4; j++) {
+                            if (i+j &gt;= m) {
+                                yes = false;
+                                goto done;
+                            }
+                            board[0][i+j] ^= 'X' ^ '.';
+                        }
+                    }
+                }
+            } else if (m == 1) {
+                for (int i = 0; i &lt; n; i++) {
+                    if (board[i][0] == 'X') {
+                        for (int j = 0; j &lt; 4; j++) {
+                            if (i+j &gt;= n) {
+                                yes = false;
+                                goto done;
+                            }
+                            board[i+j][0] ^= 'X' ^ '.';
+                        }
+                    }
+                }
+            }
+            done:;
+            
+            if (yes) cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+            else cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+        } else if (min(n, m) == 2) {
+            if (m == 2 &amp;&amp; n == 2) {
+                if (pb+pw == 4) cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+                else cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+            } else {
+                cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+            }
+        } else {
+            cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

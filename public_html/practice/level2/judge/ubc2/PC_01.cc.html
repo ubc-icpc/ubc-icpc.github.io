@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+using pt = complex&lt;ld&gt;;
+using pol = vector&lt;pt&gt;;
+const ld EPS = 1e-8;
+
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+inline bool on_segment(const pt &amp;a, const pt &amp;b, const pt &amp;p) {
+  return abs(cp(b-a, p-a)) &lt; EPS &amp;&amp; dp(b-a, p-a) &gt; 0 &amp;&amp; dp(a-b, p-b) &gt; 0; }
+inline bool on_boundary(const pol &amp;v, const pt &amp;p) { bool res = false;
+  for(int i=v.size()-1,j=0;j&lt;v.size();i=j++)
+    res |= on_segment(v[i], v[j], p) | (abs(p-v[i]) &lt; EPS); return res; }
+bool pt_in_polygon(const pt &amp;p, const pol &amp;v){ if(on_boundary(v,p)) return true;
+  ld res = 0; for(int i = v.size() - 1, j = 0; j &lt; v.size(); i = j++)
+    res += atan2(cp(v[i] - p, v[j] - p), dp(v[i] - p, v[j] - p));
+  return abs(res) &gt; 1; } // will be either 2*PI or 0
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    int n; cin &gt;&gt; n;
+    pol p;
+    for (int i = 0; i &lt; 3; i++) {
+      int x, y; cin &gt;&gt; x &gt;&gt; y;
+      p.emplace_back(x, y);
+    }
+    for (int i = 0; i &lt; n; i++) {
+      int x, y; cin &gt;&gt; x &gt;&gt; y;
+      puts(pt_in_polygon(pt(x, y), p) ? &quot;DANGER&quot; : &quot;SAFE&quot;);
+    }
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

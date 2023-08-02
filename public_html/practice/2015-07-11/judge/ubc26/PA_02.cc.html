@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+#ifndef D
+#define printf(...);
+#endif
+
+#define S(s) (((s)&gt;=0)&amp;&amp;((s)&lt;n))
+
+#define M(x) ((x)%2147483647)
+
+bool g[1024][1024] = {};
+bool v[1024][1024] = {};
+long long dp[1024][1024] = {};
+int n;
+
+typedef struct {int x, y;} xy;
+bool bfs() {
+  queue&lt;xy&gt; q;
+  q.push({0, 0});
+  while (!q.empty()) {
+    auto nxt = q.front(); q.pop();
+    int i = nxt.x, j = nxt.y;
+    if (g[i][j]) continue;
+    if (i == n - 1 &amp;&amp; j == n - 1) return true;
+    if (v[i][j]) continue;
+    v[i][j] = true;
+
+    printf(&quot;(%d, %d)&quot;, j, i);
+    #define SS(a, b) if (S(a) &amp;&amp; S(b)) q.push({(a),(b)});
+    SS(i - 1, j);
+    SS(i + 1, j);
+    SS(i, j - 1);
+    SS(i, j + 1);
+  }
+  return false;
+}
+
+int main() {
+  char c;
+  cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+      cin &gt;&gt; c;
+      g[i][j] = (c == '#');
+    }
+  }
+
+  if (g[0][0]) {
+    cout &lt;&lt; &quot;INCONCEIVABLE&quot; &lt;&lt; endl;
+    return 0;
+  }
+
+  dp[0][0] = 1;
+  for (int u = 1; u &lt; 2*n; u++) {
+    for (int v = 0; v &lt;= u; v++) {
+      int i = u - v, j = v;
+      if (!S(i) || !S(j)) continue;
+      if (!g[i][j]) {
+        long long e = i - 1 &gt;= 0 ? dp[i - 1][j] : 0;
+        long long f = j - 1 &gt;= 0 ? dp[i][j - 1] : 0;
+        dp[i][j] = M(e + f);
+      } else {
+        dp[i][j] = 0;
+      }
+      printf(&quot;(%d, %d) &quot;, j, i);
+    }
+    printf(&quot;\n&quot;);
+  }
+
+#ifdef D
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+      printf(&quot;%4d&quot;, dp[i][j]);
+    }
+    printf(&quot;\n&quot;);
+  }
+#endif
+
+  long long m = dp[n-1][n-1];
+  if (m == 0) {
+    if (bfs())
+      cout &lt;&lt; &quot;THE GAME IS A LIE&quot; &lt;&lt; endl;
+    else
+      cout &lt;&lt; &quot;INCONCEIVABLE&quot; &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; m &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

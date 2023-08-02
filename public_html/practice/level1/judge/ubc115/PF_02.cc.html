@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int x, y, z;
+
+int segs[] = {6, 2, 5, 5, 4, 5, 6, 3, 7, 6};
+
+int getCurrent(int number) {
+  int current = 0;
+  if (number == 0) {
+    return 30;
+  }
+  if (number &lt; 0) {
+    current++;
+    number = -number;
+  }
+
+  while (number) {
+    current += segs[number % 10];
+    number /= 10;
+  }
+  return current * 5;
+}
+
+int main() {
+  while (cin &gt;&gt; x &amp;&amp; x) {
+    cin &gt;&gt; y &gt;&gt; z;
+    int solutions = 0;
+    for (int i = -999; i &lt; 1000; i++) {
+      for (int j = -999; j &lt; 1000; j++) {
+        int xx = getCurrent(i);
+        int yy = getCurrent(j);
+
+        if (x == xx &amp;&amp; y == yy &amp;&amp; z == getCurrent(i + j) &amp;&amp; i + j &gt;= -999 &amp;&amp; i + j &lt; 1000) {
+          solutions++;
+        }
+
+        if (x == xx &amp;&amp; y == yy &amp;&amp; z == getCurrent(i - j) &amp;&amp; i - j &gt;= -999 &amp;&amp; i - j &lt; 1000) {
+          solutions++;
+        }
+
+        if (x == xx &amp;&amp; y == yy &amp;&amp; z == getCurrent(i * j) &amp;&amp; i * j &gt;= -999 &amp;&amp; i * j &lt; 1000) {
+          solutions++;
+        }
+
+        if (x == xx &amp;&amp; y == yy &amp;&amp; j &amp;&amp; z == getCurrent(i / j) &amp;&amp; i / j &gt;= -999 &amp;&amp; i / j &lt; 1000) {
+          solutions++;
+        }
+      }
+    }
+    cout &lt;&lt; solutions &lt;&lt; &quot; solution&quot; &lt;&lt; ((solutions == 1) ? (&quot;&quot;) : (&quot;s&quot;)) &lt;&lt; &quot; for &quot; 
+     &lt;&lt; x &lt;&lt; ' ' &lt;&lt; y &lt;&lt; ' ' &lt;&lt; z &lt;&lt;  '\n';
+  }
+
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

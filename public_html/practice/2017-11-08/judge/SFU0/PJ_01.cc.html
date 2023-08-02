@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+
+using namespace std ;
+
+long long ans[1000005];
+
+int main() 
+{
+   long long h, l, t ;
+   int a[3] ;
+   while (cin &gt;&gt; h &gt;&gt; l &gt;&gt; t &gt;&gt; a[0] &gt;&gt; a[1] &gt;&gt; a[2]) {
+      memset(ans, 0, sizeof(ans)) ;
+      ans[0] = 0 ;
+      long long r = 0 ;
+      for (int i=1; i&lt;=h; i++)
+         for (int b=0; b&lt;3; b++)
+            if (i &gt;= a[b] &amp;&amp; ans[i-a[b]] &gt;= 0) {
+               long long w =
+                (t + (l - t) * (h-i) / h) / a[b] ;
+               long long l = ans[i-a[b]] + w * w * a[b]*a[b]*a[b] ;
+               if (l &gt; ans[i]) {
+                  ans[i] = l;
+                  if (l &gt; r)
+                     r = l;
+               }
+            }
+      cout &lt;&lt; r &lt;&lt; endl ;
+   }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

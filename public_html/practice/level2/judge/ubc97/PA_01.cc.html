@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define el endl
+#define LL long long
+#define ULL unsigned long long
+#define vi vector&lt;int&gt;
+#define vd vector&lt;double&gt;
+#define mp make_pair
+#define pb push_back
+#define pf push_front
+#define pii pair&lt;int,int&gt;
+#define pll pair&lt;LL,LL&gt;
+#define x first
+#define y second
+#define pi acos(-1)
+#define sqr(x) ((x)*(x))
+#define pdd pair&lt;double,double&gt;
+#define MEMS(x) memset(x,-1,sizeof(x))
+#define MEM(x) memset(x,0,sizeof(x))
+
+int main() {
+  int r,x,y;
+  cin &gt;&gt; r &gt;&gt; x &gt;&gt; y;
+  float dist = sqrt(sqr(x) + sqr(y));
+  float ans = min(r-dist, (float)y);
+  cout &lt;&lt; ans &lt;&lt; el;
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

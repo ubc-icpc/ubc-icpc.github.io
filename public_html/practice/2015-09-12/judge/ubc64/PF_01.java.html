@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
+import java.util.*;
+
+
+//convert string problem to int problem or
+// when it first with ? it only has two cases
+public class acm {
+    // 0 represents even and odd represents odd
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int round = scan.nextInt();
+        // when use i = 1; i &lt;=!!!!
+        // char is single quotation
+        HashSet&lt;Character&gt; vowels = new HashSet&lt;Character&gt;(Arrays.asList('a', 'e', 'i', 'o', 'u', 'y'));
+        //you need give extra space to turn nextInt() to nextLine();
+        scan.nextLine();
+        for (int i = 1; i &lt;= round; i ++) {
+            System.out.print(&quot;String #&quot; + i + &quot;: &quot;);
+            // read the question, it says no more than 64
+            long answer;
+            
+            //make sure to use long for both
+            long i1 = 1;
+            long i2 = 1;
+            String s = scan.nextLine();
+            char[] array = s.toCharArray();
+            for (int k =0; k &lt; s.length(); k ++) {
+                //start with vowels
+                if (array[k] == '?') {
+                   i1 *= (k%2==0)? 6:20;
+                } else if (vowels.contains(array[k]) != (k%2 == 0)) {
+                    i1=0;
+                    break;
+                }
+            }
+            for (int k =0; k &lt; array.length; k ++) {
+                //start with consonants
+                if (array[k] == '?') {
+                    i2 *= (k%2==0)? 20:6;
+                } else if (vowels.contains(array[k]) != (k%2 == 1)) {
+                    i2=0;
+                    break;
+                }
+            }
+            answer = i1 + i2;
+            System.out.println(answer);
+
+        }
+    }
+//7
+//orooji
+//al?
+//a?i
+//g?ha
+//a?u?
+//?????????????????
+//arup
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

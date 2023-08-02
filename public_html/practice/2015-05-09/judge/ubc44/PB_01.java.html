@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class blackfriday {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		int[] count = new int[6]; //use i-1 indices
+		int size = s.nextInt();
+		int[] a = new int[size];
+		for (int i=0; i&lt;size ; i++) {
+			int a_i = s.nextInt();
+			a[i] = a_i;
+			count[(a_i-1)]++;
+		}
+		int high = -1;
+		for (int k=6; k&gt;0; k--) {
+			int index = k-1;
+			if (count[index] == 1) {
+				high = k;
+				break;
+			}
+		}
+		if (high == -1)
+			System.out.println(&quot;none&quot;);
+		else {
+			for (int i=0; i&lt;size ; i++) {
+				if (a[i] == high) {
+					System.out.println(i+1);
+					break;
+				}
+			}
+		}
+		s.close();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

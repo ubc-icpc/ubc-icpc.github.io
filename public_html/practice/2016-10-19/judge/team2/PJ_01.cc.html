@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+
+int main() {
+    int T; scanf(&quot;%d&quot;, &amp;T);
+    while (T--) {
+        double x = 0, y = 0;
+        int theta = 0;
+        int C; scanf(&quot;%d&quot;, &amp;C);
+        while (C--) {
+            char cmd[10];
+            int val;
+            scanf(&quot;%s %d&quot;, cmd, &amp;val);
+            if (strcmp(cmd, &quot;bk&quot;) == 0) {
+                strcpy(cmd, &quot;fd&quot;);
+                val = -val;
+            } else if (strcmp(cmd, &quot;rt&quot;) == 0) {
+                strcpy(cmd, &quot;lt&quot;);
+                val = -val;
+            }
+            if (strcmp(cmd, &quot;lt&quot;) == 0) {
+                theta = (theta + val) % 360;
+            }
+            if (strcmp(cmd, &quot;fd&quot;) == 0) {
+                x += val*cos(theta / 180.0 * M_PI);
+                y += val*sin(theta / 180.0 * M_PI);
+            }
+            /* printf(&quot;%.2f %.2f %d\n&quot;, x, y, theta); */
+        }
+        printf(&quot;%.0f\n&quot;, round(sqrt(x*x+y*y)));
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

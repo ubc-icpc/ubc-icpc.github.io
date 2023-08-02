@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+
+int main() {
+	
+	int t; cin &gt;&gt; t;
+	
+	for (int test = 1; test &lt;= t; test++) {
+		int r; cin &gt;&gt; r;
+		int c; cin &gt;&gt; c;
+		
+		int board[r][c];
+		
+		for (int row = 0; row &lt; r; row++) {
+			for (int col = 0; col &lt; c; col++) {
+				
+				string lol; cin &gt;&gt; lol;
+				
+				if (lol.compare(&quot;P&quot;) == 0 || lol.compare(&quot;E&quot;) == 0) {
+					//cout &lt;&lt; lol &lt;&lt; endl;
+					board[row][col] = 0;
+				} else {
+					board[row][col] = atoi(lol.c_str());
+				
+				}
+			}
+		}
+		
+		//board[0][0] = 0;
+		//board[r-1][c-1] = 0;
+		
+/*
+for (int row = 0; row &lt; r; row++) {
+for (int col = 0; col &lt; c; col++) {
+
+cout &lt;&lt; board[row][col] &lt;&lt; &quot; &quot;;
+
+}
+cout &lt;&lt; endl;
+}
+*/		
+		int sumboard[r][c];
+		
+		sumboard[0][0] = board[0][0];
+		
+		for (int col = 1; col &lt; c; col++) {
+			sumboard[0][col] = board[0][col] + sumboard[0][col-1];
+		}
+		
+		for (int row = 1; row &lt; r; row++) {
+			sumboard[row][0] = board[row][0] + sumboard[row-1][0];
+		
+		}
+		
+		for (int row = 1; row &lt; r; row++) {
+			for (int col = 1; col &lt; c; col++) {
+				sumboard[row][col] = max(sumboard[row-1][col], sumboard[row][col-1]) + board[row][col];				
+			}
+		}
+/*	
+for (int row = 0; row &lt; r; row++) {
+for (int col = 0; col &lt; c; col++) {
+
+cout &lt;&lt; sumboard[row][col] &lt;&lt; &quot; &quot;;
+
+}
+cout &lt;&lt; endl;
+}*/
+
+		cout &lt;&lt; &quot;Game Board #&quot; &lt;&lt; test &lt;&lt; &quot;: &quot; &lt;&lt; sumboard[r-1][c-1] &lt;&lt; &quot;\n\n&quot;;
+		
+//cout &lt;&lt; r &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; &quot; &quot; &lt;&lt; sumboard[r-1][c-1] &lt;&lt; endl;
+	
+	}
+
+	return 0;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

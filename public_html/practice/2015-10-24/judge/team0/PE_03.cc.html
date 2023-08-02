@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+
+pii a[100005];
+int main() {
+    int n, k; cin &gt;&gt; n &gt;&gt; k;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; a[i].first &gt;&gt; a[i].second;
+    }
+    sort(a, a+n);
+    int ans = 0;
+    multiset&lt;int&gt; q;
+    for (int i = 0; i &lt; n; i++) {
+        q.insert(a[i].second);
+        while (*q.begin() &lt;= a[i].first) {
+            q.erase(q.begin());
+            ans++;
+        }
+        if (q.size() &gt; k) q.erase(--q.end());
+    }
+    ans += q.size();
+    cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

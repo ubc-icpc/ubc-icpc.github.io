@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+n=raw_input()
+smaller=n[0]
+bigger=n[0]
+done=False
+ignore_small=False
+ignore_big=False
+for i in range(1,len(n)):
+    a=n[i]
+    if (int(n[i])-int(n[i-1]))%2==0:
+        smaller=smaller+str(int(n[i])-1)
+        bigger=bigger+str(int(n[i])+1)
+        if n[i]=='0':
+            ignore_small=True
+        if n[i]=='9':
+            ignore_big=True
+        break
+    else:
+        smaller=smaller+n[i]
+        bigger=bigger+n[i]
+if not ignore_small:
+    for i in range(len(smaller),len(n)):
+        if int(smaller[len(smaller)-1])%2==0:
+            smaller=smaller+'9'
+        else:
+            smaller=smaller+'8'
+    smaller=int(smaller)
+if not ignore_big:
+    for i in range(len(bigger),len(n)):
+        if int(bigger[len(bigger)-1])%2==0:
+            bigger=bigger+'1'
+        else:
+            bigger=bigger+'0'
+    bigger=int(bigger)
+n=int(n)
+if ignore_small:
+    print(bigger)
+elif ignore_big:
+    print(smaller)
+elif (n-smaller)&gt;(bigger-n):
+    print(bigger)
+elif (n-smaller)&lt;(bigger-n):
+    print(smaller)
+elif (smaller+bigger)==2*n:
+    print(str(smaller)+&quot; &quot;+str(bigger))
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

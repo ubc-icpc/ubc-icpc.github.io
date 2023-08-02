@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.Stack;
+
+public class S3 {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int t = sc.nextInt();
+		for (int tc = 0; tc &lt; t; tc++) {
+			boolean ans = true;
+			int n = sc.nextInt();
+			Stack&lt;Integer&gt; m = new Stack&lt;Integer&gt;(), b = new Stack&lt;Integer&gt;();
+			for (int i = 0; i &lt; n; i++) {
+				m.push(sc.nextInt());
+			}
+			int pro = 1;
+			while (pro != n) {
+				if (!b.empty() &amp;&amp; b.peek() == pro) {
+					b.pop();
+				} else {
+					while (!m.empty() &amp;&amp; m.peek() != pro) {
+						b.push(m.pop());
+					}
+					if (m.empty()) {
+						ans = false;
+						break;
+					}
+					m.pop();
+				}
+				if(!ans){
+					break;
+				}
+				pro++;
+			}
+			System.out.println(ans ? &quot;Y&quot; : &quot;N&quot;);
+		}
+
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

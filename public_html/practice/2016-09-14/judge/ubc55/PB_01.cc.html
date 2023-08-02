@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+const int N = 105;
+long long bin[105][105];
+
+void init() {
+	memset(bin, 0, sizeof(bin));
+	bin[0][0] = bin[1][0] = bin[1][1] = 1;
+	for (int i = 2; i &lt; N; i++) {
+		bin[i][0] = 1;
+		for (int j = 1; j &lt;= i; j++) {
+			bin[i][j] = bin[i - 1][j] + bin[i - 1][j - 1];
+		}
+	}
+	return;
+}
+
+int main() {
+	init();
+	int P; cin &gt;&gt; P;
+	while (P--) {
+		int k; cin &gt;&gt; k;
+		int s; cin &gt;&gt; s;
+		int x = s / 2;
+		int y = 0;
+		if (x % 2) {
+			x--; y++;
+		}
+		x /= 2;
+		long long total = 0;
+		while (x &gt;= y) {
+			long long t = bin[x+y][x];
+			total += t*t;
+			x--;
+			y += 2;
+		}
+		cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; total &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

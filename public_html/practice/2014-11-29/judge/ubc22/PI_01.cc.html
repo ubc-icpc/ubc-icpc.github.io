@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+struct planet {
+  int cost;
+  int netprofit;
+  bool operator&lt;(const planet &amp;b) const {
+    return cost &lt; b.cost;
+  }
+};
+
+int main() {
+  int N, P;
+  cin &gt;&gt; N &gt;&gt; P;
+  vector&lt;planet&gt; l;
+  int fuel = 0;
+  int planetcount = 1;
+  for (int i = 1; i &lt;= N; i++) {
+    planet temp;
+    cin &gt;&gt; temp.netprofit &gt;&gt; temp.cost;
+    if (i == P) {
+      fuel += temp.netprofit;
+      continue;
+    }
+    temp.netprofit -= temp.cost;
+    if (temp.netprofit &gt;= 0)
+      l.push_back(temp);
+  }
+  sort(l.begin(), l.end());
+  for (planet p : l) {
+    if (p.cost &lt;= fuel) {
+      fuel += p.netprofit;
+      planetcount++;
+    } else break;
+  }
+  cout &lt;&lt; fuel &lt;&lt; endl &lt;&lt; planetcount &lt;&lt; endl;
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+template &lt;typename T&gt; int sgn(T val) {
+    return (T(0) &lt; val) - (val &lt; T(0));
+}
+
+int T, N, X, Y, V, R, M;
+struct p {
+    int v;
+    int i;
+    int r;
+    p(int ii, int rr, int vv) {
+        int t = sqrt(abs(rr)) + 1e-6;
+        if (t * t == abs(rr)) { i = ii + sgn(rr) * t; r = 0; }
+        else { i = ii; r = rr; }
+        v = vv;
+    }
+    bool operator&lt; (const p&amp; b) const {
+        if (i == b.i &amp;&amp; r == b.r) return v &gt; b.v;
+        return (i + sgn(r) * sqrt(abs(r))) &lt; (b.i + sgn(b.r) * sqrt(abs(b.r)));
+    }
+};
+vector&lt;p&gt; E;
+
+int main () {
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; N;
+        E = vector&lt;p&gt;();
+        while (N--) {
+            cin &gt;&gt; X &gt;&gt; Y &gt;&gt; V;
+            int d = 1000 * 1000 - Y * Y;
+            if (d &gt;= 0) {
+                E.push_back(p(X, -1 * d, V));
+                E.push_back(p(X, d, -1 * V));
+            }
+        }
+        sort(E.begin(), E.end());
+        R = M = 0;
+        for (p i : E)
+            R = max(R, M += i.v);
+        cout &lt;&lt; R &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

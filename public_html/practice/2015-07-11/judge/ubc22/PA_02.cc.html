@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+const long long MOD = (1ll &lt;&lt; 31) - 1;
+long long N, C[1005][1005], V[1005][1005]; string M[1005];
+stack&lt;pair&lt;int, int&gt; &gt; S;
+
+int main () {
+  cin &gt;&gt; N;
+  for (int i = 0; i &lt; N; ++i) cin &gt;&gt; M[i];
+  C[0][0] = V[0][0] = 1;
+  for (int i = 0; i &lt; N; ++i)
+    for (int j = !i; j &lt; N; ++j)
+      if (M[i][j] == '.') {
+	V[i][j] = (i?V[i-1][j]:0) || (j?V[i][j-1]:0);
+	C[i][j] = ((i?C[i-1][j]:0) + (j?C[i][j-1]:0)) % MOD; }
+  //for (int i = 0; i &lt; N; ++i, cout &lt;&lt; endl)
+  //  for (int j = 0; j &lt; N; ++j, cout &lt;&lt; ' ')
+  //    cout &lt;&lt; C[i][j];
+  if (V[N-1][N-1]) { cout &lt;&lt; C[N-1][N-1] &lt;&lt; endl; return 0; }
+  memset(C, 0, sizeof C);
+  S.push(make_pair(0, 0));
+  while (!S.empty()) {
+    pair&lt;int, int&gt; top = S.top(); S.pop();
+    if (top.first &lt; 0 ||
+	top.first &gt;= N ||
+	top.second &lt; 0 ||
+	top.second &gt;= N ||
+	M[top.first][top.second] == '#' ||
+	C[top.first][top.second]) continue;
+    C[top.first][top.second] = true;
+    S.push(make_pair(top.first + 1, top.second));
+    S.push(make_pair(top.first - 1, top.second));
+    S.push(make_pair(top.first, top.second + 1));
+    S.push(make_pair(top.first, top.second - 1));
+  }
+  if (C[N-1][N-1]) cout &lt;&lt; &quot;THE GAME IS A LIE&quot; &lt;&lt; endl;
+  else cout &lt;&lt; &quot;INCONCEIVABLE&quot; &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

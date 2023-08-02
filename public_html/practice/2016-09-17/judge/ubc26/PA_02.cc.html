@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cassert&gt;
+#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;sstream&gt;
+#include &lt;iterator&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+//#define printf(...);
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define L0(qq,ss,m) for (int qq=(ss);qq&lt;(m);qq++)
+
+// dp[w][h][s] = best stacking given area (w,h) and set of blocks s
+// dp[w][h][{i}] = 1, single box i with orientation (w, h)
+// dp[w'][h'][s + {i}] = dp[w][h][s] + 1, given box i and for each orientation
+//   and (w', h') &lt;= (w, h)
+
+int n, t = 0;
+int dp[21][21][1 &lt;&lt; 11] = {};
+
+struct xyz { int x, y, z; };
+#define I(i) (1 &lt;&lt; (i))
+#define WH(x, y, a, b) { \
+    if ((x) &gt; (y)) { a = (y); b = (x); } else { a = (x); b = (y) ; } }
+#define WH_(x, y, a, b) { WH(x, y, a, b); dp[a][b][I(i)] = 1; }
+
+inline int count(int s) {
+  int c = 0;
+  L(i, n) { c += (s &amp; I(i)) != 0; }
+  return c;
+}
+
+inline vector&lt;pair&lt;int, int&gt;&gt; whs(xyz&amp; xyz) {
+  vector&lt;pair&lt;int, int&gt;&gt; vv;
+  int x = xyz.x, y = xyz.y, z = xyz.z, w, h;
+  WH(x, y, w, h);
+  vv.push_back(make_pair(w, h));
+  WH(x, z, w, h);
+  vv.push_back(make_pair(w, h));
+  WH(y, z, w, h);
+  vv.push_back(make_pair(w, h));
+  return vv;
+}
+
+inline vector&lt;pair&lt;int, int&gt;&gt; prevs(int s) {
+  vector&lt;pair&lt;int, int&gt;&gt; vv;
+  L(i, n) { if ((s &amp; I(i)) != 0) vv.push_back(make_pair(i, s &amp; ~I(i))); }
+  return vv;
+}
+
+inline bool fits(int w, int h, int ww, int hh) {
+  return (w &lt;= ww &amp;&amp; h &lt;= hh) || (w &lt;= hh &amp;&amp; h &lt;= ww);
+}
+
+int main() {
+  while (cin &gt;&gt; n) {
+    if (n == 0) break;
+    // clear dp
+    memset(dp, -1, sizeof(dp));
+
+    vector&lt;xyz&gt; v(n);
+    L(i, n) {
+      int x, y, z;
+      cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+      v[i] = {x, y, z};
+    }
+    int b = 1;
+    // base cases
+    L(i, n) {
+      xyz xyz = v[i];
+      int x = xyz.x, y = xyz.y, z = xyz.z, a, b;
+      WH_(x, y, a, b);
+      WH_(x, z, a, b);
+      WH_(y, z, a, b);
+    }
+    // layers
+    L0(i, 2, n+1) {
+      L(s, (1 &lt;&lt; n) + 1) {
+        if (count(s) == i) {
+          for (auto&amp; p : prevs(s)) {
+            int j = p.first, s1 = p.second;
+            xyz xyz = v[j];
+            for (auto&amp; wh : whs(xyz)) {
+              int ww = wh.first, hh = wh.second, y = -1;
+              L0(w, 1, ww + 1) {
+                L0(h, w, hh + 1) {
+                  if (dp[w][h][s1] == -1 || !fits(w, h, ww, hh)) continue;
+                  y = max(y, 1 + dp[w][h][s1]);
+                }
+              }
+              b = max(b, dp[ww][hh][s] = max(dp[ww][hh][s], y));
+            }
+          }
+        }
+      }
+    }
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; (++t) &lt;&lt; &quot;: &quot; &lt;&lt; b &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

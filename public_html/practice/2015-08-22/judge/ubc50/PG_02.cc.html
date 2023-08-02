@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+#include&lt;utility&gt;
+#include&lt;algorithm&gt;
+#include&lt;iomanip&gt;
+#include&lt;complex&gt;
+using namespace std;
+typedef long double ld;
+typedef pair&lt;ld, ld&gt; pdd;
+typedef complex&lt;ld&gt; pt;
+
+ld r[505], g[505][505];
+pt pts[505];
+
+ld po(ld a, int b) {
+  if (b==1) return a;
+  ld tmp = po(a,b/2);
+  ld res = tmp*tmp;
+  if (b%2) return res*a;
+  else return res;
+}
+
+ld dist(pdd p1, pdd p2) {
+  return sqrt(po(p1.first-p2.first,2)+(po(p1.second-p2.second,2)));  
+}
+
+int main() {
+  int test; cin &gt;&gt; test;
+  for (int t=1; t&lt;=test; t++) {
+    cout &lt;&lt; &quot;Campus #&quot; &lt;&lt; t &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    int n; cin &gt;&gt; n;
+    for (int i=0; i&lt;n; i++) {
+      ld x,y,ra; cin &gt;&gt; x &gt;&gt; y &gt;&gt; ra;
+      pts[i]=pt(x,y);
+      r[i]=ra;
+    }
+    // store the other points from position n to n+2*q-1
+    // so query x refers to points in positions i and i+1
+    int q; cin &gt;&gt; q;
+    for (int i=n; i&lt;n+2*q; i++) {
+      ld x,y; cin &gt;&gt; x &gt;&gt; y;
+      pts[i]=pt(x,y);
+      r[i]=0;
+    }
+    // weight matrix is distance that has to be walked in the sun
+    // so distance between the two points - (distance in shade :the radius of the shaded areas)
+    for (int i=0; i&lt;n+2*q; i++) {
+      for (int j=0; j&lt;n+2*q; j++) {
+	g[i][j]=max((ld)0.0, abs(pts[i]-pts[j])-r[i]-r[j]);
+      }
+    }
+    // floyd-warshall
+    for (int k=0; k&lt;n+2*q; k++) {
+      for (int i=0; i&lt;n+2*q; i++) {
+	for (int j=0; j&lt;n+2*q; j++) {
+	  g[i][j] = min(g[i][j], g[i][k]+g[k][j]);
+	}
+      }
+    }
+ 
+    for (int i=0;i&lt;q; i++) {
+      cout &lt;&lt; &quot;Path #&quot; &lt;&lt; i+1 &lt;&lt; &quot;: Shortest sun distance is &quot; &lt;&lt; setprecision(1) &lt;&lt; fixed &lt;&lt; g[2*i+n][2*i+1+n] &lt;&lt; &quot;.\n&quot;;
+    }
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

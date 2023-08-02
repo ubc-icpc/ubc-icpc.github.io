@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+#define INF 1000000
+
+using namespace std;
+char triangle[1024][1024];
+int powers[11];
+
+void fill(int y, int x, int n){
+	if(n==1){
+		triangle[y][x]='X';
+		triangle[y-1][x]='X';
+		triangle[y][x+1]='X';
+		triangle[y-1][x+1]='X';
+		return;
+	}
+	fill(y,x,n-1);
+	fill(y,x+powers[n-1],n-1);
+	fill(y-powers[n-1],x+powers[n-2],n-1);
+}
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	powers[0]=1;
+	for(int i=1;i&lt;11;i++){
+		powers[i]=powers[i-1]*2;
+	}
+	for(int i=1;i&lt;=n;i++){
+		int m;
+		cin&gt;&gt;m;
+		for(int j=0;j&lt;1024;j++)
+			for(int k=0;k&lt;1024;k++)
+				triangle[j][k]=' ';
+		fill(powers[m]-1,0,m);
+		cout&lt;&lt;&quot;Triangle #&quot;&lt;&lt;i&lt;&lt;':'&lt;&lt;endl;
+		for(int j=0;j&lt;powers[m];j++){
+			for(int k=0;k&lt;powers[m];k++)
+				cout&lt;&lt;triangle[j][k];
+			cout&lt;&lt;endl;
+		}
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

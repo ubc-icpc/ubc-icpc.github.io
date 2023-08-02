@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+def r(a, m):
+  global s
+  val = (s % m)/(1.0*m)
+  s = (a * s + 1) % m
+  return val
+
+i = 0
+for line in sys.stdin:
+  if not i:
+    a,m,s = map(int, line.split())
+    i += 1
+    continue
+
+  line = line[:-1]
+  output = &quot;&quot;
+  for c in line:
+    if ord(c) &lt; 0x20 or ord(c) &gt; 0x7e:
+      output += c 
+    else:
+      output += chr((ord(c) - int(95 - r(a,m)*95 + 1) - 32) % 95 + 32)
+  print(output)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

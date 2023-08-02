@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import math
+
+noteName = ['A', 'A#', 'B','C','C#','D','D#','E','F','F#','G','G#']
+
+a, b = list(map(int,input().split()))
+
+##rev = False
+##if a &gt; b:
+##    a,b = b,a
+##    rev = True
+
+r = math.log2(b / a)
+
+cents = round(1200 * r)
+
+notes = cents // 100
+mod = cents % 100
+
+if mod &gt; 50:
+    mod -= 100
+    notes += 1
+
+modA = (-mod)//2
+modB = mod//2
+
+print(noteName[0],modA)
+print(noteName[notes % 12],modB)
+</code>
+</pre>
+</body>
+</html>

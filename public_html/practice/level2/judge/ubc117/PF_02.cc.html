@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;set&gt;
+#include &lt;unordered_set&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;unordered_map&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+
+struct pt {
+    static ll xc, yc;
+    ll x, y;
+    pt() {}
+    pt(ll a, ll b) :x(a), y(b) {}
+    pt operator + (const pt&amp; o) const { return pt(x+o.x, y+o.y); }
+    pt operator - (const pt&amp; o) const { return pt(x-o.x, y-o.y); }
+    pt operator * (const ll&amp; o) const { return pt(x * o, y * o); }
+    ll dp(const pt&amp; o) const {
+        return x*o.x+y*o.y;
+    }
+    ll cp(const pt&amp; o) const {
+        return x*o.y-y*o.x;
+    }
+    static void set_center(const pt&amp; p) {
+        xc = p.x;
+        yc = p.y;
+    }
+    bool ang_less (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        return cpv &gt; 0;
+    }
+    bool operator &lt; (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        if (cpv != 0) return cpv &gt; 0;
+        return tdist.d2() &lt; odist.d2();
+    }
+    bool operator == (const pt&amp; o) const {
+        return x == o.x &amp;&amp; y == o.y;
+    }
+    ll d2() const {
+        return x*x+y*y;
+    }
+};
+ll pt::xc;
+ll pt::yc;
+
+const int N = 200100;
+
+pt pts[N];
+ll tri_area[N];
+ll tri_area_pfx[N];
+int n;
+
+ll get_area(int i, int j) {
+    i = i%n;
+    j = j%n;
+    if (i==j) return 0;
+    if (j &gt; i) {
+        if (i &gt; 0) {
+            ll ans = tri_area_pfx[j-1] - tri_area_pfx[i-1];
+            ans -= abs((pts[i]-pts[0]).cp(pts[j]-pts[0]));
+            return ans;
+        }
+        //cerr &lt;&lt; &quot;! &quot; &lt;&lt; j &lt;&lt; &quot; -&gt; &quot; &lt;&lt; tri_area_pfx[j-1] &lt;&lt; endl;
+        return tri_area_pfx[j-1];
+    }
+    if (j == 0) {
+        return tri_area_pfx[n-2]-tri_area_pfx[i-1];
+    }
+    ll ans = tri_area_pfx[n-2]-tri_area_pfx[i-1];
+    ans += tri_area_pfx[j-1];
+    ans += abs((pts[j]-pts[0]).cp(pts[i]-pts[0]));
+    return ans;
+}
+
+void solve() {
+    cin &gt;&gt; n;
+    for (int i=0; i&lt;n; ++i) {
+        cin &gt;&gt; pts[i].x &gt;&gt; pts[i].y;
+    }
+    if (n == 3) {
+        ld x = (ld) abs((pts[0]-pts[1]).cp(pts[2]-pts[1]))/2;
+        cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; 0.l &lt;&lt; &quot;\n&quot;;
+        return;
+    }
+    for (int i=1; i&lt;n-1; ++i) {
+        tri_area[i] = abs((pts[i]-pts[0]).cp(pts[i+1]-pts[0]));
+        tri_area_pfx[i] = tri_area[i] + tri_area_pfx[i-1];
+        //cerr &lt;&lt; &quot;! &quot; &lt;&lt; tri_area[i] &lt;&lt; &quot; &quot; &lt;&lt; tri_area_pfx[i] &lt;&lt; endl;
+    }
+    ll ans = 0x3f3f3f3f3f3f3f3fll;
+    int j = 1;
+    for (int i=0; i&lt;n; ++i) {
+        //cerr &lt;&lt; &quot; ga &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; = &quot; &lt;&lt; get_area(i, j) &lt;&lt; endl;
+        ll last = abs(tri_area_pfx[n-2]-2*get_area(i, j));
+        //cerr &lt;&lt; &quot;  l &quot; &lt;&lt; last &lt;&lt; endl;
+        while (true) {
+            ++j;
+            ll now = abs(tri_area_pfx[n-2]-2*get_area(i, j));
+            //cerr &lt;&lt; &quot; -&gt; &quot; &lt;&lt; now &lt;&lt; endl;
+            if (now &gt; last) {
+                --j;
+                break;
+            }
+            last = now;
+        }
+        ans = min(ans, last);
+    }
+    ld p = tri_area_pfx[n-2];
+    //cerr &lt;&lt; &quot;! ans &quot; &lt;&lt; ans &lt;&lt; &quot; pfx &quot; &lt;&lt; p &lt;&lt; endl;
+    ld a = (p+ans)/2;
+    ld b = (p-ans)/2;
+    if (a &lt; b) swap(a, b);
+    cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; a/2 &lt;&lt; &quot; &quot; &lt;&lt; b/2 &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int TT;
+    cin &gt;&gt; TT;
+    while (TT--) {
+        solve();
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

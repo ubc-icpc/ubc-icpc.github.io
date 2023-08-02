@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+
+int T, K;
+ll N;
+
+ll perm(ll a, ll b) {
+  if (a &gt; b) {
+    swap(a, b);
+  }
+  ll res = 1;
+  ll d = a;
+  for (ll i = b + 1; i &lt;= b + a; ++i) {
+    res *= i;
+    while (d &gt; 1 &amp;&amp; res % d == 0) {
+      res /= d;
+      --d;
+    }
+  }
+  return res;
+}
+
+ll calc() {
+  ll res = 0;
+  N /= 2;
+  ll A, B;
+  A = N / 2;
+  B = N % 2;
+  for (; A &gt;= B; A -= 1, B += 2) {
+    ll p = perm(A, B);
+    res += p * p;
+  }
+  return res;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; K &gt;&gt; N;
+    cout &lt;&lt; K &lt;&lt; &quot; &quot; &lt;&lt; calc() &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

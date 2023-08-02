@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;map&gt;
+#include&lt;vector&gt;
+#include&lt;sstream&gt;
+#include&lt;algorithm&gt;
+#include&lt;stack&gt;
+
+using namespace std;
+string people[105],lang[105];
+map&lt;string,vector&lt;string&gt; &gt; ltp;
+map&lt;string,int&gt; pti;
+bool m[105][105];
+int T;
+int nums;
+vector&lt;int&gt; v;
+stack&lt;int&gt; S;
+bool vis[105];
+void reverse() {
+  bool cp[T][T];
+  for(int i=0;i&lt;T;i++)
+	for(int j=0;j&lt;T;j++)
+	  cp[i][j]=m[i][j];
+  for(int i=0;i&lt;T;i++)
+	for(int j=0;j&lt;T;j++)
+	  m[i][j]=cp[j][i];
+}
+void dfs(int start,bool mod) {
+  vis[start]=true;
+  for(int i=0;i&lt;T;i++) {
+	if(i!=start &amp;&amp; !vis[i] &amp;&amp; m[start][i]) {
+	  dfs(i,mod);
+	}
+  }
+  if(mod)
+	S.push(start);
+  else
+	nums++;
+}
+void get_scc() {
+  nums=0;
+  for(int i=0;i&lt;T;i++) vis[i]=false;
+  for(int i=0;i&lt;T;i++) {
+	if(vis[i]==false)
+	  dfs(i,true);
+  }
+  reverse();
+  for(int i=0;i&lt;T;i++) vis[i]=false;
+  while(S.empty()==false) {
+	int at=S.top();
+	S.pop();
+	if(vis[at]==false) {
+	  dfs(at,false);
+	  v.push_back(nums);
+	  nums=0;
+	}
+  }
+  
+}
+int main (void) {
+  cin&gt;&gt;T;
+  for(int i=0;i&lt;T;i++) 
+	for(int j=0;j&lt;T;j++) 
+	  m[i][j]=false;
+  
+  for(int i=0;i&lt;T;i++) {
+	string p,line,l; 
+	cin&gt;&gt;p;
+	getline(cin,line);
+	stringstream ss(line);
+	ss &gt;&gt; l;
+	string str;
+	while(ss&gt;&gt;str) {
+	  ltp[str].push_back(p);
+	}
+	ltp[l].push_back(p);
+	people[i]=p;
+	lang[i]=l;
+  }
+  
+  for(int i=0;i&lt;T;i++) {
+	pti[people[i]]=i;
+	//cout &lt;&lt; people[i] &lt;&lt; i&lt;&lt;&quot; &quot; &lt;&lt;lang[i] &lt;&lt; endl;
+  }
+  /*
+  for(auto&amp; kv:ltp) {
+	cout &lt;&lt; kv.first &lt;&lt; &quot;: &quot;;
+	for(string s:kv.second)
+	  cout &lt;&lt; s &lt;&lt; &quot; &quot;;
+	cout &lt;&lt; endl;
+	}
+  */
+  for(int i=0;i&lt;T;i++) {
+	for(string s:ltp[lang[i]]) {
+	  //cout &lt;&lt; people[i] &lt;&lt; &quot;-&gt;&quot; &lt;&lt; s &lt;&lt; &quot;(&quot;&lt;&lt; pti[s] &lt;&lt;&quot;)&quot;&lt;&lt; &quot; &quot;;
+	  m[i][pti[s]]=true;
+	}
+	//cout &lt;&lt; endl;
+  }
+  /*
+  for(int i=0;i&lt;T;i++)  {
+	for(int j=0;j&lt;T;j++) 
+ 	  cout&lt;&lt;m[i][j]&lt;&lt; &quot; &quot;;
+	cout &lt;&lt; endl;
+  } reverse(); cout &lt;&lt; endl;
+  for(int i=0;i&lt;T;i++)  {
+	for(int j=0;j&lt;T;j++) 
+ 	  cout&lt;&lt;m[i][j]&lt;&lt; &quot; &quot;;
+	cout &lt;&lt; endl;
+  }
+  */
+  get_scc();
+  sort(v.begin(),v.end());
+  
+  cout &lt;&lt; T-v.back() &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

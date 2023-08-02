@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+#include &lt;vector&gt;
+
+bool done(vector&lt;int&gt; stats, vector&lt;int&gt; search) {
+	for (int i=0;i&lt;search.size();i++) {
+		if (stats[search[i]]==1) return false;
+	}
+	return true;
+}
+
+int main() {
+	int T;
+	cin&gt;&gt;T;
+	for (int t=0;t&lt;T;t++) {
+		int n;
+		cin&gt;&gt;n;
+		vector&lt;int&gt; first;
+		vector&lt;int&gt; second;
+		vector&lt;int&gt; stats(n);
+		for (int i=0;i&lt;n;i++) {
+			int j;
+			cin&gt;&gt;j;
+			first.push_back(j);
+		}
+		for (int i=0;i&lt;n;i++) {
+			int j;
+			cin&gt;&gt;j;
+			second.push_back(j);
+		}
+		
+		int place=1;
+		vector&lt;int&gt; search;
+		for (int j=0;j&lt;n;j++) {
+			stats[first[j]-1]=(stats[first[j]-1]+1)%2;
+			stats[second[j]-1]=(stats[second[j]-1]+1)%2;
+			search.push_back(first[j]-1);
+			search.push_back(second[j]-1);
+			if (done(stats, search)) {
+				cout&lt;&lt;place&lt;&lt;&quot;-&quot;&lt;&lt;j+1&lt;&lt;&quot; &quot;;
+				place=j+2;
+				search.clear();
+			}
+		}
+		cout&lt;&lt;&quot;&quot;&lt;&lt;endl;
+	}
+	return 0;
+}
+			
+		
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

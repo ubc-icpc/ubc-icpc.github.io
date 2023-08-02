@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class a {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		boolean encode = sc.nextLine().charAt(0) == 'E';
+		int shift = sc.nextInt(); sc.nextLine();
+		String line = sc.nextLine();
+		StringBuilder builder = new StringBuilder(line);
+		if (!encode) shift = -shift;
+		for (int i = 0; i &lt; builder.length(); i++) {
+			builder.setCharAt(i, convert(builder.charAt(i), shift));
+		}		
+		System.out.println(builder.toString());
+	}
+	
+	static char convert(char a, int shift) {
+		int ascii = (int)a;
+		int value = ascii - 'a';
+		int newvalue = mod(value + shift);
+		return (char)((int)'a' + newvalue);
+	}
+	
+	static int mod(int value) {
+		return ((value % 26) + 26) % 26;
+	}
+}
+</code>
+</pre>
+</body>
+</html>

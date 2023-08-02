@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.*;
+import java.util.*;
+
+public class Solution{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        PriorityQueue&lt;Integer&gt; q = new PriorityQueue&lt;Integer&gt;(k);
+        int[] arr = new int[n];
+        for(int i=0; i&lt;n; i++)
+            arr[i] = sc.nextInt();
+        for(int i: arr){
+            q.offer(i);
+ 
+            if(q.size()&gt;k){
+                q.poll();
+            }
+        }
+        long sum=0;
+        for(int i=0; i&lt;k; i++)
+            sum += q.poll();
+        System.out.println(sum);
+    }
+}</code>
+</pre>
+</body>
+</html>

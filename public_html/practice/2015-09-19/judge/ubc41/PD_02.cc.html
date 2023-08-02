@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct Hash
+{
+	size_t operator()(pair&lt;int, int&gt; f) const
+	{
+		return (f.first * 10000007) ^ f.second;
+	}
+};
+
+int main()
+{
+	int t; cin &gt;&gt; t;
+	for (int ti = 0; ti &lt; t; ti++)
+	{
+		int n; cin &gt;&gt; n;
+
+		vector&lt;pair&lt;int, int&gt;&gt; points(n);
+		for (int i = 0; i &lt; n; i++)
+		{
+			int x, y; cin &gt;&gt; x &gt;&gt; y;
+			points[i] = make_pair(x, y);
+		}
+
+		if (n &lt;= 2) { cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ti + 1 &lt;&lt; &quot;: &quot; &lt;&lt; n &lt;&lt; endl; continue; }
+
+		int max = 0;
+		for (int i = 0; i &lt; n; i++)
+		{
+			auto pt = points[i];
+			unordered_map&lt;pair&lt;int, int&gt;, int, Hash&gt; slopes;
+
+			for (int o = i + 1; o &lt; n; o++)
+			{
+				int rise;
+				int run;
+
+				if (points[o].first == pt.first)
+				{
+					rise = 0;
+					run = 1;
+				}
+				else if (points[o].second == pt.second)
+				{
+					rise = 1;
+					run = 0;
+				}
+				else
+				{
+					int gcd = __gcd(pt.first - points[o].first, pt.second - points[o].second);
+					rise = (pt.second - points[o].second) / gcd;
+					run = (pt.first - points[o].first) / gcd;
+				}
+
+				auto slope = make_pair(rise, run);
+
+				if (slopes.find(slope) == slopes.end())
+				{
+					slopes[slope] = 2;
+					if (2 &gt; max) max = 2;
+				}
+				else
+				{
+					int&amp; t = slopes[slope];
+					t++;
+					if (t &gt; max) max = t;
+				}
+			}
+		}
+
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ti + 1 &lt;&lt; &quot;: &quot; &lt;&lt; max &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

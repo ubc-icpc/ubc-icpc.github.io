@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;tuple&gt;
+#include &lt;queue&gt;
+using namespace std;
+typedef vector&lt;int&gt; vi;
+typedef queue&lt;int&gt; qi;
+
+
+int main() {
+  int N; cin &gt;&gt; N;
+  vi E(N);
+  vi indegree(N);
+  for (int i = 0; i &lt; N; ++i) {
+    cin &gt;&gt; E[i];
+    E[i]--; // change to 0 index
+    indegree[E[i]]++;
+  }
+
+  qi Q;
+  for (int i = 0; i &lt; N; ++i)
+    if (indegree[i] == 0)
+      Q.push(i);
+
+  vi deleted(N, 0);
+  int alive = N;
+  int cnt = 0;
+  while (!Q.empty()) {
+    int node = Q.front(); Q.pop();
+    if (deleted[node] == 1)
+      continue;
+    deleted[node] = 1;
+    alive--;
+    int acc = E[node];
+    if (deleted[acc] == 0) {
+      deleted[acc] = 1;
+      alive--;
+      int acc2 = E[acc];
+      indegree[acc2]--;
+      if (deleted[acc2] == 0 &amp;&amp; indegree[acc2] == 0)
+        Q.push(acc2);
+    }
+    cnt++;
+  }
+  cnt += alive / 2;
+  cout &lt;&lt; cnt &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

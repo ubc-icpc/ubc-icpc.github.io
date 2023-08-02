@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int gcd(int a, int b) {
+  if (b == 0) return a;
+  return gcd(b, a % b);
+}
+
+int main() {
+  int N; cin &gt;&gt; N;
+  for (int n = 1; n &lt;= N; ++n) {
+    cout &lt;&lt; &quot;Ticket #&quot; &lt;&lt; n &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    string ticket; cin &gt;&gt; ticket;
+    bool found = false;
+    for (int i = 1; i &lt; ticket.size(); ++i) {
+      string numstr1 = ticket.substr(0, i);
+      string numstr2 = ticket.substr(i);
+      int num1 = stoi(numstr1);
+      int num2 = stoi(numstr2);
+      if (gcd(num1, num2) == 1) {
+        cout &lt;&lt; num1 &lt;&lt; &quot; &quot; &lt;&lt; num2 &lt;&lt; endl;
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      cout &lt;&lt; &quot;Not relative&quot; &lt;&lt; endl;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

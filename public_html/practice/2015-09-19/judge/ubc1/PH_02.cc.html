@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ld;
+typedef complex&lt;ld&gt; pt;
+typedef complex&lt;double&gt; dpt;
+
+inline ld cp(const pt&amp; u, const pt&amp; v) { return imag(conj(u)*v); }
+inline int sgn(ld n) { 
+    if (n == 0) return 0;
+    else if (n &lt; 0) return -1;
+    else return 1;
+}
+
+const ld eps = 1e-6;
+struct comp {
+    pt a, b;
+    comp(pt a, pt b) : a(a), b(b) {}
+    bool operator()(const pt&amp; l, const pt&amp; r) const {
+        ld s = sgn(cp(l-a, b-a)), t = sgn(cp(r-a, b-a));
+        if (s &lt; t) return true;
+        else if (s &gt; t) return false;
+        else if (s == 0) return abs(l-b) &lt; abs(r-b);
+        return sgn(cp(l-a, r-a)) &gt; 0;
+    }
+};
+
+const ld pi = acos(-1.0L);
+int main() {
+    ios::sync_with_stdio(0);
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        vector&lt;pt&gt; p(n);
+        for (int i = 0; i &lt; n; i++) {
+            int x, y; cin &gt;&gt; x &gt;&gt; y;
+            p[i] = pt(x, y);
+        }
+        
+        vector&lt;pt&gt; w;
+        ld ans = 0;
+        int iter = 0;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = i+1; j &lt; n; j++) {
+                if (i == j) continue;
+                w.clear();
+                for (int k = 0; k &lt; n; k++) {
+                    if (k == i || k == j) continue;
+                    iter++;
+                    if (cp(p[j]-p[i], p[k]-p[i]) &gt; 0) {
+                        w.push_back(p[k]);
+                    }
+                }
+                
+                comp c(p[i], p[j]);
+                sort(w.begin(), w.end(), c);
+                double ang = 1e10;
+                for (int k = 0; k &lt; w.size(); k++) {
+                    iter++;
+                    pt u(w[k]-p[j]), v(p[i]-p[j]);
+                    dpt x(u.real(), u.imag()), y(v.real(), v.imag());
+                    double a = -arg(x/y);
+                    if (a &lt;= ang) {
+                        ang = a + eps;
+                        ans = max(ans, (ld) cp(p[j]-p[i], w[k]-p[i]));
+                    }
+                }
+            }
+        }
+        cerr &lt;&lt; iter &lt;&lt; endl;
+        
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot; &lt;&lt; fixed &lt;&lt; setprecision(1) &lt;&lt; ans/2.0 &lt;&lt; endl;
+    }
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

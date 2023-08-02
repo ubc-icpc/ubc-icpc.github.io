@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std; inline void fileio(const char* in, const char* out) { freopen(in, &quot;r&quot;, stdin); freopen(out, &quot;w&quot;, stdout); } 
+#define TD typedef
+#define forx(i,n) for(int i = 0; i &lt; (n); ++i)
+#define forxr(i,n) for(int i = (n)-1; i &gt;= 0; --i)
+TD long long ll; TD long double ld; TD pair&lt;int,int&gt; pii; TD pair&lt;ll,ll&gt; pll; TD vector&lt;int&gt; VI; TD vector&lt;bool&gt; VB; TD vector&lt;ll&gt; VL;
+const char nl = '\n'; const int INF = 0x3f3f3f3f; const ll LINF = 0x3f3f3f3f3f3f3f3fll; const ld EPS = 1e-9, PI = acos(-1);
+#define ff first
+#define ss second
+
+bool query(int a, int b, int c) {
+  cout &lt;&lt; &quot;? &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; endl;
+  cin &gt;&gt; a;
+  return a;
+}
+
+int main() {
+  atexit([](){ cerr &lt;&lt; &quot;Time: &quot; &lt;&lt; (ld)clock() / CLOCKS_PER_SEC &lt;&lt; nl; });
+  //ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+  // Emily &lt;3
+  int n;
+  cin &gt;&gt; n;
+  int r = 1;
+  int p = 2;
+  for (int c = 3; c &lt;= n; c++) {
+    if (!query(r, c, p)) {
+      p = c;
+    }
+  }
+  cout &lt;&lt; &quot;! &quot; &lt;&lt; p &lt;&lt; endl;
+  
+  return 0;
+}
+
+</code>
+</pre>
+</body>
+</html>

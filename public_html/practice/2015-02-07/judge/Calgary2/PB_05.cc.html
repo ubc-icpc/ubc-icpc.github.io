@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	while (n != 1) {
+		vector&lt;int&gt; v(n, 0), maxl(n, 0), minl(n, 0), maxr(n, 0), minr(n, 0);
+
+		int maxx = 0, minn = 3000000;
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; v[i];
+			if (v[i] &gt; maxx) {
+				maxx = v[i];
+			}
+			maxl[i] = maxx;
+			if (v[i] &lt; minn) {
+				minn = v[i];
+			}
+			minl[i] = minn;
+		}
+		maxx = 0;
+		minn = 3000000;
+		for (int i = n - 1; i &gt;= 0; i--) {
+			if (v[i] &gt; maxx) {
+				maxx = v[i];
+			}
+			maxr[i] = maxx;
+			if (v[i] &lt; minn) {
+				minn = v[i];
+			}
+			minr[i] = minn;
+		}
+
+	/*	for (int i : maxl) {
+			cout &lt;&lt; i&lt;&lt;&quot;\t&quot;;
+		}
+		cout &lt;&lt; &quot;\n&quot;;
+		for (int i : minl) {
+			cout &lt;&lt; i&lt;&lt;&quot;\t&quot;;
+		}
+		cout &lt;&lt; &quot;\n&quot;;
+		for (int i : maxr) {
+			cout &lt;&lt; i&lt;&lt;&quot;\t&quot;;
+		}
+		cout &lt;&lt; &quot;\n&quot;;
+		for (int i : minr) {
+			cout &lt;&lt; i&lt;&lt;&quot;\t&quot;;
+		}
+		cout &lt;&lt; &quot;\n&quot;;*/
+		
+		int minb = 3000000;
+		int ans = 0;
+		for (int i = 0; i &lt; n-1; i++) {
+			if (max(maxl[i] - minl[i], maxr[i+1] - minr[i+1]) &lt; minb) {
+				minb = max(maxl[i] - maxr[i], maxr[i+1] - minr[i+1]);
+			//	cout &lt;&lt; minb &lt;&lt;&quot;\t&quot;&lt;&lt;i&lt;&lt; &quot;\n&quot;;
+				ans = i;
+			}
+		}
+		cout &lt;&lt; ans+1 &lt;&lt; &quot;\n&quot;;
+		cin &gt;&gt; n;
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

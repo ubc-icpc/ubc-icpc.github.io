@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+#define MAXN 200
+
+//Edge u-&gt;v with capacity c
+struct Edge {
+  int u, v, c;
+  Edge (int uu = 0, int vv = 0, int cc = 0) : u(uu), v(vv), c(cc) {}
+};
+
+int F[MAXN][MAXN]; //Flow of the graph
+
+int maxFlow(int n, int s, int t, vector&lt;Edge&gt; &amp;M)
+{
+  int u, v, c, oh, min, df, flow, H[n], E[n], T[n], C[n][n];
+  vector&lt;Edge&gt;::iterator m;
+  list&lt;int&gt; N;
+  list&lt;int&gt;::iterator cur;
+  vector&lt; vector&lt;int&gt; &gt; R(n);
+  vector&lt;int&gt;::iterator r;
+
+  for (u = 0; u &lt; n; u++) {
+    E[u] = H[u] = T[u] = 0;
+    R[u].clear();
+    for (v = 0; v &lt; n; v++)
+      C[u][v] = F[u][v] = 0;
+  }
+
+  for (m = M.begin(); m != M.end(); m++) {
+    u = m-&gt;u;
+    v = m-&gt;v;
+    c = m-&gt;c;
+    if (c &amp;&amp; !C[u][v] &amp;&amp; !C[v][u]) {
+      R[u].push_back(v);
+      R[v].push_back(u);
+    }
+    C[u][v] += c;
+  }
+
+  H[s] = n;
+
+  for (r = R[s].begin(); r != R[s].end(); r++) {
+    v = *r;
+    F[s][v] =  C[s][v];
+    F[v][s] = -C[s][v];
+    E[v]  = C[s][v];
+    E[s] -= C[s][v];
+  }
+
+  N.clear();
+  for (u = 0; u &lt; n; u++)
+    if ((u != s) &amp;&amp; (u != t))
+      N.push_back(u);
+
+  for (cur = N.begin(); cur != N.end(); cur++) {
+    u = *cur;
+    oh = H[u];
+    
+    while (E[u] &gt; 0)
+      if (T[u] &gt;= (int)R[u].size()) {
+	min = 10000000;
+	for (r = R[u].begin(); r != R[u].end(); r++) {
+	  v = *r;
+	  if ((C[u][v] - F[u][v] &gt; 0) &amp;&amp; (H[v] &lt; min))
+	    min = H[v];
+	}
+	H[u] = 1 + min;
+	T[u] = 0;
+      }
+      else {
+	v = R[u][T[u]];
+      
+	if ((C[u][v] - F[u][v] &gt; 0) &amp;&amp; (H[u] == H[v]+1)) {
+	  df = C[u][v] - F[u][v];
+	  if (df &gt; E[u])
+	    df = E[u];
+
+	  F[u][v] += df;
+	  F[v][u]  = -F[u][v];
+	  E[u] -= df;
+	  E[v] += df;
+	}
+	else
+	  T[u]++;
+      }
+
+    if (H[u] &gt; oh)
+      N.splice(N.begin(), N, cur);
+  }
+  
+  flow = 0;
+
+  for (r = R[s].begin(); r != R[s].end(); r++)
+    flow += F[s][*r];
+
+  return flow;
+}
+
+
+int main() {
+  cout.setf(ios::fixed);
+  cout.precision(2);
+  int t;
+  cin &gt;&gt; t;
+
+  while (t--) {
+    int n;
+    cin &gt;&gt; n;
+
+    double tot = 0;
+    
+    int s = 0, t = n+1;
+    vector&lt;Edge&gt; E;
+    for (int i = 1; i &lt;= n; ++i) {
+      double x;
+      cin &gt;&gt; x;
+      tot += x;
+      int cap = x*100+0.1;
+      E.push_back(Edge(0, i, cap));
+    }
+
+    for (int i = 1; i &lt;= n; ++i) {
+      double x;
+      cin &gt;&gt; x;
+      tot += x;
+      int cap = x*100+0.1;
+      E.push_back(Edge(i, n+1, cap));
+    }
+
+    for (int i = 1; i &lt;= n; ++i)
+      for (int j = 1; j &lt;= n; ++j) {
+	double x;
+	cin &gt;&gt; x;
+	tot += x;
+	if (i != j) {
+	  int cap = x*100+0.1;
+	  E.push_back(Edge(i, j, cap));
+	  E.push_back(Edge(j, i, cap));
+	}
+      }
+
+    cout &lt;&lt; tot - maxFlow(n+2, 0, n+1, E)*0.01 &lt;&lt; endl;
+  }
+  
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+
+using namespace std;
+typedef long long ll;
+
+int n, a, b;
+typedef long double ld;
+typedef vector&lt;ld&gt; vd;
+typedef vector&lt;vd&gt; vvd;
+const ld EPS = 1e-3;
+
+#define ISZERO(x) (fabs(x) &lt; EPS)
+#define ISPOS(x) ((x) &gt; EPS)
+void pivot(vvd&amp; A, int r, int c) { // A is A|b
+  int m = A.size(), n = A[0].size(); ld tmp = A[r][c];
+  for (int i = 0; i &lt; n; ++i) A[r][i]/=tmp;
+  for (int i = 0; i &lt; m; ++i) if (i != r) { ld k = A[i][c];
+    for(int j = 0; j &lt; n; ++j) A[i][j] -= A[r][j]*k; } }
+bool gaussian(vvd&amp; A) { int m=A.size(), n=A[0].size()-1; vector&lt;bool&gt; used(m,0);
+  for (int c = 0; c &lt; n; ++c) for (int r = 0; r &lt; m; ++r)
+    if (!used[r] &amp;&amp; !ISZERO(A[r][c]) ) { pivot(A, r, c); used[r] = true; }
+  for (int r = 0; r &lt; m; ++r) if(!used[r] &amp;&amp; !ISZERO(A[r].back())) return false;
+  return true; }
+// Return the assignment to each x. Free variables are always 0
+vector&lt;bool&gt; gauss_sol(const vvd&amp; coef, vd&amp;x) {
+  int m = coef.size(), n = coef[0].size()-1;
+  vector&lt;bool&gt; ret(n, 0);
+  for (int i = 0; i &lt; n; ++i) { x[i]=0;
+    if (ret[i]) continue;
+    int cnt = 0;
+    for (int j = 0; j &lt; m; ++j) // Exactly one 1
+      if ( !ISZERO(coef[j][i]) ) ++cnt;
+    if (cnt != 1) { ret[i] = true; continue; }
+    for (int j = 0; j &lt; m; ++j) if (ISZERO(coef[j][i] - 1)) {
+      x[i] = coef[j].back();
+      for (int k = i+1; k &lt; n; ++k)
+        if (!ISZERO( coef[j][k] )) ret[k] = true;
+      break; } }
+  return ret; }
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    do{
+        cin &gt;&gt; n;
+        if (n==0) break;
+        vd y;
+        for(int i=0;i&lt;n+3;i++){
+            ld t;
+            cin &gt;&gt; t; 
+            y.pb(t);
+        }
+        int ans=-1;
+        for(int i=0;i&lt;n+3;i++){
+            vvd A;
+            for(int j=0;j&lt;n+3;j++){
+                if (j==i) continue;
+                vd aa;
+                for(ld k=0;k&lt;=n;k++){
+                    aa.pb(pow(j,k));
+                }
+                aa.pb(y[j]);
+                A.pb(aa);
+            }
+            /*
+            for(int k=0;k&lt;(int)A.size();k++){
+                for(int kk=0;kk&lt;(int)A[0].size();kk++){
+                    cout &lt;&lt; A[k][kk] &lt;&lt; &quot; &quot; ;
+                }
+                cout &lt;&lt; endl;
+            }
+            */
+            if (gaussian(A)) {
+                ans = i; break;
+            }
+            else {
+            //    cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;
+            }
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    } while(n!=0);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

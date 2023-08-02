@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import math
+
+class Fighter:
+
+    def __init__(self, name, hp, at, df):
+        self.name = name
+        self.hp = hp
+        self.at = at
+        self.df = df
+        self.wins = set()
+        self.losses = set()
+
+    def lose(self, fighter):
+        self.losses.add(fighter)
+        self.losses.union(fighter.losses)
+
+    def win(self, fighter):
+        self.wins.add(fighter)
+        self.wins.union(fighter.wins)
+
+
+def fight(fighter1, fighter2):
+    damage_to_1 = max(0, fighter2.at - fighter1.df)
+    damage_to_2 = max(0, fighter1.at - fighter2.df)
+
+    if damage_to_1 == 0 or damage_to_2 == 0:
+        if damage_to_1 != 0:
+            fighter2.win(fighter1)
+            fighter1.lose(fighter2)
+        elif damage_to_2 != 0:
+            fighter1.win(fighter2)
+            fighter2.lose(fighter1)
+        return
+
+    fighter1_rounds = math.ceil(fighter1.hp / damage_to_1)
+    fighter2_rounds = math.ceil(fighter2.hp / damage_to_2)
+
+    if fighter1_rounds &gt; fighter2_rounds:
+        fighter1.win(fighter2)
+        fighter2.lose(fighter1)
+    elif fighter1_rounds &lt; fighter2_rounds:
+        fighter2.win(fighter1)
+        fighter1.lose(fighter2)
+
+n = int(input())
+fighters = []
+
+for fighter in range(n):
+    line = input().split()
+    name = line[0]
+    hp = int(line[1])
+    at = int(line[2])
+    df = int(line[3])
+    fighter = Fighter(name, hp, at, df)
+    fighters.append(fighter)
+
+for i in range(n-1):
+    for j in range(i + 1, n):
+        fighter1 = fighters[i]
+        fighter2 = fighters[j]
+
+        if fighter2 in fighter1.wins or fighter2 in fighter1.losses:
+            continue
+
+        fight(fighter1, fighter2)
+
+triples = set()
+for fighter1 in fighters:
+    for fighter2 in fighter1.wins:
+        for fighter3 in fighter2.wins:
+            if fighter3 in fighter1.losses:
+                triples.add(frozenset((fighter1.name, fighter2.name, fighter3.name)))
+
+print(len(triples))
+for triple in triples:
+    print(' '.join(triple))
+</code>
+</pre>
+</body>
+</html>

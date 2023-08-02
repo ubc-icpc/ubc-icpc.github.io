@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int deg[400005], dist[400005];
+vector&lt;int&gt; g[400005], h[400005];
+
+int main() {
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n-1; i++) {
+        int x, y; cin &gt;&gt; x &gt;&gt; y;
+        g[x].push_back(y);
+        g[y].push_back(x);
+        deg[x]++;
+        deg[y]++;
+    }
+    
+    queue&lt;int&gt; q;
+    for (int i = 1; i &lt;= n; i++) {
+        if (deg[i] == 1) {
+            q.push(i);
+            dist[i] = 0;
+        }
+    }
+    
+    int mdist = 0;
+    vector&lt;int&gt; center;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        if (dist[u] &gt; mdist) {
+            center.clear();
+            mdist = dist[u];
+            center.push_back(u);
+        } else if (dist[u] == mdist) {
+            center.push_back(u);
+        }
+        
+        for (int v : g[u]) {
+            deg[v]--;
+            if (deg[v] == 1) {
+                q.push(v);
+                dist[v] = dist[u]+1;
+            }
+        }
+    }
+    
+    int len = 2*dist[center[0]] + (center.size() == 2);
+    
+    vector&lt;vector&lt;ll&gt;&gt; cnt(center.size());
+    memset(dist, 0x3f, sizeof dist);
+    for (int v : center) {
+        dist[v] = 0;
+    }
+    
+    for (int i = 0; i &lt; center.size(); i++) {
+        for (int v : g[center[i]]) {
+            if (center.size() &gt; 1 &amp;&amp; (v == center[0] || v == center[1])) continue;
+            q.push(v);
+            dist[v] = 1;
+            int c = 0;
+            while (!q.empty()) {
+                int u = q.front(); q.pop();
+                if (dist[u] == len/2) {
+                    c++;
+                }
+                
+                for (int w : g[u]) {
+                    if (dist[u]+1 &lt; dist[w]) {
+                        q.push(w);
+                        dist[w] = dist[u]+1;
+                    }
+                }
+            }
+            if (c &gt; 0) cnt[i].push_back(c);
+        }
+    }
+    
+    ll ans;
+    if (center.size() == 2) {
+        ll res[2] = {0, 0};
+        for (int i = 0; i &lt; cnt.size(); i++) {
+            for (ll c : cnt[i]) {
+                res[i] += c;
+            }
+        }
+        ans = res[0] * res[1];
+    } else {
+        ll res = 0, sq = 0;
+        for (ll c : cnt[0]) {
+            res += c;
+            sq += c*c;
+        }
+        ans = (res*res-sq)/2;
+    }
+    
+    cout &lt;&lt; len+1 &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

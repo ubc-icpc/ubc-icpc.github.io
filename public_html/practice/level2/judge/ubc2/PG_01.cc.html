@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+using pt = complex&lt;ld&gt;;
+
+ld eval(ld a, ld b, ld d, ld vl, ld vs, ld y) {
+  return abs(pt(d, y)) / vl + abs(pt(a, b)-pt(d, y)) / vs;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    ld a, b, d, vl, vs; cin &gt;&gt; a &gt;&gt; b &gt;&gt; d &gt;&gt; vl &gt;&gt; vs;
+    ld l = 0, r = b;
+    for (int i = 0; i &lt; 100; i++) {
+      ld m1 = (2*l+r)/3, m2 = (l+2*r)/3;
+      if (eval(a, b, d, vl, vs, m1) &lt; eval(a, b, d, vl, vs, m2)) r = m2;
+      else l = m1;
+    }
+    cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; eval(a, b, d, vl, vs, l) &lt;&lt; nl;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

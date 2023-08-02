@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+#define INF 1000000
+
+using namespace std;
+
+int c[8],n;
+long long dp[8][101];
+
+long long solve(int a, int sum){
+	if(sum==n) return 1;
+	if(sum&gt;n||a&gt;=8) return 0;
+	if(dp[a][sum]&gt;=0) return dp[a][sum];
+	dp[a][sum] = solve(a,sum+c[a]) +solve(a+1,sum);
+	return dp[a][sum];
+}
+
+int main() {
+	int e;
+	cin&gt;&gt;e;
+	for(int i=1;i&lt;=e;i++){
+		for(int j=0;j&lt;8;j++)
+			for(int k=0;k&lt;101;k++)
+				dp[j][k]=-1;
+		for(int j=0;j&lt;8;j++)
+			cin&gt;&gt;c[j];
+		cin&gt;&gt;n;
+		cout &lt;&lt; &quot;Equation #&quot; &lt;&lt; i &lt;&lt;&quot;: &quot;&lt;&lt; solve(0,0) &lt;&lt; endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

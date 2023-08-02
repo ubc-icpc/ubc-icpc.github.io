@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, M, L, C[205][205], CC[6], X, Y;
+string P;
+int up_ = 0;
+int right_ = 1;
+int down_ = 5;
+int front_ = 2;
+int back_ = 3;
+int left_ = 4;
+
+void go_north() {
+    ++Y;
+    int temp = up_;
+    up_ = back_;
+    back_ = down_;
+    down_ = front_;
+    front_ = temp;
+}
+
+void go_south() {
+    --Y;
+    int temp = up_;
+    up_ = front_;
+    front_ = down_;
+    down_ = back_;
+    back_ = temp;
+}
+
+void go_east() {
+    ++X;
+    int temp = up_;
+    up_ = left_;
+    left_ = down_;
+    down_ = right_;
+    right_ = temp;
+}
+
+void go_west() {
+    --X;
+    int temp = up_;
+    up_ = right_;
+    right_ = down_;
+    down_ = left_;
+    left_ = temp;
+}
+
+int main () {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    cin &gt;&gt; N &gt;&gt; M &gt;&gt; L;
+    while (M--) {
+        int x, y, t; cin &gt;&gt; x &gt;&gt; y &gt;&gt; t;
+        --x; --y;
+        C[x][y] = t;
+    }
+    cin &gt;&gt; P;
+    bool good = true;
+    for (int i = 0; i &lt; L &amp;&amp; good; ++i) {
+        switch (P[i]) {
+        case 'N':
+            go_north();
+            break;
+        case 'S':
+            go_south();
+            break;
+        case 'E':
+            go_east();
+            break;
+        case 'W':
+            go_west();
+            break;
+        }
+        if (Y &gt;= N || X &gt;= N || Y &lt; 0 || X &lt; 0) {
+            good = false;
+            break;
+        }
+        if (C[X][Y]) {
+            if (C[X][Y] == CC[down_] || CC[down_] == 0)
+                CC[down_] = C[X][Y];
+            else
+                good = false;
+        }
+        bool all_colored = true;
+        for (int i = 0; i &lt; 6; ++i)
+            all_colored &amp;= (CC[i] != 0);
+        if (all_colored) break;
+    }
+    
+    bool all_colored = true;
+    for (int i = 0; i &lt; 6; ++i)
+        all_colored &amp;= (CC[i] != 0);
+    
+    if (all_colored &amp;&amp; good) {
+        cout &lt;&lt; CC[0];
+        for (int i = 1; i &lt; 6; ++i) cout &lt;&lt; &quot; &quot; &lt;&lt; CC[i];
+        cout &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; &quot;0 0 0 0 0 0&quot; &lt;&lt; endl;
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

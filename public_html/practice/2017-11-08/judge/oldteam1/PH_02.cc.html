@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+#define FOR(i, n) for(int i = 0; i &lt; (n); i++)
+#define SZ(A) ((int)(A).size())
+#define PB push_back
+
+#define show(x) cerr&lt;&lt;&quot;XXXX----&gt; &quot;&lt;&lt;#x&lt;&lt;&quot; = &quot;&lt;&lt;x&lt;&lt;endl;
+
+const int MAXn = 100*1000 +2;
+int inp[MAXn], temp[MAXn];
+
+long long inv(int a[], int st, int end){
+	if (st + 1 &gt;= end )	return 0;
+	int med = (st + end) / 2;
+
+	long long ret = inv(a, st, med) + inv(a, med, end);
+
+	int p1 = st, p2 = med, cnt = st;
+	while(p1 &lt; med &amp;&amp; p2 &lt; end){
+		if (a[p1] &gt; a[p2]){
+
+			temp[cnt++] = a[p2++];
+		}
+		else{
+			ret += p2 - med;
+			temp[cnt++] = a[p1++];
+		}
+	}
+	while(p1 &lt; med){
+		ret += p2 - med;
+		temp[cnt++] = a[p1++];
+	}
+	while(p2 &lt; end){
+		temp[cnt++] = a[p2++];
+	}
+
+	for(int i = st; i &lt; end; i++)
+		a[i] = temp[i];
+
+	return ret;
+}
+
+map&lt;string, int&gt; Map;
+int n;
+int main(){
+	while(cin &gt;&gt; n &amp;&amp; n){
+		Map.clear();
+		string str;
+		FOR(i, n){
+			cin &gt;&gt; str;
+			Map[str] = i;
+		}
+		FOR(i, n){
+			cin &gt;&gt; str;
+			inp[i] = Map[str];
+		}
+		cout &lt;&lt; inv(inp, 0, n) &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

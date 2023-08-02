@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+typedef double ld;
+const ld EPS = 1e-8;
+
+struct P3 {
+    ld x, y, z;
+    P3(){}
+    P3(ld lx, ld ly, ld lz) {
+        x = lx; y = ly; z = lz;
+    }
+    P3 operator+(const P3 &amp;p) {
+        return P3(x+p.x, y+p.y, z+p.z);
+    }
+    P3 operator-(const P3 &amp;p) {
+        return P3(x-p.x, y-p.y, z-p.z);
+    }
+    P3 operator*(ld c) {
+        return P3(x*c, y*c, z*c);
+    }
+    P3 operator/(ld c) {
+        return P3(x/c, y/c, z/c);
+    }
+};
+
+inline ld dot(const P3 &amp;a, const P3 &amp;b) {
+    return a.x*b.x + a.y*b.y + a.z*b.z;
+}
+
+inline ld mag(const P3 &amp;a) {
+    return sqrt(a.x*a.x+a.y*a.y+a.z*a.z);
+}
+
+P3 balloons[2000], lights[15];
+ld rad[2000], bright[15], intense[15];
+bool obstr[15][2000];
+bool tmp[2000];
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, m, r;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; r;
+    while (n &gt; 0 || m &gt; 0 || r &gt; 0) {
+        for (int i = 0; i &lt; n; i++) {
+            int x, y, z, r; cin &gt;&gt; x &gt;&gt; y &gt;&gt; z &gt;&gt; r;
+            balloons[i] = P3(x, y, z);
+            rad[i] = r;
+        }
+        for (int i = 0; i &lt; m; i++) {
+            int x, y, z, w; cin &gt;&gt; x &gt;&gt; y &gt;&gt; z &gt;&gt; w;
+            lights[i] = P3(x, y, z);
+            bright[i] = w;
+        }
+        int cx, cy, cz; cin &gt;&gt; cx &gt;&gt; cy &gt;&gt; cz;
+        P3 ctr(cx, cy, cz);
+
+        for (int i = 0; i &lt; m; i++) {
+            P3 line = lights[i] - ctr;
+            ld m = mag(line);
+            intense[i] = bright[i] / (m*m);
+
+            line = line/m;
+            for (int j = 0; j &lt; n; j++) {
+                P3 vec = balloons[j] - ctr;
+                ld mv1 = mag(vec);
+                ld mv2 = mag(balloons[j] - lights[i]);
+                ld d1 = dot(vec, line);
+                ld dist = sqrt(mv1*mv1 - d1*d1);
+                obstr[i][j] = false;
+
+                ld mindist = min(mv1, mv2);
+                ld maxdist = max(mv1, mv2);
+                if (EPS &lt; d1 &amp;&amp; d1 &lt; m-EPS) {
+                    mindist = min(mindist, dist);
+                }
+                if ((mindist &lt; rad[j]+EPS) != (maxdist &lt; rad[j]+EPS)) {
+                    obstr[i][j] = true;
+                }
+            }
+        }
+
+        ld ans = 0;
+        for (int z = 0; z &lt; (1&lt;&lt;m); z++) {
+            for (int i = 0; i &lt; n; i++) tmp[i] = false;
+            ld sum = 0;
+            for (int i = 0; i &lt; m; i++) {
+                if (z &amp; (1&lt;&lt;i)) {
+                    for (int j = 0; j &lt; n; j++) {
+                        tmp[j] = tmp[j] || obstr[i][j];
+                    }
+                    sum += intense[i];
+                }
+            }
+            int cnt = 0;
+            for (int i = 0; i &lt; n; i++) if (tmp[i]) cnt++;
+            if (cnt &lt;= r) {
+                ans = max(ans, sum);
+            }
+        }
+        cout &lt;&lt; setprecision(16) &lt;&lt; fixed &lt;&lt; ans &lt;&lt; endl;
+
+        cin &gt;&gt; n &gt;&gt; m &gt;&gt; r;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

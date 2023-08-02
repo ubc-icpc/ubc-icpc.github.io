@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;cmath&gt;
+using namespace std;
+int main() {
+	begin:
+	int n; cin &gt;&gt; n;
+	if (n != 1) {
+		{
+			vector &lt; int &gt; all(n);
+			vector &lt; vector &lt; int &gt; &gt; s(n + 1);
+			vector &lt; vector &lt; int &gt; &gt; p(n + 1);
+			vector &lt; int &gt; answer;
+
+			{
+				int min = 2147483647, max = 0;
+				vector &lt; int &gt; gar;
+				gar.push_back(min);
+				gar.push_back(max);
+				s[0] = gar;;
+			}
+			for (int i = 1; i &lt;= n; ++i) {
+				int gar; cin &gt;&gt; gar; all[i - 1] = gar;
+				vector &lt; int &gt; temp;
+				if (gar &lt; s[i - 1][0]) temp.push_back(gar); else temp.push_back(s[i - 1][0]);
+				if (gar &gt; s[i - 1][1]) temp.push_back(gar); else temp.push_back(s[i - 1][1]);
+				temp.push_back(temp[1] - temp[0]);
+				s[i] = temp;
+			}
+			{
+				vector &lt; int &gt; temp;
+				temp.push_back(pow(2, 31) - 1);
+				temp.push_back(0);
+				p[0] = temp;
+			}
+			for (int i = n; i &gt; 1; --i) {
+				vector &lt; int &gt; temp;
+				if (all[i - 1] &lt; p[n - i][0]) temp.push_back(all[i - 1]); else temp.push_back(p[n - i][0]);
+				if (all[i - 1] &gt; p[n - i][1]) temp.push_back(all[i - 1]); else temp.push_back(p[n - i][1]);
+				temp.push_back(temp[1] - temp[0]);
+				p[n - i + 1] = temp;
+				if(temp[2] &gt;= s[i-1][2])
+					answer.push_back(temp[2]);
+				else
+					answer.push_back( s[i - 1][2]);
+			}
+			int min = 2147483647, index = 0;
+			for (int i = 0; i &lt; answer.size(); ++i) {
+				if (answer[i] &lt; min) {
+					min = answer[i];
+					index = i;
+				}
+				if (answer[i] == min) {
+					if (index &lt; i) {
+						index = i;
+					}
+				}
+			}
+			cout &lt;&lt; n - index - 1 &lt;&lt; endl;
+		}
+		goto begin;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

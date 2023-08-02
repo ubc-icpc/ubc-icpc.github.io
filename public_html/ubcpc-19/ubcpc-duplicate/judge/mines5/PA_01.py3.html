@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">mode = input()
+shift = int(input())
+
+if mode == 'D':
+	shift *= -1
+
+word = list(input())
+
+int_list= []
+
+new_list = []
+
+for i, char in enumerate(word):
+	int_list.append(ord(char))
+
+for i, num in enumerate(int_list):
+	int_list[i] = ((num - 97) + 26 + shift) % 26
+
+for i, num in enumerate(int_list):
+	new_list.append(chr(num + 97))
+
+print(''.join(new_list))
+
+
+</code>
+</pre>
+</body>
+</html>

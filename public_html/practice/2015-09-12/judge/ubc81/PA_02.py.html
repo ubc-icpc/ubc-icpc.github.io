@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+
+numberOfDataSets = raw_input()
+numberOfDataSets = int(numberOfDataSets)
+
+
+
+for i in range (0,numberOfDataSets,1):
+    input = raw_input()
+    print input
+    input = input.split()
+    j=0
+    for i in range (0,len(input),1):
+        if (input[i] == &quot;17&quot;):
+            j = 1
+    for i in range (0,len(input),1):        
+        if (input[i] == &quot;18&quot;):
+            if (j==1):
+                j=3
+            else:
+                j=2
+                
+    if (j==0):
+        print &quot;none&quot;
+    elif (j==1):
+        print &quot;zack&quot;
+    elif (j==2):
+        print &quot;mack&quot;
+    elif (j==3):
+        print &quot;both&quot;
+    
+            
+
+
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;iostream&gt;
+using namespace std;
+
+
+int main(){
+   char inst;
+   int shift;
+   string message;
+   cin&gt;&gt;inst&gt;&gt;shift&gt;&gt;message;
+
+   if(inst == 'E'){
+      for(int i=0; i&lt;message.length(); i++){
+	 if(message[i]&gt;(122-shift)){
+	    message[i]+=shift-26;
+	 }
+	 else{
+	    message[i]+=shift;
+	 }
+      }
+   }
+
+   if(inst == 'D'){
+      for(int i=0; i&lt;message.length(); i++){
+	 if(message[i]&lt;(97+shift)){
+	    message[i]-=shift;
+	    message[i]+=26;
+	 }
+	 else{
+	    message[i]-=shift;
+	 }
+      }
+   }
+
+   
+   cout&lt;&lt;message&lt;&lt;endl;
+}
+</code>
+</pre>
+</body>
+</html>

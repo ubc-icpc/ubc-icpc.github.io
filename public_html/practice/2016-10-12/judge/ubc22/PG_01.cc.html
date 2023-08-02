@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+ll A, M, S;
+string L;
+
+double r() {
+  double val = (double)(S % M) / M;
+  S = (A * S + 1) % M;
+  return val;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; A &gt;&gt; M &gt;&gt; S;
+  getline(cin, L);
+  while(getline(cin, L)) {
+    for (char cc : L) {
+      int c = cc;
+      if (c &lt; 0x20 || c &gt; 0x7e) {
+      } else {
+        c = ((c-32) + 95 - int(ceil(95-r()*95 - 1e-6)+1e-3) % 95) % 95 + 32;
+      }
+      cout &lt;&lt; (char)c;
+    }
+    cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

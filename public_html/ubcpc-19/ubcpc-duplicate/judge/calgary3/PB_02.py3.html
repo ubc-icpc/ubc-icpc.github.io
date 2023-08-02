@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">from math import ceil
+from collections import defaultdict
+
+N = int(input()) 
+fighters = []
+for i in range(N):
+	name, hp, at, df = input().split()
+	fighters.append((name, int(hp), int(at), int(df), i))
+
+winners = {f[4] : set() for f in fighters}
+
+for i, f1 in enumerate(fighters):
+	for f2 in fighters[:i]:
+		#print(f1, f2)
+
+		f1_ttk_f2 = 0
+		f2_ttk_f1 = 0
+
+		# turns to kill
+		f1_mit_att = max(0, f1[2] - f2[3])
+		if f1_mit_att:
+			f1_ttk_f2 = ceil(f2[1] / f1_mit_att)
+			#print('f1turns =', f1_ttk_f2)
+		f2_mit_att = max(0, f2[2] - f1[3])
+		if f2_mit_att:
+			f2_ttk_f1 = ceil(f1[1] / f2_mit_att)
+			#print('f2turns =', f2_ttk_f1)
+
+		# determining winner
+		if f1_ttk_f2 and f2_ttk_f1:
+			if f1_ttk_f2 &lt; f2_ttk_f1:
+				winners[f1[4]].add(f2[4])
+			elif f2_ttk_f1 &lt; f1_ttk_f2:
+				winners[f2[4]].add(f1[4])
+		elif f1_ttk_f2:
+			winners[f1[4]].add(f2[4])
+		elif f2_ttk_f1:
+			winners[f2[4]].add(f1[4])
+
+#print(winners)
+ans = []
+for i, a in enumerate(fighters):
+	for j, b in enumerate(fighters[:i]):
+		for c in fighters[:j]:
+			#print(a[4], b[4], c[4])
+			if (b[4] in winners[a[4]] and c[4] in winners[b[4]] and a[4] in winners[c[4]]    # A-B-C / B-C-A / C-A-B
+			or c[4] in winners[a[4]] and b[4] in winners[c[4]] and a[4] in winners[b[4]]):   # A-C-B / C-B-A / B-A-C
+				ans.append((fighters[a[4]][0], fighters[b[4]][0], fighters[c[4]][0]))
+
+if ans:
+	print(len(ans))
+	for IT in ans:
+		print(' '.join(IT))
+else:
+	print(0)
+
+##print(winners)
+#ans = set()
+#for A in winners.keys():
+#	for B in winners[A]:
+#		for C in winners[B]:
+#			if A in winners[C]:
+#				uh = ['0' for _ in range(N)]
+#				uh[A] = '1'
+#				uh[B] = '1'
+#				uh[C] = '1'
+#				ans.add(''.join(uh))
+#
+##print(ans)
+#if ans:
+#	print(len(ans))
+#	for IT in ans:
+#		for i, bit in enumerate(IT):
+#			if bit == '1':
+#				print(fighters[i][0], end=' ')
+#		print()
+#else:
+#	print(0)
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+const int lim = 8;
+ll memo[10][105], c[10];
+ll dp(int i, int C) {
+    if (C &lt; 0) return 0;
+    if (i == lim) return (C == 0);
+    if (memo[i][C] != -1) return memo[i][C];
+    
+    memo[i][C] = 0;
+    for (int j = 0; j &lt;= 100; j++) {
+        memo[i][C] += dp(i+1, C-j*c[i]);
+    }
+    return memo[i][C];
+}
+
+int main() {
+    int t; cin &gt;&gt; t;
+    for (int a = 1; a &lt;= t; a++) {
+        memset(memo, -1, sizeof memo);
+        for (int i = 0; i &lt; lim; i++) cin &gt;&gt; c[i];
+        int N; cin &gt;&gt; N;
+        cout &lt;&lt; &quot;Equation #&quot; &lt;&lt; a &lt;&lt; &quot;: &quot; &lt;&lt; dp(0, N) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

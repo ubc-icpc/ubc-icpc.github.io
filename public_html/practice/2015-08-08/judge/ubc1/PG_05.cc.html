@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int h[505][505], id[505][505], c, n, m;
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+
+set&lt;int&gt; g[505*505], grev[505*505];
+void dfs(int x, int y, int c) {
+    id[x][y] = c;
+    for (int d = 0; d &lt; 4; d++) {
+        int nx = x + dx[d], ny = y + dy[d];
+        if (nx &lt; 0 || ny &lt; 0 || nx &gt;= n || ny &gt;= m) continue;
+        if (id[nx][ny] != -1 || h[nx][ny] != h[x][y]) continue;
+        dfs(nx, ny, c);
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        memset(h, 0, sizeof h);
+        memset(id, -1, sizeof id);
+        for (int i = 0; i &lt; 505*505; i++) {
+            g[i].clear();
+            grev[i].clear();
+        }
+        
+        cin &gt;&gt; n &gt;&gt; m;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; m; j++) {
+                cin &gt;&gt; h[i][j];
+            }
+        }
+        
+        c = 0;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; m; j++) {
+                if (id[i][j] == -1) dfs(i, j, c++);
+            }
+        }
+        
+        int ans0 = 0, ans1 = 0;
+        for (int x = 0; x &lt; n; x++) {
+            for (int y = 0; y &lt; m; y++) {
+                for (int d = 0; d &lt; 4; d++) {
+                    int nx = x + dx[d], ny = y + dy[d];
+                    if (nx &lt; 0 || ny &lt; 0 || nx &gt;= n || ny &gt;= m) continue;
+                    if (h[nx][ny] &gt; h[x][y]) {
+                        int u = id[nx][ny], v = id[x][y];
+                        g[u].insert(v);
+                        grev[v].insert(u);
+                    }
+                }
+            }
+        }
+        
+        for (int i = 0; i &lt; c; i++) {
+            if (g[i].empty()) ans0++;
+            if (grev[i].empty()) ans1++;
+        }
+        cout &lt;&lt; max(ans0, ans1)-(c==1) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

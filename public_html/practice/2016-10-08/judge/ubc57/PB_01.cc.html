@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef pair&lt;int,int&gt; pii;
+
+string A[10],B[10];
+int eq[10][4];
+set&lt;int&gt; pos[10];
+int main(){
+    ios::sync_with_stdio(0);
+    int p,q;
+    while (cin&gt;&gt;p&gt;&gt;q){
+        if (p==0) break;
+        for (int i=0;i&lt;p;i++) cin&gt;&gt;A[i];
+        for (int i=0;i&lt;q;i++) cin&gt;&gt;B[i];
+        memset(eq,0,sizeof eq);
+        for (int i=0;i&lt;q;i++) pos[i].clear();
+        int ro=0,co=0,so=0;
+        for (int i=0;i&lt;p;i++){
+            int ind=0;
+            for (int j=0;j&lt;A[i].size();j++){
+                if (A[i][j]=='.') ind++;
+                else break;
+            }
+            eq[i][0]=ro,eq[i][1]=co,eq[i][2]=so,eq[i][3]=ind;
+            for (int j=0;j&lt;A[i].size();j++){
+                if (A[i][j]=='(') ro++;
+                if (A[i][j]==')') ro--;
+                if (A[i][j]=='{') co++;
+                if (A[i][j]=='}') co--;
+                if (A[i][j]=='[') so++;
+                if (A[i][j]==']') so--;
+            }
+        }
+        for (int R=1;R&lt;=20;R++) for (int C=1;C&lt;=20;C++) for (int S=1;S&lt;=20;S++){
+            bool good=true;
+            for (int i=0;i&lt;p;i++) if (eq[i][0]*R+eq[i][1]*C+eq[i][2]*S!=eq[i][3]) good=false;
+            if (good){
+                int ro=0,co=0,so=0,rc=0,cc=0,sc=0;
+                for (int i=0;i&lt;q;i++){
+                    int ans=R*(ro-rc)+C*(co-cc)+S*(so-sc);
+                    pos[i].insert(ans);
+                    for (int j=0;j&lt;B[i].size();j++){
+                        if (B[i][j]==')') rc++;
+                        if (B[i][j]=='}') cc++;
+                        if (B[i][j]==']') sc++;
+                        if (B[i][j]=='(') ro++;
+                        if (B[i][j]=='{') co++;
+                        if (B[i][j]=='[') so++;
+                    }
+                }
+            }
+        }
+        for (int i=0;i&lt;q;i++){
+            if (pos[i].size()==1) cout&lt;&lt;*pos[i].begin();
+            else cout&lt;&lt;-1;
+            if (i==q-1) cout&lt;&lt;endl;
+            else cout&lt;&lt;' ';
+        }
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

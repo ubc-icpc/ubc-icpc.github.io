@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef complex&lt;int&gt; pt;
+
+struct comp {
+    bool operator()(const pt&amp; p, const pt&amp; q) const {
+        if (p.real() == q.real()) return p.imag() &lt; q.imag();
+        return p.real() &lt; q.real();
+    }
+};
+
+pt a[45];
+int main() {
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        int x, y; cin &gt;&gt; x &gt;&gt; y;
+        a[i] = pt(x, y);
+    }
+    
+    if (n &gt; 20) {
+        map&lt;pt, int, comp&gt; s;
+        for (int bs = 0; bs &lt; (1&lt;&lt;20); bs++) {
+            pt p(0,0);
+            for (int i = 0; i &lt; 20; i++) {
+                if (bs &amp; (1&lt;&lt;i)) {
+                    p += a[i];
+                }
+            }
+            s[p]++;
+        }
+        
+        long long ans = 0;
+        for (int bs = 0; bs &lt; (1&lt;&lt;(n-20)); bs++) {
+            pt p(0,0);
+            for (int i = 0; i &lt; n-20; i++) {
+                if (bs &amp; (1&lt;&lt;i)) {
+                    p += a[20+i];
+                }
+            }
+            if (s.count(-p)) {
+                ans += s[-p];
+            }
+        }
+        cout &lt;&lt; ans-1 &lt;&lt; endl;
+    } else {
+        long long ans = 0;
+        for (int bs = 0; bs &lt; (1&lt;&lt;n); bs++) {
+            pt p(0,0);
+            for (int i = 0; i &lt; n; i++) {
+                if (bs &amp; (1&lt;&lt;i)) {
+                    p += a[i];
+                }
+            }
+            if (p == pt(0,0)) ans++;
+        }
+        cout &lt;&lt; ans-1 &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

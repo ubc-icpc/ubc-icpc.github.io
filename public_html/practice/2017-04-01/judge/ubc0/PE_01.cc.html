@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+map&lt;pair&lt;int,int&gt;,ll&gt; cost;
+set&lt;int&gt; adj[100005];
+int deg[100005];
+int want[100005];
+int main(){
+    ios::sync_with_stdio(0);
+    int n; cin&gt;&gt;n;
+    for (int i=0;i&lt;n;i++) cin&gt;&gt;want[i];
+    for (int i=0;i&lt;n-1;i++){
+        int a,b; ll c; cin&gt;&gt;a&gt;&gt;b&gt;&gt;c; 
+        adj[a].insert(b); adj[b].insert(a);
+        deg[a]++; deg[b]++;
+        cost[{a,b}]=c; 
+        cost[{b,a}]=c;
+    }
+    queue&lt;int&gt; q; 
+    for (int i=0;i&lt;n;i++) if (adj[i].size()==1) q.push(i);
+    vector&lt;pair&lt;int,int&gt;&gt; ans;
+    for (int i=0;i&lt;n-1;i++){
+        int now=q.front(); q.pop();
+        int nex=*adj[now].begin(); 
+        adj[now].erase(nex); adj[nex].erase(now); 
+        if (deg[now]%2!=want[now]){
+            ans.push_back({min(now,nex),max(now,nex)});
+            deg[nex]++; 
+        }
+        if (adj[nex].size()==1) q.push(nex); 
+    }
+    int root=q.front(); 
+    if (deg[root]%2==want[root]){
+        ll tot=0; 
+        for (pair&lt;int,int&gt; p:ans) tot+=cost[p];
+        cout&lt;&lt;tot&lt;&lt;&quot; &quot;&lt;&lt;ans.size()&lt;&lt;endl;
+        sort(ans.begin(),ans.end());
+        for (pair&lt;int,int&gt; p:ans) cout&lt;&lt;p.first&lt;&lt;&quot; &quot;&lt;&lt;p.second&lt;&lt;endl;
+    }
+    else cout&lt;&lt;&quot;impossible&quot;&lt;&lt;endl;
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;code.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

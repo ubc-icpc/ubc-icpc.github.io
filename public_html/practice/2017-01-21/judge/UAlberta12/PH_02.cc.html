@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int count[51][51][51][51];
+
+int values[51];
+
+bool CanBeAdded(int num, int lVal, int rVal)
+{
+	return num &gt;= lVal &amp;&amp; num &lt;= rVal;
+}
+
+int GetBest(int lPos, int rPos, int lVal, int rVal)
+{
+	//cout &lt;&lt; lPos &lt;&lt; ' ' &lt;&lt; rPos &lt;&lt; ' ' &lt;&lt; lVal &lt;&lt; ' ' &lt;&lt; rVal &lt;&lt; '\n';
+	if (lVal &gt; rVal)
+	{
+		//cout &lt;&lt; &quot;SHIT &quot; &lt;&lt; lPos &lt;&lt; ' ' &lt;&lt; rPos &lt;&lt; '\n';
+		return -10;
+	}
+
+	if (lPos &gt; rPos)
+		return 0;
+	if (lPos == rPos)
+	{
+		return values[lPos] &gt;= lVal &amp;&amp; values[lPos] &lt;= rVal;
+	}
+
+	int&amp; best = count[lPos][rPos][lVal][rVal];
+	//cout &lt;&lt; best &lt;&lt; '\n';
+	if (best == -1)
+	{
+		best = 0;
+		// Swap, keep both
+		if (CanBeAdded(values[lPos], values[rPos], rVal) &amp;&amp; CanBeAdded(values[rPos], lVal, values[lPos]))
+		{
+	//cout &lt;&lt; &quot;SLR &quot; &lt;&lt; lPos &lt;&lt; ' ' &lt;&lt; rPos &lt;&lt; ' ' &lt;&lt; lVal &lt;&lt; ' ' &lt;&lt; rVal &lt;&lt; '\n';
+			best = max(best, 2 + GetBest(lPos + 1, rPos - 1, values[rPos], values[lPos]));
+		}
+		// Swap, keep on right side
+		if (CanBeAdded(values[lPos], lVal, rVal))
+		{
+	//cout &lt;&lt; &quot;SR &quot; &lt;&lt; lPos &lt;&lt; ' ' &lt;&lt; rPos &lt;&lt; ' ' &lt;&lt; lVal &lt;&lt; ' ' &lt;&lt; rVal &lt;&lt; '\n';
+			best = max(best, 1 + GetBest(lPos + 1, rPos - 1, lVal, values[lPos]));
+		}
+		// Swap, keep on left side
+		if (CanBeAdded(values[rPos], lVal, rVal))
+		{
+	//cout &lt;&lt; &quot;SL &quot; &lt;&lt; lPos &lt;&lt; ' ' &lt;&lt; rPos &lt;&lt; ' ' &lt;&lt; lVal &lt;&lt; ' ' &lt;&lt; rVal &lt;&lt; '\n';
+			best = max(best, 1 + GetBest(lPos + 1, rPos - 1, values[rPos], rVal));
+		}
+
+		// Keep on left side
+		if (CanBeAdded(values[lPos], lVal, rVal))
+		{
+	//cout &lt;&lt; &quot;L &quot; &lt;&lt; lPos &lt;&lt; ' ' &lt;&lt; rPos &lt;&lt; ' ' &lt;&lt; lVal &lt;&lt; ' ' &lt;&lt; rVal &lt;&lt; '\n';
+			best = max(best, 1 + GetBest(lPos + 1, rPos, values[lPos], rVal));
+		}
+
+		// Keep on right side
+		if (CanBeAdded(values[rPos], lVal, rVal))
+		{
+	//cout &lt;&lt; &quot;R &quot; &lt;&lt; lPos &lt;&lt; ' ' &lt;&lt; rPos &lt;&lt; ' ' &lt;&lt; lVal &lt;&lt; ' ' &lt;&lt; rVal &lt;&lt; '\n';
+			best = max(best, 1 + GetBest(lPos, rPos - 1, lVal, values[rPos]));
+		}
+
+		best = max(best, GetBest(lPos + 1, rPos, lVal, rVal));
+		best = max(best, GetBest(lPos, rPos - 1, lVal, rVal));
+	}
+	return best;
+}
+
+int main()
+{
+	memset(count, -1, sizeof(count));
+
+	int N;
+	cin &gt;&gt; N;
+	for (int i = 0; i &lt; N; ++i)
+		cin &gt;&gt; values[i];
+
+	cout &lt;&lt; GetBest(0, N - 1, 0, 50) &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+struct node { node* l[26], *nxt[26], *failure, *suffix; int index;
+    node() { memset(l, 0, sizeof l); memset(nxt, 0, sizeof nxt); failure=suffix=0; index=0; }
+    void insert(const string&amp; s, int id, int i = 0) {
+        if (i == s.size()) { index = id; return; }
+        if (l[s[i]-'a'] == NULL) l[s[i]-'a'] = new node;
+        l[s[i]-'a']-&gt;insert(s, id, i+1); } };
+void build_links(node* root) { queue&lt;node*&gt; que; que.push(root);
+  while (!que.empty()) { node* p = que.front(); que.pop();
+    for (int i = 0; i &lt; 26; ++i) {
+      if (p-&gt;l[i]) {
+        p-&gt;nxt[i] = p-&gt;l[i];
+      } else {
+        node* q = p-&gt;failure;
+        while (q &amp;&amp; !q-&gt;nxt[i]) {
+          q = q-&gt;failure;
+        }
+        if (q) {
+          q = q-&gt;nxt[i];
+          p-&gt;nxt[i] = q;
+        } else {
+          p-&gt;nxt[i] = root;
+        }
+      }
+    }
+    for (int i=0; i&lt;26; ++i) if (p-&gt;l[i]) { node* q = p-&gt;failure;
+      while (q &amp;&amp; !q-&gt;l[i]) q = q-&gt;failure;
+      if (q) { p-&gt;l[i]-&gt;failure = q-&gt;l[i];
+        p-&gt;l[i]-&gt;suffix = (q-&gt;l[i]-&gt;index ? q-&gt;l[i] : q-&gt;l[i]-&gt;suffix);
+      } else p-&gt;l[i]-&gt;failure = p-&gt;l[i]-&gt;suffix = root;
+    que.push(p-&gt;l[i]); } } }
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    string dummy, s; getline(cin, s);
+    int n; cin &gt;&gt; n; getline(cin, dummy);
+
+    node* root = new node();
+    vector&lt;string&gt; banned(1, &quot;&quot;);
+    for (int i = 1; i &lt;= n; i++) {
+        string s2; getline(cin, s2);
+        //cerr &lt;&lt; &quot;got string &quot; &lt;&lt; s2 &lt;&lt; endl;
+        if (s2.length() == 0) continue;
+        banned.push_back(s2);
+        root-&gt;insert(s2, i);
+    }
+    build_links(root);
+
+    node* cur = root;
+    vector&lt;node*&gt; states; states.push_back(cur);
+    string ans;
+    for (auto i=0u; i &lt; s.size(); i++) {
+        int c=s[i]-'a';
+        //while(cur != root &amp;&amp; !cur-&gt;l[c]) cur = cur-&gt;failure;
+        //if (cur-&gt;l[c]) cur = cur-&gt;l[c];
+        cur = cur-&gt;nxt[c];
+
+        states.push_back(cur);
+        ans.push_back(s[i]);
+        //cerr &lt;&lt; &quot;advanced to '&quot; &lt;&lt; ans &lt;&lt; &quot;'&quot; &lt;&lt; endl;
+
+        node* dict = cur;
+        if (dict != root) {
+            if (dict-&gt;index) {
+                int n2 = banned[dict-&gt;index].length();
+                //cerr &lt;&lt; &quot;matched '&quot; &lt;&lt; banned[dict-&gt;index] &lt;&lt; &quot;' rolling back &quot; &lt;&lt; n2 &lt;&lt; &quot; characters&quot; &lt;&lt; endl;
+                for (int j = 0; j &lt; n2; j++) {
+                    ans.pop_back();
+                    states.pop_back();
+                    cur = states.back();
+                }
+                //cerr &lt;&lt; &quot;rolled back to '&quot; &lt;&lt; ans &lt;&lt; &quot;'&quot; &lt;&lt; endl;
+                //break;
+            }
+            dict = dict-&gt;suffix;
+        }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

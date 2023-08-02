@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;unordered_map&gt;
+#include &lt;tuple&gt;
+#include &lt;cstring&gt;
+#include &lt;utility&gt;
+using namespace std;
+
+const int maxn = 10005;
+const int maxk = 22;
+const int maxint = ~0U&gt;&gt;1;
+
+vector&lt;pair&lt;int, int&gt; &gt; net[maxn]; 
+vector&lt;pair&lt;int, int&gt; &gt; tree_net[maxn]; 
+
+int n;
+
+unordered_map&lt;long long, int&gt; d;
+int nc[maxn];
+
+int f(int pos, int ch, int k) {
+    auto key = (long long)pos*maxn*maxk + ch * maxk + k;
+    if (d.find(key) != d.end())  return d[key];
+
+    d[key] = maxint;
+
+    if (ch &gt;= tree_net[pos].size())  d[key] = 0;
+    else {
+        for (int i = 0; i &lt;= k; ++i) {
+            auto firstpath = tree_net[pos][ch];
+            int tmpdis;
+            if (i &gt;= nc[firstpath.first]) {
+                tmpdis = 0;
+            } else {
+                tmpdis = firstpath.second * 2 + f(firstpath.first, 0, i);
+            }
+            tmpdis += f(pos, ch+1, k-i);
+
+            if (tmpdis &lt; d[key]) {
+                d[key] = tmpdis;
+            }
+
+            if (i &gt;= nc[firstpath.first]) {
+                break;
+            }
+        }
+    }
+
+    return d[key];
+}
+
+bool v[maxn];
+
+void dfs(int pos) {
+    v[pos] = true;
+    for (int i = 0; i &lt; net[pos].size(); ++i) {
+        auto path = net[pos][i];
+        if (v[path.first])  continue;
+        tree_net[pos].push_back(path);
+        dfs(path.first);
+    }
+}
+int count_child(int pos) {
+    nc[pos] = 1;
+    for (int i = 0; i &lt; tree_net[pos].size(); ++i) {
+        nc[pos] += count_child(tree_net[pos][i].first);
+    }
+    return nc[pos];
+}
+void build_tree_net(int root) {
+    memset(v, 0, sizeof(v));
+    memset(nc, 0, sizeof(nc));
+    for (int i = 0; i &lt; n; ++i) {
+        tree_net[i].clear();
+    }
+    v[root] = true;
+
+    dfs(root);
+    count_child(root);
+}
+
+
+
+int main() {
+    int T;
+    cin &gt;&gt; T;
+    while (T--) {
+        for (int i = 0; i &lt; maxn; ++i) {
+            net[i].clear();
+        }
+        d.clear();
+
+        int k;
+        cin &gt;&gt; n &gt;&gt; k;
+
+        for (int i = 0; i &lt; n-1; ++i) {
+            int a, b, c;
+            cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+            net[a].push_back(make_pair(b, c));
+            net[b].push_back(make_pair(a, c));
+        }
+
+        int mindis = maxint;
+
+        for (int i = 0; i &lt; min(n, k+1); ++i) {
+            // cout &lt;&lt; &quot;checking &quot; &lt;&lt; i &lt;&lt; endl;
+            d.clear();
+            build_tree_net(i);
+
+            int maxch = 0;
+
+            for (int j = 0; j &lt; tree_net[i].size(); ++j) {
+                if (nc[tree_net[i][j].first] &gt; maxch) {
+                    maxch = nc[tree_net[i][j].first];
+                }
+            }
+            if (n - maxch &lt;= k) {
+                continue;
+            }
+
+            // cout &lt;&lt; &quot;tree built&quot; &lt;&lt; endl;
+
+            if (f(i, 0, k) &lt; mindis) {
+                mindis = f(i, 0, k);
+            }
+            break;
+        }
+
+        cout &lt;&lt; mindis &lt;&lt; endl;
+
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

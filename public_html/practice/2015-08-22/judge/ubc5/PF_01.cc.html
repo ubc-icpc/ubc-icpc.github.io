@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+// 1 (2x2):
+// XX
+// XX
+// 2 (4x4) shift top by 1, 1+2+1:
+// .XX.
+// .XX.
+// XXXX
+// XXXX
+// 3 (8x8) shift top by 2, 2+4+2:
+// ...XX...
+// ...XX...
+// ..XXXX..
+// ..XXXX..
+// .XX..XX.
+// .XX..XX.
+// XXXXXXXX
+// XXXXXXXX
+// 4 (16x16) shift top by 4, 4+8+4:
+// .......XX.......
+// .......XX.......
+// ......XXXX......
+// ......XXXX......
+// .....XX..XX.....
+// .....XX..XX.....
+// ....XXXXXXXX....
+// ....XXXXXXXX....
+// ...XX......XX...
+// ...XX......XX...
+// ..XXXX....XXXX..
+// ..XXXX....XXXX..
+// .XX..XX..XX..XX.
+// .XX..XX..XX..XX.
+// XXXXXXXXXXXXXXXX
+// XXXXXXXXXXXXXXXX
+
+char** c[11];
+
+inline void cp(int x, int y, int s, char** a, char** b) {
+  for (int i = x; i &lt; x+s; i++)
+    for (int j = y; j &lt; y+s; j++)
+      b[i][j] = a[i-x][j-y];
+}
+
+int main() {
+  for (int i = 1; i &lt;= 10; i++) {
+    c[i] = new char*[(1&lt;&lt;i)];
+    for (int j = 0; j &lt; (1&lt;&lt;i); j++)
+      c[i][j] = new char[(1&lt;&lt;i)];
+  }
+  for (int i = 0; i &lt; 2; i++)
+    for (int j = 0; j &lt; 2; j++)
+      c[1][i][j] = 'X';
+  for (int i = 1; i &lt; 10; i++) {
+    cp(0,(1&lt;&lt;(i-1)),(1&lt;&lt;i),c[i],c[i+1]);
+    cp((1&lt;&lt;i),0,(1&lt;&lt;i),c[i],c[i+1]);
+    cp((1&lt;&lt;i),(1&lt;&lt;i),(1&lt;&lt;i),c[i],c[i+1]);
+  }
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    cout &lt;&lt; &quot;Triangle #&quot; &lt;&lt; T &lt;&lt; &quot;:\n&quot;;
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; (1&lt;&lt;n); i++) {
+      for (int j = 0; j &lt; (1&lt;&lt;n); j++)
+        cout &lt;&lt; (c[n][i][j] ? 'X' : ' ');
+      cout &lt;&lt; &quot;\n&quot;;
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

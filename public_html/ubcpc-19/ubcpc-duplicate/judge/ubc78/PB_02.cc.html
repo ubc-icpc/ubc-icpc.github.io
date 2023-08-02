@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define DEBUG 0
+#define nl          '\n'
+#define fori(n)			for(int i = 0; i &lt; n; ++i) 
+#define forj(n)			for(int j = 0; j &lt; n; ++j)
+#define fork(n)			for(int k = 0; k &lt; n; ++k)
+#define forl(n)			for(int l = 0; l &lt; n; ++l)
+#define pq priority_queue
+#define umap unordered_map
+typedef long long ll;typedef pair&lt;int,int&gt; pii;typedef vector&lt;bool&gt; vbool;typedef vector&lt;int&gt; vint;typedef vector&lt;ll&gt; vll;typedef long double ld;typedef vector&lt;vector&lt;int&gt;&gt; vvi; 
+
+const ll N = 100010;
+const ll INF = 0x3f3f3f3f;
+const ll MOD = 1e9 + 7;
+
+struct f {
+	string name;
+	int h,a,d;
+};
+
+int main() {
+	ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+	int n; cin &gt;&gt; n;
+	vector&lt;f&gt; fiters(n);
+	fori(n) {
+		cin &gt;&gt; fiters[i].name &gt;&gt; fiters[i].h &gt;&gt; fiters[i].a &gt;&gt; fiters[i].d;
+	}
+	vvi adj(n); int xi,xj;
+	fori(n) 
+		for(int j = i+1; j &lt; n; ++j) {
+			xi = max(0,(fiters[j].a-fiters[i].d));
+			xj = max(0,(fiters[i].a-fiters[j].d));
+			if (xi == 0 || xj == 0) {
+				if (xi &gt; 0) adj[j].push_back(i);
+				if (xj &gt; 0) adj[i].push_back(j);
+				continue;
+			}
+			xi = 1 + (fiters[i].h-1)/xi;
+			xj = 1 + (fiters[j].h-1)/xj;
+			if (xi &gt; xj) adj[i].push_back(j);
+			if (xi &lt; xj) adj[j].push_back(i);
+		}
+	set&lt;string&gt; ans; int x;
+	vint it(3);
+	fori(n) {
+		//go 3 levels deep and see if goes back to original
+		forj(adj[i].size()) {
+			int cur = adj[i][j];
+			fork(adj[cur].size()) {
+				x = adj[cur][k];
+				forl(adj[x].size()) {
+					if (adj[x][l] == i) {
+						it[0] = i; it[1] = cur; it[2] = x; sort(it.begin(), it.end());
+						ans.insert(fiters[it[0]].name + &quot; &quot; + fiters[it[1]].name + &quot; &quot; + fiters[it[2]].name);
+					}		
+				}
+			}
+		}
+	}
+	cout &lt;&lt; ans.size() &lt;&lt; nl;
+	for(auto thing : ans) cout &lt;&lt; thing &lt;&lt; nl;
+	
+	
+	#if DEBUG
+	cerr &lt;&lt; &quot;Time: &quot; &lt;&lt; (ld)clock() / CLOCKS_PER_SEC &lt;&lt; &quot; s&quot; &lt;&lt; nl;
+	#endif
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

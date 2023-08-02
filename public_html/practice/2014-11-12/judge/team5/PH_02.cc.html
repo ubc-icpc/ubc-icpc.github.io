@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std; //lol
+
+int main() {
+    int t; cin &gt;&gt; t;
+    string q;
+    getline(cin, q);
+    while (t--) {
+        vector&lt;string&gt; names;
+        string s;
+        getline(cin, s);
+        istringstream ss(s);
+        string n;
+        
+        while (ss &gt;&gt; n)
+            names.push_back(n);
+        
+        getline(cin, s);
+        ss.str(s);
+        ss.clear();
+        ss &gt;&gt; n;
+        
+        int b;
+        
+        getline(cin, s);
+        ss.str(s);
+        ss.clear();
+        ss &gt;&gt; b;
+        
+        int i;
+        for (i = 0; names[i] != n; i++) ;
+        cout &lt;&lt; names[(i - 1 + b) % names.size()] &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include&lt;string&gt;
+#include &lt;tuple&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+
+
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n, k;
+	cin &gt;&gt; n &gt;&gt; k;
+	int safe = 1, broken = k;
+	string res;
+	int Cfloor;
+
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; Cfloor &gt;&gt; res;
+		if (res == &quot;BROKEN&quot; &amp;&amp; Cfloor &lt; broken) {
+			// if broken then choose the smaller floor
+			broken = Cfloor;
+		}
+		if (res == &quot;SAFE&quot; &amp;&amp; Cfloor &gt; safe) {
+			safe = Cfloor;
+		}
+	}
+	// here we get the lowest broken and highest safe
+
+
+	if (abs(broken - safe) &gt; 1) {// if they are not consecutive it's safe for them to be lower
+		cout &lt;&lt; safe+1 &lt;&lt; &quot; &quot; &lt;&lt; broken -1 &lt;&lt; endl;
+	}
+	else {
+		cout &lt;&lt; broken &lt;&lt; &quot; &quot; &lt;&lt; safe &lt;&lt; endl;
+	}
+
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+
+/**
+ * Created by Peter on 2015-04-05.
+ */
+public class SoccerBets {
+    private static HashSet&lt;String&gt; allTeams;
+    private static String[][] games;
+    public static void main(String[] args) {
+      /*  String [] input = {&quot;ITA URU 2 0&quot;, &quot;ITA IRE 1 0&quot;, &quot;ITA ARG 3 4&quot;, &quot;YUG ARG 2 3&quot;, &quot;GER CZE 1 0&quot;,
+        &quot;ENG GER 3 4&quot;, &quot;ITA ENG 2 1&quot;, &quot;CAM COL 2 1&quot;, &quot;ENG CAM 3 2&quot;, &quot;ENG BEL 1 0&quot;,
+        &quot;GER ARG 1 0&quot;,&quot;CZE CRC 4 1&quot;, &quot;NET GER 1 2&quot;, &quot;BRZ ARG 0 1&quot;, &quot;SPA YUG 1 2&quot;, &quot;ROM IRE 4 5&quot;};*/
+
+        Scanner s = new Scanner(System.in);
+        int noOfTests = Integer.parseInt(s.nextLine());
+        for(int k = 0; k&lt; noOfTests; k++) {
+            allTeams = new HashSet&lt;String&gt;();
+            games = new String[16][];
+            for (int i = 0; i &lt; 16; i++) {  //Get all teams into the set
+                String[] line = /*input[i].split(&quot;\\s+&quot;);*/s.nextLine().split(&quot;\\s+&quot;);
+                games[i] = line;
+                allTeams.add(line[0]);
+                allTeams.add(line[1]);
+            }
+
+            for (int j = 0; j &lt; 16; j++) {
+                int score1 = Integer.parseInt(games[j][2]);
+                int score2 = Integer.parseInt(games[j][3]);
+                String team1 = games[j][0];
+                String team2 = games[j][1];
+
+                if (score1 &lt; score2) {
+                    allTeams.remove(team1);
+                } else {
+                    allTeams.remove(team2);
+
+                }
+            }
+
+            String winner = &quot;&quot;;
+            for (String str : allTeams) {
+                if (str.length() &gt; winner.length()) {
+                    winner = str;
+                }
+            }
+
+            System.out.println(winner);
+        }
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

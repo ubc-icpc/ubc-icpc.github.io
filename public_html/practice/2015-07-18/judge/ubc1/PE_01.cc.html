@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+//pr[hi u vi u diag] = inclusion exclusion of each prob
+//pr[5 spaces] = f(n, m, k) 
+//              --&gt; n is number of free spaces, m is number of tot spaces, k is number
+//                  of tries
+// f(n, m, k) = (n/m) f(n-1, m-1, k-1) + (1-n/m) f(n, m-1, k-1)
+// = 1 - (1-n/m) * (1-n/(m-1)) * ... (but probably should just use DP for simplicity)
+
+ld memo[9*9][9*9][9*9];
+ld pr(int n, int m, int k) {
+    if (m &lt; n) return 0;
+    else if (k &gt;= m || n == 0) return 1;
+    else if (k == 0) return 0;
+    else if (memo[n][m][k] != 0) return memo[n][m][k];
+    
+    ld p = ld(n)/m;
+    memo[n][m][k] = p * pr(n-1, m-1, k-1) + (1-p) * pr(n, m-1, k-1);
+    return memo[n][m][k];
+}
+
+// encode each line as a corner + direction
+struct line {
+    pii c, d;
+    line() {}
+    line(pii c, pii d) : c(c), d(d) {}
+};
+
+bool filled[10][10];
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n, k; cin &gt;&gt; n &gt;&gt; k;
+        cout &lt;&lt; fixed &lt;&lt; setprecision(9);
+        if (n == 1 || k == 0) {
+            cout &lt;&lt; (k &gt;= 1 ? 100 : 0) &lt;&lt; endl;
+        } else {
+            vector&lt;line&gt; l;
+            int tot = 0;
+            for (int i = 0; i &lt; n; i++) {
+                for (int j = 0; j &lt; n; j++) {
+                    char c; cin &gt;&gt; c;
+                    filled[i][j] = (c == '*');
+                    tot += !filled[i][j];
+                }
+            }
+            
+            for (int i = 0; i &lt; n; i++) {
+                l.push_back(line(pii(i, 0), pii(0, 1)));
+                l.push_back(line(pii(0, i), pii(1, 0)));
+            }
+            l.push_back(line(pii(0,0), pii(1,1)));
+            l.push_back(line(pii(n-1,0), pii(-1,1)));
+            
+            int nl = l.size();
+            ld ans = 0;
+            for (int i = 1; i &lt; (1&lt;&lt;nl); i++) {
+                set&lt;pii&gt; f;
+                for (int j = 0; j &lt; nl; j++) {
+                    if (i &amp; (1&lt;&lt;j)) {
+                        int x = l[j].c.first, y = l[j].c.second;
+                        int dx = l[j].d.first, dy = l[j].d.second;
+                        for (int k = 0; k &lt; n; k++) {
+                            int nx = x + k*dx, ny = y + k*dy;
+                            if (!filled[nx][ny]) f.insert(pii(nx,ny));
+                        }
+                    }
+                }
+                
+                int sgn[] = {-1, 1};
+                ans += sgn[__builtin_popcount(i)%2] * pr(f.size(), tot, k);
+            }
+            cout &lt;&lt; 100*ans &lt;&lt; endl;
+        }
+    }
+    
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

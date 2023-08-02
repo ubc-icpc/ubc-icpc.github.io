@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+vector&lt;long long&gt; S1,S2,S3;
+int main() {
+	S1.push_back(0);
+	S2.push_back(0);
+	S3.push_back(0);
+	for(int i = 1; i &lt;= 20010; ++i) {
+		S1.push_back(S1[S1.size()-1] + i);
+		if(i&amp;1) {
+			S2.push_back(S2[S2.size() -1] +i);
+		} else {
+			S3.push_back(S3[S3.size()-1] + i);
+		}
+	}
+	int n; cin &gt;&gt;n;
+	int k,c;
+	for(int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; k &gt;&gt;c;
+		cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; S1[c] &lt;&lt; &quot; &quot; &lt;&lt; S2[c] &lt;&lt; &quot; &quot; &lt;&lt; S3[c] &lt;&lt; endl;
+	}
+	
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

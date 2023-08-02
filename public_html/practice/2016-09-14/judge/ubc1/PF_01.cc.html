@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+const int N = 600;
+int seen[N][N];
+vector&lt;int&gt; g[2][N];
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int ca, n; cin &gt;&gt; ca &gt;&gt; n;
+		cout &lt;&lt; ca &lt;&lt; &quot; &quot;;
+		
+		for (int i = 0; i &lt; n; i++) {
+			g[0][i].clear();
+			g[1][i].clear();
+		}
+		
+		for (int i = 0; i &lt; n; i++) {
+			int x; cin &gt;&gt; x;
+			g[0][x].push_back(i);
+		}
+		
+		for (int i = 0; i &lt; n; i++) {
+			int x; cin &gt;&gt; x;
+			g[1][x].push_back(i);
+		}
+		
+		memset(seen, 0, sizeof seen);
+		queue&lt;pair&lt;int, int&gt;&gt; q;
+		for (int i = 0; i &lt; n; i++) {
+			seen[i][i] = true;
+			q.push({i, i});
+		}
+		
+		while (!q.empty()) {
+			int x = q.front().first, y = q.front().second;
+			q.pop();
+			for (int k = 0; k &lt; 2; k++) {
+				for (int u : g[k][x]) {
+					for (int v : g[k][y]) {
+						if (!seen[u][v]) {
+							q.push({u, v});
+							seen[u][v] = true;
+						}
+					}
+				}
+			}
+		}
+		
+		bool yes = true;
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; n; j++) {
+				if (!seen[i][j]) {
+					yes = false;
+					goto done;
+				}
+			}
+		}
+		
+		done:
+		cout &lt;&lt; (yes ? &quot;YES&quot; : &quot;NO&quot;) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

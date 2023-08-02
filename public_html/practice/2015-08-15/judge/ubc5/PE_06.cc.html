@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;set&gt;
+#include &lt;utility&gt;
+#include &lt;map&gt;
+using namespace std;
+
+set&lt;int&gt; adj[50];
+string S[50];
+int v[50];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    cout &lt;&lt; &quot;Chain Email #&quot; &lt;&lt; T &lt;&lt; &quot;:\n&quot;;
+    int p, s;
+    cin &gt;&gt; p &gt;&gt; s;
+    s--;
+    for (int i = 0; i &lt; p; i++) {
+      adj[i].clear();
+      v[i] = 0;
+      cin &gt;&gt; S[i];
+    }
+    for (int i = 0; i &lt; p; i++) {
+      int n; cin &gt;&gt; n;
+      for (int j = 0; j &lt; n; j++) {
+        int x; cin &gt;&gt; x;
+        adj[i].insert(x-1);
+      }
+    }
+    queue&lt;int&gt; q;
+    q.push(s);
+    v[s] = 1;
+    while (q.size()) {
+      int f = q.front();
+      q.pop();
+      if (v[f] &gt; 10000)
+        continue;
+      for (set&lt;int&gt;::iterator it = adj[f].begin(); it != adj[f].end(); it++) {
+        v[*it]++;
+        q.push(*it);
+      }
+    }
+    bool first = true;
+    for (int i = 0; i &lt; p; i++) {
+      if (v[i] &gt; 1000) {
+        if (first)
+          first = false;
+        cout &lt;&lt; S[i] &lt;&lt; &quot; &quot;;
+      }
+    }
+    if (first)
+      cout &lt;&lt; &quot;Safe chain email!&quot;;
+    cout &lt;&lt; &quot;\n\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

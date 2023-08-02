@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import math
+
+cases = int(raw_input())
+
+counter = 0
+
+outputArray = []
+
+while counter &lt; cases:
+    rawParams = raw_input().split()
+    params = []
+    dayArray = []
+    for i in rawParams:
+        params.append(int(i))
+
+    days = params[0]
+    lemon = params[1]
+    sugar = params[2]
+
+    dayCounter = 0
+    while dayCounter &lt; days:
+        rawDayParams = raw_input().split()
+        dayParams = []
+
+        for i in rawDayParams:
+            dayParams.append(int(i))
+
+        dayArray.append(dayParams)
+        
+        dayCounter += 1
+
+    totalCost = 0
+
+    i = 0
+
+    lemonStock = 0
+    sugarStock = 0
+    
+    lowestLemon = dayArray[0][1]
+    lowestSugar = dayArray[0][2]
+    
+    while i &lt; days:
+        ## For each day, we buy just enough supplies of each type to
+        ## last till the next day where that supply is cheaper.
+
+        if lowestLemon &gt; dayArray[i][1]:
+            lowestLemon = dayArray[i][1]
+        if lowestSugar &gt; dayArray[i][2]:
+            lowestSugar = dayArray[i][2]
+
+        ## Lemon:
+        if dayArray[i][0] * lemon &gt;= lemonStock:
+            lemonsNeeded = dayArray[i][0] * lemon
+
+            if lemonsNeeded &gt; lemonStock:
+                lemonsNeeded -= lemonStock
+                totalCost += lemonsNeeded * lowestLemon
+                lemonStock += lemonsNeeded
+        lemonStock -= dayArray[i][0] * lemon
+
+        ## Sugar:
+        if dayArray[i][0] * sugar &gt;= sugarStock:
+            sugarNeeded = dayArray[i][0] * sugar
+
+            if sugarNeeded &gt; sugarStock:
+                sugarNeeded -= sugarStock
+                totalCost += int(math.ceil(sugarNeeded/80.0) * lowestSugar)
+                sugarStock += int(math.ceil(sugarNeeded/80.0) * 80)
+        sugarStock -= dayArray[i][0] * sugar
+        
+        i += 1
+        
+    outputArray.append(totalCost)
+    counter += 1
+
+for i in outputArray:
+    print i
+        
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

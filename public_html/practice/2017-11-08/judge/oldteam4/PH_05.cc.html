@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+using namespace std;
+map&lt;string,int&gt; m1;
+string m2[100000];
+long long count = 0;
+
+void merge(int start1, int end1, int start2, int end2){
+    int left = start1;
+    int right = start2;
+    int n = end2 - start1;
+    string* temp = new string[n+1];
+    for(int i = 0; i&lt;= n ; i++){
+        if (left &gt; end1) {
+            temp[i] = m2[right];
+            right++;
+        }
+        else if (right &gt; end2) {
+            temp[i] = m2[left];
+            left++;
+        }
+        else if(m1[m2[left]] &lt; m1[m2[right]]){
+            temp[i] = m2[left];
+            left++;
+        }
+        else{
+            temp[i] = m2[right];
+            right++;
+            count += end1-left+1;
+        }
+    }
+    for(int i = 0; i &lt;= n; i++){
+        m2[start1+i] = temp[i];
+    }
+    delete[] temp;
+}
+
+void msort(int start, int end){
+    if (end - start &lt; 1){
+        return;
+    }
+    int mid = (start + end)/2;
+    msort(start, mid);
+    msort(mid+1, end);
+    merge(start, mid, mid+1, end);
+    return;
+}
+
+int main(){
+    string s;
+    int n;
+    while(cin&gt;&gt; n){
+        count=0;
+        if(n == 0) break;
+        m1.clear();
+        for(int i = 0; i&lt; n; i++){
+            cin &gt;&gt; s;
+            m1[s] = i;
+        }
+        for(int i = 0; i&lt; n; i++){
+            cin &gt;&gt; m2[i];
+        }
+        msort(0,n-1);
+        cout&lt;&lt;count&lt;&lt;endl;
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

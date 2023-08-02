@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  int p; cin &gt;&gt; p;
+  while (p--) {
+    int k, p, q; char c;
+    cin &gt;&gt; k &gt;&gt; p &gt;&gt; c &gt;&gt; q;
+    ll res = 0;
+    ll cnt = 0;
+    for (; p != 1 || q != 1; cnt++) {
+      if (p &lt; q) {
+        q = q - p;
+      }
+      else if (p &gt; q) {
+        // Everytime current node u is a right child of its parent, there are some nodes to its left that we need to add to our result. In every such situation, see how far above the original node we are (cnt) and add the left half of this subtree. 
+        res |= (1 &lt;&lt; cnt);
+        p = p -q;
+      }
+    }
+    // Number of nodes in all the levels of the binary tree above the level that this node is in + 1 (for this node)
+    res |= (1 &lt;&lt; cnt);
+    cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; res &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

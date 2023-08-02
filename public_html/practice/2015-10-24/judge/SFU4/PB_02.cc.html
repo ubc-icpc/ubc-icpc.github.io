@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string&gt;
+#include &lt;math.h&gt;
+#include &lt;bitset&gt;
+#include &lt;vector&gt;
+#include &lt;list&gt;
+
+using namespace std;
+
+list&lt;list&lt;int&gt; &gt; bt(int n)
+{
+	list&lt;list&lt;int&gt; &gt; res;
+	if(n==1)
+	{
+		list&lt;int&gt; tmp;
+		tmp.push_back(n);
+		res.push_back(tmp);
+		return res;
+	}
+	list&lt;list&lt;int&gt; &gt; rem;
+	rem = bt(n-1);
+	int z=0;
+	for(list&lt;list&lt;int&gt; &gt;::iterator it_i=rem.begin(); it_i!=rem.end(); it_i++, z++)
+	{
+		if(z%2==0)
+		{
+			for(int i=0; i&lt;=(*it_i).size(); i++)
+			{
+				res.push_front(*it_i);
+				list&lt;int&gt;::iterator it_j=res.begin()-&gt;begin();
+				for(int j=0; j&lt;i; j++)
+					it_j++;
+				res.begin()-&gt;insert(it_j, n);
+			}
+		}
+		else
+		{
+			for(int i=0; i&lt;=(*it_i).size(); i++)
+			{
+				res.push_front(*it_i);
+				list&lt;int&gt;::iterator it_j=res.begin()-&gt;begin();
+				for(int j=0; j&lt;(*it_i).size()-i; j++)
+					it_j++;
+				res.begin()-&gt;insert(it_j, n);
+			}
+		}
+	}
+}
+
+int main()
+{
+	list&lt;list&lt;int&gt; &gt; perms;
+	int n;
+	scanf(&quot;%d&quot;, &amp;n);
+	perms = bt(n);
+	// if(n==1)
+	// {
+	// 	printf(&quot;1\n&quot;);
+	// 	return 0;
+	// }
+	// if(n==2)
+	// {
+	// 	printf(&quot;1 2\n&quot;);
+	// 	printf(&quot;2 1\n&quot;);
+	// 	return 0;
+	// }
+	list&lt;list&lt;int&gt; &gt; alaki;
+	list&lt;list&lt;int&gt; &gt;::iterator it_i=perms.begin();
+	for(; it_i!=perms.end(); it_i++)
+	{
+		int z=1;
+		list&lt;int&gt;::iterator sorted;
+		for(sorted = (*it_i).begin(); sorted!=(*it_i).end(); sorted++, z++)
+			if((*sorted)!=z)
+				break;
+		if(sorted==(*it_i).end())
+			break;
+		alaki.push_back(*it_i);
+	}
+
+	for(; it_i!=perms.end(); it_i++)
+	{
+		list&lt;int&gt;::iterator it_j=(*it_i).begin();
+		if(it_j!=(*it_i).end())
+		{
+			printf(&quot;%d&quot;, (*it_j));
+			it_j++;
+			for(; it_j!=(*it_i).end(); it_j++)
+			{
+				printf(&quot; %d&quot;, (*it_j));
+			}
+			printf(&quot;\n&quot;);
+		}
+	}
+	// return 0 ;
+	it_i=alaki.begin();
+	for(; it_i!=alaki.end(); it_i++)
+	{
+		list&lt;int&gt;::iterator it_j=(*it_i).begin();
+		if(it_j!=(*it_i).end())
+		{
+			printf(&quot;%d&quot;, (*it_j));
+			it_j++;
+			for(; it_j!=(*it_i).end(); it_j++)
+			{
+				printf(&quot; %d&quot;, (*it_j));
+			}
+			printf(&quot;\n&quot;);
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

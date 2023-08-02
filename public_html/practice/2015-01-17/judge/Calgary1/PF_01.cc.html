@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long LL;
+
+int main() {
+	int W, D, V, T, dgt[10];
+	cin &gt;&gt; W &gt;&gt; D;
+	for (int d = 0; d &lt; D; d++) cin &gt;&gt; dgt[d];
+	cin &gt;&gt; V;
+	while (V--) {
+		cin &gt;&gt; T;
+		set&lt;LL&gt; cur;
+		for (int d = 0; d &lt; D; d++) cur.insert(dgt[d]);
+		for (int w = 0; w &lt; W; w++) {
+			set&lt;LL&gt; nxt;
+			for (LL x : cur) {
+				for (int d = 0; d &lt; D; d++) {
+					if (x*dgt[d] &lt;= T) nxt.insert(x*dgt[d]);
+					if (x+dgt[d] &lt;= T) nxt.insert(x+dgt[d]);
+				}
+			}
+			cur = move(nxt);
+		}
+		cout &lt;&lt; (cur.count(T) ? &quot;Y\n&quot; : &quot;N\n&quot;);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

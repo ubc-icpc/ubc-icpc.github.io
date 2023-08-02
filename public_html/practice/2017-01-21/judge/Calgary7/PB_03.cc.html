@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; VI;
+#define xx first
+#define yy second
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+#define FORB(i,a,b) for(int i=int(b)-1;i&gt;=int(a);i--)
+
+int main() {
+	ios::sync_with_stdio(false);
+	string s; ll n;
+	cin &gt;&gt; s &gt;&gt; n; n--;
+	ll t = s.size(), j = n;
+	while (t*2 &lt; n) t *= 2;
+	while (t &gt; s.size()) {
+		if (j == t)
+			j--;
+		else if (j &gt; t)
+			j = j-t-1;
+		t /= 2;
+	}
+	if (j &gt; t) j = j-t-1;
+	cout &lt;&lt; s[j] &lt;&lt; endl;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

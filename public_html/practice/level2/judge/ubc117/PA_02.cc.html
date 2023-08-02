@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;set&gt;
+#include &lt;unordered_set&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;unordered_map&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    ld R, x, y;
+    cin &gt;&gt; R &gt;&gt; x &gt;&gt; y;
+    cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; min(R-sqrt(x*x+y*y), (ld) y) &lt;&lt; endl;
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

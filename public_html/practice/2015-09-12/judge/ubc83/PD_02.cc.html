@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+
+int run(int, int, int, int[], int[], int[], int, int, int);
+
+int main(){
+	int n;
+	std::cin &gt;&gt; n;
+
+	for(int i = 0; i &lt; n; i++){
+		int d, x, s;
+		std::cin &gt;&gt; d &gt;&gt; x &gt;&gt; s;
+		int c[d], pl[d], ps[d];
+		for(int j = 0; j &lt; d; j++){
+			std::cin &gt;&gt; c[j] &gt;&gt; pl[j] &gt;&gt; ps[j];
+			if(j != 0){
+				if(pl[j-1] &lt; pl[j]) pl[j] = pl[j-1];
+				if(ps[j-1] &lt; ps[j]) ps[j] = ps[j-1];
+			}
+		}
+
+		long long cost = 0, currS = 0;
+		for(int j = 0; j &lt; d; j++){
+			int needS = c[j] * s - currS;
+
+			cost += pl[j] * c[j] * x;
+			
+			if(needS &gt; 0){
+				currS += ceil(needS / 80.0) * 80;
+				cost += ps[j] * ceil(needS / 80.0);
+			}
+			currS -= c[j]*s;
+		}
+		
+		std::cout &lt;&lt; cost &lt;&lt; &quot;\n&quot;;
+	}	
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+set&lt;int&gt; good;
+vector&lt;bool&gt; primes(1e5, 1);
+int q;
+
+void pre() {
+  good.insert(2);
+  int cur, curPrime;
+  for (int i = 2; i &lt;= sqrt(q); i++) {
+    if (primes[i]) {
+      for (int j = i*i; j &lt;= sqrt(q); j+= i) {
+        primes[j] = 0;
+      }
+      cur = i; curPrime = i;
+      while (cur &lt;= q) {
+        good.insert(cur);
+        cur *= curPrime;
+      }
+    }
+  }
+}
+
+bool isPrime() {
+  if ( q &lt; 2) return false;
+  for (int i = 2; i &lt;= sqrt(q); i++) {
+    if (q % i == 0) return false;
+  }
+  return true;
+}
+      
+
+int main() {
+  cin &gt;&gt; q;
+  pre();
+  //for(int e : good) cout &lt;&lt; e &lt;&lt; endl;
+  if(isPrime() || good.count(q)) {
+    cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

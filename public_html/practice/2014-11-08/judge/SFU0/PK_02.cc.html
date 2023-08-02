@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;string&gt;
+using namespace std;
+
+const int maxnode = 3005;
+const int maxint = ~0U&gt;&gt;1;
+
+int totalCost(0);
+
+string m[35];
+int n, mm;
+
+struct edge {
+	int v, u;
+	edge *next, *rev;
+	edge(): next(0){}
+	edge(int v_, int u_, edge *next_): v(v_), u(u_), next(next_){}
+};
+
+struct netWork {
+	edge *net[maxnode], *urg[maxnode], *p;
+	int beginNode, endNode, scr, des, totalFlow, dis[maxnode], gap[maxnode];
+
+	int maxFlow();
+	int aug(int, int);
+	void init();
+	void add(int ti, int tj, int tu) {
+		net[ti] = new edge(tj, tu, net[ti]);
+		net[tj] = new edge(ti, 0, net[tj]);
+		net[ti]-&gt;rev = net[tj];
+		net[tj]-&gt;rev = net[ti];
+	}
+} net;
+
+
+
+int dx[] = {1, 0, -1, 0};
+int dy[] = {0, -1, 0, 1};
+
+void netWork::init() {
+	totalFlow = 0;
+	memset(net, 0, sizeof(net));
+	memset(urg, 0, sizeof(urg));
+	memset(dis, 0, sizeof(dis));
+	memset(gap, 0, sizeof(gap));
+
+	beginNode = 1; endNode = 2 * mm * n + 2; scr = 2 * mm * n + 1; des =  2 * mm * n + 2;
+
+	for (int i= 0; i &lt; mm; ++i) {
+		for (int j = 0; j &lt; n; ++j) {
+			add(i * n + j + 1, i * n + j +  mm*n + 1, 1);
+			if (m[i][j] == 'W') {
+				add(scr, i * n + j + 1, 1);
+				for (int k = 0; k &lt; 4; ++k) {
+					int xx = j + dx[k], yy = i + dy[k];
+					if (xx &gt;= 0 &amp;&amp; xx &lt; n &amp;&amp; yy &gt;= 0 &amp;&amp; yy &lt; mm) {
+						if (m[yy][xx] == 'I') {
+							add(i * n + j +  mm*n + 1, yy * n + xx + 1, 1);
+						}
+					}
+				}
+
+			} else if (m[i][j] == 'I') {
+				for (int k = 0; k &lt; 4; ++k) {
+					int xx = j + dx[k], yy = i + dy[k];
+					if (xx &gt;= 0 &amp;&amp; xx &lt; n &amp;&amp; yy &gt;= 0 &amp;&amp; yy &lt; mm) {
+						if (m[yy][xx] == 'N') {
+							add(i * n + j +  mm*n + 1, yy * n + xx + 1, 1);
+						}
+					}
+				}
+			} else if (m[i][j] == 'N') {
+				add(i * n + j + mm * n + 1, des, 1);
+			}
+		}
+	}
+
+	gap[0] = 2 * mm * n + 2;
+
+	for (int i = beginNode; i &lt;= endNode; ++i) {
+		urg[i] = net[i];
+	}
+}
+
+int netWork::aug(int pos, int m) {
+	if (pos == des)  return m;
+	int d(0), l(m), minDis(endNode);
+	for (edge *&amp;e = urg[pos]; e; e = e-&gt;next) {
+		if (e-&gt;u &amp;&amp; dis[pos] == dis[e-&gt;v] + 1) {
+			d = aug(e-&gt;v, l &lt; e-&gt;u ? l : e-&gt;u);
+			e-&gt;u -= d; e-&gt;rev-&gt;u += d; l -= d;
+			if (dis[scr] == endNode || !l)  return m - l;
+		}
+	}
+
+	for (edge *e = urg[pos] = net[pos]; e; e = e-&gt;next) {
+		if (e-&gt;u &amp;&amp; dis[e-&gt;v] + 1 &lt; minDis)  minDis = dis[e-&gt;v] + 1;
+	}
+
+	if (l == m) {
+		if (!--gap[dis[pos]])  dis[scr] = endNode;
+		else ++gap[dis[pos] = minDis];
+	}
+
+	return m - l;
+}
+
+int netWork::maxFlow() {
+	while (dis[scr] &lt; endNode) totalFlow += aug(scr, maxint);
+	return totalFlow;
+}
+
+int main() {
+
+	string s;
+	while (getline(cin, s)) {
+		n = s.length();
+		mm = 1;
+		m[0] = s;
+
+		while(getline(cin, s)) {
+			if (s.length() == 0)  break;
+			m[mm] = s;
+			++mm;  
+		}
+
+		net.init();
+
+		cout &lt;&lt; net.maxFlow() &lt;&lt; endl;
+
+	}
+
+	return 0;
+
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

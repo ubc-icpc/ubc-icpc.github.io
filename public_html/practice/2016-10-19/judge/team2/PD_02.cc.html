@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int R, C; cin &gt;&gt; R &gt;&gt; C;
+
+	vector&lt;string&gt; lines;
+	for(int i = 0; i &lt; R; i++) {
+		string curr; cin &gt;&gt; curr; lines.push_back(curr);
+	}
+	set&lt;pii&gt; visited;
+	pii curr = {0, 0}; visited.insert(curr);
+	int moves = 0;
+	while(true) {
+		char instr = lines[curr.first][curr.second];
+		if(instr == 'E') {
+			curr = {curr.first, curr.second + 1};
+		} else if (instr == 'W') {
+			curr = {curr.first, curr.second - 1};
+		} else if (instr == 'N') {
+			curr = {curr.first - 1, curr.second};
+		} else if (instr == 'S') {
+			curr = {curr.first + 1, curr.second};
+		} else if (instr == 'T') {
+			cout &lt;&lt; moves &lt;&lt; endl;
+			return 0;
+		}
+		moves++;
+		if(curr.first &gt;= R || curr.first &lt; 0
+			|| curr.second &gt;= C || curr.second &lt; 0) {
+			cout &lt;&lt; &quot;Out&quot; &lt;&lt; endl;
+			return 0;
+		}
+		if(visited.count(curr)) {
+			cout &lt;&lt; &quot;Lost&quot; &lt;&lt; endl;
+			return 0;
+		}
+		visited.insert(curr);
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

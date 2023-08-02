@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+using namespace std;
+void print(int x)
+{
+	switch (x)
+	{
+	case 0:printf(&quot;A&quot;);break; 
+	case 1:printf(&quot;A#&quot;);break; 
+	case 2:printf(&quot;B&quot;);break; 
+	case 3:printf(&quot;C&quot;);break; 
+	case 4:printf(&quot;C#&quot;);break; 
+	case 5:printf(&quot;D&quot;);break; 
+	case 6:printf(&quot;D#&quot;);break; 
+	case 7:printf(&quot;E&quot;);break; 
+	case 8:printf(&quot;F&quot;);break; 
+	case 9:printf(&quot;F#&quot;);break; 
+	case 10:printf(&quot;G&quot;);break; 
+	case 11:printf(&quot;G#&quot;);break; 
+    }
+}
+int p,q,ans,x,y,x1,x2,a1,a2;
+int main()
+{
+	scanf(&quot;%d%d&quot;,&amp;p,&amp;q);
+	while (p&lt;q) p*=2;
+	while (p&gt;=q*2) q*=2;
+	//printf(&quot;%d %d\n&quot;,p,q);
+	double t=log((double)p/q)/log(2);
+	//printf(&quot;%.2lf\n&quot;,t);
+	double tt=t*1200;
+	double l=floor(tt);
+	if (tt-l&gt;0.5) ans=l+1;
+	else ans=l;
+	if (ans%100&lt;=50) x=ans/100;
+	else x=ans/100+1;
+	y=ans-100*x;
+	x1=x;x2=0;
+	if (y&gt;=25) 
+	{
+		a1=25;
+		a2=a1-y; 
+	} 
+	else if (y&gt;-25)
+	{
+		a1=y;
+		a2=0;
+	}
+	else 
+	{
+		a1=-25;
+		a2=a1-y;
+	}
+	//printf(&quot;%d %d\n&quot;,x1,x2);
+	if (x1==12) x1=0;
+	print(x1);
+	printf(&quot; %d\n&quot;,a1);
+	print(x2);
+	printf(&quot; %d&quot;,a2);
+}
+</code>
+</pre>
+</body>
+</html>

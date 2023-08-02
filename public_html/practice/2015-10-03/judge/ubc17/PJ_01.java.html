@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class J {
+    static Map&lt;String, Boolean&gt; visited;
+    static Map&lt;String, Set&lt;String&gt;&gt; paths;
+    static Stack&lt;String&gt; stack;
+    static String to;
+
+    public static boolean bfs(String from) {
+        Queue&lt;String&gt; queue = new LinkedList&lt;String&gt;();
+        Queue&lt;String&gt; prev = new LinkedList&lt;String&gt;();
+        Map&lt;String, String&gt; trace = new HashMap&lt;String, String&gt;();
+
+        queue.add(from);
+        prev.add(&quot;&quot;);
+        boolean found = false;
+
+        while (!queue.isEmpty()) {
+            String curr = queue.remove();
+            String currprev = prev.remove();
+
+            if (curr.equals(to)) {
+                trace.put(to, currprev);
+                found = true;
+                break;
+            }
+
+            if (visited.get(curr) != null &amp;&amp; visited.get(curr)) {
+                continue;
+            }
+
+            trace.put(curr, currprev);
+            visited.put(curr, Boolean.TRUE);
+
+            if (paths.get(curr) != null) {
+                for (String s : paths.get(curr)) {
+                    queue.add(s);
+                    prev.add(curr);
+                }
+            }
+        }
+
+        if (found) {
+            // stack
+            String x = to;
+
+            while (!x.equals(&quot;&quot;)) {
+                stack.push(x);
+                x = trace.get(x);
+            }
+        }
+
+        return found;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int num = sc.nextInt();
+
+        stack = new Stack&lt;String&gt;();
+        visited = new HashMap&lt;String, Boolean&gt;();
+        Set&lt;String&gt; st = new HashSet&lt;String&gt;();
+        paths = new HashMap&lt;String, Set&lt;String&gt;&gt;();
+
+        sc.nextLine();
+
+        String[][] list = new String[num][];
+
+        for (int i = 0; i &lt; num; ++i) {
+            String[] stations = sc.nextLine().split(&quot; &quot;);
+            list[i] = stations;
+            for (int j = 0; j &lt; stations.length; ++j) {
+                st.add(stations[j]);
+            }
+        }
+
+        for (String s : st) {
+            Set&lt;String&gt; visit = new HashSet&lt;String&gt;();
+            paths.put(s, visit);
+            visited.put(s, Boolean.FALSE);
+        }
+
+        for (int i = 0; i &lt; num; ++i) {
+            String[] stations = list[i];
+            for (int j = 1; j &lt; stations.length; ++j) {
+                paths.get(stations[0]).add(stations[j]);
+                paths.get(stations[j]).add(stations[0]);
+            }
+        }
+
+        String from = sc.next();
+        to = sc.next();
+
+        if (bfs(from)) {
+            while (!stack.empty()) {
+                String curr = stack.pop();
+                System.out.print(curr);
+                if (!stack.empty()) {
+                    System.out.print(&quot; &quot;);
+                } else {
+                    System.out.print(&quot;\n&quot;);
+                }
+            }
+        } else {
+            System.out.println(&quot;no route found&quot;);
+        }
+
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+//#include &lt;iostream&gt;
+using namespace std;
+
+int p;
+int d;
+long long n;
+long long largest;
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie();
+	cin &gt;&gt; p;
+	for (int i=0; i&lt;p; i++) {
+		cin &gt;&gt; d &gt;&gt; n;
+		largest = 1;
+		while (true) {
+			if (n==1) break;
+			if (n &gt; largest) {
+				largest = n;
+			}
+			if (n % 2 == 0) {
+				n = n/2;
+			} else {
+				n = 3*n+1;
+			}
+		}
+		cout &lt;&lt; d &lt;&lt; ' ' &lt;&lt; largest &lt;&lt; '\n';
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

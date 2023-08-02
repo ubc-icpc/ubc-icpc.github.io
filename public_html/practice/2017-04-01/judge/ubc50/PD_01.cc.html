@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int n, r, T;
+int h[50005];
+
+bool ok(int s) {
+  int cur = 0, tot = 0;
+  if (s &lt; h[0]) return false;
+  cur = h[0];
+  tot = cur;
+  for (int i = 1; i &lt; n; i++) {
+    int req = h[i] - h[i-1];
+    if (req &gt; s) return false;
+    if (req + cur &lt; s) {
+      cur += req;
+      tot += req;
+    } else if (req + cur == s) {
+      tot += req; if (i != n-1) tot += r;
+      cur = 0;
+    } else if (req + cur &gt; s) {
+      tot += r;
+      cur = req;
+      tot += req;
+    }
+  }
+  return tot &lt;= T;
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cin &gt;&gt; n &gt;&gt; r &gt;&gt; T;
+  for (int i = 0; i &lt; n; i++) cin &gt;&gt; h[i];
+  int lo = 1, hi = 1e9+1;
+  while (lo &lt; hi) {
+    int mid = lo + (hi-lo)/2;
+    if (ok(mid))
+      hi = mid;
+    else
+      lo = mid+1;
+  }
+  assert(ok(lo));
+  cout &lt;&lt; lo &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

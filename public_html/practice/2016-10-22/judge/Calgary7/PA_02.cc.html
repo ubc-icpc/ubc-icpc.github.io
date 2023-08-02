@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+template&lt;typename T&gt; ostream&amp; operator&lt;&lt;(ostream&amp; s, vector&lt;T&gt;&amp; v)
+{ s &lt;&lt; '{'; FOR(i,0,v.size()) s &lt;&lt; (i ? &quot;,&quot; : &quot;&quot;) &lt;&lt; v[i]; return s &lt;&lt; '}'; }
+template&lt;typename S, typename T&gt; ostream&amp; operator&lt;&lt;(ostream &amp;s, pair&lt;S,T&gt; const&amp; p)
+{ return s &lt;&lt; '(' &lt;&lt; p.first &lt;&lt; ',' &lt;&lt; p.second &lt;&lt; ')'; }
+
+struct QQ {
+	int x1,y1,x2,y2;
+};
+
+struct {
+	int ls;
+	bool vis;
+} gd[1000][1000];
+
+int numSets, ans[10000];
+vector&lt;int&gt; ds, dr;
+int findSet(int i) {
+	return ds[i] == i ? i : (ds[i] = findSet(ds[i]));
+}
+void unionSet(int i, int j) {
+	int x = findSet(i), y = findSet(j);
+	if (x == y) return;
+	numSets--;
+	if (dr[x] &lt; dr[y]) ds[x] = y;
+	else if (dr[x] &gt; dr[y]) ds[y] = x;
+	else {ds[x] = y; dr[y]++;}
+}
+bool sameSet(int i, int j) {
+	return findSet(i) == findSet(j);
+}
+
+int N, M, Q;
+const int DN[] = {0,0,-1,1}, DM[] = {-1,1,0,0};
+void dfs(int n, int m) {
+	if (gd[n][m].vis) return;
+	gd[n][m].vis = true;
+	numSets++;
+	FOR(i,0,4) {
+		int n2 = n+DN[i], m2 = m+DM[i];
+		if (n2 &lt; 0 || n2 &gt;= N || m2 &lt; 0 || m2 &gt;= M || gd[n2][m2].ls) continue;
+		unionSet(n*M+m, n2*M+m2);
+		dfs(n2,m2);
+	}
+}
+
+int main() {
+	scanf(&quot;%d%d%d&quot;, &amp;N, &amp;M, &amp;Q);
+	dr.assign(N*M, 0);
+	ds.resize(N*M);
+	iota(begin(ds), end(ds), 0);
+	vector&lt;QQ&gt; qs(Q);
+	FOR(q,0,Q) {
+		QQ&amp; qq = qs[q];
+		scanf(&quot;%d%d%d%d&quot;, &amp;qq.x1, &amp;qq.y1, &amp;qq.x2, &amp;qq.y2);
+		qq.x1--; qq.x2--; qq.y1--; qq.y2--;
+		FOR(x,qq.x1,qq.x2+1) FOR(y,qq.y1,qq.y2+1) gd[x][y].ls++;
+	}
+	FOR(n,0,N) FOR(m,0,M) if (!gd[n][m].ls) dfs(n,m);
+	for (int q = Q-1; q &gt;= 0; q--) {
+		ans[q] = numSets;
+		QQ&amp; qq = qs[q];
+		FOR(x,qq.x1,qq.x2+1) FOR(y,qq.y1,qq.y2+1) {
+			gd[x][y].ls--;
+			if (!gd[x][y].ls) {
+				dfs(x, y);
+			}
+		}
+	}
+	FOR(q,0,Q) printf(&quot;%d\n&quot;, ans[q]);
+		/*FOR(m,0,M) {
+			FOR(n,0,N) printf(&quot;%03d &quot;, findSet(n*M+m));
+			printf(&quot;\n&quot;);
+		}
+		printf(&quot;\n&quot;);*/
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

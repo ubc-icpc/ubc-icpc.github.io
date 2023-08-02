@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, A[10005], R;
+
+map&lt;int, int&gt; E, D;
+vector&lt;map&lt;int, int&gt; &gt; mem;
+
+int match(int i) {
+    if (i == -1) return -2;
+    if (i == -2) return -1;
+    return i;
+}
+
+int getnext(int i) {
+    if (i == -2) return 0;
+    return i+1;
+}
+
+int main () {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    E[1] = -2;
+    E[2] = -1;
+    D[-2] = 1;
+    D[-1] = 2;
+    int val = 3;
+    for (int i = 0; i &lt;= 26; ++i) {
+        E[val] = i;
+        D[i] = val;
+        val *= 2;
+    }
+    
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; N;
+        for (int i = 0; i &lt; N; ++i) {
+            cin &gt;&gt; A[i];
+            A[i] = E[A[i]];
+        }
+        mem = vector&lt;map&lt;int, int&gt; &gt;(N+1);
+        R = -5;
+        for (int i = N-1; i &gt;= 0; --i) {
+            int val = A[i];
+            mem[i][val] = i+1;
+            while (true) {
+                R = max(R, val);
+                int nextpos = mem[i][val];
+                if (mem[nextpos].count(match(val))) {
+                    mem[i][getnext(val)] = mem[nextpos][match(val)];
+                    val = getnext(val);
+                } else break;
+            }
+        }
+        cout &lt;&lt; D[R] &lt;&lt; endl;
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

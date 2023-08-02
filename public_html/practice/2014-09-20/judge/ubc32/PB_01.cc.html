@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;double, double&gt; pdd;
+
+double D[5];
+pdd HE[5];
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		for (int i = 0; i &lt; 5; i++) {
+			cin &gt;&gt; HE[i].first;
+		}
+		
+		double tot_ed = 0;
+		for (int i = 0; i &lt; 5; i++) {
+			cin &gt;&gt; HE[i].second;
+			tot_ed += HE[i].second;
+		}
+		
+		double tot_d = 0;
+		for (int i = 0; i &lt; 5; i++) {
+			cin &gt;&gt; D[i];
+			tot_d += D[i];
+		}
+		
+		double dmg = 1e99;
+		vector&lt;int&gt; p({0,1,2,3,4});
+		do {
+			double ttot_ed = tot_ed;
+			double tdmg = 0;
+			for (int i = 0; i &lt; 5; i++) {
+				double dt = HE[p[i]].first/tot_d;
+				tdmg += ttot_ed*dt;
+				ttot_ed -= HE[p[i]].second;
+			}
+			dmg = min(dmg, tdmg);
+		} while (next_permutation(p.begin(), p.end()));
+		
+		cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; dmg &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

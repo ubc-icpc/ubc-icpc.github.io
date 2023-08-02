@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class B {
+
+	private void work() {
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+
+		int sz = 400400;
+		int[] a = new int[sz];
+		int[] leftMin = new int[sz];
+		int[] leftMax = new int[sz];
+		int[] rightMin = new int[sz];
+		int[] rightMax = new int[sz];
+
+		while (true) {
+			int n = sc.nextInt();
+			if (n == 1)
+				break;
+			for (int i = 0; i &lt; n; i++) {
+				a[i] = sc.nextInt();
+			}
+			leftMin[0] = a[0];
+			leftMax[0] = a[0];
+			for (int i = 1; i &lt; n; i++) {
+				leftMin[i] = leftMin[i - 1];
+				leftMax[i] = leftMax[i - 1];
+				if (a[i] &lt; leftMin[i])
+					leftMin[i] = a[i];
+				if (a[i] &gt; leftMax[i])
+					leftMax[i] = a[i];
+			}
+			rightMin[n - 2] = a[n - 1];
+			rightMax[n - 2] = a[n - 1];
+			for (int i = n - 3; i &gt;= 0; i--) {
+				rightMin[i] = rightMin[i + 1];
+				rightMax[i] = rightMax[i + 1];
+				if (a[i + 1] &lt; rightMin[i])
+					rightMin[i] = a[i + 1];
+				if (a[i + 1] &gt; rightMax[i])
+					rightMax[i] = a[i + 1];
+			}
+
+			int best = rightMax[0] - rightMin[0];
+			int bestCut = 0;
+			for (int i = 1; i &lt; n - 1; i++) {
+				int left = leftMax[i] - leftMin[i];
+				int right = rightMax[i] - rightMin[i];
+				if (right &gt; left)
+					left = right;
+				if (left &lt; best) {
+					best = left;
+					bestCut = i;
+				}
+			}
+			System.out.println(bestCut + 1);
+		}
+
+		sc.close();
+	}
+
+	public static void main(String[] args) {
+		B bbb = new B();
+		bbb.work();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

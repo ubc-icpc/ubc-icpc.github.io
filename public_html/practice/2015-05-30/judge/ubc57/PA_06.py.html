@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+a=raw_input()
+L=[0,0,0,0,0,0,0,0]
+Dic={&quot;'&quot;:'7', '-': '7', ',': '5', '/': '7', '.': '6', '1': '0', '0': '7', '3': '2', '2': '1', '5': '3', '4': '3','Z':'0', '[':'7',']':'7', '7':'4', '6': '4', '9': '6', '8': '5', ';': '7', '=': '7', 'A': '0', 'C': '2', 'B': '3', 'E': '2', 'D': '2', 'G': '3', 'F': '3', 'I': '5', 'H': '4', 'K': '5', 'J': '4', 'M': '4', 'L': '6', 'O': '6', 'N': '4', 'Q': '0', 'P': '7', 'S': '1', 'R': '3', 'U': '4', 'T': '3', 'W': '1', 'V': '3', 'Y': '4', 'X': '1'}
+for i in range(0,len(a)):
+    n=int(Dic[a[i]])
+    L[n]=L[n]+1
+for i in range(0,8):
+    print(L[i])
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

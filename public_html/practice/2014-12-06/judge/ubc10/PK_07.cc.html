@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+
+using namespace std; 
+
+struct P {
+	int x, y;
+	P(){}
+	P(int lx, int ly) {
+		x = lx; y = ly;
+	}
+};
+
+struct cmpX {
+	bool operator() (const P &amp;p1, const P &amp;p2) const {
+		return p1.x &lt; p2.x || (p1.x == p2.x &amp;&amp; p1.y &lt; p2.y);
+	}
+};
+
+struct N {
+	N * left;
+	N * right;
+	int y1, y2;
+	int maxsize;
+	bool leaf;
+	int height;
+	
+	N(){}
+	void init(int ly1, int ly2);
+	void insert(int y);
+	int getLH() {
+		if (left == NULL) return 0;
+		return left-&gt;height;
+	}
+	int getRH() {
+		if (right == NULL) return 0;
+		return right-&gt;height;
+	}
+	void fix() {
+		height = 1 + max(getLH(), getRH());
+		maxsize = max(left-&gt;maxsize, right-&gt;maxsize);
+	}
+	void rotateRight(N *&amp; ptr) {
+		if (leaf || left-&gt;leaf) return;
+		N* curr = ptr;
+		int a = y1, b = left-&gt;left-&gt;y2, c = left-&gt;y2, d = y2;
+
+		ptr = left;
+		ptr-&gt;y1 = a;
+		ptr-&gt;y2 = d;
+
+		N* tmp = left-&gt;right;
+		left-&gt;right = curr;
+		left = tmp;
+
+		y1 = b;
+		y2 = d;
+
+		fix();
+		ptr-&gt;fix();
+	}
+	void rotateLeft(N *&amp; ptr) {
+		if (leaf || right-&gt;leaf) return;
+		N* curr = ptr;
+		int a = y1, b = right-&gt;y1, c = right-&gt;right-&gt;y1, d = y2;
+
+		ptr = right;
+		ptr-&gt;y1 = a;
+		ptr-&gt;y2 = d;
+
+		N* tmp = right-&gt;left;
+		right-&gt;left = curr;
+		right = tmp;
+		
+		y1 = a;
+		y2 = c;
+
+		fix();
+		ptr-&gt;fix();
+	}
+	void balance(N *&amp; ptr) {
+		if (ptr == NULL) return;
+		if (leaf) return;
+
+		int b = getLH() - getRH();
+		if (b &lt;= -2) {
+			int b2 = right-&gt;getLH() - right-&gt;getRH();
+			if (b2 &gt; 0) {
+				right-&gt;rotateRight(right);
+			}
+			rotateLeft(ptr);
+		} else if (b &gt;= 2) {
+			int b2 = left-&gt;getLH() - left-&gt;getRH();
+			if (b2 &lt; 0) {
+				left-&gt;rotateLeft(left);
+			}
+			rotateRight(ptr);
+		}
+	}
+	void print(int s) {
+		for (int i = 0; i &lt; s; i++) cerr &lt;&lt; ' ';
+		cerr &lt;&lt; '[' &lt;&lt; y1 &lt;&lt; ',' &lt;&lt; y2 &lt;&lt; ',' &lt;&lt; height &lt;&lt; ']' &lt;&lt; endl;
+		if (!leaf) {
+			left-&gt;print(s+4);
+			right-&gt;print(s+4);
+		}
+	}
+};
+int ind;
+N bucket[1000000];
+
+void N::init(int ly1, int ly2) {
+	left = NULL; right = NULL;
+	y1 = ly1; y2 = ly2; 
+	maxsize = y2 - y1;
+	height = 1;
+	leaf = true;
+	ind++;
+}
+void N::insert(int y) {
+	if (y &lt;= y1 || y &gt;= y2) return;
+	if (leaf) {
+		left = &amp;bucket[ind];
+		left-&gt;init(y1, y);
+
+		right = &amp;bucket[ind];
+		right-&gt;init(y, y2);
+
+		leaf = false;
+	} else {
+		left-&gt;insert(y);
+		left-&gt;balance(left);
+
+		right-&gt;insert(y);
+		right-&gt;balance(right);
+	}
+	fix();
+}
+
+int main() {
+	int n, m, ntree; cin &gt;&gt; n &gt;&gt; m &gt;&gt; ntree;
+	vector&lt;P&gt; trees;
+	for (int i = 0; i &lt; ntree; i++) {
+		int x, y; cin &gt;&gt; x &gt;&gt; y;
+		trees.push_back(P(x, y));
+	}
+	// dummy trees
+	trees.push_back(P(0, 0));
+	trees.push_back(P(n, m));
+	sort(trees.begin(), trees.end(), cmpX());
+	ntree = trees.size();
+
+	// line sweep
+	int best = 0;
+	for (int i = 0; i &lt; ntree &amp;&amp; trees[i].x &lt; n;) {
+		ind = 0;
+		N * stuff = &amp;bucket[ind];
+		stuff-&gt;init(0, m);
+		//stuff-&gt;print(0);
+
+		int sx = trees[i].x;
+		while (i &lt; ntree &amp;&amp; trees[i].x == sx) i++;
+		for (int j = i; j &lt; ntree;) {
+			int tx = trees[j].x;
+			//cerr &lt;&lt; &quot;[&quot; &lt;&lt; sx &lt;&lt; &quot;, &quot; &lt;&lt; tx &lt;&lt; &quot;] x &quot; &lt;&lt; stuff-&gt;maxsize &lt;&lt; endl;
+			best = max(best, (tx-sx) * stuff-&gt;maxsize);
+			while (j &lt; ntree &amp;&amp; trees[j].x == tx) {
+				//cerr &lt;&lt; &quot;insert &quot; &lt;&lt; trees[j].y &lt;&lt; endl;
+				stuff-&gt;insert(trees[j].y);
+				//stuff-&gt;print(0);
+				j++;
+			}
+		}
+	}
+	cout &lt;&lt; best &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

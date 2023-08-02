@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+#define MOD 1000000007
+
+using namespace std;
+typedef long long int lli;
+
+lli A[100000], B[100000], As[100000], Bs[100000];
+
+int main()
+{
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	int D;
+	cin &gt;&gt; D;
+	lli sum = 0;
+	for(int i=0;i&lt;D;++i)
+	{
+		cin &gt;&gt; A[i];
+		sum += A[i];
+		As[i] = sum;
+	}
+	sum = 0;
+	for(int i=0;i&lt;D;++i)
+	{
+		cin &gt;&gt; B[i];
+		sum += B[i];
+		Bs[i] = sum;
+	}
+	bool found = false;
+	for(int i=D-1;i&gt;=0;--i)
+	{
+		if(As[i] == Bs[i])
+		{
+			found = true;
+			cout &lt;&lt; i+1 &lt;&lt; endl;
+			break;
+		}
+	}
+	if(found == false)
+		cout &lt;&lt; 0 &lt;&lt; endl;
+	
+	
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

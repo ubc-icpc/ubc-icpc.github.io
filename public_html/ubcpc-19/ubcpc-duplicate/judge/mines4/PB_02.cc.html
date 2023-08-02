@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+
+using namespace std;
+
+struct Fighter {
+    string name;
+    int HP;
+    int AT;
+    int DF;
+};
+
+Fighter* getFighter();
+void printFighter(Fighter *toPrint);
+int winner(Fighter a, Fighter b);
+bool isTriple(Fighter &amp;a, Fighter &amp;b, Fighter &amp;c);
+string printTriple(Fighter &amp;a, Fighter &amp;b, Fighter &amp;c);
+void printTriples(Fighter **fighters, int numFighters);
+
+int main() {
+
+	int numFighters;
+
+	cin &gt;&gt; numFighters;
+
+	Fighter **fighters = new Fighter*[numFighters];
+
+	for(int i = 0; i &lt; numFighters; i++) {
+		fighters[i] = getFighter();
+	}
+
+	printTriples(fighters, numFighters);
+
+	// Test case
+    // Fighter *test1 = getFighter();
+    // Fighter *test2 = getFighter();
+	// Fighter *test3 = getFighter();
+
+	// if(isTriple(*test1, *test2, *test3))
+	// 	cout &lt;&lt; &quot;It worked!&quot; &lt;&lt; endl;
+	// else 
+	// 	cout &lt;&lt; &quot;It failed&quot; &lt;&lt; endl;
+
+    return 0;
+}
+
+Fighter* getFighter() {
+
+    int hp, at, df;
+    string name;
+    cin &gt;&gt; name &gt;&gt; hp &gt;&gt; at &gt;&gt; df;
+
+    Fighter* toReturn = new Fighter;
+    toReturn-&gt;name = name;
+    toReturn-&gt;HP = hp;
+    toReturn-&gt;AT = at;
+    toReturn-&gt;DF = df;
+
+    return toReturn;
+}
+
+void printFighter(Fighter *toPrint) {
+    cout &lt;&lt; toPrint-&gt;name &lt;&lt; &quot;: HP: &quot; &lt;&lt; toPrint-&gt;HP &lt;&lt; &quot;; AT: &quot; &lt;&lt; toPrint-&gt;AT &lt;&lt; &quot;; DF: &quot; &lt;&lt; toPrint-&gt;DF &lt;&lt; endl;
+}
+
+string printTriple(Fighter &amp;a, Fighter &amp;b, Fighter &amp;c) {
+	return a.name + &quot; &quot; + b.name + &quot; &quot; + c.name + &quot;\n&quot;;
+}
+
+void printTriples(Fighter **fighters, int numFighters) {
+
+    int remFighters, tripCount = 0;
+
+	string output;
+
+	string firstTrip;
+	for (int a = 2; a &lt; numFighters; a++) {
+		for (int b = 1; b &lt; a; b++) {
+			for (int c = 0; c &lt; b; c++) {
+				// cout &lt;&lt; a &lt;&lt; b &lt;&lt; c &lt;&lt; endl;
+				if (isTriple(*fighters[a], *fighters[b], *fighters[c])) { 
+					output += printTriple(*fighters[a], *fighters[b], *fighters[c]);
+					tripCount++;
+					// cout &lt;&lt; tripCount &lt;&lt; endl;
+					// if (haveOne = false) {
+					// 	firstTrip = ??
+					// } 
+				}
+			}
+		}
+	}
+
+	cout &lt;&lt; tripCount &lt;&lt; endl;
+	cout &lt;&lt; output &lt;&lt; endl;
+}
+
+int winner(Fighter a, Fighter b) {
+	if ((b.AT - a.DF) &lt;= 0 &amp;&amp; (a.AT - b.DF) &lt;= 0) {
+		return 0;
+	}
+	int lossA = max(0, b.AT-a.DF);
+	int lossB = max(0, a.AT-b.DF);
+
+	int hitsA = 0, hitsB = 0;
+
+	if (lossA != 0) {
+		hitsA = (a.HP-1) / lossA;
+	} else { return 1;}
+	if (lossB != 0) {
+		hitsB = (b.HP-1) / lossB;
+	} else { return 2;}
+
+	if (hitsA &gt; hitsB) {
+		return 1;
+	} else if (hitsB &gt; hitsA) {
+		return 2;
+	} else {
+		return 0;
+	}
+}
+
+bool isTriple(Fighter&amp; a, Fighter&amp; b, Fighter&amp; c) {
+	char winner1, winner2, winner3;
+	int winNum;
+	//cout &lt;&lt; a.name &lt;&lt; &quot; &quot; &lt;&lt; b.name &lt;&lt; endl;
+	winNum = winner(a,b);
+	if (winNum == 1) {
+		winner1 = 'a';
+	} else if (winNum == 2) {
+		winner1 = 'b';
+	} else {
+		return false;
+	} 
+		//cout &lt;&lt; b.name &lt;&lt; &quot; &quot; &lt;&lt; c.name &lt;&lt; endl;
+    winNum = winner(b,c);
+	if (winNum == 1) {
+		winner2 = 'b';
+	} else if (winNum == 2) {
+		winner2 = 'c';
+	} else {
+		return false;
+	} 
+		//cout &lt;&lt; a.name &lt;&lt; &quot; &quot; &lt;&lt; c.name &lt;&lt; endl;
+
+	winNum = winner(a, c);
+	if (winNum == 1) {
+		winner3 = 'a';
+	} else if (winNum == 2) {
+		winner3 = 'c';
+	} else {
+		return false;
+	} 
+	if (winner1 == winner2 || winner2 == winner3 || winner1 == winner3) {
+		return false;
+	} else {
+		return true;
+	}
+}</code>
+</pre>
+</body>
+</html>

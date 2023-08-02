@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+N = int(raw_input())
+for i in range(N):
+	S = raw_input()
+	le = int(raw_input())
+	mys = raw_input()
+	mys = mys[1:-1]
+
+	nums = mys.split(',')
+	
+	for i in range(le):
+		nums[i] = int(nums[i])
+
+	err = False
+	rev = 0
+	start = 0
+	end =0
+	for ele in S:
+		if ele=='R':
+			rev = 1-rev
+			
+		elif ele=='D':
+			if le==0:
+				err = True
+				break
+			else:
+				if rev==0:
+					start+=1
+				else:
+					end+=1
+				le-=1;
+	if err:
+		print(&quot;error&quot;)
+	else:
+		if rev ==1:
+			nums.reverse()
+			ss = end
+			ee = -start
+		else:
+			ss = start
+			ee = -end
+
+		if le==0:
+			print(&quot;[]&quot;)
+		elif ee==0:
+			print(nums[ss:])
+		else:
+			print(nums[ss:ee])
+			
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

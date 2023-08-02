@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+map&lt;string, int&gt; m({ {&quot;lower&quot;, 0}, {&quot;middle&quot;, 1}, {&quot;upper&quot;, 2} });
+struct val {
+	string name;
+	vector&lt;int&gt; v;
+	bool operator&lt;(const val&amp; o) const {
+		return (v == o.v ? name &lt; o.name : v &gt; o.v);
+	}
+};
+
+int main() {
+	int n; cin &gt;&gt; n;
+	string s, tok, name;
+	getline(cin, s);
+	vector&lt;val&gt; res;
+	
+	int L = 0;
+	for (int i = 0; i &lt; n; i++) {
+		getline(cin, s);
+		stringstream ss(s);
+		val v; ss &gt;&gt; name;
+		v.name = name.substr(0, name.length()-1);
+		while (ss &gt;&gt; tok) {
+			if (tok != &quot;class&quot;) v.v.push_back(m[tok]);
+		}
+		reverse(v.v.begin(), v.v.end());
+		res.push_back(v);
+		L = max(L, (int) v.v.size());
+	}
+	for (int i = 0; i &lt; n; i++) {
+		int add = L - res[i].v.size();
+		for (int j = 0; j &lt; add; j++) {
+			res[i].v.push_back(1);
+		}
+	}
+	
+	sort(res.begin(), res.end());
+	for (const auto&amp; v : res) {
+		cout &lt;&lt; v.name &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

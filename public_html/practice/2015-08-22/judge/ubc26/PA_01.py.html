@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+from sys import stdin
+k = 0
+for i, l in enumerate(stdin):
+    n = int(l)
+    if not n: break
+    k += n
+    if k &gt;= 100:
+        print(&quot;Input #{}: Totally Sweet!&quot;.format(i+1))
+        y = k // 50
+        k -= y * 50
+    elif k &gt;= 50:
+        print(&quot;Input #{}: Sweet!&quot;.format(i+1))
+        k -= 50
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

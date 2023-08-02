@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int d[10];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int n; cin &gt;&gt; n;
+    cout &lt;&lt; &quot;Denominations:&quot;;
+    for (int i = 0; i &lt; n; i++) {
+      cin &gt;&gt; d[i];
+      cout &lt;&lt; &quot; &quot; &lt;&lt; d[i];
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+    for (int i = 1; i &lt; n; i++) {
+      if (d[i] &lt; 2*d[i-1]) {
+        cout &lt;&lt; &quot;Bad&quot;;
+        goto VELOCIRAPTOR;
+      }
+    }
+    cout &lt;&lt; &quot;Good&quot;;
+    VELOCIRAPTOR:
+    cout &lt;&lt; &quot; coin denominations!\n\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

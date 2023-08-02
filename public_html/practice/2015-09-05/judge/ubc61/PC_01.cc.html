@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+const double PI = 3.14159265359;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	for (int N=1; N&lt;=n; N++) {
+		double a,b; cin &gt;&gt; a &gt;&gt; b;
+		double c = sqrt(a*a + b*b);
+		double tarea = a*b/2;
+		double r = (a + b - c)/2;
+		double b2 = (b + c - a)/2;
+		double c2 = sqrt(b2*b2 + r*r);
+		double r2 = (c2*r-r*r)/(c2+r);
+		double ratio = (r2*r2)/(r*r);
+		double carea = (r*r*PI)/(1-ratio);
+		cout &lt;&lt; fixed &lt;&lt; setprecision(4) &lt;&lt; &quot;Case #&quot; &lt;&lt; N &lt;&lt; &quot;: &quot; &lt;&lt; carea/tarea &lt;&lt; endl &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

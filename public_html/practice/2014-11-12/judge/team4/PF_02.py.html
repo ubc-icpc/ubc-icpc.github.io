@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+def inp(): return sys.stdin.next().rstrip('\n')
+
+def from_b(x):
+    aa = map(int, x[::-1])
+    bb = map(lambda i: (-2)**i, xrange(len(x)))
+    return sum(map(lambda a,b: a*b, aa, bb))
+    
+def to_b_it(x):
+    if x == 0: yield 0
+    while x != 0:
+        q = -(x/2)
+        r = x - (-2*q)
+        yield r
+        x = q
+ 
+def to_b(x):
+    return list(reversed(list(to_b_it(x))))
+   
+  
+#for x in range(-25, 25):
+#    print &quot;%d: %s&quot;  % (x, ''.join(map(str,to_b(int(x)))))
+   
+n = int(inp())
+
+for ____ in xrange(n):
+    c, x = inp().split(&quot; &quot;)
+    #print c, x
+    if c == 'b':
+        print &quot;From binary: %s is %r&quot; % (x, from_b(x))
+    else:
+        print &quot;From decimal: %s is %s&quot; % (x, ''.join(map(str,to_b(int(x)))))
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

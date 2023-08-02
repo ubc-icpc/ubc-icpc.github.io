@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;sstream&gt;
+using namespace std;
+
+string trim_zero(string s){
+	if (s.length() == 1) return s;
+	int ctr = 0;
+	string ret = &quot;&quot;;
+	for (int i = 0; i &lt; s.length() - 1; i++){
+		if (s[i] == '0') ctr++;
+		else break;
+	}
+	for (int i = ctr; i &lt; s.length(); i++){
+		ret = ret + s[i];
+	}
+	return ret;
+}
+
+string int_to_bstring(int n){
+	string ans = &quot;&quot;;
+	for (int i = 0; i &lt; 32; i++){
+		stringstream ss; 		
+		ss &lt;&lt; ('0' + n &amp; 1);
+		string app;
+		ss &gt;&gt; app;
+		ans = app + ans;
+		n = n &gt;&gt; 1;
+	}
+	return ans;
+}
+int b_to_d(int b){
+	int d = 0;
+	for (int i = 0; i &lt; 32; i++){
+		if ((b &amp; 1)==1 &amp;&amp; (i%2==1)){
+			d += -1*(1 &lt;&lt; i);
+		} else if ((b &amp; 1)==1){
+			d += (1 &lt;&lt; i);
+		}
+		b = b &gt;&gt; 1;
+	}
+	return d; 
+}
+
+int main(){
+	map&lt;int, string&gt; d2b_map;
+	map&lt;string, int&gt; b2d_map; 
+	for (int i = 0; i &lt; 32768; i++){
+		string b = trim_zero(int_to_bstring(i));
+		int d = b_to_d(i);
+		d2b_map[d] = b;
+		b2d_map[b] = d;
+	}
+
+	int n; cin &gt;&gt; n;
+	while (n--){
+		char c; cin &gt;&gt; c;
+		if (c=='b'){
+			string s; cin &gt;&gt; s;
+			cout &lt;&lt; &quot;From binary: &quot;&lt;&lt; s &lt;&lt; &quot; is &quot; &lt;&lt; b2d_map[trim_zero(s)] &lt;&lt; endl;
+		} else {
+			int num; cin &gt;&gt; num;
+			cout &lt;&lt; &quot;From decimal: &quot; &lt;&lt; num &lt;&lt; &quot; is &quot; &lt;&lt; d2b_map[num] &lt;&lt; endl;
+		}
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

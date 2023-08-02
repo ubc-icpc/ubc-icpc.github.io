@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef complex&lt;double&gt; pt;
+
+int W, N, D, n;
+double pi = acos(-1.0), a[20000], eps = 1e-5;
+
+bool valid(double L) {
+	for (int i = 0; i &lt; n; i++) {
+		//start at point i
+		double cur = a[i];
+		int num = 0, idx = i, w = W;
+		while (w-- &amp;&amp; num &lt; n) {
+			int nidx = lower_bound(a, a+2*n+1, cur+L+eps)-a;
+			if (a[nidx]-a[idx] &gt; L+eps) {
+				num += nidx - idx;
+				idx = nidx;
+			} else {
+				num += nidx - idx + 1;
+				idx = nidx + 1;
+			}
+			cur = a[idx];
+		}
+		if (num &gt;= n) return true;
+	}
+	return false;
+}
+
+int main() {
+	while (cin &gt;&gt; W &amp;&amp; W) {
+		cin &gt;&gt; N &gt;&gt; D;
+		vector&lt;int&gt; div(D);
+		for (int i = 0; i &lt; D; i++) {
+			cin &gt;&gt; div[i];
+		}
+		
+		vector&lt;pt&gt; p;
+		for (int i = 0; i &lt; N; i++) {
+			bool good = false;
+			for (int d : div) good |= (i%d == 0);
+			if (good) p.push_back(polar(1.0, 2*pi*i/N));
+		}
+		
+		n = p.size();
+		for (int i = 0; i &lt; 2*n; i++) {
+			a[i] = abs(p[(i+1)%n]-p[i%n]);
+		}
+		
+		for (int i = 0; i &lt; 2*n-1; i++) {
+			a[i+1] += a[i];
+		}
+		a[2*n] = 1e9; //sentinel
+		
+		double l = 0, r = 2*pi;
+		while (r-l &gt; 1e-8) {
+			double m = (l+r)/2;
+			if (valid(m)) {
+				r = m;
+			} else {
+				l = m;
+			}
+		}
+		
+		cout &lt;&lt; fixed &lt;&lt; setprecision(1) &lt;&lt; 1000*((l+r)/2 + 2) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int sat[110][4];
+
+int main() {
+	int cas;
+	scanf(&quot;%d&quot;, &amp;cas);
+	while (cas--) {
+		int rings, runes;
+		int error = 5;
+		scanf(&quot;%d%d&quot;, &amp;rings, &amp;runes);
+		memset(sat, 0, sizeof(sat));
+		//puts(&quot;-----&quot;);
+		for (int i = 0; i &lt; runes; i++) {
+			int mark[30] = {0};
+			for (int j = 0; j &lt; 3; j++) {
+			int k;
+				scanf(&quot;%d&quot;, &amp;k);
+				if (k == 0) error = 1;
+				int sign = 1;
+				if (k &lt; 0) sign = -1;
+				k *= sign;
+				if (k &gt; rings &amp;&amp; error &gt; 2) {
+					error = 2;
+				}
+				if (mark[k] != 0 &amp;&amp; error &gt; 3) {
+					error = 3;
+				}
+				mark[k] = 1;
+				sat[i][j] = k * sign;
+			}
+			scanf(&quot;%*d&quot;);
+		}
+		if (error == 1) {
+			puts(&quot;INVALID: NULL RING&quot;);
+		} else if (error == 2) {
+			puts(&quot;INVALID: RING MISSING&quot;);
+		} else if (error == 3) {
+			puts(&quot;INVALID: RUNE CONTAINS A REPEATED RING&quot;);
+		}
+		if (error != 5) continue;
+		int flag;
+		for (int l = 0; l &lt; (1 &lt;&lt; rings); l++) {
+			flag = 1;
+			for (int j = 0; j &lt; runes; j++) {
+				int p = 0;
+				for (int i = 0; i &lt; 3; i++) {
+					int k = sat[j][i], sign = 1;
+					if (k &lt; 0) {
+						k = -k;
+						sign = 0;
+					}
+					k--;
+					if ((l &amp; (1 &lt;&lt; k)) &amp;&amp; sign || !(l &amp; (1 &lt;&lt; k)) &amp;&amp; !sign) {
+						p = 1;
+					}
+				}
+				if (p == 0) {
+					flag = 0;
+					break;
+				}
+			}
+			if (flag) {
+				 puts(&quot;RUNES SATISFIED!&quot;);
+				 break;
+			}
+		}
+		if (!flag) {
+			puts(&quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!&quot;);
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

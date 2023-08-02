@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+
+public class D {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int r, c, w, b, n = sc.nextInt();
+		for(int i = 0; i&lt; n;i++){
+			r = sc.nextInt();
+			c = sc.nextInt();
+			b = w = 0;
+			for (int j = 0;j&lt; r; j++) {
+				for (int k = 0; k&lt; c ;k++){
+					if (j % 2 == k%2) {
+						b += sc.nextInt();
+					} else {
+						w += sc.nextInt();
+					}
+				}
+			}
+			System.out.println(&quot;Case #&quot;+(i+1)+&quot;: &quot;+ (b == w ? &quot;YES&quot; : &quot;NO&quot;));
+			System.out.println();
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

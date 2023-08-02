@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+/* #define debug printf */
+#define debug(...)
+
+char s[100001];
+
+typedef unsigned long long llu;
+
+#define R 32
+#define M 2
+
+llu A[100000/R+2][R];
+int len;
+
+int track(int e) {
+    int total = 0;
+    int eq = 0;
+    debug(&quot;TRY %d\n&quot;, e);
+    int i; for (i = 0; i &lt; (len-e) / R; i++) {
+        llu xr = A[i][0] ^ A[i+e/R][e%R];
+        /*debug(&quot;A[%d] &gt;&gt; %d ^ A[%d] &gt;&gt; %d\n&quot;, i, 0, i+e/R, e%R);
+        for (int j = 63; j &gt;= 0; j--) printf(&quot;%llu&quot;, A[i][0]&gt;&gt;j&amp;1); printf(&quot;\n&quot;);
+        for (int j = 63; j &gt;= 0; j--) printf(&quot;%llu&quot;, A[i+e/R][e%R]&gt;&gt;j&amp;1); printf(&quot;\n&quot;);
+        for (int j = 63; j &gt;= 0; j--) printf(&quot;%llu&quot;, xr&gt;&gt;j&amp;1); printf(&quot;\n&quot;);*/
+        if (xr == 0) {
+            /* debug(&quot;EQ %d\n&quot;, eq); */
+            eq += R;
+        } else {
+            eq += __builtin_ctzll(xr)/M;
+            /* debug(&quot;EQ %d TAKE\n&quot;, eq); */
+            if (eq &gt;= e)
+                total += eq-e+1;
+            eq = __builtin_clzll(xr)/M;
+            /* debug(&quot;EQ %d\n&quot;, eq); */
+        }
+    }
+    if ((len-e) % R) {
+        llu xr = (A[i][0] ^ A[i+e/R][e%R]) | (~((llu) 0) &lt;&lt; ((len-e)%R*2));
+        eq += __builtin_ctzll(xr)/M;
+    }
+    if (eq &gt;= e)
+        total += eq-e+1;
+    return total;
+}
+
+int main() {
+    while (true) {
+        scanf(&quot;%s&quot;, s);
+        if (s[0] == '0') break;
+        len = strlen(s);
+        memset(A, 0, sizeof A);
+        if (s[0] == 0) break;
+        for (int i = 0; s[i] != 0; i++) {
+            llu v = s[i] == 'A' ? 0 : s[i] == 'T' ? 1 : s[i] == 'C' ? 2 : 3;
+            A[i/R][0] |= v &lt;&lt; (i%R*M);
+        }
+        for (int j = 1; j &lt; R; j++) {
+            for (int i = 0; i &lt;= (len-1)/R; i++)
+                A[i][j] = (A[i+1][0] &lt;&lt; ((R-j)*M)) | (A[i][0] &gt;&gt; j*M);
+        }
+        /*for (int i = 127; i &gt;= 0; i--) printf(&quot;%lld&quot;, A[0] &gt;&gt; i&amp;1); printf(&quot;\n&quot;);
+        while (true) {
+            int a, b; scanf(&quot;%d%d&quot;, &amp;a, &amp;b);
+            if (a == 0) break;
+            printf(&quot;%d\n&quot;, eq(a, b));
+        }*/
+        llu count = 0;
+        for (int e = 1; e &lt; R*4 &amp;&amp; e &lt;= len/2; e++) {
+            int total = 0;
+            int eq = 0;
+            for (int i = 0; i+e &lt; len; i++) {
+                if (s[i] == s[i+e]) {
+                    eq += 1;
+                } else {
+                    if (eq &gt;= e)
+                        total += eq-e+1;
+                    eq = 0;
+                }
+            }
+            if (eq &gt;= e)
+                total += eq-e+1;
+            debug(&quot;%d: %d\n&quot;, e, total);
+            count += total;
+        }
+        for (int e = R*4; e &lt;= len/2; e++) {
+            int t = track(e);
+            int total = 0;
+            int eq = 0;
+            for (int i = 0; i+e &lt; len; i++) {
+                if (s[i] == s[i+e]) {
+                    eq += 1;
+                } else {
+                    if (eq &gt;= e)
+                        total += eq-e+1;
+                    eq = 0;
+                }
+            }
+            if (eq &gt;= e)
+                total += eq-e+1;
+            debug(&quot;%d: %d\n&quot;, e, t);
+            /* if (total != t) */
+            /*     printf(&quot;REKT %d\n&quot;, e); */
+            count += t;
+        }
+        printf(&quot;%llu\n&quot;, count);
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

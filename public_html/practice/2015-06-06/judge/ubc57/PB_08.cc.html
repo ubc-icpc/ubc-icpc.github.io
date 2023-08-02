@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// June 6 B.cpp : Defines the entry point for the console application.
+//
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+int L[100005];
+
+int main()
+{
+	long long n,x;
+	cin &gt;&gt; n;
+	for (int i = 0; i &lt; n; i++){
+		cin &gt;&gt; x;
+		L[i] = x;
+	}
+	sort(L, L + n);
+	vector&lt;long long&gt; G;
+	G.push_back(1);
+	for (int i = 1; i &lt; n;i++){
+		if (L[i] != L[i - 1]) G.push_back(1);
+		else G.back()++;
+	}
+	if (G.size() &lt; 3){
+		cout &lt;&lt; &quot;Slavko&quot; &lt;&lt; endl;
+		cout &lt;&lt; L[0] &lt;&lt; ' ' &lt;&lt; L[n - 1];
+	}
+	else{
+		string answer;
+		while (true){
+			long long s = G.size();
+			if (s == 3){
+				if (G[0] &gt; G[2]){
+					cout &lt;&lt; &quot;Slavko&quot; &lt;&lt; endl;
+					cout&lt;&lt;L[G[0] - 1]&lt;&lt; ' '&lt;&lt; L[G[0]];
+					break;
+				}
+				else{
+					cout &lt;&lt; &quot;Mirko&quot;&lt;&lt;endl;
+					cout &lt;&lt; L[G[0]+G[1]-1] &lt;&lt; ' ' &lt;&lt; L[G[0]+G[1]];
+					break;
+				}
+			}
+			if (s == 2){
+				cout &lt;&lt; &quot;Slavko&quot; &lt;&lt; endl;
+				cout &lt;&lt; L[G[0]-1] &lt;&lt; ' ' &lt;&lt; L[G[0]];
+				break;
+			}
+			long long n = min(G.front(), G.back());
+			G[0] = G[0] - n;
+			G[1] = G[1] + n;
+			G[s - 2] = G[s - 2] + n;
+			G[s - 1] = G[s - 1] - n;
+			if (G[0]==0)G.erase(G.begin());
+			if (G.back()==0)G.pop_back();
+		}
+	}
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

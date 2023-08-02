@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+using namespace std;
+typedef long long ll;
+
+const int maxn=1e6+3;
+ll test,n,k;
+ll mod=1e6+3;
+ll fact[maxn],ifact[maxn];
+
+ll binom(ll n, ll k) {
+  ll ans=1;
+  while (n&amp;&amp;k) {
+    ll nm=n%mod;
+    ll dm=k%mod;
+    if (nm&lt;dm) return 0;
+    ll num=fact[nm];
+    ll denom=(ifact[nm-dm]*ifact[dm])%mod;
+    ans=(ans*((num*denom)%mod))%mod;
+    n/=mod;
+    k/=mod;
+  }
+  return ans;
+}
+
+ll power(ll num, ll exp) {
+  if (exp==0) return 1;
+  if (exp==1) return num;
+  ll res=power(num, exp/2);
+  res=res%mod;
+  res*=res;
+  if (exp%2) res*=num;
+  return res%mod;
+}
+
+int main() {
+  fact[0]=ifact[0]=1;
+  for (int i=1; i&lt;mod; i++){
+    fact[i]=(i*fact[i-1])%mod;
+    ifact[i]=power(fact[i],mod-2);
+  }
+  cin &gt;&gt; test;
+  while (test--) {
+    cin &gt;&gt; n &gt;&gt; k;
+    ll res=1;
+    while (n&gt;1) {
+      // a: 2 ways of choosing a winner in each faceoff
+      // b: #ways  in one faceoff
+      // final result: ((#ways in one faceoff)^(#rounds))*(#choosing winners)
+      ll a=power(2,n/2);
+      ll b=binom(k,(k/2));
+      ll tmp=(power(b,n/2)*a)%mod;
+      res=(res*tmp)%mod;
+      n=(n+1)/2;
+    }
+    cout &lt;&lt; res &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+//#define printf(...);
+#define I(x) x; cin &gt;&gt; x;
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define L0(qq,ss,m) for (int qq=ss;qq&lt;(m);qq++)
+#define SL(ss, mmm) \
+  vector&lt;string&gt; ss; \
+  int I(mmm); ss.reserve(mmm); \
+  L(iiii, mmm) {string I(tt);ss.push_back(tt);}
+
+typedef long double real;
+const real sqrt2 = 1.4142135623730951;
+const real pi = 3.14159265358979;
+
+#define OUT(x) cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; (x) &lt;&lt; endl;
+int main() {
+  int I(mm);
+  L(ii, mm) {
+    real I(s); real I(r);
+    real ir = s/2;
+    if (r &gt;= sqrt2 * ir) {
+      OUT(s*s);
+    } else if (r &lt; ir) {
+      OUT(pi*r*r);
+    } else {
+      real theta = acos(ir / r);
+      real phi = pi / 4 - theta;
+      real y = r * sin(theta);
+      real a1 = ir * y / 2;
+      real a2 = pi * r * r * (phi / (2*pi));
+      real integral = 8 * (a1 + a2);
+      OUT(integral);
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

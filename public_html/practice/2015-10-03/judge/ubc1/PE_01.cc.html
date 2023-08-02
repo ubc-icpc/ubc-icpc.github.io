@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+
+const int MAXW = 505;
+//winner always wants to maximize number of extra moves
+//loser always wants to minimize number of extra moves
+//(number of extra moves)
+int memo[MAXW][MAXW][3];
+int dp(int r, int c, int t) {
+    int ans;
+    if (t == 0) {
+        if (r == 1) return 0;
+        if (memo[r][c][t] != -1) return memo[r][c][t];
+        
+        ans = 0;
+        for (int i = 1; i &lt; r; i++) {
+            int u0 = dp(i, c, t^1);
+            int v1 = dp(r-i, c, t^1);
+            if (u0 &amp;&amp; v1) ans = 1;
+        }
+    } else if (t == 1) {
+        if (c == 1) return 1;
+        if (memo[r][c][t] != -1) return memo[r][c][t];
+        
+        ans = 1;
+        for (int i = 1; i &lt; c; i++) {
+            int u0 = dp(r, i, t^1);
+            int v1 = dp(r, c-i, t^1);
+            if (!u0 &amp;&amp; !v1) ans = 0;
+        }
+    }
+    
+    return memo[r][c][t] = ans;
+}
+
+int main() {
+    memset(memo, -1, sizeof memo);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n, m; cin &gt;&gt; m &gt;&gt; n;
+        
+        string s; cin &gt;&gt; s;
+        int t = (s == &quot;Vicky&quot;);
+        bool win = (t ? dp(n, m, t) == 0 : dp(n, m, t) == 1);
+        cout &lt;&lt; s &lt;&lt; &quot; &quot; &lt;&lt; (win ? &quot;can win&quot; : &quot;cannot win&quot;) &lt;&lt; endl;
+        
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#include &lt;stdint.h&gt;
+using namespace std;
+int S, w, l;
+double prob(int a, int b, int win) {
+	if(a &gt;= 4) return 1.0;
+	if(b &gt;= 4) return 0.0;
+	int s = 20;
+	if(win != -1) {
+		if(win) s += w;
+		else s -= l;
+	}
+	return    (double)(s)/(S+s)  * prob(a+1, b, true) + 
+	       (1-(double)(s)/(S+s)) * prob(a, b+1, false);
+}
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	while(n--) {
+		string team;
+		getline(cin, team);
+		getline(cin, team);
+		cin &gt;&gt; S &gt;&gt; w &gt;&gt; l;
+		cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; prob(0, 0, -1) &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

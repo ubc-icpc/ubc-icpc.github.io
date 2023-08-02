@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;iterator&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+using qi = queue&lt;int&gt;;
+
+int main() {
+  int T; cin &gt;&gt; T;
+  vi dx {-2, -2, 2, 2, -1, 1, -1, 1};
+  vi dy {-1, 1, -1, 1, -2, -2, 2, 2};
+  for (int cases = 1; cases &lt;= T; ++cases) {
+    int N, R1, C1, R2, C2;
+    cin &gt;&gt; N &gt;&gt; R1 &gt;&gt; C1 &gt;&gt; R2 &gt;&gt; C2;
+    R1--, C1--, R2--, C2--;
+    vi found(N * N, -1);
+    qi next;
+    next.push(R1 * N + C1);
+    found[R1 * N + C1] = 0;
+    while (!next.empty() &amp;&amp; found[R2 * N + C2] == -1) {
+      int R = next.front() / N;
+      int C = next.front() % N;
+      int dist = found[R * N + C];
+      // cout &lt;&lt; R &lt;&lt; ' ' &lt;&lt; C &lt;&lt; &quot; dist: &quot; &lt;&lt; dist &lt;&lt; endl;
+      next.pop();
+      for (int i = 0; i &lt; 8; ++i) {
+        int nR = R + dy[i];
+        int nC = C + dx[i];
+        int ind = nR * N + nC;
+        if (0 &lt;= nR &amp;&amp; nR &lt; N
+            &amp;&amp; 0 &lt;= nC &amp;&amp; nC &lt; N
+            &amp;&amp; found[ind] == -1) {
+          found[ind] = dist + 1;
+          next.push(ind);
+        }
+      }
+    }
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; cases &lt;&lt; &quot;: &quot; &lt;&lt; found[R2 * N + C2] &lt;&lt; endl;
+    if (cases != T)
+      cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

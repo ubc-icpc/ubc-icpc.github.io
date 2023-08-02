@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+typedef long long ll;
+ll a[5006];
+int main() {
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		int n; cin &gt;&gt; n;
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; a[i];
+			a[i] *= 2;
+		}
+		
+		sort(a, a+n);
+		ll ans = (a[n-1]-a[0])/2;
+		for (int i = 0; i &lt; n-1; i++) {
+			ll a0 = (-a[i]-a[0] + a[n-1]+a[i+1])/2;
+			ll a1 = a[i]-a[0];
+			ll a2 = a[n-1]-a[i+1];
+			ans = min(ans, min(a0,max(a1,a2)));
+		}
+
+		cout &lt;&lt; (ans+1)/2 &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

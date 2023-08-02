@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+long long dp[10000008];
+
+const long long INF = 225* 1e9;
+
+int e,s,f;
+
+int main(){
+	cin &gt;&gt; e&gt;&gt;s&gt;&gt;f;
+	if (s&gt;f) swap(s,f);
+	for(int i=1;i&lt;=s;i++){
+		dp[i] = 2;
+	}
+	dp[0] =0;
+	for(int i=s+1;i&lt;=e;i++){
+		dp[i] += dp[i-s];
+		if (dp[i] &gt; INF) continue;
+		if (i&gt;f) dp[i]+=dp[i-f];
+		else dp[i]+=1;
+	}
+	//for(int i=0;i&lt;=e;i++) cout &lt;&lt; dp[i] &lt;&lt;&quot; &quot;;
+	double ans1 = (double)225 / (double)(dp[e]);
+	double ans2 = (double)200 / (double)(dp[e]-1);
+	//cout &lt;&lt; dp[e] &lt;&lt; endl;
+	cout &lt;&lt; setprecision(6)&lt;&lt;fixed &lt;&lt; min(ans1, ans2) &lt;&lt;endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

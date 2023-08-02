@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// July 18 D.cpp : Defines the entry point for the console application.
+//
+
+//#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+using namespace std;
+long long L[11];
+long long DP[6][51];
+int ma;
+int F[55];
+
+//long long dp(int x, int sum, int words){ //x is index of last
+//	if (words == 0) return 1;
+//	if ((x == 0) &amp;&amp; (sum == L[x] * words)) return 1;
+//	if (x == 0) return 0;
+//	if (DP[x][sum][words] != -1) return DP[x][sum][words];
+//	long long answer=0;
+//	for (int amount = 0; amount &lt;= words; amount++)answer += dp(x - 1, sum - L[x] * amount, words - amount)*F[words] / (F[words - amount]*F[amount]);
+//	DP[x][sum][words] = answer;
+//	return answer;
+//}
+//vector&lt;long long&gt; part(int tot, int n){
+//
+//}
+//long long dp(int x, int wl, int len){
+//	if (DP[x][wl][len] != -1) return DP[x][wl][len];
+//	if (wl == 0) return 1;
+//	if (len &lt; 0) return 0;
+//	if ((len == 0) &amp;&amp; (wl != 0)) return 0;
+//	long long answer = 0;
+//	if (x == 1){
+//		if (len != wl) return 0;
+//		else{
+//			vector&lt;long long&gt; V = part(wl, 1);
+//			for (int i = 0; i &lt; V.size(); i++) answer += F[wl] / V[i];
+//			DP[x][wl][len] = answer;
+//			return answer;
+//		}
+//	}
+//	vector&lt;long long&gt; V = part(wl, x);
+//	for (int a = 0; a &lt;= wl; a++){
+//		vector&lt;long long&gt; V = part(a, L[x]);
+//		for (int i = 0; i &lt; V.size(); i++) answer += dp(x-1,wl-a,wl-a*x)*F[wl]/(F[wl-a]*V[i]);
+//	}
+//	DP[x][wl][len] = answer;
+//	return answer;
+//}
+
+long long dp(int words, int len){
+	if (len &lt; 0) return 0;
+	if ((words == 0) &amp;&amp; (len == 0)) return 1;
+	if (words == 0) return 0;
+	if (words == 1) return L[len];
+	if (DP[words][len] != -1) return DP[words][len];
+	long long answer = 0;
+	for (int l = 3; l &lt;= ma; l++) answer += (L[l] * dp(words - 1, len - l));
+	DP[words][len] = answer;
+	//cout &lt;&lt; words &lt;&lt; &quot; &quot; &lt;&lt; len &lt;&lt;&quot; &quot;&lt;&lt;answer&lt;&lt; endl;
+	return answer;
+}
+int main()
+{
+	int t, w, p ,q, sum,  z;
+	string s;
+	cin &gt;&gt; t;
+	long long prod=1;
+	F[0] = 1;
+	for (int i = 1; i &lt;= 50; i++){
+		prod = prod*i;
+		F[i] = prod;
+	}
+	for (int i = 0; i &lt; t; i++){
+		memset(DP, -1, sizeof DP);
+		memset(L, 0, sizeof L);
+		ma = 0;
+		cin &gt;&gt; w &gt;&gt; p &gt;&gt; q;
+		for (int j = 0; j &lt; w; j++) {
+			cin &gt;&gt; s;
+			z = s.length();
+			L[z]++;
+			ma = max(ma, z);
+		}
+		for (int j = 1; j &lt;= q; j++){
+			cin &gt;&gt; sum;
+			cout &lt;&lt; dp(p,sum) &lt;&lt; endl;;
+		}
+
+
+	}
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

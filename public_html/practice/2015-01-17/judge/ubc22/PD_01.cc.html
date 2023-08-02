@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;queue&gt;
+using namespace std;
+
+int N;
+
+struct node {
+  vector&lt;int&gt; m;
+  int cost;
+};
+
+class visited {
+public:
+  bool b[7][7][7][7][7][7][7];
+  visited () {
+    fill( &amp;b[0][0][0][0][0][0][0], &amp;b[0][0][0][0][0][0][0] + sizeof(b),false);
+  }
+  void set(vector&lt;int&gt; a) {
+    a.resize(7);
+    b[a[0]][a[1]][a[2]][a[3]][a[4]][a[5]][a[6]] = true;
+  }
+  bool get(vector&lt;int&gt; a) {
+    a.resize(7);
+    return b[a[0]][a[1]][a[2]][a[3]][a[4]][a[5]][a[6]];
+  }
+};
+
+int main() {
+  
+  while (true) {
+    cin &gt;&gt; N;
+    node start;
+    vector&lt;int&gt; end;
+    if (N == 0) break;
+    start.m.resize(N);
+    for (int i = 0; i &lt; N; i++) {
+      int temp;
+      cin &gt;&gt; temp;
+      temp--;
+      start.m[temp] = i;
+    }
+    start.cost = 0;
+    end.resize(N);
+    for (int i = 0; i &lt; N; i++) {
+      end[i] = i;
+    }
+    visited v;
+    queue&lt;node&gt; q;
+    q.push(start);
+    bool f = true;
+    while (!q.empty()) {
+      node top = q.front();
+      q.pop();
+      if(v.get(top.m)) continue;
+      v.set(top.m);
+      if (top.m == end) {
+	cout &lt;&lt; top.cost &lt;&lt; endl;
+	f = false;
+	break;
+      }
+      vector&lt;bool&gt; bo(N, false);
+      for (int i = 0; i &lt; N; i++) {
+	if (bo[top.m[i]]) continue;
+	bo[top.m[i]] = true;
+	if (top.m[i] - 1 &gt;= 0 &amp;&amp; !bo[top.m[i] - 1]) {
+	  node temp;
+	  temp.m = top.m;
+	  temp.m[i]--;
+	  temp.cost = top.cost + 1;
+	  q.push(temp);
+	}
+	if (top.m[i] + 1 &lt; N &amp;&amp; !bo[top.m[i] + 1]) {
+	  node temp;
+	  temp.m = top.m;
+	  temp.m[i]++;
+	  temp.cost = top.cost + 1;
+	  q.push(temp);
+	}
+      }
+
+    }
+    if (f) cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+  }
+  
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

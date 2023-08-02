@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+struct event {
+	ld ang; int id;
+	event() {}
+	event(ld a, int id) : ang(a), id(id) {}
+	const bool operator&lt;(const event&amp; o) const {
+		if (ang == o.ang) return id &lt; o.id;
+		return ang &lt; o.ang;
+	}
+};
+
+pt p[50005];
+event e[100005];
+
+const ld pi = acos(-1.0L);
+int main() {
+	int n, w, h;
+	while (cin &gt;&gt; n &gt;&gt; w &gt;&gt; h) {
+		if (n+w+h == 0) break;
+		pt c(w/2.0, h/2.0);
+		for (int i = 0; i &lt; n; i++) {
+			ld x, y; cin &gt;&gt; x &gt;&gt; y;
+			p[i] = pt(x,y);
+		}
+
+		int cnt = 0;
+		set&lt;int&gt; s;
+		for (int i = 0; i &lt; n; i++) {
+			e[cnt++] = event(arg(p[i]-c), i+1);
+			ld angle = arg(p[i]-c)+pi;
+			if (angle &gt;= pi) angle -= 2*pi;
+			e[cnt++] = event(angle, -i-1);
+			if (p[i].imag() &gt;= h/2.0) {
+				s.insert(i+1);
+			}
+		}
+
+		sort(e, e+cnt);
+		for (int i = 0; i &lt; cnt; i++) {	
+			if (s.size() == n/2) break;
+			if (e[i].id &gt; 0) {
+				s.insert(e[i].id);
+			} else {
+				s.erase(-e[i].id);
+			}
+		}
+
+		for (set&lt;int&gt;::iterator it = s.begin(); it != s.end(); it++) {
+			cout &lt;&lt; p[*it-1].real() &lt;&lt; &quot; &quot; &lt;&lt; p[*it-1].imag() &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

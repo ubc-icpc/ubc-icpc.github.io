@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using uc = unsigned char;
+using ui = unsigned int;
+using ull = unsigned long long;
+using ll = long long;
+using ld = long double;
+using vs = vector&lt;string&gt;;
+using vi = vector&lt;int&gt;;
+using vui = vector&lt;ui&gt;;
+using vuc = vector&lt;uc&gt;;
+using vull = vector&lt;ull&gt;;
+using vll = vector&lt;ll&gt;;
+using ss = set&lt;string&gt;;
+using suc = set&lt;uc&gt;;
+using si = set&lt;int&gt;;
+using sui = set&lt;ui&gt;;
+using sll = set&lt;ll&gt;;
+using sull = set&lt;ull&gt;;
+using uss = unordered_set&lt;string&gt;;
+using usui = unordered_set&lt;ui&gt;;
+using usuc = unordered_set&lt;uc&gt;;
+using usi = unordered_set&lt;int&gt;;
+using usll = unordered_set&lt;ll&gt;;
+using usull = unordered_set&lt;ull&gt;;
+
+ull binomial(ull n, ull k)
+{
+	ull den = 1, num = 1;
+	for (int i = 1; i &lt;= k; i = i + 1) den = den * i;
+	for (int j = n - k + 1; j &lt;= n; j = j + 1) num = num * j;
+	return num / den;
+}
+
+int main()
+{
+	int t; cin &gt;&gt; t;
+	while (t--)
+	{
+		int r, s, x, y, w;
+		cin &gt;&gt; r &gt;&gt; s &gt;&gt; x &gt;&gt; y &gt;&gt; w;
+
+		ld prob = 0;
+		ld sing = 1.0L - ((ld) (r - 1) / s);
+		for (int i = x; i &lt;= y; i++)
+		{
+			// cout &lt;&lt; binomial(y, i) * pow(sing, i) * pow(1 - sing, y - i) &lt;&lt; endl;
+			prob += binomial(y, i) * pow(sing, i) * pow(1 - sing, y - i);
+		}
+		// cout &lt;&lt; prob &lt;&lt; endl;
+
+		if (prob * w &gt; 1.0L)
+		{
+			cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+		}
+		else
+		{
+			cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

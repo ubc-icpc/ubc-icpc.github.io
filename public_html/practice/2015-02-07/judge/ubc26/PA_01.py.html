@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+def N(): return sys.stdin.next()
+t = int(N())
+for i in range(t):
+    m, n = map(int, N().split(' '))
+    yx = []
+    for j in range(m):
+        yx.append(list(sys.stdin.next())[0:-1])
+
+    sx, sy = 0, 0
+    for y in range(m):
+        for x in range(n):
+            if yx[y][x] == 'S':
+                sx, sy = x, y
+                break
+
+    d = 0
+    for y in range(m):
+        for x in range(n):
+            if yx[y][x] == 'B':
+                d += abs(y - sy) + abs(x - sx)
+    d *= 2
+    print &quot;%d seconds to blocks get!&quot; % d
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

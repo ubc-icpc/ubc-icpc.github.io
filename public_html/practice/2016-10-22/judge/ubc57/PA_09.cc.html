@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int,int&gt; pii;
+
+pii parent[1005][1005]; 
+int n,m;
+vector&lt;pii&gt; delta={{0,1},{0,-1},{-1,0},{1,0}};
+int black[1005][1005];
+int ans[10005];
+int x1[10005],x2[10005],yy1[10005],y2[10005];
+pii find(pii x){
+    if (parent[x.first][x.second].first==-1) return x;
+    return parent[x.first][x.second]=find(parent[x.first][x.second]);
+}
+void unite(pii x, pii y){
+    pii xRoot=find(x); pii yRoot=find(y);
+    if ((xRoot.first==yRoot.first)&amp;&amp;(xRoot.second==yRoot.second)) return;
+    parent[xRoot.first][xRoot.second]=yRoot;
+}
+bool inRange(pii x){
+    if (x.first&lt;0) return false;
+    if (x.second&lt;0) return false;
+    if (x.first&gt;=n) return false;
+    if (x.second&gt;=m) return false;
+    return true;
+}
+bool visited[1005][1005];
+int main(){
+    //freopen(&quot;readable.txt&quot;,&quot;w&quot;,stdout);
+    ios::sync_with_stdio(0);
+    int q; cin&gt;&gt;n&gt;&gt;m&gt;&gt;q;
+    for (int i=0;i&lt;q;i++){
+        cin&gt;&gt;x1[i]&gt;&gt;yy1[i]&gt;&gt;x2[i]&gt;&gt;y2[i];
+        x1[i]--; x2[i]--; yy1[i]--; y2[i]--;
+        for (int x=x1[i];x&lt;=x2[i];x++) for (int y=yy1[i];y&lt;=y2[i];y++) black[x][y]++;
+    }
+    set&lt;pii&gt; diff;
+    for (int i=0;i&lt;n;i++) for (int j=0;j&lt;m;j++) parent[i][j]={-1,-1};
+    for (int i=0;i&lt;n;i++) for (int j=0;j&lt;m;j++) if (black[i][j]==0){
+        for (pii dd:delta){
+            pii nex={i+dd.first,j+dd.second};
+            if ((inRange(nex))&amp;&amp;(black[nex.first][nex.second]==0)){
+                unite({i,j},nex);
+            }
+        }
+    }
+    for (int i=0;i&lt;n;i++) for (int j=0;j&lt;m;j++) if (black[i][j]==0) diff.insert(find({i,j})); 
+    ans[q-1]=diff.size();
+    for (int i=q-1;i&gt;0;i--){
+        //cout&lt;&lt;i&lt;&lt;endl;
+        for (int x=x1[i];x&lt;=x2[i];x++) for (int y=yy1[i];y&lt;=y2[i];y++) {
+            black[x][y]--;
+            if (black[x][y]==0){
+                set&lt;pii&gt; s;
+                for (pii dd:delta){
+                    pii nex={x+dd.first,y+dd.second};
+                    if ((inRange(nex))&amp;&amp;(black[nex.first][nex.second]==0)){
+                        s.insert(find(nex));
+                        diff.erase(find(nex));
+                    }
+                }
+                for (pii root:s) unite(root,{x,y});
+                diff.insert(find({x,y}));
+            }
+        }
+        ans[i-1]=diff.size();
+    }
+    for (int i=0;i&lt;q;i++) cout&lt;&lt;ans[i]&lt;&lt;endl;
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

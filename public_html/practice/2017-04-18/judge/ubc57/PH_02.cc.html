@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+const ll M=1e9+7;
+int col[305];
+ll freq[305];
+ll choose[305][305];
+int adj[305][305];
+ll running[305];
+int main(){
+    ios::sync_with_stdio(0);
+    //freopen(&quot;readable.txt&quot;,&quot;w&quot;,stdout);
+    for (int i=0;i&lt;=300;i++){
+        choose[i][0]=1; choose[i][i]=1;
+        for (int j=1;j&lt;i;j++) choose[i][j]=(choose[i-1][j]+choose[i-1][j-1])%M;
+    }
+    int n; cin&gt;&gt;n;
+    for (int i=1;i&lt;=n;i++) for (int j=1;j&lt;=n;j++) cin&gt;&gt;adj[i][j];
+    set&lt;int&gt; used; 
+    set&lt;int&gt; vals;
+    int f=0;
+    for (int now=1;now&lt;n;now++){
+        set&lt;int&gt; unique;
+        int ch;
+        for (int i=1;i&lt;=n;i++) if (used.count(i)==0){
+            unique.clear();
+            for (int j=1;j&lt;=n;j++) if ((j!=i)&amp;&amp;(used.count(j)==0)) unique.insert(adj[i][j]);
+            if (unique.size()==1){
+                ch=i; break;
+            }
+        }
+        col[now]=*unique.begin();
+        f=max(f,col[now]);
+        vals.insert(col[now]);
+        used.insert(ch);
+    }
+    ll ans=0;
+    ll power=1;
+    for (int e=1;e&lt;=n;e++){ //sets with i&lt;e and including e
+        memset(running,0,sizeof running);
+        ll most=0;
+        for (int i=1;i&lt;=f;i++) most=max(most,freq[i]);
+        ll tot=0;
+        for (int x=0;x&lt;=most;x++){
+            for (int i=1;i&lt;=f;i++) running[i]=(running[i]+choose[freq[i]][x])%M;
+            ll prod=1;
+            for (int i=1;i&lt;=f;i++) prod=(prod*running[i])%M;
+            if (x==most) tot=(tot+most*prod)%M;
+            else tot=(tot-prod+M)%M;
+            //cout&lt;&lt;prod&lt;&lt;endl;
+        }
+        ans=(ans+tot+power)%M;
+        //each set gets a bonus point for including e 
+        freq[col[e]]++;
+        //cout&lt;&lt;col[e]&lt;&lt;endl;
+        power=(2*power)%M;
+    }
+    cout&lt;&lt;ans&lt;&lt;endl;
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;code.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

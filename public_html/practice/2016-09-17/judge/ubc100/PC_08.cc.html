@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+int arr[7][6];
+vector&lt;int&gt; vec, ans;
+int indexes[7][7];
+int rots[7];
+inline int getx0(int idx) {
+	return arr[vec[0]][( indexes[vec[0]][1]+idx)%6];
+}
+inline int getx(int idx, int idx2, int orig) {
+	int x =  arr[idx][(   (6+indexes[idx][getx0(orig-1)]-(orig+2)%6)%6   +idx2)%6];
+	return x;
+}
+inline bool f() {
+	for(int i=1; i&lt;=5; i++) {
+		if(getx(vec[i],(i+1)%6,i)  != getx(vec[i+1],(i+4)%6, i+1) ) {
+			return false;
+		}
+	}
+	if(getx(vec[6],1,6) != getx(vec[1], 4, 1)) {
+		return false;
+	}
+
+	return true;
+}
+int main(void) {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int n; cin &gt;&gt; n;
+	for(int i=0; i&lt;n; i++) {
+		vec.clear();
+		vec =  {0, 1, 2, 3, 4, 5, 6};//{0, 6, 4, 5, 3, 1, 2};
+		for(int j=0; j&lt;7; j++) {
+			for(int k=0; k&lt;6; k++) {
+				cin &gt;&gt; arr[j][k];
+				indexes[j][ arr[j][k] ] = k;
+			}
+		}
+		
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; i+1 &lt;&lt; &quot;:&quot;;
+		bool done = false;
+		do {
+			done = f();
+		} while(!done &amp;&amp; next_permutation(vec.begin(), vec.end()));
+		if(done) {
+			for(int x:vec) cout &lt;&lt; &quot; &quot; &lt;&lt; x;
+			cout &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot; No solution&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

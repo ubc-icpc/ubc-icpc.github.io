@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+using vvi = vector&lt;vector&lt;int&gt;&gt;;
+
+int main()
+{
+	int r, c; cin &gt;&gt; r &gt;&gt; c;
+	vvi board(r);
+	for (auto&amp; i : board) i.resize(c);
+
+	for (int i = 0; i &lt; r * c; i++)
+	{
+		int x; cin &gt;&gt; x;
+		board[i / c][i % c] = x;
+	}
+
+	bool sp = r == 1 || c == 1;
+
+	long long best = -1;
+	for (int par1 = 0; par1 &lt; 2; par1++)
+	{
+		for (int par2 = 0; par2 &lt; 2; par2++)
+		{
+			// cout &lt;&lt; par1 &lt;&lt; &quot; &quot; &lt;&lt; par2 &lt;&lt; endl;
+
+			vvi bcp = board;
+			bool ok = true;
+			long long sum = 0;
+
+			for (int i = 0; i &lt; r * c; i++)
+			{
+				pair&lt;int, int&gt; xy = make_pair(i / c, i % c);
+				int pp = ((xy.first + (xy.second % 2)) % 2) ? par2 : par1;
+				pp = (xy.first % 2) ? !pp : pp;
+
+				int&amp; el = bcp[xy.first][xy.second];
+
+				if (el == 0)
+				{
+					el = 1;
+
+					if (xy.first &gt; 0) el = max(el, bcp[xy.first - 1][xy.second] + 1);
+					if (xy.second &gt; 0) el = max(el, bcp[xy.first][xy.second - 1] + 1);
+
+					if (el % 2 != pp) el++;
+				}
+				else if (el % 2 != pp)
+				{
+					ok = false;
+					break;
+				}
+
+				if (xy.first &lt; r - 1 &amp;&amp; bcp[xy.first + 1][xy.second] &lt;= el &amp;&amp; bcp[xy.first + 1][xy.second])
+				{
+					ok = false;
+					break;
+				}
+				if (xy.second &lt; c - 1 &amp;&amp; bcp[xy.first][xy.second + 1] &lt;= el &amp;&amp; bcp[xy.first][xy.second + 1])
+				{
+					ok = false;
+					break;
+				}
+
+				sum += el;
+			}
+
+			if (ok) best = best &lt; 0 ? sum : min(best, sum);
+		}
+	}
+
+	if (r == 1)
+	{
+		best = 0;
+		int prev = 0;
+		for (int i : board[0])
+		{
+			if (i == 0)
+			{
+				prev = prev + 1;
+				best += prev;
+			}
+			else
+			{
+				if (i &lt;= prev)
+				{
+					best = -1;
+					break;
+				}
+
+				prev = i;
+				best += prev;
+			}
+		}
+	}
+	else if (c == 1)
+	{
+		best = 0;
+		int prev = 0;
+
+		for (int j = 0; j &lt; board.size(); j++)
+		{
+			int i = board[j][0];
+			if (i == 0)
+			{
+				prev = prev + 1;
+				best += prev;
+			}
+			else
+			{
+				if (i &lt;= prev)
+				{
+					best = -1;
+					break;
+				}
+
+				prev = i;
+				best += prev;
+			}
+		}
+	}
+
+	cout &lt;&lt; best &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

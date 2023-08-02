@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// ACMSept17B.cpp : Defines the entry point for the console application.
+//
+
+//UBC Competative pOrgramming 
+//Sept 17th 2016
+//ECNA 2012
+
+//B: Flash Mob
+
+
+//#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+
+int main(int argc, char** argv[])
+{
+
+	int n;
+	int x;
+	int y;
+	unsigned int dist;
+	int med;
+	int caseNum = 0;
+
+	cin &gt;&gt; n;
+	
+
+	while (n != 0) {
+		vector&lt;int&gt; xcoords;
+		vector&lt;int&gt; ycoords;
+
+		dist = 0;
+		caseNum++;
+
+		if (n % 2 == 0) {
+			med = n / 2 - 1;
+		}
+		else {
+			med = n / 2;
+		}
+
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; x &gt;&gt; y;
+			xcoords.push_back(x);
+			ycoords.push_back(y);
+
+		}
+
+		sort(xcoords.begin(), xcoords.end());
+		sort(ycoords.begin(), ycoords.end());
+		
+		//get total distance
+		for (int i = 0; i &lt; n; i++) {
+			dist += abs(xcoords[med] - xcoords[i]) + abs(ycoords[med] - ycoords[i]);
+		}
+
+
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; caseNum &lt;&lt; &quot;: (&quot; &lt;&lt; xcoords[med] &lt;&lt; &quot;,&quot; &lt;&lt; ycoords[med] &lt;&lt; &quot;) &quot; &lt;&lt; dist &lt;&lt; &quot;\n&quot;;
+
+
+
+		cin &gt;&gt; n;
+	}
+
+
+
+
+    return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

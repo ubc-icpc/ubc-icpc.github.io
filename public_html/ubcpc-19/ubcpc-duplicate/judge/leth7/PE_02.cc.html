@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;iostream&gt;
+#include&lt;queue&gt;
+using namespace std;
+
+int main(){
+   int scenes, acts;
+   cin&gt;&gt;scenes&gt;&gt;acts;
+   priority_queue&lt;int&gt; p;
+
+   for(int i=0; i&lt;scenes; i++){
+      int temp;
+      cin&gt;&gt;temp;
+      p.push(temp);
+   }
+
+   int score=0;
+   for(int i=0; i&lt;acts; i++){
+      score+=p.top();
+      p.pop();
+   }
+
+   cout&lt;&lt;score&lt;&lt;endl;
+
+}
+</code>
+</pre>
+</body>
+</html>

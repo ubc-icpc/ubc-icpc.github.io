@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+typedef vector&lt;vector&lt;int&gt; &gt; state;
+
+int main() {
+    int n; 
+    while (cin &gt;&gt; n) {
+        if (!n) break;
+        state st, en;
+        st.resize(n); en.resize(n);
+        for (int i = 0; i &lt; n; i++) {
+            en[i].push_back(i+1);
+            int x; cin &gt;&gt; x;
+            st[i].push_back(x);
+        }
+        
+        if (st == en) {
+            cout &lt;&lt; 0 &lt;&lt; endl;
+            continue;
+        }
+        
+        map&lt;state, int&gt; dist;
+        map&lt;state, int&gt; col;
+        queue&lt;state&gt; q;
+        dist[st] = dist[en] = 0;
+        col[st] = 1; col[en] = 2;
+        q.push(st); q.push(en);
+        state u, t;
+        int ans = -1;
+        while (!q.empty()) {
+            u = q.front(); q.pop();
+            for (int i = 0; i &lt; n-1; i++) {
+                //try moving coin to the right
+                if (!u[i].empty()) {
+                    t = u;
+                    int x = t[i].back(); t[i].pop_back();
+                    if (t[i+1].size() &amp;&amp; t[i+1].back() &lt; x) continue;
+                    t[i+1].push_back(x);
+                    if (col.count(t)) {
+                        if (col[t] != col[u]) {
+                            ans = dist[t] + dist[u] + 1;
+                            goto done;
+                        }
+                    } else {
+                        dist[t] = dist[u] + 1;
+                        col[t] = col[u];
+                        q.push(t);
+                    }
+                }
+            }
+            
+            for (int i = n-1; i &gt;= 1; i--) {
+                //try moving coin to the left
+                if (!u[i].empty()) {
+                    t = u;
+                    int x = t[i].back(); t[i].pop_back();
+                    if (t[i-1].size() &amp;&amp; t[i-1].back() &lt; x) continue;
+                    t[i-1].push_back(x);
+                    if (col.count(t)) {
+                        if (col[t] != col[u]) {
+                            ans = dist[t] + dist[u] + 1;
+                            goto done;
+                        }
+                    } else {
+                        dist[t] = dist[u] + 1;
+                        col[t] = col[u];
+                        q.push(t);
+                    }
+                }
+            }
+        }
+        
+    done:
+        if (ans == -1) cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+        else cout &lt;&lt; ans &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int d[50], k[200];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    cout &lt;&lt; &quot;Trip #&quot; &lt;&lt; T &lt;&lt; &quot;: &quot;;
+    int c; cin &gt;&gt; c;
+    for (int i = 0; i &lt; c; i++)
+      cin &gt;&gt; d[i];
+    sort(d,d+c);
+    for (int i = 0; i &lt; 4*c; i++) {
+      cin &gt;&gt; k[i];
+      k[i] *= -1;
+    }
+    sort(k,k+4*c);
+    int mx = 0;
+    for (int i = 0; i &lt; c; i++)
+      for (int j = i*4; j &lt; (i+1)*4; j++)
+        mx = max(mx,d[i]-k[j]);
+    cout &lt;&lt; mx &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

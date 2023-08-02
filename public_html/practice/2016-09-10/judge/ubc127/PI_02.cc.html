@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+int main() {
+    map&lt;char, pair&lt;int, int&gt; &gt; x = {
+        make_pair('q', make_pair(0, 0)),
+        make_pair('w', make_pair(0, 1)),
+        make_pair('e', make_pair(0, 2)),
+        make_pair('r', make_pair(0, 3)),
+		make_pair('t', make_pair(0, 4)),
+		make_pair('y', make_pair(0, 5)),
+		make_pair('u', make_pair(0, 6)),
+		make_pair('i', make_pair(0, 7)),
+		make_pair('o', make_pair(0, 8)),
+		make_pair('p', make_pair(0, 9)),
+		make_pair('a', make_pair(1, 0)),
+        make_pair('s', make_pair(1, 1)),
+        make_pair('d', make_pair(1, 2)),
+        make_pair('f', make_pair(1, 3)),
+		make_pair('g', make_pair(1, 4)),
+		make_pair('h', make_pair(1, 5)),
+		make_pair('j', make_pair(1, 6)),
+		make_pair('k', make_pair(1, 7)),
+		make_pair('l', make_pair(1, 8)),
+		make_pair('z', make_pair(2, 0)),
+        make_pair('x', make_pair(2, 1)),
+        make_pair('c', make_pair(2, 2)),
+        make_pair('v', make_pair(2, 3)),
+		make_pair('b', make_pair(2, 4)),
+		make_pair('n', make_pair(2, 5)),
+		make_pair('m', make_pair(2, 6))
+    };
+    
+    map&lt;int, set&lt;string&gt; &gt; o;
+    int t, n, d;
+    string m, s;
+
+    cin &gt;&gt; t;
+
+    while(t--) {
+        cin &gt;&gt; m &gt;&gt; n;
+        while(n--) {
+            cin &gt;&gt; s;
+            d = 0;
+            for(int i=0; i&lt;s.length(); i++) {
+                d += abs(x[s[i]].first - x[m[i]].first) + abs(x[s[i]].second - x[m[i]].second);               
+            }
+            o[d].insert(s+&quot; &quot;+to_string(d));
+        }
+        for(map&lt;int, set&lt;string&gt; &gt;::iterator it1=o.begin(); it1 != o.end(); it1++) {
+           for(set&lt;string&gt;::iterator it2=(it1-&gt;second).begin(); it2 != (it1-&gt;second).end(); it2++) {
+                cout &lt;&lt; *it2 &lt;&lt; endl;
+           }
+        }
+        o.clear();
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

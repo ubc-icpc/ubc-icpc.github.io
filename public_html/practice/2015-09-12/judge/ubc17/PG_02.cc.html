@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    for (int q = 1; q &lt;= n; ++q) {
+        printf(&quot;Grid #%d: &quot;, q);
+
+        int d, n;
+        cin &gt;&gt; d &gt;&gt; n;
+        if (d &gt; ((n - 1) * (n - 1) + 1)) {
+            printf(&quot;impossible\n&quot;);
+        } else {
+            printf(&quot;%d\n&quot;, (n - 1) * 2 * d);
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

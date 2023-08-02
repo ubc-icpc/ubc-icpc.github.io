@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+ll A[30005];
+ll cumm[30005];
+ll lt[30005];
+ll rt[30005];
+int n;
+bool isPrime(ll x){
+    if (x==2) return true;
+    if (x%2==0) return false;
+    for (int i=3;i*i&lt;=x;i+=2) if (x%i==0) return false;
+    return true;
+}
+ll range(int l, int r){ //move the stuff from l to r
+    int m=(l+r)/2;
+    ll ans=0;
+    ans+=rt[l+1]-rt[m+1]-(cumm[n]-cumm[m])*ll(m-l); //l to m
+    ans+=lt[r-1]-lt[m]-(cumm[m])*ll(m-l); //m+1 to r
+    return ans;
+}
+bool check[30010];
+int main(){
+    ios::sync_with_stdio(0);
+    vector&lt;int&gt; primes;
+    for (int i=3;i&lt;=30009;i+=2) if (isPrime(i)) {
+        if (i&lt;=30000) primes.push_back(i); 
+        check[i]=true;
+    }
+    while (cin&gt;&gt;n){
+        if (n==0) break;
+        memset(A,0,sizeof A); memset(cumm,0,sizeof cumm);
+        memset(lt,0,sizeof lt); memset(rt,0,sizeof rt);
+        for (int i=1;i&lt;=n;i++) cin&gt;&gt;A[i];
+        cumm[0]=0; 
+        for (int i=1;i&lt;=n;i++) cumm[i]=cumm[i-1]+A[i]; 
+        lt[0]=0;
+        for (int i=1;i&lt;=n;i++) lt[i]=lt[i-1]+cumm[i]; 
+        rt[n+1]=0;
+        for (int i=n;i&gt;=1;i--) rt[i]=rt[i+1]+(cumm[n]-cumm[i-1]); //right sum to i
+        ll ans=1e13;
+        if (n==1) ans=0;
+        //Case 1: a single gap of 2 
+        for (int i=1;i&lt;=n-2;i++) ans=min(ans,lt[i-1]+A[i+1]+rt[i+3]); 
+        //Case 2: a single gap length p 
+        for (int p:primes) for (int i=1;i&lt;=n-p;i++) ans=min(ans,lt[i-1]+range(i,i+p)+rt[i+p+1]);
+        //Case 3: a gap length 2 and p
+        for (int p:primes) if (check[p+2]) for (int i=1;i&lt;=n-p-2;i++) {
+            ans=min(ans,lt[i-1]+A[i+1]+range(i+2,i+2+p)+rt[i+3+p]); //2 then p
+            ans=min(ans,lt[i-1]+range(i,i+p)+A[i+p+1]+rt[i+3+p]); //p then 2
+        }
+        //Case 4: a gap length 2 then p then 2
+        for (int p:primes) if ((check[p+2])&amp;&amp;(check[p+4])) for (int i=1;i&lt;=n-p-4;i++) {
+            ans=min(ans,lt[i-1]+A[i+1]+range(i+2,i+2+p)+A[i+3+p]+rt[i+5+p]); //2 then p
+        }
+        //CASE 5: no gaps! all to one stack 
+        for (int i=1;i&lt;=n;i++) ans=min(ans,lt[i-1]+rt[i+1]);
+        
+        cout&lt;&lt;ans&lt;&lt;endl;
+    }
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;A.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

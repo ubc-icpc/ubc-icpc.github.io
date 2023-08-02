@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+int n, gid = 0;
+struct trie_node {
+    map&lt;string, trie_node&gt; child;
+    int c, sz, nid, id;
+    trie_node() : c(0), id(0), sz(0) {
+        nid = gid++;
+    };
+    
+    void insert(vector&lt;string&gt;&amp; v, int i, int ans_id) {
+        sz++;
+        if (i == v.size()) {
+            id = ans_id;
+        } else {
+            child[v[i]].insert(v, i+1, ans_id);
+        }
+    }
+};
+
+struct rval {
+    int mx;
+    map&lt;int, int&gt; m;
+    rval() : mx(0) {};
+};
+
+vector&lt;rval&gt; refval;
+int dfs(trie_node* u, string debug=&quot;&quot;) {
+    if (u-&gt;id) {
+        rval rv;
+        rv.mx = 1;
+        rv.m[u-&gt;id]++;
+        refval.push_back(rv);
+        u-&gt;c = 1;
+        return refval.size()-1;
+    }
+    
+    vector&lt;int&gt; w;
+    int bst = -1;
+    for (auto&amp; ch : u-&gt;child) {
+        w.push_back(dfs(&amp;ch.second/*, ch.first*/));
+        if (bst == -1 || refval[bst].m.size() &lt; refval[w.back()].m.size()) {
+            bst = w.back();
+        }
+    }
+    
+    for (int rv : w) {
+        if (rv == bst) continue;
+        for (auto p : refval[rv].m) {
+            refval[bst].m[p.first] += p.second;
+            refval[bst].mx = max(refval[bst].mx, refval[bst].m[p.first]);
+        }
+    }
+    u-&gt;c = refval[bst].mx;
+    //cerr &lt;&lt; debug &lt;&lt; &quot; &quot; &lt;&lt; u-&gt;c &lt;&lt; endl;
+    return bst;
+}
+
+trie_node root;
+
+ld memo[100005][105];
+ld dp(trie_node* r, int t) {
+    if (t &lt;= 0) return 0;
+    if (memo[r-&gt;nid][t]) return memo[r-&gt;nid][t];
+    
+    ld ans = dp(&amp;root, t-1) + r-&gt;c/ld(r-&gt;sz);
+    ld tans = 0;
+    for (auto&amp; ch : r-&gt;child) {
+        tans += (ch.second.sz)*dp(&amp;ch.second, t-1)/ld(r-&gt;sz);
+    }
+    memo[r-&gt;nid][t] = max(ans, tans);
+    return memo[r-&gt;nid][t];
+}
+
+int main() {
+    int t; cin &gt;&gt; t &gt;&gt; n;
+    string line, word, answer;
+    getline(cin, line);
+    
+    int cnt = 1;
+    map&lt;string, int&gt; ans_id;
+    for (int i = 0; i &lt; n; i++) {
+        getline(cin, line);
+        stringstream ss(line);
+        vector&lt;string&gt; sent;
+        while (ss &gt;&gt; word) sent.push_back(word);
+        
+        answer = sent.back();
+        sent.pop_back();
+        if (!ans_id.count(answer)) ans_id[answer] = cnt++;
+        root.insert(sent, 0, ans_id[answer]);
+    }
+    assert(root.sz == n);
+    dfs(&amp;root);
+    cout &lt;&lt; fixed &lt;&lt; setprecision(8) &lt;&lt; dp(&amp;root, t) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

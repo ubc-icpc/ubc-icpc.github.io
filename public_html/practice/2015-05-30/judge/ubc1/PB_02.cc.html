@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int g[2][100005];
+int main() {
+    ios::sync_with_stdio(0);
+    int n, m, p;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; p;
+    
+    memset(g, 0x3f, sizeof g);
+    for (int i = 0; i &lt; n; i++) {
+        int a, b; cin &gt;&gt; a &gt;&gt; b;
+        g[0][i] = a;
+        g[1][b] = min(g[1][b], i);
+    }
+    
+    int c = p, ans = 0;
+    while (g[1][c] != 0x3f3f3f3f) {
+        ans++;
+        c = g[0][g[1][c]];
+        if (ans &gt; 1e6) {
+            ans = -1;
+            break;
+        }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

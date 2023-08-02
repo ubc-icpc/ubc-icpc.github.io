@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using ll = long long;
+
+const ll imax = numeric_limits&lt;ll&gt;::max();
+const int dx[] = { 1, 0, -1, 0 };
+const int dy[] = { 0, -1, 0, 1 };
+
+struct Node
+{
+	vector&lt;pair&lt;Node*, int&gt;&gt; edges;
+	ll time;
+	Node() : time(imax) { }
+};
+
+struct Cmp
+{
+	bool operator()(Node* x, Node* y)
+	{
+		return x-&gt;time &gt; y-&gt;time;
+	}
+};
+
+int main()
+{
+	int t; cin &gt;&gt; t;
+	while (t--)
+	{
+		int k, w, h; cin &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+
+		unordered_map&lt;char, int&gt; kling;
+		for (int i = 0; i &lt; k; i++)
+		{
+			char _0;
+			int _1;
+			cin &gt;&gt; _0 &gt;&gt; _1;
+			kling[_0] = _1;
+		}
+		kling['E'] = 0;
+
+		vector&lt;string&gt; map(h);
+
+		for (int i = 0; i &lt; h; i++)
+		{
+			cin &gt;&gt; map[i];
+		}
+
+		vector&lt;Node&gt; nodes(h * w + 1);
+		Node* out = &amp;nodes.back();
+		Node* in;
+
+		for (int x = 0; x &lt; w; x++)
+		{
+			for (int y = 0; y &lt; h; y++)
+			{
+				Node&amp; node = nodes[y * w + x];
+				if (map[y][x] == 'E') in = &amp;node;
+
+				for (int t = 0; t &lt; 4; t++)
+				{
+					int xi = x + dx[t], yi = y + dy[t];
+
+					if (xi &gt;= 0 &amp;&amp; xi &lt; w &amp;&amp; yi &gt;= 0 &amp;&amp; yi &lt; h)
+					{
+						node.edges.push_back(make_pair(&amp;nodes[yi * w + xi], kling[map[yi][xi]]));
+					}
+					else
+					{
+						node.edges.push_back(make_pair(out, 0));
+					}
+				}
+			}
+		}
+
+		priority_queue&lt;Node*, vector&lt;Node*&gt;, Cmp&gt; q;
+		in-&gt;time = 0;
+		q.push(in);
+
+		while (!q.empty())
+		{
+			Node* node = q.top();
+			if (node == out)
+			{
+				cout &lt;&lt; node-&gt;time &lt;&lt; endl;
+				break;
+			}
+
+			q.pop();
+
+			for (auto&amp; i : node-&gt;edges)
+			{
+				Node tmp;
+				Node* dest = i.first;
+
+				tmp.time = node-&gt;time + i.second;
+
+				if (Cmp()(dest, &amp;tmp))
+				{
+					dest-&gt;time = tmp.time;
+					q.push(dest);
+				}
+			}
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//package nov27;
+import java.util.*;
+
+public class A {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int R = sc.nextInt();
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+
+        double h = Math.sqrt(x*x + y*y);
+        double circDist = R-h;
+
+        System.out.println(Math.min(y, circDist));
+    }
+}
+
+/*
+12 6 6
+ */</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n;
+	int T = 1;
+	while(cin &gt;&gt; n &amp;&amp; n!=0) {
+		cout &lt;&lt; &quot;Desktop &quot; &lt;&lt; T &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		vector&lt;pair&lt;pii,pii&gt;&gt; inp;
+		for (int i=0; i&lt;n; i++) {
+			int r,c,w,h;
+			cin &gt;&gt; r &gt;&gt; c &gt;&gt; w &gt;&gt; h;
+			inp.push_back(pair&lt;pii,pii&gt;(pii(r,c),pii(w,h)));
+		}
+		int m; cin &gt;&gt; m;
+		while(m--) {
+			int x, y; cin &gt;&gt; x &gt;&gt; y;
+			int ans = -1;
+			for (int i=0; i&lt;n; i++) {
+				if (x &gt;= inp[i].first.first &amp;&amp;
+					y &gt;= inp[i].first.second &amp;&amp;
+					x &lt; (inp[i].first.first + inp[i].second.second) &amp;&amp;
+					y &lt; (inp[i].first.second + inp[i].second.first) )
+					ans = i+1;
+			}
+			if (ans == -1) {
+				cout &lt;&lt; &quot;background&quot; &lt;&lt; endl;
+			} else {
+				cout &lt;&lt; &quot;window &quot; &lt;&lt; ans &lt;&lt; endl;
+			}
+		}
+		T++;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

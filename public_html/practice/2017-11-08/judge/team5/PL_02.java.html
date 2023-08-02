@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//package ACM;
+
+import java.util.Scanner;
+
+public class Tongues {
+//    public static char[] lower_vow = {'a', 'e', 'i', 'o', 'u'};
+//    public static char[] upper_vow = {'A', 'E', 'I', 'O', 'U'};
+//    public static char[] lower = {'b', 'k', 'x', 'z', 'n', 'h', 'd',
+//            'c', 'w', 'g', 'p', 'v', 'j', 'q', 't', 's', 'r', 'l', 'm', 'f'};
+    public static char[] upper = {'B', 'K', 'X', 'Z', 'N', 'H', 'D',
+            'C', 'W', 'G', 'P', 'V', 'J', 'Q', 'T', 'S', 'R', 'L', 'M', 'F'};
+
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+
+        while(sc.hasNextLine()){
+            String line = sc.nextLine();
+            char[] in = line.toCharArray();
+            StringBuilder sb = new StringBuilder();
+            for (int i=0; i&lt;in.length; i++){
+                boolean isLower = in[i] &gt;= 'a' &amp;&amp; in[i] &lt;= 'z';
+
+                if (isLower){
+                    in[i] = (char) (in[i]-'a'+'A');
+                }
+                switch (in[i]){
+                    case 'A':  in[i] = 'E';
+                        break;
+                    case 'E':  in[i] = 'A';
+                        break;
+                    case 'I':  in[i] = 'O';
+                        break;
+                    case 'O':  in[i] = 'I';
+                        break;
+                    case 'U':  in[i] = 'Y';
+                        break;
+                    case 'Y':  in[i] = 'U';
+                        break;
+                    case 'B':  in[i] = upper[10];
+                        break;
+                    case 'K':  in[i] = upper[11];
+                        break;
+                    case 'X':  in[i] = upper[12];
+                        break;
+                    case 'Z':  in[i] = upper[13];
+                        break;
+                    case 'N':  in[i] = upper[14];
+                        break;
+                    case 'H':  in[i] = upper[15];
+                        break;
+                    case 'D':  in[i] = upper[16];
+                        break;
+                    case 'C':  in[i] = upper[17];
+                        break;
+                    case 'W':  in[i] = upper[18];
+                        break;
+                    case 'G':  in[i] = upper[19];
+                        break;
+                    case 'P':  in[i] = upper[0];
+                        break;
+                    case 'V':  in[i] = upper[1];
+                        break;
+                    case 'J':  in[i] = upper[2];
+                        break;
+                    case 'Q':  in[i] = upper[3];
+                        break;
+                    case 'T':  in[i] = upper[4];
+                        break;
+                    case 'S':  in[i] = upper[5];
+                        break;
+                    case 'R':  in[i] = upper[6];
+                        break;
+                    case 'L':  in[i] = upper[7];
+                        break;
+                    case 'M':  in[i] = upper[8];
+                        break;
+                    case 'F':  in[i] = upper[9];
+                        break;
+
+                    default:
+
+                }
+
+
+                if (isLower){
+                    in[i] = (char) (in[i]+'a'-'A');
+                }
+                sb.append(in[i]);
+        }
+            System.out.println(sb.toString());
+
+
+
+        }
+
+        sc.close();
+
+
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

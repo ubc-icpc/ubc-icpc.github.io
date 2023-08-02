@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+firstLine=raw_input().split(' ')
+
+n=int(firstLine[0])
+k=int(firstLine[1])
+# s = []
+# base = int(raw_input())
+# s.append(base)
+# ss = []
+
+# for i in xrange(n-1):
+# 	r = int(raw_input())
+# 	if (r-base) &lt; 1000:
+# 		s.append(r)
+# 	else:
+# 		ss.append(s)
+# 		base = r
+# 		s = []
+# 		s.append(r)
+# ss.append(s)
+m=0
+t = []
+for i in xrange(n):
+	t.append(int(raw_input()))
+
+s = []
+for i in xrange(n):
+	s.append(t[i])
+	if t[i]&gt;=s[0]+1000:
+		s.pop(0)
+	if len(s) &gt; m:
+		m = len(s)
+
+	
+# print m
+if m%k == 0:
+	print m/k
+else:
+	print m/k+1
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

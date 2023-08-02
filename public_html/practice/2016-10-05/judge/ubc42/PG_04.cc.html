@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+using ll = long long int;
+
+#define Ds(A, B) ((x##A - x##B) * (x##A - x##B) + (y##A - y##B) * (y##A - y##B))
+
+int main()
+{
+    ll x0, y0, x1, y1, x2, y2; cin &gt;&gt; x0 &gt;&gt; y0 &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+	double r0; cin &gt;&gt; r0;
+
+	ll as = Ds(0, 1);
+	ll bs = Ds(0, 2);
+	ll cs = Ds(1, 2);
+
+	double A = sqrt(4 * as * bs - (as + bs - cs) * (as + bs - cs)) / 4.0;
+	double r = A * 2 / (sqrt(as) + sqrt(bs) + sqrt(cs));
+
+	cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; (r - r0) / r0 * 100 &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

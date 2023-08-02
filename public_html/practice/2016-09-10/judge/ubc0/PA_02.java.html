@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args){
+		Scanner in = new Scanner(System.in);
+	
+		int tests = in.nextInt();
+		int w = 0, h = 0, n = 0, p1Turns = 0, p2Turns = 0, x = 0, y = 0, p1Shots = 0, p2Shots = 0, totalShots = 0, indexOfRemoved = 0;
+		boolean isFirstPlayerTurn = true, testSolved = false;
+		String line = null;
+		String[] tokens = null;
+		ArrayList&lt;Integer&gt; p1r, p1c, p2c, p2r;
+		
+		
+		for(int i = 0; i &lt; tests; i += 1){
+			
+			isFirstPlayerTurn = true;
+			
+			p1r = new ArrayList&lt;Integer&gt;();
+			p1c = new ArrayList&lt;Integer&gt;(); 
+			p2r = new ArrayList&lt;Integer&gt;();
+			p2c = new ArrayList&lt;Integer&gt;();
+			
+			w = in.nextInt();
+			h = in.nextInt();
+			n = in.nextInt();
+			
+			//player 1
+			for(int row = 0; row &lt; h; row += 1){
+				line = in.nextLine();
+				if(line.isEmpty()){
+					line = in.nextLine();
+				}
+				
+				for(int col = 0; col &lt; w; col += 1){
+					if(line.charAt(col) == '#'){
+						p1r.add(h - 1 - row);
+						p1c.add(col);
+					}
+				}
+			}
+			
+			//player 2
+			for(int row = 0; row &lt; h; row += 1){
+				line = in.nextLine();
+				if(line.isEmpty()){
+					line = in.nextLine();
+				}
+				
+				for(int col = 0; col &lt; w; col += 1){
+					if(line.charAt(col) == '#'){
+						p2r.add(h - 1 - row);
+						p2c.add(col);
+					}
+				}
+			}
+			
+			p1Shots = 0;
+			p2Shots = 0;
+			totalShots = 0;
+			testSolved = false;
+			
+			//get turns
+			for(int k = 0; k &lt; n; k += 1){
+				line = in.nextLine();
+				
+				if(testSolved){
+					continue;
+				}
+				
+				//if(line.contains(&quot;_&quot;) || line.contains(&quot;#&quot;)){
+					//continue;
+				//}
+				
+				tokens = line.split(&quot; &quot;);
+				
+				x = Integer.parseInt(tokens[0]);
+				y = Integer.parseInt(tokens[1]);
+				
+				totalShots += 1;
+				
+				//first player turn
+				if(isFirstPlayerTurn){
+					
+					if(p1Shots == 0){
+						p1Turns += 1;
+					}
+					
+					p1Shots += 1;
+					
+					
+					indexOfRemoved = -1;
+					for(int z = 0; z &lt; p2c.size(); z += 1){
+						if(p2c.get(z) == x &amp;&amp; p2r.get(z) == y){
+							indexOfRemoved = z;
+						}
+					}
+					
+					if(indexOfRemoved != -1){
+						p2c.remove(indexOfRemoved);
+						p2r.remove(indexOfRemoved);
+						
+						if(p2c.isEmpty()){
+							isFirstPlayerTurn = !isFirstPlayerTurn;
+						}
+					}
+					else{
+						p1Shots = 0;
+						isFirstPlayerTurn = !isFirstPlayerTurn;
+					}
+				}
+				//second player turn
+				else{
+					
+					if(p2Shots == 0){
+						p2Turns += 1;
+					}
+					
+					p2Shots += 1;
+					
+					indexOfRemoved = -1;
+					for(int z = 0; z &lt; p1c.size(); z += 1){
+						if(p1c.get(z) == x &amp;&amp; p1r.get(z) == y){
+							indexOfRemoved = z;
+						}
+					}
+					
+					if(indexOfRemoved != -1){
+						p1c.remove(indexOfRemoved);
+						p1r.remove(indexOfRemoved);
+						
+						if(p1c.isEmpty()){
+							isFirstPlayerTurn = !isFirstPlayerTurn;
+						}
+					}
+					else{
+						p2Shots = 0;
+						isFirstPlayerTurn = !isFirstPlayerTurn;
+					}
+				}
+				
+				//check if game's over
+				if(p1Turns == p2Turns){
+					if(p2c.isEmpty() &amp;&amp; !p1c.isEmpty()){
+						System.out.println(&quot;player one wins&quot;);
+						testSolved = true;
+					}
+					
+					if(p1c.isEmpty() &amp;&amp; !p2c.isEmpty()){
+						System.out.println(&quot;player two wins&quot;);
+						testSolved = true;
+					}
+					
+					if(p1c.isEmpty() &amp;&amp; p2c.isEmpty()){
+						System.out.println(&quot;draw&quot;);
+						testSolved = true;
+					}
+					
+					//game ends and both players still have ships
+					if(totalShots == n &amp;&amp; !testSolved){
+						System.out.println(&quot;draw&quot;);
+						testSolved = true;
+					}
+				}
+				
+				//yet another hack pops in
+				if(totalShots == n &amp;&amp; !testSolved){
+					if(p2c.isEmpty() &amp;&amp; !p1c.isEmpty()){
+						System.out.println(&quot;player one wins&quot;);
+						testSolved = true;
+					}
+					
+					if(p1c.isEmpty() &amp;&amp; !p2c.isEmpty()){
+						System.out.println(&quot;player two wins&quot;);
+						testSolved = true;
+					}
+					
+					if(p1c.isEmpty() &amp;&amp; p2c.isEmpty()){
+						System.out.println(&quot;draw&quot;);
+						testSolved = true;
+					}
+					
+					if(!p1c.isEmpty() &amp;&amp; !p2c.isEmpty()){
+						System.out.println(&quot;draw&quot;);
+						testSolved = true;
+					}
+				}
+
+			}
+		}
+		
+		in.close();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

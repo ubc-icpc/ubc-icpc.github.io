@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+const long double PI = acos(-1.0);
+
+int main () {
+  int n; cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; ++i) {
+    double l,r;
+    cin &gt;&gt; l &gt;&gt; r;
+    if (r*2 &lt;= l) {
+      double a = PI*r*r;
+      cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; a &lt;&lt; endl;
+    } else if (l &lt;= r*sqrt(2)) {
+      double a = l*l;
+      cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; a &lt;&lt; endl;
+    } else {
+      double a = r*r*(2*sin(2*acos(l/(2*r)))+2*(PI/2-2*acos(l/(2*r))));
+      cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; a &lt;&lt; endl;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

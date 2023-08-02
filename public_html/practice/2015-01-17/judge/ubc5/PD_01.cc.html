@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;vi&gt; vvi;
+
+map&lt;vvi,int&gt; m;
+
+int main() {
+  int n, c;
+  while (cin &gt;&gt; n &amp;&amp; n) {
+    m.clear();
+    queue&lt;vvi&gt; q;
+    vvi s;
+    for (int i = 0; i &lt; n; i++) {
+      cin &gt;&gt; c;
+      s.push_back(vi(1,c));
+    }
+    q.push(s);
+    m[s] = 0;
+    while (q.size()) {
+      vvi f = q.front();
+      q.pop();
+      int d = m[f];
+      bool br = true;
+      for (int i = 0; i &lt; n; i++) {
+        if (f[i].size() != 1 || !f[i].size() || f[i][0] != i+1) {
+          br = false;
+          break;
+        }
+      }
+      if (br) {
+        cout &lt;&lt; d;
+        goto VELOCIRAPTOR;
+      }
+      for (int i = 0; i &lt; n; i++) {
+        if (!f[i].size())
+          continue;
+        if (i &gt; 0 &amp;&amp; (!f[i-1].size() || f[i].back() &lt; f[i-1].back())) {
+          vvi ff = f;
+          ff[i-1].push_back(ff[i].back());
+          ff[i].pop_back();
+          if (!m.count(ff)) {
+            m[ff] = d+1;
+            q.push(ff);
+          }
+        }
+        if (i &lt; n-1 &amp;&amp; (!f[i+1].size() || f[i].back() &lt; f[i+1].back())) {
+          vvi ff = f;
+          ff[i+1].push_back(ff[i].back());
+          ff[i].pop_back();
+          if (!m.count(ff)) {
+            m[ff] = d+1;
+            q.push(ff);
+          }
+        }
+      }
+    }
+    cout &lt;&lt; &quot;IMPOSSIBLE&quot;;
+    VELOCIRAPTOR:
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

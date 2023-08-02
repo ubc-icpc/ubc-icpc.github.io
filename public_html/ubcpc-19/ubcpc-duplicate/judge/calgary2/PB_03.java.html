@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * 
+ */
+
+/**
+ * @author charl
+ */
+public class B {
+
+	/**
+	 * @param args
+	 * @throws IOException
+	 */
+	public static void main(String[] args) throws IOException {
+		Reader in = new Reader();
+		int n = in.nextInt();
+		String[] names = new String[n];
+		int[] hp = new int[n], atk = new int[n], def = new int[n];
+		for (int i = 0; i &lt; n; i++) {
+			names[i] = in.next();
+			hp[i] = in.nextInt();
+			atk[i] = in.nextInt();
+			def[i] = in.nextInt();
+		}
+		//v[i][j] is true if i wins over j;
+		boolean[][] v = new boolean[n][n];
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = i + 1; j &lt; n; j++) {
+				int turnsj = (int) Math.ceil((double) hp[j] / Math.max(0,(atk[i] - def[j])));
+				int turnsi = (int) Math.ceil((double) hp[i] / Math.max(0,(atk[j] - def[i])));
+//				System.out.println(i + &quot; &quot; + j);
+//				System.out.println(turnsi+ &quot; &quot; + turnsj);
+				if (turnsj &gt; turnsi) {
+					v[j][i] = true;
+				} else if (turnsi &gt; turnsj) {
+					v[i][j] = true;
+				}
+			}
+		}
+		Queue&lt;int[]&gt; q = new LinkedList&lt;int[]&gt;();
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = i + 1; j &lt; n; j++) {
+				for (int k = j + 1; k &lt; n; k++) {
+					if ((v[i][j] &amp;&amp; v[j][k] &amp;&amp; v[k][i]) || (v[i][k] &amp;&amp; v[k][j] &amp;&amp; v[j][i])) {
+						int[] temp = { i, j, k };
+						q.add(temp);
+					}
+				}
+			}
+		}
+		if (q.isEmpty()) {
+			System.out.println(0);
+		} else {
+			System.out.println(q.size());
+			for (int[] i : q) {
+				for (int j : i) {
+					System.out.print(names[j] + &quot; &quot;);
+				}
+				System.out.println();
+			}
+		}
+	}
+
+}
+
+class Reader {
+	final private int BUFFER_SIZE = 1 &lt;&lt; 16;
+	private DataInputStream din;
+	private byte[] buffer;
+	private int bufferPointer, bytesRead;
+
+	public Reader() {
+		din = new DataInputStream(System.in);
+		buffer = new byte[BUFFER_SIZE];
+		bufferPointer = bytesRead = 0;
+	}
+
+	public Reader(InputStream in) {
+		din = new DataInputStream(in);
+		buffer = new byte[BUFFER_SIZE];
+		bufferPointer = bytesRead = 0;
+	}
+
+	public Reader(String file_name) throws IOException {
+		din = new DataInputStream(new FileInputStream(file_name));
+		buffer = new byte[BUFFER_SIZE];
+		bufferPointer = bytesRead = 0;
+	}
+
+	private void fillBuffer() throws IOException {
+		bytesRead = din.read(buffer, bufferPointer = 0, BUFFER_SIZE);
+		if (bytesRead == -1)
+			buffer[0] = -1;
+	}
+
+	private byte read() throws IOException {
+		if (bufferPointer == bytesRead)
+			fillBuffer();
+		return buffer[bufferPointer++];
+	}
+
+	public void close() throws IOException {
+		if (din == null)
+			return;
+		din.close();
+	}
+
+	public String nextLine() throws IOException {
+		byte[] buf = new byte[64]; // line length
+		int cnt = 0, c;
+		while ((c = read()) != -1) {
+			if (c == '\n')
+				break;
+			buf[cnt++] = (byte) c;
+		}
+		return new String(buf, 0, cnt);
+	}
+
+	public String next() throws IOException {
+		StringBuffer ret = new StringBuffer();
+		byte c = read();
+		while (Character.isWhitespace(c))
+			c = read();
+
+		do {
+			ret.append((char) c);
+		} while (!Character.isWhitespace(c = read()));
+		return ret.toString();
+	}
+
+	public char nextChar() throws IOException {
+		byte c = read();
+		while (Character.isWhitespace(c))
+			c = read();
+		return (char) c;
+	}
+
+	public int nextInt() throws IOException {
+		int ret = 0;
+		byte c = read();
+		while (c &lt;= ' ')
+			c = read();
+		boolean neg = (c == '-');
+		if (neg)
+			c = read();
+		do {
+			ret = ret * 10 + c - '0';
+		} while ((c = read()) &gt;= '0' &amp;&amp; c &lt;= '9');
+
+		if (neg)
+			return -ret;
+		return ret;
+	}
+
+	public long nextLong() throws IOException {
+		long ret = 0;
+		byte c = read();
+		while (c &lt;= ' ')
+			c = read();
+		boolean neg = (c == '-');
+		if (neg)
+			c = read();
+		do {
+			ret = ret * 10 + c - '0';
+		} while ((c = read()) &gt;= '0' &amp;&amp; c &lt;= '9');
+		if (neg)
+			return -ret;
+		return ret;
+	}
+
+	public double nextDouble() throws IOException {
+		double ret = 0, div = 1;
+		byte c = read();
+		while (c &lt;= ' ')
+			c = read();
+		boolean neg = (c == '-');
+		if (neg)
+			c = read();
+
+		do {
+			ret = ret * 10 + c - '0';
+		} while ((c = read()) &gt;= '0' &amp;&amp; c &lt;= '9');
+
+		if (c == '.') {
+			while ((c = read()) &gt;= '0' &amp;&amp; c &lt;= '9') {
+				ret += (c - '0') / (div *= 10);
+			}
+		}
+
+		if (neg)
+			return -ret;
+		return ret;
+	}
+
+}</code>
+</pre>
+</body>
+</html>

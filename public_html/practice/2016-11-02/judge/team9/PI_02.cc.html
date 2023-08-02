@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include&lt;string&gt;
+#include &lt;tuple&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(0);
+
+	long long q;
+	cin &gt;&gt; q;
+
+	if (q == 1) {
+		cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+		return 0;
+	}
+
+	set&lt;long long&gt; s;
+	
+	while (q &gt; 1) {
+		bool isPrime = true;
+		for (int i = 2; i &lt;= sqrt(q); i++) {
+			if (q%i == 0) {
+				s.insert(i);
+				q /= i; // update q
+				isPrime = false;
+				break;
+			}
+		}
+		if (isPrime) {
+			s.insert(q);
+			break;
+		}
+	}
+
+	if (s.size() == 1) {
+		cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+	}
+	else {
+		cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

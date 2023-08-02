@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;	       
+	    
+int main()
+{
+   int x;
+   int y;
+   vector&lt;int&gt; V;
+   int input;
+   int output = 0;
+
+   cin &gt;&gt; x &gt;&gt; y;
+
+   for(int i=0;i&lt;x;i++)
+   {
+      cin &gt;&gt; input;
+      V.push_back(input);
+   }
+   
+   sort(V.begin(), V.end());
+
+   while(y &gt; 0)
+   {
+      output += V.back();
+      V.pop_back();
+      y--;
+   }
+   
+   cout &lt;&lt; output &lt;&lt; endl;
+   return 0;
+}
+</code>
+</pre>
+</body>
+</html>

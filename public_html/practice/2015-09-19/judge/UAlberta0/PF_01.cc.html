@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+        vector&lt;int&gt; ns, length, num;
+        int T, N, l, next;
+
+        cin &gt;&gt; T;
+
+        while (T--) {
+                cin &gt;&gt; N;
+                ns.clear();
+                num.clear();
+                length.clear();
+
+                for (int i = 0; i &lt; N; ++i) {
+                        cin &gt;&gt; l;
+                        ns.push_back(l);
+                }
+                sort(ns.begin(), ns.end(), greater&lt;int&gt;());
+
+                for (int i = 0; i &lt; N ; ++i) {
+                        next = i;
+                        while(ns[next] == ns[i] &amp;&amp; next &lt; N - 1) {
+                                ++next;
+                        }
+                        
+                        if (next == N - 1 &amp;&amp; ns[i] == ns[N-1]) {
+                                break;
+                        }
+                        
+                        length.push_back(N - next);
+                        num.push_back(ns[i] - ns[next]);
+
+                        i = next - 1;
+                }
+
+                for (int i = num.size() - 1; i &gt;= 0; --i) {
+                        cout &lt;&lt; num[i] &lt;&lt; &quot; &quot; &lt;&lt; length[i] &lt;&lt; endl;
+                }
+                cout &lt;&lt; endl;
+        }
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

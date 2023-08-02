@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+#define EPS 1e-8
+using namespace std;
+int x[3];
+int y[3];
+bool aboveorbelow[3]; // above/right is 1, below/left is 0
+vector &lt;pair &lt;int, int&gt; &gt; other;
+int isabove(pair &lt;int, int&gt; f) {
+	assert(other.size() == 2);
+	if (other[1].first == other[0].first) {
+		if (f.first == other[1].first)
+			return -1;
+		return f.first &gt; other[1].first;
+	}
+	double slope = (other[1].second - other[0].second) / (double)(other[1].first - other[0].first);
+	if ((other[1].second + (slope * (f.first - other[1].first))) &lt; (double)f.second + EPS &amp;&amp; (other[1].second + (slope * (f.first - other[1].first))) &gt; (double)f.second - EPS) {
+		//cout &lt;&lt; &quot;END &quot; &lt;&lt; (other[1].second + (slope * (f.first - other[1].first))) &lt;&lt; ' ' &lt;&lt; f.second &lt;&lt; '\n';
+		return -1;
+	}
+	return (other[1].second + (slope * (f.first - other[1].first))) &lt; f.second;
+}
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	int t;
+	cin &gt;&gt; t;
+	while (t--) {
+		int num;
+		cin &gt;&gt; num;
+		cin &gt;&gt; x[0] &gt;&gt; y[0] &gt;&gt; x[1] &gt;&gt; y[1] &gt;&gt; x[2] &gt;&gt; y[2];
+		for (int i = 0; i &lt; 3; i++) {
+			other.clear();
+			for (int j = 0; j &lt; 3; j++) {
+				if (i != j) {
+					other.emplace_back(x[j], y[j]);
+				}
+			}
+			sort(other.begin(), other.end());
+			//cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+			aboveorbelow[i] = isabove(make_pair(x[i], y[i]));
+			assert(aboveorbelow[i] != -1);
+			//cout &lt;&lt; &quot;YO&quot; &lt;&lt; endl;
+		}
+		//cout &lt;&lt; &quot;HI&quot; &lt;&lt; endl;
+		int xv, yv;
+		while (num--) {
+			cin &gt;&gt; xv &gt;&gt; yv;
+			bool pos = true;
+			for (int i = 0; i &lt; 3; i++) {
+				other.clear();
+				for (int j = 0; j &lt; 3; j++) {
+					if (i != j) {
+						other.emplace_back(x[j], y[j]);
+					}
+				}
+				sort(other.begin(), other.end());
+				if (isabove(make_pair(xv, yv)) != aboveorbelow[i] &amp;&amp; isabove(make_pair(xv, yv)) != -1) {
+					pos = false;
+				}
+			}
+			cout &lt;&lt; (pos ? &quot;DANGER&quot; : &quot;SAFE&quot;) &lt;&lt; endl;
+		}
+	}
+}</code>
+</pre>
+</body>
+</html>

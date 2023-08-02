@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+/***************************************
+*                                      *
+*            Lord Klotski              *
+*                                      *
+****************************************/
+
+import java.util.* ;
+import java.math.* ;
+import java.io.* ;
+
+public class QuantumTeleport 
+{
+    static int N ;
+    static class swag
+    {
+        int node, a,b ; 
+        public swag (int i, int j, int k) {node = i ; a = j ; b = k ;}
+    }
+    static boolean isLegit(swag test,ArrayList&lt;swag&gt; real)
+    {
+        for (swag g : real)
+        {
+            if (test.a &gt; g.a &amp;&amp; test.b &gt; g.b) return false ;
+        }
+        return true ;
+    }
+    public static void main(String[] args) throws Exception
+    {
+        Scanner input = new Scanner(System.in) ;
+        int T = input.nextInt() ;
+        while (T --&gt; 0)
+        {            
+            N = input.nextInt() ;
+            int[][][] arr = new int[N][N][4] ;
+            for (int i = 0 ; i &lt; N ; i ++)
+                for (int j = 0 ; j &lt; N ; j ++)
+                    Arrays.fill(arr[i][j],-1) ;
+            int M = input.nextInt() ;
+            for (int i = 0 ; i &lt; M ; i ++)
+            {
+                int a = input.nextInt() ;
+                int b = input.nextInt() ;
+                arr[a][b][0] = input.nextInt() ; // AA
+                arr[a][b][1] = input.nextInt() ; // AB
+                arr[a][b][2] = input.nextInt() ; // BA
+                arr[a][b][3] = input.nextInt() ; // BB
+
+                arr[b][a][0] = arr[a][b][0] ; // AA
+                arr[b][a][1] = arr[a][b][1] ; // AB
+                arr[b][a][2] = arr[a][b][2] ; // BA
+                arr[b][a][3] = arr[a][b][3] ; // BB
+                
+            }
+            
+            Queue&lt;swag&gt; q = new LinkedList&lt;swag&gt;() ;
+            ArrayList&lt;ArrayList&lt;swag&gt;&gt; dist = new ArrayList&lt;ArrayList&lt;swag&gt;&gt;() ;
+            for (int i = 0 ; i &lt; N ; i ++)
+            {
+                dist.add(new ArrayList&lt;swag&gt;());
+            }           
+            
+            dist.get(0).add(new swag(0,0,0)) ;
+            
+            q.offer(new swag(0,0,0)) ;
+            while(!q.isEmpty())
+            {
+                swag cur = q.poll() ;
+                int x = cur.node ;
+                for (int j = 0 ; j &lt; N ; j ++)
+                {
+                    if (arr[x][j][0] &lt; 0) continue ;
+                    int nA = Math.max(cur.a + arr[x][j][0],cur.b + arr[x][j][2]) ;
+                    int nB = Math.max(cur.a + arr[x][j][1],cur.b + arr[x][j][3]) ;
+                    
+                    if (isLegit(new swag(0,nA,nB),dist.get(j)))
+                    {
+                        for (int i = dist.get(j).size()-1 ; i &gt;= 0 ; i --)
+                        {
+                            swag s = dist.get(j).get(i) ;
+                            if (s.a &gt; nA &amp;&amp; s.b &gt; nB)
+                            {
+                                dist.get(j).remove(i) ;
+                            }
+                        }
+                        dist.get(j).add(new swag(0,nA,nB));
+                        q.offer(new swag(j,nA,nB)) ;
+                    }
+                }
+            }
+
+            int ans = 420*420 ;
+            for (int i = 0 ; i &lt; dist.get(1).size() ; i ++)
+            {
+                ans = Math.min(ans,Math.max(dist.get(1).get(i).a,dist.get(1).get(i).b) ) ;
+            }
+            System.out.println(ans);
+            
+        }
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

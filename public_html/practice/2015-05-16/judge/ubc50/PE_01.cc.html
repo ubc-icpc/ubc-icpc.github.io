@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll n, m, k;
+ll a[505];
+ll arr[505][505];
+
+ll noise(ll x, ll k) {
+  ll a=x/(k+1);
+  ll b = x%(k+1);
+  return (k+1 - b)*(a*(a+1))/2 + b*((1+a)*(1+a+1))/2;
+}
+
+int main() {
+  cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+
+  for (int i=0; i&lt;n; i++) {
+    int x; cin &gt;&gt; x; a[x]++;
+  }
+  for (int i=1; i&lt;=m; i++) {
+    for (int j=0; j&lt;=k; j++) {
+      arr[i][j] = arr[i-1][j] + noise(a[i], 0);
+      for (int y=1; y&lt;=j; y++)
+	arr[i][j] = min(arr[i][j], arr[i-1][j-y] + noise(a[i],y));
+    }
+  }
+  cout &lt;&lt; arr[m][k] &lt;&lt; endl;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

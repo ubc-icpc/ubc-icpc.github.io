@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+  int t; cin &gt;&gt; t;
+  
+  for (int i=0; i&lt;t; i++) {
+    string s; cin &gt;&gt; s;
+    vector&lt;int&gt; p_ind;
+    vector&lt;int&gt; a_ind;
+    vector&lt;int&gt; t_ind;
+    vector&lt;int&gt; h_ind;
+    
+    for (int j=0; j&lt;s.size(); j++) {
+      if (s[j] == 'p') p_ind.push_back(j);
+      if (s[j] == 'a') a_ind.push_back(j);
+      if (s[j] == 't') t_ind.push_back(j);
+      if (s[j] == 'h') h_ind.push_back(j);
+    }
+    
+    if (p_ind.size()*a_ind.size()*t_ind.size()*h_ind.size() == 0) {
+      cout &lt;&lt; -1 &lt;&lt; endl;
+      continue;
+    }
+    
+    int mini = 501;
+    
+    for (int j=0; j&lt;p_ind.size(); j++) {
+      int pos = 0;
+      while (a_ind[pos] &lt; p_ind[j] &amp;&amp; pos&lt;a_ind.size()) {
+        pos++;
+      }
+      if (pos == a_ind.size()) {
+        break;
+      }
+      
+      int a_pos = a_ind[pos];
+      pos = 0;
+      while (t_ind[pos] &lt; a_pos &amp;&amp; pos&lt;t_ind.size()) {
+        pos++;
+      }
+      if (pos == t_ind.size()) {
+        break;
+      }
+      
+      int t_pos = t_ind[pos];
+      pos = 0;
+      while (h_ind[pos] &lt; t_pos &amp;&amp; pos&lt;h_ind.size()) {
+        pos++;
+      }
+      if (pos == h_ind.size()) {
+        break;
+      }
+      
+      int len =  h_ind[pos] - p_ind[j] + 1;
+      if (len &lt; mini) mini = len;
+    }
+    
+    if (mini != 501) cout &lt;&lt; mini &lt;&lt; endl;
+    else cout &lt;&lt; -1 &lt;&lt; endl;
+    
+  }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

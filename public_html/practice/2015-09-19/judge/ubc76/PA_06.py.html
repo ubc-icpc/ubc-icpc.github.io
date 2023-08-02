@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+o = []
+while (True):
+    if (int(raw_input().split()[0]) == 0):
+        break
+    else:    
+        o.append([int(x) for x in raw_input().split()])
+    
+for pile in o:
+    pile.sort(reverse = True)
+    dry,wash = 1,0
+    '''
+    if (len(pile) == 1):
+        time = 30+pile[0]
+        hour,minu = time/60,time%60
+        print &quot;%d:%02d&quot; % (hour, minu)
+    else:
+    '''    
+    right = 30+pile[0]
+    for d in range(len(pile)-1):
+        if ((dry+1) &lt;= len(pile) and right+pile[d+1] &lt;= 30*(dry+1)):
+            right = 30*(dry+1)
+            right = right + pile[d+1]
+            dry = dry+1
+        else:
+            right = right +pile[d+1]
+            dry = dry+1
+    hour,minu = right/60,right%60
+    print &quot;%d:%02d&quot; % (hour, minu)            
+            
+                </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

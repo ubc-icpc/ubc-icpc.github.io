@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+    int n; cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) {
+        int g, p; cin &gt;&gt; g &gt;&gt; p;
+        cout &lt;&lt; &quot;Team #&quot; &lt;&lt; i &lt;&lt; endl;
+        cout &lt;&lt; &quot;Games: &quot; &lt;&lt; g &lt;&lt; endl;
+        cout &lt;&lt; &quot;Points: &quot; &lt;&lt; p &lt;&lt; endl;
+        cout &lt;&lt; &quot;Possible records:&quot; &lt;&lt; endl;
+        for (int w = g; w &gt;= 0; w--) {
+            int pw = 3 * w, pt = p - pw;
+            if (pt &gt;= 0 &amp;&amp; pt + w &lt;= g) {
+                cout &lt;&lt; w &lt;&lt; &quot;-&quot; &lt;&lt; pt &lt;&lt; &quot;-&quot; &lt;&lt; g-w-pt &lt;&lt; endl;
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

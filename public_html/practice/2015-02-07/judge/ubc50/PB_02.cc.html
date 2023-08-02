@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;list&gt;
+#include&lt;algorithm&gt;
+#include&lt;limits&gt;
+
+using namespace std;
+
+int main() {
+  int n;
+  cin &gt;&gt; n;
+  while(n!=1) {
+    vector&lt;int&gt; v(n);
+    for(int a = 0; a &lt; n; a++) {
+      cin &gt;&gt; v[a];
+    }
+    int max_left = -1;
+    int min_left = numeric_limits&lt;int&gt;::max();
+    int max_right = -1;
+    int min_right = numeric_limits&lt;int&gt;::max();
+    vector&lt;int&gt; left(n);
+    vector&lt;int&gt; right(n);
+
+    for(int i = 0, j = n-2; i &lt; n-1; i++, j--) {
+      // find out max and min in left and right elements from i
+      if(v[i] &gt; max_left)
+	max_left = v[i];
+      if(v[i] &lt; min_left)
+	min_left = v[i];
+      if(v[j+1] &gt; max_right)
+	max_right = v[j+1];
+      if(v[j+1] &lt; min_right)
+	min_right = v[j+1];
+      // find out differences in the indices of left and right
+      left[i] = max_left - min_left;
+      right[j] = max_right - min_right;
+    }
+
+    // now pick out min of max(l[i],r[i])
+    int x = -1;
+    int m;
+    int check = numeric_limits&lt;int&gt;::max();
+    for(int i = 0; i &lt; n-1; i++) {
+      m = max(right[i],left[i]);
+      if(m &lt; check) {
+	check = m;
+	x = i;
+      }
+    }
+
+    cout &lt;&lt; x+1 &lt;&lt; endl;
+     cin &gt;&gt; n;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

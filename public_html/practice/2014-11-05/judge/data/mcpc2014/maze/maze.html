@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Problem F: The Maze Makers</title>
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style>
+</head>
+<body>
+<h1>Problem F: The Maze Makers</h1>
+<table class="files">
+  <tbody>
+  <tr>
+    <td>Source file:</td>
+    <td> <span style="font-family: monospace;">maze</span><tt>.</tt>{<tt>c</tt>,
+	<tt>cpp</tt>, <tt>java</tt>} </td>
+    </td>
+  </tr>
+  <tr>
+    <td>Input file:</td>
+    <td><tt>maze.in</tt></td>
+  </tr>
+  </tbody>
+</table>
+
+<p>
+The Maze Makers is a publisher of puzzle books.&nbsp; One of their
+most popular series is maze books.&nbsp; They have a program that
+generates rectangular two-dimensional mazes like the one shown in
+<b>Figure&nbsp;1</b>.&nbsp; The rules for these mazes are: (1) A maze
+has exactly two exterior cell walls missing, opening to two distinct
+terminal cells, (2) starting from any one cell, all other cells are
+reachable, (3) between any two cells in the maze there is exactly one
+simple path. Formally, a path is a sequence of cells where each cell
+and its successor on the path share an edge without a wall.
+A <i>simple </i>path is a path that never repeats a cell.&nbsp;
+</p>
+
+<p>
+The Maze Maker program uses hexadecimal digits to encode the walls
+and passages of a maze.&nbsp; For each cell in the maze there is a
+corresponding hex digit.&nbsp; As shown in <b>Figure 2</b>, the 1's
+and 0's in the 4 digit binary representation of a hex digit
+correspond to the walls (1's) and passages (0's) for each cell in
+the maze.&nbsp; For example, the binary encoding for the hex digit B
+is 1011.&nbsp; Starting at the top of the cell and moving clockwise
+around it, this digit represents a cell with a wall at the top, a
+passage to the right and walls at the bottom and to the left.&nbsp;
+A path between two maze cells successively moves one cell up, down,
+left or right, going through passages only.
+</p>
+
+<table align="center" border="1" cellpadding="10" cellspacing="2">
+  <tbody>
+  <tr>
+      <td>
+	  <img alt="2D-Maze" src="fig_01.png" width="200">
+	  <br>
+	  <br>
+	  <center><b>Figure 1:</b> Sample Maze</center>
+      </td>
+      <td>
+	  <img alt="Hex Code for Walls and Passageways"
+	  src="fig_02.png" width="200">
+	  <br>
+	  <br>
+	  <center><b>Figure 2:</b> Hex Code for Walls<br>and Passageways</center>
+      </td>
+      <td>
+	  <img alt="Maze with Cell
+	  Labels" src="fig_03.png" width="200">
+	  <br>
+	  <br>
+	  <center><b>Figure 3:</b> Maze with Cell Labels</center>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+<b>Figure 3</b> shows the sample maze with the hexadecimal labels in
+each cell.&nbsp; For example, the hexadecimal digit E in the
+top-right cell indicates that it has a wall above it, to its
+right, below it, yet a passageway to its left. The hexadecimal
+digit 8 to its left indicates that its cell has only a wall
+above it. The inputs will always be self-consistent, in that
+the hexadecimal digits in neighboring cells will agree on
+whether they share a wall or passageway, and each input will
+always have precisely two terminal cells, each with one missing
+exterior wall.
+</p>
+
+<p>
+Our sample maze is a legitimate maze in that all cells are
+reachable and there is a unique simple path between any pairs of cells
+in the maze. Your goal is to write a program that reads the hexadecimal
+descriptions of a potential maze and tests to determine if it 
+is legitimate. If there is a problem, your program must report
+only the <em>first</em> problem, as detailed below in the section
+titled "Output".
+</p>
+
+<!--
+-->
+<p style="page">&nbsp;</p>
+
+<p>
+<b>Input</b>: The input consists of the descriptions of one or more
+candidate mazes.&nbsp; Each maze description will start with two integers, H
+and W, indicating the height and width of the maze, respectively, such
+that <nobr>1 &le; H &le; 50</nobr> and
+<nobr>2 &le; W &le; 50</nobr>. Following this first
+line will be H rows of hexadecimal digits, with each row consisting of W digits.&nbsp;
+The input is terminated with a line displaying a pair of zeros.
+</p>
+
+<p>
+<b>Output</b>:&nbsp; For each candidate maze, the program should output
+the first one of the following statements that applies:
+<br>
+<blockquote>NO SOLUTION<br>
+UNREACHABLE CELL<br>
+MULTIPLE PATHS<br>
+MAZE OK<br>
+</blockquote>
+</p>
+
+<p>
+The classification statements are defined formally as follows:
+
+<blockquote>
+NO SOLUTION - There is no path through the interior of the maze
+between the two exterior openings.
+<br>
+<br>
+UNREACHABLE CELL - There is at least one cell in the maze that is not
+reachable by following passageways from either of the openings in the
+exterior walls of the maze.
+<br>
+<br>
+MULTIPLE PATHS - There exists a pair of cells in the maze that have
+more than one simple path between them. Two simple paths are
+considered to be distinct if any part of the paths differ.
+<br>
+<br>
+MAZE OK - None of the above problems exist.
+</blockquote>
+</p>
+
+<p>
+Note well that for the second case given in the following examples, there is no
+path between the start and finish and there is an unreachable cell;
+the correct output should simply be <nobr>NO SOLUTION</nobr>, because
+that error message is listed first in the above list. Similarly, in
+the fourth example given, UNREACHABLE&nbsp;CELL is reported because
+that error has priority over the multiple paths.
+</p>
+
+<p>
+<!--
+Sample input and output follows.
+-->
+Sample input and output is given on the following page.
+</p>
+
+<table class="example page">
+
+  <thead><tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+    <td><b>Maze Diagrams:</b></td>
+  </tr>
+  </thead> <tbody>
+  <tr>
+    <td><kbd>
+6 7<br>
+9A8C98E<br>
+2E5753C<br>
+980A496<br>
+553C53C<br>
+53C75D5<br>
+3E3E363<br>
+3 3<br>
+F9A<br>
+D3E<br>
+3AC<br>
+1 8<br>
+3AAA8AAE<br>
+6 3<br>
+9AC<br>
+3C5<br>
+A24<br>
+9A6<br>
+5BC<br>
+3C7<br>
+5 4<br>
+8A8E<br>
+592C<br>
+5186<br>
+161C<br>
+3A63<br>
+5 4<br>
+8AAE<br>
+59AC<br>
+5386<br>
+1E1C<br>
+3A63<br>
+0 0</kbd></td>	
+    <td>
+	<kbd>
+MAZE OK<br>
+NO SOLUTION<br>
+MAZE OK<br>
+UNREACHABLE CELL<br>
+MULTIPLE PATHS<br>
+MULTIPLE PATHS
+	</kbd>
+    </td>
+    <td>
+	<img alt="sample mazes" src="mazes.png" height="500">
+    </td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+<br>
+</body>
+</html>

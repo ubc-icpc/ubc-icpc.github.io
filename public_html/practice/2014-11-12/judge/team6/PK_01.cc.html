@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+unordered_map&lt;int, int&gt; dist;
+int main() {
+	int goal = (1&lt;&lt;13)-1, nst[3];
+	queue&lt;int&gt; q[2];
+	q[0].push(goal);
+	dist[goal] = 0;
+	while (!q[0].empty() || !q[1].empty()) {
+		int st;
+		if (!q[0].empty()) st = q[0].front(), q[0].pop();
+		else st = q[1].front(), q[1].pop();
+		int first_half = st &amp; ((1&lt;&lt;13) - 1);
+		int second_half = (st - first_half) &gt;&gt; 13;
+
+		//try rotating top half left
+		int rfirst_half = first_half/2 + ((first_half&amp;1)&lt;&lt;12);
+		nst[0] = rfirst_half + (second_half&lt;&lt;13);
+		
+		//try rotating bottom half left
+		int rsecond_half = second_half/2 + ((second_half&amp;1)&lt;&lt;12);
+		nst[1] = first_half + (rsecond_half&lt;&lt;13);
+		
+		//try swapping bridge
+		int first_three = first_half&amp;7, second_three = second_half&amp;7;
+		int mask = first_three^second_three;
+		nst[2] = (first_half^mask) + ((second_half^mask)&lt;&lt;13);
+		
+		for (int i = 0; i &lt; 3; i++) {
+			if (!dist.count(nst[i]) || dist[st] + (i==2) &lt; dist[nst[i]]) {
+				q[i==2].push(nst[i]);
+				dist[nst[i]] = dist[st] + (i == 2);
+			}
+		}
+	}
+	
+	string s;
+	while (cin &gt;&gt; s) {
+		int st = 0;
+		//our bfs assumes lower bits define top circle
+		reverse(s.begin(), s.end());
+		for (int i = 0; i &lt; s.size(); i++) {
+			st *= 2;
+			st += (s[i] == 'g');
+		}
+		cout &lt;&lt; dist[st] &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

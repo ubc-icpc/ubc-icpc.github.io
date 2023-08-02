@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+
+// Line segment (a, b) to pt p distance.
+inline ld lsp_dist(const pt &amp;a, const pt &amp;b, const pt &amp;p) {
+  return dp(b - a, p - a) &gt; 0 &amp;&amp; dp(a - b, p - b) &gt; 0 ?
+    abs(cp(b - a, p - a) / abs(b - a)) : min(abs(a - p), abs(b - p)); }
+    
+pt c[55];
+ld r[55];
+const ld eps = 1e-10;
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        ld w, h; cin &gt;&gt; w &gt;&gt; h;
+        
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            ld x, y; cin &gt;&gt; x &gt;&gt; y &gt;&gt; r[i];
+            c[i] = pt(x,y);
+        }
+        
+        pt wp[4] = {pt(0,0), pt(w, 0), pt(w, h), pt(0, h)};
+        ld s = 0, t = min(w, h);
+        while (abs(s-t) &gt; eps) {
+            ld m = (s+t)/2;
+            
+            // list of evaluation points
+            vector&lt;pt&gt; eval;
+            
+            // add the points touching two corners of the wall
+            eval.push_back(pt(m,m));
+            eval.push_back(pt(w-m,m));
+            eval.push_back(pt(w-m,h-m));
+            eval.push_back(pt(m,h-m));
+            
+            // add the points touching two clocks
+            for (int i = 0; i &lt; n; i++) {
+                for (int j = i+1; j &lt; n; j++) {
+                    // triangle with side lengths |ci - cj|,
+                    // ri + r, rj + r
+                    ld A = abs(c[i]-c[j]), B = r[i] + m, C = r[j] + m;
+                    ld ctheta = (A*A + B*B - C*C)/(2*A*B);
+                    if (abs(ctheta) &gt;= 1) continue;
+                    
+                    ld theta = acos(ctheta);
+                    pt dir = (c[j] - c[i])/abs(c[j] - c[i]);
+                    eval.push_back(c[i] + (r[i]+m)*polar(1.0L, theta)*dir);
+                    eval.push_back(c[i] + (r[i]+m)*polar(1.0L, -theta)*dir);
+                }
+            }
+            
+            bool any = false;
+            // check each center point
+            for (pt p : eval) {
+                bool res = true;
+                
+                // check overlap with circles
+                for (int i = 0; i &lt; n; i++) {
+                    if (abs(c[i]-p) &lt; r[i] + m - eps) {
+                        res = false;
+                        break;
+                    }
+                }
+                
+                // check overlap with walls
+                for (int i = 0; i &lt; 4; i++) {
+                    if (lsp_dist(wp[i], wp[(i+1)%4], p) &lt; m) {
+                        res = false;
+                        break;
+                    }
+                }
+                
+                // check if within walls
+                for (int i = 0; i &lt; 4; i++) {
+                    if (cp(wp[(i+1)%4]-wp[i], p-wp[i]) &lt; 0) {
+                        res = false;
+                        break;
+                    }
+                }
+                any = any || res;
+            }
+            
+            if (any) {
+                s = m;
+            } else {
+                t = m;
+            }
+        }
+        
+        cout &lt;&lt; setprecision(15) &lt;&lt; fixed &lt;&lt; (s+t)/2 &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

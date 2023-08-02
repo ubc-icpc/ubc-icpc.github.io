@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+ll x[405], y[405];
+int main() {
+    ios::sync_with_stdio(0);
+    int t, ca = 0; cin &gt;&gt; t;
+    
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        //cerr &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; t &lt;&lt; endl;
+        if (n == 0) {
+            cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot; &lt;&lt; 0 &lt;&lt; endl;
+            continue;
+        }
+        
+        for (int i = 0; i &lt; n; i++) cin &gt;&gt; x[i] &gt;&gt; y[i];
+        map&lt;tuple&lt;ll, ll, ll&gt;, int&gt; m;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (i == j) continue;
+                ll a = x[j]-x[i], b = y[j]-y[i];
+                ll g = __gcd(a, b);
+                a /= g, b /= g;
+                if (a &lt; 0) {
+                    a *= -1;
+                    b *= -1;
+                }
+                //m = b/a
+                //y = (b/a)x + c
+                tuple&lt;ll, ll, ll&gt; tup(a,b,-b*x[i]+a*y[i]);
+                m[tup]++;
+            }
+        }
+        
+        int ans = 0;
+        for (auto p : m) ans = max(ans, p.second);
+        //cerr &lt;&lt; ans &lt;&lt; endl;
+        //ans = n*(n-1)
+        for (int i = 1; i &lt;= n; i++) {
+            if (i*(i-1) == ans) cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot; &lt;&lt; i &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+vector&lt;string&gt; name;
+vector&lt;int&gt; hp;
+vector&lt;int&gt; attack;
+vector&lt;int&gt; def;
+
+bool win(int a, int b) {
+  int adec = attack[b] - def[a];
+  int bdec = attack[a] - def[b];
+  if (adec &lt;= 0 &amp;&amp; bdec &lt;= 0) {
+    return false;
+  } else if (adec &lt;= 0) {
+    return true;
+  } else if (bdec &lt;= 0) {
+    return false;
+  }
+  return (hp[a]/adec + (hp[a]%adec != 0)) &gt; (hp[b]/bdec + (hp[b]%bdec != 0));
+}
+
+bool isGood(int i, int j, int k) {
+  if (win(i, j) &amp;&amp; win(j, k) &amp;&amp; win(k, i)) {
+    return true;
+  }
+  if (win(k, j) &amp;&amp; win(j, i) &amp;&amp; win(i, k)) {
+    return true;
+  }
+  return false;
+}
+
+int main() {
+  int n;
+  cin &gt;&gt; n;
+  name.resize(n);
+  attack.resize(n);
+  hp.resize(n);
+  def.resize(n);
+
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; name[i] &gt;&gt; hp[i] &gt;&gt; attack[i] &gt;&gt; def[i];
+  }
+
+  vector&lt;vector&lt;int&gt;&gt; ans;
+
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = i; j &lt; n; j++) {
+      for (int k = j; k &lt; n; k++) {
+        if (isGood(i, j, k)) {
+          ans.push_back({i,j,k});
+        }
+      }
+    }
+  }
+
+  cout &lt;&lt; ans.size() &lt;&lt; endl;
+  for (int i = 0; i &lt; ans.size(); i++) {
+    cout &lt;&lt; name[ans[i][0]] &lt;&lt; &quot; &quot; &lt;&lt; name[ans[i][1]] &lt;&lt; &quot; &quot; &lt;&lt; name[ans[i][2]] &lt;&lt; endl;
+  }
+}
+</code>
+</pre>
+</body>
+</html>

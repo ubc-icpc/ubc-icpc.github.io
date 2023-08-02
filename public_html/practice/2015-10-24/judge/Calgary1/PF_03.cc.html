@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+
+int main() {
+	int tc, T, N;
+	scanf(&quot;%d&quot;, &amp;tc);
+	while (tc--) {
+		scanf(&quot;%d%d&quot;, &amp;T, &amp;N);
+		vector&lt;char&gt; g(T+1, 1);
+		bool cp = false;
+		FOR(n,0,N) {
+			int s, d;
+			scanf(&quot;%d%d&quot;, &amp;s, &amp;d);
+			d -= s;
+			vector&lt;char&gt; g2(T+1);
+			FOR(t, 0, T+1) if (g[t]) {
+				if (t+d &lt;= T) {g2[t+d] = 1; if (n==N-1) cp=true;}
+				if (t-d &gt;= 0) {g2[t-d] = 1; if (n==N-1) cp=true;}
+			}
+			g = move(g2);
+		}
+		if (!cp) {puts(&quot;impossible&quot;);return 0;}
+	}
+	puts(&quot;possible&quot;);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

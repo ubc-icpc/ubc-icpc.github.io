@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+# G - Infinity plus one
+
+def order(a):
+    # convert [[+]][+]+ to [1,1,1] and ++[+][[+]+] to [0,0,1]
+    dep = 0
+    curr = 0  # will we add on this level
+    currd=0
+    val = [0]
+    for c in a:
+        # only allow adding another one once we've visited the base level
+        if c=='+':
+            curr = 1  #candidate depth to add at
+            currd=max(currd,dep)
+            # since
+            # [++] = [+]  ([0,1])
+            # but
+            # [+][+] &gt; [+]  ([0,2] &gt; [0,1])
+            # only allow adding 1 at a time for any depth (except 0)
+        elif c=='[':
+            # val[:dep] = [0]*dep #can't since it might be empty.
+            dep+=1
+            # d = 1  # allow adding 1 again
+            # don't since [[+][+]] == [[+]]. ([0,0,1])
+            if len(val)==dep:
+                val.append(0)
+        elif c==']':
+            # d = 0  # allow adding 1 again No, since [[]+] == [+]
+            # [[+]][+][+] &gt; [[+]][+] &gt; [[+]]+++ &gt; [[+]]+
+            # [+]+ &gt; [+]
+            # if curr or any(val[dep:]):
+            #     # overwrite previous depths if we added something higher
+            #     # since:
+            #     # +[+] = [+]
+            #     # +[[+]] = [[+]]  (moving &gt;inside)
+            #     # [[+]] &lt;=   +[[+]]   &lt;= [+[+]] &lt;= [[++]] == [[+]]
+            #     # bounded above and below -&gt; equal
+            #     val[:dep]=[0]*(dep)
+            dep-=1
+        if dep==0:
+            # add and reset
+            if curr:
+                val[currd]+=1
+                # clear previous depths if we added higher
+                val[:currd] = [0]*currd
+            currd=0
+            curr = 0
+        # print(val)
+    while val and val[-1]==0:
+        val.pop()
+    return val
+
+# [[+]+] &gt;= [[+]]+  ?
+# [[+]+] == [+]+[+]+[+]+... =?= [+][+][+]...+?
+# is [[+]+] == [[+]]?
+# yes, if we assume there is no 'last' +. No otherwise.
+# case:
+# [[+]+] vs [[+]]+
+# original algo would say &gt;.
+# if no, &lt;.
+
+# case: [[+][+]] == [[+]]
+# we know [[+][+]] &gt; [[+]+]
+
+&quot;&quot;&quot;
+8
++
+[+]+
+[+][+]
++++++++
++++[+++]
++[+[+]+]+
+[+][[+]][+]
+[][[][]][]
+&quot;&quot;&quot;
+
+
+M = int(input())
+P = [input() for x in range(M)]
+o = [order(p) for p in P]
+
+from functools import cmp_to_key
+def ocmp(t,s):
+    # hack because first position is least significant value,
+    # when default list comparison considers first the most significant
+    if len(t[0]) == len(s[0]):
+        return -1 if t[0][::-1] &lt; s[0][::-1] else +1
+    return -1 if len(t[0]) &lt; len(s[0]) else +1
+
+print('\n'.join(t[1] for t in sorted(zip(o,P), key=cmp_to_key(ocmp))))
+
+</code>
+</pre>
+</body>
+</html>

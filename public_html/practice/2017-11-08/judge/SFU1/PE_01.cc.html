@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+/*
+ * E.cpp
+ *
+ *  Created on: 2014-11-08
+ *      Author: djwoods
+ */
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdlib&gt;
+#include &lt;math.h&gt;
+
+using namespace std;
+
+int runes[101][3];
+int nRunes, rings;
+
+bool runeSatisfied(int index, int bm)
+{
+	for (int i = 0; i &lt; 3; i++)
+	{
+		int ind = abs(runes[index][i]) - 1;
+		if (runes[index][i] &lt; 0 &amp;&amp; ((bm &amp; (1&lt;&lt;ind)) == 0))
+		{
+			return true;
+		}
+		if (runes[index][i] &gt; 0 &amp;&amp; ((bm &amp; (1&lt;&lt;ind)) &gt; 0))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+int main()
+{
+	int g;
+	cin &gt;&gt; g;
+	while (g-- &gt; 0)
+	{
+		cin &gt;&gt; rings &gt;&gt; nRunes;
+		memset(runes, 0, sizeof(runes));
+
+		int a, b, c, d;
+		bool err1 = false; bool err2 = false; bool err3 = false;
+
+		for (int i = 0; i &lt; nRunes; i++)
+		{
+			cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d;
+			if (a == 0 || b == 0 || c == 0)
+			{
+				err1 = true;
+			}
+			else if (abs(a) &gt; rings || abs(b) &gt; rings || abs(c) &gt; rings)
+			{
+				err2 = true;
+			}
+			else if (abs(a) == abs(b) || abs(a) == abs(c) || abs(b) == abs(c))
+			{
+				err3 = true;
+			}
+			runes[i][0] = a;
+			runes[i][1] = b;
+			runes[i][2] = c;
+		}
+
+		if (err1)
+		{
+			cout &lt;&lt; &quot;INVALID: NULL RING&quot; &lt;&lt; endl;
+		}
+		else if (err2)
+		{
+			cout &lt;&lt; &quot;INVALID: RING MISSING&quot; &lt;&lt; endl;
+		}
+		else if (err3)
+		{
+			cout &lt;&lt; &quot;INVALID: RUNE CONTAINS A REPEATED RING&quot; &lt;&lt; endl;
+		}
+		else
+		{
+			bool satisfied = false;
+			int maxI = pow(2.0, rings);
+			for (int i = 0; i &lt; maxI; i++)
+			{
+				satisfied = true;
+				for (int r = 0; r &lt; nRunes; r++)
+				{
+					if (!runeSatisfied(r, i))
+					{
+						satisfied = false;
+						break;
+					}
+				}
+				if (satisfied)
+				{
+					break;
+				}
+			}
+
+			if (satisfied)
+			{
+				cout &lt;&lt; &quot;RUNES SATISFIED!&quot; &lt;&lt; endl;
+			}
+			else
+			{
+				cout &lt;&lt; &quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!&quot; &lt;&lt; endl;
+			}
+		}
+	}
+	return 0;
+}
+
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

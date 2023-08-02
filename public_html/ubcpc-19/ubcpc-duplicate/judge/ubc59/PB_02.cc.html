@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cctype&gt;
+#include &lt;cmath&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;set&gt;
+using namespace std;
+
+/*
+g++ -std=c++11 b-balanced.cpp -o k
+
+1 
+TheStrong 90 60 10 
+
+5 
+TheStrong 90 60 10 
+TheInvincible 10000 10000 10000 
+TheTough 70 50 25 
+TheBrick 3 1 4159 
+TheResilient 160 40 10
+
+10 
+TheStrong 90 60 10 
+TheInvincible 10000 10000 10000 
+TheTough 70 50 25 
+TheBrick 3 1 4159 
+TheResilient 160 40 10
+2TheStrong 90 60 10 
+2TheInvincible 10000 10000 10000 
+2TheTough 70 50 25 
+2TheBrick 3 1 4159 
+2TheResilient 160 40 10
+*/
+
+void debug() {
+    cout &lt;&lt; &quot;DEBUG&quot; &lt;&lt; endl;
+}
+
+bool i_beats_j(int hpi, int ati, int dfi, int hpj, int atj, int dfj) {
+    if(atj - dfi &lt;= 0 &amp;&amp; ati - dfj &lt;= 0) {
+        return false;
+    } else if(atj - dfi &lt;= 0) {
+        return true;
+    } else if(ati - dfj &lt;= 0) {
+        return false;
+    } else {
+        if(ceil( ((float) hpi) / (atj - dfi)) == ceil( ((float) hpj) / (ati - dfj))) {
+            return false;
+        } else if(ceil( ((float) hpi) / (atj - dfi)) &gt; ceil( ((float) hpj) / (ati - dfj))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+int main() {
+    int N, acc; acc = 0;
+    vector&lt;string&gt; sol;
+    cin &gt;&gt; N;
+    string name[N];
+    int HP[N];
+    int AT[N];
+    int DF[N];
+    set&lt;int&gt; b[N];
+    bool tmp;
+    for(int i = 0; i &lt; N; i++) {
+        cin &gt;&gt; name[i] &gt;&gt; HP[i] &gt;&gt; AT[i] &gt;&gt; DF[i];
+        b[i] = set&lt;int&gt;();
+    }
+
+    if(N &lt; 3) {
+        cout &lt;&lt; 0 &lt;&lt; endl;
+        return 0;
+    }
+
+    for(int i = 0; i &lt; N; i++) {
+        // compare against fighter
+        for(int j = 0; j &lt; N; j++) {
+            tmp = i_beats_j(HP[i], AT[i], DF[i], HP[j], AT[j], DF[j]);
+            if(i != j &amp;&amp; tmp)
+                b[i].insert(j);
+        }
+    }
+
+    //for(int i = 0; i &lt; N; i++) {
+    //    cout &lt;&lt; i &lt;&lt; &quot;: &quot;;
+    //    for(int j : b[i]) cout &lt;&lt; j &lt;&lt; &quot; &quot;;
+    //    cout &lt;&lt; endl;
+    //}
+
+    set&lt;set&lt;int&gt;&gt; touched;
+    set&lt;int&gt; tmps;
+    for(int i = 0; i &lt; N; i++) {
+        for(int j : b[i]) {
+            for(int k : b[j]) {
+                //cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; b[k].count(i) &lt;&lt; endl;
+                if(b[k].count(i) != 0) {
+                    // we found it
+                    tmps = set&lt;int&gt;();
+                    tmps.insert(i);
+                    tmps.insert(j);
+                    tmps.insert(k);
+                    if(touched.count(tmps) == 0) {
+                        acc += 1;
+                        sol.push_back(name[i] + &quot; &quot; + name[j] + &quot; &quot; + name[k]);
+                        touched.insert(tmps);
+                    }
+                }
+            }
+        }
+    }
+
+    cout &lt;&lt; acc &lt;&lt; endl;
+    for(const string&amp; str : sol) {
+        cout &lt;&lt; str &lt;&lt; endl;
+    }
+
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

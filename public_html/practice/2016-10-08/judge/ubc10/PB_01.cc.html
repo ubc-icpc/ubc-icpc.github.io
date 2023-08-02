@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;pii, int&gt; piii;
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    string dummy, line;
+    int p, q; cin &gt;&gt; p &gt;&gt; q;
+    while (p &gt; 0 || q &gt; 0) {
+        getline(cin, dummy);
+
+        vector&lt;piii&gt; sol;
+        int c1 = 0, c2 = 0, c3 = 0;
+        int indent[p];
+        int coeff[p][3];
+        for (int i = 0; i &lt; p; i++) {
+            getline(cin, line);
+
+            int cnt = 0;
+            while (cnt &lt; line.length() &amp;&amp; line[cnt] == '.') cnt++;
+            indent[i] = cnt;
+            coeff[i][0] = c1;
+            coeff[i][1] = c2;
+            coeff[i][2] = c3;
+
+            //cerr &lt;&lt; c1 &lt;&lt; &quot; &quot;&lt;&lt; c2 &lt;&lt; &quot; &quot; &lt;&lt; c3 &lt;&lt; endl;
+
+            for (int j = 0; j &lt; line.length(); j++) {
+                if (line[j] == '(') c1++;
+                else if (line[j] == '{') c2++;
+                else if (line[j] == '[') c3++;
+                else if (line[j] == ')') c1--;
+                else if (line[j] == '}') c2--;
+                else if (line[j] == ']') c3--;
+            }
+        }
+
+        for (int x = 1; x &lt;= 20; x++) {
+            for (int y = 1; y &lt;= 20; y++) {
+                for (int z = 1; z &lt;= 20; z++) {
+                    bool good = true;
+                    for (int k = 0; k &lt; p; k++) {
+                        if (x*coeff[k][0] + y*coeff[k][1] + z*coeff[k][2] != indent[k]) {
+                            good = false;
+                            break;
+                        }
+                    }
+                    if (good) {
+                        //cerr &lt;&lt; &quot;found sol: &quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; &quot; &quot; &lt;&lt; z &lt;&lt; endl;
+                        sol.push_back(piii(pii(x, y), z));
+                    }
+                }
+            }
+        }
+
+
+        c1 = 0; c2 = 0; c3 = 0;
+        for (int i = 0; i &lt; q; i++) {
+            getline(cin, line);
+            int ans = -1;
+            bool good = true;
+            for (piii s : sol) {
+                int tmp = s.first.first * c1 + s.first.second * c2 + s.second * c3;
+                if (ans == -1) {
+                    ans = tmp;
+                } else if (ans != tmp) {
+                    good = false;
+                    break;
+                }
+            }
+            if (i &gt; 0) cout &lt;&lt; &quot; &quot;;
+            if (good) cout &lt;&lt; ans;
+            else cout &lt;&lt; -1;
+
+            for (int j = 0; j &lt; line.length(); j++) {
+                if (line[j] == '(') c1++;
+                else if (line[j] == '{') c2++;
+                else if (line[j] == '[') c3++;
+                else if (line[j] == ')') c1--;
+                else if (line[j] == '}') c2--;
+                else if (line[j] == ']') c3--;
+            }
+        }
+        cout &lt;&lt; endl;
+
+        cin &gt;&gt; p &gt;&gt; q;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

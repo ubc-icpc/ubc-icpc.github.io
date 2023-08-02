@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;queue&gt;
+#include &lt;climits&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;math.h&gt;
+#include &lt;iomanip&gt;  
+#include &lt;stack&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+struct fighter {
+	string name;
+	int hp;
+	int at; 
+	int df;
+};
+
+bool beats(fighter f1, fighter f2) {
+	int rate1 = max(0, f2.at - f1.df);
+	int rate2 = max(0, f1.at - f2.df);
+	if (rate1 == 0 &amp;&amp; rate2 == 0) {
+		return false;
+	}
+	if (rate1 == 0) {
+		return true;
+	}
+	if (rate2 == 0) {
+		return false;
+	}
+	int c1 = f1.hp/rate1;
+	int c2 = f2.hp/rate2;
+	if (f1.hp % rate1 != 0) {
+		c1++;
+	}
+	if (f2.hp % rate2 != 0) {
+		c2++;
+	}
+	return c1 &gt; c2;
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;fighter&gt; fighters;
+	for (int i = 0; i &lt; n; i++) {
+		fighter f;
+		cin &gt;&gt; f.name &gt;&gt; f.hp &gt;&gt; f.at &gt;&gt; f.df;
+		fighters.push_back(f);
+	}
+
+	vector&lt;string&gt; ans;
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = i + 1; j &lt; n; j++) {
+			for (int k = j + 1; k &lt; n; k++) {
+				if (beats(fighters[i], fighters[j]) &amp;&amp; beats(fighters[j], fighters[k]) &amp;&amp; beats(fighters[k], fighters[i])) {
+					string s = fighters[i].name + &quot; &quot; + fighters[j].name + &quot; &quot; + fighters[k].name;
+					ans.push_back(s);
+				} else if (beats(fighters[i], fighters[k]) &amp;&amp; beats(fighters[k], fighters[j]) &amp;&amp; beats(fighters[j], fighters[i])) {
+					string s = fighters[i].name + &quot; &quot; + fighters[j].name + &quot; &quot; + fighters[k].name;
+					ans.push_back(s);
+				}
+			}
+		}
+	}
+
+	cout &lt;&lt; ans.size() &lt;&lt; endl;
+	for (int i = 0; i &lt; ans.size(); i++) {
+		cout &lt;&lt; ans[i] &lt;&lt; endl;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

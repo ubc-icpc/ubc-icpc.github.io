@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;unordered_set&gt;
+#include &lt;queue&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+using vs = vector&lt;string&gt;;
+using uss = unordered_set&lt;string&gt;;
+using qs = queue&lt;string&gt;;
+
+vs argharian(string word) {
+  uss res;
+  if (word.size() &gt; 1 &amp;&amp; *(word.rbegin() + 1) == 'e') {
+    string new_word = word;
+    swap(*new_word.rbegin(), *(new_word.rbegin() + 1));
+    // cout &lt;&lt; &quot;rev last e rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+    res.insert(new_word);
+  }
+  for (int i = 0; i &lt; word.size(); ++i) {
+    if (i + 2 &lt; word.size()) {
+      if (word.substr(i, 3) == &quot;che&quot;) {
+        string new_word = word;
+        new_word.replace(i, 3, &quot;rge&quot;);
+        // cout &lt;&lt; &quot;rev rge rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+        res.insert(new_word);
+      }
+      if (word.substr(i, 3) == &quot;rec&quot;) {
+        string new_word = word;
+        // cout &lt;&lt; &quot;rev re rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+        new_word.erase(i + 2, 1);
+        res.insert(new_word);
+      }
+    }
+    if (i + 1 &lt; word.size()) {
+      if (word.substr(i, 2) == &quot;ec&quot;) {
+        string new_word = word;
+        new_word.replace(i, 2, &quot;ce&quot;);
+        // cout &lt;&lt; &quot;rev ce rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+        res.insert(new_word);
+      }
+    }
+  }
+  vs argh;
+  for (auto&amp; w : res)
+    if (3 &lt;= w.size() &amp;&amp; w.size() &lt;= 12)
+    argh.push_back(w);
+  return argh;
+}
+
+vs ackanese(string word) {
+  uss res;
+  if (*word.rbegin() == 'e') {
+    string new_word = word;
+    swap(*new_word.rbegin(), *(new_word.rbegin() + 1));
+    // cout &lt;&lt; &quot;last e rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+    res.insert(new_word);
+  }
+  for (int i = 0; i &lt; word.size(); ++i) {
+    if (i + 2 &lt; word.size()) {
+      if (word.substr(i, 3) == &quot;rge&quot;) {
+        string new_word = word;
+        new_word.replace(i, 3, &quot;che&quot;);
+        // cout &lt;&lt; &quot;rge rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+        res.insert(new_word);
+      }
+    }
+    if (i + 1 &lt; word.size()) {
+      if (word.substr(i, 2) == &quot;re&quot;) {
+        string new_word = word;
+        new_word.insert(i + 2, &quot;c&quot;);
+        // cout &lt;&lt; &quot;re rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+        res.insert(new_word);
+      }
+      if (word.substr(i, 2) == &quot;ce&quot;) {
+        string new_word = word;
+        new_word.replace(i, 2, &quot;ec&quot;);
+        // cout &lt;&lt; &quot;ce rule: &quot; &lt;&lt; new_word &lt;&lt; endl;
+        res.insert(new_word);
+      }
+    }
+  }
+  vs ack;
+  for (auto&amp; w : res)
+    ack.push_back(w);
+  return ack;
+}
+
+int main() {
+  string word; cin &gt;&gt; word;
+  int cases = 1;
+  while (true) {
+    uss found;
+    qs next; next.push(word);
+    found.insert(word);
+    while (!next.empty()) {
+      string curr_word = next.front();
+      next.pop();
+      vs ack = ackanese(curr_word);
+      for (auto&amp; s : ack) {
+        vs argh = argharian(s);
+        for (auto&amp; rev : argh) {
+          if (found.find(rev) == found.end()) {
+            next.push(rev);
+            found.insert(rev);
+          }
+        }
+      }
+    }
+    vs sym;
+    for (auto&amp; s : found)
+      sym.push_back(s);
+    sort(sym.begin(), sym.end());
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; cases++ &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    for (auto&amp; s : sym)
+      cout &lt;&lt; s &lt;&lt; endl;
+    if (cin &gt;&gt; word) {
+      cout &lt;&lt; endl;
+    } else {
+      break;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+ld p;
+
+ld lol(int win, int loss, ld percent )
+{
+	if (win &gt;= loss + 2 &amp;&amp; win &gt;= 4)
+	{
+		return 1;
+	}
+	if (loss &gt;= win + 2 &amp;&amp; loss &gt;= 4)
+	{
+		return 0;
+	}
+	else if (percent &lt;= 1e-12)
+		return 0.5;
+
+	return p * lol(win + 1, loss, percent * p) + (1-p) * lol(win, loss + 1,percent * (1-p));
+
+}
+
+int main()
+{
+	int n;
+	cin &gt;&gt; n;
+	cout.precision(5);
+	while (n--)
+	{
+		cin &gt;&gt; p;
+		cout &lt;&lt; fixed &lt;&lt; lol(0,0,1) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

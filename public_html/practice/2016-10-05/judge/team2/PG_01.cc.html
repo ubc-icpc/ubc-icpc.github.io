@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+
+ll X1, Y1, X2, Y2, X3, Y3, a, b, c;
+ld r, ir;
+
+int main () {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; X1 &gt;&gt; Y1 &gt;&gt; X2 &gt;&gt; Y2 &gt;&gt; X3 &gt;&gt; Y3 &gt;&gt; ir;
+
+  a = (X1 - X2) * (X1 - X2) + (Y1 - Y2) * (Y1 - Y2);
+  b = (X2 - X3) * (X2 - X3) + (Y2 - Y3) * (Y2 - Y3);
+  c = (X1 - X3) * (X1 - X3) + (Y1 - Y3) * (Y1 - Y3);
+
+  r = sqrt(4 * a * b - (a + b - c) * (a + b - c)) / 2 / (sqrt(a) + sqrt(b) + sqrt(c));
+
+  cout &lt;&lt; (r - ir) / ir * 100 &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

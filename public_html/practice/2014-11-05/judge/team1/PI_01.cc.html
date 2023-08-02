@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+#define mp(a,b) make_pair(a,b)
+
+typedef pair&lt;int,int&gt; pii;
+
+int WOW_SO_HARDCORE_X[4] = {-1,1,0,0};
+int WOW_SO_HARDCORE_Y[4] = {0,0,1,-1};
+
+char f[1000][1000];
+
+int main()
+{
+    int x, y, t, l, w, x1, y1, x2, y2;
+    while (cin &gt;&gt; x &gt;&gt; y &gt;&gt; t &gt;&gt; l &gt;&gt; w &amp;&amp; x != -1)
+    {
+        memset(f, 0, sizeof f);
+        queue&lt;pii&gt; q, q2;
+        for (int i = 0; i &lt; l; i++)
+        {
+            cin &gt;&gt; x1 &gt;&gt; y1;
+            x1--; y1--;
+            q.push(mp(x1,y1));
+            f[x1][y1] = 'W';
+        }
+        for (int i = 0; i &lt; w; i++)
+        {
+            cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+            x1--; y1--; x2--; y2--;
+            if (x1 == x2)
+            {
+                for (int j = min(y1,y2); j &lt;= max(y1,y2); j++)
+                    f[x1][j] = 'X';
+            }
+            else if (y1 == y2)
+            {
+                for (int j = min(x1,x2); j &lt;= max(x1,x2); j++)
+                    f[j][y1] = 'X';
+            }
+            else
+            {
+                for (int j = x1, k = y1;;)
+                {
+                    f[j][k] = 'X';
+                    if (j &lt;= x2)
+                    {
+                        j++;
+                        if (j &gt; x2)
+                            break;
+                    }
+                    else
+                    {
+                        j--;
+                        if (j &lt; x2)
+                            break;
+                    }
+                    if (k &lt;= y2)
+                        k++;
+                    else
+                        k--;
+                }
+            }
+        }
+        for (int i = 0; i &lt; t-1; i++)
+        {
+            while (q.size())
+            {
+                pii p = q.front();
+                q.pop();
+                int X = p.first, Y = p.second;
+                for (int j = 0; j &lt; 4; j++)
+                {
+                    int XX = X+WOW_SO_HARDCORE_X[j], YY = Y+WOW_SO_HARDCORE_Y[j];
+                    if (XX &gt;= 0 &amp;&amp; XX &lt; x &amp;&amp; YY &gt;= 0 &amp;&amp; YY &lt; y &amp;&amp; !f[XX][YY])
+                    {
+                        f[XX][YY] = 'W';
+                        q2.push(mp(XX,YY));
+                    }
+                }
+            }
+            q = q2;
+            q2 = queue&lt;pii&gt;();
+        }
+        int T = 0;
+        for (int i = 0; i &lt; x; i++)
+            for (int j = 0; j &lt; y; j++)
+                if (f[i][j] == 'W')
+                    T++;
+        cout &lt;&lt; T &lt;&lt; &quot;\n&quot;;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

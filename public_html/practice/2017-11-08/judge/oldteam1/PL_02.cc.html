@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+char v[6] = {'a', 'i', 'y', 'e', 'o', 'u'};
+char C[20] = {'b', 'k', 'x', 'z', 'n', 'h', 'd', 'c', 'w', 'g', 'p', 'v', 'j', 'q', 't', 's', 'r', 'l', 'm', 'f'};
+
+int main()
+{
+    string s;
+    while (getline(cin, s))
+    {
+        string s2 = &quot;&quot;;
+        for (int i = 0; i &lt; s.size(); i++)
+        {
+            char c = s[i];
+            if ((c &gt;= 'A' &amp;&amp; c &lt;= 'Z') || (c &gt;= 'a' &amp;&amp; c &lt;= 'z'))
+            {
+                bool isl = (c &gt;= 'a' &amp;&amp; c &lt;= 'z');
+                if (!isl)
+                    c |= 32;
+                int ind = 0;
+                while (ind &lt; 6 &amp;&amp; v[ind] != c)
+                    ind++;
+                if (ind &lt; 6)
+                {
+                    c = v[(ind+3)%6];
+                    if (!isl)
+                        c ^= 32;
+                }
+                else
+                {
+                    ind = 0;
+                    while (C[ind] != c)
+                        ind++;
+                    c = C[(ind+10)%20];
+                    if (!isl)
+                        c ^= 32;
+                }
+            }
+            s2.push_back(c);
+        }
+        cout &lt;&lt; s2 &lt;&lt; &quot;\n&quot;;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

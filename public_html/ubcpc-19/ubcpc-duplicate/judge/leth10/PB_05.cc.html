@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+
+#define debug(a) cerr &lt;&lt; #a &lt;&lt; &quot; = &quot; &lt;&lt; (a) &lt;&lt; endl;
+
+template&lt;typename T&gt;
+ostream&amp; operator&lt;&lt;(ostream&amp; o, const vector&lt;T&gt;&amp; v) {
+    int b = 0; for (const auto&amp; a : v) o &lt;&lt; (b++ ? &quot;, &quot; : &quot;&quot;) &lt;&lt; a; return o;
+}
+
+template&lt;typename T, typename U&gt;
+ostream&amp; operator&lt;&lt;(ostream&amp; o, const pair&lt;T, U&gt;&amp; p) {
+    o &lt;&lt; p.X &lt;&lt; ' ' &lt;&lt; p.Y; return o;
+}
+
+ll log(ll x) {
+    return 64 - __builtin_clzll(x) - 1;
+}
+
+int adj[100][100] = {0};
+int stat[100][3];
+int HP = 0;
+int AT = 1;
+int DF = 2;
+
+const int inf = numeric_limits&lt;int&gt;::max();
+
+bool beats(int A, int B) {
+    int Adies = inf;
+    int Bdies = inf;
+    if (stat[A][AT] &gt; stat[B][DF]) {
+        int dmg = stat[A][AT] - stat[B][DF];
+        Bdies = (stat[B][HP] + dmg - 1) / dmg;
+    }
+    if (stat[B][AT] &gt; stat[A][DF]) {
+        int dmg = stat[B][AT] - stat[A][DF];
+        Adies = (stat[A][HP] + dmg - 1) / dmg;
+    }
+    return Adies &gt; Bdies;
+}
+
+int main() {
+#define int ll
+    ios::sync_with_stdio(0); cin.tie(0);
+
+    int n;
+    cin &gt;&gt; n;
+    set&lt;set&lt;int&gt;&gt; S;
+    map&lt;string, int&gt; vert;
+    map&lt;int, string&gt; name;
+
+    for (int i = 0; i &lt; n; i++) {
+        string s;
+        cin &gt;&gt; s;
+        vert[s] = i;
+        name[i] = s;
+        cin &gt;&gt; stat[i][HP] &gt;&gt; stat[i][AT] &gt;&gt; stat[i][DF];
+    }
+
+    for (int i =0 ; i &lt; n; i++) {
+        for (int j =0; j &lt; n; j++) {
+            if (i == j) continue;
+            if (beats(i, j)) adj[i][j] = 1;
+        }
+    }
+
+    /* for (int i = 0 ; i &lt; n; i++) { */
+        /* for (int j = 0; j &lt; n; j++) { */
+            /* cout &lt;&lt; adj[i][j] &lt;&lt; ' '; */
+        /* } */
+        /* cout &lt;&lt; endl; */
+    /* } */
+
+
+
+    for (int i = 0; i &lt; n ;i++) {
+        stack&lt;pii&gt; Q;
+        vector&lt;int&gt; prev(n, -1);
+        for (int j = 0; j &lt; n; j++) {
+            if (i != j &amp;&amp; adj[i][j]) {
+                Q.emplace(1, j);
+                prev[j] = i;
+            }
+        }
+        while (!Q.empty()) {
+            auto next = Q.top();
+            Q.pop();
+            int current = next.second;
+            if (next.first &lt; 2) {
+                for (int j = 0; j &lt; n; j++) {
+                    if (current != j &amp;&amp; adj[current][j]) {
+                        Q.emplace(next.first + 1, j);
+                        prev[j] = current;
+                    }
+                }
+            }
+            else {
+                if (adj[next.second][i]) {
+                    set&lt;int&gt; trip;
+                    trip.insert(i);
+                    trip.insert(next.second);
+                    assert(prev[next.second] != -1);
+                    trip.insert(prev[next.second]);
+                    S.insert(trip);
+                }
+            }
+        }
+    }
+    cout &lt;&lt; S.size() &lt;&lt; endl;
+    for (auto x: S) {
+        assert(x.size() == 3);
+        for (auto p: x) cout &lt;&lt; name[p] &lt;&lt; ' ' ;
+        cout &lt;&lt; endl;
+    }
+}
+
+</code>
+</pre>
+</body>
+</html>

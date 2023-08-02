@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+/**
+ * Created by jennylian on 9/10/16.
+ */
+
+// @EXPECTED_RESULTS@: CORRECT
+
+import java.io.*;
+import java.util.*;
+
+public class jenny {
+
+    public static String keyboard[] = {
+            &quot;qwertyuiop&quot;,
+            &quot;asdfghjkl#&quot;,
+            &quot;zxcvbnm###&quot;
+    };
+
+    public static void main(String args[]) throws IOException {
+        Scanner sc = new Scanner(System.in);
+
+        int mapping[][] = new int[256][2];
+        for (int i = 0; i &lt; 3; i++) {
+            for (int j = 0; j &lt; 10; j++) {
+                //debug
+                int a1 = (int) keyboard[i].charAt(j);
+                int a2 = (int) keyboard[i].charAt(j);
+                //what are these -- ACSII representations
+//                    System.out.println(a1);
+//                    System.out.println(a2);
+
+                mapping[(int) keyboard[i].charAt(j)][0] = i;
+                mapping[(int) keyboard[i].charAt(j)][1] = j;
+            }
+        }
+        int distMatrix[][] = new int[256][256];
+        for (int i = 0; i &lt; 256; i++) {
+            for (int j = 0; j &lt; 256; j++) {
+                distMatrix[i][j] = Math.abs(mapping[i][0] - mapping[j][0]) +
+                        Math.abs(mapping[i][1] - mapping[j][1]);
+            }
+        }
+        int numCases = sc.nextInt();
+
+        while (numCases-- &gt; 0) {
+            int numStrings;
+            TreeMap&lt;Integer, TreeSet&lt;String&gt;&gt; result = new TreeMap&lt;Integer, TreeSet&lt;String&gt;&gt;();
+            String buf, orig;
+            orig = sc.next();
+            numStrings = sc.nextInt();
+
+            for (int i = 0; i &lt; numStrings; i++) {
+                int cur = 0;
+                buf = sc.next();
+                for (int j = 0; j &lt; buf.length(); j++) {
+                    if ((int) buf.charAt(j) != (int) orig.charAt(j))
+                        cur += distMatrix[(int) buf.charAt(j)][(int) orig.charAt(j)];
+                }
+
+                if (!result.containsKey(cur)) {
+                    result.put(cur, new TreeSet&lt;String&gt;());
+                }
+                TreeSet&lt;String&gt; s = result.get(cur);
+                s.add(buf);
+            }
+
+            for (Map.Entry&lt;Integer, TreeSet&lt;String&gt;&gt; entry : result.entrySet()) {
+                Integer key = entry.getKey();
+                TreeSet&lt;String&gt; s = entry.getValue();
+
+                for (String o : s) {
+                    System.out.println(o + &quot; &quot; + key);
+                }
+            }
+
+//			for (multiset&lt;pair&lt;int,string&gt; &gt;::iterator it = result.begin(); it != result.end(); it++) {
+//				printf(&quot;%s %d\n&quot;, it-&gt;second.c_str(), it-&gt;first);
+//			}
+        }
+    }
+
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

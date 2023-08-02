@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+one = raw_input()
+two = raw_input()
+a = int(one.split()[0])
+b = int(one.split()[1])
+c = int(two.split()[0])
+d = int(two.split()[1])
+res = ''
+
+while a != 1 or b != 0 or c != 0 or d != 1:
+    if a &gt;= b and c &gt;= d:
+        a -= b
+        c -= d
+        res += '0'
+    else:
+        b -= a
+        d -= c
+        res += '1'
+print res[::-1]
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define pb   push_back
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+//typedef complex&lt;int&gt; pt;
+typedef pair&lt;int,int&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+template &lt;typename T,typename U&gt;                                                   
+std::pair&lt;T,U&gt; operator-(const std::pair&lt;T,U&gt; &amp; l,const std::pair&lt;T,U&gt; &amp; r) {   
+    return {l.first-r.first,l.second-r.second};                                    
+} 
+
+ld cp(const pt&amp; a, const pt&amp; b) { return a.first*b.second-a.second*b.first; }
+
+pol chull(pol p) {
+  sort(p.begin(), p.end()); int top=0, bot=1; pol ch(2*p.size());
+  for (unsigned int i=0, d=1; i &lt; p.size() &amp;&amp; i &gt;= 0; i += d) {
+  // If there are no duplicates, can change &lt;= 0 to &lt; 0 to keep redundant points
+    while (top &gt; bot &amp;&amp; cp(ch[top-1]-ch[top-2], p[i]-ch[top-2]) &lt;= 0) top--;
+    ch[top++] = p[i]; if (i == p.size()-1) d = -1, bot = top;
+  } ch.resize(max(1, top-1)); return ch; }
+
+int n, w,h, x[1000*1010], y[1000*1010], T;
+bool grid[1001][1001];
+
+//inline int dist(const pt &amp;a, const pt&amp;b) { return abs(a.real()-b.real())+abs(a.imag()-b.imag());}
+inline int dist(const pt &amp;a, const pt&amp;b) { return abs(a.first-b.first)+abs(a.second-b.second);}
+
+bool tr(int m){
+    //return true;
+    vector&lt;pair&lt;int,int&gt;&gt; cur,next;
+    memset(grid,0, sizeof grid);
+    for(int i=0;i&lt;n;i++) cur.pb({x[i],y[i]});
+    for(int i=0;i&lt;m;i++){
+        for(auto t: cur){
+            int x = t.first, y = t.second;
+            if (grid[x][y] || x&lt;0 || y&lt;0 || x&gt;=w|| y&gt;=h) continue; 
+            grid[x][y] = 1;
+            x--; if(!grid[x][y])next.pb({x,y}); x++;
+            x++; if(!grid[x][y])next.pb({x,y}); x--;
+            y--; if(!grid[x][y])next.pb({x,y}); y++;
+            y++; if(!grid[x][y])next.pb({x,y}); y--;
+        }
+        cur.clear();
+        swap(cur,next);
+    }
+    pol p;
+    for(int x=0;x&lt;w;x++)
+        for(int y=0;y&lt;h;y++)
+            if (!grid[x][y])
+                p.pb({x,y});
+    pol q = chull(p);
+    for(auto u:q)
+        for(auto v:q)
+            if (dist(u,v)&gt;=m) return true;
+    return false;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt; T;
+    while(T--){
+        cin &gt;&gt; n&gt;&gt; w &gt;&gt; h;
+        for(int i=0;i&lt;n;i++){
+            cin&gt;&gt; x[i] &gt;&gt; y[i];
+        }
+        //binary search on max length
+        int lo = 1, hi = 2001;
+        for(int it=0;it&lt;11;it++){
+            int mid = (lo+hi)/2;
+            if (tr(mid)) lo = mid;
+            else hi = mid;
+        }
+        cout &lt;&lt; lo &lt;&lt;endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

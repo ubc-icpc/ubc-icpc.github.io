@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;queue&gt;
+#include &lt;climits&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;math.h&gt;
+#include &lt;iomanip&gt;  
+#include &lt;stack&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+int main() {
+	string s; cin &gt;&gt; s;
+	int n; cin &gt;&gt; n;
+	string msg; cin &gt;&gt; msg;
+	if (s[0] == 'E') {
+		for (int i = 0; i &lt; msg.size(); i++) {
+			char l = (msg[i] - 'a' + n)%26 + 'a';
+			cout &lt;&lt; l;
+		}
+	} else {
+		for (int i = 0; i &lt; msg.size(); i++) {
+			char l = (msg[i] - 'a' - n + 26)%26 + 'a';
+			cout &lt;&lt; l;
+		}
+	}
+	cout &lt;&lt; endl;
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

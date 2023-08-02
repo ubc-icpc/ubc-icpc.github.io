@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+// think of div and conquer.
+// lets say i have all solutions to [0, n/2) and [n/2 to n)
+// how do we combine it?
+// suppose it was just min * L and consider a[n/2].
+// find max j s.t. j in [0, n/2) and a[j] &lt; a[n/2].
+// then a[j+k ... n/2] for k = 1, 2, ... will have min = a[n/2].
+// so i get a contribution of (1 + 2 + .. + n/2-j)*a[n/2]
+// using a stack and a left to right sweep, we can merge in O(n)
+// time for this problem.
+
+// ok now lets incorporate the max into our cost.
+// suppose it was max * min * L and consider a[n/2] (after
+// having computed the solution of the left and right halves)
+// as before, find max j s.t. j in [0, n/2) and a[j] &lt; a[n/2].
+// and now, also find max i s.t. i in [0, n/2) and a[i] &gt; a[n/2]
+// for k in [i+1... n/2) \intersect [j+1... n/2), a[n/2] is the max
+// and the min.
+// what about for the rest? ok depending on their lengths, we can take
+// care of them too.
+// this should be O(n) merge time as well if we use a stack.
+
+// annoying as heck to code, but should be ok...
+
+const ll mod = 1000000000, maxn = 500005;
+ll pmax[maxn], pmin[maxn], a[maxn], smin[maxn], smax[maxn], rmin[maxn], rmax[maxn], ssmin[maxn], asum[maxn], aasum[maxn], ssmax[maxn];
+ll sumlen(ll a, ll b) {
+    ll res = (b*(b+1))/2 - (a*(a+1))/2;
+    return res%mod;
+}
+
+ll sum(int a, int b, ll arr[maxn], int l, int r, ll cnt, ll arr2[maxn]) {
+    if (a &gt; b) return 0;
+    if (b == r-1) return (arr[a] + cnt*arr2[a])%mod;
+    return (arr[a]-arr[b+1]+cnt*(arr2[a]-arr2[b+1]))%mod;
+}
+
+ll solve(int l, int r) {
+    if (l == r) return 0;
+    
+    rmin[l] = rmax[l] = a[l];
+    pmin[r-1] = a[r-1];
+    ssmin[r-1] = ssmax[r-1] = smin[r-1] = smax[r-1] = a[r-1];
+    asum[r-1] = aasum[r-1] = (a[r-1]*a[r-1])%mod;
+    pmax[r-1] = -a[r-1];
+    if (r == l+1) return (a[l]*a[l])%mod;
+    
+    int m = (l+r)/2;
+    ll sl = solve(l, m), sr = solve(m, r);
+    ll ans = (sl + sr)%mod;
+    
+    for (int i = m; i &lt; r; i++) {
+        int j = lower_bound(pmin+l, pmin+m, rmin[i])-pmin;
+        int k = lower_bound(pmax+l, pmax+m, -rmax[i])-pmax;
+        
+        // part before common area:
+        ans += sum(l, min(j,k)-1, asum, l, m, i-m+1, aasum)%mod;
+        ans %= mod;
+        
+        // common area:
+        int lj = i-j+1, lk = i-k+1;
+        int el = min(lj, lk), L = max(lj, lk);
+        ans += (((sumlen(1+i-m, el) * rmin[i])%mod)*rmax[i])%mod;
+        ans %= mod;
+        
+        //extra max area:
+        ans += ((sum(k, j-1, smin, l, m, i-m+1, ssmin)%mod)*rmax[i])%mod;
+        ans %= mod;
+        
+        //extra min area
+        ans += ((sum(j, k-1, smax, l, m, i-m+1, ssmax))*rmin[i])%mod;
+        ans %= mod;
+    }
+    
+    for (int i = r-2; i &gt;= l; i--) {
+        pmin[i] = min(a[i], pmin[i+1]);
+        pmax[i] = min(-a[i], pmax[i+1]);
+        smin[i] = smin[i+1] + (r-i) * pmin[i];
+        smin[i] %= mod;
+        ssmin[i] = ssmin[i+1] + pmin[i];
+        ssmin[i] %= mod;
+        smax[i] = smax[i+1] - (r-i) * pmax[i];
+        smax[i] %= mod;
+        ssmax[i] = ssmax[i+1] - pmax[i];
+        ssmax[i] %= mod;
+        asum[i] = asum[i+1] - (r-i) * (pmin[i] * pmax[i])%mod;
+        asum[i] %= mod;
+        aasum[i] = aasum[i+1] - (pmin[i] * pmax[i])%mod;
+        aasum[i] %= mod;
+    }
+    for (int i = l+1; i &lt; r; i++) {
+        rmin[i] = min(a[i], rmin[i-1]);
+        rmax[i] = max(a[i], rmax[i-1]);
+    }
+    
+    return ans;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; a[i];
+    }
+    
+    cout &lt;&lt; (solve(0, n)%mod + mod)%mod &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

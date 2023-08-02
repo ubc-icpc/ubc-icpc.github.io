@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+struct fi {
+    string name;
+    ll x, y, z;
+    fi() {}
+    fi(string a, ll b, ll c, ll d) : name(a), x(b), y(c), z(x) {}
+    bool operator &lt; (const fi&amp; o) const {
+        ll xm = x;
+        ll xo = o.x;
+        int q = 0;
+        while(xm &gt; 0 &amp;&amp; xo &gt; 0 &amp;&amp; q &lt; 10010) {
+            xm -= max(o.y-z, 0LL);
+            xo -= max(y-o.z, 0LL);
+            ++ q;
+        }
+        return (xo &gt; 0 &amp;&amp; xm &lt;= 0);
+    }
+};
+
+bool dp[120][120];
+fi fis[120];
+
+inline bool check_triple(int i, int j, int k) {
+    return (dp[i][j] &amp;&amp; !dp[j][i] &amp;&amp; dp[j][k] &amp;&amp; !dp[k][j] &amp;&amp; dp[k][i] &amp;&amp; !dp[i][k]);
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int n;
+    cin &gt;&gt; n;
+    for(int i=0; i&lt;n; ++i) {
+        cin &gt;&gt; fis[i].name &gt;&gt; fis[i].x &gt;&gt; fis[i].y &gt;&gt; fis[i].z;
+    }
+    for(int i=0; i&lt;n; ++i) {
+        for(int j=0; j&lt;n; ++j) {
+            dp[i][j] = fis[i] &lt; fis[j];
+        }
+    }
+    vector&lt;string&gt; ans;
+    for(int i=0; i&lt;n; ++i) {
+        for(int j=i+1; j&lt;n; ++j) {
+            for(int k=j+1; k&lt;n; ++k) {
+                if(check_triple(i, j, k)
+                || check_triple(i, k, j)
+                || check_triple(j, i, k)
+                || check_triple(j, k, i)
+                || check_triple(k, i, j)
+                || check_triple(k, j, i)) {
+                    ans.push_back(fis[i].name + &quot; &quot; + fis[j].name + &quot; &quot; + fis[k].name);
+                }
+            }
+        }
+    }
+    cout &lt;&lt; ans.size() &lt;&lt; &quot;\n&quot;;
+    for(auto&amp; x : ans) {
+        cout &lt;&lt; x &lt;&lt; &quot;\n&quot;;
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

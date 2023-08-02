@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+stdin = sys.stdin
+
+t = int(stdin.readline().strip())
+
+for _ in range(t):
+    n = int(stdin.readline().strip())
+    p1 = 0
+    p2 = 0
+    for _ in range(n):
+        h1, h2 = stdin.readline().strip().split()
+        if h1 != h2:
+            if h1 == 'R':
+                if h2 == 'S':
+                    p1 += 1
+                    continue
+                p2 += 1
+            elif h1 == 'S':
+                if h2 == 'P':
+                    p1 += 1
+                    continue
+                p2 += 1
+            elif h1 == 'P':
+                if h2 == 'R':
+                    p1 += 1
+                    continue
+                p2 += 1
+    if p1 &gt; p2:
+        print(&quot;Player 1&quot;)
+    elif p1 == p2:
+        print(&quot;TIE&quot;)
+    elif p1 &lt; p2:
+        print(&quot;Player 2&quot;)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

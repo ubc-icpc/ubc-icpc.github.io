@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+
+public class Ratio
+{
+	public static final double EPSILON = Math.pow(2, (double)1 / 2000);
+	public static void main(String[] args)
+	{
+		Scanner in = new Scanner(System.in);
+		int p = in.nextInt();
+		int q = in.nextInt();
+		String [] scale = new String[12];
+		scale[0] = &quot;A&quot;;
+		scale[1] = &quot;A#&quot;;
+		scale[2] = &quot;B&quot;;
+		scale[3] = &quot;C&quot;;
+		scale[4] = &quot;C#&quot;;
+		scale[5] = &quot;D&quot;;
+		scale[6] = &quot;D#&quot;;
+		scale[7] = &quot;E&quot;;
+		scale[8] = &quot;F&quot;;
+		scale[9] = &quot;F#&quot;;
+		scale[10] = &quot;G&quot;;
+		scale[11] = &quot;G#&quot;;
+
+		// Regarding the frequency of the first note as 1, we want a second
+		// note with a frequency equal to q / p.
+		double ratio = (double)q / p;
+		int octaves = 0;
+		while (true)
+		{
+			for (int cents1 = -25; cents1 &lt;= 25; cents1++)
+			{
+				for (int cents2 = -25; cents2 &lt;= 25; cents2++)
+				{
+					for (int notes = 0; notes &lt;= 11; notes++)
+					{
+						double val = Math.pow(2, (double)(cents2 - cents1) / 1200);
+						val *= Math.pow(2, octaves);
+						val *= Math.pow(2, (double)notes / 12);
+						if (ratio &lt; 1)
+							val = 1 / val;
+
+						if (ratio / EPSILON &lt;= val &amp;&amp; val &lt;= ratio * EPSILON)
+						{
+							if (ratio &lt; 1)
+							{
+								System.out.printf(&quot;%s %d\n&quot;, scale[notes], cents2);
+								System.out.printf(&quot;A %d\n&quot;, cents1);
+								return;
+							}
+							System.out.printf(&quot;A %d\n&quot;, cents1);
+							System.out.printf(&quot;%s %d\n&quot;, scale[notes], cents2);
+							return;
+						}
+					}
+				}
+			}
+			octaves++;
+		}
+	}
+}
+</code>
+</pre>
+</body>
+</html>

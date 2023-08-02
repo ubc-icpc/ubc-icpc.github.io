@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+import java.awt.*;
+
+public class Solution {
+
+  public static void main(String[] args) {
+    Scanner s = new Scanner(System.in);
+    Point[] counts = new Point[1001];
+
+    for(int j = 0; j &lt; counts.length; j++) {
+      counts[j] = new Point(j, 0);
+    }
+
+    int n = s.nextInt();
+
+    for(int i = 0; i &lt; n; i++)
+      counts[s.nextInt()].y++;
+
+    Comparator&lt;Point&gt; highCountsFirst = new Comparator&lt;Point&gt;() {
+      public int compare(Point p1, Point p2) {
+        return Integer.compare(p2.y, p1.y);
+      }
+    };
+
+    Comparator&lt;Point&gt; highValueFirst = new Comparator&lt;Point&gt;() {
+      public int compare(Point p1, Point p2) {
+        return Integer.compare(p2.x, p1.x);
+      }
+    };
+
+    Arrays.sort(counts, highCountsFirst);
+
+    int k = 0;
+    int maxCount = counts[k].y;
+
+    ArrayList&lt;Point&gt; first = new ArrayList&lt;Point&gt;();
+    ArrayList&lt;Point&gt; second = new ArrayList&lt;Point&gt;();
+
+    while(k &lt; counts.length &amp;&amp; counts[k].y == maxCount)  {
+      first.add(counts[k]);
+      k++;
+    }
+
+    maxCount = counts[k].y;
+
+    while(k &lt; counts.length &amp;&amp; counts[k].y == maxCount ) {
+      second.add(counts[k]);
+      k++;
+    }
+
+
+    int maxDiff = 0;
+
+    if(first.size() &gt; 1) {
+      Collections.sort(first, highValueFirst);
+      maxDiff = Math.abs(first.get(0).x - first.get(first.size() - 1).x);
+    } else {
+      int highVal = first.get(0).x;
+      Collections.sort(second, highValueFirst);
+
+      for(Point p : second) {
+        int diff = Math.abs(highVal - p.x);
+        if(diff &gt; maxDiff) 
+          maxDiff = diff;
+      }
+    }
+
+    System.out.println(maxDiff);
+
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

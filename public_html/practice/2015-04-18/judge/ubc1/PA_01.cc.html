@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+
+const ll mod = 1000000007;
+
+int a[100005], b[100005];
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; a[i];
+        }
+        
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; b[i];
+        }
+        
+        int* arr[] = {a, b};
+        int last = 0;
+        ll sh[2] = {0, 0}, ph[2] = {1, 1};
+        vector&lt;int&gt; v[2];
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; 2; j++) {
+                sh[j] += arr[j][i];
+                ph[j] = (ph[j] * arr[j][i])%mod;
+                v[j].push_back(arr[j][i]);
+            }
+            
+            if (sh[0] == sh[1] &amp;&amp; ph[0] == ph[1]) {
+                sort(v[0].begin(), v[0].end());
+                sort(v[1].begin(), v[1].end());
+                
+                if (v[0] == v[1]) {
+                    v[0].clear(); v[1].clear();
+                    sh[0] = sh[1] = 0;
+                    ph[0] = ph[1] = 1;
+                    cout &lt;&lt; last+1 &lt;&lt; '-' &lt;&lt; i+1 &lt;&lt; ' ';
+                    
+                    last = i+1;
+                }
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

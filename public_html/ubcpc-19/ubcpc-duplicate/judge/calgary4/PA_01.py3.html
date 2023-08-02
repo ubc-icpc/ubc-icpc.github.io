@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">person = input()
+shift = int(input())
+word = input()
+answer = &quot;&quot;
+
+if person == &quot;E&quot;:
+    for i in range(len(word)):
+        casted = ord(word[i])
+        newletter = casted + shift
+        if newletter &gt; 122:
+            newletter = 96 + (newletter - 122)
+        answer += chr(newletter)
+else:
+    for i in range(len(word)):
+        casted = ord(word[i])
+        newletter = casted - shift
+        if newletter &lt; 97:
+            newletter = 122 - (96 - newletter)
+        answer += chr(newletter)
+
+print(answer)
+</code>
+</pre>
+</body>
+</html>

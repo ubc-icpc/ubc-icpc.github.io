@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+char grid[100][100];
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        string s;
+        cin &gt;&gt; s;
+
+        int len = s.length();
+
+        int gridsize = (int)pow(len, 0.5);
+        if (gridsize * gridsize &lt; len) ++gridsize;
+
+        for (int i = 0; i &lt; gridsize; ++i) {
+            for (int j = 0; j &lt; gridsize; ++j) {
+                int index = i * gridsize + j;
+                if (index &gt;= len) {
+                    grid[i][j] = '*';
+                } else {
+                    grid[i][j] = s[index];
+                }
+            }
+        }
+
+        for (int i = 0; i &lt; gridsize; ++i) {
+            for (int j = gridsize - 1; j &gt;= 0; --j) {
+                if (grid[j][i] != '*') {
+                    printf(&quot;%c&quot;, grid[j][i]);
+                }
+            }
+        }
+        printf(&quot;\n&quot;);
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

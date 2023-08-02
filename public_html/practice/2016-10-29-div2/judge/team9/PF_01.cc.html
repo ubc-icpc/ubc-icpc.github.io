@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include&lt;string&gt;
+#include &lt;tuple&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+
+
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n, c;
+	cin &gt;&gt; n;
+
+	vector&lt;int&gt; v(n);
+	set&lt;int&gt; s;
+	// read in vect
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; v[i];
+	}
+
+	
+
+
+	std::sort(v.begin(), v.end());
+
+	int sum, min = v[0] + v[n - 1];
+
+	for (int i = 0; i &lt;= n / 2 - 1; i++) {
+		sum = v[i] + v[n - 1 - i];
+		if (min &gt; sum) {
+			min = sum;
+		}
+	}
+	cout &lt;&lt; min &lt;&lt;endl;
+
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  int a, b, c, d; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d;
+  
+  int s = -1;
+
+  if (b == c &amp;&amp; b == 0) {
+    if (a &amp;&amp; d) {
+      s = -1;
+    } else if (!a &amp;&amp; !d) {
+    } else if (a) {
+      s = 0;
+    } else {
+      s = 1;
+    }
+  } else if (b - c == 1 || b == c) {
+    s = 0;
+  } else if (c - b == 1) {
+    s = 1;
+  } else {
+    s = -1;
+  }
+
+  if (s == -1) {
+    cout &lt;&lt; &quot;impossible&quot;;
+  } else {
+    cout &lt;&lt; s;
+    while (true) {
+      if (s == 0) {
+        if (a) {
+          cout &lt;&lt; 0;
+          a--;
+        } else if (b) {
+          cout &lt;&lt; 1;
+          s = 1;
+          b--;
+        } else break;
+      } else {
+        if (d &amp;&amp; !b) {
+          cout &lt;&lt; 1;
+          d--;
+        } else if (c) {
+          cout &lt;&lt; 0;
+          s = 0;
+          c--;
+        } else break;
+      }
+    }
+    assert(a == 0 &amp;&amp; b == 0 &amp;&amp; c == 0 &amp;&amp; d == 0);
+  }
+  
+  cout &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

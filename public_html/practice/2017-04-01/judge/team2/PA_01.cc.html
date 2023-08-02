@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+#define debug printf
+typedef long long ll;
+
+int G[101][101];
+
+int main() {
+    int r, c, d; scanf(&quot;%d%d%d&quot;, &amp;r, &amp;c, &amp;d);
+    for (int y = 1; y &lt;= r; y++)
+        for (int x = 1; x &lt;= c; x++)
+            scanf(&quot;%d&quot;, &amp;G[y][x]);
+    for (int i = 0; i &lt; d; i++) {
+        int r1, c1, r2, c2; scanf(&quot;%d%d%d%d&quot;, &amp;r1, &amp;c1, &amp;r2, &amp;c2);
+        if (G[r1][c1])
+            G[r1][c1] -= 1, G[r2][c2] += 1;
+    }
+    for (int y = 1; y &lt;= r; y++) {
+        for (int x = 1; x &lt;= c; x++)
+            printf(x == c ? &quot;%d\n&quot; : &quot;%d &quot;, G[y][x]);
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

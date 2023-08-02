@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;ll,ll&gt; pll;
+vector&lt;vector&lt;int&gt;&gt; adj; 
+const int INF=1e9; 
+
+struct fit{ 
+      int HP,AT,DF;
+      int id;
+      string name; 
+};
+
+
+void fight(fit one,fit two){ 
+  int diff1=max(0,two.AT-one.DF); 
+  int diff2=max(0,one.AT-two.DF); 
+  int n1;
+  int n2; 
+  if(diff1==0){ 
+    n1=INF; 
+  }else{ 
+    n1=one.HP/diff1; 
+    if(one.HP%diff1!=0){ 
+      n1++;
+    }
+  }
+  if(diff2==0){ 
+    n2=INF; 
+  }else{ 
+    n2=two.HP/diff2; 
+    if(two.HP%diff2!=0){ 
+      n2++; 
+    }
+  }
+  if(n1==n2){ 
+    adj[one.id][two.id]=0; 
+    adj[two.id][one.id]=0; 
+    return; 
+  }
+  adj[one.id][two.id]=n1&gt;n2?1:-1;
+  adj[two.id][one.id]=n2&gt;n1?1:-1; 
+}
+
+              
+
+
+                  
+
+int main() {
+  cin.tie(0);
+  ios::sync_with_stdio(0);
+  int n; 
+  cin&gt;&gt;n; 
+  vector&lt;fit&gt; fi(n); 
+  adj.resize(n); 
+  for(int i=0;i&lt;n;i++){ 
+    cin&gt;&gt;fi[i].name&gt;&gt;fi[i].HP&gt;&gt;fi[i].AT&gt;&gt;fi[i].DF; 
+    fi[i].id=i;
+    adj[i].resize(n); 
+  }
+  for(int i=0;i&lt;n;i++){ 
+    for(int j=0;j&lt;n;j++){ 
+      fight(fi[i],fi[j]); 
+    } 
+  }
+  int ct=0; 
+  vector&lt;vector&lt;string&gt;&gt; f;
+  for(int i=0;i&lt;n;i++){ 
+    for(int k=0;k&lt;i;k++){ 
+      for(int j=0;j&lt;k;j++){ 
+        if((adj[i][k]==1 and adj[k][j]==1 and adj[j][i]==1) or ( adj[i][k]==-1 and adj[k][j]==-1 and adj[j][i]==-1)){ 
+          ct++;
+            f.push_back({fi[i].name,fi[j].name,fi[k].name}); 
+        } 
+      }
+    }
+  }
+  cout&lt;&lt;ct&lt;&lt;endl;
+  for(auto v:f){ 
+    for(string s: v){
+      cout&lt;&lt;s&lt;&lt;&quot; &quot;;
+    }
+    cout&lt;&lt;endl;
+}
+
+            
+
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

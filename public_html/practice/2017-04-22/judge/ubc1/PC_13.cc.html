@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+using namespace rel_ops;
+typedef __int128 ll;
+
+ll gcd(ll a, ll b) {
+  while (b &gt; 0) {
+    ll tmp = a;
+    a = b;
+    b = tmp % b;
+  }
+  return a;
+}
+
+ll zzabs(const ll &amp;z) {
+  return z &gt;= 0 ? z : -z;
+}
+
+struct rational_t { ll nu, de;
+  rational_t(const ll &amp;n = 0, const ll &amp;d = 1) {
+    ll g = gcd(zzabs(n), zzabs(d)); nu = n / g; de = d / g;
+    if (de &lt; 0) { nu = -nu; de = -de; } }
+  rational_t operator+(const rational_t&amp; b) const
+  { return rational_t( nu*b.de+de*b.nu, de*b.de ); }
+  rational_t operator-(const rational_t&amp; b) const
+  { return rational_t( nu*b.de-de*b.nu, de*b.de ); }
+  rational_t operator-() const { return rational_t(-nu, de); }
+  rational_t operator*(const rational_t&amp; b) const
+  { return rational_t( nu*b.nu, de*b.de ); }
+  rational_t operator/(const rational_t&amp; b) const
+  { return rational_t( nu*b.de, de*b.nu ); }
+  bool operator== (const rational_t &amp; b) const {return nu * b.de == b.nu * de;}
+  bool operator== (const int &amp;k) const { return nu == k * de; }
+  bool operator&lt; (const rational_t&amp; b) const { return nu * b.de &lt; b.nu * de; }
+};
+typedef rational_t ld;
+
+const ld INF = ld(1000000000000000000LL);
+
+namespace LE {
+ld sgn = ld(1); //set to 1 for lower envelope, -1 for upper envelope
+struct line {
+    ld m, b, left;
+    line() : left(-INF) {}
+    line(ld m, ld b) : m(m), b(b), left(-INF) {}
+    ld eval(ld x) const { return m*x + b; }
+    bool operator&lt;(const line&amp; o) const {
+        if (m == o.m) return sgn*b &lt; sgn*o.b;
+        return sgn*m &gt; sgn*o.m;
+    }
+    ld intersect(const line&amp; o) const {
+        if (m == o.m) return INF;
+        return (o.b-b)/(m-o.m);
+    }
+};
+struct comp_left {
+    bool operator()(const line&amp; l, const line&amp; r) const {
+        if (l.left == r.left) {
+            if (l.m == r.m) return l.b &lt; r.b;
+            return l.m &lt; r.m;
+        }
+        return l.left &lt; r.left;
+    }
+};
+struct envelope {
+    set&lt;line&gt; lines;
+    set&lt;line, comp_left&gt; top;
+    ld query(ld x) {
+        line l; l.left = x;
+        set&lt;line, comp_left&gt;::iterator it = --top.lower_bound(l);
+        return it-&gt;eval(x);
+    }
+    void recompute(line nl, line l, ld xl) {
+        top.erase(nl);
+        lines.erase(nl);
+        if (nl.m != l.m) {
+            nl.left = xl;
+            top.insert(nl);
+            lines.insert(nl);
+        }
+    }
+    void insert(line l) {
+        if (lines.size() == 1) {
+            if (l &lt; *lines.begin()) {
+                recompute(*lines.begin(), l, -INF);
+            } else {
+                if (l.m == lines.begin()-&gt;m) return;
+                l.left = l.intersect(*lines.begin());
+            }
+        } else if (lines.size() &gt; 1) {
+            auto i = lines.lower_bound(l);
+            if (i != lines.begin() &amp;&amp; i != lines.end()) {
+                auto j = i; j--;
+                ld x = i-&gt;intersect(*j);
+                if (sgn*l.eval(x) &gt;= sgn*(i-&gt;eval(x))) return;
+            }
+            for (int k = 0; k &lt; 2; k++) {
+                ld s = ld(k ? -1 : 1);
+                i = lines.lower_bound(l);
+                bool bcond = (k ? i != lines.end() : i != lines.begin());
+                if (!bcond) continue;
+                auto j = i;
+                if (k) j++;
+                else { j = --i; j--; }
+                while (true) {
+                    bool econd = (k ? j == lines.end() : i == lines.begin());
+                    ld x12 = i-&gt;intersect(l), x13 = j-&gt;intersect(l);
+                    if (!econd &amp;&amp; s*x13 &gt;= s*x12) {
+                        auto it = i;
+                        if (k) i++, j++;
+                        else i--, j--;
+                        top.erase(*it);
+                        lines.erase(it);
+                    } else {
+                        if (k) recompute(*i, l, i-&gt;intersect(l));
+                        else l.left = l.intersect(*i);
+                        break;
+                    }
+                }
+            }
+        }
+        lines.insert(l); top.insert(l);
+    }
+};
+}
+
+namespace UE {
+ld sgn = ld(-1); //set to 1 for lower envelope, -1 for upper envelope
+struct line {
+    ld m, b, left;
+    line() : left(-INF) {}
+    line(ld m, ld b) : m(m), b(b), left(-INF) {}
+    ld eval(ld x) const { return m*x + b; }
+    bool operator&lt;(const line&amp; o) const {
+        if (m == o.m) return sgn*b &lt; sgn*o.b;
+        return sgn*m &gt; sgn*o.m;
+    }
+    ld intersect(const line&amp; o) const {
+        if (m == o.m) return INF;
+        return (o.b-b)/(m-o.m);
+    }
+};
+struct comp_left {
+    bool operator()(const line&amp; l, const line&amp; r) const {
+        if (l.left == r.left) {
+            if (l.m == r.m) return l.b &lt; r.b;
+            return l.m &lt; r.m;
+        }
+        return l.left &lt; r.left;
+    }
+};
+struct envelope {
+    set&lt;line&gt; lines;
+    set&lt;line, comp_left&gt; top;
+    ld query(ld x) {
+        line l; l.left = x;
+        set&lt;line, comp_left&gt;::iterator it = --top.lower_bound(l);
+        return it-&gt;eval(x);
+    }
+    void recompute(line nl, line l, ld xl) {
+        top.erase(nl);
+        lines.erase(nl);
+        if (nl.m != l.m) {
+            nl.left = xl;
+            top.insert(nl);
+            lines.insert(nl);
+        }
+    }
+    void insert(line l) {
+        if (lines.size() == 1) {
+            if (l &lt; *lines.begin()) {
+                recompute(*lines.begin(), l, -INF);
+            } else {
+                if (l.m == lines.begin()-&gt;m) return;
+                l.left = l.intersect(*lines.begin());
+            }
+        } else if (lines.size() &gt; 1) {
+            auto i = lines.lower_bound(l);
+            if (i != lines.begin() &amp;&amp; i != lines.end()) {
+                auto j = i; j--;
+                ld x = i-&gt;intersect(*j);
+                if (sgn*l.eval(x) &gt;= sgn*(i-&gt;eval(x))) return;
+            }
+            for (int k = 0; k &lt; 2; k++) {
+                ld s = ld(k ? -1 : 1);
+                i = lines.lower_bound(l);
+                bool bcond = (k ? i != lines.end() : i != lines.begin());
+                if (!bcond) continue;
+                auto j = i;
+                if (k) j++;
+                else { j = --i; j--; }
+                while (true) {
+                    bool econd = (k ? j == lines.end() : i == lines.begin());
+                    ld x12 = i-&gt;intersect(l), x13 = j-&gt;intersect(l);
+                    if (!econd &amp;&amp; s*x13 &gt;= s*x12) {
+                        auto it = i;
+                        if (k) i++, j++;
+                        else i--, j--;
+                        top.erase(*it);
+                        lines.erase(it);
+                    } else {
+                        if (k) recompute(*i, l, i-&gt;intersect(l));
+                        else l.left = l.intersect(*i);
+                        break;
+                    }
+                }
+            }
+        }
+        lines.insert(l); top.insert(l);
+    }
+};
+}
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  UE::envelope ue;
+  LE::envelope le;
+  int n, q; cin &gt;&gt; n &gt;&gt; q;
+  set&lt;ld&gt; xpts;
+  for (int i = 0; i &lt; n; i++) {
+    int xi, yi; cin &gt;&gt; xi &gt;&gt; yi;
+    ld x = xi, y = yi;
+    ue.insert(UE::line(x, -y));
+    le.insert(LE::line(x, -y));
+    xpts.insert(x);
+  }
+
+  for (int i = 0; i &lt; q; i++) {
+    int c; cin &gt;&gt; c;
+    if (c == 1) {
+      long long xi, yi; cin &gt;&gt; xi &gt;&gt; yi;
+      ld x = xi, y = yi;
+      ue.insert(UE::line(x, -y));
+      le.insert(LE::line(x, -y));
+      xpts.insert(x);
+    } else {
+      long long ai, bi, ci; cin &gt;&gt; ai &gt;&gt; bi &gt;&gt; ci;
+      if (bi == 0) {
+        // ax = c &lt;=&gt; x = c/a
+        ld xx = ld(ci)/ld(ai);
+        auto it = xpts.lower_bound(xx);
+        if (it == xpts.end() || (it == xpts.begin() &amp;&amp; *it &gt; xx)) {
+          cout &lt;&lt; &quot;YES&quot; &lt;&lt; '\n';
+        } else {
+          cout &lt;&lt; &quot;NO&quot; &lt;&lt; '\n';
+        }
+      } else {
+        ld a(ai), b(bi), c(ci);
+        // ax + by = c &lt;=&gt; y = (c - ax)/b = (-a/b)x + (c/b)
+        ld xx = -a/b;
+        ld yy = -c/b;
+        if (yy &lt; le.query(xx) || ue.query(xx) &lt; yy) {
+          cout &lt;&lt; &quot;YES&quot; &lt;&lt; '\n';
+        } else {
+          cout &lt;&lt; &quot;NO&quot; &lt;&lt; '\n';
+        }
+      }
+    }
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

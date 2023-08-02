@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+
+
+char lett[] = {'e','p','l','r','a','g','f','s','o','x','v','c','w','t','i','b','z','d','h','n','y','k','m','j','u','q'};
+char Lett[] = 
+{'E','P','L','R','A','G','F','S','O','X','V','C','W','T','I','B','Z','D','H','N','Y','K','M','J','U','Q'};
+int main(){
+	string s;
+	
+	while(getline(cin,s,'\n')){
+		for(int i=0; i&lt;256; i++){
+			if(s[i] &lt;= 'Z' &amp;&amp; s[i] &gt;= 'A'){
+				s[i] = Lett[s[i] - 'A'];
+			}
+			if(s[i] &lt;= 'z' &amp;&amp; s[i] &gt;= 'a'){
+				s[i] = lett[s[i] - 'a'];
+			}
+		}
+		cout&lt;&lt;s&lt;&lt;endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

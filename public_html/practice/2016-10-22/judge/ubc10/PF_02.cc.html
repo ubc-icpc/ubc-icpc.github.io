@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+double f(int x, int y, int p) {
+    double ans = (double)y/(x+y);
+    double prod = (double)x/(x+y);
+    for (int i = 1; i &lt; p; i++) {
+        ans = ans * (double)(x-i+1)/(x-i+y) + prod * (double)y/(x-i+y);
+        prod *= (double)(x-i)/(x-i+y);
+    }
+    return ans;
+}
+
+int main() {
+    int n, p; cin &gt;&gt; n &gt;&gt; p;
+    int y = 1;
+    double fy = f(n, y, p);
+    while (true) {
+        double fy2 = fy * (double)(n-p+2+y-1)/(n+y+1)*(double)(y+1)/y;
+        if (fy2 &gt; fy) {
+            fy = fy2;
+            y++;
+        } else {
+            break;
+        }
+    }
+    cout &lt;&lt; setprecision(16) &lt;&lt; fixed &lt;&lt; fy &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

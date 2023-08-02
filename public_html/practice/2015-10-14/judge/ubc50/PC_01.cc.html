@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+#include&lt;string&gt;
+#include&lt;map&gt;
+#include&lt;vector&gt;
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+struct pt{
+  ld x,y,z;
+};
+
+int t,p,w,q;
+ld dist[65][65];
+vector&lt;pt&gt; v;
+map&lt;string, int&gt; id;
+
+ld weight(pt a, pt b) {
+  return sqrt(pow(a.x-b.x,2) + pow(a.y-b.y,2) + pow(a.z-b.z,2));
+}
+
+int main() {
+  cin &gt;&gt; t;
+  for (int test=1; test&lt;=t; test++) {
+    int cnt=0;
+    id.clear();
+    v.clear();
+    cin &gt;&gt; p;
+    v.resize(p);
+    for (int i=0; i&lt;p; i++) {
+      string s; ld x,y,z;
+      cin &gt;&gt; s &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+      id[s]=cnt++;
+      v[i].x=x; v[i].y=y; v[i].z=z;
+    }
+    for (int i=0; i&lt;p; i++) {
+      for (int j=0; j&lt;p; j++) {
+	dist[i][j]=weight(v[i],v[j]);
+      }
+    }
+    cin &gt;&gt; w;
+    for (int i=0; i&lt;w; i++) {
+      string s1,s2; cin &gt;&gt; s1 &gt;&gt; s2;
+      dist[id[s1]][id[s2]]=0;
+    }
+    // floyd warshall
+    for  (int k=0; k&lt;p; k++) {
+      for (int i=0; i&lt;p; i++) {
+	for (int j=0; j&lt;p; j++) {
+	  dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);
+	}
+      }
+    }
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; test &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    cin &gt;&gt; q;
+    for (int qe=0; qe&lt;q; qe++) {
+      string s1,s2; cin &gt;&gt; s1 &gt;&gt; s2;
+      cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; s1 &lt;&lt; &quot; to &quot; &lt;&lt; s2 &lt;&lt; &quot; is &quot; &lt;&lt; ll(dist[id[s1]][id[s2]]+0.5) &lt;&lt; &quot; parsecs.&quot; &lt;&lt; endl;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

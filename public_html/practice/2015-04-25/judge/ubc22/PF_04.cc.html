@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int L, T, R, C, B1, B2, bitl[5005][1005], bitr[5005][1005];
+set&lt;int&gt; S[1005];
+char op;
+
+void add(int c, int r, int v) {
+  if(v &gt; 0) { if (!S[c].insert(r).second) return; }
+  else if (S[c].erase(r) == 0) return;
+  if (r &gt; 4000) return;
+  for (int i = r + 1001 - c; i &lt; 5005; i += i &amp; -i)
+    for (int j = c; j &lt; 1005; j += j &amp; -j)
+      bitl[i][j] += v;
+  for (int i = r + c; i &lt; 5005; i += i &amp; -i)
+    for (int j = 1001 - c; j &lt; 1005; j += j &amp; -j)
+      bitr[i][j] += v;
+}
+
+int query (int c, int r) {
+  int res = 0;
+  for (int i = r + 1001 - c; i &gt; 0; i -= i &amp; -i)
+    for (int j = c; j &gt; 0; j -= j &amp; -j)
+      res += bitl[i][j];
+  if (c &lt; 1000)
+    for (int i = r + c; i &gt; 0; i -= i &amp; -i)
+      for (int j = 1000 - c; j &gt; 0; j -= j &amp; -j)
+        res += bitr[i][j];
+  return res;
+}
+
+int main () {
+  ios::sync_with_stdio(0); cin.tie(0);
+  B1 = B2 = numeric_limits&lt;int&gt;::max();
+  cin &gt;&gt; L &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; op &gt;&gt; R &gt;&gt; C;
+    switch (op) {
+    case 'E': add(C, R, 1); break;
+    case 'L': add(C, R, -1); break;
+    case 'S':
+      if (C &gt;= 1000 || S[C].count(R) || S[C + 1].count(R)) cout &lt;&lt; &quot;No\n&quot;;
+      else cout &lt;&lt; query(C, R) + query(C + 1, R) &lt;&lt; &quot;\n&quot;;
+    }
+  }
+  for (int i = 1; i &lt;= 1000; ++i) {
+    int j = L + 1; auto it = S[i].upper_bound(L);
+    while (it != S[i].end() &amp;&amp; j == *it) { ++it; ++j; };
+    int k = query(i, j);
+    if (k &lt;= B1) { B2 = B1; B1 = k; }
+    else if (k &lt;= B2) B2 = k;
+    ++j;
+    while (it != S[i].end() &amp;&amp; j == *it) { ++it; ++j; };
+    k = query(i, j);
+    if (k &lt;= B1) { B2 = B1; B1 = k; }
+    else if (k &lt;= B2) B2 = k;
+  }
+  cout &lt;&lt; B1 + B2 &lt;&lt; &quot;\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

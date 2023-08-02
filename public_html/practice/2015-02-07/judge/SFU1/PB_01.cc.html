@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//
+//  ArrayBalancing.cpp
+//  ACM
+//
+//  Created by David Woods on 2015-02-07.
+//  Copyright (c) 2015 David Woods. All rights reserved.
+//
+
+#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdio&gt;
+#include &lt;math.h&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int N;
+int index(int i) {
+    int chunkSize = (int)sqrt(N);
+    return i / chunkSize;
+}
+
+int arr[400005];
+int maxArr[650]; // Sqrt chunks
+int minArr[650];
+
+int balance(int ind) {
+    // Get min for values 0 to index
+    int rMin = 21000000; int lMin = 2100000;
+    int lMax = -1; int rMax = -1;
+    int sIndex = index(ind);
+    int chunkSize = (int)sqrt(N);
+    
+    for (int i = 0; i &lt; sIndex; i++) {
+        lMin = min(lMin, minArr[i]);
+        lMax = max(lMax, maxArr[i]);
+    }
+    for (int i = chunkSize * sIndex; i &lt;= ind; i++) {
+        lMin = min(lMin, arr[i]);
+        lMax = max(lMax, arr[i]);
+    }
+    
+    for (int i = sIndex+1; i &lt; (N/chunkSize) + 1; i++) {
+        rMin = min(rMin, minArr[i]);
+        rMax = max(rMax, maxArr[i]);
+    }
+    
+    for (int i = ind+1; i &lt; chunkSize * (sIndex + 1); i++) {
+        rMin = min(rMin, arr[i]);
+        rMax = max(rMax, arr[i]);
+    }
+    
+    return max(lMax - lMin, rMax - rMin);
+}
+
+
+int main()
+{
+    while (cin &gt;&gt; N) {
+        if (N == 1) {
+            break;
+        }
+        
+        for (int i = 0; i &lt; 650; i++) {
+            maxArr[i] = -1;
+            minArr[i] = 2100000;
+        }
+        
+        for (int i = 0; i &lt; N; i++) {
+            cin &gt;&gt; arr[i];
+            
+            maxArr[index(i)] = max(arr[i], maxArr[index(i)]);
+            minArr[index(i)] = min(arr[i], minArr[index(i)]);
+        }
+        
+        int ans = 1;
+        int best = 2100000;
+        for (int i = 0; i &lt; N; i++) {
+            int bal = balance(i);
+            if (bal &lt; best) {
+                best = bal;
+                ans = i + 1;
+            }
+        }
+        
+        printf(&quot;%d\n&quot;, ans);
+    }
+    
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

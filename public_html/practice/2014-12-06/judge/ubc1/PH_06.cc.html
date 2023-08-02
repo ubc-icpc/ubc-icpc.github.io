@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+//just find if minimum cycle size = 4.
+//-&gt; bfs.
+vector&lt;int&gt; g[4005];
+int dist[4005], par[4005];
+int main() {
+	int n, m, k; cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+	for (int i = 0; i &lt; k; i++) {
+		int x, y; cin &gt;&gt; x &gt;&gt; y;
+		x--, y--;
+		g[x].push_back(n+y);
+		g[n+y].push_back(x);
+	}
+	
+	bool yes = true;
+	memset(par, -1, sizeof par);
+	for (int i = 0; i &lt; n; i++) {
+		memset(dist, -1, sizeof dist);
+		queue&lt;int&gt; q;
+		dist[i] = 0; par[i] = i;
+		q.push(i);
+		while (!q.empty() &amp;&amp; dist[q.front()] &lt;= 2) {
+			int u = q.front(); q.pop();
+			for (int v : g[u]) {
+				if (par[u] != v) {
+					if (dist[v] != -1) {
+						if (par[par[v]] == par[u]) {
+							yes = false;
+							goto done;
+						} else {
+							continue;
+						}
+					} else {
+						dist[v] = dist[u]+1;
+						par[v] = u;
+						q.push(v);
+					}
+				}
+			}
+		}
+	}
+	done:
+	cout &lt;&lt; (yes ? &quot;YES&quot; : &quot;NO&quot;) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

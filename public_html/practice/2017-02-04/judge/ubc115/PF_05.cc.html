@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int t, m, n;
+int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+string g[1024];
+int v[1024][1024];
+int cc[1024][1024];
+int cf[1024][1024];
+int vf[1024][1024];
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin &gt;&gt; t;
+    while (t--) {
+        cin &gt;&gt; n &gt;&gt; m;
+        for (int j = 0; j &lt; m; j++) {
+            cin &gt;&gt; g[j];
+        }
+        memset(cc, 0x3f, sizeof (cc));
+        memset(cf, 0x3f, sizeof (cf));
+        memset(v, 0, sizeof (v));
+        memset(vf, 0, sizeof (vf));
+        bool has_exit = false;
+        queue&lt;pair&lt;int, int&gt;&gt; q;
+        queue&lt;pair&lt;int, int&gt;&gt; f;
+        for (int j = 0; j &lt; m; j++) {
+            for (int i = 0; i &lt; n; i++) {
+                if (g[j][i] == '*') {
+                    f.push({j, i});
+                    cf[j][i] = 0;
+                }
+                if (g[j][i] == '@') {
+                    q.push({j, i});
+                    cc[j][i] = 0;
+                }
+            }
+        }
+        while (!f.empty()) {
+            auto node = f.front();
+            int y = node.first;
+            int x = node.second;
+            f.pop();
+            if (vf[y][x]) {
+                continue;
+            }
+            vf[y][x] = 1;
+            for (int i = 0; i &lt; 4; i++) {
+                int yp = y + dir[i][0];
+                int xp = x + dir[i][1];
+                if (xp &gt;= 0 &amp;&amp; yp &gt;= 0 &amp;&amp; xp &lt; n &amp;&amp; yp &lt; m &amp;&amp; g[yp][xp] != '#' &amp;&amp; g[yp][xp] != '*' &amp;&amp; !vf[yp][xp]) {
+                    f.push({yp, xp});
+                    cf[yp][xp] = min(cf[yp][xp], cf[y][x] + 1);
+                }
+            }
+        }
+
+        set&lt;int&gt; count;
+        while (!q.empty()) {
+            auto node = q.front();
+            int y = node.first;
+            int x = node.second;
+            if (y == 0 || x == 0 || y == m - 1 || x == n - 1) {
+                count.insert(cc[y][x]);
+                has_exit = true;
+            }
+            q.pop();
+            if (v[y][x]) {
+                continue;
+            }
+            v[y][x] = 1;
+            for (int i = 0; i &lt; 4; i++) {
+                int yp = y + dir[i][0];
+                int xp = x + dir[i][1];
+                if (xp &gt;= 0 &amp;&amp; yp &gt;= 0 &amp;&amp; xp &lt; n &amp;&amp; yp &lt; m &amp;&amp; 
+                        !v[yp][xp] &amp;&amp; g[yp][xp] != '#' &amp;&amp; 
+                        g[yp][xp] != '*' &amp;&amp; min(cc[y][x] + 1, cc[yp][xp]) &lt; cf[yp][xp]) {
+                    q.push({yp, xp});
+                    cc[yp][xp] = min(cc[yp][xp], cc[y][x] + 1);
+                }
+            }
+        }
+
+        if (has_exit) {
+            cout &lt;&lt; *count.begin() + 1 &lt;&lt; '\n';
+        } else {
+            cout &lt;&lt; &quot;IMPOSSIBLE\n&quot;;
+        }
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

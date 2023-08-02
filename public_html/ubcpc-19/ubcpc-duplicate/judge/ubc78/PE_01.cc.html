@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define DEBUG 0
+#define nl          '\n'
+#define fori(n)			for(int i = 0; i &lt; n; ++i) 
+#define forj(n)			for(int j = 0; j &lt; n; ++j)
+#define fork(n)			for(int k = 0; k &lt; n; ++k)
+#define forl(n)			for(int l = 0; l &lt; n; ++l)
+#define pq priority_queue
+#define umap unordered_map
+typedef long long ll;typedef pair&lt;int,int&gt; pii;typedef vector&lt;bool&gt; vbool;typedef vector&lt;int&gt; vint;typedef vector&lt;ll&gt; vll;typedef long double ld;typedef vector&lt;vector&lt;int&gt;&gt; vvi; 
+
+const ll N = 100010;
+const ll INF = 0x3f3f3f3f;
+const ll MOD = 1e9 + 7;
+
+int main() {
+	ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+	int n, k; cin &gt;&gt; n &gt;&gt; k;
+	vint a(n);
+	fori(n) cin &gt;&gt; a[i];
+	sort(a.begin(), a.end());
+	ll ans = 0;
+	for(int i = n-1; i &gt;= (n-k); --i) ans += a[i];
+	cout &lt;&lt; ans &lt;&lt; nl;
+	
+	#if DEBUG
+	cerr &lt;&lt; &quot;Time: &quot; &lt;&lt; (ld)clock() / CLOCKS_PER_SEC &lt;&lt; &quot; s&quot; &lt;&lt; nl;
+	#endif
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

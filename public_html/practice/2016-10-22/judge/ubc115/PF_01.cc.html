@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long double ld;
+int main() {
+        int n, p;
+        cin &gt;&gt; n &gt;&gt; p;
+        ld r = (ld) p / (n + 1.0) * (n / (p - 1));
+        for (int i = 2; i &lt;= n / (p - 1); i++) {
+                r *= (ld) (n + i - p) / (n + i);
+        }
+        cout &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; r &lt;&lt; endl;
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

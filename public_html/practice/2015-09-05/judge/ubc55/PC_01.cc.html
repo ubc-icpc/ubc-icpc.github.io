@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#define _USE_MATH_DEFINES
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+int main()
+{
+	int n;
+	cin &gt;&gt; n;
+	int count = 0;
+	while (n--)
+	{
+		count++;
+		ld little, big;
+		cin &gt;&gt; little &gt;&gt; big;
+		ld area_triangle = little * big / 2;
+		ld theta1 = atan(little / big);
+		ld theta2 = M_PI / 2 - theta1;
+		ld bisect = theta1 / 2;
+		ld radius2 = little * sin(theta2) / (1+sqrt(2));
+		ld radius = (little + big - sqrt(little*little + big*big))/2;
+		ld x_ratio = 1 / sin(bisect);
+		ld circle_ratio = (x_ratio - 1) / (x_ratio + 1);
+		ld area_circle = M_PI * radius * radius;
+		//for (int i = 0; i &lt; 10000; i++)
+		//{
+		//	radius *= circle_ratio;
+		//	area_circle += M_PI*radius*radius;
+		//}
+		area_circle *= (1 / (1 - (circle_ratio* circle_ratio)));
+		cout.precision(4);
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; count &lt;&lt; &quot;: &quot; &lt;&lt; area_circle / area_triangle &lt;&lt; endl &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

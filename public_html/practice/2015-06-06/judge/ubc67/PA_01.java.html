@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.*;
+import java.util.*;
+
+public class A {
+	
+	public static void main(String args[]) throws IOException{
+		
+		BufferedReader kinput = new BufferedReader(new InputStreamReader(System.in));
+		
+		boolean zero = false;
+		
+		String a = kinput.readLine();
+		int[] b = new int[a.length()];
+		
+		for(int c = 0; c &lt; a.length(); c++) {
+			b[c] = Character.getNumericValue(a.charAt(c));
+			if(a.charAt(c) == '0') {
+				zero = true;
+			}
+		}
+		
+		if(zero) {
+			
+			int sum = 0;
+			
+			for(int c = 0; c &lt; a.length(); c++) {
+				sum += b[c];
+			}
+			
+			if(sum%3 == 0) {
+				Arrays.sort(b);
+				
+				for(int c = a.length()-1; c &gt;= 0; c--) {
+					System.out.print(b[c]);
+				}
+				
+				System.out.println();
+			}
+			
+			else {
+				System.out.println(-1);
+			}
+		}
+		
+		else {
+			System.out.println(-1);
+		}
+		
+	}
+	
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

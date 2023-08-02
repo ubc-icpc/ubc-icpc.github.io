@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+bool there_must_be_a_better_way_of_doing_this = false;
+
+struct m {
+  bool k;
+  int y, s;
+  m(bool kk, int yy, int ss) : k(kk), y(yy), s(ss) {}
+  bool operator&lt;(const m&amp; b) const {
+    if (!there_must_be_a_better_way_of_doing_this &amp;&amp; y != b.y)
+      return y &lt; b.y;
+    return s &lt; b.s;
+  }
+};
+
+int main() {
+  int k, n;
+  cin &gt;&gt; k &gt;&gt; n;
+  set&lt;m&gt; a, b;
+  int y, p;
+  cin &gt;&gt; y &gt;&gt; p;
+  a.insert(m(1,y,p));
+  for (int i = 0; i &lt; n+k-2; i++) {
+    cin &gt;&gt; y &gt;&gt; p;
+    a.insert(m(0,y,p));
+  }
+  int q = 0;
+  // i have no idea if this is necessary
+  vector&lt;m&gt; v;
+  for (set&lt;m&gt;::iterator it = a.begin(); q &lt; n+k-1; q++, it++) {
+    m m2(it-&gt;k,it-&gt;y,it-&gt;s);
+    v.push_back(m2);
+  }
+  there_must_be_a_better_way_of_doing_this = true;
+  for (int i = 0; i &lt; k; i++)
+    b.insert(v[i]);
+  int yk = -1, vi = k;
+  bool d = false;
+  for (int Y = 2011; Y &lt; 2011+n; Y++, vi++) {
+    // winner is last moose in b
+    if ((--b.end())-&gt;k) {
+      cout &lt;&lt; Y &lt;&lt; &quot;\n&quot;;
+      d = true;
+      break;
+    }
+    b.erase(*(--b.end()));
+    b.insert(v[vi]);
+  }
+  if (!d)
+    cout &lt;&lt; &quot;unknown\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

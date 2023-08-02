@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+using ll = unsigned long long int;
+
+void recurse(vector&lt;int&gt;&amp; cur, int level, bool dir, int quad, double x, double y)
+{
+	if (level &lt; 0) return;
+	quad = (quad + 4) % 4;
+
+	int n;
+
+	if (x &lt; 0.5)
+	{
+		if (y &lt; 0.5) n = 0;
+		else n = 1;
+	}
+	else
+	{
+		if (y &lt; 0.5) n = 3;
+		else n = 2;
+	}
+
+	n = (n - quad + 4) % 4;
+	if (dir)
+	{
+		n = 3 - n;
+	}
+
+	cur.push_back(n);
+	if (x &gt; 0.5) x = (x - 0.5) * 2;
+	else x = x * 2;
+	if (y &gt; 0.5) y = (y - 0.5) * 2;
+	else y = y * 2;
+	
+	if (n == 1 || n == 2)
+	{
+		recurse(cur, level - 1, dir, quad, x, y);
+	}
+	else if (n == 0)
+	{
+		recurse(cur, level - 1, !dir, quad + (dir ? -1 : 1), x, y);
+	}
+	else
+	{
+		recurse(cur, level - 1, !dir, quad + (dir ? 1 : -1), x, y);
+	}
+}
+
+ll assign(vector&lt;int&gt;&amp; cur)
+{
+	reverse(cur.begin(), cur.end());
+	ll val = 0;
+
+	for (ll i = 0; i &lt; cur.size(); i++)
+	{
+		val += (ll) cur[i] &lt;&lt; (ll) (i * 2);;
+	}
+	return val;
+}
+
+int main()
+{
+	int n, S; cin &gt;&gt; n &gt;&gt; S;
+	vector&lt;pair&lt;ll, string&gt;&gt; c;
+	while (n--)
+	{
+		int ix, iy; cin &gt;&gt; ix &gt;&gt; iy;
+		string s; cin &gt;&gt; s;
+		vector&lt;int&gt; cur;
+		recurse(cur, 31, false, 0, (double) ix / S, (double) iy / S);
+
+		c.push_back(make_pair(assign(cur), s));
+	}
+	sort(c.begin(), c.end());
+
+	for (auto i : c)
+	{
+		cout &lt;&lt; i.second &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

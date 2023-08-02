@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+
+using namespace std;
+typedef long long int ll;
+
+double a, b, c, d, m;
+
+double bs(double goal) {
+	double bot = 0;
+	double top = 1e10;
+	for(int i=0;i&lt;1000000;++i) {
+		double mid = (bot+top)/2;
+		double val = (m/mid)*(a*mid*mid*mid*mid+b*mid*mid*mid+c*mid*mid+d*mid);
+		if(val &gt;= goal)
+			top = mid;
+		else
+			bot = mid;
+	}
+	return bot;
+}
+
+int main()
+{
+	double t;
+	cin &gt;&gt; a;
+	while(cin) {
+		cin &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; m &gt;&gt; t;
+		double v = bs(t);
+		if(v &gt; .005) v -= .005;
+		cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; v &lt;&lt; endl;
+		cin &gt;&gt; a;
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

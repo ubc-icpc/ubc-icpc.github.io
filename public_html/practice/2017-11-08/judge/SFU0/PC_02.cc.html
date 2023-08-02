@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;unordered_set&gt;
+#include &lt;queue&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+const int maxn = 22;
+
+typedef unsigned long long ull;
+
+string m_map[maxn];
+int w, h;
+int gx, gy;
+
+struct Dice {
+    Dice(): d{0, 0, 0, 0, 0, 0}, face_down(1){}
+
+    //    4
+    //  0 1 2 3
+    //    5
+    int d[6];
+    int face_down;
+
+    Dice roll(int dir) const {  // 0 &lt;- right, 1 &lt;- down, 2 &lt;- left, 3 &lt;- up
+        static const int next_face[4][6]
+        {
+            {1, 2, 3, 0, 2, 2},
+            {5, 5, 5, 5, 1, 3},
+            {3, 0, 1, 2, 0, 0},
+            {4, 4, 4, 4, 3, 1}
+        };
+
+        static const int next_index[4][6]
+        {
+            {1, 2, 3, 0, 4, 5},
+            {0, 5, 2, 4, 1, 3},
+            {3, 0, 1, 2, 4, 5},
+            {0, 4, 2, 5, 3, 1}
+        };
+
+
+        Dice re = *this;
+        re.face_down = 1; //next_face[dir][face_down];
+
+        for (int i = 0; i &lt; 6; ++i) {
+            re.d[i] = d[next_index[dir][i]];
+        }
+
+        return re;
+    }
+
+    int count_d() const {
+        int cd = 0;
+        for (int i = 0; i &lt; 6; ++i)  cd += d[i];
+        return cd;
+    }
+
+    // Dice operator= (const Dice &amp;dic) {
+    //     face_down = dic.face_down;
+    //     for (int i = 0; i &lt; 6; ++i) {
+    //         d[i] = dic.d[i];
+    //     }
+    // }
+
+    ull hash() const {
+        ull l = 0;
+        for (int i = 0; i &lt; 6; ++i) {
+            l *= 2;  l += d[i];
+        }
+        return l;
+    }
+};
+
+struct Grid {
+
+    Grid(){
+        for (int i = 0; i &lt; 6; ++i)  px[i] = py[i] = -1;
+    }
+    
+    int px[6], py[6];
+
+    // Grid operator= (const Grid &amp;g) {
+    //     w = g.w;  h = g.h;  cp = g.cp;
+    //     for (int i = 0; i &lt; 2; ++i) {
+    //         cgx[i] = g.cgx[i];  cgy[i] = g.cgy[i];
+    //     }
+    //     for (int i = 0; i &lt; 6; ++i) {
+    //         px[i] = g.px[i];  py[i] = g.py[i];
+    //     }
+    // }
+
+    void put(int xx, int yy) {
+        for (int i = 0; i &lt; 6; ++i) {
+            if (px[i] &lt; 0) {
+                px[i] = xx;
+                py[i] = yy;
+                break;
+            }
+        }
+    }
+
+    ull hash() const {
+        vector&lt;pair&lt;int, int&gt; &gt; v;
+        for (int i = 0; i &lt; 6; ++i) {
+            if (px[i] &lt; 0)  continue;
+            v.push_back(make_pair(px[i], py[i]));
+        }
+        sort(v.begin(), v.end());
+
+        ull l = 0;
+        for (int i = 0; i &lt; v.size(); ++i) {
+            l *= maxn;  l += v[i].first;
+            l *= maxn;  l += v[i].second;
+        }
+        return l;
+    }
+};
+
+
+struct State {
+    Grid grid;
+    Dice dice;
+
+    int cx, cy;
+    int moves;
+
+    ull hash() const {
+        ull l = grid.hash();
+        l *= 70;  l += dice.hash();
+        l *= maxn;  l += cx;
+        l *= maxn;  l += cy;
+        return l;
+    }
+
+    bool is_done() const {
+        return cx == gx &amp;&amp; cy == gy &amp;&amp; dice.count_d() == 6;
+    }
+
+    State roll(int dir) const {
+        State s = *this;
+        static const int dx[] = {1, 0, -1, 0};
+        static const int dy[] = {0, 1, 0, -1};
+
+        int tx = cx + dx[dir], ty = cy + dy[dir];
+        if (tx &lt; 0 || tx &gt;= w || ty &lt; 0 || ty &gt;= h || m_map[ty][tx] == '#') {
+            return s;
+        }
+        s.cx = tx;  s.cy = ty;
+        s.dice = dice.roll(dir);
+        if (s.dice.d[s.dice.face_down] == 0) {
+            // cout &lt;&lt; &quot;  face_down is 0, cx = &quot; &lt;&lt; s.cx &lt;&lt; &quot; cy = &quot; &lt;&lt; s.cy &lt;&lt; endl;
+            for (int i = 0; i &lt; 6; ++i) {
+                // cout &lt;&lt; &quot;  Checking &quot; &lt;&lt; s.grid.px[i] &lt;&lt; &quot; &quot; &lt;&lt; s.grid.py[i] &lt;&lt; endl;
+                if (s.grid.px[i] &lt; 0)  continue;
+                if (s.grid.px[i] == s.cx &amp;&amp; s.grid.py[i] == s.cy) {
+                    // cout &lt;&lt; &quot;  Found&quot; &lt;&lt; endl;
+                    s.grid.px[i] = -1;  s.grid.py[i] = -1;
+                    s.dice.d[s.dice.face_down] = 1;
+                    break;
+                }
+            }
+        } else {
+            bool should_pass = true;
+            for (int i = 0; i &lt; 6; ++i) {
+                if (s.grid.px[i] &lt; 0)  continue;
+                if (s.grid.px[i] == s.cx &amp;&amp; s.grid.py[i] == s.cy) {
+                    should_pass = false;
+                    break;
+                }
+            }
+
+            // if (m_map[s.cy][s.cx] == 'G' || m_map[s.cy][s.cx] == 'C') {
+            //     should_pass = false;
+            // }
+
+            if (should_pass) {
+                s.grid.put(s.cx, s.cy);
+                s.dice.d[s.dice.face_down] = 0;
+            }
+        }
+        s.moves = moves + 1;
+
+        return s;
+    }
+};
+
+int main() {
+    string s;
+    while (getline(cin, s)) {
+        h = 0;
+        m_map[h++] = s;
+        w = s.length();
+        while (getline(cin, s)) {
+            if (s.length() &lt;= 1)  break;
+            m_map[h++] = s;
+        }
+
+        // cout &lt;&lt; &quot;W = &quot; &lt;&lt; w &lt;&lt; &quot;  H = &quot; &lt;&lt; h &lt;&lt; endl;
+
+        State inits;
+        inits.moves = 0;
+        for (int i = 0; i &lt; h; ++i) {
+            for (int j = 0; j &lt; w; ++j) {
+                if (m_map[i][j] == 'C') {
+                    inits.cx = j;  inits.cy = i;
+                } else if (m_map[i][j] == 'P') {
+                    inits.grid.put(j, i);
+                } else if (m_map[i][j] == 'G') {
+                    gx = j;  gy = i;
+                }
+            }
+        }
+
+        unordered_set&lt;ull&gt;  hash_set;
+
+        queue&lt;State&gt; q;
+        q.push(inits);
+
+        int min_moves = -1;
+
+        // int mm[10] = {1, 0, 0, 3, 0, 0, 2, 1, 3, 1};
+        // State cs = inits;
+        // for (int i = 0; i &lt; 10; ++i) {
+        //     cs = cs.roll(mm[i]);
+        //     cout &lt;&lt; cs.cy &lt;&lt; &quot; &quot; &lt;&lt; cs.cx &lt;&lt; &quot; &quot; &lt;&lt; cs.moves &lt;&lt; endl;
+        //     cout &lt;&lt; &quot;   &quot;;
+        //     for (int i = 0; i &lt; 6; ++i)  cout &lt;&lt; cs.dice.d[i];
+        //     cout &lt;&lt; endl;
+        //     cout &lt;&lt; &quot;   count_d = &quot; &lt;&lt; cs.dice.count_d() &lt;&lt; &quot;  face_down = &quot; &lt;&lt; cs.dice.face_down &lt;&lt; endl;
+        //     cout &lt;&lt; &quot;   &quot;;
+        //     for (int i = 0; i &lt; 6; ++i) {
+        //         if (cs.grid.px[i] &lt; 0)  continue;
+        //         cout &lt;&lt; &quot;(&quot; &lt;&lt; cs.grid.py[i] &lt;&lt; &quot;,&quot; &lt;&lt; cs.grid.px[i] &lt;&lt; &quot;) &quot;;
+        //     }
+        //     cout &lt;&lt; endl;
+        // }
+
+        while (!q.empty()) {
+            State cs = q.front();  q.pop();
+            if (hash_set.count(cs.hash()) &gt; 0)  continue;
+            hash_set.insert(cs.hash());
+
+            // cout &lt;&lt; cs.cy &lt;&lt; &quot; &quot; &lt;&lt; cs.cx &lt;&lt; &quot; &quot; &lt;&lt; cs.moves &lt;&lt; endl;
+            // cout &lt;&lt; &quot;   &quot;;
+            // for (int i = 0; i &lt; 6; ++i)  cout &lt;&lt; cs.dice.d[i];
+            // cout &lt;&lt; endl;
+            // cout &lt;&lt; &quot;   count_d = &quot; &lt;&lt; cs.dice.count_d() &lt;&lt; &quot;  face_down = &quot; &lt;&lt; cs.dice.face_down &lt;&lt; endl;
+            // cout &lt;&lt; &quot;   &quot;;
+            // for (int i = 0; i &lt; 6; ++i) {
+            //     if (cs.grid.px[i] &lt; 0)  continue;
+            //     cout &lt;&lt; &quot;(&quot; &lt;&lt; cs.grid.py[i] &lt;&lt; &quot;,&quot; &lt;&lt; cs.grid.px[i] &lt;&lt; &quot;) &quot;;
+            // }
+            // cout &lt;&lt; endl;
+
+            if (cs.is_done()) {
+                min_moves = cs.moves;
+                break;
+            }
+
+            for (int dir = 0; dir &lt;= 3; ++dir) {
+                q.push(cs.roll(dir));
+            }
+        }
+
+        cout &lt;&lt; min_moves &lt;&lt; endl;
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

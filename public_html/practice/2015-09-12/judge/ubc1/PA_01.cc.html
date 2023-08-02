@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        bool has17 = false, has18 = false;
+        for (int i = 0; i &lt; 10; i++) {
+            int x; cin &gt;&gt; x;
+            has17 = has17 || (x == 17);
+            has18 = has18 || (x == 18);
+            cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+        
+        if (has17 &amp;&amp; has18) {
+            cout &lt;&lt; &quot;both&quot; &lt;&lt; endl;
+        } else if (has17) {
+            cout &lt;&lt; &quot;zack&quot; &lt;&lt; endl;
+        } else if (has18) {
+            cout &lt;&lt; &quot;mack&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+        }
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

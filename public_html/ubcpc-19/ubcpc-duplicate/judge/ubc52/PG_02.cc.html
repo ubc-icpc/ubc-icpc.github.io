@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+
+vector&lt;int&gt; eval(const string&amp; s, int l, int r) {
+  if (l &gt; r) return {0};
+  if (s[r] == '+') {
+    auto v = eval(s, l, r-1);
+    v[0]++;
+    return v;
+  } else if (s[r] == ']') {
+    int nl = r-1;
+    int d = -1;
+    while (1) {
+      d += (s[nl] == '[') - (s[nl] == ']');
+      if (d == 0) break;
+      nl--;
+    }
+    auto v = eval(s, nl+1, r-1), v2 = eval(s, l, nl-1);
+    if (v.back() != 0) {
+      vector&lt;int&gt; ret(v.size()+1);
+      ret.back() = 1;
+      if (v2.size() &gt; ret.size()) {
+        v2[ret.size()-1] += ret.back();
+        for (int i = (int)ret.size()-2; i &gt;= 0; i--) {
+          v2[i] = 0;
+        }
+        return v2;
+      } else if (v2.size() == ret.size()) {
+        ret.back() += v2.back();
+      }
+      return ret;
+    } else {
+      return v2;
+    }
+  }
+  assert(0);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int m; cin &gt;&gt; m;
+  vector&lt;pair&lt;string, vector&lt;int&gt;&gt;&gt; v;
+  for (int i = 0; i &lt; m; i++) {
+    string s; cin &gt;&gt; s;
+    v.emplace_back(s, eval(s, 0, s.size()-1));
+  }
+  sort(v.begin(), v.end(), [](const auto&amp; a, const auto&amp; b) {
+    if (a.second.size() != b.second.size()) return a.second.size() &lt; b.second.size();
+    for (int i = a.second.size()-1; i &gt;= 0; i--) {
+      if (a.second[i] != b.second[i]) return a.second[i] &lt; b.second[i];
+    }
+    return false;
+  });
+  for (const auto&amp; p : v) {
+    cout &lt;&lt; p.first &lt;&lt; nl;
+    //for (int i : p.second) cerr &lt;&lt; i &lt;&lt; &quot; &quot;;
+    //cerr &lt;&lt; nl;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+import math
+input = sys.stdin
+
+moves = list(input.readline().strip())
+
+mapping = {
+	&quot;R&quot;: &quot;S&quot;,
+	&quot;B&quot;: &quot;K&quot;,
+	&quot;L&quot;: &quot;H&quot;
+}
+
+s = 0
+i = min(3, len(moves))
+out = &quot;&quot;
+while True:
+	seg = moves[s:i]
+	
+	m = {'R': False, 'B': False, 'L': False}
+	for c in seg:
+		m[c] = True
+
+	if m['R'] and m['L'] and m['B']:
+		out += &quot;C&quot;
+		s = min(s + 3, len(moves))
+		i = min(i + 3, len(moves))
+	else:
+		out += mapping[seg[0]]
+		s = min(s + 1, len(moves))
+		i = min(i + 1, len(moves))
+
+	if s == i:
+		break
+
+print(out)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

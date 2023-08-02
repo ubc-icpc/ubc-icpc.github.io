@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import sys
+import math
+import functools
+from collections import deque
+sin = sys.stdin
+
+
+def trunc(f):
+    st = str(f)
+    stt = st.split(&quot;.&quot;)
+    if len(stt[1]) &lt; 2:
+        for i in range((2 - len(stt[1]))):
+            stt[1] += str(0)
+    return stt[0] + &quot;.&quot; + stt[1][0:2]
+
+
+abcdmt = sin.readline().split()
+while abcdmt != []:
+    a = float(abcdmt[0])
+    b = float(abcdmt[1])
+    c = float(abcdmt[2])
+    d = float(abcdmt[3])
+    m = float(abcdmt[4])
+    t = float(abcdmt[5])
+    low = 0.0
+    high = 100000000000.0
+    eps = .000001
+    while True:
+        mid = (low + high)/2
+        fuel = (a*(mid**3)+b*(mid**2)+c*mid+d)*m
+        if abs(t-fuel) &lt; eps:
+            print(trunc(mid))
+            break
+        elif fuel &gt; t:
+            high = mid
+        elif fuel &lt; t:
+            low = mid
+    abcdmt = sin.readline().split()
+</code>
+</pre>
+</body>
+</html>

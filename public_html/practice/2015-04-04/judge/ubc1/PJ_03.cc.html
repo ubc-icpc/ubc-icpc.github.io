@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef float ld;
+typedef complex&lt;ld&gt; pt;
+
+const ld EPS = 1e-8;
+ld cp(const pt &amp;a, const pt &amp;b) { return imag(conj(a)*b); }
+inline ld sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : x/abs(x); }
+
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b)
+{ return a.real() &lt; b.real() || (a.real() == b.real() &amp;&amp; a.imag() &lt; b.imag()); }
+
+// handles ALL cases, change occurences of &lt;= to &lt; to exclude endpoints
+bool seg_x_seg(pt a1, pt a2, pt b1, pt b2) {
+  //if (a1==a2 || b1==b2) return false; // uncomment to exclude endpoints
+  int s1 = sgn(cp(a2 - a1, b1 - a1)), s2 = sgn(cp(a2 - a1, b2 - a1));
+  int s3 = sgn(cp(b2 - b1, a1 - b1)), s4 = sgn(cp(b2 - b1, a2 - b1));
+  if(!s1 &amp;&amp; !s2 &amp;&amp; !s3) { // collinear
+    if (cmp_lex(a2, a1)) swap(a1, a2); if (cmp_lex(b2, b1)) swap(b1, b2);
+    //return cmp_lex(a1, b2) &amp;&amp; cmp_lex(b1, a2);//uncomment to exclude endpoints
+    return !cmp_lex(b2, a1) &amp;&amp; !cmp_lex(a2, b1);
+  } return s1*s2 &lt;= 0 &amp;&amp; s3*s4 &lt;= 0; }
+  
+pt s[2], t[2], p[100005];
+int main() {
+    ios::sync_with_stdio(0);
+    int T; cin &gt;&gt; T;
+    while (T--) {
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            ld x, y; cin &gt;&gt; x &gt;&gt; y;
+            if (i == 0 || i == 2) {
+                s[i/2] = pt(x,y);
+            } else if (i == 1 || i == 3) {
+                t[i/2] = pt(x,y);
+            }
+            p[i] = pt(x,y);
+        }
+        
+        bool found = false;
+        for (int k = 0; k &lt; 2; k++) {
+            set&lt;int&gt; seen;
+            for (int i = 0; i &lt; n; i++) {
+                seen.insert(i);
+            }
+        
+            seen.erase(2*k);
+            seen.erase(2*k+1);
+            
+            int st = 2*(k^1), en = 2*(k^1)+1;
+            queue&lt;int&gt; q({st});
+            seen.erase(st);
+            
+            int iters = 0;
+            vector&lt;int&gt; to_erase;
+            while (!q.empty()) {
+                int u = q.front(); q.pop();
+                if (u == en) {
+                    found = true;
+                    break;
+                }
+                
+                for (int v : seen) {
+                    iters++;
+                    if (seg_x_seg(p[u], p[v], s[k], t[k])) continue;
+                    q.push(v);
+                    to_erase.push_back(v);
+                }
+                
+                for (int v : to_erase) {
+                    seen.erase(v);
+                }
+                to_erase.clear();
+                
+                if (iters &gt; 10000000) break;
+            }
+            
+            if (found) break;
+        }
+        
+        cout &lt;&lt; (found ? &quot;POSSIBLE&quot; : &quot;IMPOSSIBLE&quot;) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

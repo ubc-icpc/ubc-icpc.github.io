@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+double f (int, int, double);
+
+int main()
+{
+   int cases;
+   cin &gt;&gt; cases;
+   for (int a=0;a&lt;cases;a++)
+   {
+      double p, win;
+      cin &gt;&gt; p;
+
+      win=f(0,0,p);
+      cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; win &lt;&lt; endl; 
+   }
+}
+
+double f (int i, int j, double p)
+{
+   if ((i&lt;4&amp;&amp;j&lt;4)&amp;&amp;!(i==3&amp;&amp;j==3))
+   {
+      return (p*f(i+1,j,p)+(1-p)*f(i,j+1,p));
+   }
+   if (i==4&amp;&amp;j&lt;3)
+      return 1;
+   if (i&lt;3&amp;&amp;j==4)
+      return 0;
+   return (p*p)/(1-(2*p)*(1-p));
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

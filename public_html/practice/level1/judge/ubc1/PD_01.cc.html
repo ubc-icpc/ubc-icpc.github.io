@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+struct window {
+	int r, c, w, h;
+};
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n; 
+	while (cin &gt;&gt; n) {
+		if (!n) break;
+		
+		vector&lt;window&gt; v;
+		for (int i = 0; i &lt; n; i++) {
+			int r, c, w, h; cin &gt;&gt; r &gt;&gt; c &gt;&gt; w &gt;&gt; h;
+			v.push_back({r, c, w, h});
+		}
+		
+		static int ca = 1;
+		cout &lt;&lt; &quot;Desktop &quot; &lt;&lt; ca++ &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		int m; cin &gt;&gt; m;
+		while (m--) {
+			int x, y; cin &gt;&gt; x &gt;&gt; y;
+			bool found = false;
+			for (int i = v.size()-1; i &gt;= 0; i--) {
+				if (x &gt;= v[i].r &amp;&amp; x &lt; v[i].r + v[i].h &amp;&amp; y &gt;= v[i].c &amp;&amp; y &lt; v[i].c + v[i].w) {
+					cout &lt;&lt; &quot;window &quot; &lt;&lt; i+1 &lt;&lt; endl;
+					found = true;
+					break;
+				}
+			}
+			if (!found) cout &lt;&lt; &quot;background&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

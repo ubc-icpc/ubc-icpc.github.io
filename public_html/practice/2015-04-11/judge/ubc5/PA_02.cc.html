@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+typedef long long ll;
+typedef vector&lt;ll&gt; vll;
+
+const int N = 2;
+const char cs[7] = {'B','E','S','I','G','O','M'};
+
+int main() {
+  map&lt;char,vll&gt; m;
+  for (int i = 0; i &lt; 7; i++)
+    m[cs[i]] = vll(N,0);
+  int n; cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++) {
+    char c; ll v;
+    cin &gt;&gt; c &gt;&gt; v;
+    m[c][((v%N)+N)%N]++;
+  }
+  ll a = 0;
+  for (int B = 0; B &lt; N; B++)
+    for (int E = 0; E &lt; N; E++)
+      for (int S = 0; S &lt; N; S++)
+        for (int I = 0; I &lt; N; I++)
+          for (int G = 0; G &lt; N; G++)
+            for (int O = 0; O &lt; N; O++)
+              for (int M = 0; M &lt; N; M++)
+                if (((B+2*E+2*S+I)*(G+O+E+S)*(2*O+M)) % N == 0)
+                  a += m['B'][B]*m['E'][E]*m['S'][S]*m['I'][I]*m['G'][G]*m['O'][O]*m['M'][M];
+  cout &lt;&lt; a &lt;&lt; &quot;\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

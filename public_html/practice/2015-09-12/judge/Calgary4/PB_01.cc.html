@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main(){
+  int n; cin &gt;&gt; n;
+    while(n--)
+      {
+	int medal[6];
+	int countU, countR; countU = 0; countR =0;
+	for(int i = 0; i &lt; 6; i++){
+	  cin &gt;&gt; medal[i];
+	  cout &lt;&lt; medal[i] &lt;&lt; &quot; &quot;;
+	  if(i &lt;3)
+	    countU += medal[i];
+	  else
+	    countR += medal[i];
+	}
+	cout &lt;&lt; endl;
+
+	bool count = false;
+	if(countU &gt; countR)
+	  count = true;
+
+	bool color = false;
+	if(medal[0] &gt; medal[3])
+	  color = true;
+	else if(medal[0] == medal[3] &amp;&amp; medal[1] &gt; medal[4])
+	  color = true;
+	else if(medal[0] == medal[3] &amp;&amp; medal[1] == medal[4] &amp;&amp; medal[2] &gt; medal[5])
+	  color = true;
+
+	if(color &amp;&amp; count){
+	  cout &lt;&lt; &quot;both\n\n&quot;;
+	  continue;
+	}else if(color){
+	  cout &lt;&lt; &quot;color\n\n&quot;;
+	  continue;
+	}else if (count){
+	  cout &lt;&lt; &quot;count\n\n&quot;;
+	  continue;
+	}else
+	  cout &lt;&lt; &quot;none\n\n&quot;;
+
+      }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

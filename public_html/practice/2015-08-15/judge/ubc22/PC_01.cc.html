@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, D;
+string P;
+
+int main () {
+    cin &gt;&gt; T;
+    for (int t = 1; t &lt;= T; ++t) {
+        cin &gt;&gt; N &gt;&gt; D &gt;&gt; P;
+        cout &lt;&lt; &quot;Day #&quot; &lt;&lt; t &lt;&lt; endl &lt;&lt; N &lt;&lt; &quot; &quot; &lt;&lt; D &lt;&lt; endl &lt;&lt; P &lt;&lt; endl;
+        for (int i = 0, c = 1, b = 0;; ++c, b = 0) {
+            for (int j = min(i + D + 1, N - 1); j &gt; i; --j)
+                if (P[j] == '.') {
+                    b = i = j; break;
+                }
+            if (!b) { cout &lt;&lt; 0 &lt;&lt; endl; break; }
+            if (i == N - 1) { cout &lt;&lt; c &lt;&lt; endl; break; }
+        }
+        cout &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

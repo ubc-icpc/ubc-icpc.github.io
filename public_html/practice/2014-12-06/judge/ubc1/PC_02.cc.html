@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int H, K, len = 1000000;
+ll h[1000005];
+bool valid(int d) {
+	bool any = false;
+	for (int i = 0; i &lt; H; i++) {
+		//begin sweep at house h[i]
+		int num_req = 1;
+		int nxt = (h[i]+d)%len;
+		for (int j = i, k = 0; k &lt; H; j=(j+1)%H, k++) {
+			if (min(abs(h[j]-nxt), len-abs(h[j]-nxt)) &lt;= d) continue;
+			nxt = (h[j]+d)%len;
+			num_req++;
+		}		
+		
+		any |= (num_req &lt;= K);
+	}
+	return any;
+}
+
+int main() {
+	cin &gt;&gt; H;
+	for (int i = 0; i &lt; H; i++) {
+		cin &gt;&gt; h[i];
+	}
+	sort(h, h+H);
+	
+	cin &gt;&gt; K;
+	ll l = 0, r = len;
+	while (r-l &gt; 1) {
+		int m = (l+r)/2;
+		if (valid(m)) {
+			r = m;
+		} else {
+			l = m+1;
+		}
+	}
+	if (valid(l)) r = l;
+	
+	cout &lt;&lt; r &lt;&lt; endl;
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

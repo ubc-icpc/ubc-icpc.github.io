@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define pb(a)   push_back(a)
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+int n, m, a, b;
+const int MOD = 1440;
+
+typedef pair&lt;int, int&gt; state;
+
+vector&lt;pair&lt;int,int&gt;&gt; adj[555];
+
+vector&lt;int&gt; cedge[5555];
+vector&lt;int&gt; vedge[5555];
+
+map&lt;state, int&gt; mintime;
+
+    int cc= -1e9;
+int dijk(int inittime){
+    priority_queue&lt;pair&lt;int,state&gt;,vector&lt;pair&lt;int,state&gt;&gt;, greater&lt;pair&lt;int,state&gt;&gt; &gt;pq;
+    pq.push({inittime,{480,0}});
+    int mtime = 1e9;
+    mintime.clear();
+    while (!pq.empty()){
+        auto top = pq.top();pq.pop();
+        int time = top.first;
+        state st = top.second;
+        int energy = st.first;
+        if (energy&lt;0) continue;
+        if (cc&lt;19 &amp;&amp; cc &gt;=16) if(time-inittime&lt;999) cout &lt;&lt; &quot;time: &quot; &lt;&lt; time-inittime &lt;&lt; &quot; &quot; &lt;&lt; st.first &lt;&lt; &quot; &quot; &lt;&lt; st.second &lt;&lt; endl;
+        if (!mintime.count(st)) mintime[st] = time; 
+        else continue;
+        if (st.second == n-1) {mtime = time; break;}
+        for(auto pa: adj[st.second]){
+            int k = pa.second, to = pa.first;
+            for(int i = 0;i&lt;(int)cedge[k].size();i++){
+                int curtime = time;
+                int curenergy = energy;
+                if (vedge[k][i]&gt;240) continue;
+                //cout &lt;&lt; &quot;NEED 2x &quot;&lt;&lt; vedge[k][i] &lt;&lt; endl;
+                if (curenergy&lt;2*vedge[k][i]) curtime+=(2*vedge[k][i]-curenergy), curenergy =2*vedge[k][i];
+                int modcurtime = curtime%1440;
+                int entime = cedge[k][i], btime = (i==0? 0:(cedge[k][i-1]+1));
+                if (modcurtime&lt;=entime &amp;&amp; modcurtime&gt;= btime){ // fit for travel NOW
+                    int nexttime = curtime+vedge[k][i];
+                    //cout &lt;&lt; curenergy &lt;&lt; &quot; &quot; &lt;&lt; vedge[k][i] &lt;&lt; endl;
+                    state nextst = {curenergy-2*vedge[k][i],to};
+                    //cout &lt;&lt;&quot;adding &quot; &lt;&lt;nexttime &lt;&lt;&quot; &quot; &lt;&lt; nextst.first &lt;&lt; &quot; &quot; &lt;&lt; nextst.second &lt;&lt; endl;
+                    if (mintime.count(nextst)) continue;
+                    else pq.push({nexttime, nextst});
+                }
+                else{
+                    int wait = btime - modcurtime;
+                    if (wait&lt;0) wait+=1440;
+                    //cout &lt;&lt; btime &lt;&lt; &quot; &quot; &lt;&lt; modcurtime &lt;&lt; &quot; &quot; &lt;&lt; wait &lt;&lt; endl;
+                    curenergy+=wait;
+                    if (curenergy&gt;480) curenergy = 480;
+                    int nexttime = curtime+wait+vedge[k][i];
+                    //cout &lt;&lt; curenergy &lt;&lt; &quot; &quot; &lt;&lt; vedge[k][i] &lt;&lt; endl;
+                    state nextst = {curenergy-2*vedge[k][i],to};
+                    //cout &lt;&lt;&quot;adding &quot; &lt;&lt;nexttime &lt;&lt;&quot; &quot; &lt;&lt; nextst.first &lt;&lt; &quot; &quot; &lt;&lt; nextst.second &lt;&lt; endl;
+                    if (mintime.count(nextst)) continue;
+                    else pq.push({nexttime, nextst});
+                }
+            }
+        }
+    }
+    return mtime-inittime;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt; n &gt;&gt; m;
+    while (n!=0){
+            cc++;
+        if (cc&lt;=19 &amp;&amp; cc &gt;=16) cout &lt;&lt; cc &lt;&lt; endl;
+        for(int i=0;i&lt;n;i++){
+            adj[i].clear();
+        }
+        for(int i=0;i&lt;m;i++){
+            cin &gt;&gt; a &gt;&gt; b;
+            if (cc&lt;=19 &amp;&amp; cc &gt;=16) cout &lt;&lt; a&lt;&lt;&quot; &quot; &lt;&lt; b&lt;&lt; &quot; &quot; &lt;&lt;endl;
+            int st=0, en=0, val = 0;
+            vector&lt;int&gt; c; vector&lt;int&gt; v;
+            while (en!=1439){
+                cin &gt;&gt; st &gt;&gt; en &gt;&gt; val;
+                if (cc&lt;=19 &amp;&amp; cc &gt;=16) cout &lt;&lt; st &lt;&lt;&quot; &quot; &lt;&lt; en&lt;&lt; &quot; &quot;  &lt;&lt; val &lt;&lt; &quot; &quot; &lt;&lt;endl;
+                c.pb(en);
+                v.pb(val);
+            }
+            cedge[i] = c;
+            vedge[i] = v;
+            adj[a].push_back({b,i});
+            adj[b].push_back({a,i});
+        }
+    int mtime = dijk(720);
+    cout &lt;&lt;mtime &lt;&lt;endl;
+    cin &gt;&gt; n &gt;&gt; m;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

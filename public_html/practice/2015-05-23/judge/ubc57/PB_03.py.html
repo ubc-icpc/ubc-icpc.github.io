@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+n=int(raw_input())
+Dic={}
+L=[True]*n
+People=[]
+for i in range(0,n):
+    a=raw_input()
+    if a not in Dic:
+        Dic[a]=[]
+    Dic[a].append(i)
+    People.append(a)
+for i in range(0,n-1):
+    a=raw_input()
+    L[Dic[a][0]]=False
+    Dic[a].pop(0)
+for i in range(0,n):
+    if L[i]:
+        print(People[i])
+        break
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

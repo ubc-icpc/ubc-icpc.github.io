@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+vector&lt;int&gt; g[35];
+bool seen[35];
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int nw; cin &gt;&gt; nw;
+        set&lt;string&gt; st;
+        for (int i = 0; i &lt; nw; i++) {
+            string s; cin &gt;&gt; s;
+            st.insert(s);
+        }
+        
+        int n, m; cin &gt;&gt; n &gt;&gt; m;
+        for (int i = 0; i &lt; n; i++) {
+            g[i].clear();
+        }
+        
+        for (int i = 0; i &lt; m; i++) {
+            int a, b; string c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+            if (st.count(c)) continue;
+            g[a].push_back(b);
+            g[b].push_back(a);
+        }
+        
+        memset(seen, 0, sizeof seen);
+        seen[0] = true;
+        queue&lt;int&gt; q({0});
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            for (int v : g[u]) {
+                if (!seen[v]) {
+                    seen[v] = true;
+                    q.push(v);
+                }
+            }
+        }
+        
+        cout &lt;&lt; seen[n-1] &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

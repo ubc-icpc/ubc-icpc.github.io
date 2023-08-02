@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main()
+{
+	int N;
+	cin &gt;&gt; N;
+	vector&lt;int&gt; tides;
+	for (int i = 0; i &lt; N; ++i) {
+		int k;
+		cin &gt;&gt; k;
+		tides.push_back(k);
+	}
+	sort(tides.begin(), tides.end());
+	for (int i = 0; i &lt; N; ++i) {
+		int k = i/2;
+		bool high = i % 2 == 1;
+		if (high) {
+			int a = 0;
+			if (N % 2 == 1) {
+				a = 1;
+			}
+			cout &lt;&lt; tides.at(N/2+k+a) &lt;&lt; &quot; &quot;;
+		}
+		else {
+			cout &lt;&lt; tides.at((N-1)/2 - k) &lt;&lt; &quot; &quot;;;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

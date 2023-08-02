@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import fileinput
+import math
+
+def fn(c, m_0, b, r, i, l):
+    m = m_0 - c
+    times = (m - r * l) / (c - b - i * l)
+    return math.floor(times) + 1
+
+input = fileinput.input()
+cases = int(input.readline())
+
+for i in range(cases):
+    data = input.readline().split()
+    c = float(data[0])
+    m = float(data[1])
+    b = float(data[2])
+    r = float(data[3])
+    i = float(data[4])
+
+    min_l = fn(c, m, b, r, i, 0)
+    max_l = fn(c, m, b, r, i, 100000)
+    print int(max(min_l, max_l))
+
+input.close()
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

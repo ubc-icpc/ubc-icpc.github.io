@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.*;
+import java.util.Scanner;
+
+public class Solution{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        char op = sc.next().charAt(0);
+        int key = sc.nextInt();
+        String str = sc.next();
+        str.toLowerCase().trim();
+        key = key % 26;
+        if(op == 'D')
+            key = -key;
+            
+        char[] arr = str.toCharArray();
+        String res=&quot;&quot;;
+        for(int i=0; i&lt;arr.length; i++){
+            int v = (int)arr[i];
+            v = v + key;
+            if(v &gt; 122)
+                v = v - 26;
+            else if(v &lt; 97)
+                v = v + 26;
+            res += (char)v;
+        }
+        System.out.println(res);
+    }
+}</code>
+</pre>
+</body>
+</html>

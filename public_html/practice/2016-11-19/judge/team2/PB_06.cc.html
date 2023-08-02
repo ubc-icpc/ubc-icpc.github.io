@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	ll k; cin &gt;&gt; k;
+
+	while(k != 0) {
+		string s; cin &gt;&gt; s;
+
+		int numDigits = 0;
+
+		int a = s.size() + 1;
+		bool valid = true;
+		while(a != 1) {
+			if(a % 2 != 0) {
+				valid = false;
+				break;
+			}
+			a = a &gt;&gt; 1;
+			numDigits++;
+		}
+		vector&lt;char&gt; knownDigits (numDigits, '?');
+		set&lt;char&gt; unseen;
+		for(int i = 1; i &lt; 10; i++) {
+			unseen.insert('0' + i); 
+		}
+		int idx = 0;
+		for(int i = 1; i &lt; s.size() + 1; i*=2, idx++) {
+			char currDigit = '?';
+			for(int j = i; j &lt; s.size() + 1; j += 2*i) {
+				if(s[j-1] != '?') {
+					if(currDigit == '?') {
+						currDigit = s[j-1];
+						unseen.erase(currDigit);
+					} else if (currDigit != s[j-1]) {
+						valid = false;
+					}
+				}
+			}
+			if(currDigit != '?'){
+				knownDigits[idx] = currDigit;
+				numDigits--;
+			} 
+		}
+		if(!valid || knownDigits[0] == '0') {
+			cout &lt;&lt; -1 &lt;&lt; endl;
+			cin &gt;&gt; k;
+			continue;
+		}
+
+		vector&lt;int&gt; newNum;
+		k--;
+		while(k != 0) {
+			newNum.push_back(k % 9);
+			k = k / 9;
+		}
+		if(newNum.size() &gt; numDigits) {
+			cout &lt;&lt; -1 &lt;&lt; endl;
+			cin &gt;&gt; k;
+			continue;
+		}
+		while(newNum.size() &lt; numDigits) {
+			newNum.push_back(0);
+		}
+		reverse(newNum.begin(), newNum.end());
+		if(knownDigits[0] == '?' &amp;&amp; newNum.size() &gt; 0 &amp;&amp; newNum[0] &gt;= unseen.size()) {
+			cout &lt;&lt; -1 &lt;&lt; endl;
+			cin &gt;&gt; k;
+			continue;
+		}
+		for(int i = 0, j = 0; i &lt; knownDigits.size(); i++) {
+			if(knownDigits[i] == '?') {
+				if(i == 0) {
+					int k = 0;
+					for(auto it = unseen.begin(); it != unseen.end(); it++, k++) {
+						if(newNum[j] == k) {
+							knownDigits[i] = *it;
+							break;
+						}
+					}
+				} else if(newNum[j] + '0' &gt;= knownDigits[0]) {
+					knownDigits[i] = '0' + newNum[j] + 1;
+				} else {
+					knownDigits[i] = '0' + newNum[j];
+				}
+				j++;
+			}
+		}
+		// cout &lt;&lt; &quot;a&quot;;
+		// for(int i = 0; i &lt; newNum.size(); i++) {
+		// 	cout &lt;&lt; newNum[i] &lt;&lt; &quot; &quot;;
+		// }
+		// cout &lt;&lt; endl;
+		// for(int i = 0; i &lt; knownDigits.size(); i++) {
+		// 	cout &lt;&lt; knownDigits[i] &lt;&lt; &quot; &quot;;
+		// }
+		// cout &lt;&lt; endl;
+		idx = 0;
+		for(int i = 1; i &lt; s.size() + 1; i*=2, idx++) {
+			char currDigit = knownDigits[idx];
+			for(int j = i; j &lt; s.size() + 1; j += 2*i) {
+				s[j-1] = currDigit;
+			}
+		}
+		cout &lt;&lt; s &lt;&lt; endl;
+
+		cin &gt;&gt; k;
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

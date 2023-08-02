@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;array&gt;
+
+
+
+using namespace std;
+
+void decrementDist(array&lt;int,6&gt; &amp; dist);
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    array&lt;int,6&gt; distribution = {15,0,0,0,0,0};
+
+    struct TwoWayMap {
+
+        map&lt; array&lt;int,6&gt;,int&gt; dist2number;
+        map&lt;int, array&lt;int,6&gt;&gt; number2dist;
+
+
+        int getNumber (array&lt;int,6&gt; place){
+            return dist2number[place];
+        }
+
+        array&lt;int,6&gt; getDist (int place){
+            return number2dist[place];
+        }
+
+        void add (array&lt;int,6&gt; dist, int number){
+            dist2number[dist] = number;
+            number2dist[number] = dist;
+        }
+    };
+
+    TwoWayMap doublemap;
+
+    for (int i = 15503; i &gt; 0; --i) {
+        doublemap.add(distribution,i);
+        decrementDist(distribution);
+    }
+    doublemap.add(distribution,0);
+
+    array&lt;int, 6&gt; input;
+    array&lt;int, 6&gt; output;
+    string prompt;
+    int Case = 1;
+    cin &gt;&gt; prompt;
+    while (prompt != &quot;e&quot;){
+        if (prompt == &quot;m&quot;){
+
+            cin &gt;&gt; input[0];
+            cin &gt;&gt; input[1];
+            cin &gt;&gt; input[2];
+            cin &gt;&gt; input[3];
+            cin &gt;&gt; input[4];
+            cin &gt;&gt; input[5];
+
+            cout &lt;&lt; &quot;Case &quot; &lt;&lt; Case &lt;&lt; &quot;: &quot; &lt;&lt; doublemap.getNumber(input) &lt;&lt; endl;
+
+        }else{
+
+            int n;
+            cin &gt;&gt; n;
+            output = doublemap.getDist(n);
+            cout &lt;&lt; &quot;Case &quot; &lt;&lt; Case &lt;&lt; &quot;: &quot; &lt;&lt; output[0] &lt;&lt; &quot; &quot; &lt;&lt; output[1] &lt;&lt; &quot; &quot; &lt;&lt; output[2] &lt;&lt; &quot; &quot; &lt;&lt; output[3] &lt;&lt; &quot; &quot; &lt;&lt; output[4] &lt;&lt; &quot; &quot; &lt;&lt; output[5] &lt;&lt; endl;
+
+        }
+        Case++;
+        cin &gt;&gt; prompt;
+    }
+
+
+    return 0;
+}
+
+
+void decrementDist(array&lt;int,6&gt; &amp; dist){
+    int i = 5;
+    while(dist[i] == 0){
+        i--;
+    }
+
+    if (i == 5){
+        int count = dist[i];
+        dist[i] = 0;
+        i--;
+        while(dist[i] == 0){
+            i--;
+        }
+        dist[i] = dist[i] - 1;
+        dist[i+1] = dist[i+1] + 1 + count;
+
+    }
+    else{
+        dist[i] = dist[i] - 1;
+        dist[i+1] = dist[i+1] + 1;
+    }
+    return;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

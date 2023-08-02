@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+const int N = 100005;
+
+ll x[N], y[N];
+int main() {
+  srand(1729);
+  int n; scanf(&quot;%d&quot;, &amp;n);
+  for (int i = 0; i &lt; n; i++) {
+    scanf(&quot;%lld %lld&quot;, &amp;x[i], &amp;y[i]);
+  }
+  if (n &lt;= 4) {
+    printf(&quot;success\n&quot;);
+    return 0;
+  }
+  bool found = false;
+  for (int t = 0; t &lt; 100000; t++) {
+    for (int i = 0; i &lt; 3; i++) {
+      int j = (rand() % (n-i)) + i;
+      swap(x[i], x[j]);
+      swap(y[i], y[j]);
+    }
+    if ((y[2] - y[0]) * (x[1] - x[0]) == (y[1] - y[0]) * (x[2] - x[0])) {
+      found = true;
+      break;
+    }
+  }
+  if (!found) {
+    printf(&quot;failure\n&quot;);
+    return 0;
+  }
+  ll x0 = x[0], y0 = y[0], dx = x[1]-x[0], dy = y[1]-y[0];
+  int cnt = 0;
+  ll u0, v0, du, dv;
+  bool good = true;
+  for (int i = 3; i &lt; n; i++) {
+    if ((y[i] - y0)*dx != dy*(x[i] - x0)) {
+      if (cnt == 0) {
+        u0 = x[i];
+        v0 = y[i];
+      } else if (cnt == 1) {
+        du = x[i] - u0;
+        dv = y[i] - v0;
+      } else {
+        if ((y[i] - v0)*du != dv*(x[i] - u0)) {
+          //cerr &lt;&lt; &quot;line1: &quot; &lt;&lt; x0 &lt;&lt; &quot; &quot; &lt;&lt; y0 &lt;&lt; &quot; &quot; &lt;&lt; dx &lt;&lt; &quot; &quot; &lt;&lt; dy &lt;&lt; endl;
+          //cerr &lt;&lt; &quot;line2: &quot; &lt;&lt; u0 &lt;&lt; &quot; &quot; &lt;&lt; v0 &lt;&lt; &quot; &quot; &lt;&lt; du &lt;&lt; &quot; &quot; &lt;&lt; dv &lt;&lt; endl;
+          //cerr &lt;&lt; &quot;remaining points not colinear&quot; &lt;&lt; endl;
+          //cerr &lt;&lt; x[i] &lt;&lt; &quot; &quot; &lt;&lt; y[i] &lt;&lt; endl;
+          good = false;
+          break;
+        }
+      }
+      cnt++;
+    }
+  }
+  if (good) {
+    printf(&quot;success\n&quot;);
+  } else {
+    printf(&quot;failure\n&quot;);
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;pii, pii&gt; piipii;
+typedef pair&lt;piipii, bool&gt; piipii_O; //pair and orientation! (T: horiz; F:vert)
+typedef vector&lt;ll&gt; vi;
+typedef vector&lt;vi &gt; vvi;
+typedef vector&lt;bool&gt; vb;
+typedef vector&lt;vb &gt; vvb;
+
+int main () {
+	int n, k;
+	cin &gt;&gt; n &gt;&gt; k;
+	int maxsafe = 1;
+	int minbreak = k;	
+
+	string result; int f;
+	while (n--) {
+		cin &gt;&gt; f &gt;&gt; result;
+		if (result == &quot;BROKEN&quot; &amp;&amp; f&lt;minbreak) {
+			minbreak = f;
+		}
+		if (result == &quot;SAFE&quot; &amp;&amp; f&gt;maxsafe) {
+			maxsafe = f;
+		}
+	}
+
+	cout &lt;&lt; maxsafe+1  &lt;&lt; &quot; &quot; &lt;&lt; minbreak-1 &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

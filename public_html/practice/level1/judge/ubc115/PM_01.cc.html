@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef vector&lt;vector&lt;int&gt;&gt; vvi;
+bool v[10005];
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int t, n, m, a, b;
+  cin &gt;&gt; t;
+  while (t--) {
+    cin &gt;&gt; n &gt;&gt; m;
+    vvi g(n, vector&lt;int&gt;(0));
+    for (int i = 0; i &lt; m; i++) {
+      cin &gt;&gt; a &gt;&gt; b;
+      a--; b--;
+      g[a].push_back(b);
+      g[b].push_back(a);
+    }
+    memset(v, 0, sizeof (v));
+    queue&lt;int&gt; q;
+    int count = 0;
+    for (int i = 0; i &lt; n; i++) {
+      q.push(i);
+      while (!q.empty()) {
+        int t = q.front();
+        q.pop();
+        if (v[t]) {
+          continue;
+        }
+        v[t] = true;
+        count++;
+        for (auto e : g[t]) {
+          if (!v[e]) {
+            q.push(e);
+            break;
+          }
+        }
+      }
+
+    }
+    cout &lt;&lt; count - 1 &lt;&lt; '\n';
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

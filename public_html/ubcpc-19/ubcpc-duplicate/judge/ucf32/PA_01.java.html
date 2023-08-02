@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+/**
+ * Write a description of class abnormal here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+import java.util.*;
+public class abnormal
+{
+    public static void main(String args[]){
+        Scanner m = new Scanner(System.in);
+        
+        char[] alpha = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+        //System.out.println(&quot;hi&quot;);
+        String type = m.nextLine();
+        int shift = Integer.parseInt(m.nextLine());
+        String phrase = m.nextLine();
+        
+        char[] letters = phrase.toCharArray();
+        if (type.equals(&quot;D&quot;)){
+            shift = 26 - shift;
+        }
+        for (char l : letters){
+            System.out.print(shift(l, shift, alpha));
+        }
+    }
+    
+    public static char shift(char c, int shift, char[] alpha){
+        int i = c - 'a';
+
+        i += shift;
+        i %= 26;
+        
+        return alpha[i];
+    }
+}
+</code>
+</pre>
+</body>
+</html>

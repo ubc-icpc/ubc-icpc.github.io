@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;math.h&gt;
+#include&lt;string.h&gt;
+
+using namespace std;
+bool m[3000][3000];
+void f(int n, int l, int x1, int x2, int y1, int y2) {
+  for(int i=0; i&lt;l/4; i++) {
+    for(int j=0; j&lt;l/2; j++) {
+      m[x1+i][y1+j] = false;
+      m[x2-i][y1+j] = false;
+    }
+  }
+  if(n&gt;1) {
+    f(n-1,l/2,x1+l/4,x2-l/4, y1,y1+l/2);
+    f(n-1,l/2, x1,x2-l/2, y1+l/2,y2);
+    f(n-1,l/2, x1+l/2,x2, y1+l/2,y2);
+  }
+}
+
+int main(void) {
+  int t; cin &gt;&gt; t;
+
+  for(int i=1; i&lt;=t; i++) {
+    cout &lt;&lt; &quot;Triangle #&quot; &lt;&lt; i &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    int n; cin &gt;&gt; n;
+    int l=4*(int)pow(2,n-1); l/=2;
+    //memset(m,0,sizeof(m[1][1])*l*l);
+    //cout &lt;&lt; l &lt;&lt; endl;
+    for(int j=0; j&lt;l; j++) {
+      for(int k=0; k&lt;l; k++ ) {
+	m[j][k]=true;
+      }
+    }
+
+    
+    f(n,l,0,l-1,0,l-1);
+    for(int j=0; j&lt;l; j++) {
+      for(int k=0; k&lt;l; k++ ) {
+	if(m[k][j]) cout &lt;&lt; &quot;X&quot;;
+	else cout &lt;&lt; &quot; &quot;;
+      }
+      cout &lt;&lt; endl;
+    }
+  }
+  
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

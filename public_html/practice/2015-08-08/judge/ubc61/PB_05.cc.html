@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+typedef long double ld;
+
+pii homes[1005];
+int num[1005];
+
+ld dist(pii p1, pii p2) {
+	return (ld)(p1.first-p2.first)*(p1.first-p2.first) + (ld)(p1.second-p2.second)*(p1.second-p2.second);
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int h; cin &gt;&gt; h;
+		for (int i=0; i&lt;h; i++) {
+			int x,y,n; cin &gt;&gt; x &gt;&gt; y &gt;&gt; n;
+			homes[i] = make_pair(x,y);
+			num[i] = n;
+		}
+		int ans = 0;
+		for (int i=0; i&lt;h; i++) {
+			if (homes[i].second&gt;1000 || homes[i].second &lt;-1000)
+				continue;
+			ld xdist = sqrt(1000000 - homes[i].second*homes[i].second);
+			int num1 = 0, num2 = 0;
+			for (int j=0; j&lt;h; j++) {
+				if (dist(homes[j],make_pair(homes[i].first+xdist,0)) &lt;= 1000000)
+					num1+=num[j];
+				if (dist(homes[j],make_pair(homes[i].first-xdist,0)) &lt;= 1000000)
+					num2+=num[j];
+			}
+			ans = max(ans,num1);
+			ans = max(ans,num2);
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

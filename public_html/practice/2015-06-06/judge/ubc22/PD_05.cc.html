@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N;
+
+struct pipe {
+  int d, x, s;
+};
+struct node {
+  double req;
+  int p;
+  vector&lt;pipe&gt; pipes;
+} M[1005];
+
+double rec(int I) {
+  if (M[I].req != -1) return max(0.0, M[I].req);
+  for (int i = 0; i &lt; M[I].pipes.size(); ++i) {
+    if (M[I].pipes[i].d == M[I].p) continue;
+    M[M[I].pipes[i].d].p = I;
+    double r = rec(M[I].pipes[i].d);
+    if (M[I].pipes[i].s &amp;&amp; r &gt; 1) r = sqrt(r);
+    M[I].req = max(M[I].req, r / M[I].pipes[i].x * 100);
+  }
+  return M[I].req;
+}
+
+int main () {
+  M[1].p = 0;
+  cin &gt;&gt; N;
+  for (int i = 1; i &lt; N; ++i) {
+    int a, b; pipe p; cin &gt;&gt; a &gt;&gt; b &gt;&gt; p.x &gt;&gt; p.s;
+    p.d = a; M[b].pipes.push_back(p);
+    p.d = b; M[a].pipes.push_back(p);
+  }
+  for (int i = 1; i &lt;= N; ++i) cin &gt;&gt; M[i].req;
+  cout &lt;&lt; setprecision(6) &lt;&lt; fixed &lt;&lt; rec(1) &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

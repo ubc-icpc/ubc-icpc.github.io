@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef pair&lt;int,int&gt; PT;
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+
+VVI adj;
+int N, edged[100000], maxd[100000], cmin, cmax, ans;
+int dfs1(int n, int p) {
+	edged[n] = 0;
+	for (int m : adj[n]) if (m != p) edged[n] = max(edged[n], 1+dfs1(m, n));
+	return edged[n];
+}
+void dfs2(int n, int p, int pd) {
+	int maxEdged[2] = {pd, 0}, nwmg = 1;
+	for (int m : adj[n]) if (m != p) {
+		if (edged[m] + 1 &gt; maxEdged[0]) {
+			maxEdged[1] = maxEdged[0];
+			maxEdged[0] = edged[m] + 1;
+			nwmg = 1;
+		} else if (edged[m] + 1 == maxEdged[0]) {
+			nwmg++;
+		} else if (edged[m] + 1 &gt; maxEdged[1]) {
+			maxEdged[1] = edged[m] + 1;
+		}
+	}
+	//printf(&quot;For %d: %d %d %d %d\n&quot;, n, maxEdged[0], maxEdged[1], nwmg, pd);
+	for (int m : adj[n]) if (m != p) {
+		int npd = maxEdged[0];
+		if (npd == edged[m] + 1 &amp;&amp; nwmg == 1) npd = maxEdged[1];
+		dfs2(m, n, npd+1);
+	}
+	maxd[n] = max(pd, maxEdged[0]);
+	cmax = max(cmax, maxd[n]);
+	cmin = min(cmin, maxd[n]);
+}
+
+int main() {
+	int L;
+	scanf(&quot;%d%d&quot;, &amp;N, &amp;L);
+	adj.resize(N);
+	FOR(l,0,L) {
+		int a, b;
+		scanf(&quot;%d%d&quot;, &amp;a, &amp;b);
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+	}
+	memset(edged, -1, sizeof edged);
+	vector&lt;int&gt; asd;
+	FOR(n,0,N) if (edged[n] == -1) {
+		cmax = 0; cmin = INT_MAX;
+		dfs1(n, -1);
+		dfs2(n, -1, 0);
+		ans = max(ans, cmax);
+		asd.push_back(cmin);
+	}
+	sort(asd.begin(), asd.end());
+	if (asd.size() &gt;= 2) ans = max(ans, asd[asd.size()-1] + asd[asd.size()-2] + 1);
+	if (asd.size() &gt;= 3) ans = max(ans, asd[asd.size()-2] + asd[asd.size()-3] + 2);
+	//FOR(n,0,N) printf(&quot;%d edged=%d maxd=%d\n&quot;, n, edged[n], maxd[n]);
+	printf(&quot;%d\n&quot;, ans);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

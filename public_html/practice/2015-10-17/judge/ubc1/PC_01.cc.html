@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int nxt[505];
+map&lt;char, char&gt; nchar;
+int main() {
+	nchar['p'] = 'a';
+	nchar['a'] = 't';
+	nchar['t'] = 'h';
+	nchar['h'] = 'z';
+	
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		string s; cin &gt;&gt; s;
+		int n = s.size();
+		memset(nxt, -1, sizeof nxt);
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = i+1; j &lt; n; j++) {
+				if (s[j] == nchar[s[i]]) {
+					nxt[i] = j;
+					break;
+				}
+			}
+		}
+		
+		int ans = -1;
+		for (int i = 0; i &lt; n; i++) {
+			if (s[i] == 'p') {
+				int r = i;
+				for (int k = 0; k &lt; 3; k++) {
+					r = nxt[r];
+					if (r == -1) break;
+				}
+				if (r != -1) {
+					if (ans == -1) ans = r-i+1;
+					else ans = min(ans, r-i+1);
+				}
+			}
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

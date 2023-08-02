@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+#define MOD 1000000000
+
+vector&lt;ll&gt; matExp(vector&lt;ll&gt; mat, long long exp) {
+	vector&lt;ll&gt; out = {1, 0, 0, 1};
+	vector&lt;ll&gt; prev = mat;
+	while(exp &gt; 0) {
+		if(exp % 2 == 1) {
+			//out = out * mat
+			vector&lt;ll&gt; tmp (4, 0);
+			tmp[0] = (out[0] * mat[0] + out[1] * mat[2]) % MOD;
+			tmp[1] = (out[0] * mat[1] + out[1] * mat[3]) % MOD;
+			tmp[2] = (out[2] * mat[0] + out[3] * mat[2]) % MOD;
+			tmp[3] = (out[2] * mat[1] + out[3] * mat[3]) % MOD;
+			out = tmp;
+		}
+		exp = exp / 2;
+		vector&lt;ll&gt; tmp (4, 0);
+		tmp[0] = (mat[0] * mat[0] + mat[1] * mat[2]) % MOD;
+		tmp[1] = (mat[0] * mat[1] + mat[1] * mat[3]) % MOD;
+		tmp[2] = (mat[2] * mat[0] + mat[3] * mat[2]) % MOD;
+		tmp[3] = (mat[2] * mat[1] + mat[3] * mat[3]) % MOD;
+		mat = tmp;
+	}
+	return out;
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+	
+	int P; cin &gt;&gt; P;
+
+	while(P--) {
+		long long K, Y; cin &gt;&gt; K &gt;&gt; Y;
+
+		vector&lt;ll&gt; ans = matExp({1, 1, 1, 0}, Y);
+
+		cout &lt;&lt; K &lt;&lt; &quot; &quot; &lt;&lt; ans[2] &lt;&lt; endl;
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

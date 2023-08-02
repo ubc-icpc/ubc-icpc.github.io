@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+#define int long long
+typedef long long ll;
+
+int n, m, a, b, c, t;
+vector&lt;int&gt; s;
+vector&lt;vector&lt;int&gt;&gt; mat;
+
+vector&lt;vector&lt;ll&gt;&gt; matrix_po(vector&lt;vector&lt;ll&gt;&gt; A,ll e) {
+
+    if (e==1) return A;
+
+    vector&lt;vector&lt;ll&gt;&gt; tmp(n), ans(n);
+
+    for (int i=0; i&lt;n; i++) {
+
+        tmp[i].resize(n);
+
+        ans[i].resize(n);
+
+    }
+
+    for (int i=0; i&lt;n; i++)
+
+        for (int j=0; j&lt;n; j++)
+
+            ans[i][j]=tmp[i][j]=0;
+
+    if (e%2==0) {
+
+        tmp = matrix_po(A,e/2);
+
+        for (int i=0; i&lt;n; i++)
+
+            for (int j=0; j&lt;n; j++)
+
+                for (int k=0; k&lt;n; k++)
+
+                    ans[i][j] = (ans[i][j] + ((tmp[i][k]*tmp[k][j])%m))%m;
+
+    }
+
+    else if (e%2==1) {
+
+        tmp=matrix_po(A,e-1);
+
+        for (int i=0; i&lt;n; i++)
+
+            for (int j=0; j&lt;n; j++)
+
+                for (int k=0; k&lt;n; k++)
+
+                    ans[i][j] = (ans[i][j] + ((A[i][k]*tmp[k][j])%m))%m;
+
+    }
+
+    return ans;
+
+}
+
+#undef int
+int main() {
+#define int long long
+  while (cin &gt;&gt; n &gt;&gt; m &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; t) {
+    if (n == 0) break;
+    s.clear();
+    s.resize(n);
+    mat.clear();
+    mat.resize(n);
+    for (int i = 0; i &lt; n; i++) {
+      mat[i].clear();
+      mat[i].resize(n);
+    }
+    for (int i = 0; i &lt; n; i++)
+      cin &gt;&gt; s[i];
+    if (t == 0) {
+      for (int i = 0; i &lt; n; i++)
+        cout &lt;&lt; s[i] &lt;&lt; &quot; &quot;;
+      cout &lt;&lt; endl;
+      continue;
+    }
+    for(int i=0; i&lt;n; i++) {
+      for(int j=i-1; j&lt;i+2; j++) {
+        if (j &gt;= n) continue;
+        if(j &lt; 0) continue;
+        if(j == i-1) mat[i][j] = a;
+        if(j == i) mat[i][j] = b;
+        if(j == i+1) mat[i][j] = c;
+      }
+    }
+    auto res = matrix_po(mat, t);
+    vector&lt;int&gt; ans(n);
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = 0; j &lt; n; j ++) {
+        ans[i] += (res[i][j]*s[j])%m;
+        ans[i] = (ans[i]+m)%m;
+      }
+    }
+    for (int i = 0; i &lt; n; i++) {
+      cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

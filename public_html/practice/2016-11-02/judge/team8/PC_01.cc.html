@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	int c, p, x, l;
+	cin &gt;&gt; c &gt;&gt; p &gt;&gt; x &gt;&gt; l;
+
+	vector&lt;vector&lt;int&gt;&gt; edges(c, vector&lt;int&gt;());
+	vector&lt;int&gt; count(c, 0);
+	vector&lt;int&gt; oc(c, 0);
+
+	while (p--) {
+		int a, b; cin &gt;&gt; a &gt;&gt; b;
+		edges[a - 1].push_back(b - 1);
+		edges[b - 1].push_back(a - 1);
+		// cout &lt;&lt; &quot;edge &quot; &lt;&lt; a - 1 &lt;&lt; &quot; &quot; &lt;&lt; b - 1 &lt;&lt; endl;
+		count[a - 1]++;
+		oc[a - 1]++;
+		count[b-1]++;
+		oc[b-1]++;
+	}
+
+	vector&lt;int&gt; stack(1, l - 1);
+	set&lt;int&gt; left;
+	while (stack.size()) {
+		int leave = stack.back();
+		stack.pop_back();
+		left.insert(leave);
+
+		// cout &lt;&lt; leave &lt;&lt; &quot; leaving&quot; &lt;&lt; endl;
+
+		if (leave == x - 1) {
+			cout &lt;&lt; &quot;leave&quot; &lt;&lt; endl;
+			return 0;
+		}
+
+		vector&lt;int&gt; parts = edges[leave];
+		for (int i = 0; i &lt; parts.size(); i++) {
+			int e = parts[i];
+			if (left.count(e)) continue;
+			// cout &lt;&lt; &quot;part &quot; &lt;&lt; e &lt;&lt; endl;
+			count[e]--;
+			if (count[e] &lt;= oc[e] / 2) {
+				stack.push_back(e);
+			}
+		}
+	}
+
+	cout &lt;&lt; &quot;stay&quot; &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

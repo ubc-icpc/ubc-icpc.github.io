@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+typedef vector&lt;vector&lt;int&gt; &gt; vvi;
+typedef long long ll;
+
+bool satisfied(ll j, vector&lt;int&gt; clause) {
+	bool a = clause[0] &gt; 0 ? ((1 &lt;&lt; (clause[0]-1)) &amp; j) : !((1 &lt;&lt; (-clause[0]-1)) &amp; j);
+	bool b = clause[1] &gt; 0 ? ((1 &lt;&lt; (clause[1]-1)) &amp; j) : !((1 &lt;&lt; (-clause[1]-1)) &amp; j);
+	bool c = clause[2] &gt; 0 ? ((1 &lt;&lt; (clause[2]-1)) &amp; j) : !((1 &lt;&lt; (-clause[2]-1)) &amp; j);
+	return (a || (b || c));
+}
+
+int main() {
+	
+	int g;
+	cin &gt;&gt; g;
+
+	for (int i=0; i&lt;g; ++i) {
+		int rings, runes;
+		cin &gt;&gt; rings &gt;&gt; runes;
+		vvi clauses; 
+		bool null_ring = false;
+		bool ring_missing = false;
+		bool repeated_ring = false;
+		for (int j=0; j&lt;runes; ++j) {
+			vector&lt;int&gt; clause(4);
+			cin &gt;&gt; clause[0] &gt;&gt; clause[1] &gt;&gt; clause[2] &gt;&gt; clause[3];
+			clauses.push_back(clause);
+
+			if (clause[0] == 0 || clause[1] == 0 || clause[2] == 0) {
+				null_ring = true;
+			}
+			if ((clause[0] &gt; rings || clause[0] &lt; -rings) ||
+				(clause[1] &gt; rings || clause[1] &lt; -rings) ||
+				(clause[2] &gt; rings || clause[2] &lt; -rings)){
+				ring_missing = true;
+			}
+			if ((abs(clause[0]) == abs(clause[1])) 
+			    || (abs(clause[0]) == abs(clause[2])) 
+				|| (abs(clause[1]) == abs(clause[2]))) {
+				repeated_ring = true;
+			}
+		}
+
+		if (null_ring) { 
+			cout &lt;&lt; &quot;INVALID: NULL RING&quot; &lt;&lt; endl;
+			continue; 
+		} else if (ring_missing) {
+			cout &lt;&lt; &quot;INVALID: RING MISSING&quot; &lt;&lt; endl;
+			continue;
+		} else if (repeated_ring) {
+			cout &lt;&lt; &quot;INVALID: RUNE CONTAINS A REPEATED RING&quot; &lt;&lt; endl;
+			continue;
+		}
+
+		bool exists_sat = false;
+		for (ll j=0; j&lt;=(1&lt;&lt;rings); ++j) {
+			bool sat = true;
+			for (int k=0; k&lt;clauses.size(); ++k) {
+				sat &amp;= satisfied(j, clauses[k]);
+			}
+			if (sat) { 
+				exists_sat = true; 
+				break;
+			}
+		}
+		if (exists_sat) cout &lt;&lt; &quot;RUNES SATISFIED!&quot; &lt;&lt; endl;
+		else cout &lt;&lt; &quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!&quot; &lt;&lt; endl;
+
+
+	}
+
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

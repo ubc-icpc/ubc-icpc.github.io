@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+const int dx[4] = {1,-1,0,0};
+const int dy[4] = {0,0,1,-1};
+
+vector&lt;pii&gt; adj[2000];
+bool vis[2000];
+int mn[2000];
+
+int main() {
+  ios::sync_with_stdio(0);
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    int n, m, t, s, g, h;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; t &gt;&gt; s &gt;&gt; g &gt;&gt; h;
+    --s; --g; --h;
+    int e;
+    for (int i = 0; i &lt; n; i++)
+      adj[i].clear();
+    for (int i = 0; i &lt; m; i++) {
+      int a, b, d; cin &gt;&gt; a &gt;&gt; b &gt;&gt; d;
+      --a; --b;
+      if ((a == g &amp;&amp; b == h) || (a == h &amp;&amp; b == g))
+        e = d;
+      adj[a].push_back(make_pair(b,d));
+      adj[b].push_back(make_pair(a,d));
+    }
+    set&lt;int&gt; S;
+    for (int i = 0; i &lt; t; i++) {
+      int x; cin &gt;&gt; x; --x;
+      memset(vis, 0, sizeof vis);
+      for (int j = 0; j &lt; n; j++)
+        mn[j] = 0x3f3f3f3f;
+      mn[s] = 0;
+      priority_queue&lt;pii&gt; pq;
+      pq.push(make_pair(0,s));
+      while (pq.size()) {
+        pii f = pq.top();
+        pq.pop();
+        if (f.second == x)
+          break;
+        if (vis[f.second])
+          continue;
+        vis[f.second] = true;
+        for (int j = 0; j &lt; adj[f.second].size(); j++) {
+          int C = -f.first+adj[f.second][j].second;
+          int u = adj[f.second][j].first;
+          if (!vis[u] &amp;&amp; mn[u] &gt; C) {
+            mn[u] = C;
+            pq.push(make_pair(-C,u));
+          }
+        }
+      }
+      queue&lt;int&gt; q;
+      q.push(x);
+      memset(vis, 0, sizeof vis);
+      vis[x] = true;
+      while (q.size()) {
+        int f = q.front();
+        q.pop();
+        for (int j = 0; j &lt; adj[f].size(); j++) {
+          int C = adj[f][j].second;
+          int u = adj[f][j].first;
+          if (!vis[u] &amp;&amp; mn[f] == C+mn[u]) {
+            if ((f == g &amp;&amp; u == h) || (u == g &amp;&amp; f == h)) {
+              S.insert(x+1);
+              goto VELOCIRAPTOR;
+            }
+            q.push(u);
+          }
+        }
+      }
+VELOCIRAPTOR:
+      ;
+    }
+    bool first = true;
+    for (int ss : S) {
+      if (first)
+        first = false;
+      else
+        cout &lt;&lt; &quot; &quot;;
+      cout &lt;&lt; ss;
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

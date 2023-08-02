@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+	int numoftest, numofnum, vectemp, order;
+	cin &gt;&gt; numoftest;
+	char answer = 'Y';
+	vector&lt; int &gt;branch;
+	vector&lt; int &gt;trail;
+	for(int noft = 0; noft &lt; numoftest; noft++){
+		branch.clear();
+		trail.clear();
+		cin &gt;&gt; numofnum;
+		for(int nofn = 0; nofn &lt; numofnum; nofn++){
+			cin &gt;&gt; vectemp;
+			trail.push_back(vectemp);
+		}
+		order = 1;
+			while(true){
+				if(!trail.empty() &amp;&amp; trail.back() == order){
+					trail.pop_back();
+					order++;
+				}else if(!branch.empty() &amp;&amp; branch.back() == order){
+						branch.pop_back();
+						order++;
+				}else if(trail.empty() &amp;&amp; branch.empty()){
+					cout &lt;&lt; &quot;Y&quot; &lt;&lt; endl;
+					break;
+				}else if(trail.empty()){
+					cout &lt;&lt; &quot;N&quot; &lt;&lt; endl;
+					break;
+				}else{
+					branch.push_back(trail.back());
+					trail.pop_back();
+				}
+			}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

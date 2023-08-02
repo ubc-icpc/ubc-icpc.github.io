@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class balance {
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		int[] arr;
+		while(true) {
+			int size = scan.nextInt();
+			if (size==1) break;
+			
+			arr = new int[size];
+			int[] maxUp = new int[size];
+			int[] minUp = new int[size];
+			int[] maxDown = new int[size];
+			int[] minDown = new int[size];
+			maxUp[0] = minUp[0] = arr[0] = scan.nextInt(); //READ A[1]
+			for (int i=1;i&lt;size;i++) { //parse input array
+				arr[i] = scan.nextInt();
+				maxUp[i] = (arr[i]&gt;maxUp[i-1]) ? arr[i] : maxUp[i-1];
+				minUp[i] = (arr[i]&lt;minUp[i-1]) ? arr[i] : minUp[i-1];
+			}
+			minDown[size-1] = maxDown[size-1] = arr[size-1];
+			for (int k=size-2;k&gt;=0;k--) {
+				maxDown[k] = (arr[k]&gt;maxDown[k+1]) ? arr[k]: maxDown[k+1];
+				minDown[k] = (arr[k]&lt;minDown[k+1]) ? arr[k]: minDown[k+1];
+			}
+			int minBalance = Integer.MAX_VALUE;
+			int splice = 0;
+			int currBal = 0;
+			for(int x=0; x&lt;size-1; x++) { //x is 0...size-2
+				currBal = (maxUp[x]-minUp[x] &gt; maxDown[x+1]-minDown[x+1]) ? (maxUp[x]-minUp[x]) : (maxDown[x+1]-minDown[x+1]);
+				if (currBal &lt; minBalance) {
+					minBalance = currBal;
+					splice = x;
+				}
+			}
+			System.out.println(splice+1); //1...N indexed arrays
+		}
+		
+		scan.close();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

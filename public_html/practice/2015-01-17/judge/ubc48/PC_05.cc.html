@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+int main() {
+	long long n; cin &gt;&gt; n;
+	vector &lt; int &gt; r(1001, 0);
+	int mfn = 0, ml = 0, ms = 2147483647, sfn = 0, sl = 0, ss = 2147483647;
+	for(int i = 0; i &lt; n; ++i){
+		int gar; cin &gt;&gt; gar;
+		r[gar] ++;
+	}
+	for(int i = 1; i &lt; r.size(); ++i){
+		if(r[i] &gt; mfn){
+			mfn = r[i];
+			ml = i;
+			ms = i;
+		}else if(r[i] == mfn){
+			if(i &gt; ml){
+				ml = i;
+			}
+			if(i &lt; ms){
+				ms = i;
+			}
+		}
+	}
+	for(int i = 1; i &lt; r.size(); ++i){
+		if(r[i] &gt; sfn &amp;&amp; r[i] &lt; mfn){
+			sfn = r[i];
+			sl = i;
+			ss = i;
+		}else if(r[i] == sfn){
+			if(i &gt; sl){
+				sl = i;
+			}
+			if(i &lt; ss){
+				ss = i;
+			}
+		}
+	}
+	if(ml != ms){
+		cout &lt;&lt; abs(ml - ms) &lt;&lt; endl;
+	}else{
+		if(abs(ml - ss) &gt; abs(ml - sl)){
+			cout &lt;&lt; abs(ml - ss) &lt;&lt; endl;
+		}else{
+			cout &lt;&lt; abs(ml - sl) &lt;&lt; endl;
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

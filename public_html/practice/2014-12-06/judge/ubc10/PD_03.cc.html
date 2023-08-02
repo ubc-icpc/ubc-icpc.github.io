@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef vector&lt;int&gt; vi;
+typedef pair&lt;int, int&gt; pii;
+
+struct E {
+	int dst, cost;
+	E(){}
+	E(int ldst, int lcost) {
+		dst = ldst; cost = lcost;
+	}
+};
+
+struct cmpE {
+	bool operator() (const E &amp;e1, const E &amp;e2) const {
+		return e1.cost &gt; e2.cost || (e1.cost == e2.cost &amp;&amp; e1.dst &gt; e2.dst);
+	}
+};
+
+int mst(bool outside, vector&lt;vector&lt;E&gt; &gt; &amp;adj) {
+	int n = adj.size() - 1;
+	int sum = 0;
+	bool visited[n+1];
+	priority_queue&lt;E, vector&lt;E&gt;, cmpE&gt; q;
+	memset(visited, 0, sizeof visited);
+	q.push(E(0, 0));
+	while (!q.empty()) {
+		E e = q.top();
+		q.pop();
+		if (visited[e.dst]) continue;
+		visited[e.dst] = true;
+		sum += e.cost;
+		//cerr &lt;&lt; &quot;visit: &quot; &lt;&lt; e.dst &lt;&lt; &quot; &quot; &lt;&lt; e.cost &lt;&lt; endl;
+		
+		for (int i = 0; i &lt; adj[e.dst].size(); i++) {
+			int nxt = adj[e.dst][i].dst;
+			if (nxt &lt; n || outside) {
+				q.push(adj[e.dst][i]);
+			}
+		}
+	}
+	for (int i = 0; i &lt; n; i++) {
+		if (!visited[i]) {
+			return 1000000000;
+		}
+	}
+	return sum;
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;vector&lt;E&gt; &gt; adj;
+	adj.resize(n+1);
+
+	map&lt;pii, vi&gt; edges;
+	map&lt;pii, int&gt; edgecosts;
+	for (int i = 0; i &lt; n; i++) {
+		int ne; cin &gt;&gt; ne;
+		int corners[ne];
+		int weights[ne];
+		for (int j = 0; j &lt; ne; j++) {
+			cin &gt;&gt; corners[j];
+		}
+		for (int j = 0; j &lt; ne; j++) {
+			cin &gt;&gt; weights[j];
+		}
+		for (int j = 0; j &lt; ne; j++) {
+			int a = corners[j];
+			int b = corners[(j+1)%ne];
+			int c = weights[j];
+			if (a &gt; b) {
+				int tmp = b;
+				b = a;
+				a = tmp;
+			}
+			pii e = pii(a, b);
+			if (edges.count(e) &gt; 0) {
+				edges[e].push_back(i);
+			} else {
+				edges[e] = vi(1, i);
+				edgecosts[e] = c;
+			}
+		}
+	}
+	map&lt;pii, vi&gt;::iterator it1 = edges.begin();
+	for (; it1 != edges.end(); ++it1) {
+		int v1, v2, c;
+		v1 = it1-&gt;second[0];
+		if (it1-&gt;second.size() == 1) {
+			v2 = n;
+		} else {
+			v2 = it1-&gt;second[1];
+		}
+		c = edgecosts[it1-&gt;first];
+		adj[v1].push_back(E(v2, c));
+		adj[v2].push_back(E(v1, c));
+	}
+	cout &lt;&lt; min(mst(false, adj), mst(true, adj)) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

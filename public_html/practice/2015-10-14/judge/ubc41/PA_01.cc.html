@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+using ull = unsigned long long;
+using ld = long double;
+
+double a, b, c, d, m, t;
+
+ld r(double v)
+{
+	return m * (a * v * v * v + b * v * v + c * v + d) - t;
+}
+ld ss(ld lo, ld hi)
+{
+    while (hi - lo &gt; 1E-8)
+    {
+        ld mid = (hi + lo) / 2;
+        if (r(mid) &gt; 0) hi = mid;
+        else lo = mid;
+    }
+    return (hi + lo) / 2;
+}
+
+int main()
+{
+    while (cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; m &gt;&gt; t)
+    {
+        ld n = ss(0, 1000000);
+		printf(&quot;%.2f\n&quot;, ((int) (100 * n)) / 100.0);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

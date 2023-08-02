@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+using namespace std;
+
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+
+#define INF 100000000
+
+int main(){
+	int t;
+	cin &gt;&gt; t;
+	for(int i = 0; i &lt; t; i++){
+		int n; cin &gt;&gt; n;
+		int points[n][2];
+		double slopes[n][n];
+		for(int j = 0; j &lt; n; j++){
+			cin &gt;&gt; points[j][1] &gt;&gt; points[j][2];
+		}
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; i + 1 &lt;&lt; &quot;: &quot;;
+		for(int j = 0; j &lt; n - 1; j++){
+			for(int k = j + 1; k &lt; n; k++){
+				double slope;
+				if(points[j][1] == points[k][1]){
+					slope = INF;
+				} else {
+					slope = ((double) (points[j][2] - points[k][2])) / (points[j][1] - points[k][1]);
+				}
+				slopes[j][k] = slope;
+			}
+		}
+		int maxLine = 1;
+		for(int j = 0; j &lt; n; j++){
+			for(int k = j+1; k &lt; n; k++){
+				int currLine = 2;
+				double currSlope = slopes[j][k];
+				for(int l = k+1; l &lt; n; l++){
+					if(fabs(currSlope - slopes[j][l]) &lt; 1e-10){
+						currLine++;
+					}
+				}
+				if(currLine &gt; maxLine) maxLine = currLine;
+			}
+		}
+
+		if(n == 0) maxLine = 0;
+		cout &lt;&lt; maxLine &lt;&lt; endl;
+	}
+
+	cin &gt;&gt; t;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

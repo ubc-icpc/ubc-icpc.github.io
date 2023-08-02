@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+typedef long long lli;
+
+//------------------------
+#define MAXN 100100
+
+int n;
+int b[MAXN];
+int deg[MAXN];
+vector&lt;int&gt; adj[MAXN];
+int parent[MAXN];
+
+lli min_cost;
+vector&lt;pii&gt; answer;
+
+map&lt;pii, lli&gt; cost;
+//------------------------
+
+void fix(int x){
+
+  for(auto v : adj[x]){
+    
+    if(v == parent[x]) continue;
+
+    parent[v] = x;
+    fix(v);
+  }
+
+  if(deg[x] % 2 == b[x]) return;
+
+  deg[parent[x]]++;
+  min_cost += cost[pii(parent[x], x)];
+  answer.push_back(pii(min(parent[x], x), max(parent[x], x)));
+}
+
+int main(){
+
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+
+  cin &gt;&gt; n;
+  for(int i = 0;i &lt; n;i++) cin &gt;&gt; b[i];
+
+  for(int i = 1;i &lt; n;i++){
+
+    int u, v;
+    lli c;
+
+    cin &gt;&gt; u &gt;&gt; v &gt;&gt; c;
+
+    deg[u]++; deg[v]++;
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+    cost[pii(u, v)] = c;
+    cost[pii(v, u)] = c;
+  }
+
+  int dis = 0;
+  for(int i = 0;i &lt; n;i++) if( (int)adj[i].size() % 2 != b[i] ) dis++;
+
+  if(dis % 2){
+    cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+    return 0;
+  }
+
+  fix(0);
+  sort(answer.begin(), answer.end());
+  cout &lt;&lt; min_cost &lt;&lt; &quot; &quot; &lt;&lt; answer.size() &lt;&lt; endl;
+  for(auto i : answer) cout &lt;&lt; i.first &lt;&lt; &quot; &quot; &lt;&lt; i.second &lt;&lt; endl;
+
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

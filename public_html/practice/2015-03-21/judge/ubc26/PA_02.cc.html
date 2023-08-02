@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define OCCUPIED ((struct T*) 12345)
+
+struct T {
+  struct T* c[11];
+};
+
+#define N(t)  int t; scanf(&quot;%d\n&quot;, &amp;t); 
+#define pl printf(&quot;__%d__\n&quot;, __LINE__);
+
+struct T* nt() {
+  struct T* t = ((struct T*)malloc(sizeof(struct T)));
+  memset((void*)t, 0, sizeof(struct T));
+  return t;
+}
+
+struct T* add(struct T* t, char c) {
+  if (!t) printf(&quot;\n!!!!!!%c!!!!!\n&quot;, c);
+  if (c == '\n') return t-&gt;c[10] = OCCUPIED;
+
+  int i = (int)(c - '0');
+  if (!t-&gt;c[i]) t-&gt;c[i] = nt();
+  //printf(&quot;(%c)&quot;, c);
+  return t-&gt;c[i];
+}
+
+int traverse(struct T* t, int indent) {
+#define pi {for(int ii=0;ii&lt;indent;ii++)printf(&quot;| &quot;); }
+  int found = 0, child = 0, i;
+  for (i=0; i&lt; 10; i++) {
+    if (t-&gt;c[i]) {
+      found = 1;
+      //pi; printf(&quot;%d: \n&quot;, i);
+      child = child || traverse(t-&gt;c[i], indent+1);
+    }
+  }
+  int end = !!(t-&gt;c[10]);
+  //pi; if (end) printf(&quot;END+\n&quot;);
+  //else printf(&quot;\n&quot;);
+
+
+  return child || (found&amp;&amp;end);
+#undef pi
+}
+
+int main() {
+  N(t);
+  while (t--) {
+    N(n);
+    struct T* root = nt();
+    while(n--) {
+      char c;
+      struct T* ptr = root;
+      while ((c = getchar()) != '\n' &amp;&amp; c != EOF) {
+        ptr = add(ptr, c);
+      }
+      add(ptr, '\n');
+    }
+
+    //printf(&quot;\n------\n&quot;);
+    int no = traverse(root, 0);
+    //printf(&quot;\n------\n&quot;);
+
+    if (no) printf(&quot;NO\n&quot;); else printf(&quot;YES\n&quot;);
+
+    //printf(&quot;\n=======\n&quot;);
+    // memory leak
+  }
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

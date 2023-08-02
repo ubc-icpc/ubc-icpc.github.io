@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;iostream&gt;
+#include&lt;fstream&gt;
+#include&lt;cstdio&gt;
+#include&lt;algorithm&gt;
+#include&lt;cmath&gt;
+#include&lt;vector&gt;
+#include&lt;deque&gt;
+#include&lt;set&gt;
+#include&lt;map&gt;
+#include&lt;bitset&gt;
+#include&lt;ctime&gt;
+#include&lt;queue&gt;
+using namespace std;
+#define int long long
+#define mn 100005
+#define inf 4444444444444444444
+#define mod 1000000009
+#define FLN &quot;test&quot; 
+#define pii pair &lt;int, int&gt;
+#define XX first
+#define YY second
+
+pii vectorize(pii A, pii B)
+{
+    return {A.XX-B.XX, A.YY-B.YY};
+}
+
+int area(pii A, pii B)
+{
+    return abs(A.XX*B.YY-A.YY*B.XX);
+}
+
+double dist(pii A, pii B)
+{
+    pii V=vectorize(A, B);
+    return sqrt(V.XX*V.XX+V.YY*V.YY);
+}
+
+signed main()
+{
+#ifdef lowie
+    freopen(FLN&quot;.inp&quot;, &quot;r&quot;, stdin);
+    freopen(FLN&quot;.out&quot;, &quot;w&quot;, stdout);
+#endif
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    int R, x, y;
+    cin&gt;&gt;R&gt;&gt;x&gt;&gt;y;
+
+    double ans=(double)R-(double)dist({0, 0}, {x, y});
+    // cerr&lt;&lt;ans&lt;&lt;&quot;\n&quot;;
+    ans=min(ans, (double)y);
+    printf(&quot;%0.8f&quot;, ans);
+}
+
+// PLEASE REMOVE cout AND cerr DEBUG LINES BEFORE SUBMITTING PROBLEMS
+// Code by low_
+// Contact me via mail: dung.totuan01@gmail.com
+// ...or codeforces: www.codeforces.com/profiles/low_
+// ...or if you're interested in food: www.instagram.com/lowie_review/</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+// N, E, S, W
+int dx[] = {1, 0, -1, 0};
+int dy[] = {0, 1, 0, -1};
+int x[105], y[105], dir[105];
+int main() {
+    int k; cin &gt;&gt; k;
+    while (k--) {
+        int a, b; cin &gt;&gt; a &gt;&gt; b;
+        map&lt;char, int&gt; md({{'N', 0}, {'S', 2}, {'E', 1}, {'W', 3}});
+        
+        int n, m; cin &gt;&gt; n &gt;&gt; m;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; y[i] &gt;&gt; x[i];
+            char c; cin &gt;&gt; c;
+            dir[i] = md[c];
+        }
+        
+        bool done = false;
+        for (int i = 0; i &lt; m; i++) {
+            int id, rep; char c;
+            cin &gt;&gt; id &gt;&gt; c &gt;&gt; rep;
+            id--;
+            if (done) continue;
+            
+            while (rep--) {
+                if (c == 'L') {
+                    dir[id] = (dir[id]+3)%4;
+                } else if (c == 'R') {
+                    dir[id] = (dir[id]+1)%4;
+                } else {
+                    x[id] += dx[dir[id]];
+                    y[id] += dy[dir[id]];
+                }
+                
+                if (x[id] &lt;= 0 || x[id] &gt;= b+1 || y[id] &lt;= 0 || y[id] &gt;= a+1) {
+                    cout &lt;&lt; &quot;Robot &quot; &lt;&lt; id+1 &lt;&lt; &quot; crashes into the wall\n&quot;;
+                    done = true;
+                    break;
+                }
+                
+                for (int j = 0; j &lt; n; j++) {
+                    if (j == id) continue;
+                    if (x[id] == x[j] &amp;&amp; y[id] == y[j]) {
+                        cout &lt;&lt; &quot;Robot &quot; &lt;&lt; id+1 &lt;&lt; &quot; crashes into robot &quot; &lt;&lt; j+1 &lt;&lt; &quot;\n&quot;;
+                        done = true;
+                        rep = 0;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (!done) cout &lt;&lt; &quot;OK\n&quot;;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

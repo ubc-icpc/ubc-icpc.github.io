@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int main() {
+	
+	int N;
+	while (cin &gt;&gt; N, N) {
+		int num_c = 0;
+		int num_g = 0;
+		int num_h = 0;
+		string name;
+		for (int i=0; i&lt;N; ++i) {
+			cin &gt;&gt; name;
+			if (name == &quot;Cheddar&quot;) num_c++;
+			if (name == &quot;Gouda&quot;) num_g++;
+			if (name == &quot;Havarti&quot;) num_h++;
+		}
+		int min_all = min(num_c, min(num_g, num_h));
+		int max_all = max(num_c, max(num_g, num_h));
+		int min_c_g = min(num_c, num_g);
+		int min_c_h = min(num_c, num_h);
+		int min_g_h = min(num_g, num_h);
+		int max_pairs = max(min_c_g, max(min_c_h, min_g_h));
+
+		// cout &lt;&lt; &quot;min all &quot; &lt;&lt; min_all &lt;&lt; &quot; max_pairs &quot; &lt;&lt; max_pairs &lt;&lt; &quot; max all &quot; &lt;&lt; max_all &lt;&lt; endl;
+
+		cout &lt;&lt; max(3*min_all, max(2*max_pairs, max_all)) &lt;&lt; endl;
+
+
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+typedef map&lt;char, int&gt; mci;
+typedef pair&lt;int, pair&lt;int, int&gt; &gt; pipii;
+
+struct comp {
+    bool operator () (pipii &amp; a, pipii &amp; b) {
+        return (a.first &gt; b.first);
+    }
+};
+
+typedef priority_queue&lt;pipii, vector&lt;pipii &gt;, comp&gt; pqpipii;
+
+char board[1024][1024];
+char visited[1024][1024];
+
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {1, 0, -1, 0};
+
+int main() {
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        int k, w, h;
+        scanf(&quot;%d %d %d&quot;, &amp;k, &amp;w, &amp;h);
+        mci values;
+        for (int i = 0; i &lt; k; ++i) {
+            char cls[4];
+            int dur;
+            scanf(&quot;%s %d&quot;, cls, &amp;dur);
+            values[cls[0]] = dur;
+        }
+        int startx, starty;
+        for (int i = 0; i &lt; h; ++i) {
+            scanf(&quot;%s&quot;, board[i]);
+            for (int j = 0; j &lt; w; ++j) {
+                if ('E' == board[i][j]) {
+                    startx = j;
+                    starty = i;
+                }
+            }
+        }
+        memset(visited, 0, sizeof(visited));
+        pqpipii q;
+        q.push(make_pair(0, make_pair(startx, starty)));
+        while (!q.empty()) {
+            pipii curr = q.top();
+            q.pop();
+            if (curr.second.first &lt; 0 || curr.second.first &gt;= w || curr.second.second &lt; 0 || curr.second.second &gt;= h) {
+                printf(&quot;%d\n&quot;, curr.first);
+                break;
+            }
+            if (visited[curr.second.second][curr.second.first]) continue;
+            visited[curr.second.second][curr.second.first] = 1;
+            int elapsed = curr.first + values[board[curr.second.second][curr.second.first]];
+            for (int i = 0; i &lt; 4; ++i) {
+                q.push(make_pair(elapsed, make_pair(curr.second.first + dx[i], curr.second.second + dy[i])));
+            }
+        }
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

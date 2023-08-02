@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+t=int(raw_input())
+for ca in range(t):
+    s=raw_input()
+    le=int(raw_input())
+    ls=raw_input()
+    l=0
+    direc=1
+    for i in range(len(s)):
+        if s[i]=='R':
+            l=l+(le-1)*direc
+            direc=-direc
+        else:
+            le-=1
+            l+=direc
+    if le&lt;0:
+        print(&quot;error&quot;)
+    else:
+        ls=ls[1:len(ls)-1]
+        if len(ls)==0:
+            print(&quot;[]&quot;)
+        else:
+            ans=&quot;&quot;
+            L=list(map(int,ls.split(',')))
+            for i in range(le):
+                ans+=&quot;,&quot;+str(L[l+i*direc])
+            print(&quot;[&quot;+ans[1:]+&quot;]&quot;)
+        
+    
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

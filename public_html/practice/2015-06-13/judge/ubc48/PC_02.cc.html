@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main(){
+	int n, k; cin &gt;&gt; n &gt;&gt; k;
+	vector &lt; int &gt; h(100001), v(100001), dh(200000), dl(200000);
+	for (int i = 0; i &lt; n; ++i){
+		int x, y; cin &gt;&gt; x &gt;&gt; y;
+		++h[x];
+		++v[y];
+		++dl[x + y - 1];
+		++dh[100001 - y + x];
+		if (h[x] == k || v[y] == k || dl[x + y - 1] == k || dh[100001 - y + x] == k){
+			cout &lt;&lt; i + 1 &lt;&lt; endl;
+			return 0;
+		}
+	}
+	cout &lt;&lt; -1 &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

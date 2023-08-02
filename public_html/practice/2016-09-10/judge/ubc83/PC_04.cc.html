@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define endl '\n'
+
+long long x;
+long long y;
+
+long long extended_gcd(long long a, long long b) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+ 
+    long long gcd = extended_gcd(b, a % b);
+ 
+    long long x1 = y;
+    long long y1 = x - (a/b)*y;
+    x = x1;
+    y = y1;
+ 
+    return gcd;
+}
+
+int main(){
+    ios::sync_with_stdio(0);
+    long long t; cin &gt;&gt; t;
+    for (long long i = 0; i &lt; t; i++) {
+        long long K, C; cin &gt;&gt; K &gt;&gt; C;
+        if (extended_gcd(K, C) != 1) {
+            cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+            continue;
+        }
+        while (x &gt; 0 || y &lt; 0) {
+            x -= C;
+            y += K;
+        }
+        if (y &gt; 1e9) cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+        else cout &lt;&lt; y &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

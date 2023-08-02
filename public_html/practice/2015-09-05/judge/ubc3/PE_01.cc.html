@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;iterator&gt;
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+using vd = vector&lt;double&gt;;
+
+int main() {
+  int T; cin &gt;&gt; T;
+  for (int cases = 1; cases &lt;= T; ++cases) {
+    int V, Y; cin &gt;&gt; V &gt;&gt; Y;
+    vi xs(V), ys(V);
+    for (int i = 0; i &lt; V; ++i)
+      cin &gt;&gt; xs[i] &gt;&gt; ys[i];
+    double above = 0.0;
+    double below = 0.0;
+    // copy(xs.begin(), xs.end(), ostream_iterator&lt;int&gt;(cout, &quot; &quot;));
+    // cout &lt;&lt; endl;
+    // copy(ys.begin(), ys.end(), ostream_iterator&lt;int&gt;(cout, &quot; &quot;));
+    // cout &lt;&lt; endl;
+    bool is_set = false;
+    double inter_x;
+    for (int i = 0; i &lt; V; ++i) {
+      int prev = i - 1;
+      if (prev &lt; 0)
+        prev = V - 1;
+      double dx = xs[i] - xs[prev];
+      double dy = ys[i] - ys[prev];
+      double dist = sqrt(dx * dx + dy * dy);
+      double max_y, min_y;
+      int max_y_ind, min_y_ind;
+      if (ys[i] &lt; ys[prev]) {
+        max_y = ys[prev];
+        min_y = ys[i];
+        max_y_ind = prev;
+        min_y_ind = i;
+      } else {
+        max_y = ys[i];
+        min_y = ys[prev];
+        max_y_ind = i;
+        min_y_ind = prev;
+      }
+      if (max_y &lt; Y) {
+        below += dist;
+      } else if (min_y &gt; Y) {
+        above += dist;
+      } else {
+        double ratio_above = (max_y - Y) / (max_y - min_y);
+        above += ratio_above * dist;
+        below += (1 - ratio_above) * dist;
+        double cut_x =
+          ratio_above * (xs[min_y_ind] - xs[max_y_ind]) + xs[max_y_ind];
+        if (is_set) {
+          double par = sqrt(abs(cut_x - inter_x) * abs(cut_x - inter_x));
+          above += par;
+          below += par;
+        } else {
+          inter_x = cut_x;
+          is_set = true;
+        }
+      }
+    }
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; cases &lt;&lt; &quot;: &quot;
+        &lt;&lt; fixed &lt;&lt; setprecision(3)
+        &lt;&lt; min(above, below) &lt;&lt; ' ' &lt;&lt; max(above, below) &lt;&lt; endl;
+    if (cases != T)
+      cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

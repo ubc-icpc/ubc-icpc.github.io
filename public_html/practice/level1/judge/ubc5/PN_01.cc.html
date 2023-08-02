@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+string b[9];
+
+inline bool ok9(const bool c[9]) {
+  bool r = true;
+  for (int i = 0; i &lt; 9; i++)
+    r = (r &amp;&amp; c[i]);
+  return r;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int n; cin &gt;&gt; n;
+  while (n--) {
+    vector&lt;pii&gt; v;
+    for (int i = 0; i &lt; 9; i++) {
+      cin &gt;&gt; b[i];
+      for (int j = 0; j &lt; 9; j++)
+        if (b[i][j] == '0')
+          v.push_back(make_pair(i,j));
+    }
+    for (char A = '1'; A &lt;= '9'; A++) {
+      for (char B = '1'; B &lt;= '9'; B++) {
+        for (char C = '1'; C &lt;= '9'; C++) {
+          for (char D = '1'; D &lt;= '9'; D++) {
+            for (char E = '1'; E &lt;= '9'; E++) {
+              b[v[0].first][v[0].second] = A;
+              b[v[1].first][v[1].second] = B;
+              b[v[2].first][v[2].second] = C;
+              b[v[3].first][v[3].second] = D;
+              b[v[4].first][v[4].second] = E;
+              bool ok = true;
+              for (int i = 0; i &lt; 9; i++) {
+                bool r[9];
+                memset(r, 0, sizeof r);
+                for (int j = 0; j &lt; 9; j++)
+                  r[b[i][j]-'1'] = true;
+                if (!ok9(r)) {
+                  ok = false;
+                  break;
+                }
+                memset(r, 0, sizeof r);
+                for (int j = 0; j &lt; 9; j++)
+                  r[b[j][i]-'1'] = true;
+                if (!ok9(r)) {
+                  ok = false;
+                  break;
+                }
+              }
+              for (int i = 0; i &lt; 9; i += 3) {
+                for (int j = 0; j &lt; 9; j += 3) {
+                  bool r[9];
+                  memset(r, 0, sizeof r);
+                  for (int k = i; k &lt; i+3; k++)
+                    for (int l = j; l &lt; j+3; l++)
+                      r[b[k][l]-'1'] = true;
+                  if (!ok9(r)) {
+                    ok = false;
+                    goto VELOCIRAPTOR;
+                  }
+                }
+              }
+VELOCIRAPTOR:
+              if (ok) {
+                for (int i = 0; i &lt; 9; i++)
+                  cout &lt;&lt; b[i] &lt;&lt; &quot;\n&quot;;
+                goto GOOD_CONTROL_FLOW;
+              }
+            }
+          }
+        }
+      }
+    }
+    cout &lt;&lt; &quot;Could not complete this grid.\n&quot;;
+GOOD_CONTROL_FLOW:
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

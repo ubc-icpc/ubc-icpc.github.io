@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+struct f{
+	ll a,b,c,d;
+};
+
+f fi[64];
+
+ll P, n, b;
+
+ll const mod = 1e9;
+
+ll m(ll a, ll b){ return (a*b)%mod; };
+ll add(ll a, ll b){ return (a+b)%mod; };
+
+f multf(f g1, f g2){
+	f ans;
+	ans = { 
+			add(m(g1.a,g2.a),m(g1.b,g2.c)), 
+			add(m(g1.a,g2.b),m(g1.b,g2.d)),
+			add(m(g1.c,g2.a),m(g1.d,g2.c)),
+			add(m(g1.c,g2.b),m(g1.d,g2.d)),
+	};
+	return ans;
+}
+
+void precomp(){
+	fi[0] = {1,0,0,1};
+	fi[1] = {1,1,1,0};
+	for(int i=2;i&lt;50;i++){
+		fi[i] = multf(fi[i-1],fi[i-1]);
+	}
+}
+	
+
+ll fib(ll a){
+	f fg = {1,0,0,1};
+	if (a==1) return 1;
+	a-=2;
+	for(int i = 0;i&lt;50;i++){
+		if ((a&gt;&gt;i) &amp; (ll)1){ fg = multf(fg, fi[i+1]);
+	//	cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+	}
+		if ((a&gt;&gt;i) == 0) break;
+	}
+	return add(fg.a,fg.b);
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);cin.tie(0);
+	cin &gt;&gt; P;
+	precomp();
+	for(int i=0;i&lt;P;i++){
+		cin &gt;&gt; n &gt;&gt; b;
+		cout &lt;&lt; n&lt;&lt; &quot; &quot; &lt;&lt; fib(b)&lt;&lt; &quot;\n&quot;;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

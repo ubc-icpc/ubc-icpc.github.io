@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">m = input()
+
+s = int(input())
+
+
+w = input()
+
+if m == 'E':
+    print(''.join([chr((ord(c) + s) if (ord(c) + s) &lt;= ord('z') else (ord(c) + s - 26)) for c in w]))
+else:
+    print(''.join([chr((ord(c) - s) if (ord(c) - s) &gt;= ord('a') else (ord(c) - s + 26)) for c in w]))
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+#include&lt;string&gt;
+#include&lt;fstream&gt;
+#include&lt;vector&gt;
+#include&lt;set&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+
+int main(){
+
+	long long d,t,l,s,x,y,z;
+	long long ms,ml;
+	
+	cin&gt;&gt;t;
+	while(t--){
+		long long r=0;
+		long long cl = 0;
+		long long cs = 0;
+		cin&gt;&gt;d&gt;&gt;l&gt;&gt;s;
+		for(long long i=0;i&lt;d;i++){
+			cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;
+			if(i==0){
+				ms = z;
+				ml = y;
+			}
+			ms = min(ms , z);
+			ml = min(ml , y);
+			
+			if(cl &lt; l*x){
+				r+=(l*x - cl)*ml;
+				cl += (l*x - cl);
+			}
+			cl -= l*x;
+			if(cs &lt; s*x){
+				if((s*x-cs)%80==0){
+					r+=((long long)((s*x-cs)/80))*ms;
+					cs += ((long long)((s*x-cs)/80))*80;
+				}
+				else{
+					r+=((long long)((s*x-cs)/80)+1)*ms;
+					cs += ((long long)((s*x-cs)/80)+1)*80;
+				}
+			}
+			cs -= s*x;
+		}
+		cout&lt;&lt;r&lt;&lt;endl;
+	}
+
+	
+
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

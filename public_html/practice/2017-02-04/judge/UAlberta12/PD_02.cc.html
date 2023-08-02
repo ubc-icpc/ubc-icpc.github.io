@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+string ntos(long long n)
+{
+    string s=&quot;&quot;;
+    while(n!=0)s=(char)(n%10+'0')+s,n/=10;
+    return s;
+}
+
+long long ston(string s)
+{
+    long long n=0,base=1;
+    int i;
+    for(i=s.size()-1;i&gt;=0;i--)
+    {
+        n+=base*(s[i]-'0');
+        base*=10;
+    }
+    return n;
+}
+
+long long su(long long a,long long b)
+{
+    long long s=0;
+    long long i;
+    for(i=a;i&lt;=b;i++)s+=i;
+    return s;
+}
+
+long long dec(long long n)
+{
+    if(n==0)return 0;
+    string s=ntos(n);
+    long long base=1,ss=0;
+    int i;
+    for(i=s.size()-1;i&gt;=0;i--)
+    {
+        long long sl=0,sm=0,sr=0;
+        if(i!=0)sl=ston(s.substr(0,i))*45*base;
+        if(base!=1)sm=su(1,s[i]-'0'-1)*base;
+        else sm=su(1,s[i]-'0');
+        if(i!=s.size()-1)sr=(1+ston(s.substr(i+1)))*(s[i]-'0');
+        ss+=sl+sm+sr;
+        base*=10;
+    }
+    return ss;
+}
+
+int main()
+{
+    int tc;
+    cin&gt;&gt;tc;
+    while(tc--)
+    {
+        long long a,b;
+        cin&gt;&gt;a&gt;&gt;b;
+        cout&lt;&lt;dec(b)-dec(a-1)&lt;&lt;endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

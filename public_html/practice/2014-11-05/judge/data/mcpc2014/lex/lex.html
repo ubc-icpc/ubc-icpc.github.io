@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html><head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="Michael Goldwasser">
+  <title>Problem C: Lexicography</title>
+
+  
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style>
+</head><body>
+<h1>Problem C: Lexicography</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <tt>lex.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+      </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>lex.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+An anagram of a string is any string that can be formed using the same
+letters as the original. (We consider the original string an anagram
+of itself as well.) For example, the string <tt>ACM</tt> has the
+following 6 anagrams, as given in alphabetical order:
+<pre>
+ACM
+AMC
+CAM
+CMA
+MAC
+MCA
+</pre>
+</p> 
+
+<p>
+As another example, the string <tt>ICPC</tt> has the following 12
+anagrams (in alphabetical order):
+<pre>
+CCIP
+CCPI
+CICP
+CIPC
+CPCI
+CPIC
+ICCP
+ICPC
+IPCC
+PCCI
+PCIC
+PICC
+</pre>
+</p> 
+
+
+<p>
+Given a string and a rank <em>K</em>, you are to determine the
+<em>K</em><sup><small>th</small></sup> such anagram according to
+alphabetical order.
+</p>
+
+
+<p><b>Input:</b> Each test case will be designated on a single line
+containing the original word followed by the desired rank <em>K</em>.
+Words will use uppercase letters (i.e., <tt>A</tt> through <tt>Z</tt>) and will have
+length at most 16. The value of <em>K</em> will be in the range from 1
+to the number of distinct anagrams of the given word. 
+A line of the form <nobr>"<tt># 0</tt>"</nobr> designates the end of the input.
+</p>
+
+<p>
+<b>Warning:</b> The value of <em>K</em> could be almost
+2<sup><small>45</small></sup> in the largest tests, so you should use type <tt>long</tt> in
+Java, or type <nobr><tt>long long</tt></nobr> in C++ to store <em>K</em>.
+</p>
+
+<p><b>Output:</b> For each test, display the <em>K</em><sup><small>th</small></sup> anagram 
+of the original string.
+</p>
+
+<table class="example">
+
+  <thead> <tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+<kbd>
+ACM 5<br/>
+ICPC 12<br/>
+REGION 274<br/>	  
+# 0
+</kbd>
+      </td>
+      <td>
+<kbd>
+MAC<br/>
+PICC<br/>
+IGNORE
+</kbd>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- hide the following only for purpose of keeping print version to 1 page
+<br>
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+ -->
+</body></html>

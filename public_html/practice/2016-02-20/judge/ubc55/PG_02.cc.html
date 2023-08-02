@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+int u = 3, d = 4, l = 5, r = 2, f = 1, b = 6, t;
+int x = 1, y = 1;
+int B[205][205] = { 0 };
+int C[7] = { 0 };
+
+void up()
+{
+	t = f;
+	f = d;
+	d = b;
+	b = u;
+	u = t;
+	y++;
+}
+
+void down()
+{
+	t = f;
+	f = u;
+	u = b;
+	b = d;
+	d = t;
+	y--;
+}
+
+void left()
+{
+	t = f;
+	f = r;
+	r = b;
+	b = l;
+	l = t;
+	x--;
+}
+
+void right()
+{
+	t = f;
+	f = l;
+	l = b;
+	b = r;
+	r = t;
+	x++;
+}
+
+int main()
+{
+	int N, M, P;
+	cin &gt;&gt; N &gt;&gt; M &gt;&gt; P;
+	for (int i = 0; i &lt; M; i++)
+	{
+		int X, Y, c;
+		cin &gt;&gt; X &gt;&gt; Y &gt;&gt; c;
+		B[X][Y] = c;
+	}
+	bool broke = false;
+	int count = 0;
+	for (int i = 0; i &lt; P; i++)
+	{
+		char c;
+		cin &gt;&gt; c;
+		switch (c)
+		{
+		case 'N':
+			up();
+			break;
+		case 'S':
+			down();
+			break;
+		case 'E':
+			right();
+			break;
+		case 'W':
+			left();
+			break;
+		}
+		if (count == 6)
+			goto done;
+		if (x == 0 || y == 0 || x &gt; N || y &gt; N)
+		{
+			broke = true;
+			goto done;
+		}
+		if (B[x][y])
+		{
+			if (C[b] != B[x][y] &amp;&amp; C[b])
+			{
+				broke = true;
+				goto done;
+			}
+			if (!C[b])
+			{
+				C[b] = B[x][y];
+				count++;
+			}
+		}
+	}
+done:
+	if (broke || count != 6)
+		cout &lt;&lt; &quot;0 0 0 0 0 0&quot; &lt;&lt; endl;
+	else
+	{
+		cout &lt;&lt; C[1];
+		for (int i = 2; i &lt; 7; i++)
+		{
+			cout &lt;&lt; &quot; &quot; &lt;&lt; C[i];
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

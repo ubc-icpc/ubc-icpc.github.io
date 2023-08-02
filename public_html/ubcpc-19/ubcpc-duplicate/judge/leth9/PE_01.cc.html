@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+int main() {
+   int N, K;
+   int sum = 0;
+   priority_queue&lt;int&gt; q;
+   cin &gt;&gt; N &gt;&gt; K;
+   
+   for(int i = 0; i &lt; N; i++) {
+      int temp;
+      cin &gt;&gt; temp;
+      q.push(temp);
+   }
+
+   for(int j = 0; j &lt; K; j++) {
+      sum += q.top();
+      q.pop();
+   }
+
+   cout &lt;&lt; sum &lt;&lt; endl;
+
+   return 0;
+}
+</code>
+</pre>
+</body>
+</html>

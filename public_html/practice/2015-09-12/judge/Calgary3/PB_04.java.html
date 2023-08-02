@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+import java.util.Scanner;
+
+public class B {
+
+	public static void main(String[] args) {
+		Scanner input = new Scanner(System.in);
+
+		int n = input.nextInt();
+		int usa[] = new int[3];
+		int russia[] = new int[3];
+
+		for (int count = 0; count &lt; n; count++) {
+			int usaCount = 0;
+			int russiaCount = 0;
+			for (int i = 0; i &lt; 6; i++) {
+				if (i &lt; 3) {
+					usa[i] = input.nextInt();
+					usaCount += usa[i];
+					System.out.print(usa[i] + &quot; &quot;);
+				} else {
+					russia[i - 3] = input.nextInt();
+					russiaCount += russia[i - 3];
+					if (i &lt; 5) {
+						System.out.print(russia[i - 3] + &quot; &quot;);
+					} else {
+						System.out.print(russia[i - 3]);
+					}
+				}
+			}
+			
+			System.out.println();
+
+			int amount = 0;
+			String type = &quot;&quot;;
+			
+			if (usaCount &gt; russiaCount) {
+				amount++;
+				type = &quot;count&quot;;
+			}
+
+			if (usa[0] &gt; russia[0]){
+				amount++;
+				type=&quot;color&quot;;
+			}else if (usa[0] == russia[0]){
+				if (usa[1] &gt; russia [1]){
+					amount++;
+					type=&quot;color&quot;;
+				}else if (usa[1] == russia [1]){
+					if (usa[2] &gt; russia[2]){
+						amount++;
+						type = &quot;color&quot;;
+					}
+				}
+				
+			}
+
+			if (amount == 2) {
+				System.out.println(&quot;both&quot;+&quot;\n&quot;);
+			} else if (amount == 0) {
+				System.out.println(&quot;none&quot;+&quot;\n&quot;);
+			} else {
+				System.out.println(type+&quot;\n&quot;);
+			}
+
+		}
+
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

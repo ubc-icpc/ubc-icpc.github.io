@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+import java.io.*;
+public class ubca {
+    public static void main(String[] args) throws IOException {
+        Scanner in = new Scanner(System.in);
+        String code = in.next();
+        int s = in.nextInt();
+        String word = in.next();
+        String alphabet = &quot;abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz&quot;;
+        HashMap&lt;Character, Character&gt; cipher = new HashMap&lt;&gt;();
+        if (code.equals(&quot;E&quot;)) {
+            for (int i = 0; i &lt; 26; i++) {
+                char a = alphabet.charAt(i);
+                char b = alphabet.charAt(i+s);
+                cipher.put(a,b);
+            }
+        }
+        else {
+            for (int i = 0; i &lt; 26; i++) {
+                char a = alphabet.charAt(i);
+                char b = alphabet.charAt(i+s);
+                cipher.put(b,a);
+            }
+        }
+
+        String res = &quot;&quot;;
+        for (char c : word.toCharArray()) {
+            res += cipher.get(c);
+        }
+        System.out.println(res);
+    }
+}
+</code>
+</pre>
+</body>
+</html>

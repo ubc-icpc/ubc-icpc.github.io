@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include&lt;math.h&gt;
+
+using namespace std;
+
+int main () {
+	int T; cin &gt;&gt; T;
+	for (int i = 1; i &lt;= T; ++i) {
+		string ns;
+		cin &gt;&gt; ns;
+		int a_after, b_after;
+		vector&lt;char&gt; n(ns.begin(), ns.end());
+		bool match;
+		for (int j = 1; j &lt; int (ns.size()); ++j) {
+			match = true;
+			string a_before, b_before;
+			for (int k = 0; k &lt; j; ++k)
+				a_before += n[k];
+			for (int k = j; k &lt; int (ns.size()); ++k)
+				b_before += n[k];
+			a_after = stoi(a_before);
+			b_after = stoi(b_before);
+			for (int m = 2; m &lt;= int (sqrt(a_after)+1); ++m) {
+				if (a_after%m == 0) {
+					if (b_after%m == 0) {
+						match = false;
+						break;
+					}
+				}
+			}
+			if (b_after%a_after == 0)
+				match = false;
+			if (a_after == 1)
+				match = true;
+			if (match)
+				break;
+		}
+		cout &lt;&lt; &quot;Ticket #&quot; &lt;&lt; i &lt;&lt; &quot;:\n&quot;;
+		if (match)
+			cout &lt;&lt; a_after &lt;&lt; &quot; &quot; &lt;&lt; b_after &lt;&lt; endl &lt;&lt; endl;
+		else
+			cout &lt;&lt; &quot;Not relative&quot; &lt;&lt; endl &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string&gt;
+//#include &lt;math.h&gt;
+#include &lt;bitset&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+#define MAXSIZE 10305
+#define MAXGOB 100010
+//bitset&lt;MAXSIZE&gt; table[MAXSIZE];
+bool table[MAXSIZE][MAXSIZE];
+typedef struct 
+{
+	int x;
+	int y;
+} point;
+
+point gob[MAXGOB];
+int maxPoint[102];
+int x1[102][40405];
+int y1[102][40405];
+
+//vector&lt;point&gt; dayere[102];
+
+void init()
+{
+	point tmp;
+	int count = 0;
+	for(int i= 0; i&lt;MAXSIZE; i++){
+		for(int j=0; j&lt;MAXSIZE; j++){
+			table[i][j] = 0;
+		}
+	}
+	for (int r = 1; r &lt; 101; r++)
+	{
+		count = 0;
+		for (int x=-1*r; x &lt;= r; x++)
+		{
+			for (int y = -1*r; y &lt;= r; y++)
+			{
+				if ((x*x + y*y ) &lt;= r*r)
+				{
+					x1[r][count] = x;
+					y1[r][count] = y;
+					count++;
+				// x1[r][count] = x;
+				// y1[r][count] = y;
+				// count++;
+				// cout&lt;&lt;&quot;r: &quot;&lt;&lt;r&lt;&lt;&quot; x:&quot;&lt;&lt;x&lt;&lt;&quot; y:&quot;&lt;&lt;y&lt;&lt;endl;
+				// x1[r][count] = -1*x;
+				// y1[r][count] = y;
+				// count++;
+				// cout&lt;&lt;&quot;r: &quot;&lt;&lt;r&lt;&lt;&quot; x:&quot;&lt;&lt;x&lt;&lt;&quot; y:&quot;&lt;&lt;y&lt;&lt;endl;
+				// x1[r][count] = x;
+				// y1[r][count] = -1*y;
+				// count++;
+				// cout&lt;&lt;&quot;r: &quot;&lt;&lt;r&lt;&lt;&quot; x:&quot;&lt;&lt;x&lt;&lt;&quot; y:&quot;&lt;&lt;y&lt;&lt;endl;
+				// x1[r][count] = -1*x;
+				// y1[r][count] = -1*y;
+				// count++;
+				// cout&lt;&lt;&quot;r: &quot;&lt;&lt;r&lt;&lt;&quot; x:&quot;&lt;&lt;x&lt;&lt;&quot; y:&quot;&lt;&lt;y&lt;&lt;endl;
+				}
+			}
+		}
+		maxPoint[r] = count;
+	}
+}
+
+int main()
+{ 
+	int g;
+	int x, y, r;
+	int m;
+	init();
+	//return 0;
+	//return 0;
+	// for(int i=0; i&lt;MAXSIZE; i++)
+	// 	table[i].reset();
+	scanf(&quot;%d&quot;, &amp;g);
+	for(int i=0; i&lt;g; i++)
+	{
+		scanf(&quot;%d%d&quot;, &amp;x, &amp;y);
+		gob[i].x = x+101;
+		gob[i].y = y+101;
+	}
+	scanf(&quot;%d&quot;, &amp;m);
+	int xlimit, ylimit;
+	int rSq = r*r;
+	for(int i=0; i&lt;m; i++)
+	{
+		scanf(&quot;%d%d%d&quot;, &amp;x, &amp;y, &amp;r);
+		x += 101;
+		y += 101;
+		// process
+		// cout &lt;&lt; 's'&lt;&lt;endl;
+		// cout&lt;&lt;r&lt;&lt;endl;
+		//cout &lt;&lt; dayere[r].size()&lt;&lt; &quot; &quot;;
+		for (int i = 0; i &lt; maxPoint[r]; i++)
+		{
+			// cout &lt;&lt; dayere[r][i].x&lt;&lt; &quot; &quot;&lt;&lt;dayere[r][i].y&lt;&lt;endl;
+			table[(x+x1[r][i])][(y+y1[r][i])] = 1;
+		}
+	}
+	int count = 0;
+	// cout &lt;&lt; g&lt;&lt;endl;
+	//return 0;
+	for (int i = 0; i &lt; g; i++)
+	{
+		if (table[gob[i].x][gob[i].y]==0)
+		{
+			//cout&lt;&lt;&quot;x:&quot;&lt;&lt;gob[i].x-100&lt;&lt;&quot; y:&quot;&lt;&lt;gob[i]
+			count++;
+		}
+	}
+		// for (int i = 0; i &lt; 100; i++)
+		// 	cout &lt;&lt; dayere[i].size()&lt;&lt;endl;
+		// for (int i = 0; i &lt; dayere[50].size(); i++)
+		// 	cout &lt;&lt; dayere[50][i].x &lt;&lt; &quot; &quot; &lt;&lt; dayere[50][i].y &lt;&lt; endl;
+	cout &lt;&lt; count&lt;&lt;endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

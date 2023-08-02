@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+
+struct cmp {
+	bool operator() (const pll &amp;p1, const pll &amp;p2) const {
+		return p1.first &lt; p2.first || (p1.first == p2.first &amp;&amp; p1.second &gt; p2.second);
+	}
+};
+
+int main() {
+	int n, p; cin &gt;&gt; n &gt;&gt; p; p--;
+	vector&lt;pll&gt; blah;
+	ll sum = 0;
+	ll count = 0;
+	for (int i = 0; i &lt; n; i++) {
+		ll a, b; cin &gt;&gt; a &gt;&gt; b;
+		if (i == p) {
+			sum += a;
+			count++;
+		} else if (a - b &gt;= 0) {
+			blah.push_back(pll(b, a - b));
+		}
+	}
+	sort(blah.begin(), blah.end(), cmp());
+	for (int i = 0; i &lt; blah.size(); i++) {
+		if (sum &lt; blah[i].first) break;
+		sum += blah[i].second;
+		count++;
+	}
+	cout &lt;&lt; sum &lt;&lt; endl &lt;&lt; count &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

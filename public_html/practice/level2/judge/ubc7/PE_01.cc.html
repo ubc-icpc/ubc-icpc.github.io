@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+const char nl = '\n';
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+// we can use the value of pi defined here
+#define _USE_MATH_DEFINES
+const ld PI = M_PIl;
+
+// define an epsilon for floating point comparisons
+const ld EPS = 1e-11;
+
+namespace CodeArchive {
+	typedef vector&lt;pt&gt; pol;
+
+	// cross product
+	ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+
+	// comparator for complex numbers. first sorts by imaginary, then by real
+	inline bool cmp_lex_i(const pt&amp; a, const pt&amp; b) {
+		return a.imag()&lt;b.imag()-EPS||(a.imag()&lt;b.imag()+EPS&amp;&amp;a.real()&lt;b.real()-EPS);}
+
+	// Area of a polygon (convex or concave). Always non-negative.
+	ld area(const pol &amp;v) { ld s = 0; int n = v.size();
+		for(int i = n-1, j = 0; j &lt; n; i = j++) s += cp(v[i], v[j]); return abs(s)/2;}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// 2D convex hull (TESTED SPOJ BSHEEP, UVA 11096)
+	////////////////////////////////////////////////////////////////////////////////
+	// Assumes nondegenerate, i.e. CH is not a line.
+	pol chull(pol p) {
+		sort(p.begin(), p.end(), cmp_lex_i); int top=0, bot=1; pol ch(2*p.size());
+		for (int i=0, d=1; i &lt; p.size() &amp;&amp; i &gt;= 0; i += d) {
+		// If there are no duplicates, can change &lt;= 0 to &lt; 0 to keep redundant points
+			while (top &gt; bot &amp;&amp; cp(ch[top-1]-ch[top-2], p[i]-ch[top-2]) &lt;= 0) top--;
+			ch[top++] = p[i]; if (i == p.size()-1) d = -1, bot = top;
+		} ch.resize(max(1, top-1)); return ch; } // pts returned in ccw order.
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+
+	// output exactly 2 digits after the decimal point
+	cout &lt;&lt; fixed &lt;&lt; setprecision(2);
+
+	int T;
+	cin &gt;&gt; T;
+	while (T--) {
+
+		int n;
+		cin &gt;&gt; n;
+
+		vector&lt;pt&gt; points;
+		for (int i = 0; i &lt; n; i++) {
+			int x, y;
+			cin &gt;&gt; x &gt;&gt; y;
+			points.push_back(pt(x, y));
+		}
+
+		// Observe that if we increase the convex hull of the points by 1 unit
+		// outwards, then we will get tangents between the outermost circles.
+		// If we include the arcs of the outermost circles, then we get a
+		// convex curve that encloses all the circles.
+		// Let P be the perimeter of the convex hull of the points, and let A
+		// be the area of the convex hull of the points.
+		// Now, the perimeter of the convex curve is P + 2*PI
+		// and the area enclosed by the convex curve is A + P + PI
+		// Don't forget to check that this (and the code below) works for
+		// degerate cases like n = 1 or all points collinear
+
+		// first find the convex hull of the points
+		vector&lt;pt&gt; hull = CodeArchive::chull(points);
+
+		// get the area and perimeter of the convex hull of the points
+		ld A = CodeArchive::area(hull);
+		ld P = 0;
+		int m = hull.size();
+		for (int i = 0; i &lt; m; i++) {
+			P += abs(hull[i] - hull[(i+1) % m]);
+		}
+
+		// get the area and perimeter of the convex curve that encloses all
+		// the circles
+		ld area = A + P + PI;
+		ld perimeter = P + 2*PI;
+		cout &lt;&lt; perimeter &lt;&lt; &quot; &quot; &lt;&lt; area &lt;&lt; nl;
+
+	}
+
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

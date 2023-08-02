@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+struct edge {
+    int v, id;
+    bool operator&lt;(const edge&amp; o) const {
+        return id &lt; o.id || (id == o.id &amp;&amp; v &lt; o.v);
+    }
+};
+
+const int maxn = 20005;
+vector&lt;edge&gt; g[maxn];
+int deg[maxn];
+
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int c = 0;
+        map&lt;string, int&gt; iden;
+        
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; maxn; i++) {
+            g[i].clear();
+            deg[i] = 0;
+        }
+        
+        for (int i = 0; i &lt; n; i++) {
+            string a, b; int id;
+            cin &gt;&gt; a &gt;&gt; b &gt;&gt; id;
+            if (!iden.count(a)) iden[a] = c++;
+            if (!iden.count(b)) iden[b] = c++;
+            
+            g[iden[a]].push_back({iden[b], id});
+            deg[iden[b]]++;
+        }
+        
+        set&lt;edge&gt; e;
+        for (int i = 0; i &lt; c; i++) {
+            if (deg[i] == 0) {
+                for (edge w : g[i]) e.insert(w);
+            }
+        }
+        
+        while (!e.empty()) {
+            edge t = *e.begin(); e.erase(e.begin());
+            cout &lt;&lt; t.id &lt;&lt; &quot; &quot;;
+            
+            deg[t.v]--;
+            if (deg[t.v] == 0) {
+                for (edge w : g[t.v]) e.insert(w);
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

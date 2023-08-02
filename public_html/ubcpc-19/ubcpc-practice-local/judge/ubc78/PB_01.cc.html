@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define DEBUG 0
+#define nl          '\n'
+#define fori(n)			for(int i = 0; i &lt; n; ++i) 
+#define forj(n)			for(int j = 0; j &lt; n; ++j)
+#define fork(n)			for(int k = 0; k &lt; n; ++k)
+#define forl(n)			for(int l = 0; l &lt; n; ++l)
+#define pq priority_queue
+#define umap unordered_map
+typedef long long ll;typedef pair&lt;int,int&gt; pii;typedef vector&lt;bool&gt; vbool;typedef vector&lt;int&gt; vint;typedef vector&lt;ll&gt; vll;typedef long double ld;typedef vector&lt;vector&lt;int&gt;&gt; vvi; 
+
+const ll N = 100010;
+const ll INF = 0x3f3f3f3f;
+const ll MOD = 1e9 + 7;
+
+string freq[12] = {&quot;A&quot;,&quot;A#&quot;,&quot;B&quot;,&quot;C&quot;,&quot;C#&quot;,&quot;D&quot;,&quot;D#&quot;,&quot;E&quot;,&quot;F&quot;,&quot;F#&quot;,&quot;G&quot;,&quot;G#&quot;};
+
+int main() {
+	ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+	ld p, q; cin &gt;&gt; p &gt;&gt; q;
+	ld x = max(p,q)/min(p,q);
+	int sum = round(1200.0*log2l(x));
+	int c = min(sum%100, 100-sum%100), d = (sum+c)/100;
+	string fi = freq[0]    + &quot; &quot; + ((c+d*100 &gt; sum)? to_string(c/2) : to_string(-c/2));
+	string se = freq[d%12] + &quot; &quot; + ((c+d*100 &gt; sum)? to_string(-(c-c/2)):to_string((c-c/2)));
+	if (p &lt; q) 
+		cout &lt;&lt; fi &lt;&lt; nl &lt;&lt; se &lt;&lt; nl; 
+	else
+		cout &lt;&lt; se &lt;&lt; nl &lt;&lt; fi &lt;&lt; nl; 
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

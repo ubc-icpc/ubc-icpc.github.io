@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+bool vis [205][205];
+int main() {
+    int m,n; cin &gt;&gt; m &gt;&gt; n;
+    vector&lt;string&gt; arr;
+    string tm;
+    for(int i =  0; i &lt; m; i++) {
+        cin &gt;&gt; tm;
+        arr.push_back(tm);    
+    }   
+    int res = 0;
+    int i = 0;
+    int j = 0;
+    
+    while(arr[i][j] != 'T'){
+        if(vis[i][j]) { cout &lt;&lt; &quot;Lost&quot; &lt;&lt; endl; return 0;}
+        vis[i][j] = true;
+        if(arr[i][j] == 'E') j++;
+        else if (arr[i][j] == 'N') i--;
+        else if (arr[i][j] == 'S') i++;
+        else if ( arr[i][j] == 'W') j--;
+        if( i &lt;0 || i &gt;=m || j &lt;0  || j &gt;= n) { cout &lt;&lt;&quot;Out&quot; &lt;&lt; endl; return 0;}
+        res++;
+    }   
+    cout &lt;&lt; res &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

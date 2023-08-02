@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main(){
+  int n;
+  std::cin &gt;&gt; n;
+
+  std::vector&lt;long long&gt; prices;
+  for(int i=0; i&lt;n; i++){
+    int cur;
+    std::cin &gt;&gt; cur;
+    prices.push_back(cur);
+  }
+
+  long long money = 100;
+  long long stocks = 0;
+
+  const int MAX_STOCKS = 100000;
+
+  for(int i=0; i&lt;(n-1); i++){
+    int cur_stocks = 0;
+
+    if(prices[i+1] &lt; prices[i]){
+      // sell
+      money += stocks*prices[i];
+      stocks = 0;
+    }
+    
+    else if(prices[i+1] &gt; prices[i]){
+      // buy
+      bool canBuy = (stocks &lt; MAX_STOCKS) &amp;&amp; (money &gt;= prices[i]);
+      while(canBuy){
+	money -= prices[i];
+	stocks++;
+	canBuy = (stocks &lt; MAX_STOCKS) &amp;&amp; (money &gt;= prices[i]);
+      }
+    }
+    
+  }
+
+  money += (stocks*prices[n-1]);
+
+  std::cout &lt;&lt; money &lt;&lt; std::endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

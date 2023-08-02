@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+//basically can just consider X mod 4.
+//if X = 0 then 0
+//if X = 2 then just brute force over i=1,2
+//if X = 1 or 3 then:
+//  find sum of all indices with b. coeffs that are 1 or 3 mod 4
+//  find one index with maximum value that is 2 mod 4.
+
+//finds number of 2s dividing n factorial
+int ndiv2(ll n) {
+    if (n &lt;= 0) return 0;
+    return n/2 + ndiv2(n/2);
+}
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        ll x, n; cin &gt;&gt; x &gt;&gt; n;
+        x %= 4;
+        if (x == 0) {
+            cout &lt;&lt; 0 &lt;&lt; endl;
+        } else if (x == 2) {
+            if ((n%4)%2) cout &lt;&lt; 3 &lt;&lt; endl;
+            else cout &lt;&lt; 0 &lt;&lt; endl;
+        } else {
+            /*
+            map&lt;int, map&lt;int, int&gt;&gt; binom;
+            
+            const int m = 50;
+            for (int i = 0; i &lt; m; i++) {
+                binom[i][0] = 1;
+            }
+            
+            for (int i = 1; i &lt; m; i++) {
+                for (int j = 1; j &lt;= i; j++) {
+                    binom[i][j] = binom[i-1][j-1] + binom[i-1][j];
+                    binom[i][j] %= 4;
+                }
+            }
+            
+            //sum of 1s always equal sum of 3s or sum of 3s is 0
+            for (int i = 0; i &lt; m; i++) {
+                int r = 0, s = 0, t = 0;
+                for (int j = 0; j &lt;= i; j++) {
+                    cerr &lt;&lt; binom[i][j];
+                    if (binom[i][j] == 1) r += j+1;
+                    if (binom[i][j] == 3) s += j+1;
+                    if (binom[i][j] == 2) t = j;
+                }
+                cerr &lt;&lt; &quot; &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; r + s &lt;&lt; &quot; &quot; &lt;&lt; (t&gt;0)*(i-t) &lt;&lt; endl;
+            }
+            //*/
+            //if n+1 is power of 2, answer is 0.
+            if (__builtin_popcountll(n+1) == 1) {
+                cout &lt;&lt; 0 &lt;&lt; endl;
+            } else {
+            
+                //g(n) -&gt; count number of 1s and 3s
+                //g(n) = 2*g(n-2^k) = 2^(# ones in binary exp of n)
+                //^ seems to fit, but how did i figure this out again?
+                //1 and 3 always come in pairs that sum to n+2
+            
+                ll g = (1LL &lt;&lt; __builtin_popcountll(n)-1) * (n+2); //i hope this doesnt overflow..
+                //f(n) = largest index of binomial coef thats 2 mod 4
+                //for some reason this is always a power of 2 away from n
+                ll a = ndiv2(n), fn = 0;
+                //cerr &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; endl;
+                for (int i = 0; ; i++) {
+                    if (ndiv2(n-(1LL&lt;&lt;i)) + ndiv2(1LL&lt;&lt;i) == a-1) {
+                        fn = n-(1LL&lt;&lt;i)+1;
+                        break;
+                    }
+                }
+                cout &lt;&lt; g + fn &lt;&lt; endl;
+            }
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

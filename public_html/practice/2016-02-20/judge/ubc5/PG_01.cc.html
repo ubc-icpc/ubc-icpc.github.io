@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+void cycle_4(int&amp; a, int&amp; b, int&amp; c, int&amp; d) {
+	int e = d; d = c; c = b; b = a; a = e;
+}
+
+int b[201][201], n;
+
+struct s {
+	int T, B, L, R, U, D, C[7], X, Y;
+	s() {
+		T = 1; B = 6; L = 5; R = 2; U = 3; D = 4;
+		for (int i = 1; i &lt; 7; i++) C[i] = 0;
+		X = Y = 1;
+	}
+	bool check() {
+		if (C[B] &amp;&amp; b[X][Y] &amp;&amp; C[B] != b[X][Y])
+			return false;
+		if (b[X][Y])
+			C[B] = b[X][Y];
+		return true;
+	}
+	bool N() {
+		if (Y == n) return false;
+		Y++;
+		cycle_4(T,U,B,D);
+		return check();
+	}
+	bool S() {
+		if (Y == 1) return false;
+		Y--;
+		cycle_4(T,D,B,U);
+		return check();
+	}
+	bool W() {
+		if (X == 1) return false;
+		X--;
+		cycle_4(T,L,B,R);
+		return check();
+	}
+	bool E() {
+		if (X == n) return false;
+		X++;
+		cycle_4(T,R,B,L);
+		return check();
+	}
+	bool ac() {
+		for (int i = 1; i &lt; 7; i++)
+			if (!C[i])
+				return false;
+		return true;
+	}
+};
+
+int main() {
+	ios::sync_with_stdio(0);
+	int m, p;
+	cin &gt;&gt; n &gt;&gt; m &gt;&gt; p;
+	for (int i = 0; i &lt; m; i++) {
+		int x, y, t;
+		cin &gt;&gt; x &gt;&gt; y &gt;&gt; t;
+		b[x][y] = t;
+	}
+	string r; cin &gt;&gt; r;
+	s d;
+	bool inv = false;
+	for (int i = 0; i &lt; p; i++) {
+		if (r[i] == 'N' &amp;&amp; !d.N()) {
+			inv = true;
+			break;
+		}
+		else if (r[i] == 'S' &amp;&amp; !d.S()) {
+			inv = true;
+			break;
+		}
+		else if (r[i] == 'W' &amp;&amp; !d.W()) {
+			inv = true;
+			break;
+		}
+		else if (r[i] == 'E' &amp;&amp; !d.E()) {
+			inv = true;
+			break;
+		}
+		if (d.ac())
+			break;
+	}
+	if (!inv &amp;&amp; d.ac()) {
+		cout &lt;&lt; d.C[1];
+		for (int i = 2; i &lt; 7; i++)
+			cout &lt;&lt; &quot; &quot; &lt;&lt; d.C[i];
+		cout &lt;&lt; &quot;\n&quot;;
+	}
+	else
+		cout &lt;&lt; &quot;0 0 0 0 0 0\n&quot;;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

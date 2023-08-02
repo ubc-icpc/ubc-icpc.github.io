@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;complex&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+const ld EPS = 1e-5;
+
+ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+
+vector&lt;pt&gt; path1, path2;
+vector&lt;ld&gt; time1, time2;
+vector&lt;ld&gt; tt;
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    ld t = 0;
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        int a, b; cin &gt;&gt; a &gt;&gt; b;
+        pt x(a, b);
+        if (i &gt; 0) {
+            t += abs(x - path1.back());
+        }
+        path1.push_back(x);
+        time1.push_back(t);
+        tt.push_back(t);
+    }
+
+    t = 0;
+    int m; cin &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        int a, b; cin &gt;&gt; a &gt;&gt; b;
+        pt x(a, b);
+        if (i &gt; 0) {
+            t += abs(x - path2.back());
+        }
+        path2.push_back(x);
+        time2.push_back(t);
+        tt.push_back(t);
+    }
+
+    sort(tt.begin(), tt.end());
+    ld ans = 1e100;
+    int i1 = 0, i2 = 0;
+    for (int i = 1; i &lt; tt.size(); i++) {
+        ld t0 = tt[i-1];
+        ld t1 = tt[i];
+        if (t0 &gt; time1.back() - EPS || t0 &gt; time2.back() - EPS) break;
+        while (i1+2 &lt; n &amp;&amp; time1[i1+1] &lt; t0 + EPS) i1++;
+        while (i2+2 &lt; m &amp;&amp; time2[i2+1] &lt; t0 + EPS) i2++;
+
+        pt v1 = path1[i1+1] - path1[i1]; v1 = v1/abs(v1);
+        pt v2 = path2[i2+1] - path2[i2]; v2 = v2/abs(v2);
+
+        pt p1 = path1[i1] + v1*(t0 - time1[i1]);
+        pt p2 = path2[i2] + v2*(t0 - time2[i2]);
+
+        ld d0 = abs(p1 - p2);
+        ld d1 = abs((p1 + v1*(t1-t0)) - (p2 + v2*(t1-t0)));
+        ld d2 = d1;
+
+        ld a = abs(v1-v2);
+        if (a &gt; EPS) {
+            ld t2 = t0 - dp(p1 - p2, v1 - v2) / a / a;
+            if (t0-EPS &lt; t2 &amp;&amp; t2 &lt; t1+EPS) {
+                d2 = abs((p1 + v1*(t2-t0)) - (p2 + v2*(t2-t0)));
+            }
+            //cerr &lt;&lt; t0 &lt;&lt; &quot; &quot; &lt;&lt; t2 &lt;&lt; &quot; &quot; &lt;&lt; t1 &lt;&lt; endl;
+        }
+        ans = min(min(ans, d2), min(d0, d1));
+    }
+    cout &lt;&lt; setprecision(16) &lt;&lt; fixed &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

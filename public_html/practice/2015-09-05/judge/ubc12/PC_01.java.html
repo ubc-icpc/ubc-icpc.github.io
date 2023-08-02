@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.text.DecimalFormat;
+import java.util.Scanner;
+
+
+public class C {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		double l1, l2, n = sc.nextInt();
+		double r1, r2, a1 , a2, ca;
+		for(int i = 1; i&lt;= n; i++){
+			l1 = sc.nextInt(); l2 = sc.nextInt();
+			r1 = getR1(l1, l2);
+			r2 = getR2(l1, l2, r1);
+			a1 = r1*r1*Math.PI;
+			a2 = r2*r2*Math.PI;
+			ca = (a1*a1 / a2)/(a1/a2 -1);
+			System.out.println(&quot;Case #&quot; +i +&quot;: &quot;+ 
+					new DecimalFormat(&quot;#0.0000&quot;).format(ca / getTa(l1 , l2)));
+			System.out.println();
+		}
+	}
+	private static double getR1(double l1, double l2) {
+		double a  = Math.atan(l1/l2)/2;
+		double cos = Math.cos(a);
+		double sin = Math.sin(a);
+		double x = l2 / (cos + sin);
+		return sin*x;
+	}
+	private static double getR2(double l1, double l2, double r1) {
+		double a  = Math.atan(l1/l2)/2;
+		double sin = Math.sin(a);
+		return (r1 - sin*r1) / (1 + sin);
+	}
+	private static double getTa(double l1, double l2) {
+		return l2 * l1 /2;
+	}
+	
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

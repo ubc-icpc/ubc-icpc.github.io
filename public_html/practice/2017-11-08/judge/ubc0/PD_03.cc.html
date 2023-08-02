@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;algorithm&gt;
+#include &lt;assert.h&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+typedef long long ll;
+
+struct Point {
+  ll ox, oy;
+  ll x, y;
+  bool negative;
+};
+
+bool operator&lt;(const Point&amp; p1, const Point&amp; p2) {
+  return p1.y * p2.x - p1.x * p2.y &gt; 0;
+}
+
+int main() {
+  int N, W, H;
+  while (cin &gt;&gt; N &gt;&gt; W &gt;&gt; H) {
+    if (N == 0) break;
+    vector&lt;Point&gt; points;
+
+    int num_neg = 0;
+    for (int i = 0; i &lt; N; ++i) {
+      Point p;
+      cin &gt;&gt; p.ox &gt;&gt; p.oy;
+      p.x = 2*p.ox - W;
+      p.y = 2*p.oy - H;
+      p.negative = (p.y &lt; 0) || (p.y == 0 &amp;&amp; p.x &lt; 0);
+      if (p.negative) {
+	p.negative = true;
+	p.x = -p.x;
+	p.y = -p.y;
+	++num_neg;
+      }
+      points.push_back(p);
+    }
+    sort(points.begin(), points.end());
+
+    int cutoff;
+    for (cutoff = 0; 2*num_neg != points.size(); ++cutoff) {
+      assert(cutoff &lt; points.size());
+      if (points[cutoff].negative) {
+	num_neg--;
+      } else {
+	num_neg++;
+      }
+    }
+
+    for (int i = 0; i &lt; points.size(); ++i) {
+      if (!(points[i].negative ^ (i &lt; cutoff))) {
+	cout &lt;&lt; points[i].ox &lt;&lt; &quot; &quot; &lt;&lt; points[i].oy &lt;&lt; endl;
+      }
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

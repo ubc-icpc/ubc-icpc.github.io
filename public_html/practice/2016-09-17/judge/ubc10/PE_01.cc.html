@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+typedef vector&lt;int&gt; vi;
+
+void dfs(vi num, string ops,
+        int &amp;optpos1, int &amp;opt1, int &amp;optpos2, int &amp;opt2) {
+    /*
+    for (int i = 0; i &lt; num.size(); i++) {
+        cerr &lt;&lt; num[i] &lt;&lt; &quot; &quot;;
+        if (i+1 &lt; num.size()) cerr &lt;&lt; ops[i] &lt;&lt; &quot; &quot;;
+    }
+    cerr &lt;&lt; endl;
+    */
+
+    if (num.size() == 1) {
+        optpos1 = optpos2 = 0;
+        opt1 = opt2 = num[0];
+        return;
+    }
+    optpos1 = optpos2 = 0;
+    opt1 = -2147483648;
+    opt2 = 2147483647;
+    for (int i = 0; i &lt; ops.length(); i++) {
+        vi nxt;
+        string nxtops;
+        int res11, res12, res21, res22;
+        for (int j = 0; j &lt; num.size(); j++) {
+            if (j == i) {
+                char op = ops[i];
+                int z = 0;
+                if (op == '+') z = num[i]+num[i+1];
+                else if (op == '-') z = num[i]-num[i+1];
+                else if (op == '*') z = num[i]*num[i+1];
+                nxt.push_back(z);
+                if (j+1 &lt; ops.length()) nxtops += ops[j+1];
+                j++;
+            } else {
+                nxt.push_back(num[j]);
+                if (j &lt; ops.length()) nxtops += ops[j];
+            }
+        }
+        dfs(nxt, nxtops, res11, res12, res21, res22);
+        if (res22 &gt; opt1) {
+            optpos1 = i;
+            opt1 = res22;
+        }
+        if (res12 &lt; opt2) {
+            optpos2 = i;
+            opt2 = res12;
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int ncase; cin &gt;&gt; ncase;
+    for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+        int m; cin &gt;&gt; m; m++;
+        vi nums(m, 0);
+        string ops(m-1, ' ');
+
+        for (int i = 0; i &lt; m; i++) {
+            cin &gt;&gt; nums[i];
+            if (i+1 &lt; m) cin &gt;&gt; ops[i];
+        }
+
+        int r11, r12, r21, r22;
+        dfs(nums, ops, r11, r12, r21, r22);
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; csnum &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;Player 1 (&quot; &lt;&lt; nums[r11] &lt;&lt; ops[r11] &lt;&lt; nums[r11+1] &lt;&lt; &quot;) leads to &quot; &lt;&lt; r12 &lt;&lt; endl;
+        cout &lt;&lt; &quot;Player 2 (&quot; &lt;&lt; nums[r21] &lt;&lt; ops[r21] &lt;&lt; nums[r21+1] &lt;&lt; &quot;) leads to &quot; &lt;&lt; r22 &lt;&lt; endl;
+        if (r12 &gt; -r22) cout &lt;&lt; &quot;Player 1 wins&quot; &lt;&lt; endl;
+        else if (r12 &lt; -r22) cout &lt;&lt; &quot;Player 2 wins&quot; &lt;&lt; endl;
+        else cout &lt;&lt; &quot;Tie&quot; &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

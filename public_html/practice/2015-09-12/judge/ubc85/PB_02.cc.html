@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+int main () {
+	int n;
+	cin &gt;&gt; n;
+	for (int i=0; i&lt;n; ++i) {
+		int a, b, c, d, e, f;
+		bool x = false;
+		bool y = false;
+		cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; e &gt;&gt; f;
+		if ((a+b+c)&gt;(d+e+f)) {
+			x = true;
+		}
+		if ((a&gt;d) || ((a==d)&amp;&amp;(b&gt;e)) || ((a==d)&amp;&amp;(b==e)&amp;&amp;(c&gt;f))) {
+			y = true;
+		} 
+		cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; &quot; &quot; &lt;&lt; d &lt;&lt; &quot; &quot; &lt;&lt; e &lt;&lt; &quot; &quot; &lt;&lt; f &lt;&lt; endl;
+		if ((x == true)&amp;&amp;(y == true)) {
+			cout &lt;&lt; &quot;both&quot; &lt;&lt; endl;
+		} else if (x == true) {
+			cout &lt;&lt; &quot;count&quot; &lt;&lt; endl;
+		} else if (y == true) {
+			cout &lt;&lt; &quot;color&quot; &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

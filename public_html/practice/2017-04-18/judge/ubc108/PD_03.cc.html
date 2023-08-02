@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+vector&lt;int&gt; tree[200000];
+int value[200000];
+
+void merge(multiset&lt;int&gt; **opt, multiset&lt;int&gt; **br) {
+	// check size
+	if ((*br)-&gt;size() &gt; (*opt)-&gt;size()) {
+		multiset&lt;int&gt; *temp = (*opt);
+		(*opt) = (*br);
+		(*br) = temp;
+	}
+	// merge br into opt
+	for (auto &amp;it : (**br)) {
+		(*opt)-&gt;insert(it);
+	}
+}
+
+void getans(int curr, multiset&lt;int&gt; **ans) {
+	if (tree[curr].empty()) {
+		(*ans)-&gt;insert(value[curr]);
+	}
+	else {
+		multiset&lt;int&gt; *branch = new multiset&lt;int&gt;;
+		for (auto &amp;child : tree[curr]) {
+			getans(child, &amp;branch);
+			merge(ans, &amp;branch);
+			branch-&gt;clear();
+		}
+		delete branch;
+		auto it = (*ans)-&gt;lower_bound(value[curr]);
+		if (it != (*ans)-&gt;end())
+			(*ans)-&gt;erase(it);
+		(*ans)-&gt;insert(value[curr]);
+	}
+}
+
+int main() {
+	int n, p;
+	cin &gt;&gt; n;
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; value[i] &gt;&gt; p;
+		if (p &gt; 0)
+			tree[p-1].push_back(i);
+	}
+	multiset&lt;int&gt; *ans = new multiset&lt;int&gt;;
+	getans(0, &amp;ans);
+	cout &lt;&lt; ans-&gt;size() &lt;&lt; endl;
+	
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

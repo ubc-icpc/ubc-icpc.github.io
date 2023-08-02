@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2016-10-22.
+ */
+public class Stock {
+    private static final long MAX_SHARES = 100000;
+
+    private static long stockCount = 0;
+    private static long cashAvailable = 100;
+    private static long previousDayPrice = 0;
+
+    public static void buyMaxYesterday(long stockPrice){
+        long stockCountBought = cashAvailable/stockPrice;
+
+        if(stockCountBought + stockCount &gt; 100000){
+            stockCountBought = 100000 - stockCount;
+            stockCount = 100000;
+        }
+        else{
+            stockCount += stockCountBought;
+        }
+        long purchasePrice = stockCountBought * stockPrice;
+        cashAvailable -= purchasePrice;
+    }
+
+
+    private static void sellMaxToday(long stockPrice) {
+        cashAvailable += stockPrice * stockCount;
+        stockCount = 0;
+    }
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int noOfCases = Integer.parseInt(s.nextLine());
+        previousDayPrice = Integer.parseInt(s.nextLine());
+
+        for (int i = 1; i &lt; noOfCases; i++) {
+            long stockPrice = Integer.parseInt(s.nextLine());
+            if (stockPrice &gt; previousDayPrice){
+                buyMaxYesterday(previousDayPrice);
+                sellMaxToday(stockPrice);
+            }
+            previousDayPrice = stockPrice;
+        }
+        System.out.println(stockCount * previousDayPrice + cashAvailable);
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

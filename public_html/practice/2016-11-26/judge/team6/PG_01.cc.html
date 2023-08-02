@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int r, c;
+vector&lt;bool&gt; visited;
+vector&lt;string&gt; lines;
+
+
+void dfs(int i, int j) {
+  if(visited[i*c + j]) return;
+  visited[i*c + j] = true;
+
+  // up
+  if(i &gt; 0 &amp;&amp; (lines[i-1][j] == 'L' || lines[i-1][j] == 'C')) 
+    dfs(i-1, j);
+
+  // down
+  if(i &lt; r-1 &amp;&amp; (lines[i+1][j] == 'L' || lines[i+1][j] == 'C')) 
+    dfs(i+1, j);
+
+  // up
+  if(j &gt; 0 &amp;&amp; (lines[i][j-1] == 'L' || lines[i][j-1] == 'C')) 
+    dfs(i, j-1);
+
+  // right
+  if(j &lt; c-1 &amp;&amp; (lines[i][j+1] == 'L' || lines[i][j+1] == 'C')) 
+    dfs(i, j+1);
+}
+
+int solve() {
+  int count = 0;
+  visited = vector&lt;bool&gt;(r*c, false);
+  while(1) {
+    bool s = false;
+    for(int i = 0; i &lt; r; i++) {
+      for(int j = 0; j &lt; c; j++) {
+        if(lines[i][j] == 'L' &amp;&amp; !visited[i*c + j]) {
+          s = true;
+          dfs(i, j);
+          count++;
+        }
+      }
+    }
+
+    if(!s) {
+      return count;
+    }
+  }
+
+  return -1;
+}
+int main() {
+  cin &gt;&gt; r &gt;&gt; c;
+  string l;
+  for(int i = 0; i &lt; r; i++) {
+    cin &gt;&gt; l;
+    lines.push_back(l);
+  }
+
+  cout &lt;&lt; solve() &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

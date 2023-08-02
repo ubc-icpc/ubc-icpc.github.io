@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+const int MAXN = 100*1000+6;
+
+const int PC = 5;
+const ll P[PC] = { 88643, 89909, 89153, 89083, 89627 }; 
+int T,N;
+
+int s1[MAXN];
+int s2[MAXN];
+
+ll pow(int a, ll pr)
+{
+//	int temp = a;
+	ll res = 1;
+	ll p = N;
+	while(a&gt;0)
+	{
+		p = (p*p)%pr;
+		if(a%2)
+			res = (res*p)%pr;
+		a/=2;
+	}
+//	cout&lt;&lt;endl&lt;&lt;&quot;power (&quot;&lt;&lt;temp&lt;&lt; &quot;,&quot;&lt;&lt;pr&lt;&lt;&quot;)-&gt; &quot;&lt;&lt;res&lt;&lt;endl;
+	return res;
+}
+
+int main()
+{
+	cin&gt;&gt;T;
+	while(T--)
+	{
+		cin&gt;&gt;N;
+		for(int i=0;i&lt;N;i++)
+			cin&gt;&gt;s1[i];
+
+		for(int i=0;i&lt;N;i++)
+			cin&gt;&gt;s2[i];
+		
+		int loc = 0;
+		ll sum[PC];
+		
+		for(int i=0;i&lt;PC;i++)
+			sum[i] = (pow(s1[loc], P[i]) + (P[i]-pow(s2[loc], P[i])))%P[i];
+
+		loc++;
+
+		cout&lt;&lt;loc&lt;&lt;&quot;-&quot;;
+
+		while( loc&lt;N )
+		{
+			bool state = false;
+//			cout&lt;&lt;endl&lt;&lt;&quot;Loc is &quot;&lt;&lt;loc&lt;&lt;endl;
+			for(int i=0;i&lt;PC;i++)
+			{
+//				cout&lt;&lt;&quot;PC: &quot;&lt;&lt;P[i]&lt;&lt;&quot; and sum is &quot;&lt;&lt;sum[i]&lt;&lt;endl;
+				state |= (sum[i]!=0);
+			}
+
+			if(!state)
+				cout&lt;&lt;loc&lt;&lt;&quot; &quot;&lt;&lt;loc+1&lt;&lt;&quot;-&quot;;
+			
+			for(int i=0;i&lt;PC;i++)
+				sum[i] = (sum[i] + pow(s1[loc], P[i]) + (P[i]-pow(s2[loc], P[i]))) % P[i];
+			loc++;
+		}
+
+		cout&lt;&lt;loc&lt;&lt;endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

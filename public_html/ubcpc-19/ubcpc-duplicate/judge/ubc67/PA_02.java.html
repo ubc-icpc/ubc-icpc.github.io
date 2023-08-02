@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//package com.company;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc = new Scanner(System.in);
+        String instr = sc.nextLine();
+        int s = sc.nextInt();
+        sc.nextLine();
+        String wrd = sc.nextLine();
+        int len = wrd.length();
+        StringBuilder ans0 = new StringBuilder();
+        if(instr.equals(&quot;E&quot;)){
+            for(int i =0;i&lt;len;i++){
+                int ascii = wrd.charAt(i)+s;
+                if(wrd.charAt(i)+s&gt;122)
+                    ascii = ascii-122+96;
+                ans0.append((char) ascii);
+            }
+        }else{
+            for(int i =0;i&lt;len;i++){
+                int ascii = wrd.charAt(i)-s;
+                if(wrd.charAt(i)-s&lt;97)
+                    ascii = 123-(97-ascii);
+                ans0.append((char) ascii);
+            }
+        }
+        System.out.println(ans0.toString());
+    }
+}
+</code>
+</pre>
+</body>
+</html>

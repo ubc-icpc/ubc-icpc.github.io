@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+
+#define ll long long
+
+using namespace std;
+
+int main(){
+	ll n;
+	while(cin&gt;&gt;n){
+		set&lt;ll&gt; lol;
+		for(int i=1;; i++){
+			ll k=i*n;	
+			while(k){
+				lol.insert(k%10);
+				k/=10;
+			}
+			if(lol.size()==10){
+				cout&lt;&lt;i&lt;&lt;endl;
+				break;
+			}
+		}	
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

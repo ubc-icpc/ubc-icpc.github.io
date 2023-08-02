@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+string s;
+set&lt;char&gt; vowel({'a', 'e', 'i', 'o', 'u', 'y'});
+int cnt[2] = {20, 6}, n;
+ll dfs(int v, int p, int c) {
+    ll res = cnt[c];
+    if (s[v] != '?') {
+        if (c &amp;&amp; !vowel.count(s[v])) res = 0;
+        else if (!c &amp;&amp; vowel.count(s[v])) res = 0;
+        else res = 1;
+    }
+    
+    if (v &gt; 0 &amp;&amp; v-1 != p) {
+        res *= dfs(v-1, v, c^1);
+    }
+    if (v &lt; n-1 &amp;&amp; v+1 != p) {
+        res *= dfs(v+1, v, c^1);
+    }
+    return res;
+}
+
+int main() {
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        cin &gt;&gt; s;
+        
+        n = s.size();
+        ll ans = -1;
+        for (int i = 0; i &lt; n; i++) {
+            if (s[i] != '?') {
+                ans = dfs(i, -1, vowel.count(s[i]));
+                break;
+            }
+        }
+        
+        cout &lt;&lt; &quot;String #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot;;
+        if (ans != -1) cout &lt;&lt; ans &lt;&lt; endl;
+        else cout &lt;&lt; dfs(0, -1, 0) + dfs(0, -1, 1) &lt;&lt; endl;
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

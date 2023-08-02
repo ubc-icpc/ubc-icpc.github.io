@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class Paperboy {
+
+	static int[] houses;
+	static int[][][]dp = new int[55][55][55];
+	static int n;
+	
+	public static int solve(int index, int l, int r)
+	{
+		if (l &lt;= 0 &amp;&amp; r &gt;= n)
+			return 0;
+		if (dp[index][l][r] != -1) 
+			return dp[index][l][r];
+		
+		int left = Integer.MAX_VALUE;
+		int right = Integer.MAX_VALUE;
+		if (l &gt; 0)
+		{
+			left = solve(l-1,l-1,r) + Math.abs(houses[index]-houses[l-1])*(n-(r-l)+1) + 1;
+		}
+		if (r &lt; n)
+		{
+			right = solve(r+1,l, r+1) + Math.abs(houses[index]-houses[r+1]) * (n-(r-l)+1) + 1;
+		}
+		
+		dp[index][l][r] = Math.min(left, right);
+		return dp[index][l][r];
+	}
+	
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		while (in.hasNext())
+		{
+			for (int I = 0; I &lt; 55; I++)
+			{
+				for (int J = 0; J &lt; 55; J++)
+				{
+					Arrays.fill(dp[I][J],-1);
+				}
+			}
+			n = in.nextInt();
+			houses = new int[n+1];
+			for (int I = 0; I &lt; n; I++)
+			{
+				houses[I] = in.nextInt();
+			}
+			int startNum = in.nextInt();
+			houses[n] = startNum;
+			
+			Arrays.sort(houses);
+			int index = 0;
+			for (int I = 0; I &lt;= n; I++)
+			{
+				if (houses[I] == startNum) {
+					index = I;
+					break;
+				}
+			}
+			
+			System.out.println(solve(index,index,index));
+		}
+
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

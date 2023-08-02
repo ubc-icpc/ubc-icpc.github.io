@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include&lt;string&gt;
+#include &lt;tuple&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+bool fncomp(pair&lt;string, string&gt; s1, pair&lt;string, string&gt; s2) {
+	if (s2.second == s1.second) { // same last name
+		if (s2.first == s2.first) {// same first name
+			return s1 &lt; s2;
+		}
+		else {
+			return s1.first &lt; s2.first;
+		}
+	}
+	else {
+		return s1.second &lt; s2.second;
+	}
+}
+
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n;
+	cin &gt;&gt; n;
+	string fn, ln;
+
+	bool(*fn_pt)(pair&lt;string, string&gt;, pair&lt;string, string&gt;) = fncomp;
+	set&lt;pair&lt;string, string&gt;, bool(*)(pair&lt;string, string&gt;, pair&lt;string, string&gt;) &gt; students(fn_pt);
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; fn &gt;&gt; ln;
+		students.insert(make_pair(fn, ln));
+	}
+
+	for (set&lt;pair&lt;string, string&gt;&gt;::iterator it = students.begin(); it != students.end(); ++it)
+		cout &lt;&lt; (*it).first &lt;&lt; &quot; &quot; &lt;&lt; (*it).second &lt;&lt; endl;
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+const int M = 50000000;
+
+int dat[1000000];
+int match[4096];
+int stack[4096]; int ssz = 0;
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+
+	int ncase; cin &gt;&gt; ncase;
+	for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+		int sm, sc, si; cin &gt;&gt; sm &gt;&gt; sc &gt;&gt; si;
+		string tmp; getline(cin, tmp);
+		string code; getline(cin, code);
+		string input; getline(cin, input);
+		//string output;
+
+		for (int i = 0; i &lt; sc; i++) {
+			if (code[i] == '[') {
+				stack[ssz++] = i;
+			} else if (code[i] == ']') {
+				int start = stack[--ssz];
+				match[start] = i;
+				match[i] = start;
+			}
+		}
+
+		int idx = 0;
+		int iptr = 0;
+		int inptr = 0;
+		bool ended = false;
+		memset(dat, 0, sizeof dat);
+		for (int t = 0; t &lt; M; t++) {
+			char c = code[iptr];
+			if (c == '-') {
+				dat[idx] = (dat[idx]+256-1)%256;
+			} else if (c == '+') {
+				dat[idx] = (dat[idx]+1)%256;
+			} else if (c == '&lt;') {
+				idx = (idx+sm-1)%sm;
+			} else if (c == '&gt;') {
+				idx = (idx+1)%sm;
+			} else if (c == '[') {
+				if (dat[idx] == 0) iptr = match[iptr]-1;
+			} else if (c == ']') {
+				if (dat[idx] != 0) iptr = match[iptr]-1;
+			} else if (c == '.') {
+				//output += (char)(dat[idx]);
+			} else if (c == ',') {
+				if (inptr &gt;= si) {
+					dat[idx] = 255;
+				} else {
+					dat[idx] = (int)(input[inptr++]);
+				}
+			}
+			iptr++;
+			if (iptr &gt;= sc) {
+				ended = true;
+				break;
+			}
+		}
+
+		//cerr &lt;&lt; output &lt;&lt; endl;
+
+		if (ended) {
+			cout &lt;&lt; &quot;Terminates&quot; &lt;&lt; endl;
+		} else {
+			ssz = 0;
+			for (int i = 0; i &lt;= iptr; i++) {
+				if (code[i] == '[') {
+					stack[ssz++] = i;
+				} else if (code[i] == ']' &amp;&amp; i &lt; iptr) {
+					--ssz;
+				}
+			}
+			for (int t = 0; t &lt; M; t++) {
+				char c = code[iptr];
+				if (c == '-') {
+					dat[idx] = (dat[idx]+256-1)%256;
+				} else if (c == '+') {
+					dat[idx] = (dat[idx]+1)%256;
+				} else if (c == '&lt;') {
+					idx = (idx+sm-1)%sm;
+				} else if (c == '&gt;') {
+					idx = (idx+1)%sm;
+				} else if (c == '[') {
+					if (dat[idx] == 0) iptr = match[iptr]-1;
+				} else if (c == ']') {
+					if (dat[idx] != 0) iptr = match[iptr]-1;
+					else {
+						if (match[iptr] == stack[ssz-1]) {
+							--ssz;
+						}
+					}
+				} else if (c == '.') {
+					//output += (char)(dat[idx]);
+				} else if (c == ',') {
+					if (inptr == si) {
+						dat[idx] = 255;
+					} else {
+						dat[idx] = (int)(input[inptr++]);
+					}
+				}
+				iptr++;
+			}
+			cout &lt;&lt; &quot;Loops &quot; &lt;&lt; stack[ssz-1] &lt;&lt; &quot; &quot; &lt;&lt; match[stack[ssz-1]] &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Arrays;
+import java.util.Scanner;
+public class excitingActs {
+
+	public static void main(String[] args) {
+
+		int numScenes = 0;
+		int numActs = 0;
+		int maxExcitement = 0;
+		
+		
+		Scanner input = new Scanner(System.in);
+		
+		numScenes = input.nextInt();
+		numActs = input.nextInt();
+		int[] levels = new int[numScenes];
+		
+		for(int i = 0; i &lt; numScenes; i++) {
+		
+			levels[i] = input.nextInt();
+		}
+		
+		Arrays.sort(levels);
+		
+		for(int j = 0; j &lt; numActs; j++) {
+			
+			maxExcitement += levels[(levels.length - 1) - j];
+		}
+		
+		System.out.println(maxExcitement);
+		
+	}//End of main
+
+}//End of class
+</code>
+</pre>
+</body>
+</html>

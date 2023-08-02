@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		string s;
+		getline(cin, s);
+		getline(cin, s);
+		string p; cin &gt;&gt; p;
+		int rot; cin &gt;&gt; rot;
+
+		vector&lt;string&gt; sss;
+		stringstream ss;
+		ss &lt;&lt; s;
+		string tmp;
+		while (ss &gt;&gt; tmp) {
+			sss.push_back(tmp);
+		}
+		
+		int n = sss.size();
+		int start = 0;
+		while (sss[start] != p) start++;
+		start = (start + rot - 1) % n;
+		cout &lt;&lt; sss[start] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

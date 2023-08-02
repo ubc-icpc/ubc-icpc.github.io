@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int bd_val[100][100];
+int bd[100][100];
+
+int main() {
+  int N; cin &gt;&gt; N;
+  for (int n = 1; n &lt;= N; ++n) {
+    int R; int C; cin &gt;&gt; R &gt;&gt; C;
+    for (int r = 0; r &lt; R; ++r) {
+      for (int c = 0; c &lt; C; ++c) {
+        bd_val[r][c] = 0;
+        if (r == 0 &amp;&amp; c == 0 || r == R-1 &amp;&amp; c == C-1) {
+          string temp; cin &gt;&gt; temp;
+        }
+        else {
+          cin &gt;&gt; bd_val[r][c];
+        }
+      }
+    }
+    for (int r = 0; r &lt; R; ++r) {
+      for (int c = 0; c &lt; C; ++c) {
+        bd[r][c] = 0;
+        int up = 0, left = 0;
+        if (r &gt; 0) up = bd[r-1][c];
+        if (c &gt; 0) left = bd[r][c-1];
+        bd[r][c] = bd_val[r][c] + max(up, left);
+      }
+    }
+    cout &lt;&lt; &quot;Game Board #&quot; &lt;&lt; n &lt;&lt; &quot;: &quot; &lt;&lt; bd[R-1][C-1] &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

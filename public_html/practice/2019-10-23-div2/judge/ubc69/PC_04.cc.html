@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+long double get_dist(tuple&lt;long double, long double, long double&gt; t1, tuple&lt;long double, long double, long double&gt; t2) {
+  ll a = get&lt;0&gt;(t1) - get&lt;0&gt;(t2);
+  ll b = get&lt;1&gt;(t1) - get&lt;1&gt;(t2);
+  ll c = get&lt;2&gt;(t1) - get&lt;2&gt;(t2);
+  return sqrt(a*a + b*b + c*c);
+}
+
+int main() {
+  int t;
+  cin &gt;&gt; t;
+  int cases = 1;
+  while (t--) {
+    int n;
+    cin &gt;&gt; n;
+    vector&lt;tuple&lt;long double, long double, long double&gt;&gt; vertex(n);
+    unordered_map&lt;string, int&gt; index;
+    for (int i = 0; i &lt; n; i++) {
+      string s;
+      cin &gt;&gt; s;
+      int x, y, z;
+      cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+      index[s] = i;
+      vertex[i] = {x, y, z};
+    }
+    vector&lt;vector&lt;long double&gt;&gt; graph(n, vector&lt;long double&gt;(n, -1.0));
+    int k;
+    cin &gt;&gt; k;
+    for (int i = 0; i &lt; k; i++) {
+      string a, b;
+      cin &gt;&gt; a &gt;&gt; b;
+      graph[index[a]][index[b]] = 0.0;
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = 0; j &lt; n; j++) {
+        if (graph[i][j] &lt; 0.0) {
+          graph[i][j] = get_dist(vertex[i], vertex[j]);
+        }
+      }
+    }
+    vector&lt;vector&lt;long double&gt;&gt; dist = graph;
+
+    for (int l = 0; l &lt; n; l++) {
+      for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; n; j++) {
+          if (dist[i][j] &gt; dist[i][l] + dist[l][j]) {
+            dist[i][j] = dist[i][l] + dist[l][j];
+          }
+        }
+      }
+    }
+
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; cases &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    int q;
+    cin &gt;&gt; q;
+    for (int i = 0; i &lt; q; i++) {
+      string a, b;
+      cin &gt;&gt; a &gt;&gt; b;
+      cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; a &lt;&lt; &quot; to &quot; &lt;&lt; b &lt;&lt; &quot; is &quot; &lt;&lt; fixed &lt;&lt; setprecision(0) &lt;&lt; round(dist[index[a]][index[b]]) &lt;&lt; &quot; parsecs.&quot; &lt;&lt; endl; 
+    }
+    cases++;
+  }
+}
+</code>
+</pre>
+</body>
+</html>

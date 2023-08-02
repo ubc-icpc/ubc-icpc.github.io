@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int main() {
+  int T, n, m;
+  bool prime;
+  cin &gt;&gt; T;
+  while(T--) {
+    cin &gt;&gt; m &gt;&gt; n; 
+
+    prime = true;
+    for(int p = -200; p &lt;= 200; p++) {
+      for(int q = -200; q &lt;= 200; q++) {
+        if(p == 0 &amp;&amp; q == 0) {
+          continue;
+        }
+
+        if((m*p + n*q) % (p*p + q*q) == 0 &amp;&amp; (n*p - m*q) % (p*p + q*q) == 0) {
+          if((abs(m) == abs(p) &amp;&amp; abs(n) == abs(q)) || (abs(n) == abs(p) &amp;&amp; abs(m) == abs(q)) || (abs(p) == 1 &amp;&amp; q == 0) || (abs(q) == 1 &amp;&amp; p == 0)) {
+            continue;
+          }
+
+          prime = false; 
+        }
+      }
+    }
+
+    if(prime) {
+      cout &lt;&lt; &quot;P\n&quot;;
+    } else {
+      cout &lt;&lt; &quot;C\n&quot;;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

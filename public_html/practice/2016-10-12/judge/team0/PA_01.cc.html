@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+string ss[55];
+
+int main(){
+    int n,m,t;
+    cin &gt;&gt; n;
+    getline(cin,ss[0]);
+    for(int i=0;i&lt;n;i++){
+        getline(cin,ss[i+1]);
+    }
+    cin &gt;&gt; m;
+    for(int i=0;i&lt;m;i++){
+        cin &gt;&gt; t;
+        cout &lt;&lt; &quot;Rule &quot;&lt;&lt; t &lt;&lt; &quot;: &quot;;
+        if (t&gt;0 &amp;&amp; t&lt;=n)
+            cout &lt;&lt; ss[t] &lt;&lt; &quot;\n&quot;;
+        else
+            cout &lt;&lt; &quot;No such rule&quot; &lt;&lt; &quot;\n&quot;;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

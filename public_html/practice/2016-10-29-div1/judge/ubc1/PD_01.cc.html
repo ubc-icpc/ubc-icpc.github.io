@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+int main() {
+	int a[3], b[3];
+	for (int i = 0; i &lt; 3; i++) cin &gt;&gt; a[i];
+	for (int i = 0; i &lt; 3; i++) cin &gt;&gt; b[i];
+	sort(a, a+3);
+	sort(b, b+3);
+	
+	bool eq = true;
+	for (int i = 0; i &lt; 3; i++) eq = eq &amp;&amp; (a[i] == b[i]);
+	
+	if (!eq) cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;
+	else {
+		if (a[0] * a[0] + a[1] * a[1] == a[2] * a[2]) {
+			cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

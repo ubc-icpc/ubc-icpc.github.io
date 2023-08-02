@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int R, C, E[2][1005], res;
+string M[1005];
+
+int main() {
+	memset(E[0], 0x7F, sizeof E[0]);
+	memset(E[1], 0xFF, sizeof E[1]);
+	cin &gt;&gt; R &gt;&gt; C;
+	for (int i = R - 1; i &gt;= 0; --i) cin &gt;&gt; M[i];
+	for (int i = 0; i &lt; R; ++i)
+		for (int j = 0; j &lt; C; ++j)
+			if (M[i][j] == 'J') {
+				E[0][i] = min(E[0][i], j);
+				E[1][i] = max(E[1][i], j);
+			}
+	while (R &gt; 1)
+		if (M[R - 1].find_first_of('J') == -1) --R;
+		else break;
+	int end, start = 0;
+	for (int i = 1; i &lt; R; ++i) {
+		end = (i % 2)? max(start, max(E[1][i], E[1][i - 1])) : min(start, min(E[0][i], E[0][i - 1]));
+		res += abs(start - end) + 1;
+		start = end;
+	}
+	res += abs(start - (((R) % 2)? max(start, E[1][R - 1]) : min(start, E[0][R - 1])));
+	cout &lt;&lt; res &lt;&lt; endl;
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

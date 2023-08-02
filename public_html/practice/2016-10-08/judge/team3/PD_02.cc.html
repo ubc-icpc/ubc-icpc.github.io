@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef vector&lt;ld&gt; vd;
+typedef vector&lt;vd&gt; vvd;
+
+const ld EPS = 1e-9;
+
+#define ISZERO(x) (fabs(x) &lt; EPS)
+#define ISPOS(x) ((x) &gt; EPS)
+void pivot(vvd&amp; A, int r, int c) { // A is A|b
+  int m = A.size(), n = A[0].size(); ld tmp = A[r][c];
+  for (int i = 0; i &lt; n; ++i) A[r][i]/=tmp;
+  for (int i = 0; i &lt; m; ++i) if (i != r) { ld k = A[i][c];
+    for(int j = 0; j &lt; n; ++j) A[i][j] -= A[r][j]*k; } }
+bool gaussian(vvd&amp; A) { int m=A.size(), n=A[0].size()-1; vector&lt;bool&gt; used(m,0);
+  for (int c = 0; c &lt; n; ++c) for (int r = 0; r &lt; m; ++r)
+    if (!used[r] &amp;&amp; !ISZERO(A[r][c]) ) { pivot(A, r, c); used[r] = true; }
+  for (int r = 0; r &lt; m; ++r) if(!used[r] &amp;&amp; !ISZERO(A[r].back())) return false;
+  return true; }
+/*// Return the assignment to each x. Free variables are always 0
+vector&lt;bool&gt; gauss_sol(const vvd&amp; coef, vd&amp;x) {
+  int m = coef.size(), n = coef[0].size()-1;
+  vector&lt;bool&gt; ret(n, 0);
+  for (int i = 0; i &lt; n; ++i) { x[i]=0;
+    if (ret[i]) continue;
+    int cnt = 0;
+    for (int j = 0; j &lt; m; ++j) // Exactly one 1
+      if ( !ISZERO(coef[j][i]) ) ++cnt;
+    if (cnt != 1) { ret[i] = true; continue; }
+    for (int j = 0; j &lt; m; ++j) if (ISZERO(coef[j][i] - 1)) {
+      x[i] = coef[j].back();
+      for (int k = i+1; k &lt; n; ++k)
+        if (!ISZERO( coef[j][k] )) ret[k] = true;
+      break; } }
+  return ret; }*/
+  
+int main() {
+  while (true) {
+    int D; cin &gt;&gt; D;
+    if (!D) break;
+    vd all_results;
+    for (int i = 0; i &lt; D+3; ++i) {
+      ld num; cin &gt;&gt; num;
+      all_results.push_back(num);
+    }
+    //cout &lt;&lt; &quot;read&quot; &lt;&lt; endl;
+    ld smallest = 1e20;
+    int mind = 0;
+    for (int i = 0; i &lt; D+3; ++i) {
+      //cout &lt;&lt; &quot;i &quot; &lt;&lt; i &lt;&lt; endl;
+      vd results;
+      for (int j = 0; j &lt; D+3; ++j) {
+        if (j == i) {
+          //cout &lt;&lt; &quot;excluded &quot; &lt;&lt; all_results[j] &lt;&lt; endl;
+          continue;
+        }
+        results.push_back(all_results[j]);
+      }
+      vvd mat = vvd(D+2, vd(D+2, 0));
+      for (int j = 0; j &lt; D+2; ++j) {
+        for (int k = 0; k &lt; D+2; ++k) {
+          if (k == 0) {
+            mat[j][k] = 1;
+          }
+          else if (k == D+1) {
+            mat[j][k] = results[j];
+          }
+          else {
+            ld dj = (double) j;
+            if (j &gt;= i) dj += 1;
+            mat[j][k] = dj;
+            for (int d=1; d &lt; k; ++d) {
+              mat[j][k] *= dj;
+            }
+          }
+        }
+      }
+      
+      /*cout &lt;&lt; &quot;before&quot; &lt;&lt; endl;
+      for (int j = 0; j &lt; D+2; ++j) {
+        for (int k = 0; k &lt; D+2; ++k) {
+          cout &lt;&lt; mat[j][k] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+      }
+      cout &lt;&lt; endl;*/
+      
+      bool g = gaussian(mat);
+      
+      /*cout &lt;&lt; &quot;after&quot; &lt;&lt; endl;
+      for (int j = 0; j &lt; D+2; ++j) {
+        for (int k = 0; k &lt; D+2; ++k) {
+          cout &lt;&lt; mat[j][k] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+      }
+      cout &lt;&lt; g &lt;&lt; endl;
+      cout &lt;&lt; endl;*/
+      if (fabs(mat[D+1][D+1]) &lt; smallest) {
+        mind = i;
+        smallest = fabs(mat[D+1][D+1]);
+      }
+    }
+    cout &lt;&lt; mind &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

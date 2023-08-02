@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+
+int main() {
+	set&lt;PT&gt; reqs;
+	vector&lt;PT&gt; pts;
+	int N, K, ans=0;
+	scanf(&quot;%d%d&quot;, &amp;N, &amp;K);
+	pts.resize(N);
+	FOR(n,0,N) scanf(&quot;%d%d&quot;, &amp;pts[n].second, &amp;pts[n].first);
+	sort(pts.begin(), pts.end());
+	FOR(k,0,K) reqs.emplace(0, k);
+	for (PT pt : pts) {
+		auto it = reqs.upper_bound(PT(pt.second, 1000000000));
+		if (it != reqs.begin()) {
+			//printf(&quot;Added %d -&gt; %d\n&quot;, pt.second, pt.first);
+			--it;
+			int k = it-&gt;second;
+			reqs.erase(it);
+			reqs.emplace(pt.first, k);
+			ans++;
+		}
+	}
+	printf(&quot;%d\n&quot;, ans);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

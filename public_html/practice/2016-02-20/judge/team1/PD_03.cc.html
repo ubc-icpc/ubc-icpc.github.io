@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, TO, I, MAX, CNT;
+map&lt;string, bool&gt; M;
+map&lt;string, int&gt; K;
+queue&lt;pair&lt;int, pair&lt;int, string&gt; &gt; &gt; LO;
+
+void login(const string&amp; name, int t) {
+    if (M[name] == false) {
+        M[name] = true;
+        ++CNT;
+        MAX = max(MAX, CNT);
+        LO.push(make_pair(t + TO, make_pair(++I, name)));
+        K[name] = I;
+    }
+}
+
+void logout(const string&amp; name, int id) {
+    if (id != -1 &amp;&amp; K[name] != id) return;
+    if (M[name] == true) {
+        M[name] = false;
+        --CNT;
+    }
+}
+
+void restart() {
+    while (!LO.empty()) {
+        logout(LO.front().second.second, LO.front().second.first);
+        LO.pop();
+    }
+}
+
+int main () {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; N &gt;&gt; TO;
+        M = map&lt;string, bool&gt;();
+        LO = queue&lt;pair&lt;int, pair&lt;int, string&gt; &gt; &gt;();
+        MAX = 0;
+        CNT = 0;
+        while (N--) {
+            int h, t; cin &gt;&gt; h;
+            cin.ignore();
+            cin &gt;&gt; t;
+            t = h * 60 + t;
+            while (!LO.empty()) {
+                if (LO.front().first &gt; t) break;
+                logout(LO.front().second.second, LO.front().second.first);
+                LO.pop();
+            }
+            string cmd; cin &gt;&gt; cmd;
+            if (cmd == &quot;SERVER&quot;) {
+                cin &gt;&gt; cmd;
+                restart();
+            } else {
+                string name; cin &gt;&gt; name &gt;&gt; cmd;
+                if (cmd == &quot;LOG_IN&quot;)
+                    login(name, t);
+                else
+                    logout(name, -1);
+            }
+        }
+        cout &lt;&lt; M.size() &lt;&lt; &quot; &quot; &lt;&lt; MAX &lt;&lt; endl;
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

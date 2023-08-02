@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;list&gt;
+using namespace std;
+
+int main() {
+  int t;
+  char c;
+  scanf(&quot;%d\n&quot;, &amp;t);
+  while (t--) {
+    list&lt;char&gt; pass{};
+    list&lt;char&gt;::iterator pos = pass.begin();
+    while ((c = getchar()) != '\n' &amp;&amp; c != '\r' &amp;&amp; c != EOF) {
+      switch (c) {
+        case '-':
+          if (pos != pass.begin()) {
+            auto back = pos;
+            --back;
+            pos = pass.erase(back);
+          }
+          break;
+        case '&lt;':
+          if (pos != pass.begin()) --pos;
+          break;
+        case '&gt;':
+          if (pos != pass.end()) ++pos;
+          break;
+        default:
+          pos = pass.insert(pos, c);
+          pos++;
+          break;
+      }
+    }
+    for (auto it=pass.begin(); it!=pass.end(); ++it)
+      cout &lt;&lt; *it;
+    cout &lt;&lt; endl;
+  }
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+def generate(x): 
+	if x== 2: return [2]
+	elif x&lt;2: return []
+	s=range(3,x+1,2)
+	yroot = x ** 0.5
+	half=(x+1)/2-1
+	i=0
+	y=3
+	while y &lt;= yroot:
+		if s[i]:
+			j=(y*y-3)/2
+			s[j]=0
+			while j&lt;half:
+				s[j]=0
+				j+=y
+		i=i+1
+		y=2*i+3
+	return [2]+[x for x in s if x]
+
+primes=generate(1000000)
+
+while True:
+	K,L=map(int,raw_input().split())
+	index=0
+	if K==0:
+		break
+	else:
+		try:
+			while True:
+				prime=primes[index]
+				if prime&gt;=L:
+					print &quot;GOOD&quot;
+					break
+				elif (K/prime)*prime==K:
+					print &quot;BAD&quot;,prime
+					break
+				index+=1
+		except IndexError:
+			print &quot;GOOD&quot;
+
+&quot;&quot;&quot;
+143 10
+143 20
+667 20
+667 30
+2573 30
+2573 40
+0 0
+&quot;&quot;&quot;
+
+&quot;&quot;&quot;
+GOOD
+BAD 11
+GOOD
+BAD 23
+GOOD
+BAD 31
+&quot;&quot;&quot;
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+enum outcome { draw, win, lose };
+class Fighter
+{
+private:
+	int hp, at, df;
+public:
+	Fighter();
+	Fighter(int, int, int, string);
+	string name;
+	enum outcome fight(Fighter* opponent);
+
+};
+
+
+Fighter::Fighter(int h, int a, int d, string x) {
+	hp = h;
+	at = a;
+	df = d;
+	name = x;
+}
+Fighter::Fighter() {
+	cin &gt;&gt; name;
+	cin &gt;&gt; hp;
+	cin &gt;&gt; at;
+	cin &gt;&gt; df;
+}
+
+enum outcome Fighter::fight(Fighter* opponent) {
+	int attack = at - opponent-&gt;df;
+	int oppattack = opponent-&gt;at - df;
+	if (attack &lt;= 0 &amp;&amp; oppattack &lt;= 0) {
+		return draw;
+	}
+	if (attack &lt;= 0) {
+		return lose;
+	}
+	if (oppattack &lt;= 0) {
+		return win;
+	}
+	int turns = opponent-&gt;hp / attack + ( opponent-&gt;hp %attack  != 0);
+	int oppturns = hp/oppattack + (hp % oppattack != 0);
+	if (turns &gt; oppturns) {
+		return lose;
+	}
+	if (turns &lt; oppturns) {
+		return win;
+	}
+	return draw;
+
+
+}
+class B
+{
+private:
+	int n;
+	vector&lt;Fighter*&gt; fighters;
+	int result;
+	vector&lt;vector&lt;string&gt;&gt; triples;
+	void check_triple(int, int, int);
+	void display();
+	void win_triple(int, int, int);
+public:
+	B();
+};
+
+
+B::B() {
+	cin &gt;&gt; n;
+	result = 0;
+	for (int i = 0; i &lt; n; i++) {
+		Fighter* f = new Fighter();
+		fighters.push_back(f);
+	}
+	for (int i = 0; i &lt; n - 2; i++) {
+		for (int j = i + 1; j &lt; n - 1; j++) {
+			for (int k = j + 1; k &lt; n; k++) {
+				check_triple(i, j, k);
+			}
+		}
+	}
+	display();
+}
+
+void B::check_triple(int i, int j, int k) {
+	auto res = fighters[i]-&gt;fight(fighters[j]);
+	if (res == draw) {
+		return;
+	}
+	if (res == win) {
+		res = fighters[j]-&gt;fight(fighters[k]);
+		//j needs to win this one!
+		if (res != win) {
+			return;
+		}
+		//now k needs to win this one!
+		res = fighters[k]-&gt;fight(fighters[i]);
+		if (res != win) {
+			return;
+		}
+		win_triple(i, j, k);
+		return;
+	}
+	res = fighters[i]-&gt;fight(fighters[k]);
+	if (res != win) {
+		return;//i lost to j, it has to beat k
+	}
+	res = fighters[k]-&gt;fight(fighters[j]);
+	if (res != win) {
+		return;//k had to beat j since j has one win already
+	}
+	win_triple(i, j, k);
+	return;
+
+}
+
+void B::win_triple(int i, int j, int k) {
+	result += 1;
+	vector&lt;string&gt; names;
+	names.push_back(fighters[i]-&gt;name);
+	names.push_back(fighters[j]-&gt;name);
+	names.push_back(fighters[k]-&gt;name);
+	triples.push_back(names);
+}
+
+
+void B::display() {
+	cout &lt;&lt; result &lt;&lt; &quot;\n&quot;;
+	for (int i = 0; i &lt; result; i++) {
+		for (int j = 0; j &lt; 3;j++) {
+			cout &lt;&lt; triples[i][j];
+			if (j &lt; 2) {
+				cout &lt;&lt; &quot; &quot;;
+			}
+			else {
+				cout &lt;&lt; &quot;\n&quot;;
+			}
+		}
+	}
+}
+int main(){
+	auto x = new B();
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

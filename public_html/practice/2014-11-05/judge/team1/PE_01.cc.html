@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int c[100], wl[100];
+
+int main()
+{
+    int w, n, T = 1;
+    while (cin &gt;&gt; w &gt;&gt; n &amp;&amp; w)
+    {
+        string s;
+        int t = 0, m = 0;
+        for (int i = 0; i &lt; n; i++)
+        {
+            cin &gt;&gt; s &gt;&gt; c[i];
+            wl[i] = s.size();
+            t += c[i];
+            m = max(m, c[i]);
+        }
+        int h = 0, lw = 0, lh = 0;
+        for (int i = 0; i &lt; n; i++)
+        {
+            int p = 8 + ceil(40.0*(c[i]-4.0)/(m-4.0));
+            int ww = ceil(9.0*wl[i]*p/16.0);
+            if (lw+ww &lt;= w)
+            {
+                lw += ww+10;
+                lh = max(lh, p);
+            }
+            else
+            {
+                h += lh;
+                lw = ww+10;
+                lh = p;
+            }
+        }
+        cout &lt;&lt; &quot;CLOUD &quot; &lt;&lt; T++ &lt;&lt; &quot;: &quot; &lt;&lt; h+lh &lt;&lt; &quot;\n&quot;;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

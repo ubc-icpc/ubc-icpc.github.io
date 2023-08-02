@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main(){
+  ios_base::sync_with_stdio(0); cin.tie(0);
+  
+  vector&lt;int&gt; v1 = {1, 2, 3, 3, 4, 10};
+  vector&lt;int&gt; v2 = {1, 2, 2, 2, 3, 5, 11};
+  
+  int N; cin &gt;&gt; N;
+  
+  for(int i = 0; i &lt; N; i++) {
+    int a1 = 0, a2 = 0;
+    for(int j = 0; j &lt; v1.size(); j++) {
+        int cur; cin &gt;&gt; cur; a1 += v1[j]*cur;
+    } 
+    for(int j = 0; j &lt; v2.size(); j++) {
+        int cur; cin &gt;&gt; cur; a2 += v2[j]*cur;
+    }
+    cout &lt;&lt; &quot;Battle &quot; &lt;&lt; i + 1 &lt;&lt; &quot;: &quot;;
+    if(a1 &gt; a2) {
+        cout &lt;&lt; &quot;Good triumphs over Evil&quot; &lt;&lt; endl;
+    } else if(a1 &lt; a2) {
+        cout &lt;&lt; &quot;Evil eradicates all trace of Good&quot; &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; &quot;No victor on this battle field&quot; &lt;&lt; endl;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

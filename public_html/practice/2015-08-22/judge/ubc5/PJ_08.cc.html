@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+pii p[50];
+bool adj[50][50];
+bool vis[50];
+int n;
+
+bool dfs(int x, vector&lt;int&gt;&amp; v) {
+  v.push_back(x);
+  vis[x] = true;
+  if (v.size() == n)
+    return true;
+  int c1i = -1, c1d = 42424242, c2i = -1, c2d = 42424242;
+  for (int i = 0; i &lt; n; i++) {
+    if (vis[i] || !adj[x][i])
+      continue;
+    if ((p[v[v.size()-2]].first == p[x].first &amp;&amp; p[x].first == p[i].first) ||
+        (p[v[v.size()-2]].second == p[x].second &amp;&amp; p[x].second == p[i].second))
+      continue;
+    if (p[x].first == p[i].first) {
+      int cdd = abs(p[x].second-p[i].second);
+      if (p[x].second &lt; p[i].second) {
+        if (c1d &gt; cdd) {
+          c1d = cdd;
+          c1i = i;
+        }
+      }
+      else {
+        if (c2d &gt; cdd) {
+          c2d = cdd;
+          c2i = i;
+        }
+      }
+    }
+    else {
+      int cdd = abs(p[x].first-p[i].first);
+      if (p[x].first &lt; p[i].first) {
+        if (c1d &gt; cdd) {
+          c1d = cdd;
+          c1i = i;
+        }
+      }
+      else {
+        if (c2d &gt; cdd) {
+          c2d = cdd;
+          c2i = i;
+        }
+      }
+    }
+  }
+  bool ok = true;
+  if (c1i != -1) {
+    for (int i = 0; i &lt; n; i++) {
+      if (i == x)
+        continue;
+      if (p[x].first == p[i].first &amp;&amp; p[x].first == p[c1i].first)
+        if (p[x].second &lt; p[i].second &amp;&amp; p[i].second &lt; p[c1i].second)
+          goto VELOCIRAPTOR;
+      else if (p[x].second == p[i].second &amp;&amp; p[x].second == p[c1i].second)
+        if (p[x].first &lt; p[i].first &amp;&amp; p[i].first &lt; p[c1i].first)
+          goto VELOCIRAPTOR;
+    }
+  }
+  if (c2i != -1) {
+    for (int i = 0; i &lt; n; i++) {
+      if (i == x)
+        continue;
+      if (p[x].first == p[i].first &amp;&amp; p[x].first == p[c2i].first)
+        if (p[x].second &gt; p[i].second &amp;&amp; p[i].second &gt; p[c2i].second)
+          goto VELOCIRAPTOR;
+      else if (p[x].second == p[i].second &amp;&amp; p[x].second == p[c2i].second)
+        if (p[x].first &gt; p[i].first &amp;&amp; p[i].first &gt; p[c2i].first)
+          goto VELOCIRAPTOR;
+    }
+  }
+  if (c1i != -1 &amp;&amp; dfs(c1i,v))
+    return true;
+  if (c2i != -1 &amp;&amp; dfs(c2i,v))
+    return true;
+  VELOCIRAPTOR:
+  v.pop_back();
+  vis[x] = false;
+  return false;
+}
+
+int main() {
+  int t = 1;
+  while (cin &gt;&gt; n &amp;&amp; n) {
+    memset(adj, 0, sizeof adj);
+    memset(vis, 0, sizeof vis);
+    cout &lt;&lt; &quot;Polygon #&quot; &lt;&lt; t++ &lt;&lt; &quot;:&quot;;
+    for (int i = 0; i &lt; n; i++)
+      cin &gt;&gt; p[i].first &gt;&gt; p[i].second;
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = 0; j &lt; n; j++) {
+        if (i == j)
+          continue;
+        if (p[i].first == p[j].first || p[i].second == p[j].second)
+          adj[i][j] = adj[j][i] = true;
+      }
+    }
+    int my = 42424242, mx = 42424242, mi = -1;
+    for (int i = 0; i &lt; n; i++) {
+      if (my &gt; p[i].second) {
+        my = p[i].second;
+        mx = p[i].first;
+        mi = i;
+      }
+      else if (my == p[i].second &amp;&amp; mx &gt; p[i].first) {
+        mx = p[i].first;
+        mi = i;
+      }
+    }
+    int mx2 = 42424242, mi2 = -1;
+    for (int i = 0; i &lt; n; i++) {
+      if (i == mi)
+        continue;
+      if (p[i].second == p[mi].second &amp;&amp; mx2 &gt; p[i].first) {
+        mx2 = p[i].first;
+        mi2 = i;
+      }
+    }
+    vector&lt;int&gt; v;
+    v.push_back(mi);
+    vis[mi] = true;
+    dfs(mi2,v);
+    for (int i = 0; i &lt; v.size(); i++)
+      cout &lt;&lt; &quot; &quot; &lt;&lt; v[i]+1;
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

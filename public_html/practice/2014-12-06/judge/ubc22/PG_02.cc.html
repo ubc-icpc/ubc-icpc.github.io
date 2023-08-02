@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;queue&gt;
+#include&lt;utility&gt;
+using namespace std;
+
+struct node {
+  unsigned long long total;
+  unsigned long long sun;
+  int at;
+  bool operator&lt;(const node&amp; b) const {
+    if (total != b.total) return total &gt; b.total;
+    if (sun != b.sun) return sun &gt; b.sun;
+    return at &gt; b.at;
+  }
+};
+
+int main () {
+  int S, N, E;
+  cin &gt;&gt; S &gt;&gt; N &gt;&gt; E;
+  vector&lt;vector&lt;node&gt; &gt; graph(N);
+  while (E--) {
+    int p1, p2, d, s;
+    cin &gt;&gt; p1 &gt;&gt; p2 &gt;&gt; d &gt;&gt; s;
+    node temp;
+    temp.total = d;
+    temp.sun = s;
+    temp.at = p1;
+    graph[p2].push_back(temp);
+    node temp2;
+    temp2.total = d;
+    temp2.sun = s;
+    temp2.at = p2;
+    graph[p1].push_back(temp2);
+  }
+  int res = -1;
+  priority_queue&lt;node&gt; pq;
+  vector&lt;bool&gt; visited(N, false);
+  vector&lt;pair&lt;int, int&gt; &gt; min(N);
+  node start;
+  start.at = 0;
+  start.sun = 0;
+  start.total = 0;
+  pq.push(start);
+  while (!pq.empty()) {
+    node top = pq.top();
+    pq.pop();
+    if (top.sun &gt; S) continue;
+    if (!visited[top.at]) {
+      visited[top.at] = true;
+      min[top.at] = make_pair(top.total, top.sun);
+    } else {
+      bool f = true;
+      if (min[top.at].first &gt; top.total) {
+	f = false;
+	min[top.at].first = top.total;
+      }
+      if (min[top.at].second &gt; top.sun) {
+	f = false;
+	min[top.at].second = top.sun;
+      }
+      if (f) continue;
+    }
+    if (top.at == N - 1) {
+      res = top.total;
+      break;
+    }
+    for (node n : graph[top.at]) {
+      node temp;
+      temp.at = n.at;
+      temp.total = top.total + n.total;
+      temp.sun = top.sun;
+      if (n.sun == 1) temp.sun += n.total;
+      pq.push(temp);
+    }
+  }
+  cout &lt;&lt; res &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

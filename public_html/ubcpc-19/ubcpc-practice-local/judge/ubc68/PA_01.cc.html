@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(false);
+	string A; cin &gt;&gt; A; const unsigned int size_A = A.size();
+	string B; cin &gt;&gt; B; const unsigned int size_B = B.size();
+	char str[size_A+size_B+1]; memset(str, 0, sizeof(str));
+	for(unsigned i = 0; i &lt; size_B; i++) {
+		str[i] = B[i];
+	}
+	for(unsigned i = 0; i &lt; size_A; i++) {
+		str[i+size_B] = A[i];
+	}
+	str[size_B] = tolower(str[size_B]);
+	cout &lt;&lt; str &lt;&lt; &quot;\n&quot;;
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

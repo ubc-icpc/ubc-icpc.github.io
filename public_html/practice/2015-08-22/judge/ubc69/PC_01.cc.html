@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+#define INF 1000000
+
+using namespace std;
+
+int min(int p[]){
+	int n=0;
+	for(int i=0;i&lt;5;i++)
+		if(p[i]&lt;p[n]) n=i;
+	return n;
+}
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		int p[5];
+		for(int j=0;j&lt;5;j++)
+			cin&gt;&gt;p[j];
+		cout&lt;&lt;&quot;Pentagon #&quot;&lt;&lt;i&lt;&lt;':'&lt;&lt;endl;
+		
+		while(p[0]&lt;0||p[1]&lt;0||p[2]&lt;0||p[3]&lt;0||p[4]&lt;0){
+			int low = min(p);
+			if(p[low]&gt;0) break;
+			p[low] = -p[low];
+			p[(5+low-1)%5]-=p[low];
+			p[(low+1)%5]-=p[low];
+		}
+		cout&lt;&lt;p[0]&lt;&lt;' '&lt;&lt;p[1]&lt;&lt;' '&lt;&lt;p[2]&lt;&lt;' '&lt;&lt;p[3]&lt;&lt;' '&lt;&lt;p[4]&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

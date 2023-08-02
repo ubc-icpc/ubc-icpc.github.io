@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; piii;
+
+int MAX, N, M, A[1005][1005];
+bool vis[1005][1005];
+int dx[] = {0, 0, 1, -1};
+int dy[] = {1, -1, 0, 0};
+priority_queue&lt;piii&gt; q;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; N &gt;&gt; M;
+  for (int i = 0; i &lt; N; ++i)
+    for (int j = 0; j &lt; M; ++j)
+      cin &gt;&gt; A[i][j];
+
+  q.push(piii(0, pii(0, 0)));
+
+  while (!q.empty()) {
+    int cost = -q.top().first;
+    int x = q.top().second.first;
+    int y = q.top().second.second;
+    q.pop();
+    if (vis[x][y]) continue;
+    vis[x][y] = true;
+    MAX = max(MAX, cost);
+    if (x == N-1 &amp;&amp; y == M-1) break;
+    for (int i = 0; i &lt; 4; ++i) {
+      int nx = x + dx[i];
+      int ny = y + dy[i];
+      if (nx &lt; 0 || nx &gt;= N || ny &lt; 0 || ny &gt;= M)
+        continue;
+      int nc = min(A[x][y] - A[nx][ny], 0);
+      q.push(piii(nc, pii(nx, ny)));
+    }
+  }
+
+  cout &lt;&lt; MAX &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

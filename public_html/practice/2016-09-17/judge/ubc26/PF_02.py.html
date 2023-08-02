@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import re
+import itertools
+import bisect
+C = itertools.chain.from_iterable
+
+def ws(s):
+    n = len(s)
+    for i in xrange(0, n):
+        for j in xrange(i+1, n+1):
+            yield s[i:j]
+
+r = re.compile(r'\b\d+\b')
+for t in xrange(1, input()+1):
+    k, w = map(int, raw_input().split(' '))
+    i, s = 0, w  # i: complete, s: max within window
+    mem = []
+    for _ in xrange(k):
+        line = raw_input()
+        c = True
+        while c:
+            c = False
+            for z in mem:
+                if z == i + 1:
+                    i, s = i + 1, s + 1
+                    c = True
+            for j in xrange(i, s+1):
+                if line.find(str(j)) != -1 and j not in mem:
+                    mem.append(j)
+                    mem.sort()
+                    mem = mem[-(w+2):]
+                    c = True
+
+    #print(mem)
+    print &quot;Case {}: {} {}&quot;.format(t, i, mem[-1] if mem else i)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

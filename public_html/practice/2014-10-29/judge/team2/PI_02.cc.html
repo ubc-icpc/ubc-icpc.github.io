@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdlib&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+typedef long int ll;
+
+int main() {
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        int n;
+        scanf(&quot;%d&quot;, &amp;n);
+        vector&lt;ll&gt; coords;
+        for (int i = 0; i &lt; n; ++i) {
+            ll x;
+            scanf(&quot;%ld&quot;, &amp;x);
+            coords.push_back(x&lt;&lt;2);
+        }
+        sort(coords.begin(), coords.end());
+        ll minmax = 1LL&lt;&lt;60;
+        for (int i = 1; i &lt; n; ++i) {
+            ll lwh = (coords[0] + coords[i-1]) / 2;
+            ll rwh = (coords[i] + coords[n-1]) / 2;
+            ll mid = (lwh + rwh) / 2;
+            int midindex = n / 2;
+            for (int j = 0; j &lt; n; ++j) {
+                if (coords[j] &gt; mid) {
+                    midindex = j;
+                    break;
+                }
+            }
+            ll currmax = coords[n-1] + lwh - rwh - coords[i];
+            if (midindex &gt; 0) {
+                currmax = max(currmax, coords[n-1] + coords[midindex - 1] - lwh - rwh);
+            }
+            if (midindex &lt; n) {
+                currmax = max(currmax, lwh + rwh - coords[0] - coords[midindex]);
+            }
+            currmax = max(currmax, coords[midindex - 1] - coords[0]);
+            currmax = max(currmax, coords[n - 1] - coords[midindex]);
+            minmax = min(currmax, minmax);
+        }
+        minmax &gt;&gt;= 1;
+        printf(&quot;%ld\n&quot;, minmax - (minmax / 2));
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

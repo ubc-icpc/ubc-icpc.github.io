@@ -1,0 +1,2799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>UBC ICPC Practices</title>
+
+<style>
+body {
+    padding: 0 0 24px 0;
+    margin: 0;
+    line-height: 1.6em;
+    font-size: 16px;
+    font-family: Georgia, serif;
+    color: #333355;
+}
+
+h1, h2, h3 {
+    padding: 0;
+    margin: 0;
+    line-height: 1.3em;
+    color: black;
+}
+
+h1 {
+    padding: 24px;
+}
+
+a:link {
+    color: #0055BB;
+}
+
+a:visited {
+    color: #223355;
+}
+
+/* Sidebar styles */
+#sidebar {
+    padding: 0 24px;
+}
+
+.box {
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+}
+
+ul {
+    margin: 8px 0 0 0;
+    padding: 0 0 0 28px;
+    list-style-position: outside;
+    list-style-type: square;
+}
+
+/* Main section styles */
+#practices ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#practices ul:first-of-type li:first-child {
+    border-color: #66AAEE;
+    background: #DDF4FF;
+	font-weight: bold;
+}
+
+#practices .officialACM.officialACM.officialACM {
+    border-color: #EE6666;
+    background: #FFDDDD;
+}
+
+#practices .tryout.tryout.tryout {
+    border-color: #33AA33;
+    background: #E5F8E5;
+}
+
+#practices .noPractice.noPractice.noPractice {
+    font-weight: normal;
+}
+
+.officialACM,
+.officialACM a {
+	color: #CC1111;
+}
+
+.tryout,
+.tryout a {
+    color: #006611;
+}
+
+.noPractice,
+.noPractice a {
+	color: #BBBBBB;
+}
+
+.practice-date {
+    display: block;
+}
+
+/* One column layout */
+@media screen and (max-width: 599px) {
+    h2 {
+        padding: 12px 24px;
+    }
+
+    #practices li,
+    #practices .noPractice.noPractice.noPractice {
+        border: 0;
+        border-bottom: 1px solid #DDD;
+        padding: 8px 24px;
+        margin: 0;
+        background: transparent;
+        font-size: 14px;
+    }
+
+    #practices li .practice-date {
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+
+    #practices ul:first-of-type li:first-child,
+    #practices .officialACM,
+    #practices .tryout {
+        border-width: 2px 0;
+        border-style: solid;
+        margin: -1px 0 0 0;
+    }
+
+    #practices_footer {
+        padding: 0 24px;
+    }
+}
+
+/* Two column layout */
+@media screen and (min-width: 600px) {
+    h2 {
+        padding: 12px 0;
+    }
+
+    h2:first-child {
+        padding-top: 0;
+    }
+
+    #practices ul:first-of-type li:first-child,
+    #practices .officialACM,
+    #practices .tryout {
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 8px;
+        padding: 8px 16px;
+        margin: 8px 0;
+    }
+
+    #practices ul:first-of-type li:first-child {
+        border-width: 2px;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 1279px) {
+    #sidebar {
+        float: right;
+        width: 280px;
+    }
+
+    #practices {
+        margin-right: 304px;
+        padding: 0 24px;
+    }
+
+    #practices li,
+    #practices .noPractice.noPractice.noPractice {
+        border: 0;
+        background: inherit;
+        padding: 0;
+        margin: 12px 17px;
+        font-size: 14px;
+        line-height: 1.4em;
+    }
+
+    #practices li .practice-date {
+        font-size: 16px;
+        line-height: 1.6em;
+    }
+}
+
+/* Three column layout */
+@media screen and (min-width: 1280px) {
+    #sidebar {
+        float: right;
+        width: 400px;
+    }
+
+    #practices {
+        margin-right: 424px;
+        padding: 0 24px;
+    }
+
+    #practices li,
+    #practices .noPractice.noPractice.noPractice {
+        border: 0;
+        background: inherit;
+        padding: 0;
+        margin: 0 17px;
+    }
+
+    .practice-date {
+        display: inline-block;
+        width: 180px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>UBC ICPC Practices</h1>
+
+<div id="sidebar">
+
+
+    <div class="box">
+    <h3>Links </h3>
+    <ul>
+    <!--<li><a href="mailto:">Contact us</a>
+	</li> -->
+    <li><a href="https://sites.google.com/site/ubcprogrammingteam/">Google site</a> (<a href="https://sites.google.com/site/ubcprogrammingteam/history">History of ICPC at UBC</a>)</li>
+    <li><a href="https://www.facebook.com/groups/831817450248984/">Facebook Group</a></li>
+    <li><a href="https://discord.gg/jfZHF7J">Discord Channel</a></li>
+    <li><a href="https://codeforces.com/group/L0zlhp0AHw/contests">Codeforces Group</a></li>
+    </ul>
+    </div>
+
+    <div class="box">
+    <h3> Useful UBC Resources</h3>
+    <ul>
+    <li><a href="https://www.students.cs.ubc.ca/~cs-490/sec202/notes/intro/io-containers.pdf">C++/Java IO Basics and Containers</a></li>
+    <li><a href="https://www.students.cs.ubc.ca/~cs-490/sec202/notes/graph/graphbasic.pdf">Graph Basics</a></li>
+    <li><a href="https://www.students.cs.ubc.ca/~cs-490/2018W2/">CPSC 490 - Problem Solving in Computer Science</a></li>
+    <li><a href="https://www.dropbox.com/s/od4af7tgmmk85hh/codearchive.cpp?dl=0">UBC Code Archive</a></li>
+    </ul>
+    </div>
+
+    <div class="box">
+    <h3> Useful External Resources </h3>
+    <ul>
+    <li><a href="https://www.topcoder.com/community/competitive-programming/tutorials/">Topcoder Tutorials</a></li>
+    <li><a href="https://www.cp-algorithms.com">cp-algorithms</a></li>
+    </ul>
+    </div>
+
+    <div class="box">
+    <h3>The Brute Force Club Classics</h3>
+    <ul>
+    <li><a href="public_html/practice/level1.html">Level 1: Фрукт Борщ and Brute Force</a></li>
+    <li><a href="public_html/practice/level2.html">Level 2: J for Jeometry</a></li>
+    <li><a>Level 3: ??????</a></li>
+    <li><a>Level 4: ??????</a></li>
+    <li><a>Level 5: ??????</a></li>
+    <li><a>Level 6: ??????</a></li>
+    </ul>
+    </div>
+
+    <div class="box">
+    <h3>Other Themed Contests</h3>
+    <ul>
+    <li><a href="http://vjudge.net/contest/17452">Flow</a> (external website)</li>
+    <li><a href="https://atcoder.jp/contests/dp">Educational DP Contest</a> (AtCoder)</li>
+    <li><a href="https://vjudge.net/contest/192225">DP Contest 1</a> (external website)</li>
+    <li><a href="https://vjudge.net/contest/100861">DP Contest 2</a> (external website)</li>
+    <li><a href="https://codeforces.com/group/L0zlhp0AHw/contest/231311">Segtree 1</a> (Codeforces)</li>
+    <li><a href="https://codeforces.com/group/L0zlhp0AHw/contest/231313">Segtree 2</a> (Codeforces)</li>
+    <li><a href="https://codeforces.com/group/L0zlhp0AHw/contest/261237">Number Theory 1</a> (Codeforces)</li>
+    <li><a href="https://codeforces.com/group/L0zlhp0AHw/contest/260525">Strings 1</a> (Codeforces)</li>
+    <li><a href="https://codeforces.com/group/L0zlhp0AHw/contest/261337">DP on Trees</a> (Codeforces)</li>
+    </ul>
+    </div>
+
+    <div class="box">
+    <h3> Other Stuff </h3>
+    <ul>
+    <li><a href="https://docs.google.com/spreadsheets/d/1iqZVJWpJ27qzeRF-mhGpzBAUjUa22P9BE169B-idUrU/edit?usp=sharing">List of practices by region.</a></li>
+    </ul>
+    </div>
+
+</div>
+
+<div id="practices">
+    <h2>2021</h2>
+    <ul>
+
+    <li>
+        <span class="practice-date"><a href="https://atcoder.jp/contests/abc217">Wed Sep 08, 2021</a></span>
+        Atcoder Beginner Contest 217 (ABC 217)
+    </li>
+
+    <li>
+        <span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102916">Sat May 08, 2021</a></span>
+        XXI Open Cup, Grand Prix of Samara 2020
+    </li>
+    <li>
+        <span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102875">Sat May 01, 2021</a></span>
+        Jiangsu Provincial 2020
+    </li>
+    <li>
+        <span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102803">Sat Apr 17, 2021</a></span>
+        Heilongjiang Provincial 2020
+    </li>
+    <li>
+        <span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102832">Sat Apr 10, 2021</a></span>
+        China Collegiate Programming Contest Changchun Site 2020 (upsolving)
+    </li>
+    <li>
+        <span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102832">Sat Apr 03, 2021</a></span>
+        China Collegiate Programming Contest Changchun Site 2020
+    </li>
+
+    <li>
+        <span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102823">Sat Mar 27, 2021</a></span>
+        China Collegiate Programming Contest Guilin Site 2018 (upsolving)
+    </li>
+    <li>
+        <span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102823">Sat Mar 20, 2021</a></span>
+        China Collegiate Programming Contest Guilin Site 2018 (CCPC)
+        + <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1367">Codeforces Round 650 (div 3)</a>
+    </li>
+    <li>
+        <span class="practice-date"><a href="https://ccpc21d1.kattis.com">Sat Mar 13, 2021</a></span>
+        Calgary Collegiate Programming Contest 2021 (CCPC)
+    </li>
+
+    <li class="officialACM">
+        <span class="practice-date">Sat Mar 06, 2021</span>
+        Pacific Northwest Regional (PACNW)
+        Scoreboards:
+        <a href="http://www.acmicpc-pacnw.org/scoreboard/2020/index1.html">div1</a>
+        <a href="http://www.acmicpc-pacnw.org/scoreboard/2020/index2.html">div2</a>
+    </li>
+    <li class="officialACM">
+        <span class="practice-date">Sat Feb 27, 2021</span>
+        System Testing for PACNW
+    </li>
+    <li class="noPractice">
+        <span class="practice-date">Sat Feb 20, 2021</span>
+        Putnam
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102821">Sat Feb 13, 2021</a></span>
+        Sichuan Provincial 2019 (Codeforces)
+        + <a href="https://codeforces.com/group/L0zlhp0AHw/contest/101653">div 2: PACNW 2014 Div 2</a>
+    </li>
+
+    <li class="officialACM">
+        <span class="practice-date"> <a href="https://naq20.kattis.com">Thu Feb 11, 2021</a></span>
+        NAQ 2020 (Kattis)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/nar20practice11">Sat Feb 06, 2021</a></span>
+        NA Practice 11 (Asia Singapore 2018)
+        + <a href="https://codeforces.com/group/L0zlhp0AHw/contest/315355">div 2: PACNW 2016 Div 2</a>
+    </li>
+
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100553">Sat Jan 30, 2021</a></span>
+        NEERC 2014 (Codeforces)
+        + <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100819">div 2: PACNW 2015 Div 2</a>
+    </li>
+
+    <li>
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/nar20practice7">Sat Jan 23, 2021</a></span>
+        NA Practice 7 (NCPC 2017)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/nar20practice5">Sat Jan 16, 2021</a></span>
+        NA Practice 5 (Bergen Open 2019)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100134">Sat Jan 09, 2021</a></span>
+        NEERC 2012 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100685">Sat Jan 02, 2021</a></span>
+        NEERC Moscow Subregional 2012 (Codeforces)
+    </li>
+
+    </ul>
+    <h2>2020</h2>
+    <ul>
+
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100519">Sat Nov 20, 2020</a></span>
+        NEERC Moscow Subregional 2014 (Codeforces)
+    </li>
+    <li class="tryout">
+        <span class="practice-date"> <a href="public_html/ubcpc-20.html">Sat Oct 24, 2020</a></span>
+        UBCPC 2020 (Kattis)
+    </li>
+    <li class="tryout">
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/cm7wtb">Sat Oct 17, 2020</a></span>
+        Tryouts 2 / UBCPC Warmup (Kattis)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100543">Sat Oct 10, 2020</a></span>
+        CERC 2014 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100543">Sat Oct 3, 2020</a></span>
+        CERC 2014 (Codeforces)
+        + <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1133">div2: Codeforces Round 544</a>
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://vjudge.net/contest/398044">Sat Sept 29, 2020</a></span>
+        SFU Practice (vjudge)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100825">Sat Sept 26, 2020</a></span>
+        ECNA 2015 (Codeforces)
+        + <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1367">div2: Codeforces Round 650</a>
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://vjudge.net/contest/395829">Sat Sept 22, 2020</a></span>
+        SFU Practice (vjudge)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102021">Sat Sept 19, 2020</a></span>
+        GCPC 2018 (Codeforces)
+        + <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1367">div2: Codeforces Round 650</a>
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100325">Sat Aug 8, 2020</a></span>
+        ASC 20 (Codeforces)
+        + <a href="https://atcoder.jp/contests/abc160">div2: Atcoder Beginner Contest 160</a>
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100324">Sat Aug 1, 2020</a></span>
+        ASC 19 (Codeforces)
+        + <a href="https://atcoder.jp/contests/abc159">div2: Atcoder Beginner Contest 159</a>
+    </li>
+    <li class="noPractice">
+        <span class="practice-date"> Sat Jul 25, 2020</span>
+        Facebook Hacker Cup
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100215">Sat Jul 18, 2020</a></span>
+        ASC 12 (Codeforces)
+    </li>
+    <li class="noPractice">
+        <span class="practice-date"> Sat Jul 11, 2020</span>
+        no practice
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100213">Sat Jul 4, 2020</a></span>
+        ASC 11 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100212">Sat Jun 27, 2020</a></span>
+        ASC 10 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100211">Sat Jun 20, 2020</a></span>
+        ASC 9 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100200">Sat Jun 13, 2020</a></span>
+        ASC 4 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102392">Sat Jun 6, 2020</a></span>
+        SEERC 2019 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/ntqceu">Sat May 30, 2020</a></span>
+        SWERC 2012 (Kattis)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/101561">Sat May 23, 2020</a></span>
+        SWERC 2011 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102500">Sat May 9, 2020</a></span>
+        NWERC 2019 (Codeforces)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://maps20.kattis.com/">Sat Mar 28, 2020</a></span>
+        Mount Allison Programming Showdown 2020 (MAPS 2020) (+ NAPC day -1 Upsolving)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://atcoder.jp/contests/abc158">Tue Mar 17, 2020</a></span>
+        AtCoder Beginner Contest 158
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://ccpc20open.kattis.com/standings">Sat Mar 14, 
+2020</a></span>
+        Calgary Collegiate Programming Contest (register by Wednesday!)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://atcoder.jp/contests/abc157">Tue Mar 10, 2020</a></span>
+        AtCoder Beginner Contest 157
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102452">Sat Mar 7, 2020</a></span>
+        Asia Hong Kong Regional 2019 (+ <a href="https://atcoder.jp/contests/abc155">AtCoder Beginner Contest 155</a>)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://atcoder.jp/contests/abc155">Tue Mar 3, 2020</a></span>
+        AtCoder Beginner Contest 155 (+ Upsolving GP of Gomel XX)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/blog/entry/73947">Sat Feb 29, 2020</a></span>
+        GP of Gomel XX (+ <a href="https://atcoder.jp/contests/abc156">AtCoder Beginner Contest 156</a>)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://atcoder.jp/contests/abc156">Tue Feb 25, 2020</a></span>
+        AtCoder Beginner Contest 156
+    </li>
+    <li class="officialACM">
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/nac20open">Sat Feb 22, 2020</a></span>
+        ICPC North America Championship (NAC 2020)
+    </li>
+    <li class="noPractice">
+		<span class="practice-date">Tues Feb 18, 2019</span> No Practice (Flying to Atlanta for NAC 2020!)
+	</li>
+    <li>
+        <span class="practice-date"> <a href=" http://www.usaco.org/index.php?page=dec19results">Sat Feb 15, 2020</a></span>
+        USACO December 2019 (<a href="https://codeforces.com/gym/102511">World Finals 2019</a>)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codingcompetitions.withgoogle.com/codejamio/round/0000000000050fc5">Tue Feb 11, 2020</a></span>
+        Code Jam to I/O for Women 2019
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100729">Sat Feb 8, 2020</a></span>
+        NWERC 2011
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://prognova.io/2020/">Fri Feb 7, 2020</a></span>
+        ProgNova 2020
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/oymwfo/">Tue Feb 4, 2020</a></span>
+        ProgNova 2018
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://open.kattis.com/contests/nac20practice03">Sat Feb 1, 2020</a></span>
+        Asia Danang Regional 2019
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100722">Fri Jan 31, 2020</a></span>
+        NWERC 2006
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1288">Tue Jan 28, 2020</a></span>
+        Educational Codeforces Round 80
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/101612">Sat Jan 25, 2020</a></span>
+        NEERC Northern Subregional 2017 
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/101620">Fri Jan 24, 2020</a></span>
+        CERC 2017
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1278">Wed Jan 22, 2020</a></span>
+        Educational Codeforces Round 78
+        (Upsolving GP of Korea XVIII)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100610">Sat Jan 18, 2020</a></span>
+        NEERC Northern Subregional 2010 
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/blog/entry/57528">Fri Jan 17, 2020</a></span>
+        GP of Korea XVIII (Opencup)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1278">Wed Jan 15, 2020</a></span>
+        Educational Codeforces Round 78 (Snow day)
+        (Upsolving GP of Gomel XVIII)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/100801">Sat Jan 11, 2020</a></span>
+        NEERC Northern Subregional 2015 
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/blog/entry/57846">Fri Jan 10, 2020</a></span>
+        GP of Gomel XVIII 
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1140">Wed Jan 8, 2020</a></span>
+        Educational Codeforces Round 42
+        (Upsolving GP of Daejeon XIX)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://atcoder.jp/contests/dp">Sat Jan 4, 2020</a></span>
+        Educational DP round (Atcoder)
+        (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/102201">Opencup XIX GP of Daejeon 2019</a>)
+    </li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Jan 1, 2019</span>
+		No Practice (Happy New Year!)
+	</li>
+    </ul>
+    <h2>2019</h2>
+    <ul>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 28, 2019</span>
+		No Practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Dec 25, 2019</span>
+		No Practice (Christmas)
+	</li>
+    <li>
+        <span class="practice-date"> <a href="http://www.usaco.org/index.php?page=feb19results">Sat Dec 21, 2019</a></span>
+        USACO Feb 2019 (continued)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="http://www.usaco.org/index.php?page=feb19results">Wed Dec 18, 2019</a></span>
+        USACO Feb 2019
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1276">Sat Dec 14, 2019</a></span>
+        Codeforces Round 606 (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/1276">Div. 2</a>) (+ more <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102341">upsolving</a>)
+    </li>
+    <li>
+        <span class="practice-date"> <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102341">Wed Dec 11, 2019</a></span>
+        Radewoosh+mnbvmar Contest (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/102416">Div 2</a> Edinburgh Contest 2019)
+    </li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 07, 2019</span>
+		No Practice (Putnam!)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/dp">Wed Dec 4, 2019</a></span>
+        Educational DP practice (Atcoder)(and <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102391">Opencup XX GP Korea</a> (Codeforces))
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102428">Sat Nov 30, 2019</a></span>
+        2019 ACM-ICPC Latin American Regional Programming Contest (Latam 2019) (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/level2.html">Wed Nov 27, 2019</a></span>
+		Geometry Practice (aka Classics Level 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://cpc.cpsc.ucalgary.ca/acpc/2019/contest/div1/index.php">Sat Nov 23, 2019</a></span>
+		Alberta Collegiate Programming Contest 2019 (ACPC 2019) (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/level2.html">Wed Nov 20, 2019</a></span>
+		Geometry Practice (aka Classics Level 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102411">Sat Nov 16, 2019</a></span>
+		ICPC 2019-2020 North-Western Russia Regional Contest (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1215">Wed Nov 13, 2019</a></span>
+		Codeforces Round #585 (Div. 2) 
+	</li>
+    <li class="officialACM">
+		<span class="practice-date"><a href="http://acmicpc-pacnw.org/scoreboard/2019/index1.html">Sat Nov 09, 2019</a></span>
+		ICPC Pacific Northwest Regional Contest 2019 
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Nov 06, 2019</span>
+		No Practice (Rest for regionals)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/hrb632">Sat Nov 02, 2019</a></span>
+		ECNA 2019 (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/100819">Div 2</a> PacNW 2015 (Div. 2))
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/dp">Wed Oct 30, 2019</a></span>
+		Educational DP contest (AtCoder) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/739">Div 1</a> Codeforces Round #381) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101991">Sat Oct 26, 2019</a></span>
+		Arab Collegiate Programming Contest 2018 (ACPC)
+	</li>
+    <li>
+		<span class="practice-date"><a>Wed Oct 23, 2019</a></span>
+		Upsolving/PACNW discussion! (<a href="public_html/practice/2019-10-23-div2.html">Div 1 baseline test</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101986">Sat Oct 19, 2019</a></span>
+		Asia Tsukuba Regional 2017 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/tzsvo6/standings">Wed Oct 16, 2019</a></span>
+		KTH Challenge 2018 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101196">Sat Oct 12, 2019</a></span>
+		ECNA 2016 (and Opencup XX Grand Prix of Korea) 
+	</li> <!--http://official.contest.yandex.ru/opencupXX/contest/14556/enter-->
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/he43gg/standings">Wed Oct 09, 2019</a></span>
+		KTH Challenge 2019 
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="https://naq19.kattis.com">Sat Oct 05, 2019</a></span>
+		UBC Tryout II 2019 (North American Qualifiers 2019) (<a href="public_html/practice/2019-10-05/naq19.html">results</a>) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1217">Wed Oct 01, 2019</a></span>
+		Codeforces Educational Round #72 
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/ubcpc-19.html">Sat Sep 28, 2019</a></span>
+		UBC Tryout I 2019 UBC Programming Contest 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1221">Wed Sep 25, 2019</a></span>
+		Codeforces Educational Round #73 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102307">Sat Sep 21, 2019</a></span>
+		2019 ICPC Universidad Nacional de Colombia Programming Contest (and Opencup XX Grand Prix of SPb)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1107">Wed Sep 18, 2019</a></span>
+		Codeforces Educational Round #59 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100488">Sat Sep 14, 2019</a></span>
+		Samara 2014 (Codeforces) (Div 1. <a href="https://www.urionlinejudge.com.br/judge/en/challenges/contest/470">Brazilian Maratona de Programa &amp; ccedil &amp; atildeo 2019 Elim Stage</a>) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100488">Wed Sep 11, 2019</a></span>
+		Samara 2014 (Codeforces) (Div 1. <a href="https://codeforces.com/group/L0zlhp0AHw/contest/1214">Codeforces Round #583</a>) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/hello-2019W.html">Sat Sep 7, 2019</a></span>
+		Hello 2019W (Div 1: <a href="https://codeforces.com/group/L0zlhp0AHw/contest/102319">UBC Summer Contest 2018 </a>, <a href="public_html/practice/2019-09-07/solutions.pdf">solution sketches</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/hello-2019W.html">Wed Sep 4, 2019</a></span>
+		Hello 2019W (Div 1: <a href="https://atcoder.jp/contests/agc035">Atcoder Grand Contest #035)</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102302">Sat Aug 31, 2019</a></span>
+		USP-ICMC 2019 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/jsc2019-qual">Wed Aug 28, 2019</a></span>
+		JSC 2019 (Atcoder) (<a href="https://not-522.appspot.com/contest/5687109711036416">Scoreboard</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102297">Sat Aug 23, 2019</a></span>
+		UCF Local 2015 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/exawizards2019">Wed Aug 21, 2019</a></span>
+		AtCoder Exawizards 2019 (<a href="https://not-522.appspot.com/contest/6495577577619456">Scoreboard</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102277">Sat Aug 17, 2019</a></span>
+		UCF Local 2019 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/abc137">Wed Aug 14, 2019</a></span>
+		AtCoder Beginner Contest 137 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://cryp.toc.tf/challenges">Sat Aug 10, 2019</a></span>
+		CryptoCTF 2019 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/diverta2019-2">Wed Aug 7, 2019</a></span>
+		diverta 2019 Contest 2 (AtCoder) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101875">Sat Aug 3, 2019</a></span>
+		USP-ICMC (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/dp">Wed Jul 30, 2019</a></span>
+		Educational DP contest (AtCoder) cont. 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/dp">Sat Jul 27, 2019</a></span>
+		Educational DP contest (AtCoder) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1196">Wed Jul 24, 2019</a></span>
+		Codeforces Round #575 (Div. 3)  
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102263">Sat Jul 20, 2019</a></span>
+		ArabellaCPC 2019 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://not-522.appspot.com/contest/6564336816357376">Wed Jul 17, 2019</a></span>
+		AtCoder Beginner Contest 133 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1173">Sat Jul 12, 2019</a></span>
+		Codeforces Round #564 (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/1173">Div 1</a>) + Facebook Hacker Cup Round 2 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1175">Wed Jul 10, 2019</a></span>
+		Educational round 66 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102007">Sat Jul 06, 2019</a></span>
+		BAPC 2018 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1155">Wed Jun 05, 2019</a></span>
+		Educational Round #63 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://sparta.ucfprogrammingteam.org/index.php/index.php">Sat Jun 01, 2019</a></span>
+		Stanford Local ACM Programming Contest 2010 hosted by UCF (<a href="public_html/practice/2019-06-01/scoreboard.html">Scoreboard</a>) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/724">Wed May 29, 2019</a></span>
+		Intel Code Challenge Final Round (Div 1+2 Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102155">Sat May 25, 2019</a></span>
+		Petrozavodsk, Yandex Cup 2018 (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/1167">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/618">Wed May 22, 2019</a></span>
+		Wunder Fund Round 2016 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102006">Sat May 18, 2019</a></span>
+		SCPC 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/agc033">Wed May 15, 2019</a></span>
+		AtCoder Grand Contest 33
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/odxtjc">Sat May 11, 2019</a></span>
+		RMPC 2018 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1156">Wed May 8, 2019</a></span>
+		Educational Codeforces #64
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://utipc19.kattis.com/">Sat May 4, 2019</a></span>
+		UT Invitational 2019
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/920">Wed May 1, 2019</a></span>
+		Educational Codeforces #37
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100971">Sat, Apr 27, 2019</a></span>
+		Samara 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/contests/1146">Sat, Apr 20, 2019</a></span>
+		Forethought Future Cup (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100283">Sat, Apr 13, 2019</a></span>
+		ECPC 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codingcompetitions.withgoogle.com/codejam/round/0000000000051705">Sat, Apr 6, 2019</a></span>
+		Google Code Jam 2019, Qualifications
+	</li>
+    <li class="officialACM">
+		<span class="practice-date"><a href="https://icpc.kattis.com/problems">Thu Apr 4, 2019</a></span>
+		World Finals 2019
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/67">Wed Apr 3, 2019</a></span>
+		Manthan 2011 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/231311">Sat, Mar 30, 2019</a></span>
+		segtree list 1 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100518">Wed, Mar 27, 2019</a></span>
+		Petrozavodsk, ASC 44 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/309">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/group/L0zlhp0AHw/contest/101221">Sat, Mar 23, 2019</a></span>
+		World Finals 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100518">Wed, Mar 20, 2019</a></span>
+		Petrozavodsk, ASC 44 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/475">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100851">Sat, Mar 16, 2019</a></span>
+		NEERC 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101175">Wed, Mar 13, 2019</a></span>
+		World Finals 2011 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/291">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/ccpc19open">Sat, Mar 9, 2019</a></span>
+		CCPC 2019 (Kattis) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/101206">Div. 1</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100956">Wed Mar 6, 2019</a></span>
+		Petrozavodsk, SPb SU + SPb AU 2016 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/177">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://naipc19.kattis.com/">Sat Mar 2, 2019</a></span>
+		NAIPC 2019 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100958">Wed Feb 27, 2019</a></span>
+		Petrozavodsk, Contest.58 2014 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/38">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102001">Sat Feb 23, 2019</a></span>
+		Asia Jakarta Regional 2018 (Codeforces)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Feb 20, 2019</span>
+		No Practice (Reading Week)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102114">Sat Feb 16, 2019</a></span>
+		Chinese Multi-University Training 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101952">Wed Feb 13, 2019</a></span>
+		Facebook Hacker Cup 2018, Round 3 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/45">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102055">Sat Feb 9, 2019</a></span>
+		China CPC Final 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101669">Wed Feb 6, 2019</a></span>
+		SEERC 2017 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/39">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102059">Sat Feb 2, 2019</a></span>
+		2018 XIX Open Cup, Grand Prix of Korea (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/44">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/group/L0zlhp0AHw/contest/100960">Wed Jan 30, 2019</a></span>
+		Petrozavodsk, Nizhny Novgorod SU 2016 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/44">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101955">Sat Jan 26, 2019</a></span>
+		Asia Shenyang Regional 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101142">Wed Jan 23, 2019</a></span>
+		NEERC, Northern Subregional 2016 (Codeforces) (<a href="https://atcoder.jp/contests/dp">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102012">Sat Jan 19, 2019</a></span>
+		Asia Xuzhou Regional 2018 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/101911">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101504">Wed Jan 16, 2019</a></span>
+		NEERC, Southern Subregional 2008 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/1006">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102056">Sat Jan 12, 2019</a></span>
+		Asia East Finals 2018 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/120">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101611">Wed Jan 9, 2019</a></span>
+		NEERC, Moscow Subregional 2017 (Codeforces) (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/1092">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/102028">Sat Jan 5, 2019</a></span>
+		Asia Jiaozuo Regional 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://atcoder.jp/contests/apc001?lang=en">Wed Jan 2, 2019</a></span>
+		Petrozavodsk Contest 001 (AtCoder)
+	</li>
+    </ul>
+
+    <h2>2018</h2>
+    <ul>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 29, 2018</span>
+		No Practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Dec 26, 2018</span>
+		No Practice (Boxing Day)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 22, 2018</span>
+		No Practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://dmoj.ca/contest/dmopc18c3">Thu Dec 20, 2018</a></span>
+		DPOMC 2018 November Contest
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/b5xepc/">Sat Dec 15, 2018</a></span>
+		Singapore Regional 2018 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://dmoj.ca/contest/dmopc18c4">Wed Dec 12, 2018</a></span>
+		DPOMC 2018 December Contest
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100451">Sat Dec 8, 2018</a></span>
+		2013 Petrozavodsk Winter Camp (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://beta.atcoder.jp/contests/agc028?lang=en">Wed Dec 5, 2018</a></span>
+		AtCoder Grand Contest 28
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 1, 2018</span>
+		No Practice (<a href="https://www.maa.org/math-competitions/putnam-competition">Putnam contest</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1030">Wed Nov 28, 2018</a></span>
+		Technocup 2019, Round 1 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/bciih6/">Sat Nov 24, 2018</a></span>
+		Singapore Regional 2015 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1077">Wed Nov 21, 2018</a></span>
+		Codeforces #521 (Div. 3)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101964">Sat Nov 17, 2018</a></span>
+		SEERC 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/1063">Wed Nov 14, 2018</a></span>
+		Codeforces #516 (<a href="https://codeforces.com/group/L0zlhp0AHw/contest/1064">Div. 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101972">Sat Nov 10, 2018</a></span>
+		Arabella Regional 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2018-11-07.html">Wed Nov 07, 2018</a></span>
+		Southeast USA 2018
+	</li>
+    <li class="officialACM">
+		<span class="practice-date"><a href="http://acmicpc-pacnw.org/scoreboard/2018/index1.html">Sat Nov 03, 2018</a></span>
+		PacNW 2018 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101201">Wed Oct 31, 2018</a></span>
+		PacNW 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101615">Sat Oct 27, 2018</a></span>
+		PacNW 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101933">Wed Oct 24, 2018</a></span>
+		NCPC 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101623">Sat Oct 20, 2018</a></span>
+		NWERC 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/gj3vh2/standings">Wed Oct 17, 2018</a></span>
+		Southeast USA 2014 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100443">Sat Oct 13, 2018</a></span>
+		SWERC 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/653">Wed Oct 10, 2018</a></span>
+		IndiaHacks 2018 (Codeforces)
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="https://naq18.kattis.com">Sat Oct 06, 2018</a></span>
+		UBC Tryout II 2018 (North American Qualifiers 2018) (<a href="public_html/practice/2018-10-06/naq18.html">results</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/192225">Wed Oct 03, 2018</a></span>
+		DP Practice
+	</li>
+    <li class="tryout">
+		<span class="practice-date">Sat Sep 29, 2018</span>
+		UBC Tryout I 2018 <a href="public_html/tryouts-2018-warmup/index.php.html">warmup</a> and <a href="public_html/tryouts-2018/index.php.html">contest</a>
+        (<a href="public_html/tryouts-2018-duplicate/index.php.html">duplicate</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/663">Wed Sep 26, 2018</a></span>
+		Codeforces #347 (Div. 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101635">Sat Sep 22, 2018</a></span>
+		SWERC 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101733">Wed Sep 19, 2018</a></span>
+		Yandex 2018, Qualification Round (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100641">Sat Sep 15, 2018</a></span>
+		ECNA 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101879">Wed Sep 12, 2018</a></span>
+		USP Tryouts 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101889">Sat Sep 08, 2018</a></span>
+		Latin American Regional 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/hello-2018W.html">Wed Sep 05, 2018</a></span>
+		Hello, 2018W!
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100488">Sat Sep 01, 2018</a></span>
+		Samara 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100800">Sat Aug 25, 2018</a></span>
+		UKEIPC 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101873">Sat Aug 18, 2018</a></span>
+		GCPC 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101556">Sat Aug 11, 2018</a></span>
+		NCPC 2010 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/226626">Sat Aug 04, 2018</a></span>
+		Codeforces Mashup (Henry)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101555">Sat Jul 28, 2018</a></span>
+		NCPC 2011 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100812">Sat Jul 21, 2018</a></span>
+		QuarterFinals Samara 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101810">Sat Jul 14, 2018</a></span>
+		Amman Collegiate Programming Contest 2018 (Codeforces) cont'd
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101810">Sat Jul 07, 2018</a></span>
+		Amman Collegiate Programming Contest 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100247">Sat Jun 30, 2018</a></span>
+		QuarterFinals Samara 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100030">Sat Jun 23, 2018</a></span>
+		V Samara 2012 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101606">Sat Jun 16, 2018</a></span>
+		UKIEPC 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/101755">Sat Jun 09, 2018</a></span>
+		XI Samara 2018 (Codeforces) (div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codeforces.com/group/L0zlhp0AHw/contest/100962">Sat Jun 09, 2018</a></span>
+		2015 Petrozavodsk Winter Camp (Codeforces) (div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101502">Sat Jun 02, 2018</a></span>
+		JUST Programming Contest 3.0 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100694">Sat May 26, 2018</a></span>
+		Samara Programming Contest 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101498">Sat May 19, 2018</a></span>
+		Amman Collegiate Programming Contest 2017 (Continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101611">Sat May 19, 2018</a></span>
+		NEERC Moscow Subregional 2017 (Codeforces) (div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codingcompetitions.withgoogle.com/codejam/archive/2018">Sat May 19, 2018</a></span>
+		Google Code Jam 2018 Round 2 (07:00 - 09:30)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101498">Sat May 12, 2018</a></span>
+		Amman Collegiate Programming Contest 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100405">Sat May 12, 2018</a></span>
+		NWERC 2013 (Codeforces) Div 1 Team Practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101778">Sat May 5, 2018</a></span>
+		JUST Programming Contest 1.0 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codejam.withgoogle.com/2018/">Sat May 5, 2018</a></span>
+		Google Code Jam 2018 Round 1C (02:00 - 04:30)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101398">Wed May 2, 2018</a></span>
+		NWERC 2012 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/966">Mon Apr 30, 2018</a></span>
+		Codeforces Round 477 (<a href="http://codeforces.com/contest/967">div 2</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codejam.withgoogle.com/2018/">Sun Apr 29, 2018</a></span>
+		Google Code Jam 2018 Round 1B (09:00 - 11:30)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101755">Sat Apr 28, 2018</a></span>
+		Samara XI 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101620">Tue Apr 24, 2018</a></span>
+		CERC 2017 (Codeforces)
+	</li>
+    <li class="officialACM">
+		<span class="practice-date"><a href="https://icpc.kattis.com/problems">Thu Apr 19th 2018</a></span>
+		World Finals 2018
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/958">Sat Apr 14, 2018</a></span>
+		Helvetic Coding Contest 2018 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codejam.withgoogle.com/2018/">Fri Apr 13, 2018</a></span>
+		Google Code Jam 2018 Round 1A (18:00 - 20:30)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/962">Wed Apr 11, 2018</a></span>
+		Codeforces Education Round 42
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100299">Sat Apr 7, 2018</a></span>
+		CERC 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://codejam.withgoogle.com/2018/">Fri Apr 6, 2018</a></span>
+		Google Code Jam 2018 Qualification Round
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100608">Wed Apr 4, 2018</a></span>
+		Stankevich 47 (<a href="http://codeforces.com/contest/954">div 2 Codeforces</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/sfu-wpc-18/index.html">Sat Mar 31, 2018</a></span>
+		SFU Winter Programming Contest (<a href="public_html/sfu-wpc-18-warmup/index.html">Warmup</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/956">Wed Mar 28, 2018</a></span>
+		VK Cup 2018 Round 2 (Codeforces) <a href="http://codeforces.com/contest/957">div 2</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://naipc18.kattis.com">Sat Mar 24, 2018</a></span>
+		NAIPC 2018 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/953">Wed Mar 21, 2018</a></span>
+		VK Cup 2018 Round 1 Wild Card (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/xnueso">Sat Mar 17, 2018</a></span>
+		Chicago 2013 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101754">Wed Mar 14, 2018</a></span>
+		Yandex 2018 Round 2 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/naipc18-p12">Sat Mar 10, 2018</a></span>
+		NAIPC Practice 12 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101745">Wed Mar 7, 2018</a></span>
+		Yandex 2018 Round 1 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/t7htwj">Sat Mar 3, 2018</a></span>
+		BAPC 2017 (Kattis) (Codeforces <a href="http://codeforces.com/gym/101666">link</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101741">Wed Feb 28, 2018</a></span>
+		Petrozavodsk Winter 2018, Saratov SU Contest (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101437">Wed Feb 28, 2018</a></span>
+		Yandex 2017 Round 2 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101128">Sat Feb 24, 2018</a></span>
+		SWERC 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100112">Wed Feb 21, 2018</a></span>
+		NCPC 2012 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2018-02-17.html">Sat Feb 17, 2018</a></span>
+		Henry Contest (now on <a href="http://codeforces.com/gym/101736">Codeforces</a>!)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/875">Wed Feb 14, 2018</a></span>
+		Codeforces Round #441 div 1 and <a href="http://codeforces.com/contest/876">div 2</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101675">Tue Feb 13, 2018</a></span>
+		Russian Code Cup Final Round 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/zfbknt">Sat Feb 10, 2018</a></span>
+		Vietnamese ICPC 2017 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101372">Wed Feb 7, 2018</a></span>
+		Russian Code Cup 3rd Qualification Round 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101234">Tue Feb 6, 2018</a></span>
+		Taiwan Team Selection 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2018-02-03.html">Sat Feb 3, 2018</a></span>
+		Lucca Contest
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101355">Wed Jan 31, 2018</a></span>
+		Russian Code Cup 2nd Qualification Round 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101667">Sat Jan 27, 2018</a></span>
+		Daejeon 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101336">Wed Jan 24, 2018</a></span>
+		Russian Code Cup 1st Qualification Round 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100554">Tue Jan 23, 2018</a></span>
+		Mudanjiang 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2018-01-20.html">Sat Jan 20, 2018</a></span>
+		Andrew Contest of Math
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101262">Wed Jan 17, 2018</a></span>
+		Waterloo Winter 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101635">Sat Jan 13, 2018</a></span>
+		SWERC 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101510">Wed Jan 10, 2018</a></span>
+		Waterloo Fall 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101243">Sat Jan 5, 2018</a></span>
+		NEERC, Central Subregional 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/757">Wed Jan 3, 2018</a></span>
+		Codecraft-17 and Codeforces Round #391 (Div 1 + 2)
+	</li>
+    </ul>
+
+    <h2>2017</h2>
+    <ul>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 30th 2017</span>
+		No Practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 23th 2017</span>
+		No Practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101410">Wed Dec 20th 2017</a></span>
+		NEERC, Moscow Subregional 2011 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101410">Tue Dec 19th 2017</a></span>
+		NEERC, Western Subregional 2011 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101597">Mon Dec 18th 2017</a></span>
+		Swiss Subregional 2017 (Codeforces) 
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101606">Thu Dec 14th 2017</a></span>
+		UKIEPC 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101237">Wed Dec 13th 2017</a></span>
+		Petrozavodsk Winter Training Camp 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-11-25.html">Sat Nov 25th 2017</a></span>
+		CCC Senior 3-5 + CCO Day 1&2
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/890">Wed Nov 22nd 2017</a></span>
+		Codeforces Round #445 (Div 2)
+	</li>
+    <li class="officialACM">
+		<span class="practice-date">Sat Nov 11th 2017</span>
+		PacNW 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-11-08.html">Wed Nov 8th 2017</a></span>
+		PACNW 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-11-06.html">Mon Nov 6th 2017</a></span>
+		PACNW 2014
+	</li>
+    <li>
+		<span class="practice-date">Sat Nov 4th 2017</span>
+		PACNW 2016 <a href="public_html/practice/2017-11-04.html">div1</a> &amp; <a href="public_html/practice/2017-11-04-div2.html">div2</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-11-01.html">Wed Nov 1st 2017</a></span>
+		ECNA 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101173">Mon Oct 30th 2017</a></span>
+		CERC 2016 (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101174">Sat Oct 28th 2017</a></span>
+		SWERC 2016 and <a href="http://codeforces.com/gym/100819">PACNW 2015 Div 2</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101173">Wed Oct 25th 2017</a></span>
+		CERC 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/zikqee">Mon Oct 23rd 2017</a></span>
+		Mid-Central USA Regional 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/k2ty86">Sat Oct 21st 2017</a></span>
+		NCPC 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/192225">Wed Oct 18th 2017</a></span>
+		DP Practice 1 (continued) and <a href="public_html/practice/2017-10-18-div2.html">Div 1 Baseline test</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/192225">Mon Oct 16th 2017</a></span>
+		DP Practice 1 
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/acpc17open/">Sat Oct 14th 2017</a></span>
+		Alberta Collegiate Programming Contests 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/edv845">Wed Oct 11th 2017</a></span>
+		North American Qualifier Contest 2016 + 2017 Hard Problems (Kattis)
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/practice/2017-10-07.html">Sat Oct 7th 2017</a></span>
+		UBC Tryouts II 2017 (North America Qualifiers 2017)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/rmvbz2">Wed Oct 4th 2017</a></span>
+		North American Qualifier Contest 2016
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/tryouts-2017.html">Sat Sep 30th 2017</a></span>
+		UBC Tryouts I 2017 (<a href="public_html/practice/2017-09-30.html">duplicate contest</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101532">Wed Sep 27th 2017</a></span>
+		JUST Programming Contest 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-09-23.html">Sat Sep 23rd 2017</a></span>
+		NWERC 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/861">Wed Sep 20th 2017</a></span>
+		Codeforces Round #434 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100090">Sat Sep 16th 2017</a></span>
+		Samara SAU Quarterfinal Qualification 2012 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://msft3c.com">Wed Sep 13th 2017</a></span>
+		Microsoft College Code Competition 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/summer2017.html">Sat Sep 9th 2017</a></span>
+		UBC Summer Contest 2017 (<a href="public_html/practice/2017-09-09.html">duplicate contest</a>, or <a href="http://codeforces.com/contest/846">easier contest</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-09-06.html">Wed Sep 6th 2017</a></span>
+		GNYR 2009
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101484">Sat Sep 2nd 2017</a></span>
+		U Sao Paulo ICMC 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101498">Wed Aug 30th 2017</a></span>
+		Amman 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100187">Sat Aug 26th 2017</a></span>
+		Samara VI 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101350">Sat Aug 19th 2017</a></span>
+		Arabella 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/837">Sat Aug 12th 2017</a></span>
+		Educational Codeforces #26
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101473">Sat Aug 5th 2017</a></span>
+		Brazil 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101404">Sat Jul 29th 2017</a></span>
+		NWERC 2010 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101436">Sat Jul 22nd 2017</a></span>
+		Yandex 2017 Round 1 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101439">Sat Jul 15th 2017</a></span>
+		Yandex 2017 Qualification Round (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://ipsc.ksp.sk/">Sat Jul 8th 2017</a></span>
+		IPSC 2017 (external website, official contest starts at 3am PST)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-07-01.html">Sat Jul 1st 2017</a></span>
+		KTH Challenge 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101161">Sat Jun 24th 2017</a></span>
+		Bangkok 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101341">Sat Jun 17th 2017</a></span>
+		Samara X 2017 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101385">Sat Jun 10th 2017</a></span>
+		Petr Mitrichev Contest 12 (Codeforces) (Online only due to power outage)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-06-03.html">Sat Jun 3rd 2017</a></span>
+		GNYR 2014
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat May 27th 2017</span>
+		No Practice
+	</li>
+    <li class="officialACM">
+		<span class="practice-date">Wed May 24th 2017</span>
+		World Finals 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/700">Mon May 22nd 2017</a></span>
+		Codeforces Round #364 (Div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101221">Sat May 20th 2017</a></span>
+		World Finals 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101242">Fri May 19th 2017</a></span>
+		World Finals 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100608">Wed May 17th 2017</a></span>
+		Andrew Stankevich 47 (Codeforces) (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100608">Tue May 16th 2017</a></span>
+		Andrew Stankevich 47 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100512">Sat May 13th 2017</a></span>
+		Andrew Stankevich 42 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101239">Fri May 12th 2017</a></span>
+		World Finals 2015 (Codeforces) (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101239">Wed May 10th 2017</a></span>
+		World Finals 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101205">Sat May 6th 2017</a></span>
+		World Finals 2012 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101175">Thu May 4th 2017</a></span>
+		World Finals 2011 (Codeforces) (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101175">Wed May 3rd 2017</a></span>
+		World Finals 2011 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100783">Sat Apr 29th 2017</a></span>
+		SWERC 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/793">Fri Apr 28th 2017</a></span>
+		Tinkoff Challenge - Elimination Round (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/265">Wed Apr 26th 2017</a></span>
+		Codeforces Round #162 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-04-22.html">Sat Apr 22th 2017</a></span>
+		USACO 2015 Febuary + CCC 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-04-18.html">Thu Apr 20th 2017</a></span>
+		NAIPC 2017 (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-04-18.html">Tue Apr 18th 2017</a></span>
+		NAIPC 2017 (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://naipc17.kattis.com/standings?filter=751">Sat Apr 15th 2017</a></span>
+		NAIPC 2017 (UBC gets silver!)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/y4rwgd">Fri Apr 14th 2017</a></span>
+		NAIPC 2016 (Kattis) (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/y4rwgd">Thu Apr 13th 2017</a></span>
+		NAIPC 2016 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101149">Sat Apr 8th 2017</a></span>
+		Samara Quarterfinal Qualification 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/767">Wed Apr 5th 2017</a></span>
+		Codeforces Round #398 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-04-01.html">Sat Apr 1st 2017</a></span>
+		UAlberta Programming Contest 2017
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/788">Wed Mar 29th 2017</a></span>
+		Codeforces Round #407 (Div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/sfu-wpc-17/index.html">Sat Mar 25th 2017</a></span>
+		SFU Winter Programming Contest (<a href="http://localhost/public_html/wpc-test/">Duplicate Contest</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/765">Wed Mar 22nd 2017</a></span>
+		Codeforces Round #397 (Div 1 + 2 combined)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/ccpc17open">Sat Mar 18th 2017</a></span>
+		CCPC 2017 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/762">Wed Mar 15th 2017</a></span>
+		Educational Codeforces Round #17
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101190">Sat Mar 11th 2017</a></span>
+		NEERC 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/782">Wed Mar 8th 2017</a></span>
+		Codeforces Round #403 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101170">Sat Mar 4th 2017</a></span>
+		NWERC 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/758">Wed Mar 1st 2017</a></span>
+		Codeforces Round #392 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/naipc17-p02">Sat Feb 25rd 2017</a></span>
+		Hong Kong 2016 (Kattis) (<a href="https://open.kattis.com/contests/snrnzq">Duplicate Contest</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101208">Fri Feb 24rd 2017</a></span>
+		World Finals 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101208">Thu Feb 23rd 2017</a></span>
+		World Finals 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/768">Wed Feb 22th 2017</a></span>
+		Codeforces Round #399 (Div 1 + 2 combined)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101196">Sat Feb 18th 2017</a></span>
+		ECNA 2016 (Codeforces)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Feb 15th 2017</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/eidpq9/standings">Sat Feb 11th 2017</a></span>
+		NCPC 2008 (Kattis, by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/766">Wed Feb 8th 2017</a></span>
+		Codeforces Round #395 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-02-04.html">Sat Feb 4th 2017</a></span>
+		BAPC 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/201">Wed Feb 1st 2017</a></span>
+		Codeforces Round #127 (Div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/2017-01-28/">Sat Jan 28th 2017</a></span>
+		ACPC 2012 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/28">Wed Jan 25st 2017</a></span>
+		Codeforces Beta Round #28
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2017-01-21.html">Sat Jan 21st 2017</a></span>
+		USACO 2017 January
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/744">Wed Jan 18th 2017</a></span>
+		Codeforces Round #385 (Div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://www.facebook.com/hackercup/problem/620734011349888/">Sat Jan 14th 2017</a></span>
+		Facebook Hacker Cup 2014 R2, 2017 R1
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101212">Wed Jan 11th 2017</a></span>
+		Bangladesh Informatics Olympiad 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101158">Sat Jan 7th 2017</a></span>
+		Tsukuba 2016 (Codeforces)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Jan 4th 2016</span>
+		No practice
+	</li>
+    </ul>
+
+    <h2>2016</h2>
+    <ul>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 31st 2016</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 24rd 2016</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100201">Sat Dec 17th 2016</a></span>
+		Andrew Stankevitch 5 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100198">Sat Dec 10th 2016</a></span>
+		Andrew Stankevitch 3 (Codeforces) (Online only)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 3rd 2016</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/739">Wed Nov 30th 2016</a></span>
+		Codeforces Round #381 (Div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-11-26.html">Sat Nov 26th 2016</a></span>
+		SEUSA 2016 Div 1
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-11-19.html">Sat Nov 19th 2016</a></span>
+		SEUSA 2013 Div 1
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/2016-11-12/index.php">Sat Nov 12th 2016</a></span>
+		ACPC 2011 (hosted by UofC)
+	</li>
+    <li class="officialACM">
+		<span class="practice-date">Sat Nov 5th 2016</span>
+		PacNW 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-11-02.html">Wed Nov 2nd 2016</a></span>
+		BAPC 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101142">Tue Nov 1st 2016</a></span>
+		NEERC 2016, Northern Subregional (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-10-30.html">Sun Oct 30th 2016</a></span>
+		BAPC 2016 Preliminaries
+	</li>
+    <li>
+		<span class="practice-date">Sat Oct 29th 2016</span>
+		PACNW 2015 <a href="public_html/practice/2016-10-29-div1.html">Div 1</a> and <a href="public_html/practice/2016-10-29-div2.html">Div 2</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100818">Thu Oct 27th 2016</a></span>
+		SEERC 2015 (Implementation) (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/725">Wed Oct 26nd 2016</a></span>
+		Canada Cup 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date">Tue Oct 25th 2016</span>
+		SEERC 2015 (Theory)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-10-22.html">Sat Oct 22nd 2016</a></span>
+		NCPC 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-10-19.html">Wed Oct 19th 2016</a></span>
+		Waterloo Surprise 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/724">Tue Oct 18th 2016</a></span>
+		Intel Code Challenge Final Round 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://open.kattis.com/contests/acpc16open">Sat Oct 15th 2016</a></span>
+		Joining U of Alberta for ACPC 2016 (Kattis)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-10-12.html">Wed Oct 12th 2016</a></span>
+		PACNW 2010
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-10-08.html">Sat Oct 8th 2016</a></span>
+		Tokyo 2012
+	</li>
+    <li>
+		<span class="practice-date">Wed Oct 5th 2016</span>
+		<a href="public_html/practice/2016-10-05.html">GCPC 2016</a> and <a href="public_html/practice/2016-10-05-div2.html">Div 1 baseline test</a>
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/tryouts-2016/index.html">Sat Oct 1st 2016</a></span>
+		UBC Tryouts II 2016 (<a href="public_html/tryouts-2016/tryouts2-translated.html">Deobfuscated</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/212">Wed Sep 28th 2016</a></span>
+		VK Cup Finals 2012 (Codeforces)
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="https://naq16.kattis.com/standings?filter=491">Sat Sep 24th 2016</a></span>
+		UBC Tryouts I 2016 (NA Qualifiers)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/500">Wed Sep 21st 2016</a></span>
+		Good Bye 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-09-17.html">Sat Sep 17th 2016</a></span>
+		ECNA 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-09-14.html">Wed Sep 14th 2016</a></span>
+		GNYR 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-09-10.html">Sat Sep 10th 2016</a></span>
+		GCPC 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101064">Sat Sep 3rd 2016</a></span>
+		U Sao Paulo Tryouts 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/101063">Sat Aug 27th 2016</a></span>
+		U Sao Paulo ICMC 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100460">Sat Aug 20th 2016</a></span>
+		Samara VII 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100803">Sat Aug 13th 2016</a></span>
+		Tokyo 2014 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100825">Sun Aug 7th 2016</a></span>
+		ECNA 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100796">Sat Jul 30th 2016</a></span>
+		Baltic 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100942">Sat Jul 23th 2016</a></span>
+		Open Cup 2016 - Grand Prix of Tatarstan (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2016-07-16">Sat Jul 16th 2016</a></span>
+		BAPC 2011
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100357">Sat Jul 9th 2016</a></span>
+		Andrew Stankevitch 31 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2016-07-02">Sat Jul 2nd 2016</a></span>
+		CERC 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100204">Sat Jun 25th 2016</a></span>
+		Andrew Stankevitch 7 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://ipsc.ksp.sk/2016/problems">Sat Jun 18th 2016</a></span>
+		IPSC 2016 (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100812">Sat Jun 11th 2016</a></span>
+		Samara SAU Qualification 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100971">Sat Jun 4th 2016</a></span>
+		Samara IX 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2016-05-28">Sat May 28th 2016</a></span>
+		NCPC 2008
+	</li>
+    <li class="officialACM">
+		<span class="practice-date">Thu May 19th 2016</span>
+		World Finals 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2016-05-07">Sat May 7th 2016</a></span>
+		BAPC 2015
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Apr 29th 2016</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2016-04-23">Sat Apr 23rd 2016</a></span>
+		CCC 2009 Stage 1 + 2
+	</li>
+    <li>
+		<span class="practice-date">Sat Apr 16th 2016</span>
+		NAIPC 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://www.cs.ubc.ca/~inutard/2016-04-09/index.php">Sat Apr 9th 2016</a></span>
+		CCC 2015 Stage 1 + 2
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100431">Thu Apr 7th 2016</a></span>
+		Andrew Stankevitch 37 (Codeforces) (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100431">Sat Apr 2nd 2016</a></span>
+		Andrew Stankevitch 37 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100200">Thu Mar 31st 2016</a></span>
+		Andrew Stankevitch 4 (Codeforces) (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100200">Sat Mar 26th 2016</a></span>
+		Andrew Stankevitch 4 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/655">Thu Mar 24th 2016</a></span>
+		CROC 2016 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date">Sat Mar 19th 2016</span>
+		SFU WPC 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2016-03-17">Thu Mar 17th 2016</a></span>
+		SFU WPC 2014
+	</li>
+    <li>
+		<span class="practice-date">Sat Mar 12th 2016</span>
+		CCPC 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/651">Thu Mar 10th 2016</a></span>
+		Codeforces Round #345 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date">Sat Mar 5th 2016</span>
+		UAPC 2016
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/631">Thu Mar 3rd 2016</a></span>
+		Codeforces Round #344 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-02-27.html">Sat Feb 27th 2016</a></span>
+		CCPC 2013 + extra problems
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/626">Thu Feb 25th 2016</a></span>
+		8VC Venture Cup 2016 - Elimination Round (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-02-20.html">Sat Feb 20th 2016</a></span>
+		CCPC 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://icpc.kattis.com/problem-sources/ACM%20ICPC%20World%20Finals%202012">Fri Feb 19th 2016</a></span>
+		World Finals 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://icpc.kattis.com/problem-sources/ACM-ICPC%20World%20Finals%202015">Wed Feb 15th 2016</a></span>
+		World Finals 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/106549">Sat Feb 13th 2016</a></span>
+		DP + Geometry I (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/106160">Thu Feb 11th 2016</a></span>
+		DP + Search I (external website) (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/106160">Sat Feb 6th 2016</a></span>
+		DP + Search I (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-01-30.html">Thu Feb 4th 2016</a></span>
+		SWERC 2013 (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-01-30.html">Sat Jan 30th 2016</a></span>
+		SWERC 2013
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/617">Thu Jan 28th 2016</a></span>
+		Codeforces Round #340 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date">Sat Jan 23rd 2016</span>
+		FB Hackercup Round 2
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100587">Thu Jan 21st 2016</a></span>
+		2015 Facebook Hacker Cup Round 2 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date">Sat Jan 16th 2016</span>
+		FB Hackercup Round 1
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-01-09.html">Wed Jan 13th 2016</a></span>
+		NWERC 2013 (continued)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2016-01-09.html">Sat Jan 9th 2016</a></span>
+		NWERC 2013
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/592">Wed Jan 6th 2016</a></span>
+		Codeforces Round #328 (Div 2)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jan 2nd 2016</span>
+		No practice
+	</li>
+    </ul>
+
+    <h2>2015</h2>
+    <ul>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 26th 2015</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/102633">Sat Dec 19th 2015</a></span>
+		Graphs 2 (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100820">Sat Dec 12th 2015</a></span>
+		PacNW 2015 again (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/231">Sat Dec 5th 2015</a></span>
+		Codeforces Round #143 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/321">Wed Dec 2nd 2015</a></span>
+		Codeforces Round #190 (Div 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/101598">Sat Nov 28th 2015</a></span>
+		Graphs 1 (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/100861">Wed Nov 25th 2015</a></span>
+		DP practice 2 (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://vjudge.net/contest/100246">Sat Nov 21st 2015</a></span>
+		DP practice 1 (external website)
+	</li>
+    <li class="officialACM">
+		<span class="practice-date">Sat Nov 14th 2015</span>
+		PacNW 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/577">Thu Nov 12th 2015</a></span>
+		Codeforces Round #319 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-11-11.html">Wed Nov 11th 2015</a></span>
+		NAIPC 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/570">Tue Nov 10th 2015</a></span>
+		Codeforces Round #316 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100800">Sun Nov 8th 2015</a></span>
+		UK &amp; Ireland 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-11-07.html">Sat Nov 7th 2015</a></span>
+		PacNW Highlights (2007-2014)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/593">Wed Nov 4th 2015</a></span>
+		Codeforces Round #329 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-10-31.html">Sat Oct 31st 2015</a></span>
+		PacNW 2014 Div 2
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/591">Wed Oct 28th 2015</a></span>
+		Codeforces Round #327 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-10-24.html">Sat Oct 24th 2015</a></span>
+		NCPC 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/588">Wed Oct 21st 2015</a></span>
+		Codeforces Round #326 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-10-17.html">Sat Oct 17th 2015</a></span>
+		ACPC 2015
+	</li>
+    <li>
+		<span class="practice-date">Wed Oct 14th 2015</span>
+		<a href="public_html/practice/2015-10-14.html">Div 1 Baseline test</a> and <a href="http://codeforces.com/contest/583">Codeforces Round #323 (Div 2)</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://acm.cs.sfu.ca/contest">Sat Oct 10th 2015</a></span>
+		GCPC 2015 (hosted by SFU)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/584">Wed Oct 7th 2015</a></span>
+		Codeforces Round #324 (Div 2)
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/practice/2015-10-03.html">Sat Oct 3rd 2015</a></span>
+		UBC Tryout II 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/581">Wed Sep 30th 2015</a></span>
+		Codeforces Round #322 (Div 2)
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/practice/2015-09-26.html">Sat Sep 26th 2015</a></span>
+		UBC Tryout I 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/580">Wed Sep 23rd 2015</a></span>
+		Codeforces Round #321 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-09-19.html">Sat Sep 19th 2015</a></span>
+		UBC Tryouts I+II 2009
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/contest/579">Wed Sep 16th 2015</a></span>
+		Codeforces Round #320 (Div 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-09-12.html">Sat Sep 12th 2015</a></span>
+		UCF Local Practice Contest 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100169">Wed Sep 9th 2015</a></span>
+		Waterloo Local Contest Oct 13 2012 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-09-05.html">Sat Sep 5th 2015</a></span>
+		UCF Local Practice Contest 2011
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Wed Sep 2nd 2015</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-08-29.html">Sat Aug 29th 2015</a></span>
+		UCF Local Practice Contest 2013
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100199">Thu Aug 27th 2015</a></span>
+		Andrew Stankevitch 1 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100199">Tue Aug 25th 2015</a></span>
+		Andrew Stankevitch 1 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-08-22.html">Sat Aug 22th 2015</a></span>
+		UCF Local Practice Contest 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100694">Thu Aug 20th 2015</a></span>
+		Samara VIII 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100694">Tue Aug 18th 2015</a></span>
+		Samara VIII 2015 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-08-15.html">Sat Aug 15th 2015</a></span>
+		UCF Local Contest 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-08-08.html">Sat Aug 8th 2015</a></span>
+		BAPC 2005
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Aug 1st 2015</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-07-18.html">Sat Jul 25th 2015</a></span>
+		BAPC 2007 (repeat from last week)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-07-18.html">Sat Jul 18th 2015</a></span>
+		BAPC 2007
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-07-11.html">Sat Jul 11th 2015</a></span>
+		NCPC 2011
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jul 4th 2015</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jun 27th 2015</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://ipsc.ksp.sk/2015/problems">Sat Jun 20th 2015</a></span>
+		IPSC 2015 (external website)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-06-13.html">Sat Jun 13th 2015</a></span>
+		COCI Contest 5 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-06-06.html">Sat Jun 6th 2015</a></span>
+		COCI Contest 4 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-05-30.html">Sat May 30th 2015</a></span>
+		COCI Contest 3 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-05-23.html">Sat May 23rd 2015</a></span>
+		COCI Contest 2 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-05-16.html">Sat May 16th 2015</a></span>
+		COCI Contest 1 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-05-09.html">Sat May 9th 2015</a></span>
+		KTH Challange 2015
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat May 2nd 2015</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-04-25.html">Sat Apr 25th 2015</a></span>
+		CCC 2013 (Stage 1 + Stage 2 Day 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-04-18.html">Sat Apr 18th 2015</a></span>
+		BAPC 2010 (again)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-04-11.html">Sat Apr 11th 2015</a></span>
+		USACO Open 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-04-04.html">Sat Apr 4th 2015</a></span>
+		GCPC 2010
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Mar 28th 2015</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-03-21.html">Sat Mar 21st 2015</a></span>
+		NCPC 2007
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-03-14.html">Sat Mar 14th 2015</a></span>
+		NCPC 2005
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-03-07.html">Sat Mar 7th 2015</a></span>
+		CCPC 2015 Div 1
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-02-28.html">Sat Feb 28st 2015</a></span>
+		USACO February 2015 and assorted
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-02-21.html">Sat Feb 21st 2015</a></span>
+		SFU WPC 2015
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/latin2014/">Sat Feb 14th 2015</a></span>
+		Latin America 2014 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-02-07.html">Sat Feb 7th 2015</a></span>
+		SFU/UBC Qualifier I 2011
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/lahore2014/">Sat Jan 31st 2015</a></span>
+		Lahore 2014 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/kulu2014/">Sat Jan 24th 2015</a></span>
+		Kuala Lumpur 2014 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-01-17.html">Sat Jan 17th 2015</a></span>
+		CCC 2012 (Stage 1, State 2 Day 1)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-01-10.html">Sat Jan 10th 2015</a></span>
+		PacNW 2014 Div 2
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2015-01-03.html">Sat Jan 3rd 2015</a></span>
+		PacNW 2014 Div 1
+	</li>
+    </ul>
+
+    <h2>2014</h2>
+    <ul>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 27th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 20th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 13th 2014</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-12-06.html">Sat Dec 6th 2014</a></span>
+		CCC 2010 (Stage 1, 2011 Stage 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-11-29.html">Sat Nov 29th 2014</a></span>
+		CCC 2014 (Stage 1 + 2)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-11-22.html">Sat Nov 22nd 2014</a></span>
+		PacNW 2011
+	</li>
+    <li class="officialACM">
+		<span class="practice-date">Sat Nov 15th 2014</span>
+		PacNW 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-11-12.html">Wed Nov 12th 2014</a></span>
+		PacNW 2007
+	</li>
+    <li>
+		<span class="practice-date">Tue Nov 11th 2014</span>
+		ECNA 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-11-08.html">Sat Nov 8th 2014</a></span>
+		PacNW 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://codeforces.com/gym/100187">Thu Nov 6th 2014</a></span>
+		Samara VI 2013 (Codeforces)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-11-05.html">Wed Nov 5th 2014</a></span>
+		Mid-Central 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/2014-11-01/">Sat Nov 1st 2014</a></span>
+		RMRC 2008 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-29.html">Wed Oct 29th 2014</a></span>
+		PacNW 2013
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-25.html">Sat Oct 25nd 2014</a></span>
+		BAPC 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-22.html">Wed Oct 22nd 2014</a></span>
+		NCPC 2010
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-18.html">Sat Oct 18th 2014</a></span>
+		Mid-Central + UT Tryouts 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-15.html">Wed Oct 15th 2014</a></span>
+		GCPC 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-11.html">Sat Oct 11th 2014</a></span>
+		NCPC 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-08.html">Wed Oct 8th 2014</a></span>
+		CCPC 2013 + Extra problems
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-04.html">Sat Oct 4th 2014</a></span>
+		ACPC 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-10-01.html">Wed Oct 1st 2014</a></span>
+		North American Qualifiers 2014
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/tryouts/contest.html">Sat Sep 27th 2014</a></span>
+		UBC Qualifiers II 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-09-24.html">Wed Sep 24th 2014</a></span>
+		Waterloo Local Contest Jan 26 2014
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/practice/2014-09-20.html">Sat Sep 20th 2014</a></span>
+		UBC Qualifiers I 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-09-17.html">Wed Sep 17th 2014</a></span>
+		Waterloo Local Contest Jun 14 2004
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-09-13.html">Sat Sep 13th 2014</a></span>
+		UBC Practice Tryout 2010
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-09-10.html">Wed Sep 10th 2014</a></span>
+		Ulm Local Contest 2006
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/2014-09-06/">Sat Sep 6th 2014</a></span>
+		Waterloo Local Contest June 2014 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-08-30.html">Sat Aug 30th 2014</a></span>
+		Arab 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-08-23.html">Sat Aug 23rd 2014</a></span>
+		Stanford Local Programming Contest 2011
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-08-16.html">Sat Aug 16th 2014</a></span>
+		KTH Challenge 2011
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-08-09.html">Sat Aug 9th 2014</a></span>
+		KTH Challenge 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-08-02.html">Sat Aug 2nd 2014</a></span>
+		KTH Challenge 2013
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-07-26.html">Sat Jul 26th 2014</a></span>
+		KTH Challenge 2014
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jul 19th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jul 12th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jul 5th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jun 28th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jun 21th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jun 14th 2014</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-06-07.html">Sat Jun 7th 2014</a></span>
+		Latin American Regional 2013
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat May 31st 2014</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-05-24.html">Sat May 24th 2014</a></span>
+		NCPC 2012 (Nordic Collegiate Programming Contest)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat May 17th 2014</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-05-10.html">Sat May 10th 2014</a></span>
+		South American 2004
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat May 3rd 2014</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-04-26.html">Sat Apr 26th 2014</a></span>
+		NAIPC Chicago Invitational 2014
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-04-19.html">Sat Apr 19th 2014</a></span>
+		CERC 2012 (online only)
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Apr 12th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Apr 5th 2014</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-03-29.html">Sat Mar 29th 2014</a></span>
+		BAPC 2010 and Chicago practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-03-22.html">Sat Mar 22nd 2014</a></span>
+		GNYR 2011 and Chicago practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-03-15.html">Sat Mar 15th 2014</a></span>
+		Chicago Invitational 2012
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://www.cs.ubc.ca/~inutard/ccpc14-clone/">Sat Mar 8th 2014</a></span>
+		CCPC 2014, running locally
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://www.cs.ubc.ca/~inutard/contest/">Sat Mar 1st 2014</a></span>
+		MIT Team Contest 2008
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-02-22.html">Sat Feb 22nd 2014</a></span>
+		CCPC 2007
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-02-15.html">Sat Feb 15th 2014</a></span>
+		NCPC 2013, and <a href="public_html/practice/2014-02-15-easy.html">GNYR 2012 (easy)</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2014-02-08">Sat Feb 8th 2014</a></span>
+		BAPC 2013 (spies), and <a href="public_html/practice/2014-02-08-easy.html">GNYR 2010 (easy)</a>
+	</li>
+    <li>
+		<span class="practice-date">Sat Feb 1st 2014</span>
+		SFU Winter Programming Contest 2014 (running <a href="http://acm.cs.sfu.ca/contest/scores.php">remotely</a> and <a href="http://localhost/public_html/practice/2014-02-01">LOCALLY</a>)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-01-25.html">Sat Jan 25th 2014</a></span>
+		Mid-Central 2012 (note: making accepted solutions publicly visible)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://localhost/public_html/practice/2014-01-18">Sat Jan 18th 2014</a></span>
+		South American 2007
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2014-01-11.html">Sat Jan 11th 2014</a></span>
+		South Central USA 2013
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Jan 4th 2014</span>
+		No practice
+	</li>
+    </ul>
+
+    <h2>2013</h2>
+    <ul>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 28th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 21st 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 14th 2014</span>
+		No practice
+	</li>
+    <li class="noPractice">
+		<span class="practice-date">Sat Dec 7th 2014</span>
+		No practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-11-30.html">Sat Nov 30th 2013</a></span>
+		Southeast USA 2013 division 2 (note: trying new judge system)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-11-23.html">Sat Nov 23rd 2013</a></span>
+		Southeast USA 2013 division 1
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-11-16.html">Sat Nov 16th 2013</a></span>
+		ECNA 2013
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-11-09.html">Sat Nov 9th 2013</a></span>
+		NCPC 2006
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-11-06.html">Wed Nov 6th 2013</a></span>
+		rerunning the regional locally: PacNW 2013
+	</li>
+    <li class="officialACM">
+		<span class="practice-date">Sat Nov 2nd 2013</span>
+		PacNW 2013
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/practice/2013-10-30/">Wed Oct 30th 2013</a></span>
+		RMRC 2013, team practice starting at 4:05 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-10-28.html">Mon Oct 28th 2013</a></span>
+		GNYR 2009, online practice for this week (individual+teams)
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://icpc.egr.duke.edu/generic_contest/index.php">Sun Oct 27th 2013</a></span>
+		GCPC 2013 (hosted by Duke University)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-10-26.html">Sat Oct 26th 2013</a></span>
+		South American 2003, team practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-10-23.html">Wed Oct 23rd 2013</a></span>
+		NCPC 2008, team practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://psc.cpsc.ucalgary.ca/acpc/2013/contest/">Sat Oct 19th 2013</a></span>
+		ACPC 2013 (hosted by UofC)
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-10-16.html">Wed Oct 16th 2013</a></span>
+		GNYR 2012, team practice
+	</li>
+    <li>
+		<span class="practice-date"><a href="http://cs.stanford.edu/group/acm/contest">Sun Oct 13th 2013</a></span>
+		joining Stanford's practice
+	</li>
+    <li>
+		<span class="practice-date">Sat Oct 12th 2013</span>
+		Paul's selection of DP+graph (team contest), running <a href="https://vjudge.net/contest/33766">remotely</a> and <a href="public_html/practice/2013-10-12.html">LOCALLY</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-10-09.html">Wed Oct 9th 2013</a></span>
+		ECNA 2011, data from <a href="http://acm.ashland.edu/2011/problem-set.html">here</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="https://icpc-qual-13.contest.scrool.se/">Sat Oct 5th 2013</a></span>
+		North America Qualifiers 2013
+	</li>
+    <li>
+		<span class="practice-date">Wed Oct 2nd 2013</span>
+		UCalgary easy #2 local (<a href="public_html/practice/2013-10-02-easy.html">EASY</a>), and ECNA 2008 (<a href="public_html/practice/2013-10-02-hard.html">HARD</a>)
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/practice/2013-09-28.html">Sat Sep 28th 2013</a></span>
+		SFU qualifiers #2, running locally
+	</li>
+    <!--<li>
+		<span class="practice-date">Sat Sept 28th 2013</span>
+		SFU qualifiers #2, <a href="http://acm.cs.sfu.ca/practiceContest/">practice</a> and <a href="http://acm.cs.sfu.ca/contest/">real</a>. Use user IDs below.
+    </li>-->
+    <li class="noPractice">
+		<span class="practice-date">Wed Sep 25th 2013</span>
+		No practice
+	</li>
+    <li class="tryout">
+		<span class="practice-date"><a href="public_html/practice/2013-09-21.html">Sat Sept 21st 2013</a></span>
+		SFU qualifiers #1, running locally
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-09-19.html">Thu Sept 19th 2013</a></span>
+		ECNA 2009, data from <a href="http://acm.ashland.edu/2009/problem-set.html">here</a>
+	</li>
+    <li>
+		<span class="practice-date">Sat Sept 14th 2013</span>
+		joining UCalgary for <a href="http://psc.cpsc.ucalgary.ca/practice/easy/">easy</a> and <a href="http://psc.cpsc.ucalgary.ca/practice/hard/">hard</a>
+	</li>
+    <li>
+		<span class="practice-date"><a href="public_html/practice/2013-09-11.html">Wed Sept 11th 2013</a></span>
+		PacNW 2008
+	</li>
+    </ul>
+
+    <div id="practices_footer">
+    <p><b>Pictures from the 2013 regional:</b> <a href="public_html/practice/regional-2013.html">click here</a></p>
+    </div>
+
+</div>
+
+</body>
+</html>

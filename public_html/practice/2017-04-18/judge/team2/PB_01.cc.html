@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef long long ll;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+typedef vector&lt;ll&gt; vi;
+typedef vector&lt;vi&gt; vvi;
+typedef vector&lt;ld&gt; vd;
+typedef vector&lt;vd&gt; vvd;
+typedef pair&lt;ll, ll&gt; pii;
+typedef vector&lt;pii&gt; vpii;
+
+#define pb push_back
+const ll INF = 0x3f3f3f3f; const ld EPS = 1e-9; const ld PI = acos(-1.L);
+
+namespace n3 {
+//*/
+const int D = 3;
+typedef vector&lt;ld&gt; ndpt;
+typedef list&lt;ndpt&gt;::iterator It;
+struct Miniball { list&lt;ndpt&gt; L; int m; vector&lt;vector&lt;ld&gt; &gt; v, a; vector&lt;ndpt&gt; c;
+  ndpt q0; vector&lt;ld&gt; r2, z, f; It end; ndpt c_c; ld c_r2;
+  Miniball() : m(0),v(D+1,vector&lt;ld&gt;(D)),a(D+1,vector&lt;ld&gt;(D)),c(D+1,ndpt(D,0)),
+    q0(D), r2(D+1), z(D+1), f(D+1), end(L.begin()), c_c(c[0]), c_r2(-1.L) {}
+  void add(ndpt &amp;p) { L.push_back(p); }
+  void move_to_front(It i) { m--; if (end==i) end++; L.splice(L.begin(),L,i); }
+  void mtf_mb(It i) { end=L.begin(); if (m==D+1) return;
+    for (It k=L.begin(),j;(j=k++)!=i;) { ld e = get_e(j);
+      if (e &gt; 0 &amp;&amp; push(*j)) mtf_mb(j), move_to_front(j); } }
+  void pivot_mb(It i) {
+    It t=++L.begin(), pivot; mtf_mb(t); ld max_e, old_r2=-1;
+    do { if((max_e=max_excess(t,i,pivot)) &gt; 0) {
+      if ((t=end)==pivot) ++t;
+      old_r2=c_r2; push(*pivot); mtf_mb(end); move_to_front(pivot); }
+    } while (max_e &gt; 0 &amp;&amp; c_r2 &gt; old_r2); }
+  ld max_excess(It j,It i,It&amp; pivot) { ld max_e=0,e;
+    for (; j!=i;++j) if ((e=get_e(j)) &gt; max_e) max_e=e,pivot=j; return max_e; }
+  ld get_e(It j) { ld e=-c_r2; for (int i=0;i&lt;D;++i) e+=pow((*j)[i]-c_c[i], 2);
+    return e; }
+  bool push(const ndpt&amp; p) { int i, j; if (!m) c[0]=q0=p, r2[0]=0; else {
+      for (i=0;i&lt;D;++i) v[m][i]=p[i]-q0[i];
+      for (i=1;i&lt;m;++i) { a[m][i]=0;
+        for (j=0;j&lt;D;++j) a[m][i]+=v[i][j]*v[m][j];
+        a[m][i]*=(2/z[i]); }
+      for (i=1;i&lt;m;++i) for (j=0;j&lt;D;++j) v[m][j]-=a[m][i]*v[i][j];
+      z[m]=0; for (j=0;j&lt;D;++j) z[m]+=2*pow(v[m][j], 2);
+      if (z[m] &lt; c_r2*EPS) return false;
+      ld e=-r2[m-1]; for (i=0;i&lt;D;++i) e+=pow(p[i]-c[m-1][i], 2);
+      f[m]=e/z[m];
+      for (i=0;i&lt;D;++i) c[m][i]=c[m-1][i]+f[m]*v[m][i];
+      r2[m]=r2[m-1]+e*f[m]/2;
+    } c_c=c[m]; c_r2=r2[m]; m++; return true; }
+  void build(){ pivot_mb(L.end()); } };
+//*!
+}
+
+struct p3d{ ld x,y,z; friend ostream&amp; operator&lt;&lt; (ostream&amp; os, const p3d&amp; p) {
+  return os &lt;&lt; &quot;(&quot; &lt;&lt; p.x &lt;&lt; &quot;,&quot; &lt;&lt; p.y &lt;&lt; &quot;,&quot; &lt;&lt; p.z &lt;&lt; &quot;)&quot;; } };
+ld abs(const p3d &amp;v){ return sqrt(v.x*v.x + v.y*v.y + v.z*v.z); }
+p3d operator+(const p3d&amp;a,const p3d&amp;b){ return {a.x+b.x,a.y+b.y,a.z+b.z}; }
+p3d operator-(const p3d&amp;a,const p3d&amp;b){ return {a.x-b.x,a.y-b.y,a.z-b.z}; }
+p3d operator*(const ld &amp;s, const p3d &amp;v){ return {s*v.x, s*v.y, s*v.z}; }
+p3d operator/(const p3d&amp;v, const ld &amp;s){ return {v.x/s, v.y/s, v.z/s}; }
+inline ld dot(const p3d &amp;a, const p3d &amp;b){ return a.x*b.x + a.y*b.y + a.z*b.z; }
+inline p3d cross(const p3d &amp;a, const p3d &amp;b){
+  return {a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x}; }
+inline ld dist(const p3d &amp;s, const p3d &amp;p) {
+  return (p.x-s.x)*(p.x-s.x) + (p.y-s.y)*(p.y-s.y) + (p.z-s.z)*(p.z-s.z); }
+// plane/line intersection. p - pt on plane, n - normal, a1 -&gt; a2 : line
+inline p3d pl_inter(const p3d &amp;p, const p3d &amp;n, const p3d &amp;a1, const p3d &amp;a2){
+  return a1 + dot(p - a1, n)/dot(n, a2 - a1)*(a2 - a1); }
+////////////////////////////////////////////////////////////////////////////////
+// CCW 3D rotation about arbitrary axis; tested on 2009 pacnw D but pray anyway
+////////////////////////////////////////////////////////////////////////////////
+inline p3d rotate(const p3d&amp; p /*pt*/, const p3d&amp; u /*axis*/, const ld&amp; angle) {
+  ld c = cos(angle), s = sin(angle), t = 1 - cos(angle);  return {
+    p.x*(t*u.x*u.x + c) + p.y*(t*u.x*u.y - s*u.z) + p.z*(t*u.x*u.z + s*u.y),
+    p.x*(t*u.x*u.y + s*u.z) + p.y*(t*u.y*u.y + c) + p.z*(t*u.y*u.z - s*u.x),
+    p.x*(t*u.x*u.z - s*u.y) + p.y*(t*u.y*u.z + s*u.x) + p.z*(t*u.z*u.z + c) }; }
+////////////////////////////////////////////////////////////////////////////////
+// 3D convex hull and volume (TESTED: Chicago2013, O(n^2))
+////////////////////////////////////////////////////////////////////////////////
+//*!
+namespace n2 {
+//*/
+struct face{int a, b, c;}; int t, n; vector&lt;p3d&gt; v;
+ld dist(const face &amp;f, const p3d p) {
+  return dot(cross(v[f.b]-v[f.a], v[f.c]-v[f.b]), p-v[f.a]); }
+ld area(const face &amp;f){ return abs(cross(v[f.b] - v[f.a], v[f.c] - v[f.a])); }
+ld volume(const face &amp;f){ p3d n=cross(v[f.b]-v[f.a], v[f.c]-v[f.b]);
+  return area(f)*dot(n/abs(n), v[f.a])/6; }
+void convex_hull_clean_input() { random_shuffle(v.begin(), v.end());
+  for(int i=n-1; i&gt;=0; i--) v[i] = v[i] - v[0];
+  for(int i=1; i&lt;n; i++) if(abs(v[i]-v[0]) &gt; EPS) { swap(v[i], v[1]); break; }
+  for(int i=2; i&lt;n; i++) if(abs(cross(v[1] - v[0], v[i] - v[0])) &gt; EPS) {
+    swap(v[i], v[2]); break; }
+  for(int i=3; i&lt;n; i++) { p3d n = cross(v[1] - v[0], v[2] - v[0]);
+    if(abs(dot(n, v[0] - v[i])) &gt; EPS) { swap(v[i], v[3]); break; } } }
+void main2(){ cin &gt;&gt; n; // outputs area/volume of the CH in 3D
+  v.resize(n); for(int i=0; i&lt;n; i++) cin &gt;&gt; v[i].x &gt;&gt; v[i].y &gt;&gt; v[i].z;
+  convex_hull_clean_input();
+  vector&lt;face&gt; f { {0, 1, 2}, {2, 1, 0} };
+  for(int i=3; i&lt;n; i++){ vector&lt;face&gt; nxt; set&lt;int&gt; edge;
+    for(auto ff : f) // remove the faces
+      if(dist(ff, v[i]) &gt; EPS) { // above
+        edge.insert((ff.a &lt;&lt; 10) | ff.b);
+        edge.insert((ff.b &lt;&lt; 10) | ff.c);
+        edge.insert((ff.c &lt;&lt; 10) | ff.a);
+      } else nxt.push_back(ff); // change shift and mask values for &gt;1024 verts
+    for(auto e : edge) if(!edge.count( ((e &amp; 1023) &lt;&lt; 10) | (e &gt;&gt; 10) ))
+      nxt.push_back(face{e &gt;&gt; 10, e &amp; 1023, i});
+    f = nxt; }
+
+  ld optimal = 1e15;
+  for(auto ff : f) {
+  	p3d norm = cross(v[ff.a] - v[ff.b], v[ff.a] - v[ff.c]);
+  	norm = norm / abs(norm);
+  	ld maxDist = 0;
+  	int maxId = 0;
+  	for(int i = 0; i &lt; v.size(); i++) {
+  		ld currDist = abs(dot(norm, v[i]) - dot(norm, v[ff.a])) / abs(norm);
+  		if(currDist &gt; maxDist) {
+  			maxDist = currDist;
+  			maxId = i;
+  		}
+  	}
+
+  	vector&lt;p3d&gt; projected;
+  	for(int i = 0; i &lt; v.size(); i++) {
+  		p3d proj;
+  		proj = v[i] - dot(v[i] - v[ff.a], norm)*norm;
+  		projected.push_back(proj);
+  	}
+
+  	n3::Miniball mb;
+  	for(auto pt : projected) {
+  		n3::ndpt p(3); 
+  		p[0] = pt.x; p[1] = pt.y; p[2] = pt.z;
+  		mb.add(p);
+  	}
+  	mb.build();
+  	optimal = min(optimal, maxDist * mb.c_r2 * PI);
+  }
+  cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; optimal &lt;&lt; endl;
+	}
+  
+}
+
+
+int main(){
+	ios::sync_with_stdio(0);
+	
+	n2::main2();
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

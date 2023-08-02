@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define debug(n, m) for (int i = 0; i &lt; n; i++) {\
+						for (int j = 0; j &lt; m; j++) {\
+							cout &lt;&lt; output[i][j] &lt;&lt; &quot; &quot;;\
+						}\
+						cout &lt;&lt; endl;\
+					}
+
+int cell[5][5];
+int main() {
+	int n, m;
+	while (cin &gt;&gt; n &gt;&gt; m &amp;&amp; n+m) {
+		int nm = n*m;
+		vector&lt;int&gt; N, M, NM;
+		while (n &gt; 0) {
+			N.push_back(n%10);
+			n /= 10;
+		}
+
+		while (m &gt; 0) {
+			M.push_back(m%10);
+			m /= 10;
+		}
+
+		while (nm &gt; 0) {
+			NM.push_back(nm%10);
+			nm /= 10;
+		}
+		while (NM.size() &lt; N.size()+M.size()) NM.push_back(-1);
+
+		reverse(N.begin(), N.end());
+		reverse(M.begin(), M.end());
+		reverse(NM.begin(), NM.end());
+		for (int i = 0; i &lt; M.size(); i++) {
+			for (int j = 0; j &lt; N.size(); j++) {
+				cell[i][j] = M[i]*N[j];
+			}
+		}
+
+		const int w = 4*N.size() + 1 + 4;
+		const int h = 4*M.size() + 1 + 4;
+		char output[h][w];
+
+		for (int i = 0; i &lt; h; i++) {
+			for (int j = 0; j &lt; w; j++) {
+				output[i][j] = ' ';
+			}
+		}
+		//print border
+		for (int i = 0; i &lt; h; i++) {
+			output[i][0] = output[i][w-1] = '|';
+		}
+		for (int i = 0; i &lt; w; i++) {
+			output[0][i] = output[h-1][i] = '-';
+		}
+		output[0][0] = output[h-1][0] = '+';
+		output[0][w-1] = output[h-1][w-1] = '+';
+		
+		//print digits of n and m
+		int del = 4;
+		for (int i = 1; i &lt;= N.size(); i++) {
+			output[1][i*del] = '0'+N[i-1];
+		}
+		for (int i = 1; i &lt;= M.size(); i++) {
+			output[i*del][w-2] = '0'+M[i-1];
+		}
+
+		//print all the slashes
+		int st = 8;
+		for (int j = 0; j &lt; NM.size()-1; j++) {
+			for (int i = 1; st-i &gt; 2; i++) {
+				if (st-i &gt;= h-1) continue;
+				if (i &gt;= w-3) continue;
+				output[st-i][i] = '/';
+			}
+			st += 4;
+		}
+
+		//print all the horizontal segments
+		int r = 2;
+		for (int j = 0; j &lt;= M.size(); j++) {
+			for (int i = 2; i &lt; w-2; i++) {
+				if ((i-2)%4 == 0) output[r][i] = '+';
+				else output[r][i] = '-';
+			}
+			r += 4;
+		}
+
+		//print all the vertical segments
+		int c = 2;
+		for (int j = 0; j &lt;= N.size(); j++) {
+			for (int i = 2; i &lt; h-2; i++) {
+				if (output[i][c] == '+') continue;
+				else output[i][c] = '|';
+			}
+			c += 4;
+		}
+
+		//print all the inside digits
+		r = 3, c = 3;
+		for (int i = 0; i/4 &lt; M.size(); i+=4) {
+			for (int j = 0; j/4 &lt; N.size(); j+=4) {
+				int val = cell[i/4][j/4];
+				output[r+i][c+j] = '0'+val/10;
+				output[r+i+2][c+j+2] = '0'+val%10;
+			}
+		}
+		
+		//print all the vertical outer digits
+		int k = 0, first = 1;
+		for (int i = 0; i &lt; M.size(); i++) {
+			if (NM[k] &gt;= 0) {
+				if (first) {
+					output[3+4*i][1] = ' ';
+					first = 0;
+				}
+				output[5+4*i][1] = '0'+NM[k];
+			}
+			k++;
+		}
+
+		//print all the horizontal outer digits
+		for (int i = 0; i &lt; N.size(); i++) {
+			if (NM[k] &gt;= 0) {
+				if (first) {
+					output[h-2][1+4*i] = ' ';
+					first = 0;
+				}
+				output[h-2][3+4*i] = '0'+NM[k];
+			}
+			k++;
+		}
+		debug(h, w);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

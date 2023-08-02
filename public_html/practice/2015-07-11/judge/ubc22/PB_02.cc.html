@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct bit {
+  vector&lt;long long&gt; mem;
+  bit () {};
+  bit (int max) { mem = vector&lt;long long&gt;(max, 0); }
+  
+  void add (int i, long long val) {
+    for (; i &lt; mem.size(); i += (i + 1) &amp; -(i + 1))
+      mem[i] += val;
+  }
+  
+  long long sum(int i) {
+    long long res = 0;
+    for (; i &gt;= 0; i -= (i + 1) &amp; -(i + 1))
+      res += mem[i];
+    return res;
+  }
+} T;
+long long N, RES, M[100005], C[100005];
+
+int main () {
+  ios::sync_with_stdio(0);
+  cin &gt;&gt; N;
+  for (int i = 0; i &lt; N; ++i) cin &gt;&gt; M[i];
+  T = bit(N + 5);
+  for (int i = N - 1; i &gt;= 0; --i) {
+    C[i] = T.sum(M[i]-1);
+    T.add(M[i], 1);
+  }
+  //for (int i = 0; i &lt; N; ++i) cout &lt;&lt; C[i] &lt;&lt; ' ';
+  //cout &lt;&lt; endl;
+  T = bit(N + 5);
+  for (int i = N - 1; i &gt;= 0; --i) {
+    RES += T.sum(M[i]-1);
+    T.add(M[i], C[i]);
+  }
+  cout &lt;&lt; RES &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

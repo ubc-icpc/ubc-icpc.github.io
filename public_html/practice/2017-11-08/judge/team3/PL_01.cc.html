@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+char vs[] = {'a', 'i', 'y','e','o','u'};
+char cs[] = {'b', 'k', 'x', 'z', 'n', 'h', 'd', 'c', 'w', 'g', 'p', 'v', 'j', 'q', 't', 's', 'r', 'l', 'm', 'f'};
+
+bool isVowel(char c) {
+  for(int i=0; i&lt;6; i++)
+    if(c == vs[i]) return true;
+  return false;
+}
+
+map&lt;char,int&gt; vid,cid;
+int main() {
+  string str;
+  for(int i=0; i&lt;6; i++) {
+    vid[vs[i]] = i;
+  }
+  for(int i=0; i&lt;20; i++) cid[cs[i]]=i;
+  while(getline(cin, str)) {
+    string ans = &quot;&quot;;
+    for(char c:str) {
+      if(!(c&gt;='A' &amp;&amp; c&lt;='Z') &amp;&amp; !(c&gt;='a' &amp;&amp; c&lt;='z')) {
+        ans +=c; continue;
+      }
+      if(c&gt;='A' &amp;&amp; c&lt;='Z') {
+        char x = (c-'A')+'a';
+        int idx;
+        if(isVowel(x)) {
+          idx = (vid[x]+3)%6;
+          ans += (vs[idx] - 'a' + 'A');
+        } else {
+          idx = (cid[x]+10)%20;
+          ans += (cs[idx] - 'a' + 'A');
+        }
+      } else {
+        int idx;
+        if(isVowel(c)) {
+          idx = (vid[c]+3)%6;
+          ans += (vs[idx]);
+        } else {
+          idx = (cid[c]+10)%20;
+          ans += (cs[idx]);
+        }
+      }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

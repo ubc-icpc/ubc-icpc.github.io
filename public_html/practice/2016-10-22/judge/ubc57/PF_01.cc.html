@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+int main(){
+    ios::sync_with_stdio(0);
+    ld n,p; cin&gt;&gt;n&gt;&gt;p;
+    ld ans=0;
+    ld tent=1.0/(n+1.0);
+    ans=max(ans,p*tent);
+    for (int x=2;x&lt;=1000000;x++){
+        tent=tent*(n-p+ld(x))/(n+ld(x));
+        ans=max(ans,p*ld(x)*tent);
+    }
+    cout&lt;&lt;fixed&lt;&lt;setprecision(10)&lt;&lt;ans&lt;&lt;endl;
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

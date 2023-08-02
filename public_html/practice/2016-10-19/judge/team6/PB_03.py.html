@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+sys.setrecursionlimit(100000)
+
+
+dp = {}
+
+def _sol(n,o):
+  if (n,o) in dp:
+    return dp[(n,o)]
+
+  if o &lt; 0:
+    return 0
+
+  if n == 0:
+    return int(o == 0)
+
+  if o == 0:
+    dp[(n,o)] = _sol(n-1,1)
+    return dp[(n,o)]
+
+  dp[(n,o)] = _sol(n-1,o+1) + _sol(n-1, o-1)
+  return dp[(n,o)]
+  
+def solve(n, o, m):
+  if n == 0:
+    return &quot;&quot;
+
+  s = &quot;&quot;
+  pos_soln = _sol(n-1, o+1)
+  if m &lt; pos_soln:
+    return &quot;(&quot; + solve(n-1, o+1, m)
+  else:
+    return &quot;)&quot; + solve(n-1, o-1, m - pos_soln)
+
+n,m = map(int, sys.stdin.readline().split())
+
+print solve(n,0,m-1)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

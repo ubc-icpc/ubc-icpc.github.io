@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;string&gt;
+#include &quot;stdio.h&quot;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int main()
+{
+    int n;
+    while(true)
+    {
+        scanf(&quot;%d&quot;, &amp;n);
+        if(n == 0) break;
+        int c, g, h;
+        c = g = h = 0;
+        for(int i = 0; i &lt; n; i ++)
+        {
+            string temp;
+            cin &gt;&gt; temp;
+            if(temp[0] == 'C')
+                c++;
+            else if(temp[0] == 'G')
+                g++;
+            else
+                h ++;
+            
+        }
+        int maxC = max(c, max(g, h));
+        int minC = min(c, min(g, h));
+        int midC = c+g+h-maxC-minC;
+        int res = max(maxC, max(midC*2, minC*3));
+        printf(&quot;%d\n&quot;, res);
+    }
+    
+    return 0;
+}
+
+/*
+6 Cheddar Cheddar Cheddar Gouda Gouda Havarti
+3 Gouda Gouda Havarti
+0
+*/</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

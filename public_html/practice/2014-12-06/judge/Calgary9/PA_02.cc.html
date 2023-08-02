@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long int ll;
+
+struct m{
+	bool operator()(pair&lt;ll,string&gt; f,pair&lt;ll,string&gt; s){
+		if(f.first&lt;s.first){
+			return true;
+		}else if(f.first&gt;s.first){
+			return false;
+		}else{
+			return f.second&gt;s.second;
+		}
+	}
+}whatisthis;
+
+int main(){
+	ll n;
+	cin&gt;&gt;n;
+	if(n&lt;=0){
+		return 0;
+	}
+	if(n==1){
+		string s;
+		cin&gt;&gt;s;
+		cout&lt;&lt;s&lt;&lt;&quot;\n&quot;;
+		return 0;
+	}
+	vector&lt;pair&lt;ll,string&gt; &gt; v;
+	for(int i=0;i&lt;n;i++){
+		string name;
+		ll r,s,d;
+		cin&gt;&gt;name&gt;&gt;r&gt;&gt;s&gt;&gt;d;
+		pair&lt;ll,string&gt; p(2*r+3*s+d,name);
+		v.push_back(p);
+	}
+	sort(v.begin(),v.end(),whatisthis);
+	cout&lt;&lt;v[n-1].second&lt;&lt;&quot;\n&quot;&lt;&lt;v[n-2].second&lt;&lt;&quot;\n&quot;;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

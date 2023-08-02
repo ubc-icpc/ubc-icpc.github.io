@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	int a, b, c, d;
+	cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d;
+	if (b == 0 &amp;&amp; c == 0) {
+		if (a*d != 0)
+			cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+		else {
+			if (a)
+				for (int i = 0; i &lt;= a; i++)
+					cout &lt;&lt; 0;
+			else
+				for (int i = 0; i &lt;= d; i++)
+					cout &lt;&lt; 1;
+			cout &lt;&lt; endl;
+		}
+	}
+	else if (abs(b-c) &gt; 1)
+		cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+	else {
+		if (b &gt; c) {
+			for (int i = 0; i &lt; a; i++)
+				cout &lt;&lt; 0;
+			for (int i = 0; i &lt; b; i++)
+				cout &lt;&lt; 0 &lt;&lt; 1;
+			for (int i = 0; i &lt; d; i++)
+				cout &lt;&lt; 1;
+		}
+		else if (b == c) {
+			for (int i = 0; i &lt; a; i++)
+				cout &lt;&lt; 0;
+			for (int i = 0; i &lt; b; i++)
+				cout &lt;&lt; 0 &lt;&lt; 1;
+			for (int i = 0; i &lt; d; i++)
+				cout &lt;&lt; 1;
+			cout &lt;&lt; 0;
+		}
+		else {
+			if (b == 0) {
+				for (int i = 0; i &lt;= d; i++)
+					cout &lt;&lt; 1;
+				for (int i = 0; i &lt;= a; i++)
+					cout &lt;&lt; 0;
+			}
+			else {
+				cout &lt;&lt; 1;
+				for (int i = 0; i &lt;= a; i++)
+					cout &lt;&lt; 0;
+				for (int i = 0; i &lt; c-2; i++)
+					cout &lt;&lt; 1 &lt;&lt; 0;
+				for (int i = 0; i &lt;= d; i++)
+					cout &lt;&lt; 1;
+				cout &lt;&lt; 0;
+			}
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+#include &lt;string&gt;
+using namespace std;
+int main()
+{
+	string a;
+	cin&gt;&gt;a;
+	int n = a.length();
+    int arr[n];
+    for(int i=0; i&lt;n; i++)
+    {
+    	arr[i]=1;
+	}
+	int max = 0;
+	for(int i=0;i&lt;n; i++)
+	{
+		int bir = a[i] - 'a';
+		for(int j=0; j&lt;i; j++)
+		{
+			int iki = a[j] - 'a';
+			if(iki&lt;bir &amp;&amp; arr[j]+1&gt;arr[i])
+			{
+				arr[i]= arr[j]+1;
+			}
+		}
+		if(arr[i]&gt;max)
+		{
+			max = arr[i];
+		}
+	}
+	cout&lt;&lt;26-max;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

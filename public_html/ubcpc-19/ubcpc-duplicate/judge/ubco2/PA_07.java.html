@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class A {
+	public static void main(String args[]) {
+		
+//		System.out.println();
+		Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+//		Scanner in = new Scanner(System.in);
+		char tp = in.next().charAt(0);
+		int shift = in.nextInt();
+//		System.out.println();
+		String input = in.next();
+		if (tp == 'E')
+			System.out.println(encode(shift, input));
+		else if (tp == 'D')
+			System.out.println(encode(-shift, input));
+	}
+
+	public static String encode(int shift, String input) {
+		String output = &quot;&quot;;
+		for (int i = 0; i &lt; input.length(); i++) {
+			int change = (int) input.charAt(i) + shift;
+			if (change &gt; 122)
+				change -= 26;
+			else if (change &lt; 97)
+				change += 26;
+			output += (char) change;
+		}
+		return output;
+	}
+}
+</code>
+</pre>
+</body>
+</html>

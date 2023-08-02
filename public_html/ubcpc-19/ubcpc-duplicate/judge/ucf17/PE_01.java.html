@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+
+public class e {
+	
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		
+		int numScenes = scan.nextInt();
+		int numActs = scan.nextInt();
+		
+		int[] sceneExcitementLevels = new int[numScenes];
+		for (int i = 0; i &lt; numScenes; i++) {
+			sceneExcitementLevels[i] = scan.nextInt();
+		}
+		
+		// Find the top numActs values in the array
+		int[] actExcitementLevels = new int[numActs];
+		for (int i = 0; i &lt; numActs; i++) {
+			int maxSceneExcitementLevelIndex = 0;
+			for (int j = 0; j &lt; numScenes; j++) {
+				if (sceneExcitementLevels[j] &gt; sceneExcitementLevels[maxSceneExcitementLevelIndex]) {
+					maxSceneExcitementLevelIndex = j;
+				}
+			}
+			
+			actExcitementLevels[i] = sceneExcitementLevels[maxSceneExcitementLevelIndex];
+			sceneExcitementLevels[maxSceneExcitementLevelIndex] = Integer.MIN_VALUE;
+		}
+		
+		int playExcitementLevel = 0;
+		for (int i = 0; i &lt; numActs; i++) {
+			playExcitementLevel += actExcitementLevels[i];
+		}
+		
+		System.out.println(playExcitementLevel);
+		
+		scan.close();
+	}
+	
+}</code>
+</pre>
+</body>
+</html>

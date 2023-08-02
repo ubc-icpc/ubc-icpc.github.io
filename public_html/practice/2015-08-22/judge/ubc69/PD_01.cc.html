@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+#define INF 1000000
+
+using namespace std;
+
+int a,b;
+
+bool rel(int a, int b){
+	for(int i=2;i&lt;=a;i++){
+		if(a%i==0 &amp;&amp; b%i==0)
+			return false;
+	}
+	return true;
+}
+
+void find(string t){
+	a=b=-1;
+	for(int i=1;i&lt;t.size();i++){
+		int c=0,d=0;
+		for(int j=0;j&lt;i;j++){
+			c*=10;
+			c+=t[j]-'0';
+		}
+		for(int j=i;j&lt;t.size();j++){
+			d*=10;
+			d+=t[j]-'0';
+		}
+		if(rel(c,d)){
+			a=c;
+			b=d;
+			return;
+		}
+	}
+}
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		cout&lt;&lt;&quot;Ticket #&quot;&lt;&lt;i&lt;&lt;':'&lt;&lt;endl;
+		string t;
+		cin&gt;&gt;t;
+		find(t);
+		if(a==-1)
+			cout&lt;&lt;&quot;Not relative&quot;&lt;&lt;endl;
+		else
+			cout&lt;&lt;a&lt;&lt;' '&lt;&lt;b&lt;&lt;endl;
+		cout&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

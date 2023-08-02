@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+vector&lt;vector&lt;int&gt; &gt; lol;
+void dfs(vector&lt;int&gt; &amp;curr, int sum) {
+    if (curr.size() == 6) {
+        if (sum == 15) {
+            lol.push_back(curr);
+        }
+        return;
+    }
+    for (int i = 0; i &lt;= 15-sum; i++) {
+        curr.push_back(i);
+        dfs(curr, sum+i);
+        curr.pop_back();
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    vector&lt;int&gt; tmp;
+    dfs(tmp, 0);
+    sort(lol.begin(), lol.end());
+
+    int csnum = 1;
+    char c; cin &gt;&gt; c;
+    while (c != 'e') {
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; csnum &lt;&lt; &quot;:&quot;;
+        if (c == 'm') {
+            vector&lt;int&gt; combo;
+            for (int i = 0; i &lt; 6; i++) {
+                int x; cin &gt;&gt; x; combo.push_back(x);
+            }
+            cout &lt;&lt; &quot; &quot; &lt;&lt; (lower_bound(lol.begin(), lol.end(), combo) - lol.begin()) &lt;&lt; endl;
+        } else {
+            int z; cin &gt;&gt; z;
+            for (int i = 0; i &lt; 6; i++) {
+                cout &lt;&lt; &quot; &quot; &lt;&lt; lol[z][i];
+            }
+            cout &lt;&lt; endl;
+        }
+        cin &gt;&gt; c;
+        csnum++;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

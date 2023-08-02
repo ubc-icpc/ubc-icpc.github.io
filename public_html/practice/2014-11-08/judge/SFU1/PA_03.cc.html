@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// problem A
+// SFU Royal
+
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+int main() {
+	int ntests;
+	int good[6];
+	int evil[7];
+
+	scanf(&quot;%d&quot;,&amp;ntests);
+
+	for(int ct = 1;ct &lt;= ntests;ct++) {
+		long long goodsum = 0;
+		long long badsum = 0;
+
+		for(int c = 0;c &lt; 6;c++) {
+			scanf(&quot;%d&quot;,good+c);
+		}
+
+		for(int c = 0;c &lt; 7;c++) {
+			scanf(&quot;%d&quot;,evil+c);
+		}
+
+		goodsum += good[0];
+		goodsum += good[1] * 2;
+		goodsum += good[2] * 3;
+		goodsum += good[3] * 3;
+		goodsum += good[4] * 4;
+		goodsum += good[5] * 10;
+
+		badsum += evil[0] * 1;
+		badsum += evil[1] * 2;
+		badsum += evil[2] * 2;
+		badsum += evil[3] * 2;
+		badsum += evil[4] * 3;
+		badsum += evil[5] * 5;
+		badsum += evil[6] * 11;
+
+		printf(&quot;Battle %d: &quot;,ct);
+
+		if(goodsum &gt; badsum) {
+			puts(&quot;Good triumphs over Evil&quot;);
+		} else if(badsum &gt; goodsum) {
+			puts(&quot;Evil eradicates all trace of Good&quot;);
+		} else {
+			puts(&quot;No victor on this battle field&quot;);
+		}
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

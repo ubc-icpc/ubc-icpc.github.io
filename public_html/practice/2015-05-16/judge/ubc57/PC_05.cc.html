@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// May 16 C.cpp : Defines the entry point for the console application.
+//
+//#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;sstream&gt;
+#include &lt;vector&gt;
+using namespace std;
+long long L[1000001][26]={{0}};
+int main(){
+    ios::sync_with_stdio(0);
+	long long n,k;
+	cin&gt;&gt;n;
+	string word;
+	cin&gt;&gt;word;
+	cin&gt;&gt;k;
+	long long len;
+	len=word.length();
+	for (int i=1;i&lt;=len;i++){
+			char c=word[i-1];
+			int num=(int) c -65;
+			L[i][num]=L[i][num]+1;
+			for (int j=0;j&lt;26;j++){
+               L[i+1][j]=L[i][j];
+   }
+   }
+	long long answer;
+	for (int i=1;i&lt;=k;i++){
+		long long row;
+		char letter;
+		cin&gt;&gt;row;
+		cin&gt;&gt;letter;
+		int as=(int)letter-65;
+		answer=0;
+		long long first,last,amount;
+		if (row%2==0){
+		last=(((row/2)%len)*((row+1)%len))%len;
+		first=(((row/2)%len)*((row-1)%len)+1)%len;
+		}
+		else{
+		last=(((row)%len)*(((row+1)/2)%len))%len;
+		first=(((row)%len)*(((row-1)/2)%len)+1)%len;
+		}
+		if (first==0) first=len;
+		if (row==1) answer=L[1][as];
+		else{
+		amount=(row-row%len)/len;
+		answer=L[len][as]*amount;
+		if (last&gt;first) answer=answer+L[last][as]-L[first-1][as];
+		else{
+		if ((last&lt;first)&amp;&amp;(last!=first-1)) answer=answer+L[last][as]+L[len][as]-L[first-1][as];
+		if ((last==first)&amp;&amp;(letter==word[first-1])) answer=answer+1;
+		}
+		if ((len==1)&amp;&amp;(L[1][as]==1)) answer=row;
+		}
+		cout&lt;&lt;answer&lt;&lt;'\n';
+	}
+	
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

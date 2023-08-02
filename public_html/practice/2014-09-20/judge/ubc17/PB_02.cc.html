@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+typedef pair&lt;double, double&gt;	pii;
+typedef vector&lt;pii&gt;		vpii;
+
+#define ins(a) push_back(a)
+
+struct cmp {
+	bool operator() (const pii &amp;x, const pii &amp;y) const {
+		return x.first*y.second &lt; y.first*x.second;
+	}
+};
+
+int main() {
+	int T; cin &gt;&gt; T;
+	cout.setf(ios::fixed,ios::floatfield);
+	cout.precision(5);
+	while (T--) {
+		vpii oppTeam;
+		for (int i=0; i&lt;5; i++) {
+			double hi; cin &gt;&gt; hi;
+			oppTeam.ins(pii(hi, 0));
+			// cout &lt;&lt; oppTeam[i].first &lt;&lt; endl;
+		}
+		double dmgLeft=0;
+		for (int i=0; i&lt;5; i++) {
+			int ei; cin &gt;&gt; ei;
+			oppTeam[i].second = ei;
+			dmgLeft+=ei;
+		}
+		sort (oppTeam.begin(), oppTeam.end(), cmp());
+		for (int i =0; i&lt; 5; i++) {
+			// cout &lt;&lt; &quot;hp of: &quot; &lt;&lt; oppTeam[i].first &lt;&lt; &quot;; dps of: &quot; &lt;&lt; oppTeam[i].second &lt;&lt; &quot;.&quot; &lt;&lt; endl;
+		}
+		double myDps=0;
+		for (int i=0; i&lt;5; i++) {
+			double tm; cin &gt;&gt; tm;
+			myDps += tm;
+		}
+		// cout &lt;&lt; myDps &lt;&lt; endl;
+		double total=0;
+		for (int i=0; i&lt;5; i++) {
+			double ttk = (oppTeam[i].first/myDps);
+			total+= (ttk*dmgLeft);
+			dmgLeft-=oppTeam[i].second;
+		}
+		cout &lt;&lt; total &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

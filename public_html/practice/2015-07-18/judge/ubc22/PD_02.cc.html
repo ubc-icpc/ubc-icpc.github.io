@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, M, N, Q, D[15], L;
+long long MEM[7][55];
+
+long long DP(int l, int n) {
+	if (n &lt; 0) return 0;
+	if (MEM[n][l] != -1) return MEM[n][l];
+	MEM[n][l] = 0;
+	for (int i = 3; i &lt;= min(10, l); ++i)
+		if (D[i])
+			MEM[n][l] += DP(l-i, n-1)  * D[i];
+	//printf(&quot;DP[%d][%d] = %lld\n&quot;, l, n, MEM[n][l]);
+	return MEM[n][l];
+}
+
+int main() {
+	cin &gt;&gt; T;
+	while (T--) {
+		cin &gt;&gt; M &gt;&gt; N &gt;&gt; Q;
+		memset(D, 0, sizeof D);
+		while (M--) { string s; cin &gt;&gt; s; ++D[s.size()]; }
+		while (Q--) {
+			cin &gt;&gt; L;
+			memset(MEM, -1, sizeof MEM); MEM[0][0] = 1;
+			cout &lt;&lt; DP(L, N) &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

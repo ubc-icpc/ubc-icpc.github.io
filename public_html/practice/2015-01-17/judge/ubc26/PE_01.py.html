@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+r, c = map(int, sys.stdin.next().split(' '))
+
+grid = [ [ -1 for j in xrange(c+1) ] for i in xrange(r+1) ]
+grid[1][1] = 1
+
+k = int(sys.stdin.next())
+for i in range(k):
+    cr, cc = map(int, sys.stdin.next().split(' '))
+    grid[cr][cc] = 0
+
+def f(i, j):
+    if i == 0 or j == 0 or i &gt; r or j &gt; c: return 0
+    if grid[i][j] == -1: grid[i][j] = f(i-1,j) + f(i,j-1)
+    return grid[i][j]
+
+print f(r,c)
+
+#for i in xrange(1, r):
+#    print &quot;&quot;.join(&quot;%10d&quot;%grid[i][j] for j in xrange(1, c))
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class UbcPA0905 {
+
+	public static void main(String [] args){
+		Scanner input = new Scanner(System.in);
+		
+		int size = input.nextInt(); 
+		
+		int [][] listarr = new int[size][10];
+		boolean [] ansZ = new boolean[size];
+		boolean [] ansM = new boolean[size];
+		// READ
+		for(int y = 0; y &lt; size; y++){
+			for(int z = 0; z &lt; 10; z++){
+				
+				listarr[y][z] = input.nextInt();
+				if(listarr[y][z] == 18)
+					ansM[y] = true;
+				else if(listarr[y][z] == 17)
+					ansZ[y] = true;
+			}
+		}
+		
+		// CHECK
+		for(int i = 0; i &lt; size; i++){
+				boolean zack = ansZ[i];
+				boolean mack = ansM[i];
+			for(int g = 0; g &lt; 10; g++){
+				System.out.print(listarr[i][g] + &quot; &quot;);				
+			}
+			
+			System.out.println();
+			if(zack == true &amp;&amp; mack == true)
+				System.out.println(&quot;both&quot;);
+			else if(zack == true &amp;&amp; mack == false)
+				System.out.println(&quot;zack&quot;);
+			else if(zack == false &amp;&amp; mack == true)
+				System.out.println(&quot;mack&quot;);
+			else
+				System.out.println(&quot;none&quot;);
+			
+			System.out.println();
+		}
+		
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+vector&lt;ll&gt; fib(94);
+ll lo, hi;
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  fib[0] = 0, fib[1] = 1;
+  for (int i = 2; i &lt;= 93; i++)
+    fib[i] = fib[i-1] + fib[i-2];
+  while (cin &gt;&gt; hex &gt;&gt; lo &gt;&gt; hi) {
+    if (lo &gt;= hi) break;
+    cout &lt;&lt; &quot;Range &quot; &lt;&lt; lo &lt;&lt; &quot; to &quot; &lt;&lt; hi &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    bool found_any = false;
+    for (int i = 0; i &lt; fib.size(); i++) {
+      if (lo &lt;= fib[i] &amp;&amp; fib[i] &lt;= hi) {
+        found_any = true;
+        cout &lt;&lt; &quot;Fib(&quot; &lt;&lt; i &lt;&lt; &quot;) = &quot; &lt;&lt; fib[i] &lt;&lt; &quot;, &quot;;
+        if (i == 0) cout &lt;&lt; &quot;lg does not exist&quot; &lt;&lt; endl;
+        else cout &lt;&lt; &quot;lg is &quot; &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; log2(fib[i]) &lt;&lt; endl;
+        vector&lt;ll&gt; factors;
+        ll num = fib[i];
+        while (num &gt; 1) {
+          while (num % 2 == 0) {
+            factors.push_back(2);
+            num /= 2;
+          }
+          // No more factors of 2 are left. So just check all odd numbers upto
+          // sqrt(num).
+          bool prime = true;
+          for (ll i = 3; i*i &lt;= num; i += 2) {
+            if (num % i == 0) {
+              prime = false;
+              factors.push_back(i);
+              num /= i;
+              break;
+            }
+          }
+          if (prime &amp;&amp; num &gt; 1) {
+            factors.push_back(num);
+            break;
+          }
+        }
+        if (factors.size() == 0)
+          cout &lt;&lt; &quot;No prime factors&quot; &lt;&lt; endl;
+        else {
+          cout &lt;&lt; &quot;Prime factors:&quot;;
+          for (const ll &amp;x : factors)
+            cout &lt;&lt; &quot; &quot; &lt;&lt; x;
+          cout &lt;&lt; endl;
+        }
+      }
+    }
+    if (!found_any)
+      cout &lt;&lt; &quot;No Fibonacci numbers in the range&quot; &lt;&lt; endl;
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

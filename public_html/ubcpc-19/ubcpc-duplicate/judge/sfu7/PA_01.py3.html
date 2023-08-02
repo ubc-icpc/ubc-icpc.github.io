@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">def encode(word):
+    return [ord(c)-ord('a') for c in word]
+def decode(encode):
+    return ''.join([chr(ord('a') + n) for n in encode])
+
+
+def c(word, shift):
+    e = encode(word)
+    e = [(n + shift) % 26 for n in e]
+    print(decode(e))
+en = input()
+shift = int(input())
+word = input()
+if (en == 'D'):
+    shift *= -1
+
+c(word, shift)
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+typedef pair&lt;ld,int&gt; pli;
+
+const int N = 76;
+
+ld mp[N+1];
+
+int main() {
+  ios::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    memset(mp, 0, sizeof mp);
+    mp[N] = 1.0L;
+    int n; cin &gt;&gt; n;
+    vector&lt;pli&gt; v;
+    for (int i = 0; i &lt; n; i++) {
+      int a, b; cin &gt;&gt; a &gt;&gt; b;
+      v.push_back(make_pair(b/100.0L,a));
+    }
+    sort(v.begin(),v.end(),greater&lt;pli&gt;());
+    for (const auto&amp; p : v) {
+      for (int i = 1; i &lt;= N; i++) {
+        if (mp[i] &gt; 0) {
+          int ni = max(0,i-p.second);
+          mp[ni] = max(mp[ni],mp[i]*p.first);
+        }
+      }
+    }
+    cout &lt;&lt; 100.0L*mp[0] &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

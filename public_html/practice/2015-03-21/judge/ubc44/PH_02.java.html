@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class shopaholic {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		int T = s.nextInt();
+		while (T-- &gt;0) {
+			int numItems = s.nextInt();
+			int[] prices = new int[numItems];
+			for (int i=0; i&lt;numItems; i++)
+				prices[i] = s.nextInt();
+			Arrays.sort(prices);
+			int maxDiscount = 0;
+			for (int k=numItems-3; k&gt;=0; k-=3)
+				maxDiscount += prices[k];
+			System.out.println(maxDiscount);
+		}
+		s.close();
+
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

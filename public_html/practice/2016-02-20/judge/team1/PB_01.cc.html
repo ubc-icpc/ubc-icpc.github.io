@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, M;
+vector&lt;pair&lt;string, string&gt; &gt; A;
+pair&lt;string, string&gt; B;
+
+int main () {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    cin &gt;&gt; N;
+    A.resize(N);
+    for (int i = 0; i &lt; N; i++)
+        cin &gt;&gt; A[i].second &gt;&gt; A[i].first;
+    
+    sort(A.begin(), A.end());
+    
+    cin &gt;&gt; M;
+    while (M--) {
+        cin &gt;&gt; B.second &gt;&gt; B.first;
+        vector&lt;pair&lt;string, string&gt; &gt;::iterator at = lower_bound(A.begin(), A.end(), B);
+        int i = at - A.begin();
+        int k = i / 3;
+        k *= 3;
+        for (int j = 0; j &lt; 3; ++j) {
+            if (j + k != i) {
+                cout &lt;&lt; A[j + k].second &lt;&lt; &quot; &quot; &lt;&lt; A[j + k].first &lt;&lt; endl;
+            }
+        }
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

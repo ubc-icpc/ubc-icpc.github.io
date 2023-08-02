@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+
+using namespace std;
+
+
+int main (void) {
+  
+  int t; cin&gt;&gt;t;
+
+  for(int k=0; k&lt;t; k++) {
+    int games, points; cin &gt;&gt; games &gt;&gt; points;
+    int m_wins = points/3;
+    cout &lt;&lt; &quot;Team #&quot; &lt;&lt; k+1 &lt;&lt; endl;
+    cout &lt;&lt; &quot;Games: &quot; &lt;&lt; games &lt;&lt; endl;
+    cout &lt;&lt; &quot;Points: &quot; &lt;&lt; points &lt;&lt; endl;
+    cout &lt;&lt; &quot;Possible records:&quot; &lt;&lt; endl;
+    for(int i=m_wins; i&gt;=0; i--) {
+      if( i + (points-(i*3)) &lt;= games ) {
+	cout &lt;&lt; i &lt;&lt; &quot; - &quot; &lt;&lt; points-(i*3) &lt;&lt; &quot; - &quot; &lt;&lt; games - i - (points-(i*3)) &lt;&lt; endl;
+      }
+    }
+    if(k!=t-1)
+    cout &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

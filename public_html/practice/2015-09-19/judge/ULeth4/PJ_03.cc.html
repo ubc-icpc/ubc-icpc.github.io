@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+
+int solve(double p)
+{
+   double x = (p*p)/(1-2*p*(1-p));
+   cout &lt;&lt; fixed &lt;&lt; setprecision(5);
+   cout &lt;&lt; p*p*p*p + 4*p*p*p*p*(1-p)+10*p*p*p*p*(1-p)*(1-p)
+      +20*p*p*p*(1-p)*(1-p)*(1-p)*x &lt;&lt; endl;
+   
+}
+
+int main()
+{
+   int cases;
+   double P[200]; 
+   cin &gt;&gt; cases;
+   for (int i=0; i&lt;cases; i++)
+      cin&gt;&gt;P[i];
+   int j= 0;
+   while(j!=cases)
+   {
+      solve(P[j]);
+      j++;
+   }
+   return 0;
+} 
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

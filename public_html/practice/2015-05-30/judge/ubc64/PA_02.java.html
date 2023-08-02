@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+/* package whatever; // don't place package name! */
+
+import java.util.*;
+import java.io.*;
+
+
+/* Name of the class has to be &quot;Main&quot; only if the class is public. */
+public class A
+{
+    public static void main (String[] args)
+    {   Scanner scan = new Scanner(System.in);
+        int[] output = {0,0,0,0,0,0,0,0};
+        String[][] keyboards = {{&quot;1&quot;,&quot;Q&quot;, &quot;A&quot;, &quot;Z&quot;}, {&quot;2&quot;, &quot;W&quot;,&quot;S&quot;,&quot;X&quot;},{&quot;3&quot;,&quot;E&quot;,&quot;D&quot;,&quot;C&quot;},{&quot;4&quot;,&quot;5&quot;,&quot;R&quot;,&quot;T&quot;,&quot;F&quot;,&quot;G&quot;,&quot;V&quot;,&quot;B&quot;},{&quot;6&quot;, &quot;7&quot;, &quot;Y&quot;,&quot;U&quot;,&quot;H&quot;,&quot;J&quot;,&quot;N&quot;,&quot;M&quot;}, {&quot;8&quot;,&quot;I&quot;,&quot;K&quot;,&quot;,&quot;}, {&quot;9&quot;,&quot;O&quot;,&quot;L&quot;,&quot;.&quot;},{&quot;0&quot;,&quot;-&quot;,&quot;=&quot;,&quot;P&quot;,&quot;[&quot;,&quot;]&quot;,&quot;;&quot;,&quot;'&quot;,&quot;/&quot;}};
+        String input = scan.nextLine();
+        for (int x=0;x&lt;input.length();x++) {
+            String l = String.valueOf(input.charAt(x));
+            for (int i =0; i &lt; keyboards.length;i ++) {
+                String [] f = keyboards[i];
+                if(Arrays.asList(f).contains(l)) {
+                    output[i]++;
+                    break;
+                }
+            }
+        }
+        
+        for (int i = 0; i &lt; output.length; i ++) {
+            System.out.print(output[i]+&quot;\n&quot;);
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

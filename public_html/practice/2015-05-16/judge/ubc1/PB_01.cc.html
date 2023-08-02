@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+  
+int main() {
+    int n; cin &gt;&gt; n;
+    
+    int xl = 100, xr = -100, yl = 100, yr = -100;
+    for (int i = 0; i &lt; n; i++) {
+        int x, y; cin &gt;&gt; x &gt;&gt; y;
+        xl = min(xl, x);
+        yl = min(yl, y);
+        xr = max(xr, x);
+        yr = max(yr, y);
+    }
+    cout &lt;&lt; max(xr-xl, yr-yl) * max(xr-xl, yr-yl) &lt;&lt; endl;
+    
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

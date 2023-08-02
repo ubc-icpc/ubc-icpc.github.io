@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+vector&lt;int&gt; occ[30];
+int main() {
+    ios::sync_with_stdio(0);
+    ll n; cin &gt;&gt; n;
+    string s; cin &gt;&gt; s;
+    for (int i = 0; i &lt; s.size(); i++) {
+        occ[s[i]-'A'].push_back(i);
+    }
+    
+    ll slen = s.length();
+    auto offset = [&amp;](ll n)-&gt;ll { 
+        if (n%2 == 0) return (((n/2)%slen)*((n-1)%slen))%slen;
+        else return ((n%slen)*(((n-1)/2)%slen))%slen;
+    };
+    
+    auto queryr = [&amp;](ll idx, char c)-&gt;ll {
+        return occ[c-'A'].end() - lower_bound(occ[c-'A'].begin(), occ[c-'A'].end(), idx);
+    };
+    
+    auto queryl = [&amp;](ll idx, char c)-&gt;ll {
+        return lower_bound(occ[c-'A'].begin(), occ[c-'A'].end(), idx) - occ[c-'A'].begin();
+    };
+    
+    auto ans = [&amp;](ll n, char c)-&gt;ll {
+        if (offset(n) + n &gt; slen) {
+            ll cnt = (n-slen+offset(n)+slen-1)/slen;
+            ll del = cnt - (n-slen+offset(n))/slen;
+            return queryr(offset(n), c) + cnt*queryr(0, c) - del*queryr(offset(n+1), c);
+        } else {
+            ll a = offset(n);
+            return queryr(a, c) - queryr(a+n, c);
+        }
+    };
+    
+    int k; cin &gt;&gt; k;
+    while (k--) {
+        ll n; char c;
+        cin &gt;&gt; n &gt;&gt; c;
+        cout &lt;&lt; ans(n, c) &lt;&lt; '\n';
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

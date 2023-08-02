@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+
+using namespace std;
+
+bool distinct(int y) {
+  map&lt;int, int&gt; m;
+  while(y&gt;0) {
+    m[y%10]++;
+    if (m[y%10]&gt;1)
+      return false;
+    y/=10;
+  }
+  return true;
+}
+
+int solve (int y) {
+  bool flag = false;
+  while (!flag) {
+    y++;
+    if(distinct(y))
+      flag=true;
+  }
+  return y;
+}
+
+int main() {
+  int y; cin &gt;&gt; y;
+  int ans = 0;
+  ans = solve(y);
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

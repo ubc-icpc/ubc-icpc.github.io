@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+typedef double ld;
+typedef vector&lt;ld&gt; vd;
+typedef vector&lt;vd&gt; vvd;
+const ld EPS = 1e-2;
+
+
+#define ISZERO(x) (fabs(x) &lt; EPS)
+#define ISPOS(x) ((x) &gt; EPS)
+void pivot(vvd&amp; A, int r, int c) { // A is A|b
+  int m = A.size(), n = A[0].size(); ld tmp = A[r][c];
+  for (int i = 0; i &lt; n; ++i) A[r][i]/=tmp;
+  for (int i = 0; i &lt; m; ++i) if (i != r) { ld k = A[i][c];
+    for(int j = 0; j &lt; n; ++j) A[i][j] -= A[r][j]*k; } }
+bool gaussian(vvd&amp; A) { int m=A.size(), n=A[0].size()-1; vector&lt;bool&gt; used(m,0);
+  for (int c = 0; c &lt; n; ++c) for (int r = 0; r &lt; m; ++r)
+    if (!used[r] &amp;&amp; !ISZERO(A[r][c]) ) { pivot(A, r, c); used[r] = true; }
+  for (int r = 0; r &lt; m; ++r) if(!used[r] &amp;&amp; !ISZERO(A[r].back())) return false;
+  return true; }
+
+void print(vvd&amp; a) {
+    cerr &lt;&lt; setprecision(3) &lt;&lt; fixed;
+    for (int i = 0; i &lt; a.size(); i++) {
+        for (int j = 0; j &lt; a[i].size(); j++) {
+            cerr &lt;&lt; a[i][j] &lt;&lt; &quot; &quot;;
+        }
+        cerr &lt;&lt; endl;
+    }
+    cerr &lt;&lt; endl;
+}
+
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int dim; cin &gt;&gt; dim;
+    while (dim &gt; 0) {
+        ld vals[dim+3];
+        for (int i = 0; i &lt; dim+3; i++) {
+            cin &gt;&gt; vals[i];
+        }
+
+        bool found = false;
+        for (int i = 0; i &lt; dim+3; i++) {
+            vvd augmat(dim+2, vd(dim+2));
+            int jj = 0;
+            for (int j = 0; j &lt; dim+3; j++) {
+                if (j == i) continue;
+                ld z = 1;
+                for (int k = 0; k &lt;= dim; k++) {
+                    augmat[jj][k] = z;
+                    z *= j;
+                }
+                augmat[jj][dim+1] = vals[j];
+                jj++;
+            }
+
+            //cerr &lt;&lt; i &lt;&lt; endl; print(augmat);
+
+            if (gaussian(augmat)) {
+                //cerr &lt;&lt; &quot;GAUSS PASS&quot; &lt;&lt; endl; print(augmat);
+
+                vd sol(dim+1, 0);
+                for (int j = 0; j &lt; dim+2; j++) {
+                    int p = 0;
+                    while (p &lt; dim+1 &amp;&amp; ISZERO(augmat[j][p])) p++;
+                    if (p &lt; dim+1) {
+                        sol[p] = augmat[j][dim+1];
+                    }
+                }
+                ld sum = 0;
+                ld z = 1;
+                for (int k = 0; k &lt;= dim; k++) {
+                    sum += z*sol[k];
+                    z *= i;
+                }
+                if (abs(sum - vals[i]) &gt; 0.99) {
+                    found = true;
+                    cout &lt;&lt; i &lt;&lt; endl;
+                    break;
+                }
+            } else {
+                //cerr &lt;&lt; &quot;GAUSS FAIL&quot; &lt;&lt; endl;
+            }
+        }
+
+        //if (!found) cerr &lt;&lt; &quot;ERROR NOT FOUND&quot; &lt;&lt; endl;
+
+        cin &gt;&gt; dim;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

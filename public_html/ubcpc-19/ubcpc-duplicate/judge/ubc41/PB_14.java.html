@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.*;
+import java.util.*;
+
+
+public class B{
+  static class Fighter {
+    String name;
+    int hp;
+    int attack;
+    int defense;
+    public Fighter(String name, int hp, int attack, int defense) {
+      this.name = name;
+      this.hp = hp;
+      this.attack = attack;
+      this.defense = defense;
+    }
+  }
+
+  private static Set&lt;String&gt; intransitiveTriples(List&lt;Fighter&gt; fighters) {
+    Map&lt;String, Set&lt;String&gt;&gt; graph = buildGraph(fighters);
+
+    Set&lt;String&gt; ret = new HashSet&lt;&gt;();
+
+    List&lt;String&gt; x = new ArrayList&lt;&gt;();
+
+    for (String f : graph.keySet()) {
+      x.add(f);
+      dfs(graph, x, ret);
+      x.remove(0);
+    }
+
+    return ret;
+  }
+
+
+  private static void dfs(Map&lt;String, Set&lt;String&gt;&gt; g, List&lt;String&gt; currFighters, Set&lt;String&gt; solution) {
+    if (currFighters.size() == 3) {
+      if (g.get(currFighters.get(2)).contains(currFighters.get(0))) {
+        List&lt;String&gt; copy = new ArrayList&lt;&gt;(currFighters);
+        Collections.sort(copy);
+        solution.add(copy.get(0) + &quot; &quot; + copy.get(1) + &quot; &quot; + copy.get(2));
+      }
+      return;
+    }
+
+    for (String f : g.get(currFighters.get(currFighters.size() - 1))) {
+      currFighters.add(f);
+      dfs(g, currFighters, solution);
+      currFighters.remove(currFighters.size() - 1);
+    }
+
+  }
+
+  private static Map&lt;String, Set&lt;String&gt;&gt; buildGraph(List&lt;Fighter&gt; fighterList) {
+    Map&lt;String, Set&lt;String&gt;&gt; graph = new HashMap&lt;&gt;();
+
+    for (Fighter f : fighterList) {
+      graph.put(f.name, new HashSet&lt;&gt;());
+    }
+
+    for (int i = 0; i &lt; fighterList.size() - 1; i ++) {
+      for (int j = i + 1; j &lt; fighterList.size(); j ++) {
+        Fighter a = fighterList.get(i);
+        Fighter b = fighterList.get(j);
+        int winner = aCanWin(a, b);
+
+        if (winner == 1) {
+          graph.get(a.name).add(b.name);
+        } else if (winner == -1) {
+          graph.get(b.name).add(a.name);
+        }
+      }
+    }
+    return graph;
+
+  }
+
+
+  private static int aCanWin(Fighter a, Fighter b) {
+    int hA = a.hp;
+    int aA = a.attack;
+    int dA = a.defense;
+
+    int hB = b.hp;
+    int aB = b.attack;
+    int dB = b.defense;
+
+    int dmgToA = Math.max(0, aB - dA);
+    int dmgToB = Math.max(0, aA - dB);
+
+    if (dmgToA == 0 &amp;&amp; dmgToB == 0) {
+      return 0;
+    }
+
+    while (hA &gt; 0 &amp;&amp; hB &gt; 0) {
+      hA -= dmgToA;
+      hB -= dmgToB;
+    }
+
+    if (hA &lt;= 0 &amp;&amp; hB &lt;= 0) {
+      return 0;
+    } else if (hA &lt; hB) {
+      return -1;
+    } else {
+      return 1;
+    }
+
+  }
+
+
+  public static void main(String[] args) {
+
+
+
+
+    MyScanner sc = new MyScanner();
+    out = new PrintWriter(new BufferedOutputStream(System.out));
+
+    int numInput = sc.nextInt();
+
+    List&lt;Fighter&gt; fighterList = new ArrayList&lt;&gt;(numInput);
+
+    for (int i = 0; i &lt; numInput; i ++) {
+      String name = sc.next();
+      int hp = sc.nextInt();
+      int attack = sc.nextInt();
+      int defense = sc.nextInt();
+
+      Fighter f = new Fighter(name, hp, attack, defense);
+      fighterList.add(f);
+    }
+    Set&lt;String&gt; ret = intransitiveTriples(fighterList);
+
+    out.println(ret.size());
+    for (String x : ret) {
+      out.println(x);
+    }
+    out.close();
+
+
+
+
+
+
+
+
+
+
+
+    // Start writing your solution here. -------------------------------------
+
+    /*
+    int n      = sc.nextInt();        // read input as integer
+    long k     = sc.nextLong();       // read input as long
+    double d   = sc.nextDouble();     // read input as double
+    String str = sc.next();           // read input as String
+    String s   = sc.nextLine();       // read whole line as String
+
+    int result = 3*n;
+    out.println(result);                    // print via PrintWriter
+    */
+
+    // Stop writing your solution here. -------------------------------------
+  }
+
+
+  //-----------PrintWriter for faster output---------------------------------
+  public static PrintWriter out;
+
+  //-----------MyScanner class for faster input----------
+  public static class MyScanner {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public MyScanner() {
+      br = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+    String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return st.nextToken();
+    }
+
+    int nextInt() {
+      return Integer.parseInt(next());
+    }
+
+    long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    String nextLine(){
+      String str = &quot;&quot;;
+      try {
+        str = br.readLine();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return str;
+    }
+
+  }
+  //--------------------------------------------------------
+}</code>
+</pre>
+</body>
+</html>

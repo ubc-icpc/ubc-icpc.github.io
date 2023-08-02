@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+string s;
+
+bool ok(int a, int b, int k) {
+        for (int i = 0; i &lt; k; i++) {
+                if (s[a * k + i] != s[b * k + (i + 1) % k]) {
+                        return false;
+                }
+        }
+        return true;
+}
+
+int main() {
+        ios::sync_with_stdio(0);
+        cin &gt;&gt; s;
+        int sl = s.length();
+        int mink = sl;
+        int n;
+        for (int k = sl - 1; k &gt; 0; k--) {
+                if (sl % k == 0) {
+                        n = sl / k;
+                        bool make_sense = true;
+                        for (int i = 0; i &lt; n - 1; i++) {
+                                make_sense = ok(i, i + 1, k);
+                                if (!make_sense) {
+                                        break;
+                                }
+                        }
+                        if (make_sense) {
+                                mink = k;
+                        }
+                }
+        }
+        cout &lt;&lt; mink;
+        return 0;
+}
+        
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

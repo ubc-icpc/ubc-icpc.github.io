@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define mp(a,b) make_pair(a,b)
+#define ff first
+#define setp(a) setprecision(a)&lt;&lt;fixed
+#define ss second
+#define fori(v) for(ll i=0; i&lt;v; i++)
+#define forj(v) for(ll j=0; j&lt;v; j++)
+#define fork(v) for(ll k=0; k&lt;v; k++)
+#define forl(v) for(ll l=0; l&lt;v; l++)
+#define fort(v) for(ll t=0; t&lt;v; t++)
+#define forz(v) for(ll z=0; z&lt;v; z++)
+#define forx(v) for(ll x=0; x&lt;v; x++)
+#define fory(v) for(ll y=0; y&lt;v; y++)
+#define ll long long
+#define double long double
+#define pb(a) push_back(a)
+#define MAX (int)(pow(10,6) + 10)
+const ll INF = 0x3f3f3f3f;
+const ll inf = pow(10,18);
+ll modulo = pow(10,9)+7;
+
+/*
+ubc69
+PYJHBZ
+*/
+
+
+void deal(){
+	ll n, k;
+	cin&gt;&gt;n&gt;&gt;k;
+	vector&lt;vector&lt;ll&gt; &gt; dp(n, vector&lt;ll&gt; (n+1, -inf));
+	vector&lt;ll&gt; arr(n);
+	fori(n)
+		cin&gt;&gt;arr[i];
+	sort(arr.rbegin(), arr.rend());
+	ll s = 0;
+	fori(k)
+		s+=arr[i];
+	cout&lt;&lt;s;
+}
+ 
+int main(){
+	cin.tie(0);
+	ios_base::sync_with_stdio(0);
+//	test();
+	deal();
+}
+</code>
+</pre>
+</body>
+</html>

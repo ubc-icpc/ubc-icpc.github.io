@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int rank = 25;
+bool bonus = false;
+int stars = 0;
+
+int winstreak = 0;
+
+int r2521(char c) { // 0
+	if (c == 'W') {
+		++winstreak;
+		if (winstreak &gt; 2) {
+			bonus = true;
+		}
+		if (bonus) {
+			stars += 2;
+		} else {
+			++stars;
+		}
+		if (stars &gt; 2) {
+			--rank;
+			stars -= 2;
+		}
+		if (rank  &lt; 21) {
+			return 1;
+		}
+	} else {
+		bonus = false;
+		winstreak = 0;
+
+		// if (stars &lt; 0) {
+		// 	if (rank &gt; 25){
+		// 		++rank;
+		// 		stars = 4;
+		// 	} else {
+		// 		stars = 0;
+		// 	}
+		// }
+	}
+
+	return 0;
+}
+
+int r2016(char c) { // 1
+	if (c == 'W') {
+		++winstreak;
+		if (winstreak &gt; 2) {
+			bonus = true;
+		}
+		if (bonus) {
+			stars += 2;
+		} else {
+			++stars;
+		}
+		if (stars &gt; 3) {
+			--rank;
+			stars -= 3;
+		}
+		if (rank  &lt; 16) {
+			return 2;
+		}
+	} else {
+		--stars;
+		bonus = false;
+		winstreak = 0;
+
+		if (stars &lt; 0) {
+			if (rank &lt; 20) {
+				++rank;
+				stars = 2;
+			} else {
+				// ++rank;
+				// stars = 1;
+				// return 0;
+				stars = 0;
+			}
+		}
+	}
+
+	return 1;
+}
+
+int r1511(char c) { // 2
+	if (c == 'W') {
+		++winstreak;
+		if (winstreak &gt; 2) {
+			bonus = true;
+		}
+		if (bonus) {
+			stars += 2;
+		} else {
+			++stars;
+		}
+		if (stars &gt; 4) {
+			--rank;
+			stars -= 4;
+		}
+		if (rank  &lt; 11) {
+			return 3;
+		}
+	} else {
+		--stars;
+		bonus = false;
+		winstreak = 0;
+
+		if (stars &lt; 0) {
+			if (rank &lt; 15) {
+				++rank;
+				stars = 3;
+			} else {
+				++rank;
+				stars = 2;
+			}
+		}
+
+		if (rank &gt; 15) {
+			return 1;
+		}
+	}
+
+	return 2;
+}
+
+int r106(char c) { // 3
+	if (c == 'W') {
+		++winstreak;
+		if (winstreak &gt; 2) {
+			bonus = true;
+		}
+		if (bonus) {
+			stars += 2;
+		} else {
+			++stars;
+		}
+		if (stars &gt; 5) {
+			--rank;
+			stars -= 5;
+		}
+		if (rank  &lt; 6) {
+			return 4;
+		}
+	} else {
+		--stars;
+		bonus = false;
+		winstreak = 0;
+
+		if (stars &lt; 0) {
+			if (rank &lt; 10) {
+				++rank;
+				stars = 4;
+			} else {
+				++rank;
+				stars = 3;
+			}
+		}
+
+		if (rank &gt; 10) {
+			return 2;
+		}
+	}
+
+	return 3;
+}
+
+int r51(char c) { // 4
+	if (c == 'W') {
+		++winstreak;
+		++stars;
+		if (stars &gt; 5) {
+			--rank;
+			stars -= 5;
+		}
+		if (rank  &lt; 1) {
+			return 5;
+		}
+	} else {
+		--stars;
+		bonus = false;
+		winstreak = 0;
+
+		if (stars &lt; 0) {
+			if (rank &lt; 5) {
+				++rank;
+				stars = 4;
+			} else {
+				++rank;
+				stars = 4;
+			}
+		}
+
+		if (rank &gt; 5) {
+			return 3;
+		}
+	}
+
+	return 4;
+}
+
+int legendary(char c) { // 5
+	return 5;
+}
+
+int main() {
+	char c;
+
+	int state = 0;
+
+	while (std::cin &gt;&gt; c) {
+		std::string s;
+		switch (state) {
+			case 0:
+				state = r2521(c);
+				break;
+			case 1:
+				state = r2016(c);
+				break;
+			case 2:
+				state = r1511(c);
+				break;
+			case 3: 
+				state = r106(c);
+				break;
+			case 4:
+				state = r51(c);
+				break;
+			case 5:
+				state = legendary(c);
+				
+				std::cin &gt;&gt; s;
+				break;
+			default: 
+				std::cout &lt;&lt; &quot;ERROR&quot; &lt;&lt; std::endl;
+				break;
+		}
+	}
+
+	if (rank == 0) {
+		std::cout &lt;&lt; &quot;Legend&quot; &lt;&lt; std::endl;
+	} else {
+		std::cout &lt;&lt; rank &lt;&lt; std::endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

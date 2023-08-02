@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long lli;
+
+//-----------------------
+#define MAXN 100100
+
+int n;
+lli bit[MAXN];
+map&lt;string, int&gt; mapa;
+//-----------------------
+
+lli sum(int x) {
+  lli s = 0;
+  while (x &gt; 0) {
+    s += bit[x];
+    x -= (x &amp; -x);
+  }
+  return s;
+}
+
+void update(int x) {
+  while (x &lt; MAXN) {
+    bit[x]++;
+    x += (x &amp; -x);
+  }
+}
+
+int main(){
+  ios_base::sync_with_stdio(0); cin.tie(0);
+
+  while (cin &gt;&gt; n &amp;&amp; n) {
+    mapa.clear();
+    memset(bit, 0, sizeof bit);
+
+    for (int i = 1; i &lt;= n; i++) {
+      string s;
+      cin &gt;&gt; s;
+      mapa[s] = i;
+    }
+
+    lli answer = 0LL;
+    for (int i = 1; i &lt;= n; i++) {
+      string s;
+      cin &gt;&gt; s;
+      int cur = mapa[s];
+      answer += sum(n) - sum(cur);
+      update(cur);
+    }
+
+    cout &lt;&lt; answer &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

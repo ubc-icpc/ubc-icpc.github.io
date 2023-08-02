@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll; 
+
+int check(int hp1, int at1, int df1, int hp2, int at2, int df2) {
+  int tot1 = (at2-df1 &lt;= 0) ? 0 : (at2-df1);
+  int tot2 = (at1-df2 &lt;= 0) ? 0 : (at1-df2); 
+  int numberToKillOne, numberToKillTwo;
+  if (tot1 == 0) 
+    numberToKillOne = INT_MAX;
+  else 
+    numberToKillOne = ((hp1 % tot1) == 0 ? hp1/tot1 : floor(hp1/tot1)+1);
+  if (tot2 == 0)
+    numberToKillTwo = INT_MAX;
+  else
+    numberToKillTwo = ((hp2 % tot2) == 0 ? hp2/tot2 : floor(hp2/tot2)+1);
+    
+  if (numberToKillOne &gt; numberToKillTwo) return 10;
+  if (numberToKillOne == numberToKillTwo) return 11;
+  else return 0;
+}
+
+int main() {
+  ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+  int n; cin &gt;&gt; n;
+  vector&lt;pair&lt;string,vector&lt;int&gt; &gt; &gt; ppl;
+  vector&lt;vector&lt;string&gt; &gt; res;
+
+  while (n--) {
+    string s; cin &gt;&gt; s;
+    int a,b,c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+    vector&lt;int&gt; p(3); p[0] = a; p[1] = b; p[2] = c;
+    ppl.push_back(make_pair(s, p));
+  }
+  for (int i = 0; i &lt; ppl.size(); i++) {
+    for (int j = i+1; j &lt; ppl.size(); j++) {
+      for (int k = j+1; k &lt; ppl.size(); k++) {
+        string firstP = ppl[i].first;
+        string secondP = ppl[j].first;
+        string thirdP = ppl[k].first;
+        vector&lt;string&gt; pairings(3); pairings[0] = firstP; pairings[1] = secondP; pairings[2] = thirdP;
+        vector&lt;int&gt; temp1 = ppl[i].second;
+        vector&lt;int&gt; temp2 = ppl[j].second;
+        vector&lt;int&gt; temp3 = ppl[k].second;
+        int res1 = check(temp1[0], temp1[1], temp1[2], temp2[0], temp2[1], temp2[2]);
+        int res2 = check(temp2[0], temp2[1], temp2[2], temp3[0], temp3[1], temp3[2]);
+        int res3 = check(temp3[0], temp3[1], temp3[2], temp1[0], temp1[1], temp1[2]);
+
+        if (res1 == 10 &amp;&amp; res2 == 10 &amp;&amp; res3 == 10) {
+          res.push_back(pairings);
+        }
+        else if(res1 == 0 &amp;&amp; res2 == 0 &amp;&amp; res3 == 0) {
+          res.push_back(pairings);
+        }
+      }
+    }
+  }
+
+  cout &lt;&lt; res.size() &lt;&lt; endl;
+  for (auto v : res) {
+    cout &lt;&lt; v[0] &lt;&lt; ' ' &lt;&lt; v[1] &lt;&lt; ' ' &lt;&lt; v[2] &lt;&lt; endl;
+  }
+
+  return 0;
+} </code>
+</pre>
+</body>
+</html>

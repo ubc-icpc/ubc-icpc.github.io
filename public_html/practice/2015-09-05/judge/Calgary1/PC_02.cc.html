@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+
+double getR(double&amp; a, double&amp; b, double&amp; c) {
+	double angleA = acos((c*c+b*b-a*a)/2.0/c/b);
+	double s = 0.5*(a+b+c);
+	double A = sqrt(s*(s-a)*(s-b)*(s-c));
+	double r = A/s;
+	double L = r/sin(0.5*angleA)-r;
+	double new_a = 2.0*L*tan(0.5*angleA);
+	double new_bc = new_a*sin(0.5*(M_PI-angleA))/sin(angleA);
+	a = new_a;
+	b = c = new_bc;
+	return r;
+}
+
+int main() {
+	int TC;
+	cin &gt;&gt; TC;
+	FOR (tc,1,TC+1) {
+		double ans = 0.0, a, b;
+		cin &gt;&gt; a &gt;&gt; b;
+		double oarea=0.5*a*b, c = sqrt(a*a+b*b);
+		for (;;) {
+			double r = getR(a, b, c);
+			double dans = M_PI*r*r/oarea;
+			ans += dans;
+			if (dans &lt; 1e-10) break;
+		}
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; tc &lt;&lt; &quot;: &quot; &lt;&lt; fixed &lt;&lt; setprecision(4) &lt;&lt; ans &lt;&lt; &quot;\n\n&quot;;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

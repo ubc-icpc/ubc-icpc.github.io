@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class H {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int t = s.nextInt();
+        for (int i = 0; i &lt; t; ++i) {
+            s.nextLine();
+            String curr = s.nextLine();
+            String[] names = curr.split(&quot; &quot;);
+            String start = s.nextLine();
+            int q = 0;
+            for (int j = 0; j &lt; names.length; ++j) {
+                if (names[j].equals(start)) {
+                    q = j;
+                    break;
+                }
+            }
+            int p = s.nextInt();
+            System.out.println(names[(p + q - 1) % names.length]);
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

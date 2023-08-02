@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+
+//dp[n][k] := deciding item n with k chosen
+int memo[505][505], val[505], n;
+int dp(int i, int k) {
+    if (i == n) return 0;
+    if (i != 0 &amp;&amp; k+1 &gt; (i+1)/2) return dp(i+1, k);
+    if (memo[i][k] != -1) return memo[i][k];
+    return memo[i][k] = max(val[i] + dp(i+1, k+1), dp(i+1, k));
+}
+
+int main() {
+    int t; cin &gt;&gt; t;
+    for (int c = 1; c &lt;= t; c++) {
+        cout &lt;&lt; &quot;Spree #&quot; &lt;&lt; c &lt;&lt; &quot;: &quot;;
+        cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; val[i];
+        }
+        
+        memset(memo, -1, sizeof memo);
+        cout &lt;&lt; dp(0,0) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

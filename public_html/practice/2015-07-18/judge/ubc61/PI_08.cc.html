@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+string teams2[50];
+vector&lt;int&gt; qtimes[50];
+
+bool mycomp(const tuple&lt;int,int,int&gt; &amp;a, const tuple&lt;int,int,int&gt; &amp;b) {
+	int id_a = get&lt;0&gt;(a);
+	int id_b = get&lt;0&gt;(b);
+	int comp_a = get&lt;1&gt;(a);
+	int comp_b = get&lt;1&gt;(b);
+	int pen_a = get&lt;2&gt;(a);
+	int pen_b = get&lt;2&gt;(b);
+
+	if (comp_a &gt; comp_b) {
+		return true;
+	} else if (comp_a == comp_b) {
+		if (pen_a &lt; pen_b) {
+			return true;
+		} else if (pen_a == pen_b) {
+			for (int i=comp_a-1; i&gt;=0; i--) {
+				if (qtimes[id_a][i] &lt; qtimes[id_b][i]) return true;
+				if (qtimes[id_a][i] &gt; qtimes[id_b][i]) return false;
+			}
+			return (teams2[id_a] &lt; teams2[id_b]);
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+int t;
+int main() {
+	int tests; cin &gt;&gt; tests;
+	while(tests--) {
+		int r; cin &gt;&gt; t &gt;&gt; r;
+		unordered_map &lt;string,int&gt; teams;
+		int qstatus [t][10];
+		memset(qstatus, 0, sizeof(qstatus[0][0])*t*10);
+		for (int i=0; i&lt;50; i++) {
+			qtimes[i].clear();
+			teams2[i].clear();
+		}
+		vector&lt;tuple&lt;int,int,int&gt;&gt; data(t); //id,comp,pen
+		for(int i=0; i&lt;t; i++) {
+			string temp; cin &gt;&gt; temp;
+			teams[temp] = i;
+			teams2[i] = temp;
+			data[i]=make_tuple(i,0,0);
+		}
+		while (r--) {
+			int time; cin &gt;&gt; time;
+			string team, status; char q;
+			cin &gt;&gt; team &gt;&gt; q &gt;&gt; status;
+			int id = teams[team];
+			if (status == &quot;rejected&quot;) {
+				if (qstatus[id][(int)q-65] != -1) {
+					qstatus[id][(int)q-65] += 1;
+				}
+			} else  if (status == &quot;accepted&quot;) {
+				if (qstatus[id][(int)q-65] != -1) {
+					qtimes[id].push_back(time);
+					get&lt;2&gt;(data[id]) += 20*qstatus[id][(int)q-65];
+					get&lt;2&gt;(data[id]) += time;
+					get&lt;1&gt;(data[id]) += 1;
+					qstatus[id][(int)q-65] = -1;
+				}
+			}
+		}
+		sort(data.begin(),data.end(),mycomp);
+		int rank[t];
+		for (int i=0; i&lt;t; i++) {
+			int id = get&lt;0&gt;(data[i]);
+			int comp = get&lt;1&gt;(data[i]);
+			int pen = get&lt;2&gt;(data[i]);
+			rank[i] = i+1;
+			if (i&gt;0 &amp;&amp; comp == get&lt;1&gt;(data[i-1]) &amp;&amp; pen == get&lt;2&gt;(data[i-1])) {
+				int n = comp;
+				for (int j=comp-1; j&gt;=0; j--) {
+					if (qtimes[id][j] == qtimes[get&lt;0&gt;(data[i-1])][j]) n--;
+				}
+				if (n==0) rank[i] = rank[i-1];
+			}
+			
+			cout &lt;&lt; rank[i] &lt;&lt; &quot; &quot; &lt;&lt; teams2[id] &lt;&lt; &quot; &quot; &lt;&lt; comp &lt;&lt; &quot; &quot; &lt;&lt; pen &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

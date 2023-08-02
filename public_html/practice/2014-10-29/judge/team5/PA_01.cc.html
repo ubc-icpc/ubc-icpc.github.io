@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+
+	int T;
+	cin&gt;&gt;T;
+	for (int t=0;t&lt;T;t++) {
+		int N,D;
+		cin&gt;&gt;N&gt;&gt;D;
+		int ans=0;
+		for (int i=0;i&lt;N;i++) {
+			int v,f,c;
+			cin&gt;&gt;v&gt;&gt;f&gt;&gt;c;
+			if (f*v&gt;=D*c) ans++;
+		}
+	cout&lt;&lt;ans&lt;&lt;endl;
+	}
+	
+	return 0;
+}
+
+
+/*
+we have speed, fuel, and fuel consumption rate.
+they're all smallish integers
+we can find how long it takes, and then see if there's enough
+check if f/c &gt; D/v
+so if fv&gt;Dc
+
+
+
+*/
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

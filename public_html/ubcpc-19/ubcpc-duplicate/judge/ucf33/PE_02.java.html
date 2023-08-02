@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Arrays;
+import java.util.Scanner;
+
+public class excitingActs {
+
+	public static void main(String[] args) {
+
+		Scanner s = new Scanner(System.in);
+		
+		int numScenes = s.nextInt();
+		int numActs = s.nextInt();
+		
+		int[] scenesEx = new int[numScenes];//excitement of scenes
+
+		for(int i = 0; i &lt; numScenes; i++) {//read in excitement
+			scenesEx[i] = s.nextInt();
+		}
+		Arrays.sort(scenesEx);//sort excitement
+		
+		int sum = 0;
+		
+		for(int j = 0; j &lt; numActs; j++ ) {//add up most exciting scenes 
+											//(only as many as there are acts)
+			sum += scenesEx[(numScenes-1)-j];
+		}
+		
+		System.out.println(sum);
+	}
+
+}
+</code>
+</pre>
+</body>
+</html>

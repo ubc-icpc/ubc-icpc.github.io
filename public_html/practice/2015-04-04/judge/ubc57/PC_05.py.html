@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+sys.setrecursionlimit(200000)
+def bestfrom1(pos):
+    if pos==passes-1:
+        a=min(Dribble1[len(Dribble1)-1]+shoot_1,Pass1[len(Pass1)-1]+shoot_2)
+        Bestsfrom1[pos]=a
+        List_1[pos]=1
+        return a
+    if List_1[pos]==1:
+        return Bestsfrom1[pos]
+    else:
+        x=bestfrom1(pos+1)
+        y=bestfrom2(pos+1)
+        a=min(Dribble1[pos]+x,Pass1[pos]+y)
+        Bestsfrom1[pos]=a
+        List_1[pos]=1
+        return a
+def bestfrom2(pos):
+    if pos==passes-1:
+        a=min(Dribble2[len(Dribble2)-1]+shoot_2,Pass2[len(Pass2)-1]+shoot_1)
+        Bestsfrom2[pos]=a
+        List_2[pos]=a
+        return a
+    if List_2[pos]==1:
+        return Bestsfrom2[pos]
+    else:
+        x=bestfrom2(pos+1)
+        y=bestfrom1(pos+1)
+        a=min(Dribble2[pos]+x,Pass2[pos]+y)
+        Bestsfrom2[pos]=a
+        List_2[pos]=1
+        return a
+cases=int(raw_input())
+for i in range(0,cases):
+    a=list(map(int,raw_input().split()))
+    passes=a[0]-1
+    start_1=a[1]
+    start_2=a[2]
+    shoot_1=a[3]
+    shoot_2=a[4]
+    Pass1=list(map(int,raw_input().split()))
+    Dribble1=list(map(int,raw_input().split()))
+    Pass2=list(map(int,raw_input().split()))
+    Dribble2=list(map(int,raw_input().split()))
+    List_1=[0]*(passes-1)+[1]
+    List_2=[0]*(passes-1)+[1]
+    Bestsfrom1=[0]*passes
+    Bestsfrom2=[0]*passes
+    pos1=start_1+bestfrom1(0)
+    pos2=start_2+bestfrom2(0)
+    print(min(pos1,pos2))
+    
+    
+    
+    
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

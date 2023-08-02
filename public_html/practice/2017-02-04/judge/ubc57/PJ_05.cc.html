@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+int main(){
+    ios::sync_with_stdio(0);
+    int t; cin&gt;&gt;t;
+    while (t--){
+        ll ans=0;
+        int n; cin&gt;&gt;n;
+        vector&lt;int&gt; v;
+        for (int i=0;i&lt;n;i++){
+            int x; cin&gt;&gt;x;
+            v.push_back(x);
+        }
+        for (int i=1;i&lt;n;i++){
+            if (v[i]&lt;v[i-1]){
+                ans++;
+                int x=v[i]; 
+                //imagine moving x to the front
+                if (x&gt;v[0]){
+                    vector&lt;ll&gt; freq;
+                    int now=v[0]; ll f=1;
+                    for (int j=1;j&lt;i;j++) if (v[j]&lt;x){
+                        if (v[j]==now) f++;
+                        else{
+                            freq.push_back(f);
+                            now=v[j],f=1;
+                        }
+                    }
+                    freq.push_back(f);
+                    ll asd=freq[0];
+                    for (int j=1;j&lt;freq.size();j++) asd=asd+freq[j]*asd+freq[j];
+                    ans+=asd;
+                }
+                v.erase(v.begin()+i);
+                v.insert(v.begin(),x);
+                sort(v.begin(),v.begin()+i+1);
+            }
+        }
+        cout&lt;&lt;ans&lt;&lt;endl;
+    }
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;code.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, M, A, B;
+string str;
+
+bool rec(int at, vector&lt;vector&lt;int&gt; &gt;&amp; p, vector&lt;bool&gt;&amp; v) {
+    if (v[at]) return false;
+    v[at] = true;
+    if (at == N-1) return true;
+    bool ret = false;
+    for (int i : p[at])
+        ret |= rec(i, p, v);
+    return ret;
+}
+
+int main () {
+    cin &gt;&gt; T;
+    while (T--) {
+        map&lt;string, bool&gt; m;
+        cin &gt;&gt; N;
+        for (int i = 0; i &lt; N; ++i) {
+            cin &gt;&gt; str;
+            m[str] = true;
+        }
+        cin &gt;&gt; N &gt;&gt; M;
+        vector&lt;vector&lt;int&gt; &gt; P = vector&lt;vector&lt;int&gt; &gt;(N);
+        vector&lt;bool&gt; V = vector&lt;bool&gt;(N);
+        while (M--) {
+            cin &gt;&gt; A &gt;&gt; B &gt;&gt; str;
+            if (m[str]) continue;
+            P[A].push_back(B);
+            P[B].push_back(A);
+        }
+        cout &lt;&lt; rec(0, P, V) &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

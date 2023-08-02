@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+string alpha = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+
+void shift(string* word, int amount) {
+    for (int i = 0; i &lt; word-&gt;length(); i++) {
+        char c = (*word)[i];
+        c = (c - 'a' + amount + 26) % 26 + 'a';
+        (*word)[i] = c;
+    }
+}
+
+int main() {
+    char encode;
+    int shiftAmount;
+    string word;
+
+    cin &gt;&gt; encode;
+    cin &gt;&gt; shiftAmount;
+    cin &gt;&gt; word;
+
+    switch (encode) {
+        case 'D':
+            shiftAmount *= -1;
+        case 'E':
+            shift(&amp;word, shiftAmount);
+    }
+    cout &lt;&lt; word &lt;&lt; '\n';
+
+}
+
+</code>
+</pre>
+</body>
+</html>

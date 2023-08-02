@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+def flip((a,b)): return (b,a)
+
+def mfe(l):
+  return map(flip, enumerate(l))
+
+vs = list(&quot;aiyeou&quot;)
+vl = dict(mfe(vs))
+cs = list(&quot;bkxznhdcwgpvjqtsrlmf&quot;)
+cl = dict(mfe(cs))
+
+def rotv(v):
+  if v.isupper():
+    return rotv(v.lower()).upper()
+  else:
+    return vs[(vl[v]+3)%6] 
+
+def rotc(c):
+  if c.isupper():
+    return rotc(c.lower()).upper()
+  else:
+    return cs[(cl[c]+10)%20]
+
+def rot(x):
+  try:
+    return rotv(x)
+  except KeyError:
+    try:
+      return rotc(x)
+    except KeyError:
+      return x
+
+def rots(s):
+  return ''.join(map(rot, s))
+#print rots(&quot;One ring to rule them all.&quot;)
+
+for l in sys.stdin:
+  sys.stdout.write(rots(l))
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

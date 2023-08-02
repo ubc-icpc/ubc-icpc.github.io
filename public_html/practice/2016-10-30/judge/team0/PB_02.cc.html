@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, M, I;
+map&lt;int, int&gt; B;
+vector&lt;int&gt;V[50005];
+int deg[50005], par[50005];
+bool vis[50005];
+stack&lt;pair&lt;int, int&gt; &gt; ss;
+
+int p(int a) {
+  if (par[a] == a) return a;
+  return par[a] = p(par[a]);
+}
+
+void merge(int a, int b) {
+  par[p(a)] = p(b);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  int bad = false;
+
+  cin &gt;&gt; N &gt;&gt; M;
+
+  for (int i = 0; i &lt; N; ++i)
+    par[i] = i;
+
+  while (M--) {
+    int a, b; string o;
+    cin &gt;&gt; a &gt;&gt; o &gt;&gt; b;
+    if (o == &quot;=&quot;) {
+      merge(a, b);
+    } else {
+      ss.push(pair&lt;int, int&gt;(a, b));
+    }
+  }
+
+  while (!ss.empty()) {
+    int a = ss.top().first;
+    int b = ss.top().second;
+    ss.pop();
+    if (p(a) == p(b)) bad = true;
+    V[p(a)].push_back(p(b));
+  }
+
+  for (int i = 0; i &lt; N; ++i) {
+    for (int j : V[i]) {
+      deg[j]++;
+    }
+  }
+
+  stack&lt;int&gt; S;
+
+  for (int i = 0; i &lt; N; ++i) {
+    if (deg[i] == 0) {
+      S.push(i);
+    }
+  }
+
+  while (!S.empty()) {
+    int top = S.top();
+    S.pop();
+
+    vis[top] = true;
+
+    for (int i : V[top])
+      if (--deg[i] == 0)
+        S.push(i);
+  }
+
+  for (int i = 0; i &lt; N; ++i) {
+    bad = bad || (!vis[i]);
+  }
+
+  if (bad) {
+    cout &lt;&lt; &quot;inconsistent&quot; &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; &quot;consistent&quot; &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long double ld;
+
+int par[5005];
+const ld eps = 1e-6;
+
+int parent(int a) { return (par[a]&lt;0? a:(par[a]=parent(par[a])));}
+
+int merge(int a, int b){
+	int x=parent(a), y = parent(b);
+	if (x==y) return -par[x];
+	if (x&gt;y) swap(x,y);
+	par[x]+=par[y];
+	par[y] = x;
+	return -par[x];
+}
+
+int n; 
+ld x[5055], y[5055];
+
+set&lt;int&gt; G[5055];
+
+ld dist(int i, int j){
+	ld x1 = x[i], x2 = x[j], y1=y[i], y2=y[j];
+	return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+}
+
+int best = 0;
+
+void work(int i, vector&lt;int&gt; items) {
+	if (items.size() == 0) {
+		best = max(best, -par[parent(i)]);
+	}
+	for (int p: items) {
+		for (int q: items) {
+			if (p == q) continue;
+			if (!G[p].count(q)) {
+				return;
+			}
+		}
+		if (p != i &amp;&amp; !G[p].count(i)) {
+			return;
+		}
+	}
+	set&lt;int&gt; ind;
+	ind.insert(parent(i));
+	for (int p: items) {
+		ind.insert(parent(p));
+	}
+	int sum = 0;
+	for (int p: ind) {
+		sum += -par[p];
+	}
+	/*for (int i: items) printf(&quot;%d &quot;, i);
+	printf(&quot;|%d\n&quot;, sum);*/
+	best = max(best, sum);
+}
+
+	vector&lt;int&gt; out;
+
+void brute_force(int i, vector&lt;int&gt; &amp;items, int pos) {
+	if (pos == items.size()) {
+		work(i, out);
+		return;
+	}
+	/*printf(&quot;ha&quot;); for (int i: items) printf(&quot;%d &quot;, i);
+	printf(&quot;\n&quot;);*/
+	out.push_back(items[pos]);
+	brute_force(i, items, pos+1);
+	out.pop_back();
+	brute_force(i, items, pos+1);
+}
+
+int main(){
+	memset(par,-1,sizeof par);
+	cin &gt;&gt; n;
+	for(int i=0;i&lt;n;i++)
+		cin &gt;&gt; x[i]&gt;&gt;y[i];
+	int maxmerge = 0;
+	for(int i=0;i&lt;n;i++)
+		for(int j=0;j&lt;n;j++)
+			if(dist(i,j)&lt;2.0+eps)
+				maxmerge = max(maxmerge, merge(i,j));
+	for(int i=0;i&lt;n;i++){
+		for(int j=0;j&lt;n;j++){
+			if(dist(i,j)&lt;4.0+eps){
+				if (parent(i) == parent(j)) continue;
+				int xx=i, yy = j;
+				G[xx].insert(yy);
+				G[yy].insert(xx);
+			}
+		}
+	}
+	for (int i = 0; i &lt; n; i++) {
+		vector&lt;int&gt; x(G[i].begin(), G[i].end());
+		brute_force(i, x, 0);
+	}
+	cout &lt;&lt; best +1 &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

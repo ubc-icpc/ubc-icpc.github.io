@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+lut = {
+    'R': { 'R':(0,0), 'P':(0,1), 'S':(1,0) },
+    'P': { 'R':(1,0), 'P':(0,0), 'S':(0,1) },
+    'S': { 'R':(0,1), 'P':(1,0), 'S':(0,0) }
+}
+
+n = int(sys.stdin.next())
+
+for _ in xrange(n):
+  j = int(sys.stdin.next())
+  s1, s2 = 0, 0
+  for __ in xrange(j):
+    a, b = sys.stdin.next().split(' ')
+    d1, d2 = lut[a[0]][b[0]]
+    s1 += d1; s2 += d2;
+  if s1 == s2: print &quot;TIE&quot;
+  elif s1 &gt; s2: print &quot;Player 1&quot;
+  else: print &quot;Player 2&quot;
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

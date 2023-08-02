@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+bool blocked[1005][1005], seen[1005][1005];
+long long dp[1005][1005], b[1005][1005], mod = (1LL&lt;&lt;31) - 1, n;
+
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+void dfs(int i, int j) {
+    seen[i][j] = true;
+    for (int d = 0; d &lt; 4; d++) {
+        int ni = i + dx[d], nj = j + dy[d];
+        if (ni &lt; 0 || nj &lt; 0 || ni &gt;= n || nj &gt;= n) continue;
+        if (seen[ni][nj] || blocked[ni][nj]) continue;
+        dfs(ni, nj);
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            char c; cin &gt;&gt; c;
+            blocked[i][j] = (c == '#');
+        }
+    }
+    
+    b[0][0] = dp[0][0] = 1;
+    for (int i = 1; i &lt; n; i++) {
+        b[0][i] = dp[0][i] = !blocked[0][i] &amp;&amp; dp[0][i-1];
+        b[i][0] = dp[i][0] = !blocked[i][0] &amp;&amp; dp[i-1][0];
+    }
+    
+    for (int i = 1; i &lt; n; i++) {
+        for (int j = 1; j &lt; n; j++) {
+            if (blocked[i][j]) continue;
+            dp[i][j] = (dp[i-1][j] + dp[i][j-1])%mod;
+            b[i][j] = b[i-1][j] || b[i][j-1];
+        }
+    }
+    
+    /*
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            cout &lt;&lt; dp[i][j] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+    */
+    
+    if (b[n-1][n-1]) cout &lt;&lt; dp[n-1][n-1] &lt;&lt; endl;
+    else {
+        dfs(0, 0);
+        if (!seen[n-1][n-1]) cout &lt;&lt; &quot;INCONCEIVABLE&quot; &lt;&lt; endl;
+        else cout &lt;&lt; &quot;THE GAME IS A LIE&quot; &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

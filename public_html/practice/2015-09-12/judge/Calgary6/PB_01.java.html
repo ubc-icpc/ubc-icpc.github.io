@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+
+public class Medal {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		int numLines = Integer.parseInt(s.nextLine());
+		
+		for (int i = 0; i &lt; numLines; i++) {
+			String line = s.nextLine();
+			Scanner l = new Scanner(line);
+			
+			int usaMedals[] = new int[3];
+			int russiaMedals[] = new int[3];
+			for (int j = 0; j &lt; 3; j++) {
+				usaMedals[j] = l.nextInt();
+			}
+			for (int j = 0; j &lt; 3; j++) {
+				russiaMedals[j] = l.nextInt();
+			}
+			l.close();
+			
+			boolean countWin = false, colorWin = false;
+			
+			int usaTotal = usaMedals[0] + usaMedals[1] + usaMedals[2];
+			int russiaTotal = russiaMedals[0] + russiaMedals[1] + russiaMedals[2];
+			if (usaTotal &gt; russiaTotal) {
+				countWin = true;
+			}
+			
+			if (usaMedals[0] &gt; russiaMedals[0]) {
+				colorWin = true;
+			} else if (usaMedals[0] == russiaMedals[0]) {
+				if (usaMedals[1] &gt; russiaMedals[1]) {
+					colorWin = true;
+				} else if (usaMedals[1] == russiaMedals[1] &amp;&amp; usaMedals[2] &gt; russiaMedals[2]) {
+					colorWin = true;
+				}
+			}
+			
+			System.out.println(line);
+			if (countWin &amp;&amp; colorWin) {
+				System.out.println(&quot;both&quot;);
+			} else if (countWin) {
+				System.out.println(&quot;count&quot;);
+			} else if (colorWin) {
+				System.out.println(&quot;color&quot;);
+			} else {
+				System.out.println(&quot;none&quot;);
+			}
+			System.out.println();
+		}
+		s.close();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+typedef long long ll;
+int main(){
+	ll n;
+
+	while (cin &gt;&gt; n){
+		bool visited[10];
+		memset(visited,false,sizeof(visited));
+		ll k = 1;
+		while (1){
+			bool all_ok = true;
+			for (int i = 0; i &lt; 10; i++){
+				if (!visited[i]) all_ok = false;
+			}
+			if (all_ok) break;
+			
+			ll num = k * n;
+			while (num != 0){
+				visited[num%10] = true;
+				num /= 10;
+			}
+			k++;
+		}
+		cout &lt;&lt; k-1 &lt;&lt; endl;
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

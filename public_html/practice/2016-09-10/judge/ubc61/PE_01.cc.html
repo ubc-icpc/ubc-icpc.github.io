@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		map&lt;string, set&lt;string&gt;&gt; m;
+        map&lt;string, set&lt;string&gt;&gt; m2;
+		int n; cin &gt;&gt; n;
+		for (int N=0; N&lt;n; N++) {
+			string name;
+            cin &gt;&gt; name;
+            int toppings;
+            cin &gt;&gt; toppings;
+            vector&lt;string&gt; vs;
+            vector&lt;string&gt; vsback;
+            set&lt;string&gt; ss;
+            set&lt;string&gt; ssback;
+            for (int i = 0; i &lt; toppings; i++) {
+                string s;
+                cin &gt;&gt; s;
+                vs.push_back(s);
+                ssback.insert(s);
+            }
+            int english;
+            cin &gt;&gt; english;
+            for (int i = 0; i &lt; english; i++) {
+                string s;
+                cin &gt;&gt; s;
+                vsback.push_back(s);
+                ss.insert(s);
+            }
+            for (string s : vs) {
+                if (m.find(s) == m.end()) {
+                    m[s] = ss;
+                }
+                else {
+                    set&lt;string&gt; s2;
+                    for (string ms : m[s]) {
+                        if (ss.count(ms)) {
+                            s2.insert(ms);
+                        }
+                    }
+                    m[s] = s2;
+                }
+            }
+            for (string s : vsback) {
+                if (m2.find(s) == m2.end()) {
+                    m2[s] = ssback;
+                }
+                else {
+                    set&lt;string&gt; s2;
+                    for (string ms : m2[s]) {
+                        if (ssback.count(ms)) {
+                            s2.insert(ms);
+                        }
+                    }
+                    m2[s] = s2;
+                }
+            }
+		}
+
+		for (auto map_entry : m) {
+            set&lt;string&gt; ss = m[map_entry.first];
+            for (string s : ss) {
+                if (m2[s].count(map_entry.first))
+                    cout &lt;&lt; &quot;(&quot; &lt;&lt; map_entry.first &lt;&lt; &quot;, &quot; &lt;&lt; s &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+            }
+        }
+        cout &lt;&lt; endl;
+	}
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

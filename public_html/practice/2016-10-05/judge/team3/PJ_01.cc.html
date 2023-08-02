@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int dp[200][200];
+int val[200][200];
+
+int main() {
+  int C, M; cin &gt;&gt; C &gt;&gt; M;
+  for (int i = 0; i &lt; M; ++i) {
+    for (int j = 0; j &lt; C; ++j) {
+      int num; cin &gt;&gt; num;
+      val[i+1][j+1] = num;
+    }
+  }
+  for (int i = 1; i &lt;= M; ++i) {
+    for (int j = 1; j &lt;= C; ++j) {
+      int msf = -1;
+      for (int k = 0; k &lt;= j; ++k) {
+        msf = max(msf, dp[i-1][k] + val[i][j-k]);
+      }
+      dp[i][j] = max(dp[i][j-1], msf);
+      //cout &lt;&lt; dp[i][j] &lt;&lt; &quot; &quot;;
+    }
+    //cout &lt;&lt; endl;
+  }
+  cout &lt;&lt; dp[M][C] &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

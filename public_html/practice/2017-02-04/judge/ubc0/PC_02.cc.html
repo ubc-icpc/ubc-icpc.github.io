@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+
+const ll INF = 0x3f3f3f3f;
+const int N = 1337, M = 4242;
+
+int par[N], first[N], nxt[2*M], ep[2*M], m;
+ll flo[2*M], cap[2*M], cost[2*M];
+void init() { m = 0; memset(first,-1,sizeof first); memset(flo,0,sizeof flo); }
+void add_edge(int a, int b, ll c=1, ll p=0) { //a,b - nodes, c, p - cap, price
+  nxt[m] = first[ep[m]=a], first[ep[m]] = m, cap[m] = c, cost[m] =  p, ++m;
+  nxt[m] = first[ep[m]=b], first[ep[m]] = m, cap[m] = 0, cost[m] = -p, ++m;
+//cout &lt;&lt; &quot;add_edge &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; endl;
+}
+
+// Max flow without costs, USAGE: 1) init(); 2) add edges, 3) ll flow=0; and 4)
+// for (ll del=INF; del; del/=2) while (ll df=mf_update(s, t, del)) flow+=df;
+// Then if you want to extract a min cut: for (int e = 0; e &lt; m; ++e)
+// if (par[ep[e]] != -1 &amp;&amp; par[ep[e^1]] == -1) cut.push_back(e);
+// If you want to recover flow paths: get set of edges with flo[e] &gt; 0.
+// E^2logC in general, E*flow on integer capacity graphs
+ll mf_update(int s, int t, ll del=1) {
+  ll df[N]; memset(df, 0, sizeof df); memset(par, -1, sizeof par);
+  queue&lt;int&gt; q; q.push(s); par[s] = -2; df[s] = INF;
+  while (!q.empty()) { ll cf; int u = q.front(); q.pop();
+    for (int v, e = first[u]; e != -1; e = nxt[e])
+      if (par[v=ep[e^1]] == -1 &amp;&amp; (cf = cap[e]-flo[e]) &gt;= del)
+        q.push(v), par[v] = e, df[v] = min(df[u], cf); }
+  if (par[t] == -1) return 0;
+  for (int e, i = t; i != s; i = ep[e])
+    e = par[i], flo[e] += df[t], flo[e^1] -= df[t];
+  return df[t]; }
+
+string r[30];
+int R[30];
+
+int main() {
+  ios::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    memset(R, 0, sizeof R);
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+      cin &gt;&gt; r[i];
+      for (int j = 0; j &lt; n; j++) {
+        if (r[i][j] == '1')
+          R[i] += 2;
+        else if (r[i][j] == 'd' &amp;&amp; i &lt; j) {
+          R[i]++;
+          R[j]++;
+        }
+      }
+    }
+    vector&lt;int&gt; pw;
+    for (int i = 0; i &lt; n; i++) {
+      int cw = R[i];
+      for (int j = 0; j &lt; n; j++) {
+        if (i == j)
+          continue;
+        if (r[i][j] == '.')
+          cw += 2;
+      }
+      bool done = false;
+      for (int j = 0; j &lt; n; j++) {
+        if (i != j &amp;&amp; R[j] &gt; cw) {
+          done = true;
+          break;
+        }
+      }
+      if (done)
+        continue;
+      //cout &lt;&lt; &quot;start &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; cw &lt;&lt; endl;
+      init();
+      int gn = 1;
+      for (int j = 0; j &lt; n; j++) {
+        for (int k = j+1; k &lt; n; k++) {
+          if (i == j || i == k)
+            continue;
+          if (r[j][k] == '.') {
+            //cout &lt;&lt; &quot;play &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; k &lt;&lt; endl;
+            add_edge(0,gn,2);
+            add_edge(gn,1000+j,INF);
+            add_edge(gn,1000+k,INF);
+            gn++;
+          }
+        }
+      }
+      for (int j = 0; j &lt; n; j++) {
+        if (i == j)
+          continue;
+        add_edge(1000+j,999,cw-R[j]);
+      }
+      ll flow=0;
+      for (ll del=INF; del; del/=2) while (ll df=mf_update(0, 999, del)) flow+=df;
+      //cout &lt;&lt; &quot;played &quot; &lt;&lt; gn-1 &lt;&lt; &quot; flow &quot; &lt;&lt; flow &lt;&lt; endl;
+      if (flow == (gn-1)*2)
+        pw.push_back(i+1);
+    }
+    for (int i = 0; i &lt; pw.size(); i++) {
+      if (i) cout &lt;&lt; &quot; &quot;;
+      cout &lt;&lt; pw[i];
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

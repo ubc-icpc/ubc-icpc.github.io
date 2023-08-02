@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int case_num;
+int main() {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        int n;
+        while (cin &gt;&gt; n &amp;&amp; n) {
+                int x, y;
+                vector&lt;int&gt; xs;
+                vector&lt;int&gt; ys;
+                while (n--) {
+                        cin &gt;&gt; x &gt;&gt; y;
+                        xs.push_back(x);
+                        ys.push_back(y);
+                }
+                sort(xs.begin(), xs.end());
+                sort(ys.begin(), ys.end());
+
+                int rx = xs[(xs.size() - 1) / 2];
+                int ry = ys[(ys.size() - 1) / 2];
+                long long distance = 0;
+                for (int i = 0; i &lt; xs.size(); i++) {
+                        distance += abs(xs[i] - rx) + abs(ys[i] - ry);
+                }
+                        
+                cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++case_num &lt;&lt; &quot;: &quot;
+                        &lt;&lt; &quot;(&quot; &lt;&lt; rx &lt;&lt; &quot;,&quot;
+                        &lt;&lt; ry &lt;&lt; &quot;) &quot; &lt;&lt; distance &lt;&lt; '\n';
+
+        }
+        return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

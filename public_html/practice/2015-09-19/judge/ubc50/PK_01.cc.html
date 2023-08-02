@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cstring&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+int n;
+int wi[455];
+int memo[455][455][455];
+
+int dp(int idx, int left, int right) {
+  if (idx==n) return 0;
+  if (memo[idx][left][right]!=-1) return memo[idx][left][right];
+  return memo[idx][left][right]=min(abs(wi[idx]-wi[left])+dp(idx+1,idx,right),
+				    abs(wi[idx]-wi[right])+dp(idx+1,left,idx));
+}
+
+int main() {
+  while (cin &gt;&gt; n) {
+    memset(wi,0,sizeof wi);
+    memset(memo,-1,sizeof memo);
+    for (int i=0; i&lt;n; i++) { int x; cin &gt;&gt; x &gt;&gt; wi[i]; }
+    reverse(wi, wi+n);
+    int res=dp(0,0,0);
+    cout &lt;&lt; res &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

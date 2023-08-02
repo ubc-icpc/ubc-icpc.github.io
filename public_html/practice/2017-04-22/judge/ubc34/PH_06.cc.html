@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+using namespace std;
+
+/* #define debug printf */
+#define debug(...)
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+
+int N, M, Q;
+
+vector&lt;int&gt; L[150001];
+int cur[150001];
+bool lazy[150001];
+int A[400001];
+int* V;
+int S[150001];
+int P[150001];
+int station[150001];
+
+int Lidx[150001];
+
+const int K = 387;
+
+int Llb[K][150001];
+int Lub[K][150001];
+vector&lt;int&gt; Lsum[K];
+
+inline void build() {
+    for (int i = N; i &gt; 0; i--)
+        A[i] = A[i&lt;&lt;1] + A[i&lt;&lt;1|1];
+}
+
+inline void update(int pos, int val) {
+    debug(&quot;station %d &lt;- %d\n&quot;, pos, val);
+    pos += N;
+    A[pos] = val;
+    for (int i = pos&gt;&gt;1; i &gt; 0; i&gt;&gt;=1)
+        A[i] = A[i&lt;&lt;1] + A[i&lt;&lt;1|1];
+}
+
+inline int query(int l, int r) {
+    int ans = 0;
+    for (l += N, r += N; l &lt;= r; l&gt;&gt;=1, r&gt;&gt;=1) {
+      if  (l&amp;1) ans += A[l++];
+      if (~r&amp;1) ans += A[r--];
+    }
+    return ans;
+}
+
+int main() {
+    scanf(&quot;%d%d%d&quot;, &amp;N, &amp;M, &amp;Q);
+    V = A+N;
+    for (int i = 1; i &lt;= N; i++) {
+        int l; scanf(&quot;%d&quot;, &amp;l);
+        L[l].push_back(i), P[i] = L[l].size() - 1, station[i] = l;
+    }
+    for (int i = 1; i &lt;= N; i++) {
+        int a; scanf(&quot;%d&quot;, &amp;a);
+        S[i] = V[i] = a;
+    }
+
+    vector&lt;pii&gt; lines;
+    for (int j = 1; j &lt;= M; j++)
+        cur[j] = 0, lines.push_back({L[j].size(), j});
+    // Process some lines lazily
+    sort(lines.rbegin(), lines.rend());
+    if (M &gt; K) lines.erase(lines.begin() + K, lines.end());
+    int idx = 0;
+    for (pii wj: lines) {
+        int j = wj.second;
+        lazy[j] = true;
+        vector&lt;int&gt; &amp;sum = Lsum[idx];
+        sum.push_back(0);
+        for (int i: L[j]) sum.push_back(*(sum.end()-1) + V[i]);
+        for (int i: L[j]) sum.push_back(*(sum.end()-1) + V[i]), V[i] = 0;
+
+        int roll = 0;
+        for (int i = 1; i &lt;= N; i++) {
+            if (station[i] == j) roll++;
+            Lub[idx][i] = roll;
+        }
+        for (int i = N; i &gt;= 1; i--) {
+            if (station[i] == j) roll--;
+            Llb[idx][i] = roll;
+        }
+        Lidx[j] = idx++;
+    }
+
+    build();
+
+    for (int i = 0; i &lt; Q; i++) {
+        int mode; scanf(&quot;%d&quot;, &amp;mode);
+        if (mode == 1) {
+            int l, r; scanf(&quot;%d%d&quot;, &amp;l, &amp;r);
+            int ans = query(l, r);
+            for (pii wj: lines) {
+                int j = wj.second, idx = Lidx[j];
+                int lower = Llb[idx][l], upper = Lub[idx][r];
+                if (upper - lower &gt; 0) {
+                    int Ls = L[j].size();
+                    int pstart = (lower + Ls - cur[j]) % Ls;
+                    int pend = pstart + (upper - lower);
+                    int contrib = Lsum[Lidx[j]][pend] - Lsum[idx][pstart];
+                    debug(&quot;Line %d: Sum [%d %d) = %d\n&quot;, j, pstart, pend, contrib);
+                    ans += contrib;
+                }
+            }
+            printf(&quot;%d\n&quot;, ans);
+        } else {
+            int x; scanf(&quot;%d&quot;, &amp;x);
+            if (L[x].size()) {
+                int Ls = L[x].size();
+                cur[x] = (cur[x] + 1) % Ls;
+                if (!lazy[x]) {
+                    for (int i = 0; i &lt; Ls; i++)
+                        update(L[x][i], S[L[x][(i+Ls-cur[x]) % Ls]]);
+                }
+            }
+        }
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

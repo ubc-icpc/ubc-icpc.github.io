@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+/*
+ID: keyvank2
+TASK: stall4
+LANG: C++
+*/
+
+#include &lt;bits/stdc++.h&gt;
+
+#define ff first
+#define ss second
+#define pb push_back
+#define mp make_pair
+#define FOR(i,j,k) for(int i = j; i &lt; (int)(k); i++)
+#define FORV(i, v) FOR(i, 0, ((v).size()))
+#define REP(i,j,k) for(int i = j; i &gt;= (int)(k); i--)
+#define setmax(i) const int maxn = (int) i;
+#define setmod(i) const int MOD = (int) i;
+#define all(a) a.begin(),a.end()
+#define autodef(x,v) typeof(v) x = (v)
+#define autoref(x,v) typeof(v)&amp; x = (v)
+#define forit(it, c) for (autodef(it, ((c).begin())); it != ((c).end()); ++it)
+
+//typedef complex&lt;double&gt; Point;
+//#define X real()
+//#define Y imag()
+
+using namespace std;
+
+//ifstream fin(&quot;stall4.in&quot;);
+//ofstream fout(&quot;stall4.out&quot;);
+//#define cin fin
+//#define cout fout
+
+typedef long long ll;
+typedef long double ld;
+typedef vector&lt;int&gt; vi;
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;ll,ll&gt; pll;
+typedef pair&lt;ld,ld&gt; pdd;
+typedef pair&lt;pii,int&gt; ppi;
+typedef pair&lt;pll,ll&gt; ppl;
+typedef pair&lt;int,pii&gt; pip;
+typedef pair&lt;ll,pll&gt; plp;
+typedef pair&lt;pii,pii&gt; ppp;
+
+const int INF = (int) 2e9;
+const ll INFL = (ll) 9e18;
+const int MAXINT = ((~0) ^ (1 &lt;&lt; 31));
+const ll MAXLL = ((~0) ^ ((ll)1 &lt;&lt; 63));
+
+template&lt;class T&gt; inline T pow2(T a) { return a*a;}
+template&lt;class T&gt; inline bool mineq(T&amp; a, T b){return (a &gt; b) ? (a=b, true) : false;}
+template&lt;class T&gt; inline bool maxeq(T&amp; a, T b){return (a &lt; b) ? (a=b, true) : false;}
+
+//srand (time(NULL));
+//9223372036854775807
+
+const int maxn = 222;
+
+int n;
+string str[maxn];
+vi v[maxn];
+int p[maxn];
+
+bool cmp(const int&amp; a, const int&amp; b){
+    /*while(v[a].back() == 0) v[a].pop_back();
+    while(v[b].back() == 0) v[b].pop_back();
+
+    if(v[a].size() != v[b].size())
+        return v[a].size() &lt; v[b].size();
+    REP(i,v[a].size()-1,0)
+        if(v[a][i] != v[b][i])
+            return v[a][i] &lt; v[b][i];
+    return false;*/
+    return v[a] &lt; v[b];
+}
+
+void printv(vi v){
+    cout &lt;&lt; &quot;VV: &quot;;
+    FOR(i,0,v.size()) cout &lt;&lt; v[i] &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; endl;
+}
+
+vi conv(string str){
+    vi v;
+
+    int l = 0, r = -1;
+    while(l &lt; str.size()){
+
+        if(str[l] == '+'){
+            v.pb(0);
+            l++;
+            continue;
+        }
+
+        int p = 1, mx = -1;
+        r = l+1;
+        while(p &gt; 0){
+
+            if(str[r] == '[')
+                p++;
+            if(str[r] == ']')
+                p--;
+            if(str[r] == '+')
+                mx = max(mx,p);
+            r++;
+        }
+
+        if(mx != -1){
+            while(v.size() &gt; 0 &amp;&amp; v.back() &lt; mx) v.pop_back();
+            v.pb(mx);
+        }
+        //cout &lt;&lt; l &lt;&lt; &quot; : &quot; &lt;&lt; r &lt;&lt; endl;
+
+        l = r;
+    }
+
+    //printv(v);
+    //while(v.size() &gt; 0 &amp;&amp; v.back() == 0) v.pop_back();
+
+    return v;
+}
+
+
+
+int main()
+{
+    ios_base::sync_with_stdio(0);cin.tie(0);
+
+    cin &gt;&gt; n;
+    FOR(i,0,n){
+        cin &gt;&gt; str[i];
+        v[i] = conv(str[i]);
+        //printv(v[i]);
+        p[i] = i;
+    }
+
+    sort(p, p+n, cmp);
+    FOR(i,0,n)
+        cout &lt;&lt; str[p[i]] &lt;&lt; endl;
+}
+</code>
+</pre>
+</body>
+</html>

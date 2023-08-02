@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef unsigned long long ull;
+typedef __int128 ll;
+
+int main() {
+  ull atmp, ntmp, mtmp; cin &gt;&gt; atmp &gt;&gt; ntmp &gt;&gt; mtmp;
+  ll m = mtmp;
+  ll a = atmp % mtmp;
+  ll n = ntmp % mtmp;
+
+  if (a == 1) {
+    cout &lt;&lt; (ull)((n+1)%m) &lt;&lt; endl;
+  } else if (m == 1) {
+    cout &lt;&lt; 0 &lt;&lt; endl;
+  } else {
+    ll pa[64], sa[64]; // pa[k] = a^(2^k), sa[k] = a^0 + a^1 + a^2 + a^3 + ... + a^(2^k-1)
+    memset(pa, 0, sizeof pa);
+    memset(sa, 0, sizeof sa);
+    pa[0] = a;
+    sa[0] = 1;
+    for (int k = 1; k &lt; 64; k++) {
+      pa[k] = (pa[k-1]*pa[k-1])%m;
+      sa[k] = (sa[k-1]+((sa[k-1]*pa[k-1])%m))%m;
+    }
+    ll ans = 0;
+    ll mul = 1;
+    for (int k = 63; k &gt;= 0; k--) {
+      if (ntmp &amp; (1ULL &lt;&lt; k)) {
+        ans += (sa[k]*mul)%m; ans %= m;
+        mul = (mul*pa[k])%m;
+      }
+    }
+    ans += mul; ans %= m;
+    cout &lt;&lt; (ull)ans &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

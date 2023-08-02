@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class D {
+	
+	static int r;
+	static int c;
+	static SN start;
+	static int result;
+	static int ires;
+	static LinkedList&lt;Node&gt; primeQ;
+	static boolean[][] seenv;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int N = sc.nextInt();
+		sc.nextLine();
+		
+		for (int n = 0; n &lt; N; n++) {
+			r = sc.nextInt();
+			c = sc.nextInt();
+			sc.nextLine();
+			char[][] map = new char[r][];
+			for (int i = 0; i &lt; r; i++)
+				map[i] = sc.nextLine().toCharArray();
+
+			for (int i = 0; i &lt; r; i++)
+				for (int j = 0; j &lt; c; j++)
+					if (map[i][j] == 'S')
+						start = new SN(i,j,null);
+			
+			result = 0;
+			primeQ = new LinkedList&lt;Node&gt;();
+			calc(map,new boolean[r][c],0,true);
+			ires = result;
+			while (!primeQ.isEmpty()) {
+				Node temp = primeQ.pop();
+				calc(temp.getMap(map),temp.getSeenV(seenv),ires,false);
+			}
+			System.out.println(result);
+		}
+		sc.close();
+	}
+
+	public static void calc(char[][] map, boolean[][] seenV, int res, boolean b) {
+		LinkedList&lt;SN&gt; q = new LinkedList&lt;SN&gt;();
+		boolean[][] seen = new boolean[r][c];
+		q.add(start);		
+		while (!q.isEmpty()) {
+			SN n = q.pop();
+			if (n.x &gt;= 0 &amp;&amp; n.y &gt;= 0 &amp;&amp; n.x &lt; r &amp;&amp; n.y &lt; c &amp;&amp; !seen[n.x][n.y]) {
+				
+				switch (map[n.x][n.y]) {
+				case 'S':
+				case '.':
+					q.add(new SN(n.x + 1,n.y,n));
+					q.add(new SN(n.x - 1,n.y,n));
+					q.add(new SN(n.x,n.y + 1,n));
+					q.add(new SN(n.x,n.y - 1,n));
+					seen[n.x][n.y] = true;
+					break;
+				case '#':
+					seen[n.x][n.y] = true;
+					break;
+				case 'V':
+					if (!seenV[n.x][n.y]) {
+						res++;
+						seenV[n.x][n.y] = true;
+					}
+					if (b) {
+						SN temp = new SN (n.x - n.prev.x + n.x, n.y - n.prev.y + n.y, null);
+						if (temp.x &lt; r &amp;&amp; temp.x &gt;= 0 &amp;&amp; temp.y &lt; c &amp;&amp; temp.y &gt;= 0 &amp;&amp; (map[temp.x][temp.y] == '.' || map[temp.x][temp.y] == 'S'))
+							primeQ.add(new Node(temp,n));
+					}
+					break;
+				}
+			}
+		}
+		if (res &gt; result) result = res;
+		if (b) seenv = seenV;
+	}
+
+}
+
+class Node {
+	int px;
+	int py;
+	int cx;
+	int cy;
+	Node (SN p, SN c) {
+		this.px = p.x;
+		this.py = p.y;
+		this.cx = c.x;
+		this.cy = c.y;
+	}
+	
+	public char[][] getMap(char[][] map) {
+		char[][] result = new char[map.length][];
+		for (int i = 0; i &lt; map.length; i++)
+			result[i] = map[i].clone();
+		result[px][py] = map[cx][cy];
+		result[cx][cy] = map[px][py];
+		return result;
+	}
+	public boolean[][] getSeenV(boolean[][] seenV) {
+		boolean[][] result = new boolean[seenV.length][];
+		for (int i = 0; i &lt; seenV.length; i++)
+			result[i] = seenV[i].clone();
+		result[px][py] = seenV[cx][cy];
+		result[cx][cy] = seenV[px][py];
+		return result;
+	}
+}
+
+class SN {
+	int x;
+	int y;
+	SN prev;
+	SN(int x, int y, SN prev) {
+		this.x = x;
+		this.y = y;
+		this.prev = prev;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

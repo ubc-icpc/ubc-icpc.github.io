@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;utility&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+int p[400][2];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; T &lt;&lt; &quot;: &quot;;
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++)
+      cin &gt;&gt; p[i][0] &gt;&gt; p[i][1];
+    if (n &lt;= 2) {
+      cout &lt;&lt; n &lt;&lt; &quot;\n&quot;;
+      continue;
+    }
+    int m = 2;
+    for (int i = 0; i &lt; n-1; i++) {
+      map&lt;pii,int&gt; s;
+      for (int j = i+1; j &lt; n; j++) {
+        int x = p[i][0]-p[j][0], y = p[i][1]-p[j][1], g;
+        if (y &lt; 0) {
+          x *= -1;
+          y *= -1;
+        }
+        if (y == 0) {
+          x = 1;
+          goto VELOCIRAPTOR;
+        }
+        if (x == 0) {
+          y = 1;
+          goto VELOCIRAPTOR;
+        }
+        g = __gcd(x,y);
+        x /= g;
+        y /= g;
+        VELOCIRAPTOR:
+        s[make_pair(x,y)]++;
+      }
+      for (map&lt;pii,int&gt;::iterator it = s.begin(); it != s.end(); it++)
+        m = max(m,it-&gt;second+1);
+    }
+    cout &lt;&lt; m &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+
+using namespace std;
+typedef long long ll;
+
+int n, a, b, c, xi, xc;
+
+map&lt;string, int&gt; ma;
+
+vector&lt;int&gt; adj[30004];
+
+int getval(string s){
+    if(ma.count(s)) return ma[s];
+    else {
+        ma[s] = c++;
+        return ma[s];
+    }
+}
+
+bool vis[33333];
+bool ancvis[33333];
+
+bool dfs(int a){
+   // cout &lt;&lt;&quot;at&quot;&lt;&lt;  a &lt;&lt; &quot; &quot; &lt;&lt; x &lt;&lt; endl;
+    ancvis[a] = true;
+    vis[a] = 1;
+    for(auto i: adj[a]){
+    //    cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; vis[i] &lt;&lt;  endl;
+        if(ancvis[i]) return true;
+        if(vis[i]) continue;
+        if(dfs(i)) return true;
+    }
+    ancvis[a] = false;
+    return false;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    c = 0;
+    cin &gt;&gt; n;
+    string s1, sign, s2;
+    for(int i=0;i&lt;n;i++){
+        cin &gt;&gt; s1 &gt;&gt; sign &gt;&gt; s2;
+        a = getval(s1); b = getval(s2);
+ //       cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+        if(sign[0]=='&gt;')
+            adj[a].pb(b);
+        else
+            adj[b].pb(a);
+    }
+  //  cout &lt;&lt; endl;
+    bool failed = false;
+    for(int i=0;i&lt;c;i++){
+        xc = xi+1;
+        if (!vis[i])
+            if (dfs(i)) failed = true;
+    }
+    if (failed) cout &lt;&lt; &quot;impossible&quot;;
+    else cout &lt;&lt; &quot;possible&quot;;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

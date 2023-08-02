@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">ALPHABET = &quot;abcdefghijklmnopqrstuvwxyz&quot;
+
+code = input()
+s = int(input())
+w = input()
+
+if code == 'E':
+    encoded_word = ''
+
+    for letter in w:
+        letter_index = ALPHABET.index(letter)
+        encoded_word += ALPHABET[(letter_index + s) % 26]
+    print(encoded_word)
+else:
+    decoded_word = ''
+
+    for letter in w:
+        letter_index = ALPHABET.index(letter)
+        decoded_word += ALPHABET[(letter_index - s) % 26]
+    print(decoded_word)
+</code>
+</pre>
+</body>
+</html>

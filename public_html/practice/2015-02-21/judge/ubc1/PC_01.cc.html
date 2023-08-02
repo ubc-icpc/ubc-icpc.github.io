@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int to_sec(int h, int m, int s) {
+	return 3600*h + 60*m + s;
+}
+
+vector&lt;int&gt; to_clock(int t, bool mode) {
+	vector&lt;int&gt; v;
+	if (mode) {
+		v.push_back(t/3600);
+	}
+	v.push_back((t%3600)/60);
+	if (!mode) {
+		v.push_back(t%60);
+	}
+	return v;
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int h, m, s; char c;
+		cin &gt;&gt; h &gt;&gt; c &gt;&gt; m &gt;&gt; c &gt;&gt; s;
+		int t0 = to_sec(h,m,s);
+		cin &gt;&gt; m &gt;&gt; c &gt;&gt; s;
+		int t1 = to_sec(0,m,s);
+
+		bool yes = false;
+		while (t1 &gt;= 0) {
+			vector&lt;int&gt; v1 = to_clock(t1, 0), v0 = to_clock(t0, 1);
+
+			if (v0 == v1) {
+				yes = true;
+				break;
+			}
+
+			t1--;
+			t0 = (t0+1)%(24*3600);
+		}
+
+		cout &lt;&lt; (yes ? &quot;Yes&quot; : &quot;No&quot;) &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

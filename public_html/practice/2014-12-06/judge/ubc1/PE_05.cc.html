@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+struct node {
+	node* left, *right;
+	bool is_leaf;
+	int val, id;
+	node() : left(NULL), right(NULL), is_leaf(false), val(0), id(0) {}
+};
+
+int cnt = 0;
+void make_tree(node* cur, string s) {
+	//check if integer
+	bool is_int = true;
+	for (int i = 0; i &lt; s.size(); i++) {
+		if (s[i] == '(') is_int = false;
+	}
+	
+	if (is_int) {
+		stringstream ss(s);
+		ss &gt;&gt; cur-&gt;val;
+		cur-&gt;is_leaf = true;
+		return;
+	}
+	
+	string inside = s.substr(1, s.size()-2);
+	int lspace = 0, rspace = inside.size()-1;
+	while (inside[lspace] == ' ') lspace++;
+	while (inside[rspace] == ' ') rspace--;
+	inside = inside.substr(lspace, rspace-lspace+1);
+	
+	int depth = 0, first = 1, split = 0;
+	while (first || depth &gt; 0 || inside[split] != ' ') {
+		first = 0;
+		if (inside[split] == '(') depth++;
+		else if (inside[split] == ')') depth--;
+		split++;
+	}
+	
+	string left = inside.substr(0, split), right = inside.substr(split+1);
+	cur-&gt;left = new node, cur-&gt;right = new node;
+	make_tree(cur-&gt;left, left); make_tree(cur-&gt;right, right);
+	cur-&gt;left-&gt;id = ++cnt; cur-&gt;right-&gt;id = ++cnt;
+}
+
+int memo[2600][2][200];
+int dp(int X, int is_edge, node* r) {
+	if (memo[X][is_edge][r-&gt;id] != -1) {
+		return memo[X][is_edge][r-&gt;id];
+	} else if (!is_edge &amp;&amp; r-&gt;is_leaf) {
+		return r-&gt;val + X;
+	}
+	
+	int ans = 0;
+	if (is_edge) {
+		for (int i = 0; i &lt;= X; i++) {
+			ans = max(ans, min((1+i)*(1+i), dp(X-i, 0, r)));
+		}
+	} else {
+		for (int i = 0; i &lt;= X; i++) {
+			ans = max(ans, dp(i, 1, r-&gt;left) + dp(X-i, 1, r-&gt;right));
+		}
+	}
+	memo[X][is_edge][r-&gt;id] = ans;
+	return ans;
+}
+
+int main() {
+	string tree;
+	getline(cin, tree);
+	
+	node * rt = new node;
+	make_tree(rt, tree);
+	
+	int X; cin &gt;&gt; X;
+	if (rt-&gt;is_leaf) {
+		cout &lt;&lt; rt-&gt;val + X &lt;&lt; endl;
+	} else {	
+		memset(memo, -1, sizeof memo);
+		int ans = 0;
+		for (int i = 0; i &lt;= X; i++) {
+			ans = max(ans, dp(i, 1, rt-&gt;left) + dp(X-i, 1, rt-&gt;right));
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

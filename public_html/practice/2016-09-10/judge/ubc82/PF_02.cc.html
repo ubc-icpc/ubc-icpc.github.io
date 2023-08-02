@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int N,a[101],b[101],t[101],Q,T,fun;
+
+vector&lt;int&gt; c, ff, tt;
+
+int dp1[34*100][25002], dp2[25002];
+
+int main(){
+	ios_base::sync_with_stdio(false);cin.tie(0);
+	cin&gt;&gt;N;
+	for(int i=0;i&lt;N;i++){
+		cin&gt;&gt;a[i]&gt;&gt;b[i]&gt;&gt;t[i];
+		if(b[i]==0) c.push_back(i);
+		else {
+			int k = 1;
+			while (a[i]-(k-1)*(k-1)*b[i]&gt;0){
+				ff.push_back(a[i]-(k-1)*(k-1)*b[i]);
+				tt.push_back(t[i]);
+				k++;
+//				cout &lt;&lt; *(ff.end()-1) &lt;&lt; endl;
+			}
+		}
+	}
+
+
+	for(int i=0;i&lt;=25000;i++){
+		for(auto j: c){
+//			if (i==0) cout &lt;&lt; t[j] &lt;&lt; &quot; &quot; &lt;&lt; a[j] &lt;&lt; endl;
+			if(i-t[j]&gt;=0)
+				dp2[i] = max(dp2[i-t[j]]+a[j],dp2[i]);
+		}
+	}
+	
+	int msf = -1;
+	for (int i=0;i&lt;=25000;i++){
+		msf = dp2[i] = max(msf,dp2[i]);
+//	cout &lt;&lt; msf&lt;&lt; &quot; &quot;;} cout &lt;&lt; endl;
+}
+
+	int NN = ff.size();
+	for(int i=0;i&lt;NN;i++){
+		for(int j=0;j&lt;=25000;j++){
+			dp1[i+1][j] = dp1[i][j];
+			if (j-tt[i]&gt;=0)
+				dp1[i+1][j] = max(dp1[i+1][j],dp1[i][j-tt[i]]+ff[i]);
+		}
+	}
+
+	msf = -1;
+	for (int i=0;i&lt;=25000;i++){
+		msf = dp1[NN][i] = max(msf,dp1[NN][i]);
+//		cout &lt;&lt; msf &lt;&lt; &quot; &quot;;}cout &lt;&lt; endl;
+		}
+	//cout &lt;&lt; &quot;TIME FOR T&quot;&lt;&lt;endl;
+	cin&gt;&gt; Q;
+	for(int i=0;i&lt;Q;i++){
+		cin&gt;&gt;T;
+		fun = -1;
+		for(int j=0;j&lt;=T;j++){
+			fun = max(fun,dp1[NN][j]+dp2[T-j]);
+		}
+		cout&lt;&lt;fun&lt;&lt;'\n';
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+cases=int(raw_input())
+for i in range(0,cases):
+    n=int(raw_input())
+    answer=n
+    L=list(map(int, raw_input().split()))
+    A=0
+    B=0
+    number=27
+    reds=15
+    player=0
+    first=-100
+    for i in range(0,n):
+        x=L[i]
+        if x==0:
+            player=(player+1)%2
+        elif player==0:
+            if x==1:
+                A=A+1
+                reds=reds-1
+                if reds==0:
+                    first=i
+            else:
+                A=A+x
+                if reds==0:
+                    if i!=first+1:
+                        number=number-x
+        elif player==1:
+            if x==1:
+                B=B+1
+                reds=reds-1
+                if reds==0:
+                    first=i
+            else:
+                B=B+x
+                if reds==0:
+                    if i!=first+1:
+                        number=number-x
+        if reds==0:
+            total=number
+            if i==first+1:
+                if player==0 and B&gt;A:
+                    total=34
+                elif player==1 and A&gt;B:
+                    total=34
+        else:
+            total=reds*8+27
+            if x==1:
+                if player==0 and B&gt;A:
+                    total=total+7
+                elif player==1 and A&gt;B:
+                    total=total+7
+        diff=max(A-B,B-A)
+        if diff&gt;total:
+            answer=i+1
+            break
+    print(answer)
+    
+        
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

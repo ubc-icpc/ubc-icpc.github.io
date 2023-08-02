@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+#include&lt;vector&gt;
+
+
+using namespace std;
+
+
+
+vector&lt;vector&lt;int&gt;&gt; matrixMultiplication(vector&lt;vector&lt;int&gt;&gt; A, vector&lt;vector&lt;int&gt;&gt; B) {
+	vector&lt;vector&lt;int&gt;&gt; res(A.size(), vector&lt;int&gt;(B[0].size(), 0)); // A.size() vectors of size B[0].size() 
+
+	for (int i = 0; i &lt; A.size(); i++) {
+		for (int j = 0; j &lt; B[0].size(); j++) {
+			for (int k = 0; k &lt; A[0].size(); k++) {
+				res[i][j] += A[i][k] * B[k][j];
+			}
+		}
+	}
+	return res;
+}
+
+
+
+vector&lt;vector&lt;int&gt;&gt; modMatrix(vector&lt;vector&lt;int&gt;&gt; A, int M) {
+	int n = A.size(), m = A[0].size();
+
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = 0; j &lt; m; j++) {
+			A[i][j] %= M;
+		}
+	}
+
+	return A;
+}
+
+vector&lt;vector&lt;int&gt;&gt; fastExponentiation(vector&lt;vector&lt;int&gt;&gt; base, int exp,int M) {
+	vector&lt;vector&lt;int&gt;&gt; val(base.size(), vector&lt;int&gt;(base.size(), 0));
+	for (int i = 0; i &lt; base.size(); i++) {
+		val[i][i] = 1;
+	}
+
+	while (exp &gt; 0) {
+		if (exp % 2 == 1) {
+			val = matrixMultiplication(val, base);
+			val = modMatrix(val,M);
+		}
+		exp = exp / 2;
+		base = matrixMultiplication(base, base);
+		base = modMatrix(base,M);
+	}
+	return val;
+}
+
+
+vector&lt;int&gt; matrixVectorMultiplication(vector&lt;vector&lt;int&gt;&gt; A, vector&lt;int&gt; v, int M) {
+	vector&lt;int&gt; res(v.size());
+
+	for (int i = 0; i &lt; v.size(); i++) {
+		// res[i] = A[i] * v;
+		for (int j = 0; j &lt; A[i].size(); j++) {
+			res[i] += A[i][j] * v[j];
+		}
+		res[i] = res[i] % M;
+	}
+	return res;
+}
+
+int main() {
+	int N, M, A, B, C, T;
+
+	while (true) {
+		cin &gt;&gt; N &gt;&gt; M &gt;&gt; A &gt;&gt; B &gt;&gt; C &gt;&gt; T;
+		if (N == 0 &amp;&amp; M == 0 &amp;&amp; A == 0 &amp;&amp; B == 0 &amp;&amp; C == 0 &amp;&amp; T == 0) {
+			break;
+		}
+
+		vector&lt;int&gt; a(N);
+		vector&lt;vector&lt;int&gt;&gt; X(N, vector&lt;int&gt;(N, 0));
+
+		for (int i = 0; i &lt; N; i++) {
+			cin &gt;&gt; a[i];
+
+			if (i - 1 &gt;= 0) { // if i-1 is still valid
+				X[i][i - 1] = A;
+			}
+			
+			X[i][i] = B;
+
+			if (i + 1 &lt;= N - 1) { // if i+1 is still valid
+				X[i][i + 1] = C;
+			}
+		}
+
+		for (int i = 0; i &lt; N; i++) {
+
+		}
+
+		// X starts with B in all i=j positions
+		// followed by C
+		// before B is A
+
+		// compute X^T
+		if (T &gt; 0)
+		{
+			X = fastExponentiation(X, T, M);
+
+			// multiply X^T with a
+			a = matrixVectorMultiplication(X, a, M);
+		}
+
+
+		// output it
+		for (int i = 0; i &lt; N; i++) {
+			cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl;
+
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

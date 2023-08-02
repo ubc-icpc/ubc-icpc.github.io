@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+bool gcd(ll a, ll b) {
+	ll p = a / b, q = a % b;
+	if (q == 0) return true;
+	if (p &gt; 1) return true;
+	return !gcd(b, q);
+}
+
+int main() {
+	ll a, b; scanf(&quot;%lld%lld&quot;, &amp;a, &amp;b);
+	if (a &lt; b) {
+		ll t = b;
+		b = a;
+		a = t;
+	}
+	printf(gcd(a, b) ? &quot;win\n&quot; : &quot;lose\n&quot;);
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

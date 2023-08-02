@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int f(multiset&lt;int&gt;&amp; s) {
+    if (s.size() == 0) return 0;
+    auto it = s.end();
+    return *(--it) - *s.begin();
+}
+
+int main() {
+    int n;
+    while (cin &gt;&gt; n) {
+        if (n == 1) break;
+        multiset&lt;int&gt; s[2];
+        vector&lt;int&gt; v(n);
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; v[i];
+            s[1].insert(v[i]);
+        }
+        
+        int ans = f(s[1]), ans_i = 0;
+        for (int i = 0; i &lt; n; i++) {
+            s[0].insert(v[i]);
+            s[1].erase(s[1].find(v[i]));
+            if (max(f(s[0]), f(s[1])) &lt; ans) {
+                ans = max(f(s[0]), f(s[1]));
+                ans_i = i;
+            }
+        }
+        cout &lt;&lt; ans_i+1 &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

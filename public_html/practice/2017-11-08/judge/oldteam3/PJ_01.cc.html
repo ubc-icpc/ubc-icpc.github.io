@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cstdlib&gt;
+#include&lt;cstring&gt;
+#include&lt;string&gt;
+#include&lt;algorithm&gt;
+#include&lt;vector&gt;
+#include&lt;cmath&gt;
+#include&lt;map&gt;
+using namespace std;
+
+typedef long long LL;
+LL ans;
+LL bottom, height, top;
+LL c[10];
+LL f[2000000];
+
+
+LL vol(int i, LL nn){
+	long double d = top + (bottom - top) * (double) nn / height;
+	LL num = (LL) floor(d / (long double) c[i]);
+	return c[i] * c[i] * c[i] * num * num ;
+}
+
+int main(){
+	while (cin &gt;&gt; height){
+		cin &gt;&gt; bottom &gt;&gt; top &gt;&gt; c[0] &gt;&gt; c[1] &gt;&gt; c[2];
+		if (bottom &lt; top) swap(bottom, top);
+		memset(f, 0, sizeof(f));
+		ans = 0;
+		for (int k = height; k &gt;= 0; --k){
+			for (int i = 0; i &lt; 3; ++i){
+				if (k + c[i] &lt;= height){
+					LL tmp = f[k+c[i]] + vol(i, k);
+					f[k] = max(tmp, f[k]);
+					ans = max(ans, f[k]);
+				}
+			}
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+		
+	}
+
+	return 0;
+	
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		int n; cin &gt;&gt; n;
+		vector&lt;int&gt; stuff;
+		for (int i = 0; i &lt; n; i++) {
+			int x; cin &gt;&gt; x;
+			stuff.push_back(x);
+		}
+		reverse(stuff.begin(), stuff.end());
+		int i = 0;
+		int next = 1;
+		vector&lt;int&gt; morestuff;
+		bool good = true;
+		while (next &lt; n) {
+			if (i &lt; n &amp;&amp; stuff[i] == next) {
+				i++; next++;
+				continue;
+			}
+			int j = morestuff.size();
+			if (j &gt; 0 &amp;&amp; morestuff[j-1] == next) {
+				morestuff.pop_back();
+				next++;
+				continue;
+			}
+			if (i &lt; n) {
+				morestuff.push_back(stuff[i]);
+				i++;
+			} else {
+				good = false;
+				break;
+			}
+		}
+		if (good) cout &lt;&lt; &quot;Y&quot; &lt;&lt; endl;
+		else cout &lt;&lt; &quot;N&quot; &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

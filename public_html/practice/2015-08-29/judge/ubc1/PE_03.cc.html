@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+//(ax+by, cx+dy) is reachable if
+//((a-kc)x + (b-kd)y, cx+dy) is reacheable or
+//(ax + by, (c-ka)x + (d-kb)y) is reacheable
+//canonize all points by their gcd, since if two pairs (a,b), (c,d) can reach (g,0), they can reach
+//each other
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        ll x0, y0, x1, y1; 
+        cin &gt;&gt; x0 &gt;&gt; y0 &gt;&gt; x1 &gt;&gt; y1;
+        
+        if (x0 == 0 &amp;&amp; y0 == 0) cout &lt;&lt; (x1 == 0 &amp;&amp; y1 == 0) &lt;&lt; endl;
+        else if (abs(__gcd(x0, y0)) == abs(__gcd(x1, y1))) cout &lt;&lt; 1 &lt;&lt; endl;
+        else cout &lt;&lt; 0 &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

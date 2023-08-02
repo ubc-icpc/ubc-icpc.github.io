@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+/*************************************************************************
+	&gt; File Name: l.cpp
+	&gt; Author: 
+	&gt; Mail: 
+	&gt; Created Time: Thu 30 Oct 13:45:10 2014
+ ************************************************************************/
+
+#include&lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+string name[101];
+vector&lt;string&gt; voc[101];
+bool found;
+int n;
+void search(string word) {
+    for(int i = 0; i &lt; n; i++) {
+        for(int j = 0; j &lt; voc[i].size(); j++) {
+            if(word == voc[i][j]) {
+                found = true;
+                cout&lt;&lt;name[i]&lt;&lt;endl;
+                return ;
+            }
+        }
+    }
+}
+int main() {
+    cin&gt;&gt;n;
+    string line;
+    string word;
+    for(int i = 0; i &lt; n; i++) {
+        cin&gt;&gt;name[i];
+        getline(cin, line);
+        word.clear();
+        for(int j = 1; j &lt; line.length(); j++) {
+            if(line[j] == ' ' &amp;&amp; !word.empty()) {
+                voc[i].push_back(word);
+                word.clear();
+            }
+            else {
+                if(line[j] &gt;= 'A' &amp;&amp; line[j] &lt;='Z')
+                    line[j] = line[j] - 'A' + 'a';
+                word.push_back(line[j]);
+            }
+        }
+        if(!word.empty()) {
+            //cout&lt;&lt;word&lt;&lt;endl;
+            voc[i].push_back(word);
+        }
+    }
+ 
+    /*for(int i= 0;i &lt; n; i++) {
+        cout&lt;&lt;name[i]&lt;&lt;&quot;: &quot;;
+        for(int j = 0; j &lt; voc[i].size(); j++) {
+            cout&lt;&lt;voc[i][j]&lt;&lt;&quot; &quot;;
+        }
+        cout&lt;&lt;endl;
+    }*/
+    getline(cin, line);
+    while(getline(cin, line)) {
+        word.clear();
+        found = false;
+        //cout&lt;&lt; &quot;line is :&quot;&lt;&lt;line&lt;&lt;endl;
+        for(int i = 0; i &lt; line.length(); i++) {
+            if(found)
+                break;
+            if(line[i] &gt;= 'A' &amp;&amp; line[i] &lt;= 'Z')
+                line[i] = line[i] + 'a' - 'A';
+
+            if(line[i] == ',' || line[i] == '.' || line[i] == ' ' || line[i] == '!' || line[i] == ';'
+              || line[i] == '?' || line[i] == ')' || line[i] == '(') {
+                if(!word.empty()) {
+                    //cout&lt;&lt;&quot;word is:&quot;&lt;&lt;word&lt;&lt;endl;
+                    search(word);
+                    word.clear();
+                    if(found)
+                        break;
+                }
+            }
+            else {
+                word.push_back(line[i]);
+            }
+        }
+        if(!found &amp;&amp; !word.empty()) {
+       //     cout&lt;&lt;&quot;word is:&quot;&lt;&lt;word&lt;&lt;endl;
+            search(word);
+        }
+    }
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

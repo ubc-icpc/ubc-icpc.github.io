@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, M[15];
+
+int main () {
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; N;
+        for (int i = 0; i &lt; N; ++i) cin &gt;&gt; M[i];
+        cout &lt;&lt; &quot;Denominations:&quot;;
+        for (int i = 0; i &lt; N; ++i) cout &lt;&lt; &quot; &quot; &lt;&lt; M[i];
+        cout &lt;&lt; &quot;\n&quot;;
+        bool b;
+        for (int i = b = 1; i &lt; N; ++i)
+            b = b &amp;&amp; (M[i]/M[i-1] &gt;= 2);
+        cout &lt;&lt; (b?&quot;Good&quot;:&quot;Bad&quot;) &lt;&lt; &quot; coin denominations!\n\n&quot;;
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

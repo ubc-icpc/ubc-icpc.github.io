@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+long long T, A, B, C, D, E;
+
+int main () {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; A &gt;&gt; B &gt;&gt; C &gt;&gt; D &gt;&gt; E;
+        long long d = B * B - 4LL * A * C;
+        bool yes = false;
+        if (d &gt;= 0) {
+            long double xa = (-1.0l * B + sqrt(1.0l * d)) / (2.0l * A);
+            long double xb = (-1.0l * B - sqrt(1.0l * d)) / (2.0l * A);
+            
+            long double ll = 1.0l * D;
+            long double rl = 1.0l * E;
+            
+            if (ll &lt;= xa &amp;&amp; xa &lt;= rl) yes = true;
+            if (ll &lt;= xb &amp;&amp; xb &lt;= rl) yes = true;
+        }
+        
+        cout &lt;&lt; (yes ? &quot;Yes&quot; : &quot;No&quot;) &lt;&lt; endl;
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

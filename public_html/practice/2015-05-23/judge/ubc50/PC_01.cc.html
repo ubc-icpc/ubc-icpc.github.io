@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll n, k;
+ll skills[5001];
+ll skills_sorted[5001];
+map&lt;ll, ll&gt; m;
+multiset&lt;ll&gt; bst;
+
+ll solve(){
+  // positions of each person based on skill
+  for (ll i=0; i&lt;n; i++)
+    m[skills_sorted[i]] = i;
+  // team number of each person based on skill
+  for (ll i=0; i&lt;n; i++)
+    skills[i] = m[skills[i]]/k;
+
+  for (ll i=0; i&lt;n; i++) {
+    auto it = bst.lower_bound(skills[i]+1);
+    // if there is someone with a higher group number, 1 minute needed
+    // so remove that higher group
+    // number of insertions  (or minutes needed) = # of people - size of my bst
+    if (it != bst.end())
+      bst.erase(it);
+    // insert current group number
+    bst.insert(skills[i]);
+  }
+  return n-bst.size();
+}
+
+int main() {
+  cin &gt;&gt; n &gt;&gt; k;
+  for (ll i=0; i&lt;n; i++) {
+    cin &gt;&gt; skills[i];
+    skills_sorted[i] = skills[i];
+  }
+  sort(skills_sorted, skills_sorted+n);
+  cout &lt;&lt; solve() &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

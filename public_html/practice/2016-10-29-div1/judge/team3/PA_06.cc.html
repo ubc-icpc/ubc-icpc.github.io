@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; pipii;
+
+int t[501][501];
+int ts[501][501];
+
+bool adjmat[501][501], seen[501];
+int matchL[501], matchR[501];
+
+bool bpm(int u, int n) {
+  for (int v = 0; v &lt; n; ++v) {
+    if (adjmat[u][v] &amp;&amp; !seen[v]) {
+      seen[v] = true;
+      if (matchR[v] == -1 || bpm(matchR[v], n)) {
+        matchL[u] = v;
+        matchR[v] = u;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+int main() {
+  int N, M; cin &gt;&gt; N &gt;&gt; M;
+  vector&lt;int&gt; depart;
+  //memset(ts, 9999999, sizeof(ts[0][0])*501*501);
+  for (int i = 0; i &lt; N; ++i) {
+    int p; cin &gt;&gt; p;
+    depart.push_back(p);
+  }
+  for (int i = 0; i &lt; N; ++i) {
+    for (int j = 0; j &lt; N; ++j) {
+      int tij; cin &gt;&gt; tij;
+      t[i][j] = tij;
+      ts[i][j] = tij;
+      /*if (i != j) {
+        ts[i][j] += depart[j];
+      }*/
+    }
+  }
+  
+  vector&lt;pipii&gt; fm;
+  for (int i = 0; i &lt; M; ++i) {
+    int si, fi, ti; cin &gt;&gt; si &gt;&gt; fi &gt;&gt; ti; --si; --fi;
+    fm.push_back({ti, {si, fi}});
+  }
+  
+  for (int k = 0; k &lt; N; ++k) {
+    for (int i = 0; i &lt; N; ++i) {
+      for (int j = 0; j &lt; N; ++j) {
+        ts[i][j] = min(ts[i][j], ts[i][k] + ts[k][j] + depart[k]);
+      }
+    }
+  }
+  
+  for (int i = 0; i &lt; M; ++i) {
+    pii iedge = fm[i].second;
+    int itime = fm[i].first;
+    itime += t[iedge.first][iedge.second] + depart[iedge.second];
+    for (int j = 0; j &lt; M; ++j) {
+      if (i == j) continue;
+      pii jedge = fm[j].second;
+      int jtime = fm[j].first;
+      if (iedge.second == jedge.first &amp;&amp; itime &lt;= jtime) {
+        adjmat[i][j] = true;
+      }
+      else if (itime + ts[iedge.second][jedge.first] + depart[jedge.first] &lt;= jtime) {
+        //printf(&quot;YES: %d %d %d %d %d\n&quot;, i, j, itime, ts[iedge.second][jedge.first], jtime);
+        adjmat[i][j] = true;
+      }
+    }
+  }
+  
+  int cnt = 0;
+  memset(matchL, -1, sizeof matchL); memset(matchR, -1, sizeof matchR);
+  for (int i = 0; i &lt; M; ++i) {
+    memset(seen, 0, sizeof seen);
+    if (bpm(i,M)) cnt++;
+  }
+  
+  cout &lt;&lt; M-cnt &lt;&lt; endl;
+  
+  /*
+  cerr &lt;&lt; endl;
+  for (int i = 0; i &lt; N; ++i) {
+    for (int j = 0; j &lt; N; ++j) {
+      cerr &lt;&lt; ts[i][j] &lt;&lt; &quot; &quot;;
+    }
+    cerr &lt;&lt; endl;
+  }*/
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

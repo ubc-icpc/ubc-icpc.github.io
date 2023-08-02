@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+const int maxn = 2505;
+ld lfsum[2505], eps = 1e-6;
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    //log dem factorials and compare
+    for (int i = 2; i &lt; maxn; i++) {
+        lfsum[i] = lfsum[i-1] + log(i);
+    }
+    
+    int t; cin &gt;&gt; t;
+    for (int c = 1; c &lt;= t; c++) {
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; c &lt;&lt; &quot;: &quot;;
+        int n[3]; cin &gt;&gt; n[0] &gt;&gt; n[1] &gt;&gt; n[2];
+        ld v[3] = {0, 0, 0};
+        for (int j = 0; j &lt; 3; j++) {
+            for (int k = 0; k &lt; n[j]; k++) {
+                int x; cin &gt;&gt; x;
+                v[j] += lfsum[x];
+            }
+        }
+        
+        int ans = 0;
+        for (int j = 0; j &lt; 3; j++) {
+            if (v[j] &gt; v[ans]) {
+                ans = j;
+            }
+        }
+        
+        //check tie
+        bool tie = false;
+        for (int j = 0; j &lt; 3; j++) {
+            if (ans != j &amp;&amp; abs(v[j] - v[ans]) &lt; eps) {
+                tie = true;
+            }
+        }
+        
+        if (tie) cout &lt;&lt; &quot;TIE&quot; &lt;&lt; endl;
+        else cout &lt;&lt; &quot;ABC&quot;[ans] &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

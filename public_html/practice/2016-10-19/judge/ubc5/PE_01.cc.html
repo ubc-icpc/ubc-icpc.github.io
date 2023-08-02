@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+typedef pair&lt;ld,int&gt; pdi;
+
+const int N = 10000;
+const ld EPS = 1e-7;
+const ld pi = acos(-1.0L);
+
+ld tp[N], ai[N];
+ld vr[N], vs[N];
+ld rp; int k;
+
+bool f(ld x) {
+  vector&lt;pdi&gt; vp;
+  for (int i = 0; i &lt; k; i++) {
+    if (x &gt; tp[i]) {
+      ld as = vs[i]*(x-tp[i])/rp;
+      if (as &gt;= pi)
+        return true;
+      ld ab = ai[i]-as, ae = ai[i]+as;
+      while (ab &lt; 0)
+        ab += 2*pi;
+      while (ab &gt;= 2*pi)
+        ab -= 2*pi;
+      while (ae &lt; 0)
+        ae += 2*pi;
+      while (ae &gt;= 2*pi)
+        ae -= 2*pi;
+      if (ab &gt; ae) {
+        ae += 2*pi;
+        vp.push_back(make_pair(ab,i));
+        vp.push_back(make_pair(ae,i+k));
+      }
+      else {
+        vp.push_back(make_pair(ab,i));
+        vp.push_back(make_pair(ae,i+k));
+        vp.push_back(make_pair(ab+2*pi,i));
+        vp.push_back(make_pair(ae+2*pi,i+k));
+      }
+    }
+  }
+  if (!vp.size())
+    return false;
+  sort(vp.begin(),vp.end());
+  int cv = 0;
+  ld s;
+  for (int i = 0; i &lt; vp.size(); i++) {
+    if (vp[i].second &lt; k) {
+      if (!cv)
+        s = vp[i].first;
+      cv++;
+    }
+    else {
+      cv--;
+      if (!cv &amp;&amp; vp[i].first-s &gt;= 2*pi)
+        return true;
+    }
+  }
+  return false;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    cin &gt;&gt; rp &gt;&gt; k;
+    for (int i = 0; i &lt; k; i++) {
+      ld x, y;
+      cin &gt;&gt; x &gt;&gt; y &gt;&gt; vr[i] &gt;&gt; vs[i];
+      tp[i] = (sqrt(x*x+y*y)-rp)/vr[i];
+      ai[i] = atan2(y,x);
+      if (ai[i] &lt; 0)
+        ai[i] += 2*pi;
+    }
+    ld lo = 0, hi = 10000000;
+    while (hi-lo &gt; EPS) {
+      ld mid = lo+(hi-lo)/2;
+      if (f(mid))
+        hi = mid;
+      else
+        lo = mid;
+    }
+    cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; lo &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

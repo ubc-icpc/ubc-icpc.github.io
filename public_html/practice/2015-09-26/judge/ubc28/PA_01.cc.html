@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+map&lt;char, int&gt; val({{'A', 4}, {'K', 3}, {'Q', 2}, {'J', 1}});
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        vector&lt;string&gt; hand(13);
+        for (int i = 0; i &lt; 13; i++) {
+            cin &gt;&gt; hand[i];
+        }
+        
+        int hcp = 0;
+        for (string s : hand) {
+            hcp += val[s[0]];
+        }
+        
+        bool bal = false;
+        map&lt;char, int&gt; suit;
+        for (string s : hand) {
+            suit[s[1]]++;
+        }
+        
+        if (min(suit['S'], min(suit['C'], min(suit['H'], suit['D']))) &gt;= 2) {
+            int c = 0;
+            for (auto p : suit) if (p.second == 2) c++;
+            bal = c &lt;= 1;
+        }
+        
+        if (15 &lt;= hcp &amp;&amp; hcp &lt;= 17 &amp;&amp; bal) cout &lt;&lt; &quot;1NT&quot; &lt;&lt; endl;
+        else cout &lt;&lt; &quot;Pass&quot; &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int sa[100];
+int ss[100];
+char sx[100];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+      cin &gt;&gt; sa[i] &gt;&gt; ss[i] &gt;&gt; sx[i];
+      sa[i]--; ss[i]--;
+    }
+    int a = 0;
+    for (int i = 0; i &lt; (1&lt;&lt;n); i++) { // 1 truth, 0 contra
+      bool v = true;
+      for (int j = 0; j &lt; m; j++) {
+        bool am = ((1&lt;&lt;sa[j]) &amp; i);
+        bool sm = ((1&lt;&lt;ss[j]) &amp; i);
+        char cm = sx[j];
+        if ((am &amp;&amp; sm &amp;&amp; cm == 'C') ||
+            (am &amp;&amp; !sm &amp;&amp; cm == 'T') ||
+            (!am &amp;&amp; sm &amp;&amp; cm == 'T') ||
+            (!am &amp;&amp; !sm &amp;&amp; cm == 'C')) {
+          v = false;
+          break;
+        }
+      }
+      if (v)
+        a++;
+    }
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; T &lt;&lt; &quot;: &quot; &lt;&lt; a &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

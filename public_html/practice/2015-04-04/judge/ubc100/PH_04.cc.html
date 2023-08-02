@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+
+using namespace std;
+
+int main (void) {
+  int T; cin &gt;&gt; T;
+  while ( T-- ) {
+    int n; cin &gt;&gt; n;
+    int x[n];
+    for( int i=0; i&lt;n; i++ ) {
+      int t; cin &gt;&gt; t;
+      x[i] = t;
+    }
+    if(n &lt;= 4) {
+      cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+      continue;
+    }
+    int a,b,c,d;
+    d = ( 6*x[0]);
+    c = ( 2*x[3] - 9*x[2] + 18*x[1] - 11*x[0]);
+    b = (-3*x[3] + 12*x[2] - 15*x[1] + 6*x[0]);
+    a = (x[3] - 3*x[2] + 3*x[1] - x[0]);
+   
+
+    //cout &lt;&lt; a &lt;&lt; b &lt;&lt; c &lt;&lt; d &lt;&lt; endl;
+    bool ok = true;
+    int i;
+    for (i=4; i&lt;n; i++){
+      if( (a*(i)*(i)*(i) + b*(i)*(i) + c*(i) + d)/6 != x[i]) {
+	ok = false;
+	break;
+      }
+    }
+    if(ok) cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+    else cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+
+int main() {
+  int T; cin &gt;&gt; T;
+  for (int cases = 1; cases &lt;= T; ++cases) {
+    int N; cin &gt;&gt; N;
+    vi xx(N), yy(N);
+    for (int i = 0; i &lt; N; ++i)
+      cin &gt;&gt; xx[i] &gt;&gt; yy[i];
+
+    int max_pass = 0;
+    for (int i = 0; i &lt; N; ++i) {
+      for (int j = 0; j &lt; N; ++j) {
+        int num_pass = 0;
+        int dx = xx[j] - xx[i];
+        int dy = yy[j] - yy[i];
+        if (i == j)
+          continue;
+        for (int k = 0; k &lt; N; ++k) {
+          if (k == i || k == j)
+            continue;
+          int kdx = xx[k] - xx[i];
+          int kdy = yy[k] - yy[i];
+          // dx / kdx == dy / kdy
+          if (dx * kdy == dy * kdx)
+            num_pass++;
+        }
+        // cout &lt;&lt; i &lt;&lt; ' ' &lt;&lt; j &lt;&lt; ' ' &lt;&lt; num_pass &lt;&lt; endl;
+        max_pass = max(max_pass, num_pass);
+      }
+    }
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; cases &lt;&lt; &quot;: &quot;;
+    if (N &lt;= 1)
+      cout &lt;&lt; N &lt;&lt; endl;
+    else
+      cout &lt;&lt; max_pass + 2 &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

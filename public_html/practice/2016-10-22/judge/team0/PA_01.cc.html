@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, M, Q, CR;
+vector&lt;bool&gt; R;
+vector&lt;int&gt; G;
+vector&lt;int&gt; S;
+vector&lt;int&gt; res;
+vector&lt;int&gt; par;
+struct sss {
+  bool h;
+  int a, b, c;
+};
+vector&lt;sss&gt; I;
+
+void pg(int i) {
+  if (!R[i]) {
+    //cout &lt;&lt; &quot;pg: &quot; &lt;&lt; i &lt;&lt; endl;
+    R[i] = true;
+    S[i] = 1;
+    par[i] = i;
+    ++CR;
+  }
+}
+
+void dg(int i) {
+  //if (R[i]) {
+    //cout &lt;&lt; &quot;dg: &quot; &lt;&lt; i &lt;&lt; endl;
+    R[i] = false;
+    --CR;
+  //}
+}
+
+int find(int i) {
+  if (i == par[i]) return i;
+  return par[i] = find(par[i]);
+}
+
+void join(int a, int b) {
+  a = find(a);
+  b = find(b);
+  if (a == b || !R[a] || !R[b]) return;
+  if (S[a] &lt; S[b]) {
+    swap(a, b);
+  }
+  par[b] = a;
+  dg(b);
+}
+
+void join_neighbor(int i, int j) {
+  if (i &gt; 0) join(i * M + j, (i-1) * M + j);
+  if (i &lt; N-1) join(i * M + j, (i+1) * M + j);
+  if (j &gt; 0) join(i * M + j, i * M + j - 1);
+  if (j &lt; M-1) join(i * M + j, i * M + j + 1);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; N &gt;&gt; M &gt;&gt; Q;
+  R = vector&lt;bool&gt;(N * M);
+  G = vector&lt;int&gt;(N * M, Q);
+  S = vector&lt;int&gt;(N * M);
+  par = vector&lt;int&gt;(N * M);
+  I = vector&lt;sss&gt;(Q);
+  res = vector&lt;int&gt;(Q);
+
+  for (int i = 0; i &lt; N * M; ++i) {
+    par[i] = i;
+  }
+
+  for (int i = 0; i &lt; Q; ++i) {
+    int ax, ay, bx, by; cin &gt;&gt; ax &gt;&gt; ay &gt;&gt; bx &gt;&gt; by;
+    --ax; --ay; --bx; --by;
+    if (ax == bx) {
+      I[i].h = false;
+      I[i].a = ax;
+      I[i].b = min(ay, by);
+      I[i].c = max(ay, by);
+      for (int j = I[i].b; j &lt;= I[i].c; ++j) {
+        G[I[i].a * M + j] = min(G[I[i].a * M + j], i);
+      }
+    } else {
+      I[i].h = true;
+      I[i].a = ay;
+      I[i].b = min(ax, bx);
+      I[i].c = max(ax, bx);
+      for (int j = I[i].b; j &lt;= I[i].c; ++j) {
+        G[j * M + I[i].a] = min(G[j * M + I[i].a], i);
+      }
+    }
+  }
+
+  for (int i = 0; i &lt; N; ++i) {
+    for (int j = 0; j &lt; M; ++j) {
+      //cout &lt;&lt; G[i * M + j] &lt;&lt; &quot; &quot;;
+      if (G[i * M + j] == Q) {
+        pg(i * M + j);
+      }
+    }
+    //cout &lt;&lt; endl;
+  }
+  for (int i = 0; i &lt; N-1; ++i) {
+    for (int j = 0; j &lt; M; ++j) {
+      join(i * M + j, (i + 1) * M + j);
+    }
+  }
+
+  for (int i = 0; i &lt; N; ++i) {
+    for (int j = 0; j &lt; M-1; ++j) {
+      join(i * M + j, i * M + j + 1);
+    }
+  }
+
+  for (int q = Q-1; q &gt;= 0; --q) {
+    //cout &lt;&lt; &quot;--- &quot; &lt;&lt; q &lt;&lt; &quot; ---&quot; &lt;&lt; endl;
+    res[q] = CR;
+    if (I[q].h) {
+      for (int j = I[q].b; j &lt;= I[q].c; ++j) {
+        if (G[j * M + I[q].a] == q) {
+          pg(j * M + I[q].a);
+          join_neighbor(j, I[q].a);
+        }
+      }
+    } else {
+      for (int j = I[q].b; j &lt;= I[q].c; ++j) {
+        if (G[I[q].a * M + j] == q) {
+          pg(I[q].a * M + j);
+          join_neighbor(I[q].a, j);
+        }
+      }
+    }
+  }
+
+  for (int i = 0; i &lt; Q; ++i) {
+    cout &lt;&lt; res[i] &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

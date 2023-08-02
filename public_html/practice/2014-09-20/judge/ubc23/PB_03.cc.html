@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt; //abs
+#include &lt;fstream&gt;
+#include &lt;numeric&gt;
+#include &lt;iomanip&gt;
+
+const long double EPS = 1e-9;
+
+using namespace std;
+
+vector&lt;double&gt; h(5, 0);
+vector&lt;double&gt; e(5, 0);
+vector&lt;double&gt; d(5, 0);
+double best(vector&lt;double&gt; rem, double damage, double edps, double dps){
+	if(rem.size()==0){
+		return damage;
+	}
+	double min=1e20;
+	for(int i=0; i&lt;rem.size(); i++){
+		double took = h[rem[i] -1]*edps/dps;
+		vector&lt;double&gt; v(rem);
+		v.erase(v.begin()+i);
+		double l = best(v, damage + took, edps-e[rem[i]-1], dps);
+		if (l&lt;min)
+			min=l;
+	}
+	return min;
+}
+
+
+
+int main(){
+	int t;
+	cin &gt;&gt; t;
+	for(int i=0; i&lt;t; i++){
+		double edps=0;
+		double dps=0;
+		for(int j=0; j&lt;5; j++){
+			cin&gt;&gt;h[j];
+		}
+		for(int j=0; j&lt;5; j++){
+			cin&gt;&gt;e[j];
+			edps+=e[j];
+		}
+		for(int j=0; j&lt;5; j++){
+			cin&gt;&gt;d[j];
+			dps+=d[j];
+		}
+		vector&lt;double&gt; v;
+		v.push_back(1);
+		v.push_back(2);
+		v.push_back(3);
+		v.push_back(4);
+		v.push_back(5);
+		double ans = best(v, 0, edps, dps);
+		cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; ans &lt;&lt;endl;
+	}
+
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

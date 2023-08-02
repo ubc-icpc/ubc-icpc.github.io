@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-03-25.
+ */
+public class PhoneNumber {
+    private static String [] phoneList;// ={&quot;911&quot;, &quot;333456&quot;, &quot;911234&quot;};
+
+
+    public static void main(String[] args) {
+
+        Scanner s = new Scanner(System.in);
+        int noOfTests = Integer.parseInt(s.nextLine());
+
+        for(int k = 0; k &lt; noOfTests; k++) {
+            int noOfNumbers = Integer.parseInt(s.nextLine());
+            phoneList = new String[noOfNumbers];
+            for(int j = 0; j &lt; noOfNumbers; j++){
+                phoneList[j] = s.nextLine();
+            }
+            Arrays.sort(phoneList);
+
+
+            if (anyPrefix(phoneList)) {
+                System.out.println(&quot;NO&quot;);
+            } else {
+                System.out.println(&quot;YES&quot;);
+            }
+        }
+    }
+    private static boolean anyPrefix (String[] str){
+        for(int i = 0; i &lt; phoneList.length-1; i++){
+            String first = phoneList[i];
+            String second = phoneList[i+1];
+            if(second.length() &gt;= first.length()) {
+                String sub =second.substring(0, first.length());
+                if (first.equals(sub)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

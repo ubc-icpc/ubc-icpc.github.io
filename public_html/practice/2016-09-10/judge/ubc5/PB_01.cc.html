@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+unsigned char m[100042];
+char c[4200], in[4200];
+int mbi[4200];
+int ex[4200];
+
+int main() {
+  int t; scanf(&quot;%d\n&quot;, &amp;t);
+  while (t--) {
+    int sm, sc, si;
+    scanf(&quot;%d%d%d\n%s\n%s\n&quot;, &amp;sm, &amp;sc, &amp;si, c, in);
+    memset(m, 0, sizeof m);
+    memset(mbi, -1, sizeof mbi);
+    memset(ex, 0, sizeof ex);
+    for (int i = 0; i &lt; sc; i++) {
+      if (c[i] == '[') {
+        int ind = i, b = 1;
+        while (b) {
+          ind++;
+          if (c[ind] == ']')
+            b--;
+          else if (c[ind] == '[')
+            b++;
+        }
+        mbi[i] = ind+1;
+        mbi[ind] = i+1;
+      }
+    }
+    int ops = 50000042, mi = 0, ci = 0, inind = 0;
+    while (ops) {
+      if (ci == sc)
+        break;
+      switch (c[ci]) {
+        case '-':
+          m[mi]--;
+          ci++;
+          break;
+        case '+':
+          m[mi]++;
+          ci++;
+          break;
+        case '&lt;':
+          mi--;
+          if (mi &lt; 0)
+            mi = sm-1;
+          ci++;
+          break;
+        case '&gt;':
+          mi++;
+          if (mi == sm)
+            mi = 0;
+          ci++;
+          break;
+        case '[':
+          if (!m[mi])
+            ci = mbi[ci];
+          else {
+            if (!ex[ci])
+              ex[ci] = 1;
+            ci++;
+          }
+          break;
+        case ']':
+          if (m[mi])
+            ci = mbi[ci];
+          else {
+            ex[mbi[ci]-1] = 2;
+            ci++;
+          }
+          break;
+        case '.':
+          ci++;
+          break;
+        case ',':
+          if (inind == si)
+            m[mi] = 255;
+          else
+            m[mi] = in[inind];
+          inind++;
+          ci++;
+          break;
+        default:
+          break;
+      }
+      ops--;
+    }
+    if (ops)
+      printf(&quot;Terminates\n&quot;);
+    else {
+      for (int i = 0; i &lt; sc; i++) {
+        if (ex[i] == 1) {
+          printf(&quot;Loops %d %d\n&quot;, i, mbi[i]-1);
+          break;
+        }
+      }
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

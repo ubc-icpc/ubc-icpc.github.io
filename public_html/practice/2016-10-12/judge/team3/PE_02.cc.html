@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main() {
+	ios::sync_with_stdio(0);
+	ll lo, hi;
+	vector&lt;ll&gt; fib;
+	fib.push_back(0);
+	fib.push_back(1);
+	for (int i=2; i&lt;=92; i++) {
+		fib.push_back(fib[i-1] + fib[i-2]);
+	}
+	while(cin &gt;&gt; hex &gt;&gt; lo &gt;&gt; hi) {
+		if (lo &gt;= hi) break;
+		cout &lt;&lt; &quot;Range &quot; &lt;&lt; lo &lt;&lt; &quot; &quot; &lt;&lt; &quot;to &quot; &lt;&lt; hi &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		int i=0;
+		bool any = false;
+		while(i &lt;= 92 &amp;&amp; fib[i] &lt; lo) i++;
+		while(i &lt;= 92 &amp;&amp; fib[i] &lt;= hi) {
+			any = true;
+			cout &lt;&lt; &quot;Fib(&quot; &lt;&lt; i &lt;&lt; &quot;) = &quot; &lt;&lt; fib[i] &lt;&lt; &quot;, lg &quot;;
+			if (fib[i] == 0) {
+				cout &lt;&lt; &quot;does not exist&quot;;
+			} else {
+				cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; &quot;is &quot; &lt;&lt; log2l(fib[i]);
+			}
+			cout &lt;&lt; endl;
+			if (fib[i] &lt; 2) {
+				cout &lt;&lt; &quot;No prime factors&quot; &lt;&lt; endl;
+			} else {
+				cout &lt;&lt; &quot;Prime factors: &quot;;
+				ll curr = fib[i];
+				string primes = &quot;&quot;;
+				while(curr%2 == 0) {
+					primes += to_string(2);
+					primes += &quot; &quot;;
+					curr = curr/2;
+				}
+				for (int j = 3; j &lt;= sqrt(curr); j+=2) {
+			        while (curr%j == 0) {
+			        	primes += to_string(j);
+			        	primes += &quot; &quot;;
+			            curr = curr/j;
+			        }
+			    }
+			    if (curr &gt; 2) {
+			    	primes += to_string(curr);
+			    	primes += &quot; &quot;;
+			    }
+			    primes.pop_back();
+			    cout &lt;&lt; primes &lt;&lt; endl;
+			}
+			i++;
+		}
+		if (!any) cout &lt;&lt; &quot;No Fibonacci numbers in the range&quot; &lt;&lt; endl;
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

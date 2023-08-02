@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class B {
+
+	private void work() {
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+		int n = sc.nextInt();
+		Map&lt;String, Character&gt; m = new HashMap&lt;String, Character&gt;();
+		for (int i = 0; i &lt; n; i++) {
+			char c = sc.next().charAt(0);
+			String code = sc.next();
+			m.put(code, c);
+		}
+		String s = sc.next();
+		while (s.length() &gt; 0) {
+			for (Map.Entry&lt;String, Character&gt; e : m.entrySet()) {
+				if (s.startsWith(e.getKey())) {
+					System.out.write(e.getValue());
+					s = s.substring(e.getKey().length());
+					break;
+				}
+			}
+		}
+		System.out.println();
+		sc.close();
+	}
+
+	public static void main(String[] args) {
+		new B().work();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

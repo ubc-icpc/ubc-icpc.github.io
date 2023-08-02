@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+int main(){
+	int n;
+	std::cin &gt;&gt; n;
+	int nums[n][10];
+	bool zack[n];
+	bool mack[n];
+
+	for(int i = 0; i &lt; n; i++){
+		zack[i] = false;
+		mack[i] = false;
+		for(int j = 0; j &lt; 10; j++){
+			int temp;
+			std::cin &gt;&gt; temp;
+			nums[i][j] = temp;
+			if(temp == 18){
+				mack[i] = true;
+			} else if(temp == 17){
+				zack[i] = true;
+			}
+		}
+	}
+
+	for(int i = 0; i &lt; n; i++){
+		for(int j = 0; j &lt; 10; j++){
+			std::cout &lt;&lt; nums[i][j] &lt;&lt; &quot; &quot;;
+		}
+		std::cout &lt;&lt; &quot;\n&quot;;
+		if(zack[i] &amp;&amp; mack[i]){
+			std::cout &lt;&lt; &quot;both&quot;;
+		} else if(zack[i]){
+			std::cout &lt;&lt; &quot;zack&quot;;
+		} else if(mack[i]){
+			std::cout &lt;&lt; &quot;mack&quot;;
+		} else {
+			std::cout &lt;&lt; &quot;none&quot;;
+		}
+		std::cout &lt;&lt; &quot;\n\n&quot;;
+	}
+
+	std::cin.get();
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

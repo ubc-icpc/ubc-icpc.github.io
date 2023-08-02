@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(nullptr);
+	cout.tie(nullptr);
+
+	int n;
+	cin &gt;&gt; n;
+
+	map&lt;string, vector&lt;int&gt;&gt; m;
+	for (int i = 0; i &lt; n; ++i) {
+		string s;
+		cin &gt;&gt; s;
+		int h, a, d;
+		cin &gt;&gt; h &gt;&gt; a &gt;&gt; d;
+		m[s].push_back(h);
+		m[s].push_back(a);
+		m[s].push_back(d);
+	}
+
+	map&lt;string, set&lt;string&gt;&gt; winner;
+	for (const auto &amp;a: m) {
+		for (const auto &amp;b: m) {
+			if (a.first != b.first) {
+				int damageAtakes = max(0, b.second[1] - a.second[2]);
+				int damageBtakes = max(0, a.second[1] - b.second[2]);
+				if (damageAtakes == 0 &amp;&amp; damageBtakes == 0) {
+					continue;
+				} else if (damageBtakes == 0 &amp;&amp; damageAtakes &gt; 0) {
+					winner[b.first].insert(a.first);
+				} else if (damageAtakes == 0 &amp;&amp; damageBtakes &gt; 0) {
+					winner[a.first].insert(b.first);
+				} else {
+					long double aRounds = ceil((long double)a.second[0]/(long double)damageAtakes);
+					long double bRounds = ceil((long double)b.second[0]/(long double)damageBtakes);
+					if (aRounds &gt; bRounds) {
+						winner[a.first].insert(b.first);
+					} else if (bRounds &gt; aRounds) {
+						winner[b.first].insert(a.first);
+					} else {
+						continue;
+					}
+				}
+			}
+		}
+	}
+
+	set&lt;set&lt;string&gt;&gt; intransTrip;
+	for (const auto &amp;a: winner) {
+		if (winner.count(a.first)){
+			for (const string &amp;b: winner[a.first]) {
+				if (winner.count(b)) {
+					for (const string &amp;c: winner[b]) {
+						if (winner.count(c) &amp;&amp; winner[c].count(a.first)) {
+							intransTrip.insert({a.first, b, c});
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (intransTrip.empty()) {
+		cout &lt;&lt; 0 &lt;&lt; '\n';
+	} else {
+		cout &lt;&lt; intransTrip.size() &lt;&lt; '\n';
+		for (const set&lt;string&gt; &amp;s: intransTrip) {
+			for (const string &amp;str: s) {
+				cout &lt;&lt; str &lt;&lt; &quot; &quot;;
+			}
+			cout &lt;&lt; '\n';
+		}
+	}
+	return 0;
+}
+
+</code>
+</pre>
+</body>
+</html>

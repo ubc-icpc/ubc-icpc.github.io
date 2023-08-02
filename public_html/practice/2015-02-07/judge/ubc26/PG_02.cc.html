@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#define printf(...);
+using namespace std;
+
+int n, cut;
+vector&lt;int&gt; extras;
+
+// digits of n in base b, reversed (0th: largest place, nth: unit place)
+void conv_base(vector&lt;int&gt;&amp; ds, int n, int b) {
+  while (n &gt;= b) {
+    int r = n % b;
+    n /= b;
+    ds.push_back(r);
+  }
+  ds.push_back(n); // unit place
+}
+
+bool is_palindrome(vector&lt;int&gt;&amp; xs) {
+  auto a = xs.cbegin(), b = xs.cend()-1;
+  while (a &lt; b) if (*a++ != *b--) return false;
+  return true;
+}
+
+void test_large(int a) {
+  int mod = n % a;
+  if (mod == 0) {
+    int b = n / a - 1;
+    if (a &lt; b &amp;&amp; b &gt; cut) {
+      printf(&quot;Larger factor: %d %d + %d = %d\n&quot;, a, b, a, n);
+      extras.push_back(b);
+    }
+  }
+}
+
+int main() {
+  cin &gt;&gt; n;
+  int cut = sqrt(n);
+  extras.clear();
+
+  printf(&quot;Number: %d\n&quot;, n);
+  int p = 1, p1 = 0;
+
+  test_large(1);
+  for (int b = 2; b &lt;= cut; b++) {
+    vector&lt;int&gt; result;
+    conv_base(result, n, b);
+
+    printf(&quot;Digits in base %5d: &quot;, b);
+    for (auto&amp; x : result)
+      printf(&quot; %5d&quot;, x);
+
+    if (is_palindrome(result)) {
+      cout &lt;&lt; b &lt;&lt; endl;
+      p++;
+    }
+
+    printf(&quot;  [%d]\n&quot;, is_palindrome(result));
+
+    test_large(b);
+  }
+  printf(&quot;Palindromes: %d\n&quot;, p + p1);
+
+  for (auto it = extras.rbegin(); it != extras.rend(); it++) cout &lt;&lt; *it &lt;&lt; endl;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

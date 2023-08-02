@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main(){
+	int teams; cin &gt;&gt; teams;
+	int cur = 1;
+	while(teams--){
+		int s, b, m;
+		cin &gt;&gt; s &gt;&gt; b &gt;&gt; m;
+
+		cout &lt;&lt; &quot;Practice #&quot; &lt;&lt;cur&lt;&lt;&quot;: &quot;&lt;&lt;s&lt;&lt;&quot; &quot;&lt;&lt;b&lt;&lt; endl;
+		cur++;
+		while(m--){
+			int k; cin &gt;&gt; k;
+			while(k &gt;= b){
+				b *= 2;
+			}
+			b = b - k;
+			cout &lt;&lt;k&lt;&lt;&quot; &quot;&lt;&lt;b&lt;&lt;endl;
+			if (m == 0){
+				cout &lt;&lt; endl;
+			}
+		}
+
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

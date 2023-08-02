@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cstring&gt;
+#include &quot;stdio.h&quot;
+#include &quot;string.h&quot;
+#include &quot;vector&quot;
+#include &quot;algorithm&quot;
+
+#define pii pair&lt;int, int&gt;
+#define pip pair&lt;int, pii&gt;
+#define F first
+#define S second
+
+using namespace std;
+
+int N,M;
+
+struct q {
+	char c;
+	int u,v,val;
+};
+
+q queries[100005];
+const int MAX = 100005;
+
+//class implementing Union Find Data Structure with Path Compression
+class Union_Find
+{
+  public:
+
+	int id[MAX], sz[MAX];
+	Union_Find(int n)	//class constructor
+	{
+		for (int i = 0; i &lt; n; ++i)
+		{
+			id[i] = i;
+			sz[i] = 1;
+		}
+	}
+	
+	int root(int i)
+	{
+		while(i != id[i])
+		{
+			id[i] = id[id[i]];	//path Compression
+			i = id[i];
+		}
+		return i;
+	}
+	int find(int p, int q)
+	{
+		return root(p)==root(q);
+	}
+	void unite(int p, int q)
+	{
+		int i = root(p);
+		int j = root(q);
+
+		if(sz[i] &lt; sz[j])
+		{
+			id[i] = j;
+			sz[j] += sz[i];
+		}
+		else
+		{
+			id[j] = i;
+			sz[i] += sz[j];
+		}
+	}
+};
+
+int values[MAX];
+
+vector&lt;pii&gt; adj[MAX];
+bool seen[MAX];
+
+void dfs(int x) {
+	for(pii p: adj[x]) {
+		if(seen[p.first]) continue;
+		seen[p.first] = true;
+		values[p.first] = values[x]+p.second;
+		dfs(p.first);
+	}
+}
+
+int main(void) {
+	while(cin &gt;&gt; N &gt;&gt; M) {
+	if(N==0 &amp;&amp; M==0) break;
+	Union_Find UF(N+1);
+	for(int i=0; i&lt;=N; i++) {
+		adj[i].clear();
+	}
+	memset(seen,0,sizeof seen);
+	for(int i=0; i&lt;M; i++) {
+		char c; cin &gt;&gt; c;
+		int u,v,val;
+		if(c == '!') {
+			cin &gt;&gt; u &gt;&gt; v &gt;&gt; val;
+			adj[u].push_back({v,val});
+			adj[v].push_back({u,-val});
+		} else {
+			cin &gt;&gt; u &gt;&gt; v;
+		}
+		queries[i].u = u;
+		queries[i].v = v;
+		queries[i].c = c;
+		queries[i].val = val;
+	}
+	for(int i=1; i&lt;=N; i++) {
+		if(seen[i]) continue;
+		values[i] = 0;
+		seen[i] = true;
+		dfs(i);
+	}
+
+	for(int i=0; i&lt;M; i++) {
+		if(queries[i].c == '!') {
+			UF.unite(queries[i].u, queries[i].v);
+		} else {
+			if(UF.find(queries[i].u, queries[i].v)) {
+				cout &lt;&lt; -values[queries[i].u] + values[queries[i].v] &lt;&lt; endl;
+			} else {
+				cout &lt;&lt; &quot;UNKNOWN&quot; &lt;&lt; endl;
+			}
+		}
+	}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+def swap(arr, i, j):
+	arr[i], arr[j] = arr[j], arr[i]
+	
+def f1(arr, off):
+	print &quot; &quot;.join(arr)
+
+def f2(arr, off):
+	f1(arr,0)
+	swap(arr,off+0, off+1)
+	f1(arr,0)
+
+def f3(arr, off):
+	f2(arr,off+1)
+	swap(arr,off+0, off+1)
+	f2(arr,off+1)
+	swap(arr,off+0, off+1)
+	f2(arr,off+1)
+
+def f4(arr, off):
+	f3(arr, off+1)
+	swap(arr,off+0, off+1)
+	f3(arr, off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+2, off+3)
+	f3(arr, off+1)
+	swap(arr,off+0, off+1)
+	f3(arr, off+1)
+
+def f5(arr,off):
+	f4(arr,off+1)
+	swap(arr,off+0, off+1)
+	f4(arr,off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+3, off+4)
+	f4(arr,off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+3, off+4)
+	f4(arr,off+1)
+	swap(arr,off+0, off+1)
+	f4(arr,off+1)
+	
+def f6(arr,off):
+	f5(arr,off+1)
+	swap(arr,off+0, off+1)
+	f5(arr,off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+3, off+4)
+	f5(arr,off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+3, off+4)
+	f5(arr,off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+2, off+3)
+	f5(arr,off+1)
+	swap(arr,off+0, off+1)
+	f5(arr,off+1)
+
+def f7(arr,off):
+	f6(arr,off+1)
+	swap(arr,off+0, off+1)
+	f6(arr,off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+5, off+6)
+	f6(arr,off+1)
+	swap(arr,off+0, off+1)
+	swap(arr,off+5, off+6)
+	f6(arr,off+1)
+	swap(arr,off+0, off+1)
+	f6(arr,off+1)
+	swap(arr,off+0, off+1)
+	f6(arr,off+1)
+	swap(arr,off+0, off+1)
+	f6(arr,off+1)
+	
+def f8(arr,off):
+	f7(arr,1)
+	swap(arr,0, 1)
+	swap(arr,5, 6)
+	f7(arr,1)
+	swap(arr,0, 1)
+	swap(arr,3, 4)
+	swap(arr,5, 6)
+	f7(arr,1)
+	swap(arr,0, 1)
+	swap(arr,3, 4)
+	swap(arr,5, 6)
+	f7(arr,1)
+	swap(arr,0, 1)
+	swap(arr,3, 4)
+	swap(arr,5, 6)
+	f7(arr,1)
+	swap(arr,0, 1)
+	swap(arr,3, 4)
+	swap(arr,5, 6)
+	f7(arr,1)
+	swap(arr,0, 1)
+	swap(arr,3, 4)
+	swap(arr,5, 6)
+	f7(arr,1)
+	swap(arr,0, 1)
+	swap(arr,3, 4)
+	swap(arr,5, 6)
+	f7(arr,1)
+
+funcs = [f1,f2,f3,f4,f5,f6,f7,f8]
+
+n = int(raw_input())
+myarr = [str(x+1) for x in range(0,n)]
+funcs[n-1](myarr,0)
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

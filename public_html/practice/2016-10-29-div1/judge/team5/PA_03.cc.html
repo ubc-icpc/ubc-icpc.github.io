@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+#define int long long
+
+const int N = 505, M = 505;
+
+struct flight {
+  // from airport s to airport f, departure at time t
+  int s, f, t;
+  
+  flight() {}
+  flight(int a, int b, int c) : s(a), f(b), t(c) {}
+};
+
+int np, mp;
+int d0[N][N]; // original distance between airport i and j
+int d[N][N]; // shortest path distance between airport i and j
+int p[N]; // waiting time at airport i
+flight flights[M];
+
+// ===========================================================================
+bool adjmat[2*N][2*N], seen[2*N];
+int matchL[2*N], matchR[2*N], m, n;
+bool bpm(int u) {
+  for (int v = 1; v &lt;= n; v++) {
+    if (adjmat[u][v] &amp;&amp; !seen[v]) {
+      seen[v] = true;
+      if (matchR[v] == -1 || bpm(matchR[v])) {
+        matchL[u] = v, matchR[v] = u;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+int main3() {
+  memset(matchL, -1, sizeof matchL);
+  memset(matchR, -1, sizeof matchR);
+  m = n = mp;
+  int cnt = 0;
+  for (int i = 1; i &lt;= m; i++) {
+    memset(seen, 0, sizeof seen);
+    if (bpm(i)) cnt++;
+  }
+  return cnt;
+}
+// ===========================================================================
+
+void floydWarshall() {
+  for (int k = 1; k &lt;= np; k++) {
+    for (int i = 1; i &lt;= np; i++) {
+      for (int j = 1; j &lt;= np; j++) {
+        d[i][j] = min(d[i][j], d[i][k] + p[k] + d[k][j]);
+      }
+    }
+  }
+}
+
+// return true if flight j can be serviced right after flight j
+bool check(int i, int j) {
+  if (flights[i].f == flights[j].s) {
+    // if flight j starts where flight i ends
+    return (flights[i].t + d0[flights[i].s][flights[i].f] + p[flights[i].f]) &lt;= flights[j].t;
+  } else {
+    // if flight j starts at a different airport from where flight i ends
+    return (flights[i].t + d0[flights[i].s][flights[i].f] + p[flights[i].f] + d[flights[i].f][flights[j].s] + p[flights[j].s]) &lt;= flights[j].t;
+  }
+}
+
+#undef int
+int main() {
+#define int long long
+  ios_base::sync_with_stdio(0);
+  cin &gt;&gt; np &gt;&gt; mp;
+  for (int i = 1; i &lt;= np; i++)
+    cin &gt;&gt; p[i];
+  for (int i = 1; i &lt;=np; i++) {
+    for (int j = 1; j &lt;= np; j++) {
+      cin &gt;&gt; d0[i][j];
+      d[i][j] = d0[i][j];
+    }
+  }
+  for (int i = 1; i &lt;= mp; i++) {
+    cin &gt;&gt; flights[i].s &gt;&gt; flights[i].f &gt;&gt; flights[i].t;
+  }
+  // get the shortest path between every pair of airports
+  floydWarshall();
+  // now construct a bipartite graph. The left side has a node for each airport
+  // and the right side has a node for each airport. There is an edge from 
+  // L_i to R_j if we can service flight i and then flight j.
+  for (int i = 1; i &lt;= mp; i++) {
+    for (int j = 1; j &lt;= mp; j++) {
+      if (i == j) continue;
+      if (check(i, j)) {
+        adjmat[i][j] = true;
+      }
+    }
+  }
+  cout &lt;&lt; mp - main3() &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

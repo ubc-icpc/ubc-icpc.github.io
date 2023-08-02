@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;bitset&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+
+bool visited[10005];
+int ni;
+int dist[16][16];
+int dp[1024][16];
+
+int dfs(int z, int c) {
+	if (dp[z][c] != -1) return dp[z][c];
+	if (__builtin_popcount(z) == 1) {
+		return dp[z][c] = dist[0][c];
+	}
+	int ans = 1000000000;
+	for (int i = 0; i &lt; ni; i++) {
+		if (i == c) continue;
+		if (z &amp; (1 &lt;&lt; i)) {
+			ans = min(ans, dfs(z - (1&lt;&lt;c), i) + dist[i][c]);
+		}
+	}
+	return dp[z][c] = ans;
+}
+
+vector&lt;pii&gt; adj[10005];
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int ncase; cin &gt;&gt; ncase; 
+	for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+		int n, m; cin &gt;&gt; n &gt;&gt; m;
+		for (int i = 0; i &lt; n; i++) adj[i].resize(0);
+		for (int i = 0; i &lt; m; i++) {
+			int a, b, len; cin &gt;&gt; a &gt;&gt; b &gt;&gt; len;
+			adj[a].push_back(pii(b, len));
+			adj[b].push_back(pii(a, len));
+		}
+
+		cin &gt;&gt; ni;
+		map&lt;int, int&gt; locs;
+		for (int i = 0; i &lt; ni; i++) {
+			int p; cin &gt;&gt; p;
+			locs[p]++;
+		}
+		locs[0] += 0;
+		ni = locs.size();
+		int p[ni]; int psz = 0;
+		for (auto it = locs.begin(); it != locs.end(); ++it) {
+			p[psz++] = it-&gt;first;
+		}
+
+		//for (int i = 0; i &lt; ni; i++) cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; p[i] &lt;&lt; &quot; &quot; &lt;&lt; locs[p[i]] &lt;&lt; endl;
+
+		for (int i = 0; i &lt; ni; i++) {
+			dist[i][i] = 0;
+			for (int j = i+1; j &lt; ni; j++) {
+				dist[i][j] = 2000000;
+				memset(visited, 0, sizeof visited);
+				priority_queue&lt;pii&gt; q;
+				q.push(pii(0, p[i]));
+				while (!q.empty()) {
+					pii entry = q.top(); q.pop();
+					int d = -entry.first;
+					int u = entry.second;
+					if (visited[u]) continue;
+					visited[u] = true;
+					if (u == p[j]) {
+						dist[i][j] = d;
+						break;
+					}
+					for (pii nxt : adj[u]) {
+						q.push(pii(-d-nxt.second, nxt.first));
+					}
+				}
+				dist[j][i] = dist[i][j];
+
+				//cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; dist[i][j] &lt;&lt; endl;
+			}
+		}
+
+		int air; cin &gt;&gt; air;
+		int ans = 0;
+		memset(dp, -1, sizeof dp);
+		for (int z = 1; z &lt; (1&lt;&lt;ni); z += 2) {
+			int zz = dfs(z, 0);
+			if (zz &lt;= air) {
+				int cnt = 0;
+				for (int i = 0; i &lt; ni; i++) {
+					if (z &amp; (1 &lt;&lt; i)) {
+						cnt += locs[p[i]];
+					}
+				}
+				ans = max(ans, cnt);
+			}
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main() {
+  ios::sync_with_stdio(0);
+  int s00, s01, s10, s11;
+  while (cin &gt;&gt; s00 &gt;&gt; s01 &gt;&gt; s10 &gt;&gt; s11) {
+    // 1
+    if (!s01 &amp;&amp; !s10 &amp;&amp; !s11) {  // s00
+      for (int i = 0; i &lt;= s00; i++)
+        cout &lt;&lt; &quot;0&quot;;
+      cout &lt;&lt; &quot;\n&quot;;
+      continue;
+    }
+    if (!s00 &amp;&amp; !s10 &amp;&amp; !s11) {  // s01
+      if (s01 &gt; 1)
+        cout &lt;&lt; &quot;impossible\n&quot;;
+      else
+        cout &lt;&lt; &quot;01\n&quot;;
+      continue;
+    }
+    if (!s00 &amp;&amp; !s01 &amp;&amp; !s11) {  // s10
+      if (s10 &gt; 1)
+        cout &lt;&lt; &quot;impossible\n&quot;;
+      else
+        cout &lt;&lt; &quot;10\n&quot;;
+      continue;
+    }
+    if (!s00 &amp;&amp; !s01 &amp;&amp; !s10) {  // s11
+      for (int i = 0; i &lt;= s11; i++)
+        cout &lt;&lt; &quot;1&quot;;
+      cout &lt;&lt; &quot;\n&quot;;
+      continue;
+    }
+    // 2
+    if (abs(s01-s10) &gt; 1) {
+      cout &lt;&lt; &quot;impossible\n&quot;;
+      continue;
+    }
+    // 4
+    if (!s01 &amp;&amp; !s10) {
+      cout &lt;&lt; &quot;impossible\n&quot;;
+      continue;
+    }
+    // 5a
+    if (!s01) {
+      for (int i = 0; i &lt;= s11; i++)
+        cout &lt;&lt; &quot;1&quot;;
+      for (int i = 0; i &lt;= s00; i++)
+        cout &lt;&lt; &quot;0&quot;;
+      cout &lt;&lt; &quot;\n&quot;;
+      continue;
+    }
+    // 5b
+    if (!s10) {
+      for (int i = 0; i &lt;= s00; i++)
+        cout &lt;&lt; &quot;0&quot;;
+      for (int i = 0; i &lt;= s11; i++)
+        cout &lt;&lt; &quot;1&quot;;
+      cout &lt;&lt; &quot;\n&quot;;
+      continue;
+    }
+    // 3
+    if (s01 &lt; s10) {
+      cout &lt;&lt; &quot;1&quot;;
+      s10--;
+    }
+    for (int i = 0; i &lt;= s00; i++) {
+      cout &lt;&lt; &quot;0&quot;;
+    }
+    s00 = 0;
+    bool p1 = true;
+    while (s01 &amp;&amp; s10) {
+      if (p1) {
+        cout &lt;&lt; &quot;1&quot;;
+        s01--;
+      } else {
+        cout &lt;&lt; &quot;0&quot;;
+        s10--;
+      }
+      p1 = !p1;
+    }
+    if (!s10) {
+      for (int i = 0; i &lt;= s11; i++)
+        cout &lt;&lt; &quot;1&quot;;
+      cout &lt;&lt; &quot;\n&quot;;
+      continue;
+    }
+    for (int i = 0; i &lt; s11; i++)
+      cout &lt;&lt; &quot;1&quot;;
+    cout &lt;&lt; &quot;0\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

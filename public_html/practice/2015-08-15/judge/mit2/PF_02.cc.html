@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int T, percent;
+char cook[9];
+
+int get(int m, int s) {
+    if (s &gt; 99) return 999;
+    int a = m / 10;
+    int b = m % 10;
+    int c = s / 10;
+    int d = s % 10;
+
+    if (a == 0 &amp;&amp; b == 0 &amp;&amp; c == 0) return 1;
+    else if (a == 0 &amp;&amp; b == 0) return 2 + (c != d);
+    else if (a == 0) return 3 + (b != c) + (c != d);
+    else return 4 + (a != b) + (b != c) + (c != d);
+}
+
+int main() {
+    scanf(&quot;%d&quot;, &amp;T);
+
+    for (int t = 1; t &lt;= T; ++t) {
+        scanf(&quot;%s&quot;, cook);
+        scanf(&quot;%d&quot;, &amp;percent);
+
+        int min = (cook[0] - '0') * 10 + (cook[1] - '0');
+        int sec = (cook[3] - '0') * 10 + (cook[4] - '0');
+        int tsec = min * 60 + sec;
+
+        int best = 999;
+        int with = 0;
+        int with2 = -999;
+        int diff = tsec * percent / 100;
+        for (int s = tsec - diff; s &lt;= tsec + diff; ++s) {
+            for (int m = 0; 60 * m &lt;= s; ++m) {
+                int test = get(m, s - 60 * m);
+                if (test &lt; best || (test == best &amp;&amp; abs(tsec - with2) &gt; abs(tsec - s))) {
+                    best = test;
+                    with = m * 100 + (s - 60 * m);
+                    with2 = s;
+                }
+            }
+        }
+
+        printf(&quot;Case #%d: %d\n&quot;, t, with);
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

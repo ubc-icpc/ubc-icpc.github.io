@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+
+int P, n, b, s[3][10003];
+
+void precomp(){
+	for(int i=1;i&lt;=10000;i++){
+		s[0][i]= s[0][i-1]+i;
+		s[1][i]= s[1][i-1]+2*i-1;
+		s[2][i]= s[2][i-1]+2*i;
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);cin.tie(0);
+	cin &gt;&gt; P;
+	precomp();
+	for(int i=0;i&lt;P;i++){
+		cin &gt;&gt; n &gt;&gt; b;
+		cout &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; s[0][b] &lt;&lt; &quot; &quot; &lt;&lt; s[1][b] &lt;&lt; &quot; &quot; &lt;&lt; s[2][b] &lt;&lt; '\n';
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+#define FOR(i, n) for(int i = 0; i &lt; (n); i++)
+#define SZ(A) ((int)(A).size())
+#define PB push_back
+
+#define show(x) cerr&lt;&lt;&quot;XXXX----&gt; &quot;&lt;&lt;#x&lt;&lt;&quot; = &quot;&lt;&lt;x&lt;&lt;endl;
+
+typedef long long LL;
+
+const int MAXn = 60;
+
+LL memc[MAXn][MAXn];
+
+LL C(int n,int k){
+	if (k &gt; n)	return 0;
+	if (k == n)	return 1;
+	if (k == 0)	return 1;
+
+	if (memc[n][k] != -1)
+		return memc[n][k];
+
+	return memc[n][k] = C(n-1, k) + C(n-1, k-1);
+}
+
+inline bool hasBit(LL n, int k){
+	return ((n &gt;&gt; k) &amp; 1);
+}
+
+LL solve(LL n, int mod){
+	
+	//cerr &lt;&lt; &quot;solving: &quot; &lt;&lt; n &lt;&lt; &quot;, &quot; &lt;&lt; mod  &lt;&lt; endl;
+	if (n == 0)	return (mod == 0);
+	if (n == 1)	return (mod &lt;= 1);
+	LL i;
+	for(i = MAXn; i &gt;= 0; i--){
+		if (hasBit(n, i)){
+			break;
+		}
+	}
+
+	LL ans = 0;
+
+	for (int k = mod; k &lt;= i; k += 3){
+		ans += C(i, k);
+	}
+
+	LL one = 1;
+	return ans + solve(n - (one &lt;&lt; i), (mod + 2) % 3);
+}
+
+
+LL n;
+
+int main(){
+	memset(memc, -1, sizeof(memc));
+	while(cin &gt;&gt; n){
+		LL ans;
+		if (n&lt;7)
+			ans = 0;
+		else
+			ans = solve(n, 0) - 1;
+		cout &lt;&lt; &quot;Day &quot; &lt;&lt; n &lt;&lt; &quot;: Level = &quot; &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

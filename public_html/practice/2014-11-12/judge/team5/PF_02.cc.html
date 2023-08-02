@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        char s; cin &gt;&gt; s;
+        
+        if (s == 'b') {
+            string b; cin &gt;&gt; b;
+            int d = 0;
+            for (int i = b.size() - 1; i &gt;= 0; i--)
+                d += ((b[i] == '0' ? 0 : 1) &lt;&lt; (b.size() - i - 1)) * (((b.size() - i) % 2 == 0) ? -1 : 1);
+                
+            cout &lt;&lt; &quot;From binary: &quot; &lt;&lt; b &lt;&lt; &quot; is &quot; &lt;&lt; d &lt;&lt; endl;
+        }
+        else {
+            int d; cin &gt;&gt; d;
+            int od = d;
+            string b = &quot;&quot;;
+            while (d) {
+                if (!(d &amp; 1)) b = &quot;0&quot; + b;
+                else { 
+                    b = &quot;1&quot; + b;
+                    d -= 1;
+                }
+                d /= -2;
+            }
+            cout &lt;&lt; &quot;From decimal: &quot; &lt;&lt; od &lt;&lt; &quot; is &quot; &lt;&lt; (b == &quot;&quot; ? &quot;0&quot; : b) &lt;&lt; endl;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

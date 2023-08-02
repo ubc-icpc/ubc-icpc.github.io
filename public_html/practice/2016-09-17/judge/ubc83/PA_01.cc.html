@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+vector&lt;vector&lt;int&gt;&gt; boxes;
+
+int dfs (set&lt;int&gt; boxesLeft, pair&lt;int, int&gt; base) {
+	if(boxesLeft.size() == 0) {
+		return 1;
+	}
+	int best = 0;
+	for(int box : boxesLeft) {
+		set&lt;int&gt; copy = boxesLeft;
+		vector&lt;int&gt; boxDims = boxes[box];
+		copy.erase(box);
+		if((base.first &gt;= boxDims[0] &amp;&amp; base.second &gt;= boxDims[1])
+			|| (base.second &gt;= boxDims[0] &amp;&amp; base.first &gt;= boxDims[1])) {
+			best = max(best, dfs(copy, {boxDims[0], boxDims[1]}));
+		}
+		if((base.first &gt;= boxDims[0] &amp;&amp; base.second &gt;= boxDims[2])
+			|| (base.second &gt;= boxDims[0] &amp;&amp; base.first &gt;= boxDims[2])) {
+			best = max(best, dfs(copy, {boxDims[0], boxDims[2]}));
+		}
+		if((base.first &gt;= boxDims[2] &amp;&amp; base.second &gt;= boxDims[1])
+			|| (base.second &gt;= boxDims[2] &amp;&amp; base.first &gt;= boxDims[1])) {
+			best = max(best, dfs(copy, {boxDims[1], boxDims[2]}));
+		}
+	}
+	return best+1;
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int n; cin &gt;&gt; n;
+	int idx = 1;
+
+	while(n != 0) {
+		for(int i = 0; i &lt; n; i++) {
+			int x, y, z; cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+			boxes.push_back({x, y, z});
+		}
+
+		set&lt;int&gt; initial;
+		for(int i = 0; i &lt; n; i++) {
+			initial.insert(i);
+		}
+
+		int ans = dfs(initial, {50, 50});
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; idx &lt;&lt; &quot;: &quot; &lt;&lt; ans-1 &lt;&lt; endl;
+		idx++;
+		cin &gt;&gt; n;
+		boxes.clear();
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

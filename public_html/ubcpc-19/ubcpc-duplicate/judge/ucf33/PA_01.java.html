@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class abnormalWords {
+
+	public static void main(String[] args) {
+		
+		Scanner s = new Scanner(System.in);
+		
+		String E_or_D = s.next();
+		int shift = s.nextInt();
+		String str = s.next();
+		char[] word = str.toCharArray();
+		String result = &quot;&quot;;
+		
+		if(E_or_D.equals(&quot;E&quot;)) {
+			
+			for(int i = 0; i &lt; str.length(); i++) {
+				int charIndex = word[i] - 'a';
+				int newCharIndex = (charIndex + shift)%26;
+				char newChar = (char)('a' + newCharIndex);
+				result += newChar;
+				
+			}
+			System.out.println(result);
+		}
+		
+		else if(E_or_D.equals(&quot;D&quot;)) {
+			
+			for(int i = 0; i &lt; str.length(); i++) {
+				int charIndex = word[i] - 'a';
+				int newCharIndex;
+				if(((charIndex - shift)%26) &lt; 1){
+					newCharIndex = (26-(shift-charIndex))%26;
+				}
+				else {
+					newCharIndex = (charIndex - shift)%26;
+				}
+				char newChar = (char)('a' + newCharIndex);
+				result += newChar;
+				
+			}
+			System.out.println(result);
+		}
+		
+		else
+			System.out.println(&quot;I can't believe you've done this.&quot;);
+		
+
+	}
+
+}
+</code>
+</pre>
+</body>
+</html>

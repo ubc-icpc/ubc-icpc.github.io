@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+n1 = int(input())
+n2 = int(input())
+
+if n1 == n2:
+    print(0)
+else:
+    if n1 &gt; n2:
+        adjn2 = n2 + 360
+        clockwise_dist = adjn2 - n1
+        cc_dist = -(n1 - n2)
+    elif n2 &gt; n1:
+        adjn2 = n2 - 360
+        clockwise_dist = n2 - n1
+        cc_dist = adjn2 - n1
+
+    if abs(clockwise_dist) &gt; abs(cc_dist):
+        print(cc_dist)
+    elif abs(clockwise_dist) &lt; abs(cc_dist):
+        print(clockwise_dist)
+    else:
+        print(180)
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

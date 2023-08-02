@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+  ios::sync_with_stdio(0);
+  string s; cin &gt;&gt; s;
+  vector&lt;int&gt; v;
+  int t = 0;
+  bool z = false;
+  for (int i = 0; i &lt; s.size(); i++) {
+    int n = s[i]-'0';
+    if (!n)
+      z = true;
+    t += n;
+    v.push_back(n);
+  }
+  if (t % 3 || !z)
+    cout &lt;&lt; &quot;-1\n&quot;;
+  else {
+    sort(v.begin(),v.end());
+    for (int i = v.size()-1; i &gt;= 0; i--)
+      cout &lt;&lt; v[i];
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

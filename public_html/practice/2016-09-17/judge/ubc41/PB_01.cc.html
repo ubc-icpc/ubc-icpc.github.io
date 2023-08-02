@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int main() {
+  int n;
+  int c = 0;
+  while(cin &gt;&gt; n) {
+    if(!n)
+      return 0;
+    c++;
+    int x[n], y[n];
+    int tx, ty;
+    for(int i = 0; i &lt; n; i++) {
+      cin &gt;&gt; tx &gt;&gt; ty;
+      x[i] = tx;
+      y[i] = ty;
+    }
+
+    sort(x, x+n); 
+    sort(y, y+n);
+ 
+    // dont need to avg 2 middle elements (i think?)
+    int xm = x[(n-1)/2];
+    int ym = y[(n-1)/2];
+  
+    int dist = 0; 
+    for(int i = 0; i &lt; n; i++) 
+      dist += abs(x[i] - xm) + abs(y[i] - ym);
+
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; c &lt;&lt; &quot;: (&quot; &lt;&lt; xm &lt;&lt; &quot;,&quot; &lt;&lt; ym &lt;&lt; &quot;) &quot; &lt;&lt; dist &lt;&lt; endl;
+  } 
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		int n; int k;
+		cin &gt;&gt; n &gt;&gt; k;
+		ll inp[n];
+		for (int i=0; i&lt;n; i++) {
+			cin &gt;&gt; inp[i];
+			inp[i] *= 2;
+		}
+		ll maxr = 1e9;
+		ll minr = 0;
+		while(maxr-minr&gt;1) {
+			ll next = inp[0] + minr+maxr;
+			ll nump = 1;
+			for (int i=0; i&lt;n; i++) {
+				if (inp[i] &lt;= next) continue;
+				else {
+					next = inp[i] + minr+maxr;
+					nump++;
+				}
+			}
+			if (nump &gt; k) {
+				minr = (minr+maxr) / 2+1;
+			} else {
+				maxr = (minr+maxr) / 2;
+			}
+		}
+		ll next = inp[0] + minr+minr;
+		ll nump = 1;
+		for (int i=0; i&lt;n; i++) {
+			if (inp[i] &lt;= next) continue;
+			else {
+				next = inp[i] + minr+minr;
+				nump++;
+			}
+		}
+		if (nump &gt; k ) cout &lt;&lt; maxr/2 &lt;&lt; '.' &lt;&lt; (maxr%2 ? '5' : '0') &lt;&lt; endl;
+		else cout &lt;&lt; minr/2 &lt;&lt; '.' &lt;&lt; (minr%2 ? '5' : '0') &lt;&lt; endl;
+		
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

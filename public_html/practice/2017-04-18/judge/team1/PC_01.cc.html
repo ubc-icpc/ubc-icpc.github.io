@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+const ll MOD = 1000000007;
+const int N = 305;
+
+ll gcd(ll a, ll b) {
+  while (b != 0) {
+    ll tmp = a;
+    a = b;
+    b = tmp % b;
+  }
+  return a;
+}
+
+ll dp[N][N][2]; // 0 = no restrict on i, 1 = restrict to no edge on i
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  int n; cin &gt;&gt; n;
+  vector&lt;ll&gt; a;
+  for (int i = 0; i &lt; n; i++) {
+    ll x; cin &gt;&gt; x; a.push_back(x);
+  }
+
+  vector&lt;vector&lt;bool&gt;&gt; ok(n, vector&lt;bool&gt;(n, 0));
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+      ok[i][j] = gcd(a[i], a[j]) &gt; 1;
+    }
+  }
+
+  // bottom up dp
+  for (int d = 0; d &lt; n; d++) {
+    for (int i = 0; i &lt; n; i++) {
+      int i2 = (i+1)%n;
+      int j = (i+d)%n;
+      int j0 = (j-1+n)%n;
+      if (d == 0) {
+        dp[i][j][0] = dp[i][j][1] = 1;
+      } else if (d == 1) {
+        dp[i][j][0] = dp[i][j][1] = 1;
+      } else {
+        for (int d2 = 1; d2 &lt; d; d2++) {
+          int k = (i+d2)%n;
+          int k2 = (k+1)%n;
+          if (ok[i][k]) {
+            dp[i][j][0] = (dp[i][j][0] + (dp[i][k][0] * dp[k][j][0])%MOD)%MOD;
+          }
+          if (ok[k][j]) {
+            dp[i][j][0] = (dp[i][j][0] + (dp[i][k][1] * dp[k][j][0])%MOD)%MOD;
+            dp[i][j][1] = (dp[i][j][1] + (dp[i][k][1] * dp[k][j][0])%MOD)%MOD;
+          }
+          /*
+          if (ok[i][j]) {
+            if (ok[i][k]) {
+              dp[i][j] = (dp[i][j] + (dp[i2][k] * dp[k][j0])%MOD)%MOD;
+              if (k2 != j) {
+                dp[i][j] = (dp[i][j] + (dp[i2][k] * dp[k2][j])%MOD)%MOD;
+              }
+            }
+            if (ok[k][j]) {
+              dp[i][j] = (dp[i][j] + (dp[i2][k] * dp[k][j0])%MOD)%MOD;
+            }
+          }
+          if (ok[i][k]) {
+            dp[i][j] = (dp[i][j] + (dp[i2][k]*dp[k][j])%MOD)%MOD;
+          }
+          */
+        }
+      }
+      //cerr &lt;&lt; &quot;dp[&quot; &lt;&lt; i &lt;&lt;&quot;][&quot; &lt;&lt; j&lt;&lt;&quot;]=&quot;&lt;&lt;dp[i][j][0] &lt;&lt; &quot; &quot;&lt;&lt;dp[i][j][1] &lt;&lt; endl;
+    }
+  }
+
+  ll ans = 0;
+  for (int i = 1; i &lt; n; i++) {
+    if (ok[0][i]) {
+      ans = (ans + (dp[i][0][0] * dp[0][i][1])%MOD)%MOD;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

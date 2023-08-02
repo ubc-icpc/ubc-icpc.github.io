@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+const ld PI = 3.1415926535897932384626433;
+
+struct pt {
+    static ll xc, yc;
+    ll x, y;
+    pt() {}
+    pt(ll a, ll b) :x(a), y(b) {}
+    pt operator + (const pt&amp; o) const { return pt(x+o.x, y+o.y); }
+    pt operator - (const pt&amp; o) const { return pt(x-o.x, y-o.y); }
+    pt operator * (const ll&amp; o) const { return pt(x * o, y * o); }
+    ll dp(const pt&amp; o) const {
+        return x*o.x+y*o.y;
+    }
+    ll cp(const pt&amp; o) const {
+        return x*o.y-y*o.x;
+    }
+    static void set_center(const pt&amp; p) {
+        xc = p.x;
+        yc = p.y;
+    }
+    bool ang_less (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        return cpv &gt; 0;
+    }
+    bool operator &lt; (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        if (cpv != 0) return cpv &gt; 0;
+        return tdist.d2() &lt; odist.d2();
+    }
+    bool operator == (const pt&amp; o) const {
+        return x == o.x &amp;&amp; y == o.y;
+    }
+    ll d2() const {
+        return x*x+y*y;
+    }
+};
+ll pt::xc;
+ll pt::yc;
+
+struct line {
+    int x, y1, y2, dir;
+    line() {}
+    line(int a, int b, int c, int d) :x(a), y1(b), y2(c), dir(d) {}
+    bool operator &lt; (const line&amp; o) const {
+        if (x == o.x) return y1 &lt; o.y1;
+        return x &lt; o.x;
+    }
+};
+
+int n, m, d;
+vector&lt;pt&gt; pts;
+
+pii solve_for(vector&lt;line&gt;&amp; init, int d) {
+    vector&lt;line&gt; lines;
+    for (auto&amp; z : init) {
+        line nxt;
+        if (z.dir == 1) {
+            lines.emplace_back(z.x-d, z.y1-d, z.y2+d, z.dir);
+        } else {
+            lines.emplace_back(z.x+d, z.y1-d, z.y2+d, z.dir);
+        }
+    }
+
+    sort(lines.begin(), lines.end());
+    int k = lines.size();
+    map&lt;int, int&gt; mp;
+    map&lt;int, int&gt; mp_old;
+    ll perim = 0;
+    ll area = 0;
+    ll fill = 0;
+    ll lx = -1e9;
+    int parts = 0;
+    for (int i=0; i&lt;k; ++i) {
+        int x = lines[i].x;
+        vector&lt;pii&gt; v;
+        while (i&lt;k &amp;&amp; lines[i].x == x) {
+            //cerr &lt;&lt; &quot;  :: &quot;;
+            if (lines[i].dir == 1) {
+                //cerr &lt;&lt; &quot; + &quot; &lt;&lt; lines[i].y1 &lt;&lt; &quot; - &quot; &lt;&lt; lines[i].y2 &lt;&lt; endl;
+            } else {
+                //cerr &lt;&lt; &quot; - &quot; &lt;&lt; lines[i].y1 &lt;&lt; &quot; + &quot; &lt;&lt; lines[i].y2 &lt;&lt; endl;
+            }
+            mp[lines[i].y1] += lines[i].dir;
+            mp[lines[i].y2] -= lines[i].dir;
+            ++i;
+        }
+        --i;
+        
+        auto jt = mp_old.begin();
+        int old_sum = 0;
+        int new_sum = 0;
+        int new_parts = 0;
+        ll new_fill = 0;
+        int ly = -1e9;
+        for (auto it = mp.begin(); it != mp.end(); ++it) {
+            int prev_os = old_sum;
+            int prev_ns = new_sum;
+            while (jt != mp_old.end() &amp;&amp; jt-&gt;first == it-&gt;first) {
+                old_sum += jt-&gt;second;
+                ++jt;
+            }
+
+            new_sum += it-&gt;second;
+
+            //cerr &lt;&lt; &quot;  -&gt; &quot; &lt;&lt; prev_os &lt;&lt; &quot; &quot; &lt;&lt; prev_ns &lt;&lt; endl;
+            if ((prev_os != 0) != (prev_ns != 0)) {
+                perim += (it-&gt;first - ly);
+                //cerr &lt;&lt; &quot; V &quot; &lt;&lt; it-&gt;first - ly &lt;&lt; endl;
+            } else {
+                //cerr &lt;&lt; &quot; V &quot; &lt;&lt; 0 &lt;&lt; endl;
+            }
+            if (prev_ns) {
+                new_fill += (it-&gt;first - ly);
+            }
+            if ((prev_ns != 0) != (new_sum != 0)) {
+                ++new_parts;
+            }
+
+            ly = it-&gt;first;
+        }
+
+        perim += parts * (lines[i].x - lx);
+        //cerr &lt;&lt; &quot; H &quot; &lt;&lt; parts * (lines[i].x - lx) &lt;&lt; &quot;\n&quot; &lt;&lt;endl;
+        area += fill * (lines[i].x - lx);
+
+        mp_old = mp;
+        fill = new_fill;
+        parts = new_parts;
+        lx = lines[i].x;
+    }
+
+    //cerr &lt;&lt; &quot;   ANS &quot; &lt;&lt; area &lt;&lt; &quot; &quot; &lt;&lt; perim &lt;&lt; endl;
+    return pii(area, perim);
+}
+
+bool contained_in(int lb, int hb, int a, int b) {
+    return (lb &lt;= a &amp;&amp; b &lt;= hb);
+}
+
+void solve() {
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; d;
+    pts.clear();
+    for (int i=0; i&lt;n; ++i) {
+        int x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        pts.emplace_back(x, y);
+    }
+    vector&lt;line&gt; lines;
+    set&lt;int&gt; ys_set;
+    for (int i=0; i&lt;n; ++i) {
+        int j = (i+1)%n;
+        ys_set.insert(pts[i].y);
+        if (pts[i].x != pts[j].x) continue;
+        if (pts[i].y &gt; pts[j].y) {
+            lines.emplace_back(pts[i].x, pts[j].y, pts[i].y, -1);
+        } else {
+            lines.emplace_back(pts[i].x, pts[i].y, pts[j].y, 1);
+        }
+    }
+    vector&lt;int&gt; ys;
+    for (auto&amp; y : ys_set) {
+        ys.push_back(y);
+    }
+    sort(lines.begin(), lines.end());
+
+    vector&lt;line&gt; good_lines;
+    for (int j=0; j&lt;ys.size()-1; ++j) {
+        for (int i=0; i&lt;lines.size(); ++i) {
+            if (contained_in(lines[i].y1, lines[i].y2, ys[j], ys[j+1])) {
+                good_lines.emplace_back(lines[i].x, ys[j], ys[j+1], lines[i].dir);
+                //cerr &lt;&lt; &quot; ADD LINE &quot; &lt;&lt; lines[i].x &lt;&lt; &quot; &quot; &lt;&lt; ys[j] &lt;&lt; &quot;-&quot; &lt;&lt; ys[j+1] &lt;&lt; &quot; &quot; &lt;&lt; lines[i].dir &lt;&lt; endl;
+            }
+        }
+    }
+    sort(good_lines.begin(), good_lines.end());
+
+    pii base = solve_for(good_lines, 0);
+    vector&lt;pii&gt; ans;
+    ll la = base.first;
+    for (int i = 1; i &lt;= m; ++i) {
+        pii t = solve_for(good_lines, i*d);
+        ans.emplace_back(t.second, t.first-la);
+        la = t.first;
+    }
+    for (auto&amp; x : ans) {
+        cout &lt;&lt; x.first &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+    for (auto&amp; x : ans) {
+        cout &lt;&lt; x.second &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int TT;
+    cin &gt;&gt; TT;
+    while(TT--) {
+        solve();
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

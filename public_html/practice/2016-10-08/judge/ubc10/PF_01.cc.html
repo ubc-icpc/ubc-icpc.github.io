@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, ll&gt; pil;
+const int N = 100005;
+
+int pp[N]; ll dpp[N];
+
+// return {root, distance to root} and compress u to child of root
+pil f(int u) {
+    if (pp[u] == u) {
+        return pil(u, 0LL);
+    }
+    pil res = f(pp[u]);
+    pp[u] = res.first;
+    dpp[u] += res.second;
+    return pil(pp[u], dpp[u]);
+}
+
+// attach root of v to root of u, with w_v - w_u == dist
+void u(int u, int v, ll dist) {
+    pil p1 = f(u);
+    pil p2 = f(v);
+    if (p1.first == p2.first) return;
+    pp[p2.first] = p1.first;
+    dpp[p2.first] += p1.second + dist - p2.second;
+}
+
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, m; cin &gt;&gt; n &gt;&gt; m;
+    while (n &gt; 0 || m &gt; 0) {
+        for (int i = 0; i &lt; n; i++) {
+            pp[i] = i; dpp[i] = 0;
+        }
+        for (int q = 0; q &lt; m; q++) {
+            char c; cin &gt;&gt; c;
+            if (c == '!') {
+                int a, b; ll w; cin &gt;&gt; a &gt;&gt; b &gt;&gt; w; a--; b--;
+                u(a, b, w);
+                //cerr &lt;&lt; w &lt;&lt; &quot; &quot; &lt;&lt; dpp[a] &lt;&lt; &quot; &quot; &lt;&lt; dpp[b] &lt;&lt; endl;
+            } else {
+                int a, b; cin &gt;&gt; a &gt;&gt; b; a--; b--;
+                pil ra = f(a), rb = f(b);
+                if (ra.first != rb.first) {
+                    cout &lt;&lt; &quot;UNKNOWN&quot; &lt;&lt; endl;
+                } else {
+                    cout &lt;&lt; rb.second-ra.second &lt;&lt; endl;
+                }
+            }
+        }
+        cin &gt;&gt; n &gt;&gt; m;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

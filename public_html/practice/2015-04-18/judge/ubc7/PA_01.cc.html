@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+#define MAXN 100000
+int main() {
+    int t; cin&gt;&gt;t;
+    for(int ti=0;ti&lt;t;++ti) {
+        int n; cin&gt;&gt;n;
+        int a[MAXN] = {}; 
+        int b[MAXN] = {};
+        int pb[MAXN] = {};
+
+        for(int i=0;i&lt;n;++i) {
+            cin&gt;&gt;a[i]; 
+        }
+        for(int i=0;i&lt;n;++i) {
+            cin&gt;&gt;b[i]; pb[b[i]-1] = i;
+        }
+        int i=0, j=0, k=0;
+        vector&lt;int&gt; idx;
+        while(j&lt;n) {
+            //cerr &lt;&lt; a[j] &lt;&lt; ' ' &lt;&lt; pb[a[j]-1] &lt;&lt; endl;
+            k = max(k, pb[a[j]-1]);
+            if(j == k) {
+                idx.push_back(j);
+                i = j+1;
+            }
+            j++;
+        }
+        int last = 0;
+        for(int i=0;i&lt;idx.size();++i){
+            cout &lt;&lt; last+1 &lt;&lt; '-' &lt;&lt; idx[i] + 1;
+            if(i &lt; idx.size()-1) cout &lt;&lt; ' ';
+            last = idx[i]+1;
+        }
+        cout &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by Radu &amp; Razvan Nesiu on 10/8/2016.
+ */
+public class Main {
+    private static int magicCounter;
+
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        long tests = in.nextInt(), p, q;
+
+
+        for(int i = 0; i &lt; tests; i += 1){
+            p = in.nextInt();
+            q = in.nextInt();
+
+            primeOrNot(p, q);
+        }
+
+        in.close();
+    }
+
+    public static void primeOrNot(long p, long q){
+        /*long s, prod, k;
+        double aux;
+        prod = p * p + q * q;
+
+        if(prod &lt;= 1){
+            System.out.println('C');
+            return;
+        }
+
+        //j * k = prod
+        for(int j = 1; j &lt; prod / 2; j += 1){
+            if(prod % j == 0){
+                k = prod / j;
+                //r * r + s * s = k
+                for(int r = 1; r &lt; k; r += 1){
+                    aux = Math.sqrt(k - r * r);
+                    if(aux % 1 == 0){
+                        s = (long) aux;
+                        if(r * p + s * q % k == 0 &amp;&amp; r * q - s * p % k == 0){
+                            System.out.println('C');
+                            return;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        System.out.println('P');*/
+        magicCounter = 0;
+        long prod, first, second;
+        for(int m = -150; m &lt;= 150; m++){
+            for(int n = -150; n &lt;= 150; n++){
+                prod = m * m + n * n;
+                first = m * p + n * q;
+                second = m * q - n * p;
+                if(prod != 0){
+                    if(first % prod == 0 &amp;&amp; second % prod == 0){
+                        magicCounter += 1;
+                    }
+                }
+            }
+        }
+
+        if(magicCounter == 8){
+            System.out.println('P');
+        }
+        else{
+            System.out.println('C');
+        }
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

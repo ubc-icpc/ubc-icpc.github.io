@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int laundry( vector&lt;int&gt; arr ) {
+  sort(arr.begin(), arr.end());
+  reverse(arr.begin(), arr.end());
+  int time_so_far = 0;
+  for(int i = 0; i &lt; arr.size(); i++ ) {
+    if( (i + 1)*30 &lt; time_so_far )
+      time_so_far += arr[i];
+    else
+      time_so_far = (i + 1) * 30 + arr[i]; 
+  }
+  return time_so_far;
+}
+
+int main( int argc, char** argv ) {
+  int N;
+  int temp;
+  while( cin &gt;&gt; N ) {
+    if( N == 0)
+      break;
+    int time = 0;
+    int count = 0;
+    int mine = 10000000;
+    vector&lt;int&gt; arr;
+    while( N-- ) {
+      cin &gt;&gt; temp;
+      // set min element
+      if( mine &gt; temp )
+        mine = temp;
+      time += temp;
+      count++;
+      arr.push_back( temp );
+    }
+    /*
+    // if the drying time is faster than the washing time
+    // we just do the fastest drying thing first
+    if( time &lt; 30*count ) {
+      time = 30*count + mine;   
+        
+    } else {
+      // otherwise the washing is faster, and the drying order
+      // doesnt matter, so we just take 30 minutes more than the drying time 
+      time += 30;
+    } */
+    time = laundry( arr );
+    cout &lt;&lt; (time / 60) &lt;&lt; &quot;:&quot;;
+    if( time % 60 &lt; 10 ) 
+      cout &lt;&lt; 0;
+    cout &lt;&lt; (time % 60) &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

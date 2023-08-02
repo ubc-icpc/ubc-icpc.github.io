@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int dp[10000001];
+int main() {
+    int e, es, ef; cin &gt;&gt; e &gt;&gt; es &gt;&gt; ef;
+    int nleaf = -1;
+    for (int i = 1; i &lt;= e; i++) {
+        dp[i] = (i-es &gt; 0 ? dp[i-es] : 1) + (i-ef &gt; 0 ? dp[i-ef] : 1);
+        if (225.0 / dp[i] &lt; 1e-7) {
+            nleaf = dp[i];
+            break;
+        }
+    }
+    if (nleaf == -1) nleaf = dp[e];
+    cout &lt;&lt; setprecision(6) &lt;&lt; fixed &lt;&lt; min(abs(225.0/nleaf), abs(200.0/(nleaf-1))) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

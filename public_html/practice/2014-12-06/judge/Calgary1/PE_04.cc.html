@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+struct node {
+	int l = -1, r = -1, val = 0;
+};
+
+int N = 0;
+node nds[300];
+
+int rd() {
+	int i = N++;
+	node&amp; n = nds[i];
+	char c;
+	while (isspace(cin.peek())) cin.get();
+	if (cin.peek() == '(') {
+		cin &gt;&gt; c; // expected (
+		n.l = rd();
+		n.r = rd();
+		cin &gt;&gt; c; // expected )
+	} else {
+		cin &gt;&gt; n.val;
+	}
+	return i;
+}
+
+int X, dp[300][2501];
+
+int sv(int i, int g) {
+	node&amp; n = nds[i];
+	if (dp[i][g]) return dp[i][g];
+	if (n.l == -1) {
+		for (int a = 0; a &lt;= X; a++) {
+			for (int c = 0; c &lt;= X - a; c++) {
+				int p = n.val + a;
+				if (i) p = min(p, (1+c)*(1+c));
+				dp[i][a+c] = max(dp[i][a+c], p);
+			}
+		}
+		return dp[i][g];
+	}
+	int ansExclTop[2501] = {};
+	for (int a = 0; a &lt;= X; a++) {
+		for (int b = 0; a+b &lt;= X; b++) {
+			int p = sv(n.l, a) + sv(n.r, b);
+			ansExclTop[a+b] = max(ansExclTop[a+b], p);
+		}
+	}
+	for (int c = 0; c &lt;= X; c++) {
+		for (int a = 0; a+c&lt;=X; a++) {
+			int p = ansExclTop[a];
+			if (i) p = min(p, (1+c)*(1+c));
+			dp[i][a+c] = max(dp[i][a+c], p);
+		}
+	}
+	return dp[i][g];
+}
+
+int main() {
+	rd();
+	cin &gt;&gt; X;
+	cout &lt;&lt; sv(0, X) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

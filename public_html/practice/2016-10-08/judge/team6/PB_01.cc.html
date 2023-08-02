@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;vi&gt; vvi;
+
+int main() {
+	while(true){
+		int p,q;cin&gt;&gt;p&gt;&gt;q;
+		if (p == 0 &amp;&amp; q == 0) return 0;
+		vvi m(p,vi(4));
+		string l; int r=0,c=0,s=0;
+		for (int i=0;i&lt;p;++i) {
+			m[i][0] = r;
+			m[i][1] = c;
+			m[i][2] = s;
+			cin &gt;&gt; l;
+			int id=0;
+			for (char ch : l) {
+				if (ch == '.') id++;
+				else break;
+			}
+			for (char ch : l) {
+				if (ch == '(') r++;
+				if (ch == '{') c++;
+				if (ch == '[') s++;
+				if (ch == ')') r--;
+				if (ch == '}') c--;
+				if (ch == ']') s--;
+			}
+			m[i][3] = id;
+		}
+		vvi sol;
+		for (r=1;r&lt;21;r++) {
+			for (c=1;c&lt;21;c++) {
+				for (s=1;s&lt;21;s++) {
+					bool g = true;
+					for (vi v : m) {
+						if (v[0]*r + v[1]*c + v[2]*s != v[3]) {
+							g = false; break;
+						}
+					}
+					if (g) sol.push_back((vi){r,c,s});
+				}
+			}
+		}
+		/*
+		for (vi rw : m) {
+			for (int q : rw) cout &lt;&lt; q &lt;&lt; ' ';
+			cout &lt;&lt; endl;
+		}
+		for (vi rw : sol) {
+			for (int q : rw) cout &lt;&lt; q &lt;&lt; ' ';
+			cout &lt;&lt; endl;
+		}
+		*/
+		int cr=0,cc=0,cs=0; string cl;
+		for (int i=0;i&lt;q;i++) {
+			int de=-1;
+			for (vi row : sol) {
+				int dc=row[0]*cr + row[1]*cc + row[2]*cs;
+				// cout &lt;&lt; dc &lt;&lt; endl;
+				if (de==-1) de = dc;
+				else if (de != dc) { de = -1; break; }
+			}
+			if (i == q-1)
+				cout &lt;&lt; de &lt;&lt; '\n';
+			else
+				cout &lt;&lt; de &lt;&lt; ' ';
+			cin &gt;&gt; l;
+			for (char ch : l) {
+				if (ch == '(') cr++;
+				if (ch == '{') cc++;
+				if (ch == '[') cs++;
+				if (ch == ')') cr--;
+				if (ch == '}') cc--;
+				if (ch == ']') cs--;
+			}
+		}
+	}
+}
+		
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;deque&gt;
+#include &lt;cassert&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;bitset&gt;
+#include &lt;climits&gt;
+#include &lt;iomanip&gt;
+#include &lt;fstream&gt;
+#include &lt;unordered_set&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+#define ll long long
+#define N 505
+#define INF (ll)(1e18+3)
+#define EPS (1e-7)
+#define PI (3.14159265358979323846)
+#define ld long double
+#define MOD (int)(1e9+7)
+
+ll p[N], t[N][N], si[N], fi[N], ti[N], d[N][N];
+ll n, m;
+
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+
+bool FindMatch(int i, const VVI &amp;w, VI &amp;mr, VI &amp;mc, VI &amp;seen) {
+    for (int j = 0; j &lt; w[i].size(); j++) {
+        if (w[i][j] &amp;&amp; !seen[j]) {
+            seen[j] = true;
+            if (mc[j] &lt; 0 || FindMatch(mc[j], w, mr, mc, seen)) {
+                mr[i] = j;
+                mc[j] = i;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int BipartiteMatching(const VVI &amp;w, VI &amp;mr, VI &amp;mc) {
+    mr = VI(w.size(), -1);
+    mc = VI(w[0].size(), -1);
+    
+    int ct = 0;
+    for (int i = 0; i &lt; w.size(); i++) {
+        VI seen(w[0].size());
+        if (FindMatch(i, w, mr, mc, seen)) ct++;
+    }
+    return ct;
+}
+
+void build(ll u) {
+    set&lt;pair&lt;ll, ll&gt; &gt; s;
+    s.insert({0, u});
+    bool seen[N];
+    memset(seen, 0, sizeof(seen));
+    while (!s.empty()) {
+        pair&lt;ll, ll&gt; cur = *(s.begin());
+        s.erase(s.begin());
+        ll cc = cur.second;
+        ll dd = cur.first;
+        
+        if (seen[cc])
+            continue;
+        seen[cc] = true;
+        
+        for (ll i = 0; i &lt; n; i++) {
+            ll nd = t[cc][i] + p[i] + dd;
+            if (nd &lt; d[u][i]) {
+                s.erase({d[u][i], i});
+                d[u][i] = nd;
+                s.insert({d[u][i], i});
+            }
+        }
+    }
+}
+
+void solve() {
+    cin &gt;&gt; n &gt;&gt; m;
+    for (ll i = 0; i &lt; n; i++) {
+        cin &gt;&gt; p[i];
+    }
+    for (ll i = 0; i &lt; n; i++) {
+        for (ll j = 0; j &lt; n; j++) {
+            cin &gt;&gt; t[i][j];
+        }
+    }
+    for (ll i = 0; i &lt; m; i++) {
+        cin &gt;&gt; si[i] &gt;&gt; fi[i] &gt;&gt; ti[i];
+        si[i]--, fi[i]--;
+    }
+    
+    for (ll i = 0; i &lt; n; i++) {
+        for (ll j = 0; j &lt; n; j++)
+            d[i][j] = INF;
+        d[i][i] = 0;
+    }
+    for (ll i = 0; i &lt; n; i++)
+        build(i);
+    
+    VVI w(m, VI(m, false));
+    for (ll i = 0; i &lt; m; i++) {
+        for (ll j = 0; j &lt; m; j++) {
+            ll t1 = ti[i] + t[si[i]][fi[i]] + p[fi[i]];
+            t1 += d[fi[i]][si[j]];
+            ll t2 = ti[j];
+            if (t1 &lt;= t2)
+                w[i][j] = true;
+        }
+    }
+    
+    VI mr, mc;
+    ll ans = BipartiteMatching(w, mr, mc);
+    cout &lt;&lt; m-ans &lt;&lt; endl;
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    solve();
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

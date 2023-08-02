@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+const int MAX_N = 1e6+10;
+const ll INF = 1000000000000000000LL;
+
+
+int n;
+set&lt;int&gt;s;
+int cur = 1;
+int child = 2;
+int main() {
+  cin&gt;&gt;n;
+  for(int i = 3 ; i &lt;= n ; i++) {
+    s.insert(i);
+  }
+  while(s.size() &gt; 0) {
+    int p = *s.begin();
+    s.erase(s.begin());
+    cout&lt;&lt;&quot;? &quot;&lt;&lt;cur&lt;&lt;&quot; &quot;&lt;&lt;child&lt;&lt;&quot; &quot;&lt;&lt;p&lt;&lt;endl;
+    fflush(stdout);
+    int ans;
+    cin&gt;&gt;ans;
+    if(ans == 0) {
+      continue;
+    }
+    else {
+      cur = child;
+      child = p;
+    }
+  }
+  cout&lt;&lt;&quot;! &quot;&lt;&lt;child&lt;&lt;endl;
+  fflush(stdout);
+}
+</code>
+</pre>
+</body>
+</html>

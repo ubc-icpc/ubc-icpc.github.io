@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int a[1005];
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        double x; cin &gt;&gt; x;
+        
+        int amt = 100*x + 0.5;
+        int de = 100;
+        int g = __gcd(amt, de);
+        amt /= g;
+        de /= g;
+        
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; a[i];
+            while (a[i]%2 == 0) a[i] /= 2;
+        }
+        
+        if (__builtin_popcount(de) != 1) {
+            cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+        } else {
+            
+            
+            int f = a[0];
+            for (int i = 0; i &lt; n; i++) f = __gcd(f, a[i]);
+            
+            if (amt % f == 0) cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+            else cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

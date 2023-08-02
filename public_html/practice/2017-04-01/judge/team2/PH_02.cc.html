@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define pb   push_back
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+const int MAXN = 1&lt;&lt;18;
+const ll INF =0x3f3f3f3f;
+
+ll add(ll a, ll b) {return a+b;}
+struct ARQTree2 { ll a[2*MAXN]; ARQTree2() { memset(a, 0, sizeof a); }
+  // use after manually changing entries in [x..y], costs O(log(MAXN) + y-x)
+ll update(int x, int y, int i=1, int l=0, int r=MAXN-1) {
+    if (y&lt;l || r&lt;x || l==r) return a[i]; int m = (l+r)/2;
+    return a[i] = add(update(x,y,2*i,l,m), update(x,y,2*i+1,m+1,r)); }
+
+void insert(int x, ll v) { a[MAXN+x] = v; update(x,x); }
+
+ll query(int x, int y, int i=1, int l=0, int r=MAXN-1) {
+    if (y&lt;l || r&lt;x) return 0; if (x&lt;=l &amp;&amp; r&lt;=y) return a[i]; int m = (l+r)/2;
+    return add(query(x,y,2*i,l,m), query(x,y,2*i+1,m+1,r)); } };
+
+int main(){
+  ios_base::sync_with_stdio(false);cin.tie(0);
+  int n, q, a, b;
+  cin &gt;&gt; n &gt;&gt; q;
+  ARQTree2* st = new ARQTree2();
+  for(int i=0;i&lt;n;i++){
+    cin &gt;&gt; a; 
+    st-&gt;insert(i,a);
+  }
+  for(int i=0;i&lt;q;i++){
+    cin &gt;&gt; a &gt;&gt; b; a--,b--;
+    cout &lt;&lt; st-&gt;query(a,b) &lt;&lt;endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

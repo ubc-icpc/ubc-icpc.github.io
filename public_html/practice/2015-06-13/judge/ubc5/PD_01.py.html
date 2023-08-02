@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+def dec(l,ind):
+  if not l[ind]:
+    ind2 = ind
+    while True:
+      l[ind2] = 9
+      ind2 -= 1
+      if l[ind2]:
+        l[ind2] -= 1
+        break
+  else:
+    l[ind] -= 1
+
+def inc(l,ind):
+  if l[ind] == 9:
+    ind2 = ind
+    while True:
+      l[ind2] = 0
+      ind2 -= 1
+      if ind2 &lt; 0:
+        l.insert(0,1) 
+        break
+      if l[ind2] &lt; 9:
+        l[ind2] += 1
+        break
+  else:
+    l[ind] += 1
+
+def hl(a,o):
+  for i in xrange(1,len(a)):
+    if a[i-1] % 2:
+      v = 8
+      while True:
+        a[i] = v
+        if a &lt; o:
+          break
+        v -= 2
+    else:
+      v = 9
+      while True:
+        a[i] = v
+        if a &lt; o:
+          break
+        v -= 2
+
+def hh(a,o):
+  for i in xrange(1,len(a)):
+    if a[i-1] % 2:
+      v = 0
+      while True:
+        a[i] = v
+        if a &gt; o:
+          break
+        v += 2
+    else:
+      v = 1
+      while True:
+        a[i] = v
+        if a &gt; o:
+          break
+        v += 2
+
+while True:
+  try:
+    n = int(raw_input())
+    mn, mx = [], []
+    a = [int(i) for i in str(n)]
+    ind = 1
+    while (a[ind] % 2) != (a[ind-1] % 2):
+      ind += 1
+    # dec/inc at ind
+    a2, a3 = a[:], a[:]
+    dec(a2,ind)
+    inc(a3,ind)
+    hl(a2,a)
+    hh(a3,a)
+    # dec/inc at ind-1
+    a4, a5 = a[:], a[:]
+    dec(a4,ind)
+    inc(a5,ind)
+    hl(a4,a)
+    hh(a5,a)
+    mm = [a2, a3, a4, a5]
+    for M in mm:
+      try:
+        N = int(&quot;&quot;.join([str(i) for i in M]))
+      except ValueError:
+        continue
+      if M &lt; a:
+        mn.append(N)
+      elif M &gt; a:
+        mx.append(N)
+    MN, MX = -1, 10**1001
+    if mn:
+      MN = max(mn)
+    if mx:
+      MX = min(mx)
+    if MX - n == n - MN:
+      print MN, MX
+    elif MX - n &lt; n - MN:
+      print MX
+    else:
+      print MN
+  except EOFError:
+    break
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

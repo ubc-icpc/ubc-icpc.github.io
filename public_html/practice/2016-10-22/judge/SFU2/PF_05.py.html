@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+from random import randint
+
+n, p = map(int, raw_input().strip().split())
+
+
+
+def calcF(x, n, p):
+	res = 1.0
+	res = 1.0 * p
+
+	up = []
+	for i in xrange(n-p+2, n+1):
+		up.append(i)
+
+	down = []
+	for i in xrange(x+n, x+n-p, -1):
+		if len(up)&gt;0 and up[-1] == i:
+			up.pop()
+		else:
+			down.append(i)
+
+	up.append(x)
+
+	for i in xrange(len(up)):
+		res *= float(up[i])
+		res /= float(down[i])
+
+	&quot;&quot;&quot;
+	for i in up:
+		res *= float(i)
+	for i in down:
+		res /= float(i)
+	&quot;&quot;&quot;
+
+	&quot;&quot;&quot;
+	prod1 = 1
+	for i in up:
+		prod1 *= i
+
+	prod2 = 1
+	for i in down:
+		prod2 *= i
+
+	res = res * float(prod1) / float(prod2)
+	&quot;&quot;&quot;
+	return res
+
+#print &quot;x:&quot;, x
+
+&quot;&quot;&quot;
+for n in xrange(2, 1000000):
+	for i in  xrange(100):
+		p = randint(2, n)
+
+		x = (n-p+1) / (p-1)
+		f1 = calcF(x, n, p)
+		f2 = calcF(x+1, n, p)
+
+		#print &quot;f1: &quot;, f1
+		#print &quot;f2: &quot;, f2
+
+		if f1 &gt; f2:
+			res = f1
+		else:
+			res = f2
+		print res
+&quot;&quot;&quot;
+
+x = (n-p+1) / (p-1)
+f1 = calcF(x, n, p)
+f2 = calcF(x+1, n, p)
+
+#print &quot;f1: &quot;, f1
+#print &quot;f2: &quot;, f2
+
+if f1 &gt; f2:
+	res = f1
+else:
+	res = f2
+print res
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

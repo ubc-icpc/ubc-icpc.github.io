@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;iostream&gt;
+#include&lt;math.h&gt;
+#include&lt;algorithm&gt;
+#include&lt;vector&gt;
+using namespace std;
+#define FOR(i,a) for(int i=0;i&lt;a;i++)
+#define PI 3.14159265
+template &lt;typename T&gt; int sign(T val) {
+	if (val &lt; 0) {
+		return -1;
+	}
+	if (val == 0)return 0;
+	return 1;
+}
+int det(double x1, double y1, double x2, double y2, double x3, double y3) {
+	return sign((x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1));
+}
+bool col(double x1, double y1, double x2, double y2, double x3, double y3) {
+	if (x3 &lt; max(x1, x2) &amp;&amp; x3 &gt;min(x1, x2) &amp;&amp; y3 &lt; max(y1, y2) &amp;&amp; y3 &gt;min(y1, y2))return true;
+
+	return false;
+}
+bool intersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+	//x3 y3 point
+	int det1 = det(x1, y1, x2, y2, x4, y4);
+	int det2 = det(x1, y1, x2, y2, x3, y3);
+	int det3 = det(x3, y3, x4, y4, x1, y1);
+	int det4 = det(x3, y3, x4, y4, x2, y2);
+	if ((det1 != det2) &amp;&amp; (det3 != det4)) return true;
+	if (det1 == 0 &amp;&amp; col(x1, y1, x2, y2, x4, y4)) return true;
+	if (det2 == 0 &amp;&amp; col(x1, y1, x2, y2, x3, y3)) return true;
+	if (det3 == 0 &amp;&amp; col(x3, y3, x4, y4, x1, y1)) return true;
+	if (det4 == 0 &amp;&amp; col(x3, y3, x4, y4, x2, y2)) return true;
+	return false;
+}
+int main() {
+	int cases; cin &gt;&gt; cases;
+	FOR(i, cases) {
+		int n, safe; cin &gt;&gt; n; double curx, cury,curdir;
+		safe = 0;
+		bool visited = false;
+		curx = cury = curdir=0;
+		vector&lt;pair&lt;pair&lt;double,double&gt;,pair&lt;double,double&gt;&gt;&gt;v;
+		FOR(a, n) {
+			double dir, x; cin &gt;&gt; dir &gt;&gt; x; dir = (double)dir * PI/180;
+			//xcos(theta), xsin(theta)
+			curdir += dir;
+			v.push_back(make_pair(make_pair(curx,cury),make_pair(curx +(double)x * cos(curdir), cury +(double)x * sin(curdir))));
+			//cout &lt;&lt; curx &lt;&lt; &quot; &quot; &lt;&lt; cury &lt;&lt; &quot;\n&quot;;
+			if (a != 0) {
+				FOR(j, a - 1) {
+					if (intersect(v[j].first.first, v[j].first.second, v[j].second.first, v[j].second.second, curx, cury, curx + (double)x * cos(curdir), cury + (double)x * sin(curdir))) {
+						if (!visited) {
+							safe = a + 1;
+							visited = true;
+						}
+					}
+				}
+			}
+			curx += (double)x * cos(curdir);
+			cury += (double)x * sin(curdir);
+		}
+		if (safe == 0)cout &lt;&lt; &quot;SAFE\n&quot;;
+		else cout &lt;&lt; safe &lt;&lt; &quot;\n&quot;;
+	}
+}</code>
+</pre>
+</body>
+</html>

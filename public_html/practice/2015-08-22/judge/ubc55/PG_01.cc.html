@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt; 
+#include &lt;complex&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+#include &lt;functional&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef pair&lt;ld, int&gt; pdi;
+
+ld adj[155][155];
+pt shade[55];
+ld radius[105];
+bool visited[55];
+
+int main()
+{
+	int n;
+	cin &gt;&gt; n;
+	int count = 0;
+	while (n--)
+	{
+		memset(adj, 0, sizeof(adj));
+		memset(shade, 0, sizeof(shade));
+		count++;
+		int s;
+		cin &gt;&gt; s;
+		cout &lt;&lt; &quot;Campus #&quot; &lt;&lt; count &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		for (int i = 0; i &lt; s; i++)
+		{
+			ld x, y, r;
+			cin &gt;&gt; x &gt;&gt; y &gt;&gt; r;
+			shade[i] = pt(x, y);
+			radius[i] = r;
+		}
+		//set up adjacency list
+		for (int i = 0; i &lt; s; i++)
+		{
+			for (int j = i + 1; j &lt; s; j++)
+			{
+				pt point = shade[i] - shade[j];
+				adj[i][j] = adj[j][i] = max(ld(0.0),abs(point) - radius[i] - radius[j]);
+			}
+		}
+		int p;
+		cin &gt;&gt; p;
+		for (int b = 0; b &lt; p; b++)
+		{
+			ld distance;
+			memset(visited, false, sizeof(visited));
+			ld x1, y1, x2, y2;
+			cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+			shade[s] = pt(x1, y1);
+			shade[s + 1] = pt(x2, y2); 
+			adj[s][s + 1] = adj[s + 1][s] = max(ld(0.0),abs(shade[s] - shade[s + 1]));
+			for (int i = 0; i &lt; s; i++)
+			{
+				adj[s][i] = adj[i][s] = max(ld(0.0),abs(shade[s] - shade[i]) - radius[i]);
+				adj[s+1][i] = adj[i][s+1] = max(ld(0.0), abs(shade[s + 1] - shade[i]) - radius[i]);
+			}
+			
+			priority_queue&lt;pdi, vector&lt;pdi&gt;, greater&lt;pdi&gt;&gt; queue;
+			queue.push(make_pair(0.0, s));
+			while (true)
+			{
+				distance = queue.top().first;
+				int index = queue.top().second;
+				queue.pop();
+				if (visited[index])
+				{
+					continue;
+				}
+				visited[index] = true;
+				if (index == s + 1)
+				{
+					break;
+				}
+				//if not we add all neighbors
+				for (int i = 0; i &lt; s + 2; i++)
+				{
+					if (!visited[i])
+					{
+						queue.push(make_pair(distance + adj[index][i] , i));
+					}
+				}
+			}
+			cout.precision(1);
+			cout &lt;&lt; &quot;Path #&quot; &lt;&lt; b + 1 &lt;&lt; &quot;: Shortest sun distance is &quot; &lt;&lt; fixed &lt;&lt; distance &lt;&lt; &quot;.&quot; &lt;&lt; endl;
+		}
+		cout &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

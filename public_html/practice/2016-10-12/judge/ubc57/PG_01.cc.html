@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+double r(int a, int m, int &amp;s){
+ double val = (s%m) / double(m);
+ s = ( a * s + 1 )%m;
+ return val;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    int a,m,s; cin&gt;&gt;a&gt;&gt;m&gt;&gt;s;
+    string out;
+    getline(cin,out);
+    while (getline(cin,out)){
+        //cout&lt;&lt;out&lt;&lt;endl;
+        string ans=&quot;&quot;; 
+        for (int i=0;i&lt;out.size();i++){
+            double v=r(a,m,s); char c=out[i]; 
+            if ((c&lt;32)||(c&gt;126)) ans+=c;
+            else{
+                for (int k=32;k&lt;=126;k++){
+                     int asd=int((k-32)+ceil(95-v*95))%95+32;
+                     if (asd==c){
+                         ans+=char(k); break;
+                     }
+                } 
+            }
+        }
+        cout&lt;&lt;ans&lt;&lt;endl; 
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

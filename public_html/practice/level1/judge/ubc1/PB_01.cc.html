@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		ll s, a; cin &gt;&gt; s &gt;&gt; a;
+		cout &lt;&lt; s &lt;&lt; &quot; &quot;;
+		
+		ll ans = 1;
+		while (a != 1) {
+			ans = max(ans, a);
+			if (a%2 == 0) a /= 2;
+			else a = 3*a + 1;
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

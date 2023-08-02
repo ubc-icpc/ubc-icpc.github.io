@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;limits&gt;
+using namespace std;
+
+int main () {
+  while (true) {
+    int N; cin &gt;&gt; N;
+    if (N == 1) break;
+    vector&lt;int&gt; v(N);
+    for (int i = 0; i &lt; N; ++i) cin &gt;&gt; v[i];
+    int MAXl = -1;
+    int MINl = numeric_limits&lt;int&gt;::max();
+    vector&lt;int&gt; l(N - 1);
+    int MAXr = -1;
+    int MINr = numeric_limits&lt;int&gt;::max();
+    vector&lt;int&gt; r(N - 1);
+    int res = numeric_limits&lt;int&gt;::max();
+    for (int i = 0, j = N - 2; i &lt; N - 1; ++i, --j) {
+      if (MAXl &lt; v[i]) MAXl = v[i];
+      if (MINl &gt; v[i]) MINl = v[i];
+      if (MAXr &lt; v[j + 1]) MAXr = v[j + 1];
+      if (MINr &gt; v[j + 1]) MINr = v[j + 1];
+      l[i] = MAXl - MINl;
+      r[j] = MAXr - MINr;
+    }
+    int index = -1;
+    for (int i = 0; i &lt; N - 1; ++i) {
+      int m = max(l[i], r[i]);
+      if (res &gt; m) {
+	index = i;
+	res = m;
+      }
+    }
+    cout &lt;&lt; index + 1 &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

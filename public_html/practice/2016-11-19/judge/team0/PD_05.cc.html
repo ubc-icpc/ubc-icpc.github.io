@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+const int N = 505, M = 1005, T = 1440, EN = 485;
+
+struct E {
+    int src, dst, cost, id;
+};
+struct E2 {
+    int dst, energy, cost;
+    bool operator&lt;(const E2 &amp;e) const {
+        return cost &gt; e.cost;
+    }
+};
+
+vector&lt;E&gt; adj[N];
+int edges[M][T], ne;
+bool visited[N][EN];
+
+set&lt;pii&gt; vis2[N];
+
+bool paretoInsert(set&lt;pii&gt; &amp;s, int x, int y) {
+    if (s.empty()) {
+        s.insert({x, y});
+        return true;
+    }
+
+    auto it = s.lower_bound({x, -65535});
+    if (it == s.end() || (*it).first &gt; x) --it;
+    if ((*it).first &gt; x || ((*it).first &lt;= x &amp;&amp; (*it).second &gt; y)) {
+        s.insert({x, y});
+        for (auto it2 = ++s.find({x, y}); it2 != s.end();) {
+            auto itnxt = it2++;
+            if ((*it2).first &gt;= x &amp;&amp; (*it2).second &gt;= y) {
+                s.erase(it2);
+            } else {
+                break;
+            }
+            it2 = itnxt;
+        }
+        return true;
+    }
+    return false;
+}
+
+int n, m;
+
+int main() {
+    scanf(&quot;%d %d&quot;, &amp;n, &amp;m);
+    while (n != 0 || m != 0) {
+        ne = 0;
+        for (int i = 0; i &lt; n; i++) {
+            adj[i].clear();
+            vis2[i].clear();
+        }
+        for (int i = 0; i &lt; m; i++) {
+            int a, b, s, t, c;
+            scanf(&quot;%d %d&quot;, &amp;a, &amp;b);
+
+            int eid = ne++;
+            adj[a].push_back({a, b, -1, eid});
+            adj[b].push_back({b, a, -1, eid});
+
+            int tt = 0;
+            scanf(&quot;%d %d %d&quot;, &amp;s, &amp;t, &amp;c);
+            while (t != T-1) {
+                for (; tt &lt;= t; tt++) {
+                    edges[eid][tt] = c;
+                }
+                scanf(&quot;%d %d %d&quot;, &amp;s, &amp;t, &amp;c);
+            }
+            for (; tt &lt;= t; tt++) {
+                edges[eid][tt] = c;
+            }
+        }
+
+        for (int i = 0; i &lt; n; i++) {
+            memset(visited[i], 0, sizeof visited[i]);
+        }
+
+        priority_queue&lt;E2&gt; q;
+        q.push({0, 480, 720});
+        paretoInsert(vis2[0], -480, 720);
+        while (!q.empty()) {
+            E2 curr = q.top(); q.pop();
+
+            if (visited[curr.dst][curr.energy]) continue;
+            visited[curr.dst][curr.energy] = true;
+
+            //printf(&quot;visit: [%d, %d] at t=%d from %d\n&quot;, curr.dst, curr.energy, curr.cost, curr.src);
+
+            if (curr.dst == n-1) {
+                printf(&quot;%d\n&quot;, curr.cost-720);
+                break;
+            }
+
+            if (vis2[curr.dst].find({-curr.energy, curr.cost}) == vis2[curr.dst].end()) continue;
+
+            int t = curr.cost % T;
+            for (E e : adj[curr.dst]) {
+                int prevE = -1;
+                int prevC = -1;
+                for (int j = 0; j &lt; 1440; j++) {
+                    int energy = min(480, curr.energy + j);
+                    int cost = edges[e.id][(t+j)%T];
+                    if (energy &gt;= cost*2) {
+                        int nxtE = energy - cost*2;
+                        int nxtC = curr.cost+j+cost;
+                        if (!visited[e.dst][nxtE] &amp;&amp; paretoInsert(vis2[e.dst], -nxtE, nxtC)) {
+                            if (prevE == -1 || (nxtE-prevE != nxtC-prevC)) {
+                                q.push({e.dst, nxtE, nxtC});
+                                prevE = nxtE;
+                                prevC = nxtC;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        scanf(&quot;%d %d&quot;, &amp;n, &amp;m);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

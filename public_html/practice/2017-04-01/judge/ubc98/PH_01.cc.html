@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main()
+{
+	int n, q;
+	cin &gt;&gt; n &gt;&gt; q;
+	
+	vector&lt;int&gt; callcounts;
+	for (int i = 0; i &lt; n; ++i)
+	{
+		int c;
+		cin &gt;&gt; c;
+		callcounts.push_back(c);
+	}
+	for (int i = 0; i &lt; q; ++i)
+	{
+		int s, t;
+		cin &gt;&gt; s &gt;&gt; t;
+		int out = 0;
+		for (int j = s; j &lt;= t; j++)
+		{
+			out += callcounts.at(j-1);
+		}
+		cout &lt;&lt; out &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

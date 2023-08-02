@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+struct edge {
+    int u; ld w;
+    edge() {}
+    edge(int u, ld w) : u(u), w(w) {}
+};
+
+ld s[10005], sz[10005];
+vector&lt;edge&gt; g[10005];
+
+ld dfs(int v, int p) {
+    ld res = 0;
+    
+    sz[v] = 1;
+    s[v] = 0;
+    vector&lt;ld&gt; a, b;
+    vector&lt;int&gt; c;
+    for (edge e : g[v]) {
+        if (e.u == p) continue;
+        c.push_back(e.u);
+        res += dfs(e.u, v);
+        sz[v] += sz[e.u];
+        s[v] += s[e.u] + e.w * sz[e.u];
+        a.push_back(s[e.u] + e.w * sz[e.u]);
+        b.push_back(a.back() + (b.size() ? b.back() : 0));
+        res += a.back();
+    }
+    
+    int n = c.size();
+    ld sz0 = 0, sz1 = sz[v]-1;
+    for (int i = n-1; i &gt;= 1; i--) {
+        int u = c[i];
+        sz1 -= sz[u];
+        sz0 = sz[u];
+        res += sz1 * a[i] + sz0 * b[i-1];
+    }
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) g[i].clear();
+        
+        for (int i = 0; i &lt; n-1; i++) {
+            int u, v; ld w; cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;
+            g[u].push_back(edge(v, w));
+            g[v].push_back(edge(u, w));
+        }
+        
+        ld npaths = ld(n)*(n-1)/2;
+        cout &lt;&lt; fixed &lt;&lt; setprecision(8) &lt;&lt; dfs(0, -1)/npaths &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

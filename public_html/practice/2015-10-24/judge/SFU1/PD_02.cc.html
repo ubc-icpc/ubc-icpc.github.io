@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;deque&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+struct pc
+{
+	int t;
+	bool s;
+	int ind;
+};
+deque&lt;pc&gt; p;
+
+bool cmp(pc f, pc s)
+{
+	//cout&lt;&lt;f.ind&lt;&lt;','&lt;&lt;s.ind&lt;&lt;&quot;.  &quot;&lt;&lt;f.t&lt;&lt;' '&lt;&lt;f.s&lt;&lt;':'&lt;&lt;s.t&lt;&lt;' '&lt;&lt;s.s&lt;&lt;endl;
+	if (f.t &lt; s.t)
+	{
+		return true;
+	}
+	if (f.t == s.t &amp;&amp; f.s == s.s) {
+		return false;
+	}
+	if (f.t == s.t &amp;&amp; f.s == false)
+	{
+		return true;
+	}
+
+
+	return false;
+}
+
+int main()
+{
+    
+	int n, k;
+	int j = 0;
+	p.clear();
+	scanf(&quot;%d %d&quot;, &amp;n, &amp;k);
+	for (int i = 0; i &lt; n; ++ i)
+	{
+		int t;
+		scanf(&quot;%d&quot;, &amp;t);
+		p.push_back({t, true, j++});
+		p.push_back({t+1000, false, j++});
+	}
+	sort(p.begin(), p.end(), cmp);
+	int sv = 0;
+	int inp = 0;
+	for (auto &amp;i: p)
+	{
+		if (i.s)
+		{
+			++ inp;
+			if (inp &gt; k*sv)
+			{
+				++sv;
+			}
+		}
+		else
+		{
+			-- inp;
+		}
+	}
+	printf(&quot;%d\n&quot;, sv);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

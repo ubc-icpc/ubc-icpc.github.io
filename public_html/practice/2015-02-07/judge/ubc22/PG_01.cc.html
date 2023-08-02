@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;cmath&gt;
+using namespace std;
+
+bool check(const vector&lt;int&gt;&amp; v) {
+  bool res = true;
+  int i = 0;
+  int j = v.size() - 1;
+  while (j &gt; i) {
+    if (v[i] != v[j]) {
+      res = false;
+      break;
+    }
+    ++i;
+    --j;
+  }
+  return res;
+}
+
+vector&lt;int&gt; generate(int N, const int&amp; b) {
+  vector&lt;int&gt; v;
+  while (N != 0) {
+    v.push_back(N % b);
+    N /= b;
+  }
+  return v;
+}
+
+int main () {
+  int N; cin &gt;&gt; N;
+  int max = sqrt(N) + 1;
+  for (int b = 2; b &lt; max; ++b) {
+    if (check(generate(N, b))) {
+      cout &lt;&lt; b &lt;&lt; endl;
+    }
+  }
+  vector&lt;int&gt; factor;
+  for (int i = 1; i &lt;= max; ++i) {
+    if (N % i == 0) {
+      int temp = N / i;
+      if (temp &gt; max)
+	factor.push_back(temp - 1);
+    }
+  }
+  for (int i = factor.size() - 1; i &gt;= 0; --i) {
+    if (check(generate(N, factor[i]))) {
+      cout &lt;&lt; factor[i] &lt;&lt; endl;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

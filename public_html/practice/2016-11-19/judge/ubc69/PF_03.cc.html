@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+struct Point {
+    long long x, y, z;
+    bool operator&lt;(const Point rhs) const { return x &lt; rhs.x; }
+};
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    Point p[100000];
+    long long k2, x, y, z, n, k, count;
+    cin &gt;&gt; n &gt;&gt; k;
+    while (n != 0 || k != 0) {
+        count = 0;
+        k2 = k * k;
+        for (int i = 0; i &lt; n; ++i)
+            cin &gt;&gt; p[i].x &gt;&gt; p[i].y &gt;&gt; p[i].z;
+        sort(p, p + n);
+        for (int i = 0; i &lt; n; ++i) {
+            x = p[i].x;
+            y = p[i].y;
+            z = p[i].z;
+            for (int j = i + 1; p[j].x &lt;= x + k &amp;&amp; j &lt; n; ++j)
+                if (p[j].y &lt;= y + k &amp;&amp; p[j].y + k &gt;= y &amp;&amp;
+                    p[j].z &lt;= z + k &amp;&amp; p[j].z + k &gt;= z &amp;&amp;
+                    ((p[j].x - x) * (p[j].x - x) +
+                     (p[j].y - y) * (p[j].y - y) +
+                     (p[j].z - z) * (p[j].z - z) &lt; k2)) ++count;
+        }
+        cout &lt;&lt; count &lt;&lt; '\n';
+        cin &gt;&gt; n &gt;&gt; k;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

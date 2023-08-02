@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+using namespace std;
+char vow[6] = {'a', 'i', 'y', 'e', 'o', 'u'};
+char cons[20] = {'b', 'k', 'x', 'z', 'n', 'h', 'd', 'c', 'w', 'g', 'p', 'v', 'j', 'q', 't', 's', 'r', 'l', 'm', 'f'};
+int main(){
+	map&lt;char, char&gt; translate;
+	for (int i = 0; i &lt; 6; i++){
+		translate[vow[i]] = vow[(i+6-3)%6];
+		translate[vow[i]-'a'+'A'] = vow[(i+6-3)%6] - 'a' +'A';
+		//cout &lt;&lt; (char)(vow[i] -'a'+'A')&lt;&lt; &quot; &quot; &lt;&lt;  (char)(vow[(i+6-3)%6] -'a'+'A')&lt;&lt; endl;
+	}
+	for (int i = 0; i &lt; 20; i++){
+		translate[cons[i]] = cons[(i+20-10)%20];
+		translate[cons[i] -'a'+'A'] =  cons[(i+20-10)%20] - 'a' + 'A';
+		//cout &lt;&lt; cons[i] &lt;&lt; &quot; &quot; &lt;&lt;  cons[(i+20-10)%20] &lt;&lt; endl;
+	}
+	/*for (map&lt;char,char&gt;::iterator it = translate.begin(); it != translate.end(); it++){
+		cout &lt;&lt; (*it).first &lt;&lt; &quot; &quot; &lt;&lt; (*it).second &lt;&lt; endl;
+	}*/
+
+	string s; 
+	while(getline(cin, s)){
+		for (int i = 0; i &lt; s.length(); i++) {
+			if ((s[i] &gt;= 'a' &amp;&amp; s[i] &lt;= 'z') || (s[i] &gt;= 'A' &amp;&amp; s[i] &lt;= 'Z')) cout &lt;&lt; translate[s[i]];
+			else cout &lt;&lt; s[i];
+		} cout &lt;&lt; endl;
+	}
+	return 0 ;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

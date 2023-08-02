@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+// create a tree of stacks, where each node is a stack
+// action a is adding 1 to a node
+// action b is subtracting 1 from a node
+// action c is asking for number in common with
+//          lca of query points
+const int maxn = 3e5+5, lgn = 19;
+struct node {
+    int par, sz, h, pushed;
+    node() : par(0), sz(0), h(0), pushed(0) {}
+    node(int p, int s, int h, int pp) : par(p), sz(s), h(h), pushed(pp) {}
+} tree[maxn];
+
+int a_memo[maxn][lgn], m_memo[maxn][lgn];
+int ancestor(int v, int j) {
+    int&amp; retval = a_memo[v][j];
+    if (retval != -1) return retval;
+    if (j == 0) return retval = tree[v].par;
+    return retval = ancestor(ancestor(v, j-1), j-1);
+}
+
+int min_sz(int v, int j) {
+    int&amp; retval = m_memo[v][j];
+    if (retval != -1) return retval;
+    if (j == 0) return retval = min(tree[v].sz, tree[tree[v].par].sz);
+    return retval = min(min_sz(v, j-1), min_sz(ancestor(v, j-1), j-1));
+}
+
+map&lt;int, int&gt; t_node[maxn];
+int top_node(int v, int c) {
+    if (c &gt; tree[v].sz) return -1;
+    if (t_node[v].count(c)) return t_node[v][c];
+    
+    int&amp; retval = t_node[v][c];
+    if (c == tree[v].pushed) return retval = v;
+    return retval = top_node(tree[v].par, c - tree[v].pushed);
+}
+
+void add_node(int id, int p, int new_num) {
+    tree[id] = node(p, tree[p].sz + new_num, tree[p].h + 1, new_num);
+}
+
+//300k nodes so max height is bound by 2^19
+//so we can start our binary search down from 2^18
+int count_nodes(int u, int v) {
+    if (tree[u].h &lt; tree[v].h) swap(u, v);
+    //bring nodes up to the same height
+    int diff = tree[u].h - tree[v].h, res = 1000000;
+    for (int i = 18; i &gt;= 0; i--) {
+        if (diff &amp; (1&lt;&lt;i)) {
+            res = min(res, min_sz(u, i));
+            u = ancestor(u, i);
+        }
+    }
+    
+    if (u != v) {
+        for (int i = 18; i &gt;= 0; i--) {
+            if ((1&lt;&lt;i) &gt; tree[u].h) continue;
+            if (u == v) break;
+            if (ancestor(u, i) != ancestor(v, i)) {
+                res = min(res, min(min_sz(u, i), min_sz(v, i)));
+                u = ancestor(u, i);
+                v = ancestor(v, i);
+            }
+        }
+        // the last step
+        res = min(res, min(min_sz(u, 0), min_sz(v, 0)));
+    }
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    memset(a_memo, -1, sizeof a_memo);
+    memset(m_memo, -1, sizeof m_memo);
+    
+    int q; cin &gt;&gt; q;
+    for (int i = 1; i &lt;= q; i++) {
+        char c; int v, w; cin &gt;&gt; c &gt;&gt; v;
+        if (c == 'a') {
+            add_node(i, v, 1);
+        } else if (c == 'b') {
+            add_node(i, v, -1);
+            cout &lt;&lt; top_node(i, 0) &lt;&lt; '\n';
+        } else {
+            add_node(i, v, 0);
+            cin &gt;&gt; w;
+            cout &lt;&lt; count_nodes(i, w) &lt;&lt; '\n';
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

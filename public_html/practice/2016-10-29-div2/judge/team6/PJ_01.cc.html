@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int w, h, b;
+vector&lt;vector&lt;int&gt;&gt; img, cpy;
+
+void img_init() {
+	for (int i = 1; i &lt;= w; i++) {
+		img[0][i] = img[h][i];
+		img[h+1][i] = img[1][i];
+	}
+	for (int i = 1; i &lt;= h; i++) {
+		img[i][0] = img[i][w];
+		img[i][w+1] = img[i][1];
+	}
+	img[0][0] = img[h][w];
+	img[h+1][0] = img[1][w];
+	img[0][w+1] = img[h][1];
+	img[h+1][w+1] = img[1][1];
+}
+
+void print_img() {
+	for (vector&lt;int&gt; row : img) {
+		for (int i : row) {
+			cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl;
+	}
+	cout &lt;&lt; endl;
+}
+
+int main() {
+	cin &gt;&gt; w &gt;&gt; h &gt;&gt; b;
+	img = vector&lt;vector&lt;int&gt;&gt; (h+2, vector&lt;int&gt;(w+2, 0));
+	for (int i = 1; i &lt;= h; i++) {
+		for (int j = 1; j &lt;= w; j++) {
+			int a; cin &gt;&gt; a;
+			img[i][j] = a;
+		}
+	}
+//	print_img();
+	cpy = img;
+	img_init();
+	
+	for (int i = 0; i &lt; b; i++) {		
+		for (int j = 1; j &lt;= h; j++) {
+			for (int k = 1; k &lt;= w; k++) {
+				int sum = 0;
+				for (int dx = -1; dx &lt;= 1; dx++) {
+					for (int dy = -1; dy &lt;= 1; dy++) {
+						sum += img[j+dx][k+dy];
+					}
+				}
+				cpy[j][k] = sum;
+			}
+		}
+		img = cpy;
+		img_init();
+//		print_img();
+	}
+	set&lt;int&gt; vals;
+	for (int i = 1; i &lt;= h; i++) {
+		for (int j = 1; j &lt;= w; j++) {
+			vals.insert(img[i][j]);
+		}
+	}
+	cout &lt;&lt; vals.size() &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

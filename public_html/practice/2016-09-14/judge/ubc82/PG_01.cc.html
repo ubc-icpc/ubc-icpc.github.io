@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+
+int P, ii, n, m, k, dp[103];
+
+
+int main(){
+	ios_base::sync_with_stdio(false);cin.tie(0);
+	cin &gt;&gt; P;
+	for(int i=0;i&lt;P;i++){
+		cin &gt;&gt; ii&gt;&gt; n &gt;&gt; m &gt;&gt; k;
+		memset(dp, 0, sizeof dp);
+		int r = m%k;
+		for(int a=0;a&lt;=n;a++){
+			if (a&gt;=m &amp;&amp; a%k==r) continue;
+			dp[0] = 1;
+		}
+		for(int a=1;a&lt;=n;a++){
+			for(int j=1;j&lt;=a;j++){
+				if (j&gt;=m &amp;&amp; j%k==r) continue;
+				dp[a] +=dp[a-j];
+			}
+		}
+		cout &lt;&lt; ii &lt;&lt; &quot; &quot; &lt;&lt; dp[n] &lt;&lt; '\n';
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

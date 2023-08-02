@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+#define EPSILON 1e-6
+
+int main(){
+	double a, b, c, d, m, t;
+	while(cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; m &gt;&gt; t){
+		double guess = 500;
+		double diff = 250;
+		double result = (a * guess * guess * guess + b * guess * guess + c * guess + d) * m;
+
+		while(abs(result - t) &gt; EPSILON){
+			if(result &gt; t){
+				guess -= diff;
+			} else {
+				guess += diff;
+			}
+			diff /= 2;
+			result = (a * guess * guess * guess + b * guess * guess + c * guess + d) * m;
+		}
+
+		guess = floor(guess * 100) / 100;
+
+		cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; guess &lt;&lt; endl;
+	} 
+	
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

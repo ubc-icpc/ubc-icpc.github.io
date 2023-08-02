@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+#define debug printf
+typedef long long ll;
+typedef pair&lt;short, int&gt; psi;
+
+#define INF 0x3f3f
+#define R 52
+char G[R*R];
+int S, T;
+char mv[51];
+int r, c;
+
+bool v[R*R];
+
+short cdist[R*R][R*R];
+short dist[4][R*R][R*R];
+
+int dirs[] = {1, -1, R, -R, 0};
+//            R  L   D  U
+
+psi que[2500];
+
+/*
+ * Use dynamic programming to exhaust all (reasonably) possible paths in the
+ * shape
+ *
+ * &lt;PATH&gt; M &lt;PATH&gt; M &lt;PATH&gt; ... &lt;PATH&gt; M &lt;PATH&gt;
+ *
+ * where each M is a move in the original move command.
+ *
+ * State: dp[i][pos] = min cost of arriving at &lt;pos&gt; after &lt;i&gt; original moves
+ */
+short dpc[2][R*R];
+
+int main() {
+    scanf(&quot;%d%d&quot;, &amp;r, &amp;c);
+    memset(G, '#', sizeof G);
+    for (int i = 1; i &lt;= r; i++)
+        for (int j = 1; j &lt;= c; j++) {
+            scanf(&quot; %c&quot;, &amp;G[i*R+j]);
+            if (G[i*R+j] == 'R') S = i*R+j;
+            if (G[i*R+j] == 'E') T = i*R+j;
+        }
+    scanf(&quot;%s&quot;, mv);
+    int len = strlen(mv);
+    for (int i = 0; i &lt; len; i++)
+        mv[i] = mv[i] == 'R' ? 0 : mv[i] == 'L' ? 1 : mv[i] == 'D' ? 2 : 3;
+    mv[len] = 4; // add a noop move at tail
+
+    // Stage 1: Multi-source BFS; O(N^4 log N^2)
+    memset(cdist, INF, sizeof cdist);
+    for (int i = 1; i &lt;= r; i++)
+        for (int j = 1; j &lt;= c; j++) {
+            int s = i*R+j;
+            if (G[s] == '#') continue;
+
+            que[0] = {0, s};
+            cdist[s][s] = 0;
+            for (int hd = 0, tl = 1; hd &lt; tl; hd++) {
+                psi _n = que[hd];
+                short w = _n.first; int n = _n.second;
+
+                for (int *d = dirs; d &lt; dirs+4; d++)
+                    if (G[n+*d] != '#' &amp;&amp; cdist[s][n+*d] == INF)
+                        cdist[s][n+*d] = w+1, que[tl++] = {w+1,n+*d};
+            }
+        }
+
+    // Stage 2: Precompute cost from s to t given free mv of d at end
+    memset(dist, INF, sizeof dist);
+    for (int *d = dirs; d &lt; dirs+5; d++) {
+        for (int s = 0; s &lt; R*R; s++)
+            for (int i = 1; i &lt;= r; i++) for (int j = 1; j &lt;= c; j++) {
+                int t = i*R+j;
+                if (G[t] == '#') continue;
+
+                dist[d-dirs][t][s] = cdist[t-*d][s];
+                if (G[t+*d] == '#')
+                    dist[d-dirs][t][s] = min(dist[d-dirs][t][s], cdist[t][s]);
+            }
+    }
+
+    // Stage 3: Memory-compressed dp; O(N^5)
+    memset(dpc[1], INF, sizeof dpc[1]);
+    dpc[1][S] = 0;
+    short ans = INF;
+    for (int i = 0; i &lt; len+1; i++) {
+        int cur = i%2, last = 1-cur;
+        memset(dpc[cur], INF, sizeof dpc[1]);
+        for (int t = 0; t &lt; R*R; t++) {
+            for (int s = 0; s &lt; R*R; s++) {
+                short val = dpc[last][s] + dist[(int) mv[i]][t][s];
+                if (val &lt; dpc[cur][t]) dpc[cur][t] = val;
+            }
+        }
+        ans = min(ans, dpc[cur][T]);
+        /*for (int p = 1; p &lt;= r; p++) {
+            for (int q = 1; q &lt;= c; q++)
+                printf(&quot;%d &quot;, dpc[cur][p*R+q]);
+            printf(&quot;\n&quot;);
+        }
+        char x; scanf(&quot;%c&quot;, &amp;x);*/
+    }
+
+    printf(&quot;%d\n&quot;, ans);
+
+    return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

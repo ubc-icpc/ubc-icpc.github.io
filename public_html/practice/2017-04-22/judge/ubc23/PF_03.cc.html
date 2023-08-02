@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+#define MOD 1000000007
+
+using namespace std;
+typedef long long int lli;
+
+vector&lt;complex&lt;double&gt; &gt; FFT(vector&lt;complex&lt;double&gt; &gt; A, int m, complex&lt;double&gt; w);
+
+int main()
+{
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	int N, v;
+	cin &gt;&gt; N;
+	vector&lt;int&gt; Ls(N);
+	int amounts[2001];
+	for(int i=0;i&lt;N;++i)
+	{
+		cin &gt;&gt; v;
+		++amounts[v];
+	}
+
+	int mlength[4001];
+	memset(mlength, 0, sizeof(int)*4001);
+
+	for(int i=1;i&lt;2001;++i)
+	{
+		for(int j=i;j&lt;2001;++j)
+		{
+			if(i!= j)
+				mlength[i+j] += min(amounts[i], amounts[j]);
+			else
+				mlength[i+j] += amounts[i]/2;
+		}
+	}
+
+	int maxx = 0;
+	for(int i=0;i&lt;4001;++i)
+		if(mlength[i] &gt; maxx)
+			maxx = mlength[i];
+	
+	int amt = 0;
+	for(int i=0;i&lt;4001;++i)
+	{
+		if(mlength[i] == maxx)
+			++amt;
+	}
+	
+	cout &lt;&lt; maxx &lt;&lt; &quot; &quot; &lt;&lt; amt &lt;&lt; endl;
+	
+	return 0;
+}
+
+vector&lt;complex&lt;double&gt; &gt; FFT(vector&lt;complex&lt;double&gt; &gt; A, int m, complex&lt;double&gt; w)
+{
+  if(m == 1)
+    return A;
+  vector&lt;complex&lt;double&gt; &gt; Aeven(m/2);
+  vector&lt;complex&lt;double&gt; &gt; Aodd(m/2);
+  for(int i=0;i&lt;m;i+=2) Aeven[i/2] = A[i];
+  for(int i=1;i&lt;m;i+=2) Aodd[i/2]  = A[i];
+  vector&lt;complex&lt;double&gt; &gt; Feven = FFT(Aeven, m/2, w*w);
+  vector&lt;complex&lt;double&gt; &gt; Fodd = FFT(Aodd, m/2, w*w);
+  vector&lt;complex&lt;double&gt; &gt; result(m);
+  complex&lt;double&gt; x = 1;
+  for(int i=0;i&lt;m/2;++i)
+  {
+    result[i] = Feven[i] + x*Fodd[i];
+    result[i+m/2] = Feven[i] - x*Fodd[i];
+    x*= w;
+  }
+
+  return result;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

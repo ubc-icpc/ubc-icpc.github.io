@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+deque&lt;pair&lt;int, char&gt;&gt; flip(deque&lt;pair&lt;int, char&gt;&gt; v) {
+	reverse(v.begin(), v.end());
+	for (auto&amp; x : v) {
+		x.second ^= 'U'^'D';
+	}
+	return v;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n;
+	while (cin &gt;&gt; n) {
+		if (!n) break;
+		string s; cin &gt;&gt; s;
+		deque&lt;deque&lt;pair&lt;int, char&gt;&gt;&gt; v;
+		for (int i = 0; i &lt; s.size(); i++) {
+			v.push_back({{i, s[i]}});
+		}
+		
+		string t; cin &gt;&gt; t;
+		for (char c : t) {
+			if (c == 'R') {
+				deque&lt;pair&lt;int, char&gt;&gt; w = v.back();
+				v.pop_back();
+				int j = int(v.size())-1;
+				w = flip(w);
+				if (j &gt;= 0) {
+					for (auto p : v[j]) {
+						w.push_back(p);
+					}
+					v[j] = w;
+				} else {
+					v.push_back(w);
+				}
+			} else {
+				deque&lt;pair&lt;int, char&gt;&gt; w = v.front();
+				v.pop_front();
+				int j = 0;
+				w = flip(w);
+				if (v.size() &gt; 0) {
+					for (auto p : v[j]) {
+						w.push_back(p);
+					}
+					v[j] = w;
+				} else {
+					v.push_back(w);
+				}
+			}
+		}
+		
+		int q; cin &gt;&gt; q;
+		static int ca = 1;
+		cout &lt;&lt; &quot;Pile &quot; &lt;&lt; ca++ &lt;&lt; endl;
+		while (q--) {
+			int x; cin &gt;&gt; x;
+			auto p = v[0][x-1];
+			cout &lt;&lt; &quot;Card &quot; &lt;&lt; x &lt;&lt; &quot; is a face &quot; &lt;&lt; (p.second == 'U' ? &quot;up&quot; : &quot;down&quot;) &lt;&lt; ' ' &lt;&lt; p.first+1 &lt;&lt; '.' &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

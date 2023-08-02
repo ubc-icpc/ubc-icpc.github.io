@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n,k;
+
+vector&lt;int&gt; v;
+
+vector&lt;vector&lt;vector&lt;int&gt; &gt; &gt; dp;
+
+int convert(char c){
+	if(c=='H')return 0;
+	if(c=='S')return 1;
+	if(c=='P')return 2;
+}
+
+int beat(int a, int b){
+	if( (a==0&amp;&amp;b==1)||(a==2&amp;&amp;b==0)||(a==1&amp;&amp;b==2))return 1;
+	return 0;
+}
+
+// f(g, s, c)=about to play game g, s switches left, current char is c
+int f(int g, int s, int c){
+	if(dp[g][s][c]!=-1)return dp[g][s][c];
+
+	if(g==n-1){
+		if(s==0)return beat(c,v[n-1]);
+		else return 1;
+	}
+	//does not switch
+	int ans=f(g+1,s,c)+beat(c,v[g]);
+	if(s&gt;0){
+		//switch to something
+		ans=max(ans, f(g+1, s-1, 2)+beat(2,v[g]));
+		ans=max(ans, f(g+1, s-1, 0)+beat(0,v[g]));
+		ans=max(ans, f(g+1, s-1, 1)+beat(1,v[g]));
+	}
+	dp[g][s][c]=ans;
+//	cout&lt;&lt;g&lt;&lt;' '&lt;&lt;s&lt;&lt;' '&lt;&lt;c&lt;&lt;' '&lt;&lt;ans&lt;&lt;endl;
+	return ans;
+}
+
+int main(){
+	cin&gt;&gt;n&gt;&gt;k;
+	v.assign(n,0);
+	dp.assign(n, vector&lt;vector&lt;int&gt; &gt;(k+1, vector&lt;int&gt;(3,-1)));
+	for(int i=0;i&lt;n;i++){char x;cin&gt;&gt;x;v[i]=convert(x);}
+	int ans=f(0, k, 0);
+	ans=max(ans, f(0, k, 1));
+	ans=max(ans, f(0, k, 2));
+	cout&lt;&lt;ans&lt;&lt;endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

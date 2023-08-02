@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+        int t;
+        int r, n;
+        cin &gt;&gt; t;
+        while (t--) {
+                cin &gt;&gt; r &gt;&gt; n;
+                double length = 0;
+                int x, y;
+                vector&lt;pair&lt;int, int&gt;&gt; coords;
+                coords.clear();
+                for (int i = 0; i &lt; n; i++) {
+                        cin &gt;&gt; x &gt;&gt; y;
+                        coords.push_back(make_pair(x, y));
+                }
+                for (int i = 0; i &lt; n - 1; i++) {
+                        length += sqrt((coords[i].first - coords[i+1].first) *
+                                        (coords[i].first - coords[i+1].first) +
+                                        (coords[i].second - coords[i+1].second) *
+                                        (coords[i].second - coords[i+1].second));
+                }
+                length += sqrt((coords[0].first - coords[n-1].first) * 
+                                (coords[0].first - coords[n-1].first) + 
+                                (coords[0].second - coords[n-1].second) * 
+                                (coords[0].second - coords[n-1].second));
+
+                double result = 1.0 - (2.0 * M_PI * r ) / length;
+                if (result &lt; 0) {
+                        cout &lt;&lt; &quot;Not possible&quot; &lt;&lt; endl;
+                } else {
+                        cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; result &lt;&lt; endl;
+                }
+        }
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

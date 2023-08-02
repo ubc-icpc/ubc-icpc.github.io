@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+ 
+using namespace std;
+
+
+int main(){
+	int total; cin &gt;&gt; total;
+	while(total--){
+		int distance, numGas, numFood; cin &gt;&gt; distance &gt;&gt; numGas &gt;&gt; numFood;
+		set&lt;int&gt; stops;
+		
+		for(int i=1; i*numGas&lt;distance;i++){
+			stops.insert(i*numGas);
+		}
+		
+		for(int i=1; i*numFood&lt;distance;i++){
+			stops.insert(i*numFood);
+		}
+		
+		cout &lt;&lt; distance &lt;&lt; &quot; &quot; &lt;&lt; numGas &lt;&lt; &quot; &quot; &lt;&lt; numFood &lt;&lt; endl;
+		cout &lt;&lt; stops.size() &lt;&lt; endl;
+		
+		
+	}
+	return 0;
+} 
+	
+	
+	
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

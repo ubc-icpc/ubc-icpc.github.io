@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; piii;
+typedef pair&lt;ld, int&gt; S;
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int csnum = 1;
+    int n; cin &gt;&gt; n;
+    while (n &gt; 0) {
+        map&lt;string, int&gt; str2idx;
+        vector&lt;string&gt; idx2str;
+        vector&lt;vector&lt;piii&gt; &gt; adj;
+        int nv = 0;
+        for (int i = 0; i &lt; n; i++) {
+            int v1, v2; string c1, c2; char c;
+            cin &gt;&gt; v1 &gt;&gt; c1 &gt;&gt; c &gt;&gt; v2 &gt;&gt; c2;
+            if (str2idx.count(c1) == 0) {
+                str2idx[c1] = nv++;
+                idx2str.push_back(c1);
+                adj.push_back(vector&lt;piii&gt;());
+            }
+            if (str2idx.count(c2) == 0) {
+                str2idx[c2] = nv++;
+                idx2str.push_back(c2);
+                adj.push_back(vector&lt;piii&gt;());
+            }
+            adj[str2idx[c1]].push_back(piii(str2idx[c2], pii(v1, v2)));
+            adj[str2idx[c2]].push_back(piii(str2idx[c1], pii(v2, v1)));
+        }
+        int val; string cc; cin &gt;&gt; val &gt;&gt; cc;
+        int s = str2idx[cc];
+        int best = -1;
+        int bestidx = -1;
+        ld bestdiff = 1000000000000.L;
+        vector&lt;bool&gt; visited(nv, false);
+        queue&lt;S&gt; q;
+        q.push(S(val, s));
+        while (!q.empty()) {
+            S curr = q.front(); q.pop();
+            if (visited[curr.second]) continue;
+            visited[curr.second] = true;
+
+            //cerr &lt;&lt; &quot;visit: &quot; &lt;&lt; idx2str[curr.second] &lt;&lt; &quot; &quot; &lt;&lt; curr.first &lt;&lt; endl;
+
+            for (int i = 0; i &lt; adj[curr.second].size(); i++) {
+                piii blah = adj[curr.second][i];
+                if (blah.first != s) {
+                    ld nxt = curr.first * blah.second.second / blah.second.first;
+                    ld nxtround = ceil(nxt-1e-9);
+                    ld diff = abs(nxtround/nxt*val-val);
+                    if (diff &lt; bestdiff &amp;&amp; (int)nxtround &lt;= 100000) {
+                        bestdiff = diff;
+                        best = (int)nxtround;
+                        bestidx = blah.first;
+                    }
+                    q.push(S(nxt, blah.first));
+                }
+            }
+        }
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; csnum &lt;&lt; &quot;: &quot; &lt;&lt; best &lt;&lt; &quot; &quot; &lt;&lt; idx2str[bestidx] &lt;&lt; endl;
+
+        cin &gt;&gt; n;
+        csnum++;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

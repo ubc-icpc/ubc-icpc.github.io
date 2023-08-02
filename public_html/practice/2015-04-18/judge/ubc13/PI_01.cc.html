@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+const int MAXL = 1000*1000 + 7;
+
+int T;
+
+string seq;
+
+int main()
+{
+	cin&gt;&gt;T;
+	while(T--)
+	{
+		cin&gt;&gt;(seq);
+
+		list&lt;char&gt; pass; pass.push_back('F');
+
+		auto it= pass.begin();
+
+		for(int j=0;j&lt;seq.size();j++)
+		{
+			//cout&lt;&lt;&quot;seq &quot;&lt;&lt;seq[j]&lt;&lt;endl;
+			if(seq[j] == '&lt;' )
+			{
+				if((it)!=pass.begin()) it--;
+			}
+			else if(seq[j] == '&gt;' )
+			{
+				it++;
+				if(it==pass.end()) it--;
+			}
+			else if(seq[j] == '-' )
+			{
+				if(it!=pass.begin())
+				{
+					it = pass.erase(it);
+					it--;
+				}
+			}
+			else
+			{
+				it++;
+				pass.insert( it, seq[j]);
+			//	cout&lt;&lt;seq[j]&lt;&lt;endl;
+				it--;
+			}
+		}
+
+		it = pass.begin(); it++;
+		for(; it!=pass.end(); it++)
+			cout&lt;&lt;(*it);
+		cout&lt;&lt;endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

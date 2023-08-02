@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+
+using namespace std;
+
+int main( void ) {
+  int T; cin &gt;&gt; T;
+
+  while( T-- ) {
+    string str; cin &gt;&gt; str;
+    string res = &quot;&quot;;
+    int pos = 0;
+    //res = res.insert(0,1,'a');
+    for( size_t i=0; i&lt;str.size(); i++ ) {
+      //cout &lt;&lt; str[i] &lt;&lt; &quot;   &quot;&lt;&lt; res &lt;&lt; &quot;   &quot; &lt;&lt; pos &lt;&lt; endl;
+      if( str[i] == '&lt;') {
+	if(pos &gt; 0) pos--;
+      }else if( str[i] == '&gt;' ) {
+	if( pos &lt; res.size() ) pos++;
+      }else if( str[i] == '-' ) {
+	if( pos &gt; 0 ) {
+	res = res.erase(pos-1, 1);
+	pos--;
+	}/* else if ( pos == 0 ) {
+	  res = res.erase(pos, 1);
+	  //pos--;
+	  }*/
+      }else {
+	res = res.insert( pos, 1, str[i] );
+	pos++;
+      }
+    }
+    cout &lt;&lt; res &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

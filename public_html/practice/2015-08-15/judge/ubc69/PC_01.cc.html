@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+#define INF 1000000
+
+using namespace std;
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		int c,d; string s;
+		cin&gt;&gt;c&gt;&gt;d&gt;&gt;s;
+		cout&lt;&lt;&quot;Day #&quot;&lt;&lt;i&lt;&lt;endl;
+		cout&lt;&lt;c&lt;&lt;' '&lt;&lt;d&lt;&lt;endl;
+		cout&lt;&lt;s&lt;&lt;endl;
+		
+		int count=0, pos=0;
+		while(pos&lt;c-1){
+			int next = pos + d + 1;
+			while(next&gt;c||s[next]=='X') next--;
+			if(next&lt;=pos){
+				count=0;
+				break;
+			}
+			count++;
+			pos=next;
+		}
+		cout&lt;&lt;count&lt;&lt;endl;
+		cout&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

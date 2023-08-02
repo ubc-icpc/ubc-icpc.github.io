@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+#define MAXN 100100
+
+int n, q;
+int acc[MAXN];
+int call[MAXN];
+
+int main(){
+
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+
+  cin &gt;&gt; n &gt;&gt; q;
+  for(int i = 1;i &lt;= n;i++) cin &gt;&gt; call[i];
+
+  for(int i = 1;i &lt;= n;i++) acc[i] = acc[i-1] + call[i];
+
+  for(int i = 1;i &lt;= q;i++){
+
+    int s, t;
+    cin &gt;&gt; s &gt;&gt; t;
+
+    cout &lt;&lt; (acc[t] - acc[s-1]) &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

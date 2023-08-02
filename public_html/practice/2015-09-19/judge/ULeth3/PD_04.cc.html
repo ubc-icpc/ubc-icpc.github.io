@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+void sort (double [][2], int);
+void check (double[][2], double, int, int&amp;, int, double);
+void check0s (double[][2], int, int&amp;, int, int);
+
+int main()
+{
+   int tests;
+   cin &gt;&gt; tests;
+   
+   for (int a=1; a&lt;=tests; a++)
+   {
+      int numPoints;
+      double points[400][2];
+
+      cin &gt;&gt; numPoints;
+      
+      for (int i=0;i&lt;numPoints;i++)
+      {
+	 cin &gt;&gt; points[i][0];
+	 cin &gt;&gt; points[i][1];
+      }
+
+      if (numPoints&lt;3)
+      {
+	 cout &lt;&lt; &quot;Case #&quot; &lt;&lt; a &lt;&lt; &quot;: &quot; &lt;&lt; numPoints &lt;&lt; endl;
+	 continue;
+      }
+      sort(points, numPoints);
+      
+      double slope;
+      int counts=2, max=0;
+
+      for (int i=0; i&lt;numPoints-1;i++)
+	 for (int j=i+1; j&lt;numPoints;j++)
+	 {
+	    if (points[j][1]-points[i][1]==0)
+	       check0s(points, j, counts, numPoints, 1);
+	    else if (points[j][0]-points[i][0]==0)
+	       check0s(points, j, counts, numPoints, 0);
+	    else
+	    {
+	       slope=(points[j][1]-points[i][1])/(points[j][0]-points[i][0]);
+	       double b=points[i][1]-slope*points[i][0];
+	       check(points, slope, j, counts, numPoints, b);
+	    }
+
+	    if (counts&gt;max)
+	       max=counts;
+	    counts=2;
+	 }
+
+      cout &lt;&lt; &quot;Case #&quot; &lt;&lt; a &lt;&lt; &quot;: &quot; &lt;&lt; max &lt;&lt; endl;
+   }
+   
+
+   return 0;
+}
+
+void sort(double p[][2], int num)
+{
+   for (int i=0;i&lt;num-1;i++)
+      for (int j=i+1;j&lt;num;j++)
+	 if (p[j][0]&lt;p[i][0])
+	 {
+	    int temp1=p[j][0];
+	    int temp2=p[j][1];
+	    p[j][0]=p[i][0];
+	    p[j][1]=p[i][1];
+	    p[i][0]=temp1;
+	    p[i][1]=temp2;
+	 }
+}
+	       
+void check(double p[][2], double slope, int j, int&amp; n, int ps, double b)
+{
+   for (int a=j+1; a&lt;ps; a++)
+      if (fabs(slope*p[a][0]+b-p[a][1])&lt;0.000001)
+	 n++;
+}
+
+void check0s (double p[][2], int j, int&amp; n, int ps, int d)
+{
+   for (int a=j+1; a&lt;ps; a++)
+      if (p[a][d]==p[j][d])
+	 n++;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

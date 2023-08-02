@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#include &lt;string.h&gt;
+
+using namespace std;
+
+struct computer {
+    long long R;
+    long long S;
+    long long D;
+    string name;
+};
+
+inline bool operator&lt; (const computer&amp; lhs, const computer&amp; rhs){
+    long long numl = 2*lhs.R + 3*lhs.S + lhs.D;
+    long long numr = 2*rhs.R + 3*rhs.S + rhs.D;
+    if(numl == numr){
+        return strcmp(lhs.name.c_str(), rhs.name.c_str()) &lt; 0;
+    }
+    return numl &gt; numr;
+}
+
+int main() {
+    
+    int N;
+    cin &gt;&gt; N;
+    string name;
+    long long R,S,D;
+    vector&lt;computer&gt; computers;
+    for(int i = 0; i &lt; N; i++){
+        cin &gt;&gt; name &gt;&gt; R &gt;&gt; S &gt;&gt; D;
+        computer c;
+        c.R = R;
+        c.S = S;
+        c.D = D;
+        c.name = name;
+        computers.push_back(c);
+    }
+    
+    sort(computers.begin(), computers.end());
+    if(N &gt; 0){
+        cout &lt;&lt; computers[0].name &lt;&lt; endl;
+    }
+    if(N &gt; 1){
+        cout &lt;&lt; computers[1].name &lt;&lt; endl;
+    }
+    
+    return 0;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

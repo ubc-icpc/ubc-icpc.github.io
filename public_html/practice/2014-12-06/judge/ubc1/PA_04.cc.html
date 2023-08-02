@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, string&gt; pls;
+
+bool comp(const pls&amp; a, const pls&amp; b) {
+	if (a.first == b.first) return a.second &lt; b.second;
+	return a.first &gt; b.first;
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;pls&gt; plsss(n);
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; plsss[i].second;
+		int x, y, z; cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+		plsss[i].first = 2*x + 3*y + z;
+	}
+	sort(plsss.begin(), plsss.end(), comp);
+	
+	if (!plsss.empty()) cout &lt;&lt; plsss[0].second &lt;&lt; endl;
+	if (plsss.size() &gt;= 2) cout &lt;&lt; plsss[1].second &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

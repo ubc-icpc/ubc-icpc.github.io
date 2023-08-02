@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+const int maxn = 100005;
+ll h[maxn], x[maxn];
+int main() {
+    int n, p; cin &gt;&gt; n &gt;&gt; p;
+    vector&lt;pair&lt;int, int&gt; &gt; v(n);
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; v[i].second &gt;&gt; v[i].first;
+    }
+    sort(v.begin(), v.end());
+    
+    for (int i = 0; i &lt; n; i++) {
+        x[i] = v[i].first;
+        h[i] = v[i].second;
+    }
+    
+    int r = lower_bound(x, x+n, p+1)-x;
+    int l = r-1;
+    ll ans = 100000000000LL;
+    while (l &gt;= 0 &amp;&amp; r &lt; n) {
+        while (x[r]-x[l] &gt; h[r]) {
+            r++;
+        }
+        if (r != n) {
+            ans = min(ans, x[r]-x[l]-h[l]);
+        }
+        if (x[r]-x[l] &gt; h[l]) l--;
+        else break;
+    }
+    
+    r = lower_bound(x, x+n, p+1)-x;
+    l = r-1;
+    while (l &gt;= 0 &amp;&amp; r &lt; n) {
+        while (x[r]-x[l] &gt; h[l]) {
+            l--;
+        }
+        if (l &gt;= 0) {
+            ans = min(ans, x[r]-x[l]-h[r]);
+        }
+        if (x[r]-x[l] &gt; h[r]) r++;
+        else break;
+    }
+    
+    ans = max(ans, 0LL);
+    if (ans == 100000000000LL) cout &lt;&lt; -1 &lt;&lt; endl;
+    else cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

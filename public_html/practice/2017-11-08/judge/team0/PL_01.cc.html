@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main(){
+  ios_base::sync_with_stdio(0); cin.tie(0);
+  
+  string vowels = &quot;aiyeou&quot;;
+  string consonants = &quot;bkxznhdcwgpvjqtsrlmf&quot;;
+  
+  set&lt;char&gt; vSet, cSet;
+  for(char cur : vowels) {
+    vSet.insert(cur);
+  }
+  for(char cur : consonants) {
+    cSet.insert(cur);
+  }
+  
+  string s; 
+  
+  while(getline(cin, s)) {
+    string out = s;
+      for(int i = 0; i &lt; s.size(); i++) {
+        bool isUpper = (s[i] &gt;= 'A' &amp;&amp; s[i] &lt;= 'Z');
+        if(isUpper) {
+            s[i] = s[i] - 'A' + 'a';
+        }
+        if(vSet.count(s[i])) {
+            for(int j = 0; j &lt; vowels.size(); j++) {
+                if(vowels[j] == s[i]) {
+                    out[i] = vowels[(j + 3) % 6];
+                    break;
+                }
+            }
+        } else if (cSet.count(s[i])) {
+            for(int j = 0; j &lt; consonants.size(); j++) {
+                if(consonants[j] == s[i]) {
+                    out[i] = consonants[(j + 10) % 20];
+                    break;
+                }
+            }
+        }
+        if(isUpper) {
+            out[i] = out[i] - 'a' + 'A';
+        }
+      }
+      cout &lt;&lt; out &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

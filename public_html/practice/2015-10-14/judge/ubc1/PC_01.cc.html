@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+ 
+using namespace std;
+ 
+typedef long double ld;
+typedef long long ll;
+struct p3d {
+    ld x, y, z;
+};
+ 
+ld dist[100][100];
+int main() {
+    int t; cin &gt;&gt; t;
+    for (int c = 1; c &lt;= t; c++) {
+        int p; cin &gt;&gt; p;
+         
+        vector&lt;p3d&gt; pt(p);
+        map&lt;string, int&gt; id;
+        int cnt = 0;
+        for (int i = 0; i &lt; p; i++) {
+            string s; cin &gt;&gt; s;
+            cin &gt;&gt; pt[i].x &gt;&gt; pt[i].y &gt;&gt; pt[i].z;
+            id[s] = cnt++;
+        }
+         
+        auto d = [&amp;](p3d a, p3d b) { return sqrt(pow(a.x-b.x, 2) + pow(a.y-b.y, 2) + pow(a.z-b.z, 2)); };
+         
+        for (int i = 0; i &lt; p; i++) {
+            for (int j = 0; j &lt; p; j++) {
+                dist[i][j] = d(pt[i], pt[j]);
+            }
+        }
+         
+        int e; cin &gt;&gt; e;
+        for (int i = 0; i &lt; e; i++) {
+            string s, t; cin &gt;&gt; s &gt;&gt; t;
+            dist[id[s]][id[t]] = 0;
+        }
+         
+        for (int k = 0; k &lt; p; k++) {
+            for (int i = 0; i &lt; p; i++) {
+                for (int j = 0; j &lt; p; j++) {
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
+         
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; c &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+        int q; cin &gt;&gt; q;
+        while (q--) {
+            string s, t; cin &gt;&gt; s &gt;&gt; t;
+            cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; s &lt;&lt; &quot; to &quot; &lt;&lt; t &lt;&lt; &quot; is &quot; &lt;&lt; ll(dist[id[s]][id[t]]+0.5) &lt;&lt; &quot; parsecs.&quot; &lt;&lt; endl;
+        }
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

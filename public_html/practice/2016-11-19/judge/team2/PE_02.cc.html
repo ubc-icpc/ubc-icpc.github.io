@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define pb(a)   push_back(a)
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+ll dp[5005][5005];
+ll ch[5105][5105];
+
+const ll MOD = 1e9+7;
+void do_dp(){
+    dp[0][0]=1;
+    for(int i=1;i&lt;5001;i++)// number of elements
+        for(int j=0;j&lt;5001;j++)
+            dp[i][j] = (dp[i-1][j-1]+dp[i-1][j]*(i-1))%MOD;
+    ch[0][0] = 1;
+    for(int i=1;i&lt;5006;i++){// number of elements
+        for(int j=0;j&lt;5006;j++){
+            ll pos = (j==0? 0: ch[i-1][j-1]);
+            ch[i][j] = (pos+ch[i-1][j])%MOD;
+        }
+}
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    do_dp();
+    int n, left, right;
+    cin &gt;&gt;n &gt;&gt; left &gt;&gt; right;
+    /*
+    for(int i=0;i&lt;n;i++){// number of elements
+        for(int j=0;j&lt;n;j++)
+            cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot;  &lt;&lt;ch[i][j] &lt;&lt; endl;//&quot; &quot;;
+        cout &lt;&lt; endl;
+    }
+    // */
+    while (n&gt;0){
+        left--;right--;
+        ll sum = 0;
+        for(int i=left;i&lt;n &amp;&amp; n-i-1&gt;=right;i++){
+            ll toadd = dp[i][left]*dp[n-i-1][right];
+            toadd%=MOD;
+            toadd*=ch[n-1][i];
+            toadd%=MOD;
+            //cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; n-i-1 &lt;&lt; &quot; &quot; &lt;&lt; toadd &lt;&lt; endl;
+            sum= (sum+toadd)%MOD;
+        }
+        cout &lt;&lt; sum &lt;&lt; endl;
+        cin &gt;&gt;n &gt;&gt; left &gt;&gt; right;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

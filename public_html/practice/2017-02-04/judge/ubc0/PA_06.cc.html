@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef double ld;
+
+//(which values picked, how many dice left, current score)
+//2^6 * 8 * 40 * transitions
+//can only generate sorted list of transitions,
+//so computing a dp for this, thats exactly 1287
+
+vector&lt;map&lt;int, int&gt;&gt; ftrans[10][10];
+vector&lt;vector&lt;int&gt;&gt; trans[10][10];
+vector&lt;ld&gt; wtrans[10][10];
+ld weight(const vector&lt;int&gt;&amp; v) {
+	map&lt;int, int&gt; freq;
+	
+	ld res = 1, k = 1;
+	for (int x : v) {
+		freq[x]++;
+		res *= k;
+		k++;
+	}
+	
+	for (auto p : freq) {
+		for (int i = 1; i &lt;= p.second; i++) {
+			res /= i;
+		}
+	}
+	return res;
+}
+
+int target;
+int val[] = {1,2,3,4,5,5};
+ld memo[1&lt;&lt;7][10][50];
+
+vector&lt;int&gt; good[1&lt;&lt;7][10];
+ld dp(int bm, int nd, int s) {
+	if (s &gt;= target &amp;&amp; ((1&lt;&lt;5) &amp; bm)) return 1.0;
+	if (nd == 0) return 0;
+	if (memo[bm][nd][s] &gt;= 0) return memo[bm][nd][s];
+	
+	ld tot = 0;
+	bool stored = good[bm][nd].size();
+	vector&lt;int&gt; iters;
+	if (!stored) {
+		for (int k = 0; k &lt; trans[nd][5].size(); k++) {
+			iters.push_back(k);
+		}
+	} else {
+		iters = good[bm][nd];
+	}
+	
+	for (int k : iters) {
+		// use optimal strategy to choose value to replace
+		ld best = 0;
+		for (const auto&amp; p : ftrans[nd][5][k]) {
+			int x = p.first;
+			int f = p.second;
+			if ((1&lt;&lt;x) &amp; bm) continue;
+			// if i choose x, what score do i get
+			best = max(best, dp(bm|(1&lt;&lt;x), nd-f, s+val[x]*f));
+		}
+		if (best) {
+			if (!stored) good[bm][nd].push_back(k); 
+			tot += wtrans[nd][5][k] * best;
+		}
+	}
+	return memo[bm][nd][s] = tot;
+}
+
+void reset() {
+	for (int i = 0; i &lt; (1&lt;&lt;6); i++) {
+		for (int j = 0; j &lt;= 8; j++) {
+			for (int k = 0; k &lt;= 40; k++) {
+				memo[i][j][k] = -1;
+			}
+		}
+	}
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	
+	for (int j = 0; j &lt;= 5; j++) {
+		trans[0][j].push_back(vector&lt;int&gt;());
+	}
+	
+	for (int i = 1; i &lt;= 8; i++) {
+		for (int j = 0; j &lt;= 5; j++) {
+			// choose j
+			trans[i][j].insert(trans[i][j].end(), trans[i-1][j].begin(), trans[i-1][j].end());
+			for (auto&amp; v : trans[i][j]) v.push_back(j);
+			
+			// skip j
+			trans[i][j].insert(trans[i][j].end(), trans[i][j-1].begin(), trans[i][j-1].end());
+			
+			ld scale = 1.0;
+			for (int k = 0; k &lt; i; k++) scale /= 6.0;
+			for (const auto&amp; v : trans[i][j]) {
+				wtrans[i][j].push_back(weight(v)*scale);
+				map&lt;int, int&gt; freq;
+				for (int x : v) {
+					freq[x]++;
+				}
+				ftrans[i][j].push_back(freq);
+			}
+		}
+	}
+	
+	for (target = 1; target &lt;= 40; target++) {
+		reset();
+		cerr &lt;&lt; fixed &lt;&lt; setprecision(16) &lt;&lt; dp(0,8,0) &lt;&lt; endl;
+	}
+	cerr &lt;&lt; endl;
+	
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		reset();
+		cin &gt;&gt; target;
+		cout &lt;&lt; fixed &lt;&lt; setprecision(16) &lt;&lt; dp(0, 8, 0) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

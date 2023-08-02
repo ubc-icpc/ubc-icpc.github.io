@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+// R1 = (a+b-sqrt(a^2 + b^2))/2
+
+//(R1-R2)^2 + x1^2 = (R1+R2)^2
+//4R1R2 = x1^2 --&gt; x1 = 2Sqrt(R1R2)
+//x1 + x2 + x3 + ... = a - r
+//x1 * 1/(1-p) = a-r
+
+int main() {
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot;;
+        ld b, a; cin &gt;&gt; b &gt;&gt; a;
+        
+        ld r0 = 0.5 * (a + b - sqrt(a*a + b*b));
+        ld l1 = sqrt((a-r0)*(a-r0) + r0*r0) - r0;
+        ld l0 = sqrt((a-r0)*(a-r0) + r0*r0) + r0;
+        ld ratio = pow(l0/l1, -2);
+        
+        ld pi = acos(-1.0L);
+        cout &lt;&lt; setprecision(4) &lt;&lt; fixed &lt;&lt; pi * r0 * r0 / (1-ratio) / (a*b/2) &lt;&lt; endl;
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

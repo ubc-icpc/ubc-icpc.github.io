@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class C {
+
+	private void work() {
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+
+		while (true) {
+			long x = sc.nextLong();
+			if (x == 0)
+				break;
+			long lo = 1;
+			long hi = 1L &lt;&lt; 30;
+			while (lo &lt; hi) {
+				long m = (lo + hi) / 2;
+				long t = m * (m + 1) / 2;
+				if (t &gt;= x)
+					hi = m;
+				else
+					lo = m + 1;
+			}
+			long diff = lo * (lo + 1) / 2 - x;
+			System.out.println(diff == 0 ? &quot;Not bored enough!&quot; : diff);
+		}
+
+		sc.close();
+	}
+
+	public static void main(String[] args) {
+		C ccc = new C();
+		ccc.work();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

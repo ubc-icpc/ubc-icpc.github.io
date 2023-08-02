@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef float ld;
+typedef complex&lt;ld&gt; pt;
+
+ld w[355][355], r[355];
+pt c[355];
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    for (int ca = 1; ca &lt;= t; ca++) {
+        cout &lt;&lt; &quot;Campus #&quot; &lt;&lt; ca &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+        
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            ld x, y, R; cin &gt;&gt; x &gt;&gt; y &gt;&gt; R;
+            c[i] = pt(x, y);
+            r[i] = R;
+        }
+        
+        int m; cin &gt;&gt; m;
+        for (int i = n; i &lt; n+2*m; i++) {
+            ld x, y; cin &gt;&gt; x &gt;&gt; y;
+            c[i] = pt(x,y);
+            r[i] = 0;
+        }
+        
+        int v = n+2*m;
+        for (int i = 0; i &lt; v; i++) {
+            for (int j = 0; j &lt; v; j++) {
+                ld dist = abs(c[i]-c[j]) - r[i] - r[j];
+                w[i][j] = max(ld(0.0), dist);
+            }
+        }
+        
+        for (int k = 0; k &lt; v; k++) {
+            for (int i = 0; i &lt; v; i++) {
+                for (int j = 0; j &lt; v; j++) {
+                    w[i][j] = min(w[i][j], w[i][k] + w[k][j]);
+                }
+            }
+        }
+        
+        for (int i = 0; i &lt; m; i++) {
+            cout &lt;&lt; &quot;  Path #&quot; &lt;&lt; i+1 &lt;&lt; &quot;: Shortest sun distance is &quot; &lt;&lt; setprecision(1) &lt;&lt; fixed &lt;&lt; w[2*i+n][2*i+1+n] &lt;&lt; &quot;.\n&quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+__author__ = 'andresr'
+import sys, math
+
+test_input = &quot;2\n&quot;+\
+             &quot;4 1 5 10 25\n&quot;+\
+             &quot;3 1 5 6&quot;
+inputs = []
+
+for line in sys.stdin:
+    for word in line.split():
+        inputs.append(int(word))
+
+n = inputs.pop(0) # number of donimation sets
+
+for i in range(0, n):
+    d = inputs.pop(0) # number of coin amounts in set
+    print(&quot;Denominations: &quot;),
+    good_denominations = True
+    previous_amount = 0
+    for j in range(0, d):
+        amount = inputs.pop(0)
+        print(amount),
+        if amount &lt; 2*previous_amount:
+            good_denominations = False
+        previous_amount = amount
+    if good_denominations:
+        print(&quot;\nGood coin denominations!\n&quot;),
+    else:
+        print(&quot;\nBad coin denominations!\n&quot;),
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

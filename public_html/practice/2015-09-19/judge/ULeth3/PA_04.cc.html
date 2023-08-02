@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+void sort (int [],int);
+
+int main()
+{
+   while (true)
+   {
+      int n, A[30];
+      cin &gt;&gt; n;
+      if (n==0)
+	 break;
+      for (int i=0;i&lt;n;i++)
+	 cin &gt;&gt; A[i];
+      sort (A,n);
+      int finish=0;
+      for (int i=0;i&lt;n;i++)
+      {
+	 int next=(i+1)*30;
+	 if (next&lt;finish)
+	    next=finish;
+	 finish=next+A[i];
+      }
+      cout &lt;&lt; finish/60 &lt;&lt; &quot;:&quot;;
+      if (finish%60&lt;10)
+	 cout &lt;&lt; &quot;0&quot;;
+      cout &lt;&lt; finish%60 &lt;&lt; endl;
+   }
+   return 0;
+}
+
+void sort(int A[], int n)
+{
+   for (int i=0;i&lt;n-1;i++)
+      for (int j=i+1;j&lt;n;j++)
+	 if (A[j]&gt;A[i])
+	 {
+	    int temp=A[i];
+	    A[i]=A[j];
+	    A[j]=temp;
+	 }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

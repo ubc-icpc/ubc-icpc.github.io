@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+struct node {
+  string name;
+  string clas; 
+  vector&lt;int&gt; classes;
+
+  node() {}
+};
+
+map&lt;string, int&gt; ma;
+
+bool cmp(const node &amp;a, const node &amp;b) {
+  int len1 = a.classes.size();
+  int len2 = b.classes.size();
+  for (int i = 0; i &lt; max(len1, len2); i++) {
+    int class1, class2;
+    if(i&gt;=len1) class1 = 2;
+    else class1 = a.classes[i];
+    if(i&gt;=len2) class2 = 2;
+    else class2 = b.classes[i];
+
+    if(class1 == class2) continue;
+    if(class1 &gt; class2) return true;
+    if(class1 &lt; class2) return false;
+  }
+  return a.name &lt; b.name;
+}
+
+int main() {
+  ma[&quot;lower&quot;] = 1;
+  ma[&quot;middle&quot;] = 2;
+  ma[&quot;upper&quot;] = 3;
+  int n; cin &gt;&gt; n;
+  vector&lt;node&gt; vec;
+  string waste; getline(cin, waste);
+  for (int i = 0; i &lt; n; i++) {
+    string x;
+    getline(cin, x);
+    stringstream ss(x); 
+    string tmp;
+    bool first = true;
+    node person;
+    while(ss &gt;&gt; tmp) {
+      if (first) {
+        person.name = tmp.substr(0, tmp.size()-1);
+        first = false;
+        continue;
+      }
+      if (tmp == &quot;class&quot;) break;
+      person.classes.push_back(ma[tmp]);
+    }
+    reverse(person.classes.begin(), person.classes.end());
+    vec.push_back(person);
+  }
+  sort(vec.begin(), vec.end(), cmp);
+  for (const node &amp;x : vec)
+    cout &lt;&lt; x.name &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

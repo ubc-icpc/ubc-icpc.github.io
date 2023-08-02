@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main() {
+  int t; cin &gt;&gt; t;
+  auto sizes = new int[2000][2000]();
+  
+  for (int i=0; i&lt;t; i++) {
+    int n; cin &gt;&gt; n;
+    int maxsize = 0;
+    
+    for (int j=0; j&lt;n; j++) {
+      string s; cin &gt;&gt; s;
+      for (int k=0; k&lt;n; k++) {
+        if (s[k] == 'F') {
+          sizes[j][k] = 0;
+        } else {
+          sizes[j][k] = 1;
+        }
+        
+        if (j!=0 &amp;&amp; k!=0 &amp;&amp; sizes[j][k]!=0) {
+          sizes[j][k] = min(sizes[j-1][k], min(sizes[j][k-1], sizes[j-1][k-1])) + 1;
+        }
+        if (sizes[j][k] &gt; maxsize) maxsize = sizes[j][k];
+      }
+    }
+    cout &lt;&lt; maxsize &lt;&lt; endl;
+  }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

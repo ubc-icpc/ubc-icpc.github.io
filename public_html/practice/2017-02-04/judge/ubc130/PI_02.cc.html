@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+typedef long long ll;
+typedef long double ld;
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int T; cin &gt;&gt; T;
+	while (T--) {
+		string p; cin &gt;&gt; p;
+		vector&lt;bool&gt; instructions;
+		for (char c : p)
+			instructions.push_back(c == 'R');
+		int n; cin &gt;&gt; n;
+		string s; cin &gt;&gt; s;
+		deque&lt;int&gt; list;
+		istringstream in(s);
+		char c; in &gt;&gt; c;
+		for (int i = 0; i &lt; n; i++) {
+			int k; in &gt;&gt; k;
+			list.push_back(k);
+			in &gt;&gt; c;
+		}
+		bool reverse = 0, err = 0;
+		for (bool b : instructions) {
+			if (b)
+				reverse = !reverse;
+			else {
+				if (list.empty()) {
+					err = 1;
+					break;
+				}
+				if (reverse)
+					list.pop_back();
+				else
+					list.pop_front();
+			}
+		}
+		if (err)
+			cout &lt;&lt; &quot;error&quot; &lt;&lt; endl;
+		else {
+			cout &lt;&lt; '[';
+			if (list.empty())
+				cout &lt;&lt; ']';
+			while (!list.empty()) {
+				int i;
+				if (reverse) {
+					i = list.back(); list.pop_back();
+				} else {
+					i = list.front(); list.pop_front();
+				}
+				cout &lt;&lt; i;
+				if (!list.empty())
+					cout &lt;&lt; ',';
+				else
+					cout &lt;&lt; ']';
+			}
+			cout &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

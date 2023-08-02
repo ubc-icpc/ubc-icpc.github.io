@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+using pt = complex&lt;ld&gt;;
+const int N = 111;
+const ld EPS = 1e-9, PI = acos(-1.L);
+
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ld sgn(ld x) { return abs(x) &lt; EPS ? 0 : (x &gt; 0) - (x &lt; 0); }
+bool eq(const pt&amp; a, const pt&amp; b) { return abs(a-b) &lt; EPS; }
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b) {
+  return a.real()&lt;b.real()-EPS||(a.real()&lt;b.real()+EPS&amp;&amp;a.imag()&lt;b.imag()-EPS);}
+bool seg_x_seg_ex(pt a1, pt a2, pt b1, pt b2) {
+  if (eq(a1,a2) || eq(b1,b2)) return false; // uncomment to exclude endpoints
+  ld za = abs(a2-a1), zb = abs(b2-b1); za=za&gt;EPS?1/za:0; zb=zb&gt;EPS?1/zb:0;
+  int s1 = sgn(cp(a2-a1, b1-a1)*za), s2 = sgn(cp(a2-a1, b2-a1)*za);
+  int s3 = sgn(cp(b2-b1, a1-b1)*zb), s4 = sgn(cp(b2-b1, a2-b1)*zb);
+  if(!s1 &amp;&amp; !s2 &amp;&amp; !s3) { // collinear
+    if (cmp_lex(a2, a1)) swap(a1, a2); if (cmp_lex(b2, b1)) swap(b1, b2);
+    return cmp_lex(a1, b2) &amp;&amp; cmp_lex(b1, a2);//uncomment to exclude endpoints
+    return !cmp_lex(b2, a1) &amp;&amp; !cmp_lex(a2, b1);
+  } return s1*s2 &lt; 0 &amp;&amp; s3*s4 &lt; 0; } //change to &lt; to exclude endpoints
+bool seg_x_seg_inc(pt a1, pt a2, pt b1, pt b2) {
+  //if (eq(a1,a2) || eq(b1,b2)) return false; // uncomment to exclude endpoints
+  ld za = abs(a2-a1), zb = abs(b2-b1); za=za&gt;EPS?1/za:0; zb=zb&gt;EPS?1/zb:0;
+  int s1 = sgn(cp(a2-a1, b1-a1)*za), s2 = sgn(cp(a2-a1, b2-a1)*za);
+  int s3 = sgn(cp(b2-b1, a1-b1)*zb), s4 = sgn(cp(b2-b1, a2-b1)*zb);
+  if(!s1 &amp;&amp; !s2 &amp;&amp; !s3) { // collinear
+    if (cmp_lex(a2, a1)) swap(a1, a2); if (cmp_lex(b2, b1)) swap(b1, b2);
+    //return cmp_lex(a1, b2) &amp;&amp; cmp_lex(b1, a2);//uncomment to exclude endpoints
+    return !cmp_lex(b2, a1) &amp;&amp; !cmp_lex(a2, b1);
+  } return s1*s2 &lt;= 0 &amp;&amp; s3*s4 &lt;= 0; } //change to &lt; to exclude endpoints
+
+int a[N], d[N];
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    int n; cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) {
+      cin &gt;&gt; a[i] &gt;&gt; d[i];
+    }
+    pt cur, dir(1, 0);
+    vector&lt;pair&lt;pt, pt&gt;&gt; segs(n+1);
+    for (int i = 1; i &lt;= n; i++) {
+      dir *= exp(pt(0, PI*a[i]/180));
+      pt prv = cur;
+      cur += (ld)d[i] * dir;
+      for (int j = 1; j &lt; i-1; j++) {
+        const auto&amp; p = segs[j];
+        if (seg_x_seg_inc(p.first, p.second, prv, cur)) {
+          //cerr &lt;&lt; &quot;intersect &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; p.first &lt;&lt; &quot; &quot; &lt;&lt; p.second &lt;&lt; &quot; &quot; &lt;&lt; prv &lt;&lt; &quot; &quot; &lt;&lt; cur &lt;&lt; nl;
+          cout &lt;&lt; i &lt;&lt; nl;
+          goto end;
+        }
+      }
+      if (i &gt; 1 &amp;&amp; seg_x_seg_ex(segs[i-1].first, segs[i-1].second, prv, cur)) {
+        cout &lt;&lt; i &lt;&lt; nl;
+        goto end;
+      }
+      //cerr &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; prv &lt;&lt; &quot;--&quot; &lt;&lt; cur &lt;&lt; nl;
+      segs[i] = {prv, cur};
+    }
+    cout &lt;&lt; &quot;SAFE\n&quot;;
+    end:;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

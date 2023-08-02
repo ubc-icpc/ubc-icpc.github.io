@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+public class BlackFriday2 {
+	public static void main(String[] args) throws IOException{
+		BufferedReader kinput=new BufferedReader(new InputStreamReader(System.in));
+		String in=kinput.readLine();
+		int ppl=Integer.parseInt(in);
+		in=kinput.readLine();
+		String[] split=new String[ppl];
+		split=in.split(&quot; &quot;);
+		int ans=0;
+		int[]dice=new int[6];
+		for(int i=0;i&lt;ppl;i++){
+			dice[Integer.parseInt(split[i])-1]++;
+		}
+		for(int i=0;i&lt;6;i++){
+			if(dice[i]==1)ans=i+1;
+		}
+		if(ans==0){
+			System.out.print(&quot;none&quot;);
+		}else{
+			for(int i=0;i&lt;ppl;i++)if(Integer.parseInt(split[i])==ans)System.out.print(i+1);
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

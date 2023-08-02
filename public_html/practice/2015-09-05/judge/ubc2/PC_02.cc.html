@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+long double PI = 3.1415926535L;
+
+int main() {
+  int N; cin &gt;&gt; N;
+  for (int n = 1; n &lt;= N; ++n) {
+    ld L1, L2; cin &gt;&gt; L1 &gt;&gt; L2;
+    ld s = sqrtl(2/(L1*L2));
+    ld a = s*min(L1, L2), b = s*max(L1, L2);
+    ld r1 = (a + b - sqrtl(a*a + b*b)) / 2;
+
+    a = r1, b = b - r1;
+    ld h0 = sqrtl(a*a + b*b), h1 = h0 + r1, h2 = h0 - r1;
+    ld r2 = r1*h2/h1;
+    ld ratio = (r2*r2)/(r1*r1);
+    ld area = PI*r1*r1/(1-ratio);
+
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; n &lt;&lt; &quot;: &quot; &lt;&lt; setprecision(4) &lt;&lt; fixed &lt;&lt; area &lt;&lt; endl &lt;&lt; endl;
+  }
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

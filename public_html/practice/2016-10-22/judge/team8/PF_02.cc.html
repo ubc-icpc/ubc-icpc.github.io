@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+#define endl '\n'
+
+using namespace std;
+
+int n, p;
+long double prob(int x) {
+	long double result = (long double) (x * p) / (n + 1);
+	for (int i = 2; i &lt;= x; i++) {
+		result *= (long double) (n-p+i) / (n+i);
+//		cout &lt;&lt; result &lt;&lt; endl;
+	}
+	return result;
+}
+
+int main() {
+	cin &gt;&gt; n &gt;&gt; p;
+	int l = 0; int r = n;
+/*	while (r - l &gt; 1) {
+		int l1 = (int) (2 * l + r) / 3;
+		int r1 = (int) (l + 2 * r) / 3;
+		if (prob(l1) &gt; prob(r1)) l = l1;
+		else r = r1;
+	}*/
+	/*while (l &lt; r) {
+		int mid = (l + r) &gt;&gt; 1;
+		if (prob(mid) &gt; prob(mid+1)) {
+			r = mid;
+		} else {
+			l = mid+1;
+		}
+	}*/
+/*	long double m = -1;
+	for (int i = 0; i &lt;= n + 10; i++) {
+		cout &lt;&lt; prob(i) &lt;&lt; endl;	
+		if (prob(i) &gt; m) { 
+			m = max(m, prob(i));
+			cout &lt;&lt; i &lt;&lt; endl;
+		}
+	}*/
+	cout &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; prob(n / (p-1)) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

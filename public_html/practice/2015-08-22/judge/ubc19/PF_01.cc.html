@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+char tri[1024][1024];
+
+/* x, and y is second corner of tip */
+void fill(int r, int c, int size) {
+  if (size == 1) {
+    tri[r][c] = 'X';
+    tri[r][c-1] = 'X';
+    tri[r+1][c] = 'X';
+    tri[r+1][c-1] = 'X';
+    return;
+  }
+  fill(r,c,size-1);
+  fill(r+(1&lt;&lt;(size-1)), c-(1&lt;&lt;(size-2)), size-1);
+  fill(r+(1&lt;&lt;(size-1)), c+(1&lt;&lt;(size-2)), size-1);
+}
+
+int main() {
+  int n; cin &gt;&gt; n;
+  int sz;
+  for (int i=1; i&lt;=n; i++) {
+    cout &lt;&lt; &quot;Triangle #&quot; &lt;&lt; i &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    cin &gt;&gt; sz;
+    int dim = 1 &lt;&lt; sz;
+    for (int j=0; j&lt;dim; j++)
+      for (int k=0; k&lt;dim; k++)
+        tri[j][k] = ' ';
+    fill (0,1&lt;&lt;(sz-1),sz);
+    
+    for (int j=0; j&lt;dim; j++) {
+      for (int k=0; k&lt;dim; k++){
+        cout &lt;&lt; tri[j][k];
+      }
+      cout &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
+  
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

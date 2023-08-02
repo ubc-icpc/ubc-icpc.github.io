@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//Doing Laundry
+
+//the point was to process the longest drying loads first, then
+//process the others
+
+//the input needs to be sorted
+
+
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+bool solve ();
+
+int main()
+
+{
+   while (solve());
+
+   return 0;
+
+}
+
+bool solve ()
+
+{
+   int n;
+   cin &gt;&gt; n;
+
+   if (!n)
+   {
+      return false;
+   }
+
+
+   int A[30];
+
+   for (int i=0; i&lt;n;  i++)
+   {
+      cin &gt;&gt; A[i];
+   }
+
+   sort (A, A+n);
+   
+   reverse (A, A+n);
+
+   int curr=0;
+   for (int i=0; i &lt;n;i++)
+   {
+      int done_wash = (i+1) *30;
+      curr = max (done_wash, curr) + A[i];
+   }
+
+   cout &lt;&lt; curr/60 &lt;&lt; &quot;:&quot; &lt;&lt; setw(2) &lt;&lt; setfill('0')&lt;&lt; curr%60 &lt;&lt; endl;
+
+   return true;
+}
+
+   
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

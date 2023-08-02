@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+const int T_LEAF = 0;
+const int T_NOT = 1;
+const int T_AND = 2;
+const int T_OR = 3;
+int depth = 0;
+struct N {
+    N* child[2];
+    int type;
+    bool val;
+
+    void print() {
+        if (type == T_LEAF) {
+            cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;LEAF: &quot; &lt;&lt; val &lt;&lt; endl;
+        } else if (type == T_NOT) {
+            cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;NOT: &quot; &lt;&lt; endl;
+            depth++; child[0]-&gt;print(); depth--;
+        } else if (type == T_AND) {
+            cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;AND: &quot; &lt;&lt; endl;
+            depth++; child[0]-&gt;print(); child[1]-&gt;print(); depth--;
+        } else if (type == T_OR) {
+            cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;OR: &quot; &lt;&lt; endl;
+            depth++; child[0]-&gt;print(); child[1]-&gt;print(); depth--;
+        } else {
+            cerr &lt;&lt; &quot;ERRROR&quot; &lt;&lt; endl;
+        }
+    }
+    bool eval() {
+        if (type == T_LEAF) {
+            return val;
+        } else if (type == T_NOT) {
+            return !child[0]-&gt;eval();
+        } else if (type == T_AND) {
+            return child[0]-&gt;eval() &amp;&amp; child[1]-&gt;eval();
+        } else if (type == T_OR) {
+            return child[0]-&gt;eval() || child[1]-&gt;eval();
+        } else {
+            cerr &lt;&lt; &quot;ERRROR&quot; &lt;&lt; endl;
+        }
+    }
+};
+
+N p[100000]; int nn = 0;
+N* parse(string &amp;str, int &amp;i) {
+    //cerr &lt;&lt; &quot;parse at: &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; str[i] &lt;&lt; endl;
+    if (str[i] == '(') {
+        int t;
+        i++;
+        N* left = parse(str, i);
+        if (str[i] == '&amp;') {
+            t = T_AND;
+            i++;
+        } else if (str[i] == '|') {
+            t = T_OR;
+            i++;
+        } else {
+            cerr &lt;&lt; &quot;ERRROR&quot; &lt;&lt; endl;
+        }
+        N* right = parse(str, i);
+        i++; // parse ')'
+        p[nn].child[0] = left;
+        p[nn].child[1] = right;
+        p[nn].type = t;
+        return &amp;p[nn++];
+    } else if (str[i] == '!') {
+        i++;
+        N* c = parse(str, i);
+        p[nn].type = T_NOT;
+        p[nn].child[0] = c;
+        return &amp;p[nn++];
+    } else if (str[i] == 't') {
+        p[nn].type = T_LEAF;
+        p[nn].val = true;
+        i++;
+        return &amp;p[nn++];
+    } else if (str[i] == 'f') {
+        p[nn].type = T_LEAF;
+        p[nn].val = false;
+        i++;
+        return &amp;p[nn++];
+    } else {
+        cerr &lt;&lt; &quot;ERRRRRRRROR&quot; &lt;&lt; endl;
+    }
+    return 0;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int ncase; cin &gt;&gt; ncase;
+    string line; getline(cin, line);
+    for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+        getline(cin, line);
+        int i = 0;
+        nn = 0;
+        N* tree = parse(line, i);
+        //tree-&gt;print();
+        bool x = line[line.length()-1] == 't';
+        cout &lt;&lt; csnum &lt;&lt; &quot;: &quot;;
+        if (x == tree-&gt;eval()) {
+            cout &lt;&lt; &quot;Good brain&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; &quot;Bad brain&quot; &lt;&lt; endl;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

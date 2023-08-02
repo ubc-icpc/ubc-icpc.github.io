@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+struct dset {
+  int parent, dist;
+};
+
+void find(vector&lt;struct dset&gt; &amp;v, int k) {
+  if(k == v[k].parent) {
+    return;
+  }
+
+  find(v, v[k].parent);
+  v[k].dist += v[v[k].parent].dist; 
+  v[k].parent = v[v[k].parent].parent;
+}
+
+void solve(vector&lt;struct dset&gt; &amp;v, int a, int b) {
+  find(v,a);
+  find(v,b);
+
+  if(v[a].parent != v[b].parent) {
+    cout &lt;&lt; &quot;UNKNOWN&quot; &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; v[a].dist - v[b].dist &lt;&lt; endl;
+  }
+}
+
+void sunion(vector&lt;struct dset&gt; &amp;v, int a, int b, int w) {
+  find(v,a);
+  find(v,b);
+
+  // bpw - apw = (bpw - bw) + (bw - aw) - (apw - aw)
+  v[v[a].parent].dist = v[b].dist + w - v[a].dist;
+  v[v[a].parent].parent = v[b].parent;
+
+  find(v,a);
+  find(v,b);
+}
+
+int main() {
+  int n, m, a, b, w;
+  char c;
+  vector&lt;struct dset&gt; v;
+  while(cin &gt;&gt; n &gt;&gt; m) {
+    if(n == 0 &amp;&amp; m == 0)
+      return 0;
+
+    for(int i = 0; i &lt; n; i++) {
+      v.push_back({i,0});
+    }
+
+    for(int i = 0; i &lt; m; i++) {
+      cin &gt;&gt; c; 
+      if(c == '!') {
+        cin &gt;&gt; a &gt;&gt; b &gt;&gt; w;
+        // w = wb - wa
+        sunion(v,a-1,b-1,w);
+      } else {
+        cin &gt;&gt; a &gt;&gt; b;
+        solve(v,a-1,b-1);
+      }
+    }
+
+    v.clear();
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

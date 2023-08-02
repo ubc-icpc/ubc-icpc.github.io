@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// Aho-Corasick witout output link
+// Incomplete (need to compress failure paths)
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;queue&gt;
+#include &lt;tuple&gt;
+using namespace std;
+
+/* #define debug printf */
+#define debug(...)
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+
+struct ac_t {
+    ac_t *next[26];
+    ac_t *fail;
+    bool output;
+    int depth;
+} ac_nodes[100011];
+ac_t *ac_root = &amp;ac_nodes[0];
+int ac_top = 1;
+
+void ac_insert(const char *buf) {
+    ac_t *cur = ac_root;
+    for (const char *c = buf; *c != 0; c++) {
+        if (!cur-&gt;next[*c-'a'])
+            cur-&gt;next[*c-'a'] = &amp;ac_nodes[ac_top++];
+        cur = cur-&gt;next[*c-'a'];
+    }
+    cur-&gt;output = true;
+}
+
+void ac_build() {
+    queue&lt;pair&lt;int, ac_t*&gt;&gt; q; q.push({0, ac_root});
+    ac_root-&gt;fail = ac_root;
+    while (q.size()) {
+        int depth; ac_t *n; tie(depth, n) = q.front(); q.pop();
+        n-&gt;depth = depth;
+        for (int i = 0; i &lt; 26; i++) {
+            if (n-&gt;next[i]) {
+                ac_t *u = n-&gt;next[i];
+                u-&gt;fail = ac_root;
+                for (ac_t *fp = n; fp != ac_root; ) {
+                    fp = fp-&gt;fail;
+                    if (fp-&gt;next[i] &amp;&amp; fp-&gt;next[i] != u) {
+                        u-&gt;fail = fp-&gt;next[i];
+                        break;
+                    }
+                }
+                q.push({depth+1, u});
+            } else {
+                // Failure path compression (overwrites next)
+                n-&gt;next[i] = n != ac_root ? n-&gt;fail-&gt;next[i] : ac_root;
+            }
+        }
+    }
+}
+
+char buf[100011];
+char S[100011];
+
+int main() {
+    scanf(&quot; %s&quot;, S);
+    int N; scanf(&quot;%d&quot;, &amp;N);
+    for (int i = 0; i &lt; N; i++) {
+        scanf(&quot; %s&quot;, buf);
+        ac_insert(buf);
+    }
+    ac_build();
+
+    debug(&quot;ready\n&quot;);
+
+    int len = strlen(S);
+    list&lt;pair&lt;char, ac_t *&gt;&gt; str;
+    str.push_back({' ', ac_root});
+    for (int i = 0; i &lt; len ;i++)
+        str.push_back({S[i], ac_root});
+
+    ac_t *cur = ac_root;
+    auto it = str.begin(); it++;
+    for (; it != str.end(); it++) {
+        char c = it-&gt;first;
+        /* while (!cur-&gt;next[c-'a'] &amp;&amp; cur != ac_root)
+            cur = cur-&gt;fail;
+        if (cur-&gt;next[c-'a']) */
+        cur = cur-&gt;next[c-'a'];
+        if (cur-&gt;output) {
+            auto first = ++it;
+            debug(&quot;(%c) Erasing length %d&quot;, c, cur-&gt;depth);
+            for (int i = 0; i &lt; cur-&gt;depth; i++) first--;
+            auto next = first; next--;
+            str.erase(first, it);
+            it = next, cur = it-&gt;second;
+            debug(&quot; (%d)\n&quot;, cur-&gt;depth);
+        } else {
+            it-&gt;second = cur;
+            debug(&quot;(%c) Moving forward 1 (%d)\n&quot;, c, cur-&gt;depth);
+        }
+    }
+    it = str.begin(); it++;
+    for (; it != str.end(); it++)
+        printf(&quot;%c&quot;, it-&gt;first);
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

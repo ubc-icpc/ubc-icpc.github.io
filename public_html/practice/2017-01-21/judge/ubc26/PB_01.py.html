@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+from math import log
+s, n = raw_input().split(' ')
+n, L = int(n), len(s)
+k = 0 if n &lt;= L else int(log(float(n - 1) / float(L), 2) + 1)
+if k &gt; 0: C = L*(1 &lt;&lt; (k-1))
+while k &gt; 0:
+    if n &gt; C: n = (n - 2) % C + 1
+    k, C = k - 1, C &gt;&gt; 1
+print(s[n-1])
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

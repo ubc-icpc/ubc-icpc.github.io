@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;deque&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+struct pt
+{
+	int p;
+	int h;
+};
+int deg[100000];
+bool vis[2][100000];
+vector&lt;vector&lt;int&gt;&gt; con;
+int ll;
+int s1;
+int s2;
+int s3;
+
+deque&lt;pt&gt; bfs;
+
+void getTree(int s, int flag)
+{
+	vis[flag][s] = true;
+	bfs.clear();
+	bfs.push_back({s, 1});
+	int target = -1;
+	int hei = 0;
+	while (bfs.size())
+	{
+		pt t = bfs[0];
+		bfs.pop_front();
+		for (auto&amp; i: con[t.p])
+		{
+			if (vis[flag][i] == 0)
+			{
+				vis[flag][i] = 1;
+				bfs.push_back({i, t.h + 1});
+			}
+		}
+		if (bfs.size() == 0)
+		{
+			target = t.p;
+			hei = t.h;
+		}
+	}
+	if (flag == 0)
+	{
+		getTree(target, 1);
+	}
+	else
+	{
+		int sm = (hei + 2) / 2;
+		if (hei &gt; ll)
+		{
+			ll = hei;
+		}
+		if (sm &gt; s1)
+		{
+			s3 = s2;
+			s2 = s1;
+			s1 = sm;
+		}
+		else  if (sm &gt; s2)
+		{
+			s3 = s2;
+			s2 = sm;
+		}
+		else if (sm &gt; s3)
+		{
+			s3 = sm;
+		}
+	}
+}
+
+int main()
+{
+	int c, l;
+	scanf(&quot;%d %d&quot;, &amp;c, &amp;l);
+	con = vector&lt;vector&lt;int&gt;&gt;(c, vector&lt;int&gt;(0, 0));
+	for (int i = 0; i &lt; l; ++i)
+	{
+		int a, b;
+		scanf(&quot;%d %d&quot;, &amp;a, &amp;b);
+		++ deg[a];
+		++ deg[b];
+		con[a].push_back(b);
+		con[b].push_back(a);
+	}
+	for ( int i = 0; i &lt; c; ++ i)
+	{
+		if (vis[0][i] || deg[i]&gt;1)
+		{
+			continue;
+		}
+		getTree(i, 0);
+	}
+	int sa = s1 + s2;
+	if (s1 == s2 &amp;&amp; s2 == s3)
+	{
+		++ sa;
+	}
+	printf(&quot;%d\n&quot;, max(ll, sa) - 1);
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

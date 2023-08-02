@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+const int maxn = 10305;
+int cnt[maxn][maxn];
+
+typedef long long ll;
+
+int main() {
+	int g; scanf(&quot;%d&quot;, &amp;g);
+	for (int i = 0; i &lt; g; i++) {
+		int x, y; scanf(&quot;%d%d&quot;, &amp;x, &amp;y);
+		cnt[x][y]++;
+	}
+	
+	int t; scanf(&quot;%d&quot;, &amp;t);
+	int ans = 0;
+	for (int i = 0; i &lt; t; i++) {
+		int x, y, r; scanf(&quot;%d%d%d&quot;, &amp;x, &amp;y, &amp;r);
+		for (int j = max(x-r, 0); j &lt;= x+r; j++) {
+			for (int k = max(y-r, 0); k &lt;= y+r; k++) {
+				if ((j-x)*(j-x) + (k-y)*(k-y) &gt; r*r) continue;
+				ans += cnt[j][k];
+				cnt[j][k] = 0;
+			}
+		}
+	}
+	printf(&quot;%d\n&quot;, g-ans);
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

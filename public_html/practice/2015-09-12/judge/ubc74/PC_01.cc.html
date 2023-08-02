@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+
+using namespace std;
+
+int check(int g, int brownie) {
+	if (brownie &lt;= g)
+		brownie = check(g, brownie * 2);
+	return brownie;
+}
+
+int main() {
+	int n, student, brownie, m, g; cin &gt;&gt; n;
+	for (int i = 1; i &lt;= n; ++i) {
+		cin &gt;&gt; student &gt;&gt; brownie &gt;&gt; m;
+		cout &lt;&lt; &quot;Practice #&quot; &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; student &lt;&lt; &quot; &quot; &lt;&lt; brownie &lt;&lt; endl;
+		for (int j = 0; j &lt; m; ++j) {
+			cin &gt;&gt; g;
+			brownie = check(g, brownie) - g;
+			cout &lt;&lt; g &lt;&lt; &quot; &quot; &lt;&lt; brownie &lt;&lt; endl;
+		}
+		cout &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

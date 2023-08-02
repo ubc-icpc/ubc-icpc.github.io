@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+
+const int MAXRUNE = 100+2;
+const int MAXRING = 22 + 2;
+
+int pos[MAXRING],neg[MAXRING];
+int ring[MAXRING];
+
+struct Trune {
+	int r[3],v[3];
+};
+Trune rune[MAXRUNE];
+
+int check(int a,int b,int c){
+	return abs(a)==abs(b) || abs(b)==abs(c) || abs(a)==abs(c);
+}
+
+int read(int cring,int crune){
+	int f1=0,f2=0,f3=0;
+	for(int i=0;i&lt;crune;i++){
+		int tmp;
+		for(int j=0;j&lt;3;j++){
+			scanf(&quot;%d&quot;,&amp;tmp);
+			if(tmp==0) f1=1;
+			else if(tmp &lt; -cring || tmp &gt; cring) f2=1; 
+			else{
+				rune[i].r[j] = abs(tmp);
+				rune[i].v[j] = tmp/abs(tmp);
+			}
+		}
+		scanf(&quot;%d&quot;,&amp;tmp);
+		if(check(rune[i].r[0],rune[i].r[1],rune[i].r[2])) f3=1;
+	}
+	if(f1) return 1;
+	if(f2) return 2;
+	if(f3) return 3;
+	return 0;
+}
+
+void init(int cring,int crune){
+	memset(pos,0,sizeof(pos));
+	memset(neg,0,sizeof(neg));
+	for(int i=0;i&lt;crune;i++){
+		for(int j=0;j&lt;3;j++)
+			if(rune[i].v[j]==1) pos[rune[i].r[j]]++;
+			else neg[rune[i].r[j]]++;
+	}
+	memset(ring,0,sizeof(ring));
+}
+
+int dfs(int p,int cring,int crune){
+	if(p==cring+1){
+		int flag = 1;
+		for(int i=0;i&lt;crune;i++){
+			int f=0;
+			for(int j=0;j&lt;3;j++) if(rune[i].v[j] == ring[rune[i].r[j]]){
+				f = 1;
+				break;
+			}
+			if(f==0){
+				flag = 0;
+				break;
+			}
+		}
+		return flag;
+	}
+	else{
+		int flag = 0;
+		if(pos[p]){
+			ring[p] = 1;
+			flag = flag || dfs(p+1,cring,crune);
+		}
+		if(neg[p]){
+			ring[p] = -1;
+			flag = flag || dfs(p+1,cring,crune);
+		}
+		if(!pos[p] &amp;&amp; !neg[p]){
+			ring[p] = 1;
+			flag = flag || dfs(p+1,cring,crune);
+		}
+		return flag;
+	}
+}
+
+int main(){
+	int g;
+	int cring,crune;
+
+	scanf(&quot;%d&quot;,&amp;g);
+	for(int i=0;i&lt;g;i++){
+		scanf(&quot;%d %d&quot;,&amp;cring,&amp;crune);
+		int tryit = read(cring,crune);
+		if(tryit==1){ printf(&quot;INVALID: NULL RING\n&quot;); continue; }
+		if(tryit==2){ printf(&quot;INVALID: RING MISSING\n&quot;); continue; }
+		if(tryit==3){ printf(&quot;INVALID: RUNE CONTAINS A REPEATED RING\n&quot;); continue; }
+		/*
+		for(int j=0;j&lt;crune;j++){
+			printf(&quot;%d: &quot;,j);
+			for(int k=0;k&lt;3;k++) printf(&quot;%d(%d) &quot;,rune[j].r[k],rune[j].v[k]);
+			printf(&quot;\n&quot;);
+		}
+		*/
+		init(cring,crune);
+		/*
+		for(int j=0;j&lt;cring;j++) printf(&quot;%d[%d,%d] &quot;,j+1,pos[j+1],neg[j+1]);
+		printf(&quot;\n&quot;);
+		*/
+		int ans = dfs(1,cring,crune);
+		if(ans) printf(&quot;RUNES SATISFIED!\n&quot;);
+		else printf(&quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!\n&quot;);
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

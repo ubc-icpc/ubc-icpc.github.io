@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+double h, v, l, s, ans,t;
+
+double f(double theta) {
+	double vx = cos(theta) * v, vy = sin(theta) * v;
+//	t = (-vy + sqrt(vy * vy + 20 * h)) / (-10);
+	t=(-vy - sqrt(vy * vy + 20 * h)) / (-10);
+	double run = l + t * s;
+	double dist = vx * t;
+	return min(run,dist);
+}
+
+double ternarysearch(double l, double r, double e) {
+	int t=10000;
+	while (t--) {
+	//	if (abs(r - l) &lt; e)
+	//		return (l + r) / 2;
+		double lt = (2 * l + r) / 3, rt = (l + 2 * r) / 3;
+		if (f(lt) &lt; f(rt))
+			l = lt;
+		else
+			r = rt;
+	}
+	return (l+r)/2;
+}
+
+int main() {
+	while (cin &gt;&gt; h &gt;&gt; v &gt;&gt; l &gt;&gt; s) {
+		double ans = f(ternarysearch(0, M_PI/2, .000000001));
+		if (ans &gt;= l)
+			printf(&quot;%.3f\n&quot;, min(ans,t*s+l));
+		else printf(&quot;BAD THROW\n&quot;);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

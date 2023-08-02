@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define _USE_MATH_DEFINES
+
+//#define DEBUG
+
+#define ll long long
+#define pii pair&lt;int,int&gt;
+#define pdd pair&lt;ldouble,ldouble&gt;
+#define ldouble long double
+#define pt complex&lt;ldouble&gt;
+#define ld ldouble
+#define nl '\n'
+const ll MOD = 1e9+7;
+const int INF = 0x3f3f3f3f;
+const ll INFLL = 0x3f3f3f3f3f3f3f3f;
+const ldouble EPS = 1e-9;
+const int N = 1e6+10;
+
+int h, bot, top;
+vector&lt;int&gt; bricks(3);
+
+ll dp[N];
+ll solve(ll hgt) {
+	if (hgt &gt; h) return -INFLL;
+	if (hgt == h) return 0;
+	if (dp[hgt] != -1) return dp[hgt];
+	ll ans = 0;
+	for (int i : bricks) {
+		if (hgt + i &gt; h) continue;
+		ld topw = (top + (bot - top) * (1 - (ld) (hgt + i) / h));
+		if (topw &lt; i) continue;
+		ll num = (ll) (topw / i);
+		ans = max(ans, solve(hgt + i) + num*num*i*i*i);
+	}
+	return dp[hgt] = ans;
+}
+
+int main() {
+	ios::sync_with_stdio(0); 
+	cin.tie(0); cout.tie(0);
+
+	while (cin &gt;&gt; h &gt;&gt; bot &gt;&gt; top &gt;&gt; bricks[0] &gt;&gt; bricks[1] &gt;&gt; bricks[2]) {
+		memset(dp, -1, sizeof dp);
+		cout &lt;&lt; solve(0) &lt;&lt; endl;
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;random&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+typedef long double ld;
+
+ld b, m;
+
+inline ld X(ld a) {
+  if (!m)
+    return a/b;
+  return (-b+sqrt(b*b+2*m*a))/m;
+}
+
+int main() {
+  int t; cin &gt;&gt; t;
+  cout &lt;&lt; fixed &lt;&lt; setprecision(1);
+  default_random_engine gen(random_device{}());
+  uniform_real_distribution&lt;ld&gt; dist(0.0L,1.0L);
+  while (t--) {
+    cin &gt;&gt; b &gt;&gt; m;
+    ld d = 0.0;
+    ld t = 0.0;
+    int n = 0;
+    ld h = m/2+b;
+    for (int i = 0; i &lt; 1000000; i++) {
+      ld a = dist(gen);
+      //cout &lt;&lt; &quot;gen &quot; &lt;&lt; a &lt;&lt; endl;
+      if (a &gt; h) {
+        t += 1+d;
+        //cout &lt;&lt; &quot;adding &quot; &lt;&lt; 1+d &lt;&lt; endl;
+        d = 0;
+        n++;
+      }
+      else {
+        d += X(a);
+        //cout &lt;&lt; &quot;fail &quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; d &lt;&lt; endl;
+      }
+    }
+    //cout &lt;&lt; t &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; endl;
+    cout &lt;&lt; t/n &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

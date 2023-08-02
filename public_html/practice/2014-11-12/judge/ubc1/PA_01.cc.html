@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+	int t;
+	cin&gt;&gt;t;
+	for (int i=0;i&lt;t;i++) {
+		int n;
+		cin&gt;&gt;n;
+		int a=0;
+		int b=0;
+		for (int j=0;j&lt;n;j++) {
+			string s,t;
+			cin&gt;&gt;s&gt;&gt;t;
+			if (s==&quot;R&quot;) {
+				if (t==&quot;P&quot;) b++;
+				if (t==&quot;S&quot;) a++;
+			}
+			if (s==&quot;P&quot;) {
+				if (t==&quot;S&quot;) b++;
+				if (t==&quot;R&quot;) a++;
+			}
+			if (s==&quot;S&quot;) {
+				if (t==&quot;R&quot;) b++;
+				if (t==&quot;P&quot;) a++;
+			}
+		}
+		if (a&gt;b) cout&lt;&lt;&quot;Player 1&quot;&lt;&lt;endl;
+		if (b&gt;a) cout&lt;&lt;&quot;Player 2&quot;&lt;&lt;endl;
+		if (a==b) cout&lt;&lt;&quot;TIE&quot;&lt;&lt;endl;
+	}
+	
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

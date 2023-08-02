@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define pb   push_back
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+ll cnt[4444];
+ll cnt2[4444];
+
+int main(){
+  ios_base::sync_with_stdio(false);cin.tie(0);
+  int a,n;
+  cin &gt;&gt; n;
+  for(int i=0;i&lt;n;i++){
+    cin&gt;&gt;a;
+    cnt[a]++;
+  }
+  for(int i=1;i&lt;2001;i++){
+    cnt2[i+i] += (cnt[i])/2;
+    //if (cnt[i]) cout &lt;&lt; cnt[i]*(cnt[i]-1)/2 &lt;&lt;endl;
+    for(int j=i+1;j&lt;2001;j++){
+      cnt2[i+j]+=min(cnt[i],cnt[j]);
+    }
+  }
+  ll mx = 0;
+  for(int i=0;i&lt;4001;i++){
+    //if (cnt2[i]) cout &lt;&lt;&quot;HAS &quot; &lt;&lt; cnt2[i] &lt;&lt; &quot; &quot; &lt;&lt; i &lt;&lt;endl;
+    mx = max(mx,cnt2[i]);
+  }
+  ll ans = 0;
+  for(int i=0;i&lt;4001;i++){
+    ans+=(mx==cnt2[i]);
+  }
+  cout&lt;&lt;mx&lt;&lt; &quot; &quot; &lt;&lt;ans;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

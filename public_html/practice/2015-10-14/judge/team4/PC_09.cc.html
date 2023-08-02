@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+#define endl '\n'
+
+typedef long double ld;
+typedef long long ll;
+
+struct planet {
+	ld x, y, z;
+};
+
+ld dists[100][100];
+
+int main() {
+	int t; cin &gt;&gt; t;
+	for (int T=1; T&lt;=t; T++) {
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; T &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		int p; cin &gt;&gt; p;
+		vector&lt;planet&gt; ps(p);
+
+		map&lt;string,int&gt; dict;
+		for (int i=0; i&lt;p; i++) {
+			string s; cin &gt;&gt; s;
+			ld x,y,z; cin &gt;&gt; ps[i].x &gt;&gt; ps[i].y &gt;&gt; ps[i].z;
+			dict[s] = i;
+		}
+
+		for (int i=0; i&lt;p; i++) {
+			for (int j=0; j&lt;p; j++) {
+				planet p1 = ps[i];
+				planet p2 = ps[j];
+				dists[i][j] = sqrt( (p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y) + (p1.z - p2.z)*(p1.z - p2.z) );
+			}
+		}
+		
+		int w; cin &gt;&gt; w;
+		for(int i=0; i&lt;w; i++) {
+			string s1, s2; cin &gt;&gt; s1 &gt;&gt; s2;
+			dists[dict[s1]][dict[s2]] = 0;
+		}
+
+		for (int k=0; k&lt;p; k++) {
+			for (int i=0; i&lt;p; i++) {
+				for (int j=0; j&lt;p; j++) {
+					dists[i][j] = min(dists[i][j], dists[i][k] + dists[k][j]);
+				}
+			}
+		}
+
+		int q; cin &gt;&gt; q;
+		for(int i=0; i&lt;q; i++) {
+			string s1, s2; cin &gt;&gt; s1 &gt;&gt; s2;
+			cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; s1 &lt;&lt; &quot; to &quot; &lt;&lt; s2 &lt;&lt; &quot; is &quot; &lt;&lt; ll(dists[dict[s1]][dict[s2]]+0.5) &lt;&lt; &quot; parsecs.&quot;&lt;&lt; endl;
+		}
+
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

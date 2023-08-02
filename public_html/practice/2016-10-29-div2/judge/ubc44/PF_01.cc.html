@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;pii, pii&gt; piipii;
+typedef pair&lt;string, string&gt; pss;
+typedef pair&lt;piipii, bool&gt; piipii_O;
+typedef vector&lt;ll&gt; vi;
+typedef vector&lt;vi &gt; vvi;
+typedef vector&lt;bool&gt; vb;
+typedef vector&lt;vb &gt; vvb;
+
+int main() {
+	ll n;
+	cin &gt;&gt; n;
+	vi ratings;
+	int rating;
+	while (n--) {
+		cin &gt;&gt; rating;
+		ratings.push_back(rating);
+	}
+	sort(ratings.begin(), ratings.end());
+	int minpairsum = INT_MAX;
+	int pairsum;
+	for (int i=0; i&lt;ratings.size()/2; i++) {
+		pairsum = ratings[i]+ratings[ratings.size()-1-i];
+		minpairsum = min(pairsum, minpairsum);
+	}
+	
+	cout &lt;&lt; minpairsum &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

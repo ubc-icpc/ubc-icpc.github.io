@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+pii p[2][1000];
+int o[2][1000];
+int c[1000];
+const int z[2] = {1,80};
+int m[2];
+
+int main() {
+  int n; cin &gt;&gt; n;
+  while (n--) {
+    int d;
+    cin &gt;&gt; d &gt;&gt; m[0] &gt;&gt; m[1];
+    for (int i = 0; i &lt; d; i++) {
+      cin &gt;&gt; c[i] &gt;&gt; p[0][i].first &gt;&gt; p[1][i].first;
+      p[0][i].second = p[1][i].second = i;
+    }
+    int a = 0;
+    for (int i = 0; i &lt; 2; i++) {
+      for (int j = 0; j &lt; d; j++)
+        o[i][j] = p[i][j].first;
+      sort(p[i],p[i]+d);
+      vector&lt;int&gt; v(1,d);
+      int ind;
+      v.push_back(ind=p[i][0].second);
+      for (int j = 1; j &lt; d; j++)
+        if (p[i][j].second &lt; ind)
+          v.push_back(ind=p[i][j].second);
+      ind = 0;
+      for (int j = v.size()-1; j; j--) {
+        for (int k = v[j]; k &lt; v[j-1]; k++)
+          ind -= c[k]*m[i];
+        if (ind &lt; 0) {
+          int b = (-ind+z[i]-1)/z[i];
+          a += o[i][v[j]]*b;
+          ind += z[i]*b;
+        }
+      }
+    }
+    cout &lt;&lt; a &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

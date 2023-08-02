@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+from sys import stdin
+
+C = int(stdin.readline().strip())
+
+strengths = []
+suitable = []
+
+def find_best(current=0, filled=0, score=0):
+    if current == 11:
+        return score
+    best = -1
+    for pos in suitable[current]:
+        if (filled &amp; (1 &lt;&lt; pos)) == 0:
+            best = max(find_best(current + 1, filled | (1 &lt;&lt; pos), score + strengths[current][pos]), best)
+    return best
+    
+
+for _ in range(C):
+    strengths = []
+    for i in range(11):
+        strengths.append(list(map(int, stdin.readline().strip().split())))
+    suitable = []
+    for i in range(11):
+        suitable.append([])
+        for j in range(11):
+            if strengths[i][j] != 0:
+                suitable[i].append(j)
+    print find_best()
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

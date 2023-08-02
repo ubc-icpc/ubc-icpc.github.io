@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class pentagon {
+	public static void main(String args[]){
+		Scanner s = new Scanner(System.in);
+		int N = s.nextInt();
+		int k = 0;
+		while (k++&lt;N) {
+			int pent[] = new int[5];
+			for (int i=0;i&lt;pent.length;i++)
+				pent[i]=s.nextInt();
+			while(!isPositive(pent) ) {
+				int minInd=minIndex(pent);
+				int val = pent[minInd];
+				pent[(minInd+4)%5]+=val;
+				pent[(minInd+1)%5]+=val;
+				pent[minInd]= -val;	
+			}
+			System.out.println(&quot;Pentagon #&quot;+k+&quot;:&quot;);
+			for(int i=0; i&lt;pent.length;i++)
+				System.out.print(pent[i]+&quot; &quot;);
+			System.out.println();
+			System.out.println();
+		}
+		s.close();
+	}
+
+	public static boolean isPositive (int[] arr) {
+		for (int i=0; i&lt;arr.length;i++) {
+			if (arr[i]&lt;0) return false;
+		}
+		return true;
+	}
+
+	public static int minIndex(int[] arr) {
+		int min = arr[0];
+		int ind = 0;
+		for(int i=0;i&lt;arr.length;i++) {
+			if (arr[i]&lt;min) {
+				min=arr[i];
+				ind=i;
+			}
+		}
+		return ind;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

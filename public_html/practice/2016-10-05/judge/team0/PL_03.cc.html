@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef double ld;
+typedef pair&lt;int, int&gt; pii;
+
+vector&lt;pii&gt; adj[1000];
+ld dp[2][1000];
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, m; cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        int a, b; char c_char; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c_char; a--; b--; 
+        int c = (int)(c_char - 'A');
+        adj[a].push_back(pii(b, c));
+        adj[b].push_back(pii(a, c));
+    }
+    string s; cin &gt;&gt; s;
+    memset(dp, 0, sizeof dp);
+    dp[0][0] = 1.0;
+
+    ld ans = 0;
+    for (int t = 0; t &lt; s.length(); t++) {
+        int c = (int)(s[t] - 'A');
+        int t1 = t%2;
+        int t2 = (t+1)%2;
+        for (int i = 0; i &lt; n; i++) dp[t2][i] = 0.0;
+
+        ans += dp[t1][n-1];
+        for (int i = 0; i &lt; n-1; i++) {
+            int cnt = 0;
+            for (pii e : adj[i]) {
+                if (e.second == c) cnt++;
+            }
+            if (cnt == 0) {
+                dp[t2][i] += dp[t1][i];
+            } else {
+                for (pii e : adj[i]) {
+                    if (e.second == c) {
+                        dp[t2][e.first] += dp[t1][i] / cnt;
+                    }
+                }
+            }
+        }
+    }
+
+    ans += dp[s.length()%2][n-1];
+    cout &lt;&lt; setprecision(16) &lt;&lt; fixed &lt;&lt; 100.0 * ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

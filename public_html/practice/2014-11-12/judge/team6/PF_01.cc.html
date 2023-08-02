@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+
+int main() {
+	std::map&lt;std::string, int&gt; bn;
+	std::map&lt;int, std::string&gt; nb;
+	for(int i = 0; i &lt; 1&lt;&lt;16; i ++) {
+		int v = 0;
+		int acc = 1;
+		int j = i;
+		std::string str;
+		while(j) {
+			if(j&amp;1) v += acc, str = &quot;1&quot; + str;
+			else str = &quot;0&quot; + str;
+
+			acc *= -2;
+			j &gt;&gt;= 1;
+		}
+		bn[str] = v;
+		nb[v] = str;
+	}
+	nb[0] = &quot;0&quot;;
+	bn[&quot;&quot;] = 0;
+	bn[&quot;0&quot;] = 0;
+	int T;
+	std::cin &gt;&gt; T;
+	while(T--) {
+		char t;
+		std::cin &gt;&gt; t;
+		if(t == 'b') {
+			std::string s;
+			std::cin &gt;&gt; s;
+			std::string os = s;
+			while(s[0] == '0' &amp;&amp; s.length()) s = s.substr(1);
+			std::cout &lt;&lt; &quot;From binary: &quot; &lt;&lt; os &lt;&lt; &quot; is &quot; &lt;&lt; bn[s] &lt;&lt; std::endl;
+			/*std::string s;
+			std::cin &gt;&gt; s;
+			int v = 0;
+			int acc = 1;
+			for(int i = s.length()-1; i &gt;= 0; i --) {
+				if(s[i] == '1') v += acc;
+				acc *= -2;
+			}
+			std::cout &lt;&lt; &quot;From binary: &quot; &lt;&lt; s &lt;&lt; &quot; is &quot; &lt;&lt; v &lt;&lt; std::endl;*/
+		}
+		else {
+			int s;
+			std::cin &gt;&gt; s;
+			std::cout &lt;&lt; &quot;From decimal: &quot; &lt;&lt; s &lt;&lt; &quot; is &quot; &lt;&lt; nb[s] &lt;&lt; std::endl;
+			/*
+			std::vector&lt;int&gt; desired;
+			int v;
+			std::cin &gt;&gt; v;
+			int orig_v = v;
+			bool neg = false;
+			if(v &lt; 0) { neg = true; v = -v; }
+			while(v != 0) {
+				if(v&amp;1) desired.push_back(1);
+				else desired.push_back(0);
+				v &gt;&gt;= 1;
+			}
+			desired.push_back(0);
+			desired.push_back(0);
+			desired.push_back(0);
+
+			std::cout &lt;&lt; &quot;\tdesired:&quot;;
+			for(auto d : desired) std::cout &lt;&lt; &quot; &quot; &lt;&lt; d;
+			std::cout &lt;&lt; std::endl;
+
+			for(int i = 0; i &lt; desired.size(); i ++) {
+				if(i % 2 == 1) {
+					if(desired[i] == 0) continue;
+					else if(desired[i] == 2) desired[i+1] ++, desired[i+2] ++, desired[i] = 0;
+					else desired[i], desired[i+1] ++;
+				}
+				else {
+					while(desired[i] &gt;= 2) desired[i+2] ++, desired[i+1] ++, desired[i] -= 2;
+				}
+			}
+
+			// negate
+			if(neg) {
+				std::vector&lt;int&gt; n(desired.size()+3, 0);
+				for(int i = 0; i &lt; desired.size(); i ++) {
+					if(i % 2 == 1) {
+						if(desired[i] == 1) {
+							n[i] ++;
+							n[i+1] ++;
+						}
+					}
+					else if(desired[i]) {
+						n[i+1] ++;
+						n[i] ++;
+					}
+				}
+				std::swap(n, desired);
+				for(int i = 0; i &lt; desired.size(); i ++) {
+					if(i % 2 == 1) {
+						while(desired[i] &gt;= 2) desired[i+1] ++, desired[i+2] ++, desired[i] = 0;
+					}
+					else {
+						while(desired[i] &gt;= 2) desired[i+2] ++, desired[i+1] ++, desired[i] -= 2;
+					}
+				}
+			}
+
+			std::cout &lt;&lt; &quot;From decimal: &quot; &lt;&lt; orig_v &lt;&lt; &quot; is &quot;;
+			while(desired.size() &amp;&amp; desired.back() == 0) desired.pop_back();
+			if(desired.size() == 0) desired.push_back(0);
+			while(desired.size()) std::cout &lt;&lt; desired.back(), desired.pop_back();
+			std::cout &lt;&lt; std::endl;
+			*/
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

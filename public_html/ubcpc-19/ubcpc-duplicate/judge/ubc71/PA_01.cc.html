@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+#include &lt;fstream&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;iomanip&gt; 
+#include &lt;unordered_set&gt;
+#include &lt;complex&gt;
+#include&lt;algorithm&gt;
+#include&lt;bitset&gt;
+#include &lt;iterator&gt;
+#include&lt;map&gt;
+#include &lt;unordered_map&gt;
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+typedef vector&lt;ll&gt; vi;
+typedef vector&lt;vi&gt; vvi;
+typedef vector&lt;ld&gt; vd;
+typedef vector&lt;vd&gt; vvd;
+typedef pair&lt;ll, ll&gt; pii;
+typedef tuple&lt; int, int, int&gt; tiii;
+typedef vector&lt;pii&gt; vpii;
+typedef unsigned long long ull;
+
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+
+	ll shift;
+	string mode, cipher;
+	cin &gt;&gt; mode&gt;&gt;shift&gt;&gt;cipher;
+
+	string res = &quot;&quot;;
+
+	if (mode == &quot;E&quot;) {
+		shift = shift;
+	}
+	else {
+		shift = 26 - shift; // decode by 1 means shift all by 25
+		// b becomes a, which is the same as shift by 25
+
+	}
+
+	for (int i = 0; i &lt; cipher.length(); i++) {
+		res += ((cipher[i] - 'a') + shift )%26 + 'a';
+	}
+
+	// I'm getting the value
+
+	cout &lt;&lt; res &lt;&lt; endl;
+
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n, m;
+int pileIndex;
+string cards;
+string ops;
+int q;
+char flip[256];
+string english[256];
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+
+  flip['U'] = 'D';
+  flip['D'] = 'U';
+  english['U'] = &quot;up&quot;;
+  english['D'] = &quot;down&quot;;
+
+
+
+  while (true) {
+    cin &gt;&gt; n;
+    if (n == 0) {
+      break;
+    }
+    deque&lt;stack&lt;pair&lt;int, char&gt;&gt;&gt; piles;
+    cin &gt;&gt; cards;
+    for (int i = 0; i &lt; cards.length(); i++) {
+      stack&lt;pair&lt;int, char&gt;&gt; sc;
+      sc.push(make_pair(i + 1, cards[i]));
+      piles.push_back(sc);
+    }
+
+    cin &gt;&gt; ops;
+    for (char op : ops) {
+      if (op == 'R') {
+        stack&lt;pair&lt;int, char&gt;&gt; pile_right = piles.back();
+        piles.pop_back();
+        while (!pile_right.empty()) {
+         piles.back().push(make_pair(pile_right.top().first, flip[pile_right.top().second]));
+         pile_right.pop();
+        }
+      } else {
+        stack&lt;pair&lt;int, char&gt;&gt; pile_left = piles.front();
+        piles.pop_front();
+        while (!pile_left.empty()) {
+          piles.front().push(make_pair(pile_left.top().first, flip[pile_left.top().second]));
+          pile_left.pop();
+        }
+      }
+    }
+    vector&lt;pair&lt;int, char&gt;&gt; ud;
+    while (!piles.front().empty()) {
+      ud.push_back(piles.front().top());
+      piles.front().pop();
+    }
+
+    cin &gt;&gt; m;
+    cout &lt;&lt; &quot;Pile &quot; &lt;&lt; ++pileIndex &lt;&lt; '\n';
+    for (int i = 0; i &lt; m; i++) {
+      cin &gt;&gt; q;
+      q--;
+      cout &lt;&lt; &quot;Card &quot; &lt;&lt; q + 1 &lt;&lt; &quot; is a face &quot;;
+      cout &lt;&lt; english[ud[q].second] &lt;&lt; ' ' &lt;&lt; ud[q].first &lt;&lt; '.' &lt;&lt; endl;
+    }
+
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

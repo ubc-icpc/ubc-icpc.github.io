@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+#include&lt;utility&gt;
+#include&lt;limits&gt;
+
+#define ll long long
+#define pii pair&lt;int,int&gt;
+
+using namespace std;
+
+int T,k,w,h;
+map&lt;char,int&gt; klin;
+vector&lt;string&gt; g;
+pii s;
+int dx[] = {-1,0,1,0};
+int dy[] = {0,-1,0,1};
+ll dist[1005][1005];
+int count;
+void set_s() {
+  for( int i=0; i&lt;h; i++ ) {
+	for(int j=0; j&lt;w; j++ ) {
+	  if( g[i][j] == 'E' ) {
+		s = make_pair(i,j);
+		return;
+	  }
+	}
+  }
+}
+void clear_dist() {
+  for( int i=0; i&lt;h+1; i++ ) {
+	for(int j=0; j&lt;w+1; j++ ) {
+	  dist[i][j]=numeric_limits&lt;ll&gt;::max();
+	}
+  }
+}
+ll dij() {
+  set&lt;pair&lt;ll,pii&gt; &gt; minset;
+  minset.insert( make_pair(0,s));
+  clear_dist();
+  dist[s.first][s.second]=0;
+  while(minset.empty()==false) {
+	pii at= minset.begin()-&gt;second;
+	minset.erase(minset.begin());
+	int y=at.first, x=at.second;
+	if( y==0 || x == 0 || y == h-1 || x == w-1 ) return dist[y][x];
+	for( int i=0;i&lt;4;i++ ) {
+	  int y2=y+dy[i];
+	  int x2=x+dx[i];
+	  if( dist[y2][x2] &gt; 
+		  dist[y][x] + klin[  g[y2][x2]   ] ) {
+	    
+		minset.erase(make_pair(dist[y2][x2], 
+							   make_pair(y2,x2) ));
+	    
+
+		dist[y2][x2] = dist[y][x] + klin[  g[y2][x2]   ];
+
+
+	    minset.insert(make_pair(dist[y2][x2], 
+							   make_pair(y2,x2) ));
+	    
+	  }
+	}
+  }
+  return 0;
+}
+int main (void) {
+  cin&gt;&gt;T;
+  while(T--){
+	klin.clear(); g.clear();
+	cin &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+	for(int i=0; i&lt;k; i++) {
+	  char a; cin&gt;&gt;a;
+	  int t; cin&gt;&gt;t;
+	  klin[a]=t;
+	}
+
+	for(int i=0; i&lt;h; i++) {
+	  string str; cin&gt;&gt;str;
+	  g.push_back(str);
+	}
+	set_s();
+	cout &lt;&lt; dij() &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

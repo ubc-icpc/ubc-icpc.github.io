@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+
+using namespace std;
+
+
+int outResult = -1;
+int visitedResult = 0;
+int treasure = 1;
+
+
+
+// code and value
+pair&lt;int, int&gt; traverse(int x, int y, int R, int C, int counter, vector&lt;vector&lt;char&gt;&gt; &amp;map, vector&lt;vector&lt;bool&gt;&gt; &amp;visited) {
+
+	// if outside print out
+	if (x&lt;0 || y&lt;0 || x&gt; R - 1 || y&gt;C - 1) {
+		return make_pair(outResult, 0);
+	}
+
+	// if visited print lost
+	if (visited[x][y]) {
+		return make_pair(visitedResult, 0);
+	}
+
+	// if T print treasure
+	if (map[x][y] == 'T') {
+		return make_pair(treasure, counter);
+	}
+
+
+	visited[x][y] = true;
+	counter++;
+	switch (map[x][y]) {
+	case 'N': return traverse(x - 1, y, R, C, counter, map, visited);
+	case 'S': return traverse(x + 1, y, R, C, counter, map, visited);
+	case 'W': return traverse(x, y - 1, R, C, counter, map, visited);
+	case 'E': return traverse(x, y + 1, R, C, counter, map, visited);
+	}
+}
+
+
+int main() {
+
+	int R, C;
+	cin &gt;&gt; R &gt;&gt; C;
+
+	vector&lt;vector&lt;char&gt;&gt; map(R, vector&lt;char&gt;(C, 0));
+	vector&lt;vector&lt;bool&gt;&gt; visited(R, vector&lt;bool&gt;(C, 0));
+
+	for (int i = 0; i &lt; R; i++) {
+		for (int j = 0; j &lt; C; j++) {
+			cin &gt;&gt; map[i][j];
+			visited[i][j] = false;
+		}
+	}
+
+	pair&lt;int, int&gt; res;
+	res = traverse(0, 0, R, C, 0, map, visited);
+
+	switch (res.first) {
+	case -1: cout &lt;&lt; &quot;Out&quot; &lt;&lt; endl; break;
+	case 0:cout &lt;&lt; &quot;Lost&quot; &lt;&lt; endl; break;
+	case 1:cout &lt;&lt; res.second &lt;&lt; endl; break;
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

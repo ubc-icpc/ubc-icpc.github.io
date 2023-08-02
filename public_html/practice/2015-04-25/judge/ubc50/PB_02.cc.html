@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+
+using namespace std;
+
+int main() {
+  int ans = 0;
+  int max_weight; cin &gt;&gt; max_weight;
+  int n; cin &gt;&gt; n;
+  int arr[n];
+  for (int i=0; i&lt;n; i++)
+    cin &gt;&gt; arr[i];
+  bool flag = false;
+  int temp = 0;
+  int i = 0;
+  while (i&lt;n &amp;&amp; !flag) {
+    if(i-4&gt;=0)
+      temp-=arr[i-4];
+    temp+=arr[i++];
+    if (temp&lt;=max_weight)
+      ans++;
+    else
+      flag = true;
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

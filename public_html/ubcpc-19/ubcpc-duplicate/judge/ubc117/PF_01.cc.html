@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+const ld AEPS = 1e-10;
+
+ll Xc, Yc;
+
+bool angeq(ld x, ld y) {
+    return abs(x-y) &lt; AEPS;
+}
+
+struct pt {
+    ll x, y;
+    pt() {}
+    pt(ll a, ll b) : x(a), y(b) {}
+    ld ang() const {
+        return atan2(y-Yc, x-Xc);
+    }
+    // sort by angle (ccw), then distance (close to far)
+    bool operator &lt; (const pt&amp; o) const {
+        if(o.x == Xc &amp;&amp; o.y == Yc) return false;
+        else if(x == Xc &amp;&amp; y == Yc) return false;
+        if(angeq(ang(), o.ang())) return ((o.x-Xc)*(o.x-Xc) + (o.y-Yc)*(o.y-Yc) &gt; (x-Xc)*(x-Xc) + (y-Yc)*(y-Yc));
+        return ang() &lt; o.ang();
+    }
+    pt operator+ (const pt&amp; o) const { return pt(x+o.x, y+o.y); }
+    pt operator- (const pt&amp; o) const { return pt(x-o.x, y-o.y); }
+};
+
+int n;
+vector&lt;pt&gt; pts;
+
+ld fac[210];
+ld g[210][210];
+
+ld choose(int n, int k) {
+    return fac[n]/fac[k]/fac[n-k];
+}
+
+void gen() {
+    fac[0] = 1;
+    for(int i=1; i&lt;210; ++i) {
+        fac[i] = fac[i-1]*i;
+    }
+    for(int n=0; n&lt;201; ++n) {
+        for(int m = 0; m&lt;=n-3; ++m) {
+            for(int k=0; k&lt;=m; ++k) {
+                g[n][m] += fac[n-k-3]*fac[2+k]*choose(m, k);
+            }
+        }
+    }
+}
+
+ll cp(pt a, pt b) {
+    return a.x*b.y - a.y*b.x;
+}
+ll dp(pt a, pt b) {
+    return a.x*b.x + a.y*b.y;
+}
+
+ll sgn(ll x) {
+    return (x&gt;0 ? 1 : (x &lt; 0 ? -1 : 0));
+}
+
+// number to the right of i-&gt;j and not between
+int cnt[210][210];
+ld ans[210];
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    gen();
+    cin &gt;&gt; n;
+    pts = vector&lt;pt&gt;(n);
+    for(auto&amp; p : pts) {
+        cin &gt;&gt; p.x &gt;&gt; p.y;
+    }
+    for(int i=0; i&lt;n; ++i) {
+        for(int j=0; j&lt;n; ++j) {
+            if(i == j) continue;
+            for(int k=0; k&lt;n; ++k) {
+                if(i == k || j == k) continue;
+                ll s = cp(pts[j]-pts[i], pts[k]-pts[i]);
+                if(s == 0) {
+                    ll d = dp(pts[j]-pts[i], pts[k]-pts[i]);
+                    if(d &gt; dp(pts[j]-pts[i], pts[j]-pts[i]) || d &lt; 0) {
+                        ++cnt[i][j];
+                    }
+                } else if(s &lt; 0) {
+                    ++cnt[i][j];
+                }
+            }
+        }
+    }
+
+    for(int i=0; i&lt;n; ++i) {
+        for(int j=0; j&lt;n; ++j) {
+            if(i == j) continue;
+            for(int k=j+1; k&lt;n; ++k) {
+                if(i == k) continue;
+                ll s = cp(pts[k]-pts[j], pts[i]-pts[j]);
+                int cc = 0;
+                if (s &gt; 0) {
+                    cc = cnt[j][k];
+                } else if (s &lt; 0) {
+                    cc = cnt[k][j];
+                } else {
+                    continue;
+                }
+                ans[i] += (ld) abs(s) / 2 * g[n][cc] / fac[n];
+            }
+        }
+    }
+    for(int i=0; i&lt;n; ++i) {
+        cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; ans[i] &lt;&lt; endl;
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

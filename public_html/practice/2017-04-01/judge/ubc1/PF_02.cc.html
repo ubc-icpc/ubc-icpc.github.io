@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+
+int N, M;
+
+struct edge {
+  bool pres;
+  //int x, y;
+  vector&lt;pair&lt;edge*, edge*&gt; &gt; nx;
+  int mem[2][2];
+  edge() {
+    pres = true;
+    memset(mem,-1, sizeof mem);
+    nx = vector&lt;pair&lt;edge*, edge*&gt; &gt;();
+  }
+
+  int dp(bool a, bool b) {
+    if (mem[a][b] != -1) return mem[a][b];
+    int res = 0;
+    for (int i = 0; i &lt; (int)nx.size(); ++i) {
+      int res1 = nx[i].first-&gt;dp(a, false) + nx[i].second-&gt;dp(b, false);
+      if ((!(nx[i].first-&gt;pres) || !a) &amp;&amp; (!(nx[i].second-&gt;pres) || !b)) {
+        res1 = max(res1, 1 + nx[i].first-&gt;dp(a, true) + nx[i].second-&gt;dp(b, true));
+      }
+      res += res1;
+    }
+    //cout &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; -&gt; &quot; &lt;&lt; res &lt;&lt; endl;
+    return mem[a][b] = res;
+  }
+};
+
+map&lt;pii, edge*&gt; rem;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; N &gt;&gt; M;
+
+  edge* root = new edge();
+  //root-&gt;x = 0;
+  //root-&gt;y = 1;
+  rem[pii(0, 1)] = root;
+  for (int i = 1; i &lt;= N; ++i) {
+    int a, b, c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+    edge* l;
+    edge* r;
+    l = new edge();
+    //l-&gt;x = a;
+    //l-&gt;y = c;
+    r = new edge();
+    //r-&gt;x = b;
+    //r-&gt;y = c;
+    rem[pii(a, b)]-&gt;nx.push_back(pair&lt;edge*, edge*&gt;(l, r));
+    rem[pii(a, c)] = l;
+    rem[pii(b, c)] = r;
+  }
+
+  while (M--) {
+    int a, b; cin &gt;&gt; a &gt;&gt; b;
+    rem[pii(a, b)]-&gt;pres = false;
+  }
+
+  int res = 0;
+  res = max(res, root-&gt;dp(0, 0));
+  res = max(res, root-&gt;dp(1, 0) + 1);
+  res = max(res, root-&gt;dp(0, 1) + 1);
+  if (!root-&gt;pres) {
+    res = max(res, root-&gt;dp(1, 1) + 2);
+  }
+  cout &lt;&lt; res &lt;&lt; endl;
+
+  //while (true) {
+  //  int a, b, c, d; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d;
+  //  cout &lt;&lt; rem[pii(a, b)]-&gt;dp(c, d) &lt;&lt; endl;
+  //}
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n;
+int case_num;
+int used[10];
+vector&lt;vector&lt;int&gt;&gt; boxes;
+
+int solution(int w, int h, int count) {
+        int best = count;
+        for (int i = 0; i &lt; n; i++) {
+                if (!used[i]) {
+                        used[i] = 1;
+                        for (int j = 0; j &lt; 3; j++) {
+                                for (int k = 0; k &lt; 3; k++) {
+                                        if (j != k &amp;&amp; boxes[i][j] &lt;= w &amp;&amp; boxes[i][k] &lt;= h) {
+                                                best = max(best, solution(boxes[i][j], boxes[i][k], count+1));
+                                        }
+                                }
+                        }
+                        used[i] = 0;
+                }
+        }
+        return best;
+}
+
+int main() {
+        while (cin &gt;&gt; n &amp;&amp; n) {
+                memset(used, 0, 10);
+                boxes.clear();
+                int dim;
+                for (int i = 0; i &lt; n; i++) {
+                        vector&lt;int&gt; box;
+                        for (int j = 0; j &lt; 3; j++) {
+                                cin &gt;&gt; dim;
+                                box.push_back(dim);
+                        }
+                        boxes.push_back(box);
+                }
+                cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++case_num &lt;&lt; &quot;: &quot;;
+                cout &lt;&lt; solution(100, 100, 0) &lt;&lt; '\n';
+        }
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

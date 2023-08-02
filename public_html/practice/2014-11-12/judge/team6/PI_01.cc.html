@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;sstream&gt;
+#include &lt;bitset&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+
+struct cmp {
+	bool operator() (const pll &amp;p1, const pll &amp;p2) const {
+		return p1.second &gt; p2.second || (p1.second == p2.second &amp;&amp; p1.first &lt; p2.first);
+	}
+};
+
+struct cmpBS {
+	bool operator() (const bitset&lt;100&gt; &amp;p1, const bitset&lt;100&gt; &amp;p2) const {
+		for (int i = 0; i &lt; 100; i++) {
+			if (p1[i] &lt; p2[i]) return true;
+			if (p1[i] &gt; p2[i]) return false;
+		}
+		return false;
+	}
+};
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	string line; getline(cin, line);
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		vector&lt;vector&lt;ll&gt; &gt; files;
+		int n = 0;
+		while (true) {
+			getline(cin, line);
+			if (line == &quot;-1&quot;) break;
+			stringstream ss;
+			ss &lt;&lt; line;
+			int filename; ss &gt;&gt; filename;
+			int tmp;
+			files.push_back(vector&lt;ll&gt;());
+			while (ss &gt;&gt; tmp) {
+				files[n].push_back(tmp);
+			}
+			n++;
+		}
+		map&lt;ll, bitset&lt;100&gt; &gt; perm;
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; files[i].size(); j++) {
+				ll user = files[i][j];
+				if (perm.count(user) == 0) {
+					perm[user] = bitset&lt;100&gt;(0);
+				}
+				perm[user][i] = 1;
+			}
+		}
+		map&lt;bitset&lt;100&gt;, pll, cmpBS&gt; count;
+		for (map&lt;ll, bitset&lt;100&gt; &gt;::iterator it = perm.begin(); it != perm.end(); ++it) {
+			if (count.count(it-&gt;second) == 0) {
+				count[it-&gt;second] = pll(it-&gt;first, 1);
+			} else {
+				pll curr = count[it-&gt;second];
+				curr.first = min(curr.first, it-&gt;first);
+				curr.second++;
+				count[it-&gt;second] = curr;
+			}
+		}
+		vector&lt;pll&gt; res;
+		for (map&lt;bitset&lt;100&gt;, pll, cmpBS&gt;::iterator it = count.begin(); it != count.end(); ++it) {
+			res.push_back(it-&gt;second);
+		}
+		sort(res.begin(), res.end(), cmp());
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; cs &lt;&lt; endl;
+		for (int i = 0; i &lt; res.size(); i++) {
+			if (res[i].second &lt;= 1) break;
+			cout &lt;&lt; res[i].second &lt;&lt; &quot; &quot; &lt;&lt; res[i].first &lt;&lt; endl;
+		}
+		if (res[0].second &lt;= 1) {
+			cout &lt;&lt; &quot;no prototypes found&quot; &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

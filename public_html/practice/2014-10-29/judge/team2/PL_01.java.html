@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class L {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int n = s.nextInt();
+
+        s.nextLine();
+
+        Map&lt;String, List&lt;String&gt;&gt; dictionary = new HashMap&lt;&gt;();
+        for (int i = 0; i &lt; n; ++i) {
+            String curr = s.nextLine();
+            String[] lang = curr.split(&quot;[,.!;?() ]+&quot;);
+            List&lt;String&gt; words = new LinkedList&lt;&gt;();
+            for (int j = 1; j &lt; lang.length; ++j) {
+                words.add(lang[j].toLowerCase());
+            }
+            dictionary.put(lang[0], words);
+        }
+
+        s.nextLine();
+
+        while (s.hasNextLine()) {
+            String line = s.nextLine();
+            if (null == line || &quot;&quot; == line) break;
+            String[] words = line.split(&quot;[,.!;?() ]+&quot;);
+            boolean matched = false;
+            for (int i = 0; i &lt; words.length; ++i) {
+                for (Map.Entry&lt;String, List&lt;String&gt;&gt; e : dictionary.entrySet()) {
+                    if (e.getValue().contains(words[i].toLowerCase())) {
+                        System.out.println(e.getKey());
+                        matched = true;
+                        break;
+                    }
+                }
+                if (matched) break;
+            }
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

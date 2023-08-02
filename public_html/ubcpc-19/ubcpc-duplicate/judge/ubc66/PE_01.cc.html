@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//#pragma GCC optimize (&quot;O3&quot;)
+
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int n;
+int m;
+int a[10010];
+int main(){
+	scanf(&quot;%d%d&quot;,&amp;n,&amp;m);
+	for(int i=1;i&lt;=n;i++){
+		scanf(&quot;%d&quot;,a+i);
+	}
+	sort(a+1,a+n+1);
+	int ans=0;
+	for(int i=n-m+1;i&lt;=n;i++)
+		ans+=a[i];
+	printf(&quot;%d\n&quot;,ans);
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

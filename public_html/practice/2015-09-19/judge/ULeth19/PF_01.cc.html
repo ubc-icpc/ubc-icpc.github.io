@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+void solve()
+{
+  int n;
+  cin &gt;&gt; n;
+  int len[100000];
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; len[i];
+  }
+  sort(len, len+n);
+
+  for (int i = 0, j; i &lt; n; i = j) {
+    for (j = i+1; j &lt; n &amp;&amp; len[i] == len[j]; j++)
+      ;
+    if (j &lt; n) {
+      cout &lt;&lt; len[j] - len[i] &lt;&lt; ' ' &lt;&lt; j &lt;&lt; endl;
+    }
+  }
+  
+  
+  cout &lt;&lt; endl;
+}
+
+int main()
+{
+  int t;
+  cin &gt;&gt; t;
+  while (t--)
+    solve();
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Set;
+
+public class D {
+
+	class Blah {
+		int hash;
+		int[] a;
+
+		Blah(int[] a) {
+			this.a = new int[a.length];
+			for (int i = 0; i &lt; a.length; i++) {
+				hash *= 31;
+				hash += (this.a[i] = a[i]);
+			}
+		}
+
+		public int hashCode() {
+			return hash;
+		}
+
+		public boolean equals(Object o) {
+			Blah b = (Blah) o;
+			for (int i = 0; i &lt; a.length; i++) {
+				if (a[i] != b.a[i])
+					return false;
+			}
+			return true;
+		}
+
+		public String toString() {
+			return Arrays.toString(a);
+		}
+	}
+
+	private void work() {
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+		while (true) {
+			int n = sc.nextInt();
+			if (n == 0)
+				break;
+			int[] t = new int[n];
+			int[] s = new int[n];
+			for (int i = 0; i &lt; n; i++) {
+				t[i] = 1 &lt;&lt; i;
+				s[i] = 1 &lt;&lt; (sc.nextInt() - 1);
+			}
+
+			Set&lt;Blah&gt; seen = new HashSet&lt;Blah&gt;();
+			Queue&lt;int[]&gt; q = new LinkedList&lt;int[]&gt;();
+			Queue&lt;Integer&gt; q2 = new LinkedList&lt;Integer&gt;();
+
+			seen.add(new Blah(s));
+			q.add(s);
+			q2.add(0);
+
+			int res = -1;
+			while (!q2.isEmpty()) {
+				int[] cur = q.poll();
+				int d = q2.poll();
+				if (Arrays.equals(cur, t)) {
+					res = d;
+					break;
+				}
+
+				for (int i = 0; i &lt; n; i++) {
+					if (cur[i] == 0)
+						continue;
+					int top = Integer.lowestOneBit(cur[i]);
+					if (i &gt; 0
+							&amp;&amp; (cur[i - 1] == 0 || top &lt; Integer
+									.lowestOneBit(cur[i - 1]))) {
+						int[] a = new int[n];
+						System.arraycopy(cur, 0, a, 0, n);
+						a[i - 1] ^= top;
+						a[i] ^= top;
+						Blah blah = new Blah(a);
+						if (!seen.contains(blah)) {
+							seen.add(blah);
+							q.add(a);
+							q2.add(d + 1);
+						}
+					}
+					if (i &lt; n - 1
+							&amp;&amp; (cur[i + 1] == 0 || top &lt; Integer
+									.lowestOneBit(cur[i + 1]))) {
+						int[] a = new int[n];
+						System.arraycopy(cur, 0, a, 0, n);
+						a[i + 1] ^= top;
+						a[i] ^= top;
+						Blah blah = new Blah(a);
+						if (!seen.contains(blah)) {
+							seen.add(blah);
+							q.add(a);
+							q2.add(d + 1);
+						}
+					}
+				}
+			}
+			if (res &lt; 0) {
+				System.out.println(&quot;IMPOSSIBLE&quot;);
+			} else {
+				System.out.println(res);
+			}
+
+		}
+		sc.close();
+	}
+
+	public static void main(String[] args) {
+		D problem = new D();
+		problem.work();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

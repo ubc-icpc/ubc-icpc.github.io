@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;sstream&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+#include&lt;limits&gt;
+#include&lt;stack&gt;
+#include&lt;queue&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+stringstream ss;
+
+int toInt (string&amp; str) {
+  ss &lt;&lt; str;
+  int res;
+  ss &gt;&gt; res;
+  ss.clear();
+  return res;
+}
+
+string trim(string&amp; str) {
+  int a = str.find_first_not_of(' ');
+  return str.substr(a, str.find_last_not_of(' ') - a + 1);
+}
+
+struct node {
+  int p;
+  int l;
+  int r;
+  int v;
+  int c;
+  bool boosted;
+  bool isleaf;
+};
+
+class tree {
+public:
+  vector&lt;node&gt; t;
+  stack&lt;int&gt; order;
+  string trim(string&amp; str) {
+    int a = str.find_first_not_of(' ');
+    return str.substr(a, str.find_last_not_of(' ') - a + 1);
+  }
+  void make_tree (string&amp; str) {
+    node n;
+    n.p = -1;
+    n.l = -1;
+    n.r = -1;
+    n.v = -1;
+    n.c = numeric_limits&lt;int&gt;::max();
+    n.boosted = true;
+    n.isleaf = false;
+    t.push_back(n);
+    str = trim(str);
+    make_tree(0, str);
+  }
+  void make_tree (int n, string&amp; str) {
+    bool isint = true;
+    for (int i = 0; isint &amp;&amp; i &lt; str.length(); i++) isint = (str[i] != '(');
+    if (isint) {
+      node temp;
+      temp.p = n;
+      temp.l = -1;
+      temp.r = -1;
+      temp.v = toInt(str);
+      temp.c = numeric_limits&lt;int&gt;::max();
+      temp.boosted = false;
+      temp.isleaf = true;
+      t[n].l = t.size();
+      t.push_back(temp);
+    } else {
+      str = str.substr(1, str.size() - 2);
+      str = trim(str);
+      int index = 0;
+      int d = 0;
+      while (d != 0 || str[index] != ' ') {
+	if (str[index] == '(') d++;
+	else if (str[index] == ')') d--;
+	index++;
+      }
+      string left = str.substr(0, index);
+      string right = str.substr(index + 1, str.length() - index - 1);
+      node temp;
+      temp.p = n;
+      temp.l = -1;
+      temp.r = -1;
+      temp.v = -1;
+      temp.c = 1;
+      temp.boosted = false;
+      temp.isleaf = false;
+      t[n].l = t.size();
+      t.push_back(temp);
+      make_tree(t[n].l, left);
+      t[n].r = t.size();
+      t.push_back(temp);
+      make_tree(t[n].r, right);
+    }
+  }
+  void get_order() {
+    queue&lt;int&gt; q;
+    q.push(0);
+    while (!q.empty()) {
+      if (q.front() != -1) {
+	order.push(q.front());
+	q.push(t[q.front()].l);
+	q.push(t[q.front()].r);
+      }
+      q.pop();
+    }
+  }
+  int next() {
+    int top = order.top();
+    order.pop();
+    return top;
+  }
+};
+
+int main () {
+  int N;
+  tree t;
+  {
+    string desc;
+    getline(cin, desc);
+    t.make_tree(desc);
+    t.get_order();
+    string str;
+    getline(cin, str);
+    N = toInt(str);
+  }
+  vector&lt;vector&lt;int&gt; &gt; dp(t.t.size(), vector&lt;int&gt;(N + 1, 0));
+  int index = -1;
+  while (index != 0) {
+    index = t.next();
+    if (t.t[index].isleaf) {
+      for (int i = 0; i &lt;= N; i++) dp[index][i] = t.t[index].v + i;
+    } else if (t.t[index].r == -1) {
+      if (index == 0) {
+	dp[0][N] = dp[t.t[0].l][N];
+	break;
+      }
+      for (int i = 0; i &lt;= N; i++) {
+	for (int j = 0; j &lt;= i; j++) {
+	  dp[index][i] = max(dp[index][i], min( (1+j) * (1+j), dp[t.t[index].l][i-j]));
+	}
+      }
+    } else if (index == 0) {
+      for (int j = 0; j &lt;= N; j++) {
+	dp[index][N] = max(dp[index][N], dp[t.t[index].l][j] + dp[t.t[index].r][N-j]);
+      }
+    } else {
+      vector&lt;int&gt; dpdp(N + 1, 0);
+      for (int i = 0; i &lt;= N; i++) {
+	for (int j = 0; j &lt;= i; j++) {
+	  dpdp[i] = max(dpdp[i], dp[t.t[index].l][j] + dp[t.t[index].r][i-j]);
+	}
+      }
+      for (int i = 0; i &lt;= N; i++) {
+	for (int j = 0; j &lt;= i; j++) {
+	  dp[index][i] = max(dp[index][i], min((1+j) * (1+j), dpdp[i-j]));
+	}
+      }
+    }
+  }
+  cout &lt;&lt; dp[0][N] &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

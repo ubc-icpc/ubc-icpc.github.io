@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define int long long
+
+using namespace std;
+int n;
+int dp[66][66];
+//m choose r
+int chooose(int m, int r) {
+  return dp[m][r];
+}
+
+int f(int x, int y) {
+  int ans = 0;
+
+  for(int i=3-y; i&lt;=x; i+=3) {
+    ans += chooose(x,i);
+  }
+  return ans;
+}
+
+#undef int
+int main() {
+#define int long long
+  //cout &lt;&lt; f(6) &lt;&lt; endl;
+  //int x = 1;
+  //x = x &lt;&lt; 60;
+  //cout &lt;&lt; x &lt;&lt; endl;
+  for(int i=0; i&lt;65; i++) {
+    for(int j=0; j&lt;65; j++) {
+      if(i==j) dp[i][j] = 1;
+      else if(i==0) dp[i][j] = 0;
+      else if(j==0) dp[i][j] = 1;
+      else if(i&lt;j) dp[i][j] = 0;
+      else dp[i][j] = dp[i-1][j] + dp[i-1][j-1];
+    }
+  }
+  while(cin &gt;&gt; n) {
+  int cnt = 0;
+  int ans = 0;
+  for(int i=60; i&gt;=0; i--) {
+    int t = 1;
+    if(!(n &amp; (t&lt;&lt;i))) continue;
+    ans += f(i,cnt%3);
+
+    cnt++;
+  }
+  ans += cnt/3;
+  cout &lt;&lt; &quot;Day &quot; &lt;&lt; n &lt;&lt; &quot;: Level = &quot; &lt;&lt; ans &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

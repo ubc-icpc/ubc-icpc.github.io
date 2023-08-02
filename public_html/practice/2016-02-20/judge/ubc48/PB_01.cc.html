@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+bool me(pair&lt;string, string&gt;a, pair&lt;string, string&gt;b){
+	if (a.second == b.second) return a.first &lt; b.first;
+	else return a.second &lt; b.second;
+}
+
+int main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
+	int n; cin &gt;&gt; n;
+	vector &lt; pair &lt; string, string &gt; &gt; v(n);
+	unordered_map &lt; string, unordered_map &lt; string, pair &lt; pair &lt; string, string &gt;, pair &lt; string, string &gt; &gt; &gt; &gt; um;
+	for (int i = 0; i &lt; n; ++i){
+		cin &gt;&gt; v[i].first &gt;&gt; v[i].second;
+	}
+	sort(v.begin(), v.end(), me);
+	for (int i = 0; i &lt; n; i += 3){
+		um[v[i].first][v[i].second].first = make_pair(v[i + 1].first, v[i + 1].second);
+		um[v[i].first][v[i].second].second = make_pair(v[i + 2].first, v[i + 2].second);
+
+		um[v[i + 1].first][v[i + 1].second].first = make_pair(v[i].first, v[i].second);
+		um[v[i + 1].first][v[i + 1].second].second = make_pair(v[i + 2].first, v[i + 2].second);
+
+		um[v[i + 2].first][v[i + 2].second].first = make_pair(v[i].first, v[i].second);
+		um[v[i + 2].first][v[i + 2].second].second = make_pair(v[i + 1].first, v[i + 1].second);
+	}
+	int q; cin &gt;&gt; q;
+	while (q--){
+		string f, l; cin &gt;&gt; f &gt;&gt; l;
+		cout &lt;&lt; um[f][l].first.first &lt;&lt; &quot; &quot; &lt;&lt; um[f][l].first.second &lt;&lt; endl &lt;&lt; um[f][l].second.first &lt;&lt; &quot; &quot; &lt;&lt; um[f][l].second.second &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

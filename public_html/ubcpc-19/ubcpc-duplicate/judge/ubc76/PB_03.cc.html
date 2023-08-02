@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int hp[101];
+int at[101];
+int df[101];
+string name[101];
+vector &lt;pair &lt;string, pair &lt;string, string&gt; &gt; &gt; stuff;
+
+bool beat(int i, int j) {
+	if (at[i] - df[j] &lt;= 0)
+		return false;
+	if (at[j] - df[i] &lt;= 0)
+		return true;
+	int hpextraj = ((hp[j] % (at[i] - df[j])) &gt; 0);
+	int hpextrai = ((hp[i] % (at[j] - df[i])) &gt; 0);
+	return (hp[j] / (at[i] - df[j]) + hpextraj) &lt; (hp[i] / (at[j] - df[i]) + hpextrai);
+}
+
+
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; name[i] &gt;&gt; hp[i] &gt;&gt; at[i] &gt;&gt; df[i];
+	}
+	long long ans = 0;
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = i + 1; j &lt; n; j++) {
+			for (int k = j + 1; k &lt; n; k++) {
+				//cout &lt;&lt; i &lt;&lt; ' ' &lt;&lt; j &lt;&lt; ' ' &lt;&lt; k &lt;&lt; ' ' &lt;&lt; beat(i, j) &lt;&lt; ' ' &lt;&lt; beat(i, k) &lt;&lt; ' ' &lt;&lt; beat(k, j) &lt;&lt; '\n';
+				if (beat(i, j) &amp;&amp; beat(j, k) &amp;&amp; beat(k, i)) {
+					ans++;
+					stuff.push_back(make_pair(name[i], make_pair(name[j], name[k])));
+				}
+				if (beat(i, k) &amp;&amp; beat(k, j) &amp;&amp; beat(j, i)) {
+					ans++;
+					stuff.push_back(make_pair(name[i], make_pair(name[k], name[j])));
+				}
+				
+			}
+		}
+	}
+	cout &lt;&lt; ans &lt;&lt; '\n';
+	assert(ans == stuff.size());
+	for (int i = 0; i &lt; stuff.size(); i++) {
+		cout &lt;&lt; stuff[i].first &lt;&lt; ' ' &lt;&lt; stuff[i].second.first &lt;&lt; ' ' &lt;&lt; stuff[i].second.second &lt;&lt; '\n';
+	}
+}</code>
+</pre>
+</body>
+</html>

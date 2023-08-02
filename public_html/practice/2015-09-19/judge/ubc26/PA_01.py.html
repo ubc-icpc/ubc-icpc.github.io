@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+while True:
+    a = int(raw_input())
+    if not a: break
+    xs, df = sorted(map(int, raw_input().split()), reverse=True), 0
+
+    for i, dt in enumerate(xs):
+        nxtw = (i + 1) * 30
+        d0 = max(nxtw, df)
+        df = d0 + dt
+
+    hr, mn = df / 60, df % 60
+    print(&quot;%d:%s&quot; % (hr, str(mn).zfill(2)))
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

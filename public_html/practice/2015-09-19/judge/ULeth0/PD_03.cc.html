@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// d.cc
+// Problem D - points on a line
+
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+struct Point
+{
+   int x, y;
+};
+
+struct Slope
+{
+   int n, d;
+   Slope (int a, int b)
+   {
+      if (b &lt; 0)
+      {
+	 a = -a;
+	 b = -b;
+      }
+      n = a;
+      d = b;
+   }
+   bool operator&lt; (Slope s) const
+   {
+      return n * s.d &lt; d * s.n;
+   }
+};
+
+
+int gcd (int a, int b)
+{
+   int r;
+   while (b)
+   {
+      r = a % b;
+      a = b;
+      b = r;
+   }
+   return a;
+}
+
+void reduce (Slope&amp; s)
+{
+   int g = gcd (abs (s.n), s.d);
+   s.n /= g;
+   s.d /= g;
+}
+
+void solve ()
+{
+   int points, x, y;
+   Point graph[400];
+   
+   cin &gt;&gt; points;
+
+   for (int i = 0; i &lt; points; i++)
+   {
+      cin &gt;&gt; x &gt;&gt; y;
+      graph[i].x = x;
+      graph[i].y = y;
+   }
+
+   if (points &lt; 3)
+   {
+      cout &lt;&lt; points &lt;&lt; endl;
+      return;
+   }
+
+   int max = -1;
+   for (int i = 0; i &lt; points; i++) {
+      map&lt;Slope, int&gt; freq;
+
+      for (int j = 0; j &lt; points; j++)
+      {
+	 if (i != j) {
+	    int num = graph[j].y - graph[i].y;
+	    int den = graph[j].x - graph[i].x;
+	    
+	    Slope s(num, den);
+	    reduce (s);
+	    
+	    freq[s]++;
+	 }
+      }
+      
+      for (auto it = freq.begin (); it != freq.end(); ++it)  
+      {
+	 if ((*it).second &gt; max)
+	    max = (*it).second;
+      }
+   }
+   cout &lt;&lt; max + 1 &lt;&lt; endl;
+}
+
+int main ()
+{
+   int cases;
+   cin &gt;&gt; cases;
+
+   for (int i = 0; i &lt; cases; i++)
+   {
+      cout &lt;&lt; &quot;Case #&quot; &lt;&lt; i + 1 &lt;&lt; &quot;: &quot;;
+      solve ();
+   }
+      
+   return 0;
+}
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

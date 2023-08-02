@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n;
+	int T = 1;
+	while(cin &gt;&gt; n &amp;&amp; n) {
+		int x[n], y[n];
+		for (int i=0; i&lt;n; i++) {
+			cin &gt;&gt; x[i] &gt;&gt; y[i];
+		}
+		sort(x, x+n);
+		sort(y, y+n);
+		int midx = x[(n-1)/2];
+		int midy = y[(n-1)/2];
+		ll ans = 0;
+		for (int i=0; i&lt;n; i++) {
+			ans += abs(x[i] - midx);
+			ans += abs(y[i] - midy);
+		}
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; T &lt;&lt; &quot;: (&quot; &lt;&lt; midx &lt;&lt; &quot;,&quot; &lt;&lt; midy &lt;&lt; &quot;)&quot; &lt;&lt; &quot; &quot;&lt;&lt; ans &lt;&lt; endl;
+		T++;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

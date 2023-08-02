@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int p = 127;
+struct gen {
+    int a, b, x;
+    gen();
+    gen(int a, int b, int x) : a(a), b(b), x(x) {};
+    int operator()() {
+        return x = (a*x+b)%p;
+    }
+};
+
+
+vector&lt;gen&gt; v;
+string repr[] = {&quot;rock&quot;, &quot;paper&quot;, &quot;scissors&quot;, &quot;lizard&quot;, &quot;Spock&quot;};
+int lose[5][2] = {{1,4}, {2, 3}, {0, 4}, {2, 0}, {1, 3}};
+
+int main() {
+    for (int a = 0; a &lt; p; a++) {
+        for (int b = 0; b &lt; p; b++) {
+            for (int x = 0; x &lt; p; x++) {
+                v.push_back(gen(a,b,x));
+            }
+        }
+    }
+    
+    map&lt;string, int&gt; irepr;
+    for (int i = 0; i &lt; 5; i++) {
+        irepr[repr[i]] = i;
+    }
+    
+    int n; cin &gt;&gt; n;
+    while (n--) {
+        vector&lt;gen&gt; nxt;
+        vector&lt;int&gt; nxtres;
+        for (int i = 0; i &lt; v.size(); i++) {
+            nxtres.push_back(v[i]());
+        }
+        
+        int val = nxtres[rand()%nxtres.size()];
+        //cerr &lt;&lt; &quot;predicting &quot; &lt;&lt; repr[val%5] &lt;&lt; endl;
+        cout &lt;&lt; repr[lose[val%5][rand()%2]] &lt;&lt; endl;
+        
+        string op;
+        cin &gt;&gt; op;
+        
+        int t = irepr[op];
+        for (int i = 0; i &lt; v.size(); i++) {
+            if (t == nxtres[i]%5) {
+                nxt.push_back(v[i]);
+            }
+        }
+        v = nxt;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

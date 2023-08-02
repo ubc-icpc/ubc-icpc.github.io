@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int as[3000];
+
+int main() {
+		ios::sync_with_stdio(0);
+		cin.tie(0);
+		int n, k;
+		cin &gt;&gt; n &gt;&gt; k;
+		for (int i = 0; i &lt; n; ++i) {
+			cin &gt;&gt; as[i];
+			as[i] = -as[i];
+		}
+		sort(as, as + n);
+
+		int res = 0;
+		for (int i = 0; i &lt; k; ++i)
+			res -= as[i];
+		cout &lt;&lt; res &lt;&lt; '\n';
+		return 0;
+}
+</code>
+</pre>
+</body>
+</html>

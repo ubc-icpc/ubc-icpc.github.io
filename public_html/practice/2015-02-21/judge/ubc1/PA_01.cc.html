@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n, c; cin &gt;&gt; n &gt;&gt; c;
+		vector&lt;int&gt; p(n), s(c), val(c+1);
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; p[i];
+		}
+
+		for (int i = 0; i &lt; c; i++) {
+			cin &gt;&gt; s[i];
+		}
+
+		for (int i = 0; i &lt; c+1; i++) {
+			cin &gt;&gt; val[i];
+		}
+
+		sort(p.rbegin(), p.rend());
+		sort(s.begin(), s.end());
+
+		int ans = 0;
+		for (int i = 0; i &lt;= n; i++) {
+			int cost = 420*i;
+			int sc = 0;
+			for (int j = 0; j &lt; i; j++) {
+				sc += p[j];
+			}
+
+			int k = 0;
+			while (k &lt; c &amp;&amp; sc &gt; s[k]) k++;
+
+			int place = c-k;
+			int profit = val[place] - cost;
+			ans = max(ans, profit);
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

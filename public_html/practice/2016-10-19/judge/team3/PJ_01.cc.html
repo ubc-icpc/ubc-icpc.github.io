@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+#define PI 3.1415926535
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		int n; cin &gt;&gt; n;
+		ld x = 0;
+		ld y = 0;
+		ld angle = 0;
+		while(n--) {
+			string cmd; ld val;
+			cin &gt;&gt; cmd &gt;&gt; val;
+			if (cmd == &quot;fd&quot;) {
+				x += val*cos(angle*PI/180);
+				y += val*sin(angle*PI/180);
+			} else if (cmd == &quot;bk&quot;) {
+				x -= val*cos(angle*PI/180);
+				y -= val*sin(angle*PI/180);
+			} else if (cmd == &quot;lt&quot;) {
+				angle += val;
+			} else {
+				angle -= val;
+			}
+		}
+		ld ans = sqrt(x*x + y*y);
+		cout &lt;&lt; (int)round(ans) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

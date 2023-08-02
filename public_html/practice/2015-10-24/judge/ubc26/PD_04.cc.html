@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+//#define printf(...);
+#define I(x) x; cin &gt;&gt; x;
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define L0(qq,ss,m) for (int qq=ss;qq&lt;(m);qq++)
+#define SL(ss, mmm) \
+  vector&lt;string&gt; ss; \
+  int I(mmm); ss.reserve(mmm); \
+  L(iiii, mmm) {string I(tt);ss.push_back(tt);}
+
+int req[105000] = {};
+
+int main() {
+  int z = 0;
+  int I(n); int I(k);
+
+  L(i, n) {
+    int I(ti);
+    L0(tj, ti, ti+1000) {
+      req[tj]++;
+      if (req[tj] &gt; z) z = req[tj];
+    }
+  }
+
+  //printf(&quot;z=%d k=%d\n&quot;, z, k);
+  int s = z / k;
+  int t = z % k;
+  cout &lt;&lt; s + (t != 0) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

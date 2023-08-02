@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">n = int(input())
+
+comps = []
+for i in range(n):
+    a, b, c, d = input().split()
+    comps.append((a,int(b),int(c),int(d)))
+
+import itertools
+
+def beats(pa,pb):
+    aKillable = pb[2] &gt; pa[3]
+    bKillable = pa[2] &gt; pb[3]
+
+    if bKillable and not aKillable:
+        return True
+
+    if bKillable and aKillable:
+        aSurv = (pa[1] - 1)//(pb[2] - pa[3])
+        bSurv = (pb[1] - 1)//(pa[2] - pb[3])
+
+        return aSurv &gt; bSurv
+    return False
+
+out = []
+for p1, p2, p3 in itertools.combinations(comps,3):
+    if beats(p1, p2) and beats(p2,p3) and beats(p3,p1):
+        out.append(p1[0] + &quot; &quot; + p2[0] + &quot; &quot; + p3[0])
+    elif beats(p2, p1) and beats(p3,p2) and beats(p1,p3):
+        out.append(p1[0] + &quot; &quot; + p2[0] + &quot; &quot; + p3[0])
+
+print(len(out))
+print('\n'.join(out))
+
+        
+</code>
+</pre>
+</body>
+</html>

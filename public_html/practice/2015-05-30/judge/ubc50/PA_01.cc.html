@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+// 0 means left pinky, 7 means right pinky
+map&lt;string, int&gt; m;
+int counts[8];
+
+int main() {
+  memset(counts,0,sizeof counts);
+  m[&quot;~&quot;] = 0;  m[&quot;`&quot;] = 0;  m[&quot;1&quot;] = 0;  m[&quot;Q&quot;] = 0;  m[&quot;A&quot;] = 0;  m[&quot;Z&quot;] = 0;
+  m[&quot;2&quot;] = 1;  m[&quot;W&quot;] = 1;  m[&quot;S&quot;] = 1;  m[&quot;X&quot;] = 1;
+  m[&quot;3&quot;] = 2;  m[&quot;E&quot;] = 2;  m[&quot;D&quot;] = 2;  m[&quot;C&quot;] = 2;
+  m[&quot;4&quot;] = 3;  m[&quot;R&quot;] = 3;  m[&quot;F&quot;] = 3;  m[&quot;V&quot;] = 3;  m[&quot;5&quot;] = 3; m[&quot;T&quot;]=3; m[&quot;G&quot;]=3; m[&quot;B&quot;]=3;
+  m[&quot;6&quot;] = 4;  m[&quot;Y&quot;] = 4;  m[&quot;H&quot;] = 4;  m[&quot;N&quot;] = 4;  m[&quot;7&quot;] = 4;  m[&quot;U&quot;] = 4;  m[&quot;J&quot;] = 4;  m[&quot;M&quot;] = 4;
+  m[&quot;8&quot;] = 5; m[&quot;I&quot;] = 5; m[&quot;K&quot;] = 5; m[&quot;,&quot;] = 5;
+  m[&quot;9&quot;] = 6;  m[&quot;O&quot;] = 6;  m[&quot;L&quot;] = 6;  m[&quot;.&quot;] = 6;
+  m[&quot;0&quot;] = 7; m[&quot;-&quot;] = 7; m[&quot;=&quot;] = 7; m[&quot;P&quot;] = 7; m[&quot;[&quot;] = 7; m[&quot;]&quot;] = 7; m[&quot;;&quot;] = 7; m[&quot;'&quot;] = 7; m[&quot;/&quot;] = 7;
+
+  string s; cin &gt;&gt; s;
+								    
+  for (int i=0; i&lt;s.length(); i++) {
+    int res = m[s.substr(i,1)];
+    counts[res]++;
+  }
+  for (int j=0;j&lt;8;j++)
+    cout &lt;&lt; counts[j] &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

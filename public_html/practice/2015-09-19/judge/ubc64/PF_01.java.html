@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// object [] array = new object[]
+
+
+import java.util.*;
+
+public class acm {
+    ///error: graphs[x][lList.get(cNum)] mistake!!!! forget to use lList.get(cNum)!!!!!!!!
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int round = scan.nextInt();
+        while (round &gt; 0) {
+            int num = scan.nextInt();
+            int [] array = new int[num];
+            for (int i = 0; i &lt; num ; i ++) {
+                array[i] = scan.nextInt();
+            }
+            Arrays.sort(array);
+
+            int point = 0;
+            for (int i = 1; i &lt; num ; i ++ ) {
+                if (array[i] &gt; array[i-1]) {
+                    //different length
+                    System.out.println((array[i] - array[i-1]) + &quot; &quot; + (i));
+                    point = i;
+                }
+            }
+            System.out.println();
+            round--;
+        }
+
+
+    }
+}
+
+
+
+//    public static  TreeMap&lt;Integer, Integer&gt;[] matrix;
+//    public static ArrayDeque&lt;Integer&gt; queue = new ArrayDeque&lt;Integer&gt;();
+//    public static int[] taken;
+//    public static int[] result;
+//    public static void main(String[] args) {
+//        Scanner scan = new Scanner(System.in);
+//        int n = scan.nextInt();
+//        matrix = new TreeMap[2*n + 1];
+//        taken = new int [2*n + 1];
+//        result = new int[2*n + 1];
+//
+//        //start form the first element
+//        queue.offer(1);
+//        for (int i = 2; i&lt; (2*n +1); i ++) {
+//            queue.offer(i);
+//            for (int k = 1; k &lt;= i -1; k ++) {
+//                int strength = scan.nextInt();
+//
+//                if (matrix[i] != null) {
+//                    matrix[i].put(strength, k);
+//                } else {
+//                    TreeMap&lt;Integer,Integer&gt; m1 = new TreeMap&lt;Integer, Integer&gt;();
+//                    m1.put(strength,k);
+//                    matrix[i] = m1;
+//                }
+//
+//                if (matrix[k] != null) {
+//                    matrix[k].put(strength, i);
+//                } else {
+//                    TreeMap&lt;Integer,Integer&gt; m1 = new TreeMap&lt;Integer, Integer&gt;();
+//                    m1.put(strength,i);
+//                    matrix[k] = m1;
+//                }
+//            }
+//        }
+////
+//        for (int i = 1; i &lt;= 2*n; i ++) {
+//            for (Map.Entry&lt;Integer,Integer&gt; e: matrix[i].entrySet()) {
+//                System.out.print(e.getKey() + &quot;:&quot; + e.getValue() + &quot; &quot;);
+//            }
+//            System.out.println();
+//        }
+//
+//        //matching
+//        while (queue.peek() != null) {
+//            int i = queue.poll();
+//            System.out.println(i);
+//            for (int k = 1; k &lt;= matrix[i].size(); k++) {
+//                Map.Entry&lt;Integer, Integer&gt; e = matrix[i].lastEntry();
+//                if (taken[e.getValue()] != 0) {
+//                    //taken
+//                    int newS = e.getKey();
+//                    if (newS &gt; taken[e.getValue()]) {
+//                        //swtiching
+//                        queue.offerLast(result[e.getValue()]);
+////                        if (result[i] != 0) {
+////                            //reset
+////                            queue.offerLast(result[i]);
+////                            result[result[i]] = 0;
+////                            taken[result[i]] = 0;
+////                        }
+//                        result[i] = e.getValue();
+//                        taken[i] = e.getKey();
+//                        taken[e.getValue()] = e.getKey();
+//                        result[e.getValue()] = i;
+//
+//                        matrix[i].pollLastEntry();
+//                        break;
+//
+//                    } else if (newS == taken[e.getValue()]) {
+//                        matrix[i].pollLastEntry();
+//                        break;
+//                    }
+//                    else{
+//                        //next round
+//                        matrix[i].pollLastEntry();
+//                    }
+//                } else {
+////                    if (result[i] != 0) {
+////                        //reset the currently matching one
+////                        queue.offerLast(result[i]);
+////                        result[result[i]] = 0;
+////                        taken[result[i]] = 0;
+////                    }
+//                    result[i] = e.getValue();
+//                    taken[i] = e.getKey();
+//                    taken[e.getValue()] = e.getKey();
+//                    result[e.getValue()] = i;
+//                    matrix[i].pollLastEntry();
+//                    break;
+//                }
+//            }
+//        }
+//
+//        for (int i =1; i &lt;= 2*n; i ++) {
+//            System.out.print(result[i] + &quot; &quot;);
+//        }
+//        System.out.println();
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

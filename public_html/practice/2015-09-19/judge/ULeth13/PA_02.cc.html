@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+int n;
+int hour, minn;
+int dry_times[30];
+
+int main(){
+   
+   while(cin&gt;&gt;n){
+      if(n==0)
+	 break;
+      for(int i=0; i&lt; n; i++){
+	 cin&gt;&gt; dry_times[i];
+      }
+      sort(dry_times, dry_times + n);
+      reverse(dry_times, dry_times + n);
+      int finish = 0;
+      for(int j=0; j&lt;n; j++){
+	 int next_ready = (j+1) * 30;
+	 if (next_ready &lt; finish)
+	    next_ready = finish;
+	 finish = next_ready + dry_times[j];
+      }
+      hour = finish / 60;
+      minn = finish % 60 ;
+     
+      cout&lt;&lt; hour &lt;&lt; ':'&lt;&lt;setfill('0')&lt;&lt;setw(2)&lt;&lt;minn&lt;&lt;endl;
+   }
+   
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

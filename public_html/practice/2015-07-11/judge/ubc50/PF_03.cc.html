@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; ii;
+
+struct cmp {
+  bool operator()(const int &amp;x, const int &amp;y) {
+    return x &gt; y;
+  }
+};
+
+int k, n, y, p;
+vector&lt;ii&gt; moose;
+set&lt;int, cmp&gt; participants;
+bool flag = false;
+
+int main() {
+  cin &gt;&gt; k &gt;&gt; n &gt;&gt; y &gt;&gt; p;
+  moose.push_back(make_pair(y,p));
+  for (int i=0; i&lt;(n+k-2); i++) {
+    int year, strength; cin &gt;&gt; year &gt;&gt; strength;
+    moose.push_back(make_pair(year, strength));
+  }
+  sort(moose.begin(), moose.end());
+  for (int i=0; i&lt;k-1; i++)
+    participants.insert(moose[i].second);
+  for (int i=k-1; i&lt;(n+k-1); i++) {
+    participants.insert(moose[i].second);
+    if (*participants.begin() == p) {
+      cout &lt;&lt; moose[i].first &lt;&lt; '\n';
+      flag = true;
+      break;
+    }
+    participants.erase(participants.begin());
+  }
+  if (!flag)
+    cout &lt;&lt; &quot;unknown&quot; &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

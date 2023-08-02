@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using ll = long long;
+using ld = long double;
+
+const ll imax = numeric_limits&lt;ll&gt;::max();
+
+struct Node
+{
+	vector&lt;pair&lt;Node*, ll&gt;&gt; edges;
+	ll x, y, z;
+	ll time;
+	Node() : time(imax) { }
+};
+
+ld d(Node&amp; a, Node&amp; b)
+{
+	return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+}
+
+int main()
+{
+	int t; cin &gt;&gt; t;
+	for (int pp = 0; pp &lt; t; pp++)
+	{
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; pp + 1 &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+
+		int p; cin &gt;&gt; p;
+		vector&lt;vector&lt;ld&gt;&gt; dists(p);
+		for (auto&amp; i : dists)
+		{
+			i.resize(p);
+		}
+
+		vector&lt;Node&gt; nodes(p);
+		unordered_map&lt;string, int&gt; names;
+
+		for (int i = 0; i &lt; p; i++)
+		{
+			string s; cin &gt;&gt; s;
+			ll x, y, z; cin &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+
+			Node* n = &amp;nodes[names[s] = i];
+			n-&gt;x = x;
+			n-&gt;y = y;
+			n-&gt;z = z;
+		}
+
+		for (int i = 0; i &lt; p; i++)
+		{
+			for (int j = 0; j &lt; p; j++)
+			{
+				dists[i][j] = d(nodes[i], nodes[j]);
+			}
+		}
+
+
+		int w; cin &gt;&gt; w;
+		for (int i = 0; i &lt; w; i++)
+		{
+			string a, b; cin &gt;&gt; a &gt;&gt; b;
+			dists[names[a]][names[b]] = 0;
+		}
+
+		for (int k = 0; k &lt; p; k++)
+		{
+			for (int i = 0; i &lt; p; i++)
+			{
+				for (int j = 0; j &lt; p; j++)
+				{
+					dists[i][j] = min(dists[i][j], dists[i][k] + dists[k][j]);
+				}
+			}
+		}
+
+		int qn; cin &gt;&gt; qn;
+		for (int i = 0; i &lt; qn; i++)
+		{
+			string a, b; cin &gt;&gt; a &gt;&gt; b;
+			cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; a &lt;&lt; &quot; to &quot; &lt;&lt; b &lt;&lt; &quot; is &quot; &lt;&lt; (ll) (dists[names[a]][names[b]] + 0.5) &lt;&lt; &quot; parsecs.&quot; &lt;&lt; endl;
+		}
+
+		/*
+		for (int i = 0; i &lt; p; i++)
+		{
+			nodes[i].edges.reserve(p);
+			Node&amp; me = nodes[i];
+			for (int j = 0; j &lt; p; j++)
+			{
+				Node&amp; them = nodes[j];
+
+				nodes[i].edges.push_back(make_pair(&amp;nodes[j], d));
+			}
+		}
+
+		int w; cin &gt;&gt; w;
+		for (int i = 0; i &lt; w; i++)
+		{
+			string a, b; cin &gt;&gt; a &gt;&gt; b;
+			nodes[names[a]].edges[names[b]].second = 0;
+		}
+
+		int qn; cin &gt;&gt; qn;
+		for (int i = 0; i &lt; qn; i++)
+		{
+			string a, b; cin &gt;&gt; a &gt;&gt; b;
+			Node* out = &amp;nodes[names[b]];
+			Node* in = &amp;nodes[names[a]];
+
+			for (auto&amp; i : nodes)
+			{
+				i.time = imax;
+			}
+
+			priority_queue&lt;Node*, vector&lt;Node*&gt;, Cmp&gt; q;
+			in-&gt;time = 0;
+			q.push(in);
+
+			while (!q.empty())
+			{
+				Node* node = q.top();
+				if (node == out)
+				{
+					cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; a &lt;&lt; &quot; to &quot; &lt;&lt; b &lt;&lt; &quot; is &quot; &lt;&lt; round(sqrt((long double) node-&gt;time)) &lt;&lt; &quot; parsecs.&quot; &lt;&lt; endl;
+					break;
+				}
+
+				q.pop();
+
+				for (auto&amp; i : node-&gt;edges)
+				{
+					Node tmp;
+					Node* dest = i.first;
+
+					tmp.time = node-&gt;time + i.second;
+
+					if (Cmp()(dest, &amp;tmp))
+					{
+						dest-&gt;time = tmp.time;
+						q.push(dest);
+					}
+				}
+			}
+
+			// cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; a &lt;&lt; &quot; to &quot; &lt;&lt; b &lt;&lt; &quot; is fuk&quot; &lt;&lt; endl;
+		}
+		*/
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

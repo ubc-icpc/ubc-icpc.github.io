@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;stdlib.h&gt; 
+#define INF 1000000
+
+using namespace std;
+
+int compare (const void * a, const void * b)
+{
+  return ( *(int*)a - *(int*)b );
+}
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		int c, ans=0;
+		cin&gt;&gt;c;
+		int d[c], t[4*c];
+		for(int j=0;j&lt;c;j++){
+			cin&gt;&gt;d[j];
+		}
+		for(int j=0;j&lt;4*c;j++){
+			cin&gt;&gt;t[j];
+		}
+		qsort(d,c,sizeof(int),compare);
+		qsort(t,4*c,sizeof(int),compare);
+		
+		for(int j=0;j&lt;c;j++){
+			if(d[j]+t[4*c-4*j-1]&gt;ans)
+				ans=d[j]+t[4*c-4*j-1];
+		}
+		
+		cout&lt;&lt;&quot;Trip #&quot;&lt;&lt;i&lt;&lt;&quot;: &quot;&lt;&lt;ans&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

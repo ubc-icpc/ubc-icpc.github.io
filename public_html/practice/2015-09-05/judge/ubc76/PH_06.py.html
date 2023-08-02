@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+dx = [1,1,2,2,-1,-1,-2,-2]
+dy = [2,-2,1,-1,2,-2,1,-1]
+
+test = int(raw_input())
+for ii in range(1,test+1):
+    N,r1,c1,r2,c2 = [int(m) for m in raw_input().split()]
+    r1 = r1-1
+    c1 = c1-1
+    r2 = r2-1
+    c2 = c2-1
+    queue = []
+    visited = [[False for i in range(N)] for j in range(N)]
+    dist = [[0 for i in range(N)] for j in range(N)]
+    queue.append([r1,c1])
+    visited[r1][c1] = True
+    while (not (queue == [])):
+        ro,co = queue.pop(0)
+        if ro == r2 and co == c2:
+            break
+        for i in range (8):
+            rn = ro + dx[i]
+            cn = co + dy[i]
+            if (rn&gt;=0 and cn &gt;= 0 and rn &lt; N and cn &lt;N and not visited[rn][cn]):
+                dist[rn][cn] = dist[ro][co]+1
+                visited[rn][cn] = True
+                queue.append([rn,cn])
+    print 'Case #'+str(ii)+': '+str(dist[r2][c2])        </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;complex&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;sstream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+typedef vector&lt;ll&gt; vi;
+typedef vector&lt;vi&gt; vvi;
+typedef vector&lt;ld&gt; vd;
+typedef vector&lt;vd&gt; vvd;
+typedef pair&lt;ll, ll&gt; pii;
+typedef vector&lt;pii&gt; vpii;
+#define pb push_back
+ld EPS = 1e-10;
+ld cp(const pt &amp;a, const pt &amp;b) { return imag(conj(a)*b); }
+ld dp(const pt &amp;a, const pt &amp;b) { return real(conj(a)*b); }
+inline ld sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : x/abs(x); }
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b)
+{ return a.real() &lt; b.real() || (a.real() == b.real() &amp;&amp; a.imag() &lt; b.imag()); }
+inline bool cmp_lex_i(const pt &amp;a, const pt &amp;b)
+{ return a.imag() &lt; b.imag() || (a.imag() == b.imag() &amp;&amp; a.real() &lt; b.real()); }
+// handles ALL cases, change occurences of &lt;= to &lt; to exclude endpoints
+bool seg_x_seg(pt a1, pt a2, pt b1, pt b2) {
+  //if (a1==a2 || b1==b2) return false; // uncomment to exclude endpoints
+  int s1 = sgn(cp(a2 - a1, b1 - a1)), s2 = sgn(cp(a2 - a1, b2 - a1));
+  int s3 = sgn(cp(b2 - b1, a1 - b1)), s4 = sgn(cp(b2 - b1, a2 - b1));
+  if(!s1 &amp;&amp; !s2 &amp;&amp; !s3) { // collinear
+    if (cmp_lex(a2, a1)) swap(a1, a2); if (cmp_lex(b2, b1)) swap(b1, b2);
+    //return cmp_lex(a1, b2) &amp;&amp; cmp_lex(b1, a2);//uncomment to exclude endpoints
+    return !cmp_lex(b2, a1) &amp;&amp; !cmp_lex(a2, b1);
+  } return s1*s2 &lt;= 0 &amp;&amp; s3*s4 &lt;= 0; }
+ 
+inline pt line_inter(const pt &amp;a, const pt &amp;b, const pt &amp;c, const pt &amp;d) {
+  return a + cp(c - a, d - c) / cp(b - a, d - c) * (b - a); }
+struct P {
+	ld x, y;
+	P(){}
+	P(ld lx, ld ly) {
+		x = lx; y = ly;
+	}
+};
+
+vector&lt;pt&gt; parse(string s) {
+	if (s == &quot;none&quot;) return vector&lt;pt&gt;();
+	stringstream ss;
+	ss &lt;&lt; s;
+	char dummy;
+	vector&lt;pt&gt; ret;
+	while (ss &gt;&gt; dummy) {
+		ld x, y;
+		ss &gt;&gt; x &gt;&gt; dummy &gt;&gt; y &gt;&gt; dummy;
+		ret.push_back(pt(x, y));
+	}
+	return ret;
+}
+
+int main() {
+	string line1, line2;
+	while (getline(cin, line1)) {
+		getline(cin, line2);
+		vector&lt;pt&gt; team = parse(line1.substr(12));
+		vector&lt;pt&gt; orcs = parse(line2.substr(6));
+		int nf = team.size();
+		int ne = orcs.size();
+		if (nf == 1) {
+			cout &lt;&lt; 0 &lt;&lt; endl;
+			continue;
+		}
+		ld ans = 1000000000000.0;
+		bool possible = false;
+		for (int i = 0; i &lt; nf; i++) {
+			for (int j = i+1; j &lt; nf; j++) {
+				// draw perpendicular bisector
+				pt p = (team[i] + team[j]) / (ld)2.0;
+				pt v = (team[j] - team[i]) * pt(0, 1);
+				//cerr &lt;&lt; &quot;C: &quot; &lt;&lt; team[i] &lt;&lt; team[j] &lt;&lt; p &lt;&lt; v &lt;&lt; endl;
+				bool neginf = true, posinf = true;
+				ld left = 0, right = 0;
+				for (int k = 0; k &lt; nf; k++) {
+					if (k == i || k == j) continue;
+					// draw perpendicular bisector to i;
+					pt pp = (team[i] + team[k]) / (ld)2.0;
+					pt vv = (team[k] - team[i]) * pt(0, 1);
+					//cerr &lt;&lt; &quot;F: &quot; &lt;&lt; team[i] &lt;&lt; team[k] &lt;&lt; pp &lt;&lt; vv &lt;&lt; endl;
+					// if bisectors not parallel
+					if (abs(cp(v, vv)) &gt; EPS) {
+						pt inter = line_inter(p, p+v, pp, pp+vv);
+						ld pos = ((inter - p) / v).real();
+						//cerr &lt;&lt; pos &lt;&lt; inter &lt;&lt; endl;
+						// left or right?
+						if (cp(v, vv) &gt; 0) {
+							//cerr &lt;&lt; &quot;L&quot; &lt;&lt; endl;
+							if (neginf) {
+								neginf = false;
+								left = pos;
+							} else {
+								left = max(left, pos);
+							}
+						} else {
+							//cerr &lt;&lt; &quot;R&quot; &lt;&lt; endl;
+							if (posinf) {
+								posinf = false;
+								right = pos;
+							} else {
+								right = min(right, pos);
+							}
+						}
+					}
+				}
+				for (int k = 0; k &lt; ne; k++) {
+					// draw perpendicular bisector to i;
+					pt pp = (team[i] + orcs[k]) / (ld)2.0;
+					pt vv = (orcs[k] - team[i]) * pt(0, 1);
+					//cerr &lt;&lt; &quot;D: &quot; &lt;&lt; team[i] &lt;&lt; orcs[k] &lt;&lt; pp &lt;&lt; vv &lt;&lt; endl;
+					// if bisectors not parallel
+					if (abs(cp(v, vv)) &gt; EPS) {
+						pt inter = line_inter(p, p+v, pp, pp+vv);
+						ld pos = ((inter - p) / v).real();
+						//cerr &lt;&lt; pos &lt;&lt; endl;
+						// left or right?
+						if (cp(v, vv) &gt; 0) {
+							//cerr &lt;&lt; &quot;R&quot; &lt;&lt; endl;
+							if (posinf) {
+								posinf = false;
+								right = pos;
+							} else {
+								right = min(right, pos);
+							}
+						} else {
+							//cerr &lt;&lt; &quot;L&quot; &lt;&lt; endl;
+							if (neginf) {
+								neginf = false;
+								left = pos;
+							} else {
+								left = max(left, pos);
+							}
+						}
+					}
+				}
+				if (neginf || posinf) {
+					possible = true;
+					if (neginf &amp;&amp; posinf) {
+						ans = min(ans, abs(v/(ld)2));
+					} else if (neginf) {
+						if (right &gt;= 0) ans = min(ans, abs(v/(ld)2));
+						else ans = min(ans, abs(team[i] - (p + right*v)));
+					} else if (posinf) {
+						if (left &lt;= 0) ans = min(ans, abs(v/(ld)2));
+						else ans = min(ans, abs(team[i] - (p + left*v)));
+					}
+					//cerr &lt;&lt; &quot;   A: &quot; &lt;&lt; ans &lt;&lt; endl;
+				} else if (left + EPS &lt; right) {
+					possible = true;
+					ans = min(ans, abs(team[i] - (p + min(abs(left), abs(right))*v)));
+					//cerr &lt;&lt; &quot;   B: &quot; &lt;&lt; ans &lt;&lt; endl;
+				}
+			}
+		}
+		if (possible) {
+			cout &lt;&lt; setprecision(12) &lt;&lt; fixed &lt;&lt; ans &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;The Orcs are close&quot; &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

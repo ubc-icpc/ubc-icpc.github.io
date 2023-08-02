@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+long long  n,w,h,cex,cey;
+struct ctree{
+	long long x;
+	long long y;
+	long long ini;
+	double ang;
+} tree[50010];
+long long treeini[50010][3];
+int compare(ctree a, ctree b)
+{
+	return a.ang&lt;b.ang;
+}
+void sorttree(long long n)
+{
+	sort(tree+1,tree+n+1,compare);
+}
+void getang(long long k)
+{
+	double i,j;
+	i=tree[k].x-cex;
+	j=tree[k].y-cey;
+	if(tree[k].y&lt;cey)
+	{
+		if(tree[k].x&gt;=cex)
+		{
+			tree[k].ang=1-i/sqrt(i*i+j*j);
+		}else
+		{
+			tree[k].ang=2-(-j)/sqrt(i*i+j*j);
+		}
+	}else if(tree[k].y==cey)
+	{
+		if(tree[k].x&gt;=cex) tree[k].ang=0; else tree[k].ang=2;
+	} else
+	{
+		if(tree[k].x&lt;=cex){
+			tree[k].ang=3-(-i)/sqrt(i*i+j*j);
+		} else tree[k].ang=4-j/sqrt(i*i+j*j);
+	}
+	return ;
+}
+long long xmul(long long x1,long long y1,long long x2,long long y2)
+{
+	if(x1==cex &amp;&amp; y1==cey) {x1=cex+1;}
+	if(x2==cex &amp;&amp; y2==cey) {x2=cex+1;}
+	return ((x1-cex)*(y2-cey)-(x2-cex)*(y1-cey));
+}
+	
+int main(void)
+{
+	long long i,j,g,l;
+	cin&gt;&gt;n&gt;&gt;w&gt;&gt;h;
+	while(n!=0)
+	{
+		cex=w;
+		cey=h;
+		for(i=1;i&lt;=n;i++)
+		{
+			cin&gt;&gt;treeini[i][0]&gt;&gt;treeini[i][1];
+			treeini[i][2]=0;
+			tree[i].x=treeini[i][0]*2;
+			tree[i].y=treeini[i][1]*2;
+			tree[i].ini=i;
+			getang(i);
+		}
+		sorttree(n);
+		for(i=1;i&lt;=n;i++)
+		{
+			j=((i+n/2-1)&gt;n)?i+n/2-1-n:i+n/2-1;
+			g=((i+n/2)&gt;n)?i+n/2-n:i+n/2;
+			if(xmul(tree[i].x,tree[i].y,tree[j].x,tree[j].y)*xmul(tree[i].x,tree[i].y,tree[g].x,tree[g].y)&lt;=0) break;
+		}
+		for(j=i;j&lt;=i+n/2-1;j++)
+		{
+			g=(j&gt;n)?j-n:j;
+			treeini[tree[g].ini][2]=1;
+		}
+		for(i=1;i&lt;=n;i++) if(treeini[i][2]) cout&lt;&lt;treeini[i][0]&lt;&lt;' '&lt;&lt;treeini[i][1]&lt;&lt;endl;
+		cin&gt;&gt;n&gt;&gt;w&gt;&gt;h;
+	}
+	return 0;
+}
+			
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

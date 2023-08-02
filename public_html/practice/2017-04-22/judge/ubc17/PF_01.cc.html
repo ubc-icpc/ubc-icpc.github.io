@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#define _USE_MATH_DEFINES
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+
+int main() {
+	ios::sync_with_stdio(0); cin.tie(0);
+
+	int num, temp;
+	cin &gt;&gt; num;
+	int height[2001], ans[4001]; 
+	memset(height, 0, sizeof(height));
+	memset(ans, 0, sizeof(ans));
+	for (int i = 0; i &lt; num; i++) {
+		cin &gt;&gt; temp;
+		height[temp]++;
+	}
+	for (int i = 1; i &lt;= 2000; i++) {
+		for (int j = 1; j &lt; i; j++)
+			ans[i+j] += min(height[i], height[j]);
+		ans[i+i] += height[i]/2;
+	}
+	int diffheight, maxlen;
+	diffheight = maxlen = 0;
+	for (int i = 1; i &lt;= 4000; i++) {
+		if (ans[i] &gt; maxlen) {
+			maxlen = ans[i];
+			diffheight = 0;
+		}
+		if (ans[i] == maxlen) {
+			diffheight++;
+		}
+	}
+	cout &lt;&lt; maxlen &lt;&lt; &quot; &quot; &lt;&lt; diffheight &lt;&lt; endl;
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

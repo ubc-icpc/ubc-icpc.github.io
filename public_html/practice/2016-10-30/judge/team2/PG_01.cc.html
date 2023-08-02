@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+struct q_t {
+	int w, x, y;
+	bool operator&lt;(const q_t&amp; b) const {
+		return w != b.w ? w &gt; b.w : x != b.x ? x &gt; b.x : y &gt; b.y;
+	}
+};
+
+int G[1002][1002];
+bool v[1002][1002];
+int d[1002][1002];
+
+const int dirs[][2] = { {1, 0}, {0, 1}, {-1, 0}, {0, -1} };
+
+const int INF = 2147483647;
+
+int main() {
+	int M, N; scanf(&quot;%d%d&quot;, &amp;M, &amp;N);
+
+	for (int i = 0; i &lt;= M+1; i++)
+		for (int j = 0; j &lt;= N+1; j++)
+			G[i][j] = INF;
+
+	for (int i = 1; i &lt;= M; i++)
+		for (int j = 1; j &lt;= N; j++)
+			scanf(&quot;%d&quot;, &amp;G[i][j]);
+
+	priority_queue&lt;q_t&gt; pq;
+	for (pq.push((q_t){0, 1, 1}); pq.size();) {
+		q_t cur = pq.top(); pq.pop();
+		if (v[cur.x][cur.y]) continue;
+		//printf(&quot;%d %d %d\n&quot;, cur.w, cur.x, cur.y);
+		v[cur.x][cur.y] = true;
+		d[cur.x][cur.y] = cur.w;
+		for (int d = 0; d &lt; 4; d++) {
+			int nx = cur.x + dirs[d][0], ny = cur.y + dirs[d][1];
+			if (G[nx][ny] != INF &amp;&amp; !v[nx][ny]) {
+				int w = max(cur.w, G[nx][ny] - G[cur.x][cur.y]);
+				pq.push((q_t){w, nx, ny});
+			}
+		}
+	}
+	printf(&quot;%d\n&quot;, d[M][N]);
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

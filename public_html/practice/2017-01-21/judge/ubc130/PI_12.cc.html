@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+typedef long long ll;
+typedef long double ld;
+using namespace std;
+
+class comp {
+public:
+	bool operator() (const vector&lt;ld&gt; &amp;a, const vector&lt;ld&gt; &amp;b) const {
+		return a[0] &lt; b[0];
+	}
+};
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	ll N, K; cin &gt;&gt; N &gt;&gt; K;
+	vector&lt;ll&gt; a;
+	ld sum = 0;
+	for (int i = 0; i &lt; N; i++) {
+		ll l; cin &gt;&gt; l;
+		a.push_back(l);
+		sum += sqrt(l);
+	}
+	priority_queue&lt;vector&lt;ld&gt;, vector&lt;vector&lt;ld&gt;&gt;, comp&gt; pq;
+	priority_queue&lt;vector&lt;ld&gt;, vector&lt;vector&lt;ld&gt;&gt;, comp&gt; floors;
+	ll cowsUsed = 0;
+	for (int i = 0; i &lt; N; i++) {
+		ll num = max((ll) (sqrt(a[i]) * K / sum)-1, (ll) 1);
+/*		pq.push({(ld) a[i] / num - (ld) a[i] / (num + 1),
+			num,
+			i});*/
+		floors.push({num,
+			(ld) a[i] / num - (ld) a[i] / (num + 1),
+			i});
+		cowsUsed += num;
+	}
+	ll cowsLeft = K - cowsUsed;
+	while (cowsLeft &lt; min(K, (ll) 1e5)) {
+		vector&lt;ld&gt; v = floors.top(); floors.pop();
+		v[0]--;
+		v[1] = (ld) a[v[2]] / v[0] - (ld) a[v[2]] / (v[0] + 1);
+		floors.push(v);
+		cowsLeft++;
+	}
+	while (!floors.empty()) {
+		vector&lt;ld&gt; v = floors.top(); floors.pop();
+		pq.push({v[1], v[0], v[2]});
+	}
+//	cout &lt;&lt; cowsLeft &lt;&lt; endl;
+	for (int i = 0; i &lt; cowsLeft; i++) {
+		vector&lt;ld&gt; cur = pq.top(); pq.pop();
+//		cout &lt;&lt; cur[0] &lt;&lt; &quot; &quot; &lt;&lt; cur[1] &lt;&lt; &quot; &quot; &lt;&lt; cur[2] &lt;&lt; endl;
+		cur[1]++;
+		cur[0] = (ld) a[cur[2]] / cur[1] - (ld) a[cur[2]] / (cur[1] + 1);
+		pq.push(cur);
+	}
+	ld time = 0;
+	while (!pq.empty()) {
+		vector&lt;ld&gt; cur = pq.top(); pq.pop();
+//		cout &lt;&lt; cur[0] &lt;&lt; &quot; &quot; &lt;&lt; cur[1] &lt;&lt; &quot; &quot; &lt;&lt; cur[2] &lt;&lt; endl;
+		time += cur[0] + (ld) a[cur[2]] / (cur[1] + 1);
+	}
+	cout &lt;&lt; (ll) (time + 0.5) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+ 
+typedef long long ll;
+ 
+// char to 3x3 visualization of piece
+map&lt;char,vector&lt;string&gt;&gt; M;
+ 
+// char to bitmask of piece
+map&lt;char,set&lt;ll&gt;&gt; M2;
+ 
+const ll N = (1&lt;&lt;21);
+short vis[N][20], depth[N][20];
+string S;
+ 
+const short INF = 10000;
+// returns true if cycle found, false otherwise
+// bm: bitmask
+// si: string index
+// cd: current depth
+short f(ll bm, ll si) {
+  if (vis[bm][si] == 1)
+    return INF;
+  if (vis[bm][si] == 2)
+    return depth[bm][si];
+  vis[bm][si] = 1;
+  depth[bm][si] = 0;
+  for (ll cbm : M2[S[si]]) { // cbm: current bitmask
+    // drop piece until contact with existing bitmask or bottom
+    ll p = 7;
+    while (p &amp;&amp; ((cbm&lt;&lt;((p-1)*3)) &amp; bm) == 0)
+      p--;
+    ll nbm = (bm | (cbm&lt;&lt;(p*3))); // new bitmask
+    // delete full rows
+    for (ll i = 0; i &lt; 10; i++) {
+      if ((nbm &amp; (7&lt;&lt;(i*3))) == (7&lt;&lt;(i*3))) {
+        ll lm = (1&lt;&lt;(i*3))-1; // lower bitmask of bits to keep
+        // keep all bits with index lower than i*3
+        // and all bits of the shifted new bitmask with index &gt;= i*3
+        nbm = ((nbm &amp; lm) | ((nbm&gt;&gt;3) &amp; (~lm)));
+        i--;
+      }
+    }
+    if (nbm &gt;= N) {
+	  depth[bm][si] = max(depth[bm][si], short(1));
+      continue;
+	}
+	if (f(nbm,(si+1)%S.size()) == INF)
+      return INF;
+  
+	depth[bm][si] = max((short) depth[bm][si], short(1 + depth[nbm][(si+1)%S.size()]) );
+  }
+  vis[bm][si] = 2;
+  return depth[bm][si];
+}
+ 
+// rotate strings
+// v: vector of strings representing piece
+inline vector&lt;string&gt; rs(const vector&lt;string&gt;&amp; v) {
+  vector&lt;string&gt; ret(3,&quot;...&quot;);
+  for (ll i = 0; i &lt; 3; i++)
+    for (ll j = 0; j &lt; 3; j++)
+      ret[i][j] = v[2-j][i];
+  return ret;
+}
+ 
+int main() {
+  ios::sync_with_stdio(0);
+  M['T'] = {&quot;***&quot;,
+            &quot;.*.&quot;,
+            &quot;.*.&quot;};
+  M['X'] = {&quot;.*.&quot;,
+            &quot;***&quot;,
+            &quot;.*.&quot;};
+  M['R'] = {&quot;.**&quot;,
+            &quot;**.&quot;,
+            &quot;.*.&quot;};
+  M['S'] = {&quot;.**&quot;,
+            &quot;.*.&quot;,
+            &quot;**.&quot;};
+  M['Z'] = {&quot;**.&quot;,
+            &quot;.*.&quot;,
+            &quot;.**&quot;};
+  M['V'] = {&quot;*..&quot;,
+            &quot;*..&quot;,
+            &quot;***&quot;};
+  M['7'] = {&quot;**.&quot;,
+            &quot;.**&quot;,
+            &quot;.*.&quot;};
+  M['W'] = {&quot;*..&quot;,
+            &quot;**.&quot;,
+            &quot;.**&quot;};
+  for (pair&lt;char,vector&lt;string&gt;&gt; p : M) {
+    vector&lt;string&gt; v(p.second);
+    // rotate four times
+    for (ll R = 0; R &lt; 4; R++) {
+      ll X = 0;
+      for (ll i = 0; i &lt; 9; i++) {
+        ll x = i/3, y = i%3;
+        if (v[x][y] == '*')
+          X |= (1&lt;&lt;i);
+      }
+      M2[p.first].insert(X);
+      v = rs(v);
+    }
+  }
+  cin &gt;&gt; S;
+  if (f(0,0) == INF)
+    cout &lt;&lt; &quot;forever\n&quot;;
+  else
+    cout &lt;&lt; depth[0][0] &lt;&lt; &quot;\n&quot;;
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

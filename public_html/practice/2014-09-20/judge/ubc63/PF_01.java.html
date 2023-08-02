@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+// Can ride least 2 over, then ride biggest 2 over and ride back on smallest.
+public class Main {
+
+    public Main() {
+        main(null);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine();
+            String[] ins = line.split(&quot; &quot;);
+            if (ins.length &gt;= 2) {
+                System.out.println(getCost(ins));
+            } else {
+                return;
+            }
+        }
+    }
+
+    public static Integer getCost(String[] args) {
+        int numEntries = 0;
+        numEntries = Integer.parseInt(args[0]);
+
+        ArrayList&lt;Integer&gt; src = new ArrayList&lt;Integer&gt;();
+
+        for (int i = 0; i &lt; numEntries; i++) {
+            src.add(Math.min(420, Integer.parseInt(args[1 + i])));
+        }
+        Collections.sort(src);
+
+        return moveBoat(src, 0);
+    }
+
+    public static Integer moveBoat(ArrayList&lt;Integer&gt; s, Integer c) {
+        if (s.size() &lt;= 2) {
+            return Collections.max(s) + c;
+        } else if (s.size() == 3) {
+            return s.get(2) + s.get(0) + s.get(1) + c;
+        }
+        // Move 2 over and return to shore A
+        int cost;
+        int costMaxSize2 = s.get(s.size() - 1) + 2 * s.get(0)
+                + s.get(s.size() - 2);
+        int costMaxMin2 = 2 * s.get(1) + s.get(0) + s.get(s.size() - 1);
+        cost = Math.min(costMaxSize2, costMaxMin2);
+
+        s.remove(s.size() - 1);
+        s.remove(s.size() - 1);
+
+        return moveBoat(s, c + cost);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

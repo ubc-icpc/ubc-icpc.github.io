@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int memo[5005][3][3][1&lt;&lt;9], mod = 10007;
+int id(int r, int c) {
+    return 3*r + c;
+}
+
+int dp(int n, int r, int c, int bs) {
+    if (n == 0) return bs == 0;
+    if (c == 3) return dp(n, r+1, 0, bs);
+    if (r == 3) return dp(n-1, 0, 0, (~bs)&amp;((1&lt;&lt;9) - 1) );
+    if (memo[n][r][c][bs] != -1) return memo[n][r][c][bs];
+    
+    // try putting it horizontal
+    int ans = 0;
+    if (c &lt; 2) {
+        if ( (bs &amp; (3 &lt;&lt; id(r,c))) == 0 ) {
+            ans += dp(n, r, c+1, bs | (3 &lt;&lt; id(r,c)));
+        }
+    }
+    
+    // try putting vertical
+    if (r &lt; 2) {
+        if ( (bs &amp; (9 &lt;&lt; id(r,c))) == 0 ) {
+            ans += dp(n, r, c+1, bs | (9 &lt;&lt; id(r,c)));
+        }
+    }
+    
+    // try putting nothing
+    ans += dp(n, r, c+1, bs);
+    return memo[n][r][c][bs] = ans%mod;
+}
+
+int main() {
+    memset(memo, -1, sizeof memo);
+    
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        cout &lt;&lt; dp(n, 0, 0, 0) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

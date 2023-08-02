@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+using namespace std;
+long long n, k;
+long long k2;
+
+long long dist2(vector&lt;long long&gt; &amp;a, vector&lt;long long&gt; &amp;b) {
+	return (a[0] - b[0]) * (a[0] - b[0])
+		+ (a[1] - b[1]) * (a[1] - b[1])
+		+ (a[2] - b[2]) * (a[2] - b[2]) &lt; k2;
+}
+
+bool comp(const vector&lt;long long&gt; &amp;a, const vector&lt;long long&gt; &amp;b) {
+	return a[0] &lt; b[0];
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	vector&lt;vector&lt;long long&gt;&gt; points;
+	while (cin &gt;&gt; n &gt;&gt; k) {
+		if (n + k == 0)
+			break;
+		k2 = k*k;
+		for (int i = 0; i &lt; n; i++) {
+			long long a, b, c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+			vector&lt;long long&gt; row;
+			row.push_back(a); row.push_back(b); row.push_back(c);
+			points.push_back(row);
+		}
+		sort(points.begin(), points.end(), comp);
+		int count = 0;
+		for (int i = 0; i &lt; points.size(); i++) {
+			for (int j = i + 1; j &lt; points.size(); j++) {
+				if (points[j][0] - points[i][0] &gt;= k)
+					break;
+				int dx = points[j][0] - points[i][0];
+				int dy = abs(points[j][1] - points[i][1]);
+				int dz = abs(points[j][2] - points[i][2]);
+				if (dy &gt;= k || dz &gt;= k)
+					continue;
+				if (dx + dy + dz &lt; k) {
+					count++;
+					continue;
+				}
+				if (dist2(points[i], points[j])) {
+					count++;
+				}
+			}
+		}
+		cout &lt;&lt; count &lt;&lt; endl;
+		points.clear();
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

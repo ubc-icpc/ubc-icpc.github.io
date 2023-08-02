@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;deque&gt;
+#include &lt;cassert&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;bitset&gt;
+#include &lt;climits&gt;
+#include &lt;iomanip&gt;
+#include &lt;fstream&gt;
+#include &lt;unordered_set&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+using namespace std;
+
+#define ll long long
+#define N 52
+#define INF 1000000000000LL
+#define EPS (1e-7)
+#define PI (acos(-1.L))
+
+#define MOD (int)(1e9)
+
+ll sp1rr, sp1cc, sp2rr, sp2cc;
+ll kgr, kgc;    //bottom right corner of king
+
+ll n, m;
+char g[N][N];
+ll dist[N][N];
+bool seen[N][N];
+
+// {top, left, right, down}
+ll dr[] = {-1, 0, 1, 0};
+ll dc[] = {0, -1, 0, 1};
+
+ll convert[] = {2, 3, 0, 1};
+
+// {down, right, top, left}
+//ll dr[] = {1, 0, -1, 0};
+//ll dc[] = {0, 1, 0, -1};
+
+
+//from bottom right corner
+// {top, left, down, right}
+ll drk1[] = {-2, -1, 1, -1};
+ll dck1[] = {-1, -2, -1, 1};
+ll drk2[] = {-2, 0, 1, 0};
+ll dck2[] = {0, -2, 0, 1};
+
+//bool pawn(ll r, ll c)   {return g[r][c]=='o';}
+bool king(ll r, ll c)   {return g[r][c]=='X';}
+bool obs(ll r, ll c)    {return g[r][c]=='*';}
+bool space(ll r, ll c)  {return g[r][c]=='.';}
+
+bool valid(ll r, ll c) {
+    if (!(r &gt;= 0 &amp;&amp; r &lt; n &amp;&amp; c &gt;= 0 &amp;&amp; c &lt; m))
+        return false;
+    if (obs(r, c))
+        return false;
+    if (kgr-r &lt;= 1 &amp;&amp; kgr-r &gt;= 0 &amp;&amp; kgc-c &lt;= 1 &amp;&amp; kgc-c &gt;= 0)
+        return false;
+    return true;
+}
+
+struct State {
+    State(ll krr, ll kcc, ll dirr, ll costt) {
+        kr = krr;
+        kc = kcc;
+        dir = dirr;
+        cost = costt;
+    }
+    ll kr, kc, dir, cost;
+};
+struct Statecomp {
+    bool operator() (const State s1, const State s2) const {
+        if (s1.cost != s2.cost)
+            return s1.cost &lt; s2.cost;
+        if (s1.kr != s2.kr)
+            return s1.kr &lt; s2.kr;
+        if (s1.kc != s2.kc)
+            return s1.kc &lt; s2.kc;
+        if (s1.dir != s2.dir)
+            return s1.dir &lt; s2.dir;
+        return false;
+    }
+};
+
+void bfs(ll r, ll c) {
+    
+    memset(seen, 0, sizeof(seen));
+    for (ll i = 0; i &lt; N; i++) {
+        for (ll j = 0; j &lt; N; j++) {
+            dist[i][j] = INF;
+        }
+    }
+    dist[r][c] = 0;
+    queue&lt;pair&lt;ll, ll&gt; &gt; q;
+    pair&lt;ll,ll&gt; p(r, c);
+    q.push(p);
+    while (!q.empty()) {
+        pair&lt;ll, ll&gt; cur = q.front();
+        q.pop();
+        ll cr = cur.first, cc = cur.second;
+        //cout &lt;&lt; cr &lt;&lt; &quot; &quot; &lt;&lt; cc &lt;&lt; endl;
+        if (seen[cr][cc])
+            continue;
+        seen[cr][cc] = true;
+        for (ll i = 0; i &lt; 4; i++) {
+            ll nr = cr+dr[i], nc = cc+dc[i];
+            if (!valid(nr, nc) || seen[nr][nc])
+                continue;
+            dist[nr][nc] = dist[cr][cc]+1;
+            pair&lt;ll, ll&gt; pp(nr, nc);
+            q.push(pp);
+        }
+    }
+}
+
+ll rc2rc(ll r1, ll c1, ll r2, ll c2) {
+    bfs(r1, c1);
+    return dist[r2][c2];
+}
+
+void solve() {
+    bool foundSpace = false;
+    for (ll i = 0; i &lt; n; i++) {
+        for (ll j = 0; j &lt; m; j++){
+            cin &gt;&gt; g[i][j];
+            if (king(i, j)) {
+                kgr = i, kgc = j;
+            }
+            if (space(i, j)) {
+                if (!foundSpace) {
+                    sp1rr = i, sp1cc = j;
+                    foundSpace = true;
+                }
+                else {
+                    sp2rr = i, sp2cc = j;
+                }
+            }
+        }
+    }
+    if (kgr == 1 &amp;&amp; kgc == 1) {
+        cout &lt;&lt; 0 &lt;&lt; endl;
+        return;
+    }
+    
+    bool seenG[N][N][4];
+    ll resCost[N][N][4];
+    memset(seenG, 0, sizeof(seenG));
+    for (ll i = 0; i &lt; N; i++) {
+        for (ll j = 0; j &lt; N; j++) {
+            for (ll k = 0; k &lt; 4; k++) {
+                resCost[i][j][k] = INF;
+            }
+        }
+    }
+    
+    set&lt;State, Statecomp&gt; s;
+    
+    for (ll i = 0; i &lt; 4; i++) {
+        ll sp1r = sp1rr, sp1c = sp1cc, sp2r = sp2rr, sp2c = sp2cc;
+        ll nsp1r = kgr + drk1[i];
+        ll nsp1c = kgc + dck1[i];
+        ll nsp2r = kgr + drk2[i];
+        ll nsp2c = kgc + dck2[i];
+        if (!valid(nsp1r, nsp1c) || !valid(nsp2r, nsp2c))
+            continue;
+        ll sum = rc2rc(sp1r, sp1c, nsp1r, nsp1c) + rc2rc(sp2r, sp2c, nsp2r, nsp2c);
+        ll sum2 = rc2rc(sp1r, sp1c, nsp2r, nsp2c) + rc2rc(sp2r, sp2c, nsp1r, nsp1c);
+        State ss(kgr, kgc, i, min(sum, sum2));
+        s.insert(ss);
+    }
+    while (!s.empty()) {
+        State cur = *(s.begin());
+        s.erase(s.begin());
+        if (seenG[cur.kr][cur.kc][cur.dir])
+            continue;
+        //cout &lt;&lt; cur.kr &lt;&lt; &quot; &quot; &lt;&lt; cur.kc &lt;&lt; &quot; &quot; &lt;&lt; cur.dir &lt;&lt; endl;
+        seenG[cur.kr][cur.kc][cur.dir] = true;
+        resCost[cur.kr][cur.kc][cur.dir] = cur.cost;
+        kgr = cur.kr;
+        kgc = cur.kc;
+        ll sp1r = cur.kr + drk1[cur.dir];
+        ll sp1c = cur.kc + dck1[cur.dir];
+        ll sp2r = cur.kr + drk2[cur.dir];
+        ll sp2c = cur.kc + dck2[cur.dir];
+        
+        for (ll i = 0; i &lt; 4; i++) {
+            ll nkr = cur.kr+dr[i];
+            ll nkc = cur.kc+dc[i];
+            
+            ll nsp1r = cur.kr + drk1[i];
+            ll nsp1c = cur.kc + dck1[i];
+            ll nsp2r = cur.kr + drk2[i];
+            ll nsp2c = cur.kc + dck2[i];
+            if (!valid(nsp1r, nsp1c) || !valid(nsp2r, nsp2c))
+                continue;
+            ll sum = rc2rc(sp1r, sp1c, nsp1r, nsp1c) + rc2rc(sp2r, sp2c, nsp2r, nsp2c);
+            ll sum2 = rc2rc(sp1r, sp1c, nsp2r, nsp2c) + rc2rc(sp2r, sp2c, nsp1r, nsp1c);
+            State ss(nkr, nkc, convert[i], min(sum, sum2)+cur.cost+1);
+            s.insert(ss);
+        }
+    }
+    
+    ll minCost = INF;
+    for (ll i = 0; i &lt; 4; i++) {
+        minCost = min(minCost, resCost[1][1][i]);
+    }
+    if (minCost == INF)
+        minCost = -1;
+    cout &lt;&lt; minCost &lt;&lt; endl;
+}
+
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    while (true) {
+        cin &gt;&gt; n &gt;&gt; m;
+        //cout &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; endl;
+        if (!n &amp;&amp; !m)
+            break;
+        solve();
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+public class L {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		sc.nextLine();
+		ArrayList&lt;String&gt;[] langs = new ArrayList[n];
+		String[] langnames = new String[n];
+		for (int i = 0; i &lt; n; i++) {
+			langs[i] = new ArrayList&lt;String&gt;();
+			String[] tokens = sc.nextLine().split(&quot;\\s+&quot;);
+			langnames[i] = tokens[0].trim();
+			for (int j = 1; j &lt; tokens.length; j++) {
+				tokens[j] = tokens[j].trim();
+				if (tokens[j].length() &gt; 0) {
+					langs[i].add(tokens[j].toLowerCase());
+				}
+			}
+		}
+		sc.nextLine();
+		while (sc.hasNext()) {
+			String[] tokens = sc.nextLine().split(&quot;(\\s|\\,|\\.|!|;|\\?|\\(|\\))+&quot;);
+			boolean found = false;
+			for (int i = 0; i &lt; tokens.length &amp;&amp; !found; i++) {
+				tokens[i] = tokens[i].trim().toLowerCase();
+				for (int j = 0; j &lt; n &amp;&amp; !found; j++) {
+					for (String word : langs[j]) {
+						if (word.equals(tokens[i])) {
+							found = true;
+							System.out.println(langnames[j]);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

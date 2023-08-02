@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+ll x;
+
+ll ipow(ll b, ll p) {
+    ll x = 1;
+    for(int i=0; i&lt;20; ++i) {
+        if((p&gt;&gt;i)&amp;1) x *= b;
+        b *= b;
+    }
+    return x;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    cin &gt;&gt; x;
+
+    ll qq = powl(x, .5) + .5;
+    if (qq*qq == x) {
+        cout &lt;&lt; 1 &lt;&lt; endl;
+        return 0;
+    }
+
+    for(ll d=3; d&lt;=63; d+=2) {
+        for(ll b=2; powl(b, d)-.5 &lt;= x; ++b) {
+            //cerr &lt;&lt; &quot;!! &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; d &lt;&lt; endl;
+            bool match = true;
+            ll ipb = ipow(b, d-1);
+            while(x%b == 0 &amp;&amp; match) {
+                match = false;
+                if (x%ipb == 0) {
+                    x/= ipb;
+                    //cerr &lt;&lt; &quot; &quot; &lt;&lt; ipb &lt;&lt; endl;
+                    match = true;
+                }
+                else if(x != b) {
+                    ll p = powl(x/b, 1.0/(d-1))+.5;
+                    if (ipow(p, d-1) == x/b) {
+                        x = b;
+                        //cerr &lt;&lt; &quot; &quot; &lt;&lt; x/b &lt;&lt; endl;
+                        match = true;
+                    }
+                }
+            }
+        }
+    }
+    cout &lt;&lt; x &lt;&lt; endl;
+
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

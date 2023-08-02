@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef double ld;
+
+ld memo[9][1&lt;&lt;6][31][41];
+
+ld dfs(int num, int seen, int score, int target);
+ld dfs2(int dice[6], int k, int num, int seen, int score, int target) {
+    if (k == num) {
+        ld bestAns = 0;
+        for (int i = 0; i &lt; num; i++) {
+            if (seen &amp; (1 &lt;&lt; dice[i])) continue;
+            int newNum = num;
+            int newSeen = seen | (1 &lt;&lt; dice[i]);
+            int newScore = score;
+            for (int j = 0; j &lt; num; j++) {
+                if (dice[i] == dice[j]) {
+                    newNum--;
+                    newScore += min(5, dice[i]+1);
+                }
+            }
+            ld newAns = dfs(newNum, newSeen, newScore, target);
+            if (newAns &gt; bestAns) {
+                bestAns = newAns;
+            }
+        }
+        return bestAns;
+    }
+
+    ld ans = 0;
+    for (int i = 0; i &lt; 6; i++) {
+        dice[k] = i;
+        ans += dfs2(dice, k+1, num, seen, score, target)/6.0;
+        dice[k] = 0;
+    }
+    return ans;
+}
+
+ld dfs(int num, int seen, int score, int target) {
+    if ((seen &amp; (1&lt;&lt;5)) &amp;&amp; score &gt;= target) {
+        return 1;
+    }
+    if (num == 0) {
+        return 0;
+    }
+    if (memo[num][seen][score][target] != -1) {
+        return memo[num][seen][score][target];
+    }
+    int dice[8];
+    ld ans = dfs2(dice, 0, num, seen, score, target);
+    return memo[num][seen][score][target] = ans;
+}
+
+ld ans[41] = {
+  0.0,
+  0.9934260978934217,
+  0.9934260978934217,
+  0.9934260978934217,
+  0.9934260978934217,
+  0.9934260978934217,
+  0.9934247686293650,
+  0.9934165972110608,
+  0.9934002819443735,
+  0.9933624595076219,
+  0.9932673271661977,
+  0.9930229839754668,
+  0.9925757389466515,
+  0.9917243682786575,
+  0.9898606162424060,
+  0.9860079561222627,
+  0.9810130309722186,
+  0.9725513758121004,
+  0.9598255703513192,
+  0.9421533972031441,
+  0.9188722841064407,
+  0.8930267371507455,
+  0.8556015864378141,
+  0.8077385074741977,
+  0.7483733338698375,
+  0.6803307111795185,
+  0.6069901896971663,
+  0.5247594468429353,
+  0.4354204654105082,
+  0.3462932871493447,
+  0.2637895194647885,
+  0.1940149358050818,
+  0.1358125206427483,
+  0.0867752158931796,
+  0.0526175939142237,
+  0.0289075053679455,
+  0.0156781451938801,
+  0.0075024119324905,
+  0.0026855223142037,
+  0.0009558554428784,
+  0.0001461079070016
+}; 
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    /*
+    for (int i = 0; i &lt;= 8; i++) {
+        for (int j = 0; j &lt; (1&lt;&lt;6); j++) {
+            for (int k = 0; k &lt;= 30; k++) {
+                for (int t = 0; t &lt;= 40; t++) {
+                    memo[i][j][k][t] = -1;
+                }
+            }
+        }
+    }
+
+    cout &lt;&lt; setprecision(16) &lt;&lt; fixed;
+    cout &lt;&lt; &quot;ld ans[41] = {&quot; &lt;&lt; endl;
+    cout &lt;&lt; &quot;  0.0,&quot; &lt;&lt; endl;
+    for (int n = 1; n &lt;= 40; n++) {
+        cout &lt;&lt; &quot;  &quot; &lt;&lt; dfs(8, 0, 0, n) &lt;&lt; &quot;,&quot; &lt;&lt; endl;
+    }
+    cout &lt;&lt; &quot;}; &quot; &lt;&lt; endl;
+    */
+
+    int ncase; cin &gt;&gt; ncase;
+    while (ncase--) {
+        int n; cin &gt;&gt; n;
+        cout &lt;&lt; setprecision(16) &lt;&lt; fixed &lt;&lt; ans[n] &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

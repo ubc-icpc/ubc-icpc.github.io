@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;list&gt;
+#include&lt;cmath&gt;
+#include&lt;limits&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+int main() {
+  long long s;
+  cin &gt;&gt; s;
+  while(s) {
+    long long ans = 0;
+    long long x = (0.5)*(-1+sqrt(1+8*s));
+    long long csum = (x+1)*(x+2)/2;
+    if(floor(-1+sqrt(1+8*s)) == (-1+sqrt(1+8*s)))
+      ans = 0;
+    else
+      ans = csum - s;
+    
+    if(ans &gt; 0)
+      cout &lt;&lt; ans &lt;&lt; endl;
+    else
+      cout &lt;&lt; &quot;Not bored enough!&quot; &lt;&lt; endl;
+    
+    cin &gt;&gt; s;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

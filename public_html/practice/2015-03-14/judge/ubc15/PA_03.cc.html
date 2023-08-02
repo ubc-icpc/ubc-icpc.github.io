@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+
+int g_victimId = 0;
+int g_A = 0;
+int g_B = 0;
+
+struct Command {
+    int id;
+    char action;
+    int repeat;
+    Command(int id, char action, int repeat) : id(id), action(action), repeat(repeat){}
+};
+
+struct Robot {
+    int id;
+    int x;
+    int y;
+    int xDir;
+    int yDir;
+    Robot(int id, int x, int y, char dir) : id(id), x(x), y(y) {
+        if (dir == 'N') {
+            xDir = 0;
+            yDir = 1;
+        }
+
+        else if (dir == 'S') {
+            xDir = 0;
+            yDir = -1;
+        }
+
+        else if (dir == 'E') {
+            xDir = 1;
+            yDir = 0;
+        }
+
+        else if (dir == 'W') {
+            xDir = -1;
+            yDir = 0;
+        }
+    }
+
+    void GoForward() {
+        x += xDir;
+        y += yDir;
+    }
+
+    void TurnLeft() {
+        int tmp = xDir;
+        xDir = -yDir;
+        yDir = tmp;
+        //std::cout &lt;&lt; &quot;id: &quot; &lt;&lt; id &lt;&lt; &quot;, xdir: &quot; &lt;&lt; xDir &lt;&lt; &quot;, ydir: &quot; &lt;&lt; yDir &lt;&lt; std::endl;
+    }
+
+    void TurnRight() {
+        int tmp = xDir;
+        xDir = yDir;
+        yDir = -tmp;
+        //std::cout &lt;&lt; &quot;id: &quot; &lt;&lt; id &lt;&lt; &quot;, xdir: &quot; &lt;&lt; xDir &lt;&lt; &quot;, ydir: &quot; &lt;&lt; yDir &lt;&lt; std::endl;
+    }
+
+    void ProcAction(char action) {
+        if (action == 'L')
+            TurnLeft();
+        else if (action == 'R')
+            TurnRight();
+        else if (action == 'F')
+            GoForward();
+    }
+};
+
+bool HitWall(Robot r) {
+    if (r.x == 0 || r.x == g_A+1 || r.y == 0 || r.y == g_B+1)
+        return true;
+    return false;
+}
+
+bool HitRobot(int id, std::vector&lt;Robot&gt;&amp; robots) {
+    for(std::vector&lt;Robot&gt;::iterator it = robots.begin(); it!=robots.end(); ++it) {
+        //std::cout &lt;&lt; &quot;id: &quot; &lt;&lt; it-&gt;id &lt;&lt; &quot;, x: &quot; &lt;&lt; it-&gt;x &lt;&lt; &quot;, y: &quot; &lt;&lt; it-&gt;y &lt;&lt; &quot;\n&quot;;
+
+        if (it-&gt;id == id)
+            continue;
+
+        if (it-&gt;x == robots[id].x &amp;&amp; it-&gt;y == robots[id].y) {
+            g_victimId = it-&gt;id;
+            return true;
+        }
+    }
+    return false;
+}
+
+int main(int argc, char* argv[]) {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(0);
+    int k;
+    std::cin &gt;&gt; k;
+    while (k--) {
+        int a, b;
+        int n, m, n_total;
+        int id = 1;
+        std::cin &gt;&gt; a &gt;&gt; b;
+        g_A = a;
+        g_B = b;
+        std::cin &gt;&gt; n &gt;&gt; m;
+        n_total = n;
+        std::vector&lt;Robot&gt; robots(n+1, Robot(0, -1, -1, 'x'));
+
+        while (n--) {
+            int x, y;
+            char dir;
+            std::cin &gt;&gt; x &gt;&gt; y &gt;&gt; dir;
+            //std::cout &lt;&lt; &quot;id: &quot; &lt;&lt; n_total - n &lt;&lt; &quot;, x: &quot; &lt;&lt; x &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; &quot;, dir: &quot; &lt;&lt; dir &lt;&lt; std::endl;
+            robots[n_total - n] = Robot(id, x, y, dir);
+            id++;
+        }
+
+        std::vector&lt;Command&gt; cmds;
+        cmds.reserve(m);
+        while (m--) {
+            int id, repeat;
+            char action;
+            std::cin &gt;&gt; id &gt;&gt; action &gt;&gt; repeat;
+            cmds.push_back(Command(id, action, repeat));
+        }
+
+        std::vector&lt;Command&gt;::iterator it;
+        bool isColl = false;
+        for(it = cmds.begin(); it!=cmds.end(); ++it){
+            if (isColl)
+                break;
+            while (it-&gt;repeat--) {
+                int id = it-&gt;id;
+                robots.at(id).ProcAction(it-&gt;action);
+                if (HitWall(robots.at(id))) {
+                    std::cout &lt;&lt; &quot;Robot &quot; &lt;&lt; id &lt;&lt; &quot; crashes into the wall&quot; &lt;&lt; &quot;\n&quot;;
+                    isColl = true;
+                    break;
+                }
+                if (HitRobot(id, robots)) {
+                    std::cout &lt;&lt; &quot;Robot &quot; &lt;&lt; id &lt;&lt; &quot; crashes into robot &quot; &lt;&lt; g_victimId &lt;&lt; &quot;\n&quot;;
+                    isColl = true;
+                    break;
+                }
+            }
+        }
+        if (!isColl) 
+            std::cout &lt;&lt; &quot;OK&quot; &lt;&lt; &quot;\n&quot;;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

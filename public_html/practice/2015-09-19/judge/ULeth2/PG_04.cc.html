@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+using namespace std;
+
+void strip_zero(string &amp;d){
+   int q;
+   for(q = d.size()-1; q &gt; 0 &amp;&amp; d[q] == '0'; q--) ;
+   d = d.substr(0,q+1);
+}
+
+void mult2(string &amp;d){
+   int car = 0;
+   for(int q = d.size()-1; q&gt;= 0; q--){
+      int num = d[q] - '0';
+      num*= 2;
+      num += car;
+      d[q] = num%10 + '0';
+      car = num/10;
+   }
+}
+
+bool solve(string s){
+   int p;
+   for(p = 0; p &lt; (int)s.size() &amp;&amp; s[p] != '.'; p++) ;
+   if(p == (int)s.size())
+      return true;
+   string d = s.substr(p+1);
+   strip_zero(d);
+   //cout &lt;&lt; d &lt;&lt; endl;
+   while(d.size() &gt; 1 and d.back() == '5'){
+      mult2(d);
+      strip_zero(d);
+   }
+   //cout &lt;&lt; d &lt;&lt; endl;
+   if(d == &quot;5&quot; or d == &quot;&quot; or d == &quot;0&quot;)
+      return true;
+   else
+      return false;
+}
+
+int main(){
+   string s;
+   while(cin &gt;&gt; s){
+      if(solve(s)){
+	 cout &lt;&lt; &quot;Exact.&quot;;
+      }
+      else{
+	 cout &lt;&lt; &quot;Some precision lost.&quot;;
+      }
+      cout &lt;&lt; endl;
+   }
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

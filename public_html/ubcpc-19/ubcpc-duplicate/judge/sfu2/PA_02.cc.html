@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+	char type;
+	int shif;
+	cin &gt;&gt; type &gt;&gt; shif;
+	if (type == 'D') {
+		shif = 26-shif;
+	}
+
+	string word;
+	cin &gt;&gt; word;
+	for (int i = 0; i &lt; word.size(); i++) {
+		if (word[i] + shif &gt; 'z') {
+			cout &lt;&lt; static_cast&lt;char&gt;(word[i] + shif - 26);
+		}
+		else {
+			cout &lt;&lt; static_cast&lt;char&gt;(word[i] + shif);
+		}
+	}
+	cout &lt;&lt; endl;
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

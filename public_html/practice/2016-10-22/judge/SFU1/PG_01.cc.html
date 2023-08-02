@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+int main(){
+	int arr[26] = {0,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,3,3,3,3,3,2,2,2,2,2};
+	string s;cin&gt;&gt;s;
+	int rank=25, stars=0, streak=0;
+	for (char c: s) {
+		if(c=='W') {
+			stars++;
+			streak++;
+			if(rank &gt;=6 &amp;&amp; rank &lt;=25 &amp;&amp; streak&gt;=3) stars++;
+
+			if(stars &gt; arr[rank]) {
+				stars -= arr[rank];
+				rank--;
+				if(rank==0){
+					cout&lt;&lt;&quot;Legend&quot;&lt;&lt;endl;
+					return 0;
+				}
+			}
+		}
+		else if(c=='L') {
+			streak = 0;
+			if(rank&lt;=20) stars--;
+			if(stars &lt; 0){
+				if(rank&gt;=20) stars=0;
+				else{
+					rank++;
+					stars=arr[rank]-1;
+				}
+			}
+		}
+	}
+	cout&lt;&lt;rank&lt;&lt;endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

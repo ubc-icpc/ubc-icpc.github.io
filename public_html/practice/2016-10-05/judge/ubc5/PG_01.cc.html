@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+pt p[3];
+
+int main() {
+  ios::sync_with_stdio(0);
+  for (int i = 0; i &lt; 3; i++) {
+    ld x, y; cin &gt;&gt; x &gt;&gt; y;
+    p[i] = pt(x,y);
+  }
+  ld r; cin &gt;&gt; r;
+  ld a = abs(p[0]-p[1]);
+  ld b = abs(p[1]-p[2]);
+  ld c = abs(p[2]-p[0]);
+  ld A = sqrt(4*a*a*b*b-(a*a+b*b-c*c)*(a*a+b*b-c*c))/4;
+  ld rc = 2*A/(a+b+c);
+  ld p = rc/r-1;
+  cout &lt;&lt; p*100 &lt;&lt; &quot;\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

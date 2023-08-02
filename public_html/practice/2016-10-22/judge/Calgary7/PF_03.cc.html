@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;functional&gt;
+#include &lt;algorithm&gt;
+#include &lt;fstream&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;unordered_set&gt;
+#include &lt;unordered_map&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;string&gt;
+#include &lt;bitset&gt;
+#include &lt;cassert&gt;
+#include &lt;sstream&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+double prob(ll n, ll m, ll p) {
+	double ret = 1.0 * n * p / (m + 1.0);
+	while (m + n - p &gt; 0 &amp;&amp; m + n &gt; m + 1) {
+		ret *= (1.0 * m + n - p) / (m + n);
+		n--;
+	}
+	return ret;
+}
+
+int main() {
+	ll m, p;
+	cin &gt;&gt; m &gt;&gt; p;
+	double ans = 0.0;
+	ll l = 1, r = 1e6;
+	while (r - l &gt; 20ll) {
+		ll one_third = l + (r - l) / 3, two_third = l + 2 * (r - l) / 3;
+		double x = prob(one_third, m, p), y = prob(two_third, m, p);
+		if (x &lt; y) l = one_third;
+		else r = two_third;
+	}
+	for (ll i = l; i &lt;= r; i++) {
+		ans = max(ans, prob(i, m, p));
+	}
+	printf(&quot;%.10lf\n&quot;, ans);
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

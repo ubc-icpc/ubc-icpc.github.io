@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * Created by Razvan1995 on 10/22/2016.
+ */
+public class Main {
+    static final int MAX_SHARES = 100000;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int days = Integer.parseInt(br.readLine());
+        long money = 100, price, priceNext, shares = 0, canBuy = 0;
+        boolean ascending = false, ascendingNext;
+
+        price = Integer.parseInt(br.readLine());
+
+        if(days == 1){
+            System.out.println(100);
+            return;
+        }
+
+        priceNext = Integer.parseInt(br.readLine());
+
+        if(price &lt; priceNext){
+            ascendingNext = true;
+        }
+        else{
+            ascendingNext = false;
+        }
+
+        //sell
+        if(ascending &amp;&amp; !ascendingNext){
+            money += shares * price;
+            shares = 0;
+        }
+
+        //buy
+        if(!ascending &amp;&amp; ascendingNext){
+            canBuy = money / price;
+            if(MAX_SHARES - shares &gt;= canBuy) {
+                shares += canBuy;
+                money -= canBuy * price;
+            }
+            else{
+                shares += (MAX_SHARES - shares);
+                money -= (MAX_SHARES - shares) * price;
+            }
+        }
+
+        ascending = ascendingNext;
+        price = priceNext;
+
+        //LOOP STARTS HERE
+        for(int i = 0; i &lt; days - 1; i += 1){
+            if(i != days - 2) {
+                priceNext = Integer.parseInt(br.readLine());
+            }
+            else{
+                //last step - always sell
+                ascending = true;
+                priceNext = -1;
+            }
+
+            if(price &lt; priceNext){
+                ascendingNext = true;
+            }
+            else if(price &gt; priceNext){
+                ascendingNext = false;
+            }
+            else{
+                ascendingNext = ascending;
+            }
+
+            //sell
+            if(ascending &amp;&amp; !ascendingNext){
+                money += shares * price;
+                shares = 0;
+            }
+
+            //buy
+            if(!ascending &amp;&amp; ascendingNext){
+                canBuy = money / price;
+                if(MAX_SHARES - shares &gt;= canBuy) {
+                    shares += canBuy;
+                    money -= canBuy * price;
+                }
+                else{
+                    //BUG
+                    //shares += (MAX_SHARES - shares);
+                    //money -= (MAX_SHARES - shares) * price;
+
+                    money -= (MAX_SHARES - shares) * price;
+                    shares += (MAX_SHARES - shares);
+                }
+            }
+
+            ascending = ascendingNext;
+            price = priceNext;
+
+        }
+
+        System.out.println(money);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

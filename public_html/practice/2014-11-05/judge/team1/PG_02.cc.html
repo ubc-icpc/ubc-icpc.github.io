@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+#define FOR(i, n) for(int i = 0; i &lt; (n); i++)
+#define SZ(A) ((int)(A).size())
+#define PB push_back
+
+#define show(x) cerr&lt;&lt;&quot;XXXX----&gt; &quot;&lt;&lt;#x&lt;&lt;&quot; = &quot;&lt;&lt;x&lt;&lt;endl;
+
+char toChar(int k){
+	if (k &lt; 26)
+		return 'A' + k;
+	if (k == 26)	return '_';
+	if (k == 27)	return '.';
+}
+
+int toInt(char ch){
+	if (ch == '_')	return 26;
+	if (ch == '.')	return 27;
+	return ch-'A';
+}
+
+int main(){
+	int n;
+	string str;
+	while(cin &gt;&gt; n  &amp;&amp; n){
+		cin &gt;&gt; str;
+		for(int i = str.length()-1; i&gt;=0;i--){
+			cout &lt;&lt; toChar((toInt(str[i]) + n) % 28);
+		}
+		cout &lt;&lt; endl;
+
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

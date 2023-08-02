@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+struct node_t {
+	int letter[26];
+	int tab;
+	int parent;
+	int length;
+	int cost;
+};
+node_t G[1048576];
+
+int G_top = 2;
+
+int min(int a, int b) { return a &lt; b ? a : b; }
+
+void build(char *str) {
+	int cur = 1;
+	for (int i = 0; str[i] != 0; i++) {
+		char c = str[i];
+		if (!G[cur].letter[c-'a']) {
+			int child = G_top++;
+			G[cur].letter[c-'a'] = child;
+			G[child].length = G[cur].length + 1;
+			G[child].parent = cur;
+		}
+		cur = G[cur].letter[c-'a'];
+	}
+	int end = cur;
+	cur = 1;
+	for (int i = 0; str[i] != 0; i++) {
+		char c = str[i];
+		cur = G[cur].letter[c-'a'];
+		if (!G[cur].tab)
+			G[cur].tab = end;
+	}
+}
+
+char str[1048576];
+int q[1048576] = {1};
+bool v[1048576] = {0, 1};
+
+int main() {
+	memset(G, 0, sizeof G);
+	int n, m; scanf(&quot;%d%d&quot;, &amp;n, &amp;m);
+	for (int i = 0; i &lt; n; i++) {
+		scanf(&quot;%s&quot;, str);
+		build(str);
+	}
+	for (int h = 0, t = 1; h &lt; t; h++) {
+		int cur = q[h];
+		for (int i = 0; i &lt; 28; i++) {
+			int next = i == 26 ? G[cur].tab : (i == 27 ? G[cur].parent : G[cur].letter[i]);
+			if (next &amp;&amp; !v[next]) {
+				G[next].cost = G[cur].cost + 1;
+				v[next] = true;
+				q[t++] = next;
+			}
+		}
+	}
+	for (int i = 0; i &lt; m; i++) {
+		scanf(&quot;%s&quot;, str);
+		int len = strlen(str);
+		int best = len;
+		int cur = 1;
+		//printf(&quot;%s\n&quot;, str);
+		for (int j = 0; str[j] != 0; j++) {
+			char c = str[j];
+			cur = G[cur].letter[c-'a'];
+			//printf(&quot;%c%d\n&quot;, c, G[cur].cost);
+			if (!cur)
+				break;
+			best = min(best, G[cur].cost + len - (j + 1));
+		}
+		printf(&quot;%d\n&quot;, best);
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

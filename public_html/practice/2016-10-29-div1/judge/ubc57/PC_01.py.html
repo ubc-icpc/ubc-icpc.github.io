@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+n=int(raw_input())
+L=[]
+for i in range(n):
+    s=raw_input().split()
+    name=s[0]
+    name=name[:len(name)-1]
+    val=''
+    for i in reversed(range(1,len(s)-1)):
+        if s[i]=='lower':
+            val+='c'
+        if s[i]=='middle':
+            val+='b'
+        if s[i]=='upper':
+            val+='a'
+    L.append([val,name])
+l=0
+for x in L:
+    l=max(l,len(x[0]))
+for i in range(n):
+    if (len(L[i][0])&lt;l):
+        L[i][0]+='b'*(l-len(L[i][0]))
+L.sort()
+for x in L:
+    print(x[1])
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

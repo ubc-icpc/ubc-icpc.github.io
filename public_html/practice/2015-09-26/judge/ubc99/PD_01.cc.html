@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int k[9001][701];
+int a[70];
+
+int main() {
+  for (int i = 1; i &lt;= 9000; i++)
+    for (int j = 1; j &lt;= 700; j++)
+      k[i][j] = -1;
+  a[0] = 1;
+  for (int i = 1; i &lt; 70; i++)
+    a[i] = 42424242;
+  k[100][1] = 100;
+  for (int d = 1; d &lt; 700; d++) {
+    for (int m = 100; m &lt;= 9000; m++) {
+      if (k[m][d] == -1)
+        continue;
+      k[m][d+1] = max(k[m][d+1],min(m,k[m][d]+m/2));
+      int r = 0, cm = m, cc = k[m][d], e = 10;
+      while (cc-e &gt;= 0) {
+        cc -= e;
+        cm++;
+        k[cm][d+1] = max(k[cm][d+1],cc);
+        e += 3;
+        r++;
+        if (a[r] &gt; d) {
+          a[r] = d;
+          if (r == 69)
+            goto VELOCIRAPTOR;
+        }
+      }
+    }
+  }
+  VELOCIRAPTOR:
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int n; cin &gt;&gt; n;
+    cout &lt;&lt; a[n] &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

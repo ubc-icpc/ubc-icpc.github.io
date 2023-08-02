@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
+public class b {
+
+	public static void main(String[] args) throws Exception {
+		FastScanner sc = new FastScanner(System.in);
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+		int n = sc.nextInt();
+		
+		Person[] ps = new Person[n];
+		for (int i = 0; i &lt; n; i++)
+			ps[i] = new Person(sc.next(), sc.nextInt(), sc.nextInt(), sc.nextInt());
+		StringBuilder res = new StringBuilder();
+		int x = 0;
+		for (int i = 0; i &lt; n; i++)
+			for (int j = i + 1; j &lt; n; j++)
+				if (ps[i].Beats(ps[j])) {
+					for (int k = i + 1; k &lt; n; k++) {
+						if (ps[j].Beats(ps[k]) &amp;&amp; ps[k].Beats(ps[i])) {
+							x++;
+							res.append(ps[i].name + &quot; &quot; + ps[j].name + &quot; &quot; + ps[k].name +&quot;\n&quot;);
+						}
+					}
+				}
+		out.println(x);
+		out.println(res);
+		out.close();
+	}
+
+	public static class Person
+	{
+		String name;
+		int at,df,hp;
+		
+		Person(String s, int h, int a, int d){
+			at = a;
+			df = d;
+			hp = h;
+			name = s;
+		}
+		
+		boolean Beats(Person o) {
+			int a1 = at - o.df;
+			int a2 = o.at - df;
+			if (a2 &lt; 0)
+				a2 = 0;
+			if (a1 &lt; 0)
+				a1 = 0;
+			if (a1 == 0)
+				return false;
+			if (a2 == 0)
+				return true;
+			int t1 = (o.hp + a1 - 1) / a1;
+			int t2 = (hp + a2 - 1) / a2;
+			return t1 &lt; t2;
+		}
+	}
+	
+	public static class FastScanner
+	{
+		BufferedReader br;
+		StringTokenizer st;
+		FastScanner(InputStream in) throws Exception{
+			br = new BufferedReader(new InputStreamReader(in));
+			st = new StringTokenizer(br.readLine());
+		}
+		
+		String next() throws Exception
+		{
+			if (!st.hasMoreTokens()) {
+				st = new StringTokenizer(br.readLine());
+				return next();
+			}
+			return st.nextToken();
+		}
+		
+		int nextInt() throws Exception
+		{
+			return Integer.parseInt(next());
+		}
+	}
+}
+
+/*
+
+
+15
+a 90 60 10
+b 10000 10000 10000
+c 70 50 25
+d 3 1 4159
+e 160 40 10
+f 90 60 10
+g 10000 10000 10000
+h 70 50 25
+i 3 1 4159
+j 160 40 10
+k 90 60 10
+l 10000 10000 10000
+m 70 50 25
+n 3 1 4159
+o 160 40 10
+
+
+*/</code>
+</pre>
+</body>
+</html>

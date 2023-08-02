@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+typedef long long ll;
+
+ll dp[101][101];
+ll p[101][101];
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int c, m; cin &gt;&gt; c &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        p[i][0] = 0;
+        for (int j = 1; j &lt;= c; j++) {
+            cin &gt;&gt; p[i][j];
+        }
+    }
+
+    for (int j = 0; j &lt;= c; j++) {
+        dp[0][j] = p[0][j];
+    }
+
+    for (int i = 1; i &lt; m; i++) {
+        for (int j = 0; j &lt;= c; j++) {
+            dp[i][j] = dp[i-1][j];
+            for (int k = 1; k &lt;= j; k++) {
+                dp[i][j] = max(dp[i][j], dp[i-1][j-k] + p[i][k]);
+            }
+        }
+    }
+
+    ll ans = 0;
+    for (int j = 0; j &lt;= c; j++) {
+        ans = max(ans, dp[m-1][j]);
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

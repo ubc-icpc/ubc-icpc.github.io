@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class b {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int count = sc.nextInt();
+		Fighter[] fighters = new Fighter[count];
+		for (int i = 0; i &lt; count; i++) {
+			String name = sc.next();
+			int hp = sc.nextInt();
+			int at = sc.nextInt();
+			int df = sc.nextInt();
+			sc.nextLine();
+			fighters[i] = new Fighter(name, hp, at, df);
+		}
+		
+//		for (int i = 0; i &lt; count; i++) {
+//			for (int j = i + 1; j &lt; count; j++) {
+//				System.out.print(fighters[i].name + &quot; &quot; + fighters[j].name);
+//				winsSay(fighters[i], fighters[j]);
+//				System.out.println();
+//			}
+//		}
+		
+		int counter = 0;
+		List&lt;String&gt; output = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; count; i++) {
+			for (int j = i + 1; j &lt; count; j++) {
+				for (int k = j + 1; k &lt; count; k++) {
+					if (formTriple(fighters[i], fighters[j], fighters[k])) {
+						counter++;
+						output.add(fighters[i].name + &quot; &quot; + fighters[j].name + &quot; &quot; + fighters[k].name);
+					}
+				}
+			}
+		}
+		
+		System.out.println(counter);
+		for (String line : output) System.out.println(line);
+	}
+	
+//	static boolean draw(Fighter a, Fighter b) {
+//		int damageFrom2 = Math.max(0, b.a - a.d);
+//		int damageFrom1 = Math.max(0, a.a - b.d);
+//
+//		if (damageFrom2 == 0 &amp;&amp; damageFrom1 == 0) return true;
+//		if (damageFrom2 == 0) return false;
+//		if (damageFrom1 == 0) return false;
+//		
+//		int turns1 = a.h / damageFrom2;
+//		int turns2 = b.h / damageFrom1;
+//		
+//		return turns1 == turns2;
+//	}
+	
+	static boolean formTriple(Fighter a, Fighter b, Fighter c) {
+		
+//		winsSay(a, b);
+//		winsSay(b, c);
+//		winsSay(c, a);
+//		
+//		winsSay(a, c);
+//		winsSay(c, b);
+//		winsSay(b, a);
+		
+		if (wins(a, b) &amp;&amp; wins(b, c) &amp;&amp; wins(c, a)) return true;
+		if (wins(a, c) &amp;&amp; wins(c, b) &amp;&amp; wins(b, a)) return true;
+		return false;
+	}
+	
+
+//	static void winsSay(Fighter a, Fighter b) {
+//		int damageFrom2 = Math.max(0, b.a - a.d);
+//		int damageFrom1 = Math.max(0, a.a - b.d);
+//		
+//		System.out.println(a.name + &quot; vs &quot; + b.name);
+//		System.out.print(&quot; d: &quot; + damageFrom1 + &quot; &quot; + damageFrom2);
+//
+//		if (damageFrom2 == 0 &amp;&amp; damageFrom1 == 0) {
+//			System.out.println(&quot; Draw&quot;);
+//			return;
+//		}
+//		if (damageFrom2 == 0) {
+//			System.out.println(&quot; Wins by default&quot;);
+//			return;
+//		}
+//		if (damageFrom1 == 0) {
+//			System.out.println(&quot; Loses by default&quot;);
+//			return;
+//		}
+//		
+//		int turns1 = a.h / damageFrom2;
+//		if (a.h % damageFrom2 != 0) turns1++;
+//		
+//		int turns2 = b.h / damageFrom1;
+//		if (b.h % damageFrom1 != 0) turns2++;
+//		
+//		System.out.print(&quot; t: &quot; + turns1 + &quot; &quot; + turns2);
+//		
+//		if (turns2 &lt; turns1) {
+//			System.out.println(&quot; Wins by turn&quot;);
+//			return;
+//		} else {
+//			System.out.println(&quot; Loses by turn&quot;);
+//			return;
+//		}
+//	}
+	
+	static boolean wins(Fighter a, Fighter b) {
+		int damageFrom2 = Math.max(0, b.a - a.d);
+		int damageFrom1 = Math.max(0, a.a - b.d);
+
+		if (damageFrom2 == 0 &amp;&amp; damageFrom1 == 0) return false; // draw
+		if (damageFrom2 == 0) return true; // cannot be hurt
+		if (damageFrom1 == 0) return false; // cannot do hurting
+		
+		int turns1 = a.h / damageFrom2;
+		if (a.h % damageFrom2 != 0) turns1++;
+		
+		int turns2 = b.h / damageFrom1;
+		if (b.h % damageFrom1 != 0) turns2++;
+		
+		return turns2 &lt; turns1; // b takes shorter time to die
+	}
+}
+
+class Fighter {
+	String name;
+	int h;
+	int a;
+	int d;
+	
+	public Fighter(String name, int h, int a, int d) {
+		super();
+		this.name = name;
+		this.h = h;
+		this.a = a;
+		this.d = d;
+	}
+}</code>
+</pre>
+</body>
+</html>

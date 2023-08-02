@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+	// your code goes here
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int a, b, cc, e =0;
+	cin &gt;&gt; a;
+	while (a&gt;e) {
+		cin &gt;&gt; b;
+		cin &gt;&gt; cc;
+		long long c = cc;
+		long long d = c;
+		while (c&gt;1) {
+			if (c%2==0) {
+				c = c/2;
+			} else {
+				c = c*3 + 1;
+			}
+			if (c&gt;d) {
+				d = c;
+			}
+		}
+		cout &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; d &lt;&lt; endl;
+		e++;
+	}
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

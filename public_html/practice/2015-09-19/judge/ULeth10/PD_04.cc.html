@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#include &lt;stdint.h&gt;
+using namespace std;
+struct F {
+	int n, d;
+	bool operator &lt; (const F&amp; f) const {
+		return (n*f.d) &lt; (f.n*d);
+	}
+};
+
+int gcd(int a, int b){ 
+	int r;
+	while(b) {
+		r = a % b;
+		a = b;
+		b = r;
+	}
+	return a;
+}
+
+void reduce(F&amp; f) {
+	int g = gcd(abs(f.n), f.d);
+	f.n /= g;
+	f.d /= g;
+}
+
+void init(F&amp; f) {
+	if(f.d &lt; 0) {
+		f.n = -f.n;
+		f.d = -f.d;
+	}
+	reduce(f);
+}
+
+
+struct P {
+	int x, y;
+};
+
+int main() {
+	int T, C = 0;
+	cin &gt;&gt; T;
+	while(T--) {
+		int N;
+		cin &gt;&gt; N;
+		vector&lt;P&gt; vp(N);
+		for(int i = 0; i &lt; N; ++i) cin &gt;&gt; vp[i].x &gt;&gt; vp[i].y;
+
+		map&lt;F, int&gt; sf;
+		int max = 0;
+		for(int i = 0; i &lt; N; ++i) {
+			for(int j = 0; j &lt; N; ++j) {
+				if(i == j) continue;
+				F p;
+				p.n = vp[i].y - vp[j].y;
+				p.d = vp[i].x - vp[j].x;
+				init(p);
+				if(sf.find(p) == sf.end()) sf[p] = 1;
+				else sf[p]++;
+				if(max &lt; sf[p]) max = sf[p];
+			}
+			sf.clear();
+		}
+
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++C &lt;&lt; &quot;: &quot; &lt;&lt; (N ? max + 1 : 0) &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstring&gt;
+using namespace std;
+typedef long double ld;
+ld dp[2][500][500];
+ld solve(ld X) {
+    ld res = 0;
+    ld diff = 0;
+    ld loss = 1;
+    ld cur;
+    for (int i=1; ; i++) {
+        diff = min(1.L, diff+X);
+        cur = loss * diff;
+        loss *= 1-diff;
+        ld delta = i * cur;
+        res += delta;
+        if (delta &lt;= 1e-6) break;
+    }
+    return 1/res;
+}
+int main() {
+    ld P; while(cin &gt;&gt; P) {
+      ld lo = 0, hi = P;
+      while(hi-lo &gt; 1e-5) {
+        ld m = (hi+lo)/2;
+        if (solve(m) &gt; P) hi = m;
+        else lo = m;
+      }
+      cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; lo &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

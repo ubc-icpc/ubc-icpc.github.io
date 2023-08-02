@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+#define debug printf
+
+#define R 52
+
+const int dirs[] = { 1, R, -1, -R };
+
+char G[2704];
+bool v[2704];
+
+bool fill_dfs1(int n) {
+    bool land = false;
+    v[n] = true;
+    for (const int* d = dirs; d &lt; dirs+4; d++) {
+        if (G[n+*d] == 'L') land = true;
+        if (!v[n+*d] &amp;&amp; G[n+*d] == 'C') land |= fill_dfs1(n+*d);
+    }
+    return land;
+}
+void fill_dfs2(int n, char c) {
+    G[n] = c;
+    for (const int* d = dirs; d &lt; dirs+4; d++)
+        if (G[n+*d] == 'C') fill_dfs2(n+*d, c);
+}
+void fill(int n) {
+    char c = fill_dfs1(n) ? 'L' : 'W';
+    fill_dfs2(n, c);
+}
+void unfill(int n) {
+    G[n] = 'W';
+    for (const int* d = dirs; d &lt; dirs+4; d++)
+        if (G[n+*d] == 'L') unfill(n+*d);
+}
+
+int main() {
+    memset(G, 'W', sizeof G);;
+    int r, c; scanf(&quot;%d%d&quot;, &amp;r, &amp;c);
+    for (int i = 1; i &lt;= r; i++)
+        for (int j = 1; j &lt;= c; j++)
+            scanf(&quot; %c&quot;, &amp;G[i*R+j]);
+
+    for (int i = 1; i &lt;= r; i++)
+        for (int j = 1; j &lt;= c; j++)
+            if (!v[i*R+j] &amp;&amp; G[i*R+j] == 'C') fill(i*R+j);
+
+    /* for (int i = 1; i &lt;= r; i++) { */
+    /*     for (int j = 1; j &lt;= c; j++) printf(&quot;%c&quot;, G[i*R+j]); printf(&quot;\n&quot;); */
+    /* } */
+
+    int total = 0;
+    for (int i = 1; i &lt;= r; i++)
+        for (int j = 1; j &lt;= c; j++)
+            if (G[i*R+j] == 'L') total++, unfill(i*R+j);
+
+    printf(&quot;%d\n&quot;, total);
+
+    return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

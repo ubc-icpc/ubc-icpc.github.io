@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+typedef __int128 lli;
+
+struct t_edge{
+    lli v;
+    int x, y;
+    bool spec;
+
+    t_edge(lli v_ = 0LL, int x_ = 0, int y_ = 0, bool spec_ = false){
+        v = v_; x = x_; y = y_; spec = spec_;
+    }
+};
+
+//-----------------------
+#define MAXN 200200
+
+int n, m, k, w;
+
+bool spec[MAXN];
+vector&lt;t_edge&gt; edge;
+vector&lt;t_edge&gt; edge2;
+
+int picked;
+int pickedTotal;
+lli currentCost;
+
+int parent[MAXN];
+
+//-----------------------
+
+bool comp1(t_edge a, t_edge b){
+    if(a.v != b.v) return a.v &lt; b.v;
+    return a.spec &gt; b.spec;
+}
+bool comp2(t_edge a, t_edge b){
+    if(a.v != b.v) return a.v &lt; b.v;
+    return a.spec &lt; b.spec;
+}
+int find(int x){
+    return parent[x] = (parent[x]==x)?x:(find(parent[x]));
+}
+void join(int a, int b){
+    parent[find(a)] = find(b);
+}
+void kruskal(lli c, bool inv){
+    
+    picked = 0;
+    pickedTotal = 0;
+    currentCost = 0LL;
+
+    edge2.clear();
+    for(auto e : edge){
+        if(e.spec) edge2.push_back(t_edge(e.v+c, e.x, e.y, 1));
+        else edge2.push_back(e);
+    }
+
+    if(inv) sort(edge2.begin(), edge2.end(), comp1);
+    else sort(edge2.begin(), edge2.end(), comp2);
+
+    //cout &lt;&lt; &quot;DUDE WTF COME ON&quot; &lt;&lt; endl;
+    //for(int i = 0;i &lt; (int)edge2.size();i++) cout &lt;&lt; edge2[i].v &lt;&lt; &quot; &quot;; cout &lt;&lt; endl;
+
+    for(int i = 1;i &lt;= n;i++) parent[i] = i;
+
+    for(auto e : edge2){
+
+        //cout &lt;&lt; &quot;try to join &quot; &lt;&lt; e.x &lt;&lt; &quot; &quot; &lt;&lt; e.y &lt;&lt; endl;
+
+        if(find(e.x) == find(e.y)) continue;
+
+        join(e.x, e.y);
+
+        pickedTotal++;
+        currentCost += e.v;
+
+        if(e.spec){
+            picked++;
+            //currentCost -= c;
+        }
+    }
+}
+
+int main(){
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k &gt;&gt; w;
+    for(int i = 1;i &lt;= k;i++){
+        int x;
+        cin &gt;&gt; x;
+        spec[x] = true;
+    }
+
+    for(int i = 1;i &lt;= m;i++){
+        long long v;
+        int a, b;
+        cin &gt;&gt; a &gt;&gt; b &gt;&gt; v;
+
+        bool s = false;
+        if(spec[a] ^ spec[b]) s = true;
+
+        edge.push_back(t_edge(v, a, b, s));
+    }
+
+    long long beg = -10000000000LL;
+    long long end = +10000000000LL;
+
+    while(beg &lt; end){
+        
+        int lb, ub;
+        lli c = (beg + end)/2;
+
+        kruskal(c, 1);
+        ub = picked;
+		kruskal(c, 0);
+		lb = picked;
+
+        if(pickedTotal &lt; n-1){
+            cout &lt;&lt; -1 &lt;&lt; endl;
+            return 0;
+        }
+
+		if (lb &lt;= w &amp;&amp; w &lt;= ub) beg = end = c;
+        if(w &lt; lb) beg = c+1;
+        else end = c-1;	
+    }
+
+    int ub, lb;
+    kruskal(beg, 1);
+    ub = picked;
+    kruskal(beg, 0);
+    lb = picked;
+
+    if(lb &lt;= w &amp;&amp; w &lt;= ub){
+        cout &lt;&lt; (long long) (currentCost - w*beg) &lt;&lt; endl;
+    }
+    else cout &lt;&lt; -1 &lt;&lt; endl;
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

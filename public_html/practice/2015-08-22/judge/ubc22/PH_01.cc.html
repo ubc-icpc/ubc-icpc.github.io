@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+vector&lt;pair&lt;int, bool&gt; &gt; A[20];
+int T, N, M, X, Y, V[20], B[20];
+char C;
+
+int main () {
+    cin &gt;&gt; T;
+    for (int t = 1; t &lt;= T; ++t) {
+        memset(V, 0, sizeof V);
+        memset(B, -1, sizeof B);
+        for (int i = 0; i &lt; 20; ++i) A[i] = vector&lt;pair&lt;int, bool&gt; &gt;();
+        cin &gt;&gt; N &gt;&gt; M;
+        while (M--) {
+            cin &gt;&gt; X &gt;&gt; Y &gt;&gt; C; --X; --Y;
+            A[X].push_back(make_pair(Y, C == 'C'));
+            A[Y].push_back(make_pair(X, C == 'C'));
+        }
+        int r = 1;
+        for (int i = 0; i &lt; N; ++i)
+            if (!V[i]) {
+                stack&lt;pair&lt;int, bool&gt; &gt; s;
+                s.push(make_pair(i, false));
+                bool success = true;
+                while (!s.empty()) {
+                    pair&lt;int, bool&gt; top = s.top(); s.pop();
+                    if (V[top.first]) {
+                        if (B[top.first] == top.second) continue;
+                        success = false; break;
+                    }
+                    V[top.first] = true;
+                    B[top.first] = top.second;
+                    for (pair&lt;int, bool&gt; p : A[top.first])
+                        s.push(make_pair(p.first, p.second ^ top.second));
+                }
+                r *= success * 2;
+            }
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; t &lt;&lt; &quot;: &quot; &lt;&lt; r &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

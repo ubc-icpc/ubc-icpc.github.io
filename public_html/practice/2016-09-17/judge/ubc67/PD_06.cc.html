@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+int A[15504][6];
+int main() {
+	int x = 0;
+	int a1,b1,c1,d1,e1,f1; 
+	int k; 
+
+	int i=0;
+	for (int a=0; a&lt;=15; a++) {
+		for (int b=0; b&lt;=15; b++) {
+			for (int c=0; c&lt;=15; c++) {
+				for (int d=0; d&lt;=15; d++) {
+					for (int e=0; e&lt;=15; e++) {
+						for (int f=0; f&lt;=15; f++) {
+							if (a+b+c+d+e+f == 15) {
+								A[i][0] = a;
+								A[i][1] = b;
+								A[i][2] = c;
+								A[i][3] = d;
+								A[i][4] = e;
+								A[i][5] = f;
+								i++;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	while(true) {
+		x++;
+	
+	string type; cin &gt;&gt; type;
+	if (type == &quot;e&quot;) {
+		break;
+	}
+
+	if (type == &quot;m&quot;) {
+		cin &gt;&gt; a1 &gt;&gt; b1 &gt;&gt; c1 &gt;&gt; d1 &gt;&gt; e1 &gt;&gt; f1;
+		if (a1+b1+c1+d1+e1+f1 != 15) {
+			break;
+		}
+		for (int i=0; i&lt;15504; i++) {
+			if (A[i][0] == a1 &amp;&amp; A[i][1] == b1 &amp;&amp; A[i][2] == c1 &amp;&amp; A[i][3] == d1 &amp;&amp; A[i][4] == e1 &amp;&amp; A[i][5] == f1) {
+				cout &lt;&lt; &quot;Case &quot; &lt;&lt; x &lt;&lt; &quot;: &quot; &lt;&lt; i &lt;&lt; endl;
+			}
+		}
+	} else if (type == &quot;u&quot;) {
+		cin &gt;&gt; k;
+		if (k &gt; 15503 || k &lt; 0) {
+			break;
+		}
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; x &lt;&lt; &quot;: &quot; &lt;&lt; A[k][0] &lt;&lt; &quot; &quot; &lt;&lt; A[k][1] &lt;&lt; &quot; &quot; &lt;&lt; A[k][2] &lt;&lt; &quot; &quot; &lt;&lt; A[k][3] &lt;&lt; &quot; &quot; &lt;&lt; A[k][4] &lt;&lt; &quot; &quot; &lt;&lt; A[k][5] &lt;&lt; endl; 
+	} else {
+		break;
+	}
+}
+
+	return 0;
+}
+
+
+	// int i=0;
+	// for (int a=0; a&lt;=15; a++) {
+	// 	for (int b=0; b&lt;=15; b++) {
+	// 		for (int c=0; c&lt;=15; c++) {
+	// 			for (int d=0; d&lt;=15; d++) {
+	// 				for (int e=0; e&lt;=15; e++) {
+	// 					for (int f=0; f&lt;=15; f++) {
+	// 						if (a+b+c+d+e+f == 15) {
+	// 							if (type == &quot;m&quot;){
+	// 								if (a == a1 &amp;&amp; b == b1 &amp;&amp; c == c1 &amp;&amp; d == d1 &amp;&amp; e == e1 &amp;&amp; f == f1) {
+	// 									cout &lt;&lt; &quot;Case &quot; &lt;&lt; x &lt;&lt; &quot;: &quot; &lt;&lt; i &lt;&lt; endl;
+	// 								}
+	// 							} else if (type == &quot;u&quot;) {
+	// 								if (i == k) {
+	// 									cout &lt;&lt; &quot;Case &quot; &lt;&lt; x &lt;&lt; &quot;: &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; &quot; &quot; &lt;&lt; d &lt;&lt; &quot; &quot; &lt;&lt; e &lt;&lt; &quot; &quot; &lt;&lt; f &lt;&lt; endl; 
+	// 								}
+	// 							}
+	// 							i++;
+	// 						}
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+							
+								// A[i][0] = a;
+								// A[i][1] = b;
+								// A[i][2] = c;
+								// A[i][3] = d;
+								// A[i][4] = e;
+								// A[i][5] = f;
+								// if (type == &quot;m&quot;) {
+								// 	if (a == a1 &amp;&amp; b == b1 &amp;&amp; c == c1 &amp;&amp; d == d1 &amp;&amp; e == e1 &amp;&amp; A[i][5] == f1) {
+								// 	cout &lt;&lt; &quot;Case &quot; &lt;&lt; x &lt;&lt; &quot;: &quot; &lt;&lt; i &lt;&lt; endl;
+								// 	break;
+								// 	}
+								// } else if (type == &quot;u&quot;) {
+								// 	if (i == k) {
+								// 		cout &lt;&lt; &quot;Case &quot; &lt;&lt; x &lt;&lt; &quot;: &quot; &lt;&lt; A[k][0] &lt;&lt; &quot; &quot; &lt;&lt; A[k][1] &lt;&lt; &quot; &quot; &lt;&lt; A[k][2] &lt;&lt; &quot; &quot; &lt;&lt; A[k][3] &lt;&lt; &quot; &quot; &lt;&lt; A[k][4] &lt;&lt; &quot; &quot; &lt;&lt; A[k][5] &lt;&lt; endl; 
+								// 		break;
+								// 	}
+								// }
+								// i++;
+									//else if (type == &quot;u&quot;) {
+	//	int k; cin &gt;&gt; k;
+	//	cout &lt;&lt; &quot;Case &quot; &lt;&lt; x &lt;&lt; &quot;: &quot; &lt;&lt; A[k][0] &lt;&lt; &quot; &quot; &lt;&lt; A[k][1] &lt;&lt; &quot; &quot; &lt;&lt; A[k][2] &lt;&lt; &quot; &quot; &lt;&lt; A[k][3] &lt;&lt; &quot; &quot; &lt;&lt; A[k][4] &lt;&lt; &quot; &quot; &lt;&lt; A[k][5] &lt;&lt; endl; 
+	//}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">// A5 - F
+
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;fstream&gt;
+#include &lt;climits&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;list&gt;
+#include &lt;set&gt;
+#include &lt;bitset&gt;
+
+#include &lt;complex&gt;
+#include &lt;iomanip&gt;
+
+#include &lt;map&gt;
+
+#define input_crack ios_base::sync_with_stdio(0)
+#define input_coffee std::cin.tie(0)
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+
+typedef complex&lt;ld&gt; pt;
+
+const pt origin(0, 0);
+const ll INF = 0x3f3f3f3f;
+const ld EPS = 1e-6;
+const ld PI = acos(-1.L);
+
+int ANCHOR_X = 0;
+int ANCHOR_Y = 0;
+
+
+struct intervalPin {
+
+	pt mainPoint;
+	bool startNode;		// true means interval start, false means end point
+	pt pairPoint;
+	int cats;
+	ld angle;
+};
+
+
+struct Point {
+	ld x;
+	ld y;
+	ld angle;
+};
+
+
+struct Ring {
+	Point centre;
+	ld radius;
+	ld angle;
+};
+
+
+struct Comparison {
+	ld angle;
+	bool enter;		// true means entering circle --&gt; increment, 
+					// false means exiting a cirlce --&gt; decrement
+};
+
+
+struct RingToRingTangentLines {
+
+	// 4 tangent points in total
+	// points that go from top to top and bottom to bottom of two circles
+	Point outer[2];
+	// points that make an 'X' between circles
+	Point inner[2];
+
+};
+
+
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+
+inline bool cmp_lex_i(const pt&amp; a, const pt&amp; b) {
+	return a.imag() &lt; b.imag() || (a.imag() == b.imag() &amp;&amp; a.real() &lt; b.real());
+}
+
+bool cmp_ang(const pt&amp; a, const pt&amp; b) {
+	bool aorig = cmp_lex_i(origin, a), borig = cmp_lex_i(origin, b);
+	if (aorig ^ borig) return aorig; else return cp(a, b) &gt; 0;
+}
+
+
+bool cmp_special(const Comparison&amp; a, const Comparison&amp; b) {
+		
+	//if (a.angle &lt; b.angle) {
+	//	return true;
+	//}
+	//else {
+	//	return false;
+	//}
+
+	return (a.angle &lt; b.angle);
+
+}
+
+
+ld getAngle(ld x, ld y) {
+
+	ld result = atan2(y, x);
+	return result;
+}
+
+ld calcX(ld x, ld mu, ld delta, ld BigDelta, ld Dist, bool first) {
+
+	ld result = -delta * mu;
+	if(first) {
+		result += BigDelta;
+	}
+	else {
+		result -= BigDelta;
+	}
+	result = result / Dist;
+
+	return result;
+}
+
+ld calcY(ld x, ld mu, ld delta, ld eta) {
+
+	ld result = -(mu * x + delta);
+	result = result / eta;
+
+	return result;
+
+}
+
+// Used these pages as reference 
+// http://www.ambrsoft.com/TrigoCalc/Circles2/Circles2Tangent_.htm
+// https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Tangents_between_two_circles
+RingToRingTangentLines getTangentLines(const Ring&amp; ringA, const Ring&amp; ringB) {
+
+	RingToRingTangentLines result;
+
+	ld rA, rB, rASqrd, rArB, mu, muSqrd, eta, etaSqrd, deltaA, deltaB, Dist;
+	
+	rA = ringA.radius;
+	rB = ringB.radius;
+
+	rASqrd = rA * rA;
+	rArB = rA * rB;
+	
+	mu = ringA.centre.x - ringB.centre.x;
+	muSqrd = mu * mu;
+
+	eta = ringA.centre.y - ringB.centre.y;
+	etaSqrd = eta * eta;
+	
+	Dist = etaSqrd + muSqrd;
+
+	deltaA = rASqrd - rArB;
+
+	deltaB = rASqrd + rArB;
+
+	if (abs(eta) &lt; EPS) {
+
+		ld dmu, xA, yA, xB, yB;
+
+		dmu = 1;
+		if(mu &lt; 0) {
+			dmu = -1;
+		}
+
+		xA = ((-deltaA * mu)/Dist);
+
+		yA = -dmu * sqrt(rASqrd - xA * xA);
+
+		result.outer[0] = {xA, yA};
+		result.outer[1] = {xA, -yA};
+
+		xB = ((-deltaB * mu) / Dist);
+		yB = -dmu * sqrt(rASqrd - xB * xB);
+
+		result.inner[0] = {xB, yB};
+		result.inner[1] = {xB, -yB};
+
+		//return result;
+	} 
+	else {
+		ld dASqrd, dBSqrd, deta, DeltaA, DeltaB, tempY;
+		ld x = 0;
+		ld y = 0;
+
+		dASqrd = deltaA * deltaA;
+		dBSqrd = deltaB * deltaB;
+
+		deta = 1;
+		if (eta &lt; 0) {
+			deta = -1;
+		}
+
+		DeltaA = (deta * sqrt(dASqrd * muSqrd - Dist*(dASqrd - etaSqrd * rASqrd)));
+
+		DeltaB = (deta * sqrt(dBSqrd * muSqrd - Dist*(dBSqrd - etaSqrd * rASqrd)));
+
+		x = calcX(x, mu, deltaA, DeltaA, Dist, true);
+		y = calcY(x, mu, deltaA, eta);
+		result.outer[0] = {x, y};
+			
+		x = calcX(x, mu, deltaA, DeltaA, Dist, false);
+		y = calcY(x, mu, deltaA, eta);
+		result.outer[1] = {x, y};
+		
+		x = calcX(x, mu, deltaB, DeltaB, Dist, true);
+		y = calcY(x, mu, deltaB, eta);
+		result.inner[0] = {x, y}; 
+
+		x = calcX(x, mu, deltaB, DeltaB, Dist, false);
+		y = calcY(x, mu, deltaB, eta);
+		result.inner[1] = {x, y};
+
+		//return result;
+	}
+
+	return result;
+
+}
+
+
+// angle in radians e.g. PI = 180, PI/2 = 90
+// targetPoint is the point that is to get rotated
+ll cantorSandwich(ll k1, ll k2) {
+
+	ll result = (1 / 2)*(k1 + k2)*(k1 + k2 + 1);
+	result += k2;
+
+	return result;
+}
+
+
+void prob_solve() {
+	
+	int n;
+	ld x, y, r;
+
+	cin &gt;&gt; n;
+
+	vector&lt;Ring&gt; doughnuts;
+
+	doughnuts.clear();
+	
+	Point myPoint;
+	Ring myRing;
+
+	while (n--) {
+
+		cin &gt;&gt; x &gt;&gt; y &gt;&gt; r;
+
+		//myPoint.x = x;
+		//myPoint.y = y;
+		//myPoint.angle = getAngle(y, x);
+		myPoint = {x, y, getAngle(y, x)};
+
+		//myRing.centre = myPoint;
+		//myRing.radius = r;
+		//myRing.angle = 0;
+		myRing = {myPoint, r, 0};
+
+		doughnuts.push_back(myRing);
+	}
+	// completed reading in all the Rings
+
+	//for (int i = 0; i &lt; doughnuts.size(); i++) {
+	//	cout &lt;&lt; doughnuts[i].centre.x &lt;&lt; &quot;,&quot; &lt;&lt; doughnuts[i].centre.y &lt;&lt; endl;
+	//}
+
+	int finalMax = 0;
+	int localMax;
+
+	Ring anchorRing, targetRing;
+
+	vector&lt; Comparison &gt; allTangents;
+
+	for (int i = 0; i &lt; doughnuts.size(); i++) {
+		
+		anchorRing = doughnuts[i];
+		allTangents.clear();
+
+		// reset localMax back to 1
+		localMax = 1;
+
+		for (int j = 0; j &lt; doughnuts.size(); j++) {
+			targetRing = doughnuts[j];
+
+			if (j == i) {
+				continue;
+			}
+			
+			RingToRingTangentLines tanLines = getTangentLines(anchorRing, targetRing);
+
+			ld ptA, ptB, ptC, ptD;
+
+			ptA = getAngle(tanLines.inner[0].x, tanLines.inner[0].y);
+			ptB = getAngle(tanLines.outer[0].x, tanLines.outer[0].y);
+
+			ptC = getAngle(tanLines.outer[1].x, tanLines.outer[1].y);
+			ptD = getAngle(tanLines.inner[1].x, tanLines.inner[1].y);
+
+			allTangents.push_back({ ptA, true });
+			allTangents.push_back({ ptB, false });
+
+			allTangents.push_back({ ptC, true });
+			allTangents.push_back({ ptD, false });
+
+
+			if (ptA &gt; ptB || ptC &gt; ptD) {
+				localMax++;
+			}
+
+			//if (ptC &gt; ptD) {
+			//	localMax++;
+			//}
+
+
+		} // end for loop
+		
+		int myLength = allTangents.size();
+				
+		if (myLength &gt; 0) {		// more than 1 RING on the board
+			
+			sort(allTangents.begin(), allTangents.end(), cmp_special);
+
+			for (int k = 0; k &lt; myLength; k++) {
+			
+				if (allTangents[k].enter) {
+					localMax++;
+				} 
+				else {
+					localMax--;
+				}
+
+				finalMax = max(localMax, finalMax);
+			}
+		}
+		else  {
+			// THERE is ONLY 1 RING on the board
+			finalMax = 1;
+		}				
+
+	}
+
+	cout &lt;&lt; finalMax &lt;&lt; endl;			
+
+}
+
+
+
+int main() {
+
+	input_crack;
+	input_coffee;
+
+	//std::string filename(&quot;a5_f1.in&quot;);
+	//std::ifstream infile(filename.c_str());
+	//std::cin.rdbuf(infile.rdbuf());
+
+	int t;
+	cin &gt;&gt; t;
+
+	while (t--) {
+		prob_solve();
+	}
+
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

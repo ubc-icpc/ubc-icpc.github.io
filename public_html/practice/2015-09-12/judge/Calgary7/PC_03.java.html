@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class P5 {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int prac = sc.nextInt();
+		int x;
+		
+		for (int i=0; i&lt;prac; i++){
+			int std = sc.nextInt();
+			int brwn = sc.nextInt();
+			System.out.println(&quot;Practice #&quot; +(i+1)+&quot;: &quot;+std+&quot; &quot;+brwn);
+			
+			int n = sc.nextInt();
+			
+			for(int j=0; j&lt;n; j++){
+				x = sc.nextInt();
+				while( x &gt;= brwn){
+					brwn = brwn*2;
+				}
+				brwn = brwn-x;
+				System.out.println(x +&quot; &quot;+brwn);
+			}
+		}
+		return;
+				
+		
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

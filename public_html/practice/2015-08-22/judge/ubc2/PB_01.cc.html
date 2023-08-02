@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+bool isMatching(const string&amp; pattern, const string&amp; word) {
+  if (pattern.size() != word.size()) return false;
+  for (int i = 0; i &lt; pattern.size(); ++i) {
+    if (pattern[i] != word[i] &amp;&amp; pattern[i] != '-') return false;
+  }
+  return true;
+}
+
+int main() {
+  int N; cin &gt;&gt; N;
+  vector&lt;string&gt; dict;
+  for (int i = 0; i &lt; N; ++i) {
+    string word; cin &gt;&gt; word;
+    dict.push_back(word);
+  }
+  int W; cin &gt;&gt; W;
+  for (int i = 1; i &lt;= W; ++i) {
+    string pattern; cin &gt;&gt; pattern;
+    int total = 0;
+    cout &lt;&lt; &quot;Word #&quot; &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; pattern &lt;&lt; endl;
+    for (int j = 0; j &lt; dict.size(); ++j) {
+      if (isMatching(pattern, dict[j])) {
+        cout &lt;&lt; dict[j] &lt;&lt; endl;
+        total++;
+      }
+    }
+    cout &lt;&lt; &quot;Total number of candidate words = &quot; &lt;&lt; total &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

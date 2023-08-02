@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+/*************************************************************************
+	&gt; File Name: e2.cpp
+	&gt; Author: 
+	&gt; Mail: 
+	&gt; Created Time: Thu 30 Oct 18:42:20 2014
+ ************************************************************************/
+
+#include&lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, ll&gt; pipll;
+map&lt;char,ll&gt; edge_cost;
+const int MAXN = 1001;
+const ll INIFINITE = 999999999999;
+ll dist[MAXN * MAXN];
+int w, h;
+bool visited[MAXN * MAXN];
+char Map[MAXN][MAXN];
+int ex, ey;
+int k;
+int direction[4][2] = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+int convert(int x, int y) {
+    return x * w + y;
+}
+struct comp {
+    bool operator () (pipll &amp; a, pipll &amp; b) {
+        return a.second &gt; b.second;
+    }
+};
+bool valid(int x, int y) {
+    return (x &gt;= 0 &amp;&amp; x &lt; h) &amp;&amp; (y &gt;= 0 &amp;&amp; y &lt; w);
+}
+void Dijkstra() {
+    int s;
+    int ns;
+    int nx, ny;
+    int cx, cy;
+    fill(dist, dist + w * h, INIFINITE );
+    fill(visited, visited + w * h, false);
+    dist[convert(ex, ey)] = 0;
+    priority_queue&lt;pipll, vector&lt;pipll&gt;, comp &gt; q;
+    q.push(make_pair(convert(ex, ey), 0));
+    
+    while(!q.empty()) {
+        s = q.top().first;
+        q.pop();
+        if(visited[s]) {
+            continue;
+        }
+        visited[s] = true;
+        cx = s / w;
+        cy = s % w;
+        //cout&lt;&lt;&quot;visit &quot;&lt;&lt;cx&lt;&lt;&quot; &quot;&lt;&lt;cy&lt;&lt;endl;
+        if(cx == 0 || cx == h - 1 || cy == 0 || cy == w - 1) {
+            //cout&lt;&lt;&quot;escape: (&quot;&lt;&lt;cx&lt;&lt;&quot;, &quot;&lt;&lt;cy&lt;&lt;&quot;)&quot;&lt;&lt;endl;
+            cout&lt;&lt;dist[s]&lt;&lt;endl;
+            break;
+        }
+        for(int i = 0; i&lt; 4; i++) {
+            nx = cx + direction[i][0];
+            ny = cy + direction[i][1];
+            ns = convert(nx, ny);
+            if(valid(nx, ny) &amp;&amp; !visited[ns]) {
+                if(dist[ns] &gt; dist[s] + edge_cost[Map[nx][ny]]) {
+                    dist[ns] = dist[s] + edge_cost[Map[nx][ny]];
+                    //cout&lt;&lt;&quot;q push &quot;&lt;&lt;nx&lt;&lt;&quot; &quot;&lt;&lt;ny&lt;&lt;endl;
+                    q.push(make_pair(ns,dist[ns]));
+                }
+            
+            }
+        }
+    }
+}
+int main() {
+    int test;
+    char c;
+    int cost;
+    cin&gt;&gt;test;
+    while(test --) {
+        cin&gt;&gt;k&gt;&gt;w&gt;&gt;h;
+        edge_cost.clear();
+        for(int i = 0; i &lt; k; i++) {
+            cin&gt;&gt;c&gt;&gt;cost;
+            edge_cost[c] = cost;
+        }
+        for(int i = 0; i &lt; h; i++) {
+            for(int j = 0; j &lt; w; j++) {
+                cin&gt;&gt;Map[i][j];
+                if(Map[i][j] == 'E') {
+                    ex = i;
+                    ey = j;
+                }
+            }
+        }
+        //cout&lt;&lt;&quot;start: &quot;&lt;&lt;ex&lt;&lt;&quot; &quot;&lt;&lt;ey&lt;&lt;endl;
+        Dijkstra();
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

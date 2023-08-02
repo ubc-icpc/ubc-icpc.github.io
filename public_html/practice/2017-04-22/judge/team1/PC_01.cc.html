@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+using namespace rel_ops;
+typedef __int128 ll;
+
+ll gcd(ll a, ll b) {
+  while (b &gt; 0) {
+    ll tmp = a;
+    a = b;
+    b = tmp % b;
+  }
+  return a;
+}
+
+ll zzabs(const ll &amp;z) {
+  return z &gt;= 0 ? z : -z;
+}
+
+struct rational_t { ll nu, de;
+  rational_t(const ll &amp;n = 0, const ll &amp;d = 1) {
+    ll g = gcd(zzabs(n), zzabs(d)); nu = n / g; de = d / g;
+    if (de &lt; 0) { nu = -nu; de = -de; } }
+  rational_t operator+(const rational_t&amp; b) const
+  { return rational_t( nu*b.de+de*b.nu, de*b.de ); }
+  rational_t operator-(const rational_t&amp; b) const
+  { return rational_t( nu*b.de-de*b.nu, de*b.de ); }
+  rational_t operator-() const { return rational_t(-nu, de); }
+  rational_t operator*(const rational_t&amp; b) const
+  { return rational_t( nu*b.nu, de*b.de ); }
+  rational_t operator/(const rational_t&amp; b) const
+  { return rational_t( nu*b.de, de*b.nu ); }
+  bool operator== (const rational_t &amp; b) const {return nu * b.de == b.nu * de;}
+  bool operator== (const int &amp;k) const { return nu == k * de; }
+  bool operator!= (const rational_t &amp; b) const {return nu * b.de != b.nu * de;}
+  bool operator!= (const int &amp;k) const { return nu != k * de; }
+  bool operator&lt; (const rational_t&amp; b) const { return nu * b.de &lt; b.nu * de; }
+};
+typedef rational_t ld;
+
+const ld INF = ld(1000000000000000000LL);
+
+namespace LE {
+const ld is_query = ld(-(1LL&lt;&lt;62));
+struct Line {
+  ld m, b;
+  mutable function&lt;const Line*()&gt; succ;
+  bool operator&lt;(const Line&amp; rhs) const {
+    if (rhs.b != is_query) return m &lt; rhs.m;
+    const Line* s = succ();
+    if (!s) return 0;
+    ld x = rhs.m;
+    return b - s-&gt;b &lt; (s-&gt;m - m) * x;
+  }
+};
+// will maintain upper hull for maximum
+struct HullDynamic : public multiset&lt;Line&gt; {
+  bool bad(iterator y) {
+    auto z = next(y);
+    if (y == begin()) {
+      if (z == end()) return 0;
+      return y-&gt;m == z-&gt;m &amp;&amp; y-&gt;b &lt;= z-&gt;b;
+    }
+    auto x = prev(y);
+    if (z == end()) return y-&gt;m == x-&gt;m &amp;&amp; y-&gt;b &lt;= x-&gt;b;
+    // could overflow
+    return (x-&gt;b - y-&gt;b)*(z-&gt;m - y-&gt;m) &gt;= (y-&gt;b - z-&gt;b)*(y-&gt;m - x-&gt;m);
+  }
+  void insert_line(ld m, ld b) { m = -m; b = -b; // flip the line
+    auto y = insert({ m, b });
+    y-&gt;succ = [=] { return next(y) == end() ? 0 : &amp;*next(y); };
+    if (bad(y)) { erase(y); return; }
+    while (next(y) != end() &amp;&amp; bad(next(y))) erase(next(y));
+    while (y != begin() &amp;&amp; bad(prev(y))) erase(prev(y));
+  }
+  ld eval(ld x) {
+    auto l = *lower_bound((Line) { x, is_query });
+    return -(l.m * x + l.b); // flip the answer
+  }
+};
+}
+
+namespace UE {
+const ld is_query = ld(-(1LL&lt;&lt;62));
+struct Line {
+  ld m, b;
+  mutable function&lt;const Line*()&gt; succ;
+  bool operator&lt;(const Line&amp; rhs) const {
+    if (rhs.b != is_query) return m &lt; rhs.m;
+    const Line* s = succ();
+    if (!s) return 0;
+    ld x = rhs.m;
+    return b - s-&gt;b &lt; (s-&gt;m - m) * x;
+  }
+};
+// will maintain upper hull for maximum
+struct HullDynamic : public multiset&lt;Line&gt; {
+  bool bad(iterator y) {
+    auto z = next(y);
+    if (y == begin()) {
+      if (z == end()) return 0;
+      return y-&gt;m == z-&gt;m &amp;&amp; y-&gt;b &lt;= z-&gt;b;
+    }
+    auto x = prev(y);
+    if (z == end()) return y-&gt;m == x-&gt;m &amp;&amp; y-&gt;b &lt;= x-&gt;b;
+    // could overflow
+    return (x-&gt;b - y-&gt;b)*(z-&gt;m - y-&gt;m) &gt;= (y-&gt;b - z-&gt;b)*(y-&gt;m - x-&gt;m);
+  }
+  void insert_line(ld m, ld b) {
+    auto y = insert({ m, b });
+    y-&gt;succ = [=] { return next(y) == end() ? 0 : &amp;*next(y); };
+    if (bad(y)) { erase(y); return; }
+    while (next(y) != end() &amp;&amp; bad(next(y))) erase(next(y));
+    while (y != begin() &amp;&amp; bad(prev(y))) erase(prev(y));
+  }
+  ld eval(ld x) {
+    auto l = *lower_bound((Line) { x, is_query });
+    return l.m * x + l.b;
+  }
+};
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  UE::HullDynamic ue;
+  LE::HullDynamic le;
+  int n, q; cin &gt;&gt; n &gt;&gt; q;
+  set&lt;ld&gt; xpts;
+  for (int i = 0; i &lt; n; i++) {
+    int xi, yi; cin &gt;&gt; xi &gt;&gt; yi;
+    ld x = xi, y = yi;
+    ue.insert_line(x, -y);
+    le.insert_line(x, -y);
+    xpts.insert(x);
+  }
+
+  for (int i = 0; i &lt; q; i++) {
+    int c; cin &gt;&gt; c;
+    if (c == 1) {
+      long long xi, yi; cin &gt;&gt; xi &gt;&gt; yi;
+      ld x = xi, y = yi;
+      ue.insert_line(x, -y);
+      le.insert_line(x, -y);
+      xpts.insert(x);
+    } else {
+      long long ai, bi, ci; cin &gt;&gt; ai &gt;&gt; bi &gt;&gt; ci;
+      if (bi == 0) {
+        // ax = c &lt;=&gt; x = c/a
+        ld xx = ld(ci)/ld(ai);
+        auto it = xpts.lower_bound(xx);
+        if (it == xpts.end() || (it == xpts.begin() &amp;&amp; *it &gt; xx)) {
+          cout &lt;&lt; &quot;YES&quot; &lt;&lt; '\n';
+        } else {
+          cout &lt;&lt; &quot;NO&quot; &lt;&lt; '\n';
+        }
+      } else {
+        ld a(ai), b(bi), c(ci);
+        // ax + by = c &lt;=&gt; y = (c - ax)/b = (-a/b)x + (c/b)
+        ld xx = -a/b;
+        ld yy = -c/b;
+        if (yy &lt; le.eval(xx) || ue.eval(xx) &lt; yy) {
+          cout &lt;&lt; &quot;YES&quot; &lt;&lt; '\n';
+        } else {
+          cout &lt;&lt; &quot;NO&quot; &lt;&lt; '\n';
+        }
+      }
+    }
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

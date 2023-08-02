@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main() {
+	int r, s;
+	cin &gt;&gt; r &gt;&gt; s;
+
+	int left[r];
+	int right[r];
+
+	for (int i=0; i&lt;r; i++) {
+		left[i] = r;
+		right[i] = -1;
+	}
+
+	int maxheight = -1;
+	for (int i=r-1; i&gt;=0; i--) {
+		for (int j=0; j&lt;s; j++) {
+			char c; cin &gt;&gt; c;
+			if (c == 'J') {
+				if (j &lt; left[i] || left[i] == r) left[i] = j;
+				if (j &gt; right[i] || right[i] == -1) right[i] = j;
+				maxheight = max(maxheight,i);
+			}
+		}
+	}
+	
+	int ans=0;
+	int pos=0;
+	bool dir = true;
+	for (int i=0; i&lt;=maxheight; i++) {
+		if (dir) {
+			int next = right[i];
+			if (i &lt;= r-2) next = max(right[i+1],next);
+			if (next != -1) {
+				ans += abs(next - pos);
+				pos = next;
+			}
+			dir = false;
+			if (i != maxheight) ans++;
+		} else {
+			int next = left[i];
+			if (i &lt;= r-2) next = min(left[i+1],next);
+			if (next != r) {
+				ans += abs(next - pos);
+				pos = next;
+			}
+			dir = true;
+			if (i != maxheight) ans++;
+		}
+	}
+	cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

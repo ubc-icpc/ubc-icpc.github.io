@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+const double INF=numeric_limits&lt;double&gt;::max();
+
+struct pt{
+	int x,y;
+	pt() {};
+	pt(int x1, int y1) : x(x1), y(y1) {}
+};
+
+int main() {
+	int t; cin &gt;&gt; t;
+	for(int N=1; N&lt;=t; N++) {
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; N &lt;&lt; &quot;: &quot;;
+		int n; cin &gt;&gt; n;
+		vector&lt;pt&gt; pts;
+		for (int i=0; i&lt;n; i++) {
+			int x,y; cin &gt;&gt; x &gt;&gt; y;
+			pts.push_back(pt(x,y));
+		}
+		if (n &lt;= 2) {
+			cout &lt;&lt; n &lt;&lt; endl;
+			continue;
+		}
+		int ans = 2;
+		for (int i=0; i&lt;n-1; i++) {
+			map&lt; pair&lt;int,int&gt;,int&gt; smap;
+			for (int j=i+1; j&lt;n; j++) {
+				int dx = pts[i].x - pts[j].x;
+				int dy = pts[i].y - pts[j].y;
+				if (dy &lt; 0) {
+					dx *= -1;
+					dy *= -1;
+				}
+				if (dx == 0 || dy == 0) {
+					if (dx == 0) dy = 1;
+					if (dy == 0) dx = 1;
+				} else {
+					int g = __gcd(dx,dy);
+					dx /= g;
+					dy /= g;
+				}
+				smap[make_pair(dx,dy)]++;
+			}
+			for (map&lt; pair&lt;int,int&gt;,int&gt;::iterator it = smap.begin(); it!= smap.end(); it++) {
+				ans = max(ans, it-&gt;second+1);
+			}
+		}
+		
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

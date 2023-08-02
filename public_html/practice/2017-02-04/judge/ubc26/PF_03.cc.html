@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cassert&gt;
+#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;sstream&gt;
+#include &lt;iterator&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;deque&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+//#define printf(...);
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define L0(qq,ss,m) for (int qq=(ss);qq&lt;(m);qq++)
+#define Ld(qq,ss,ff,d) for (int qq=(ss);qq&gt;=(ff);qq+=(d))
+
+struct Qi {
+  int x, y, t;
+};
+
+void test() {
+  int W, H;
+  cin &gt;&gt; W &gt;&gt; H;
+  vector&lt;char&gt; grid(W*H);
+  vector&lt;int&gt; prop(W*H); // time of fire arrival
+  vector&lt;bool&gt; v(W*H); // visited
+
+  int px = -1, py = -1;
+
+#define I(xx, yy) (((yy)*W)+(xx))
+
+  queue&lt;Qi&gt; q;
+  L(y, H) {
+    string line;
+    cin &gt;&gt; line;
+    L(x, W) {
+      char ch;
+      ch = grid[I(x, y)] = line[x];
+      prop[I(x, y)] = -1;
+      if (ch == '@') px = x, py = y;
+      if (ch == '*') q.push({x, y, 0});
+    }
+  }
+
+  while (!q.empty()) {
+    Qi qi = q.front();
+    int x = qi.x, y = qi.y, t = qi.t;
+    q.pop();
+    if (!(x &gt;= 0 &amp;&amp; x &lt; W &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; H &amp;&amp; grid[I(x, y)] != '#' &amp;&amp; prop[I(x, y)] == -1)) continue;
+    prop[I(x, y)] = t;
+    q.push({x - 1, y, t + 1});
+    q.push({x + 1, y, t + 1});
+    q.push({x, y - 1, t + 1});
+    q.push({x, y + 1, t + 1});
+  }
+
+  int success = -1;
+  q.empty();
+  q.push({px, py, 0});
+  while (!q.empty()) {
+    Qi qi = q.front();
+    int x = qi.x, y = qi.y, t = qi.t;
+    q.pop();
+    //printf(&quot;q=%d pos=(%d, %d) t=%d s=%c prop=%d\n&quot;, (int) q.size(), x, y, t, grid[I(x, y)], prop[I(x, y)]);
+    if (!(x &gt;= 0 &amp;&amp; x &lt; W &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; H &amp;&amp; grid[I(x, y)] != '#' &amp;&amp; (prop[I(x, y)] == -1 || t &lt; prop[I(x, y)]) &amp;&amp; !v[I(x, y)])) continue;
+    v[I(x, y)] = true;
+    if (x == 0 || x == W - 1 || y == 0 || y == H - 1) {
+      success = t + 1;
+      break;
+    }
+    q.push({x - 1, y, t + 1});
+    q.push({x + 1, y, t + 1});
+    q.push({x, y - 1, t + 1});
+    q.push({x, y + 1, t + 1});
+  }
+
+  if (success == -1) cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl; else cout &lt;&lt; success &lt;&lt; endl;
+  return;
+
+  L(y, H) {
+    L(x, W) cout &lt;&lt; grid[I(x, y)];
+    cout &lt;&lt; endl;
+  }
+  cout &lt;&lt; endl;
+
+  L(y, H) {
+    L(x, W) if (prop[I(x, y)] == -1) cout &lt;&lt; &quot;.&quot;; else cout &lt;&lt; prop[I(x, y)];
+    cout &lt;&lt; endl;
+  }
+  cout &lt;&lt; &quot;-----------&quot; &lt;&lt; endl;
+}
+
+int main() {
+  int T; cin &gt;&gt; T;
+  L(t, T) test();
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

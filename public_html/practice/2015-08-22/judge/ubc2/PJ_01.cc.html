@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;pii, int&gt; ppiii;
+
+int v_adj[50];
+int h_adj[50];
+
+int main() {
+  int p = 1;
+  while (true) {
+    int N; cin &gt;&gt; N;
+    if (N &lt;= 0) break;
+    assert(N % 2 == 0);
+    vector&lt;ppiii&gt; v_xy;
+    vector&lt;ppiii&gt; v_yx;
+    for (int n = 0; n &lt; N; ++n) {
+      int x, y; cin &gt;&gt; x &gt;&gt; y;
+      v_xy.push_back({{x, y}, n});
+      v_yx.push_back({{y, x}, n});
+    }
+    sort(v_xy.begin(), v_xy.end());
+    sort(v_yx.begin(), v_yx.end());
+    for (int n = 0; n &lt; N; n += 2) {
+      ppiii p1 = v_xy[n], p2 = v_xy[n+1];
+      int i1 = p1.second, i2 = p2.second;
+      v_adj[i1] = i2;
+      v_adj[i2] = i1;
+    }
+    for (int n = 0; n &lt; N; n += 2) {
+      ppiii p1 = v_yx[n], p2 = v_yx[n+1];
+      int i1 = p1.second, i2 = p2.second;
+      h_adj[i1] = i2;
+      h_adj[i2] = i1;
+    }
+    cout &lt;&lt; &quot;Polygon #&quot; &lt;&lt; p &lt;&lt; &quot;:&quot;;
+    int start = v_yx[0].second, curr = h_adj[start];
+    bool vertical = true;
+    cout &lt;&lt; &quot; &quot; &lt;&lt; start + 1;
+    while (curr != start) {
+      cout &lt;&lt; &quot; &quot; &lt;&lt; curr + 1;
+      if (vertical) curr = v_adj[curr];
+      else curr = h_adj[curr];
+      vertical = !vertical;
+    }
+    cout &lt;&lt; endl;
+
+    p++;
+  }
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

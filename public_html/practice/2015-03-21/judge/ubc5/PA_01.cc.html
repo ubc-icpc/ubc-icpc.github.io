@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+string p[10000];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++)
+      cin &gt;&gt; p[i];
+    sort(p,p+n);
+    bool ok = true;
+    for (int i = 0; i &lt; n-1; i++) {
+      if (p[i].size() &gt; p[i+1].size())
+        continue;
+      bool pm = true;
+      for (int j = 0; j &lt; p[i].size(); j++) {
+        if (p[i][j] != p[i+1][j]) {
+          pm = false;
+          break;
+        }
+      }
+      if (pm) {
+        ok = false;
+        break;
+      }
+    }
+    cout &lt;&lt; (ok ? &quot;YES&quot; : &quot;NO&quot;) &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

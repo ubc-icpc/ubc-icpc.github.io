@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// e.cc
+// problem g (b) - binary conversions
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+void times2 (string&amp; num)
+{
+   bool carry = false;
+   for (auto it = num.rbegin (); it != num.rend (); ++it)
+   {
+      int n = ((*it) - '0') * 2;
+      if (carry)
+	 n++;
+      
+      string s = to_string (n);
+      
+      if (n &gt; 9)
+      {
+	 (*it) = s[1];
+	 carry = true;
+      }
+      else
+      {
+	 (*it) = s[0];
+	 carry = false;
+      }
+   }
+}
+
+void removeZero (string&amp; num)
+{
+   if (num.empty())
+      return;
+   
+   while (num.back() == '0')
+      num.pop_back();
+}
+
+void solve (string num)
+{
+   int i = 0;
+   while (num[i] != '.')
+      i++;
+   
+   num.erase (0, i + 1); 
+   removeZero (num);
+   while (!num.empty())
+   {
+      if (num.back() != '5')
+      {
+	 cout &lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+	 return;
+      }
+      times2 (num);
+      removeZero (num);
+   }
+   cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+}
+
+int main ()
+{
+   string s;
+
+   while (cin &gt;&gt; s)
+      solve (s);
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

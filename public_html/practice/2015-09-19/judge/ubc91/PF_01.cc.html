@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+void print_bars( vector&lt;int&gt; heights ) {
+  sort(heights.begin(), heights.end());
+  for(int i = 0; i &lt; heights.size() - 1; i++) {
+    int diff = heights[i+1] - heights[i];
+    if(diff &gt; 0) {
+      cout &lt;&lt; diff &lt;&lt; &quot; &quot; &lt;&lt; i+1 &lt;&lt; endl;
+    }
+  }
+  cout &lt;&lt; endl;
+}
+
+int main( int argc, char ** argv ) {
+  int T;
+  cin &gt;&gt; T;
+  while( T-- ) {
+    int N;
+    cin &gt;&gt; N;
+    int temp;
+    vector&lt;int&gt; bars;
+    while( N-- ) {
+      cin &gt;&gt; temp;
+      bars.push_back(temp);
+    }
+    print_bars( bars ); 
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

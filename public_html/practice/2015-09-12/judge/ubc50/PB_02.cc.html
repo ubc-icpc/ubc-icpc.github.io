@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+using namespace std;
+
+int t;
+
+int main() {
+  cin &gt;&gt; t;
+  while (t--) {
+    int arr[6];
+    int us[3], russia[3];
+    int ucnt=0, rcnt=0;
+    bool col=false, cnt=false;
+    
+    for (int i=0; i&lt;6; i++) cin &gt;&gt; arr[i];
+    for (int i=0; i&lt;3; i++) { us[i]=arr[i]; ucnt+=us[i]; }
+    for (int i=0; i&lt;3; i++) { russia[i]=arr[i+3]; rcnt+=russia[i];}
+    if (ucnt&gt;rcnt) cnt=true;
+    if (us[0]&gt;russia[0]) col=true;
+    else if (us[0]==russia[0] &amp;&amp; us[1]&gt;russia[1]) col=true;
+    else if (us[0]==russia[0] &amp;&amp; us[1]==russia[1] &amp;&amp; us[2]&gt;russia[2]) col=true;
+    for (int i=0; i&lt;6; i++) cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; endl;
+    if (col&amp;cnt) cout &lt;&lt; &quot;both&quot; &lt;&lt; endl;
+    else if (col) cout &lt;&lt; &quot;color&quot; &lt;&lt; endl;
+    else if (cnt) cout &lt;&lt; &quot;count&quot; &lt;&lt; endl;
+    else cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

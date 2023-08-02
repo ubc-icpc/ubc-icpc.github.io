@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+unordered_map&lt;int, int&gt; par;
+unordered_map&lt;int, int&gt; sz;
+unordered_map&lt;string, int&gt; id;
+
+int find(int u) {
+	if (par[u] == u) return u;
+	return par[u] = find(par[u]);
+}
+
+int join(int u, int v) {
+	if (find(u) == find(v)) return sz[find(u)];
+	sz[find(v)] += sz[find(u)];
+	par[find(u)] = find(v);
+	return sz[find(v)];
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		par.clear();
+		sz.clear();
+		id.clear();
+		
+		string u, v;
+		int q, c = 0; cin &gt;&gt; q;
+		while (q--) {
+			cin &gt;&gt; u &gt;&gt; v;
+			if (!id.count(u)) {
+				c++;
+				par[c] = c;
+				sz[c] = 1;
+				id[u] = c;
+			}
+			
+			if (!id.count(v)) {
+				c++;
+				par[c] = c;
+				sz[c] = 1;
+				id[v] = c;
+			}
+			cout &lt;&lt; join(id[u], id[v]) &lt;&lt; '\n';
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

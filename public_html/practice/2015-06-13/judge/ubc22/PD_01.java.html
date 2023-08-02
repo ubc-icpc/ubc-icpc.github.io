@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String original = sc.nextLine();
+        int discrepancy;
+        int parity = (original.charAt(0) - '0') % 2;
+        for (discrepancy = 0; discrepancy &lt; original.length(); ++discrepancy) {
+            if ((original.charAt(discrepancy) - '0') % 2 != parity) break;
+            parity = (parity + 1) % 2;
+        }
+        StringBuilder higher = new StringBuilder(&quot;0&quot; + original);
+        higher.setCharAt(discrepancy + 1, (char)(higher.charAt(discrepancy + 1) - 1));
+        int i;
+        for (i = discrepancy + 1; i &gt;= 0; --i)
+            if (higher.charAt(i) &lt;= '7') {
+                higher.setCharAt(i, (char)(higher.charAt(i) + 2));
+                break;
+            }
+        if (i &lt; 2) higher.setCharAt(i, (char)(higher.charAt(i) - 1));
+        parity = (higher.charAt(i) - '0' + 1) % 2;
+        for (++i; i &lt; higher.length(); ++i) {
+            higher.setCharAt(i, (char)('0' + parity));
+            parity = (parity + 1) % 2;
+        }
+        StringBuilder lower = new StringBuilder(original);
+        lower.setCharAt(discrepancy, (char)(lower.charAt(discrepancy) + 1));
+        for (i = discrepancy; i &gt;= 0; --i)
+            if (lower.charAt(i) &gt;= '2') {
+                lower.setCharAt(i, (char)(lower.charAt(i) - 2));
+                break;
+            }
+        if (i &lt; 0) { lower.setCharAt(0, '0'); ++i; }
+        parity = (lower.charAt(i) - '0' + 1) % 2;
+        for (++i; i &lt; lower.length(); ++i) {
+            lower.setCharAt(i, (char)('8' + parity));
+            parity = (parity + 1) % 2;
+        }
+        BigInteger distHigh = new BigInteger(higher.toString()).subtract(new BigInteger(original));
+        BigInteger distLow = new BigInteger(original).subtract(new BigInteger(lower.toString()));
+        int comp = distHigh.compareTo(distLow);
+        if (comp &gt; 0) System.out.println(new BigInteger(lower.toString()).toString());
+        else if (comp &lt; 0) System.out.println(new BigInteger(higher.toString()).toString());
+        else System.out.println(new BigInteger(lower.toString()).toString() + &quot; &quot; + new BigInteger(higher.toString()).toString());
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

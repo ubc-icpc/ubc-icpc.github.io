@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int grid[102][102];
+int visited[102][102];
+int water[102][102];
+int water_visited[102][102];
+int n, m;
+int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+int case_num;
+
+int dfs(int y, int x, int count) {
+  if (y &gt; n || x &gt; m || x &lt;= 0 || y &lt;= 0 || visited[y][x] || (water_visited[y][x])) {
+    return 0;
+  }
+  visited[y][x] = 1;
+  int mycount = count + 1;
+  for (int i = 0; i &lt; 4; i++) {
+    mycount += dfs(y + dir[i][0], x + dir[i][1], count);
+  }
+  return mycount;
+}
+
+int dfs_water(int y, int x, int count) {
+   if (y &gt; n + 1 || x &gt; m + 1|| x &lt; 0 || y &lt; 0 || water_visited[y][x] || (grid[y][x] != 0)) {
+    return 0;
+  }
+  water_visited[y][x] = 1;
+  int mycount = count + 1;
+  for (int i = 0; i &lt; 4; i++) {
+    mycount += dfs_water(y + dir[i][0], x + dir[i][1], count);
+  }
+  return mycount;
+}
+
+void print() {
+  for (int j = 0; j &lt; n + 2; j++) {
+    for (int i = 0; i &lt; m + 2; i++) {
+      cout &lt;&lt; grid[j][i] &lt;&lt; ' ';
+    }
+    cout &lt;&lt; '\n';
+  }
+}
+
+bool splits() {
+  int count_zeros = 0;
+  int count_connected = 0;
+
+  count_zeros = dfs_water(0, 0, 0);
+  for (int j = 0; j &lt; n; j++) {
+    for (int i = 0; i &lt; m; i++) {
+      if (grid[j][i] != 0) {
+        count_connected = dfs(j, i, 0);
+        goto next;
+      }     
+    }
+  }
+next:
+  return count_zeros + count_connected &lt; m * n + 2 * m + 2 * n + 4;
+}
+
+int main() {
+  while (cin &gt;&gt; n &gt;&gt; m &amp;&amp; (n + m)) {
+    int h_max = 0;
+    memset(grid, 0, sizeof (grid));
+    for (int j = 1; j &lt;= n; j++) {
+      for (int i = 1; i &lt;= m; i++) {
+        cin &gt;&gt; grid[j][i];
+        h_max = max(h_max, grid[j][i]);
+      }
+    }
+
+    int split_height = h_max;
+    for (int i = 0; i &lt;= h_max; i++) {
+      memset(visited, 0, sizeof (visited));
+      memset(water_visited, 0, sizeof (water_visited));
+      for (int y = 1; y &lt;= n; y++) {
+        for (int x = 1; x &lt;= m; x++) {
+          if (grid[y][x] &lt;= i) {
+            grid[y][x] = 0;
+          }
+        }
+      }
+      if (splits()) {
+        split_height = i;
+        break;
+      }
+    }
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++case_num &lt;&lt; &quot;: &quot;;
+    if (split_height == h_max) {
+      cout &lt;&lt; &quot;Island never splits.\n&quot;;
+    } else {
+      cout &lt;&lt; &quot;Island splits when ocean rises &quot; &lt;&lt; split_height &lt;&lt; &quot; feet.\n&quot;;
+    }
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

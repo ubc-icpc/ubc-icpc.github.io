@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+/**
+ * Created by alihonarmand on 2016-10-29.
+ */
+public class C {
+    public C() throws IOException {
+        Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+
+        ArrayList&lt;Integer&gt; safe = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; broke = new ArrayList&lt;Integer&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            int step = sc.nextInt();
+            boolean isSafe = sc.next().equals(&quot;SAFE&quot;);
+
+            if(isSafe)
+                safe.add(step);
+            else
+                broke.add(step);
+        }
+
+
+        Collections.sort(safe);
+        Collections.sort(broke);
+
+
+//        int highestMightNotBreak;
+//        int lowestCouldBreak =safe.get(safe.size()-1)+1;
+//
+//        if(safe.size()==0)
+//            lowestCouldBreak = 2;
+//        else
+//            lowestCouldBreak =safe.get(safe.size()-1)+1;
+//
+//        if(broke.size() == 0)
+//            highestMightNotBreak = k-1;
+//        else
+//            highestMightNotBreak = broke.get(broke.size()-1)-1;
+
+
+        System.out.println( (safe.size()==0? 2:  safe.get(safe.size()-1)+1) + &quot; &quot; +  ( broke.size()==0? (k-1) : broke.get(0)-1)  );
+
+
+
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        new C();
+    }
+
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

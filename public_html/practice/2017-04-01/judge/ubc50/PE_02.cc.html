@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+#define int long long 
+typedef pair&lt;int, int&gt; pii;
+
+const int N = 1e5+5;
+int n, b[N];
+vector&lt;pii&gt; adj[N];
+bool seen[N];
+#undef int
+int main() {
+#define int long long
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++) cin &gt;&gt; b[i];
+  for (int i = 0; i &lt; n-1; i++) {
+    int u, v, c;
+    cin &gt;&gt; u &gt;&gt; v &gt;&gt; c;
+    adj[u].push_back({v,c});
+    adj[v].push_back({u,c});
+  }
+  memset(seen, 0, sizeof seen);
+  queue&lt;int&gt; q;
+  stack&lt;int&gt; s;
+  q.push(0);
+  seen[0] = true;
+  while(!q.empty()) {
+    int x = q.front();
+    s.push(x);
+    q.pop();
+    for(pii p: adj[x]) {
+      int u = p.first;
+      if(u==x || seen[u]) continue;
+      q.push(u);
+      seen[u] = true;
+    }
+    
+  }
+  bool impossible = false;
+  int edges=0, cost=0;
+  memset(seen, 0, sizeof seen);
+  vector&lt;pii&gt; vec;
+  while(!s.empty()) {
+    
+    int x = s.top();
+    s.pop();
+    seen[x] = true;
+    if(b[x]!=adj[x].size()%2) {
+      edges++;
+      bool found = false;
+      for(pii p: adj[x]) {
+        int u = p.first;
+        if(!seen[u]) {
+          cost += p.second;
+          found = true;
+          b[u] = !b[u];
+          if(x&lt;u)
+            vec.push_back({x,u});
+          else
+            vec.push_back({u,x});
+          break;
+        }
+      }
+
+      if(!found) {
+        impossible = true;
+        break;
+      }
+    }
+  }
+
+  if(impossible) cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+  else {
+    cout &lt;&lt; cost &lt;&lt;  &quot; &quot; &lt;&lt; edges &lt;&lt; endl;
+    sort(vec.begin(), vec.end());
+    for(pii p: vec) {
+      cout &lt;&lt; p.first &lt;&lt; &quot; &quot; &lt;&lt; p.second &lt;&lt; endl;;
+    }
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

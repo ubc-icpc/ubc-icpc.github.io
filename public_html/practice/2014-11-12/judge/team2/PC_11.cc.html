@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cstdlib&gt;
+#include &lt;string&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+// =======================================================
+ 
+typedef unsigned long long ULL;
+#define ll long long
+ 
+#ifndef USE_ASM
+ULL mulmod(ULL a, ULL b, ULL m) {
+    ULL res = 0;
+    while(a) {
+        if(a&amp;1) {
+            if(b &gt;= m-res) res -= m;
+            res += b;
+        }
+        a &gt;&gt;= 1;
+ 
+        ULL tb = b;
+        if(b &gt;= m-b) tb -= m;
+        b += tb;
+    }
+    return res;
+}
+#else
+ULL mulmod(ULL a, ULL b, ULL m) {
+    ULL r;
+    __asm__(
+        &quot;mulq %2\n\t&quot;
+        &quot;divq %3&quot;
+        : &quot;=&amp;d&quot; (r), &quot;+%a&quot; (a)
+        : &quot;rm&quot; (b), &quot;rm&quot; (m)
+        : &quot;cc&quot;
+    );
+    return r;
+}
+#endif
+ 
+ULL modpow(ULL a, ULL b, ULL n) {
+    ULL result = 1;
+    while(b &gt; 0) {
+        if(b % 2) result = mulmod(result%n, a%n, n);
+        b &gt;&gt;= 1;
+        a = mulmod(a%n, a%n, n);
+    }
+    return result;
+}
+ 
+/* Checks if n &gt; 3 is prime. */
+bool mr(ULL n) {
+
+	if (n &lt; 2) return false;
+	if (n == 2) return true;
+    /* deterministic version, works on all 64-bit llegers */
+    const ULL base[7] = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
+ 
+    ULL d = n - 1;
+    ll s = 0;
+    while(d%2 == 0) s ++, d &gt;&gt;= 1;
+ 
+    for(ll i = 0; i &lt; 7; i ++) {
+        if(base[i] % n == 0) continue;
+        ULL a = base[i];
+        if(modpow(a, d, n) == 1) continue;
+        bool found = false;
+        for(ll r = 0; r &lt; s &amp;&amp; !found; r ++) {
+            if(modpow(a, (1ull&lt;&lt;r)*d, n) == n-1) found = true;
+        }
+        if(!found) return false;
+    }  
+    return true;
+}
+
+// =======================================================
+
+#undef ll
+typedef int ll;
+ll b, d;
+
+
+void print_strs(vector&lt;string&gt; palinstr) {
+	for (int i=0; i&lt;palinstr.size(); ++i) {
+		cout &lt;&lt; palinstr[i] &lt;&lt; endl;
+	}
+}
+
+void print_palins(vector&lt;ll&gt; palins) {
+	for (int i=0; i&lt;palins.size(); ++i) {
+		cout &lt;&lt; palins[i] &lt;&lt; endl;
+	}
+}
+
+inline char digit(ll k) {
+	if (k &lt; 10) {
+		char c = '0' + k;
+		return c;
+	}
+	char c = 'a' + k - 10;
+	return c;
+}
+
+inline ll char_to_num(char c) {
+	if (c &lt; 58) return c - '0';
+	return c - 'a' + 10;
+}
+
+void convert_to_num(vector&lt;ll&gt;&amp; palinlls, vector&lt;string&gt;&amp; palinsstr) {
+	for (ll i=0; i&lt;palinsstr.size(); ++i) {
+		ll val = 0;
+		for (ll j=0; j&lt;d/2; ++j) {
+			val += char_to_num(palinsstr[i][j])*pow(double(b),j) + char_to_num(palinsstr[i][j])*pow(double(b),d-j-1);
+		}
+		if (d%2) val += char_to_num(palinsstr[i][d/2])*pow(double(b),d/2);
+		palinlls.push_back(val);
+	}
+}
+
+vector&lt;string&gt; palinhalves, palinhalves2;
+void get_palins(vector&lt;ll&gt;&amp; palins) {
+	palinhalves.clear();
+	palinhalves2.clear();
+	palinhalves.push_back(&quot;&quot;);
+
+	string s;
+	for (ll i=0; i&lt;d/2; ++i) {
+		for (ll j=0; j&lt;palinhalves.size(); ++j) {
+			for (ll k=0; k&lt;b; ++k) {
+				if ((d % 2 == 0) &amp;&amp; i == 0 &amp;&amp; (k % 2 == 0) &amp;&amp; k != 2) continue; // weak optimization
+				s = palinhalves[j];
+				s.push_back(digit(k));
+				palinhalves2.push_back(s);
+			}
+		}
+		palinhalves = palinhalves2;
+		palinhalves2.clear();
+	}
+
+	if (d%2) {
+		for (ll j=0; j&lt;palinhalves.size(); ++j) {
+			for (ll k=0; k&lt;b; ++k) {
+				s = palinhalves[j];
+				s.push_back(digit(k));
+				palinhalves2.push_back(s);
+			}
+		}
+		palinhalves = palinhalves2;
+		palinhalves2.clear();
+	}
+
+	// for (ll i=0; i&lt;palinhalves.size(); ++i) {
+	// 	s = palinhalves[i];
+	// 	for (ll j=0; j&lt;d/2; ++j) {
+	// 		char c = s[d/2 - j - 1];
+	// 		s.push_back(c);
+	// 	}
+	// 	palinhalves2.push_back(s);
+	// }
+
+	convert_to_num(palins, palinhalves);
+}
+
+
+int main() {
+	vector&lt;ll&gt; palins;
+	while (cin &gt;&gt; d &gt;&gt; b, d || b) {
+		palins.clear();
+		get_palins(palins);
+		ll count = 0;
+		for (ll i=0; i&lt;palins.size(); ++i) {
+			if (mr(palins[i])) {
+				++count;
+			}
+		}
+			
+		cout &lt;&lt; &quot;The number of &quot; &lt;&lt; d &lt;&lt; &quot;-digit palindromic primes &lt; 2^31 in base &quot; &lt;&lt; b &lt;&lt; &quot;.&quot; &lt;&lt; endl;
+		cout &lt;&lt; &quot;What is &quot; &lt;&lt; count &lt;&lt; &quot;?&quot; &lt;&lt; endl;
+		cout &lt;&lt; endl;
+
+
+	}
+
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+
+mt19937_64 rng(time(0));
+
+ll modmul(ll a, ll b, ll m) {
+  return (__int128) a * b % m;
+}
+
+ll modpow(ll b, ll e, ll m) {
+  b %= m;
+  ll ans = 1;
+  for (; e; e /= 2, b = modmul(b,b,m)) {
+    if (e%2) ans = modmul(ans,b,m);
+  }
+  return ans;
+}
+/*
+using ull = long long;
+
+ull pollard(ull n) {
+	auto f = [n](ull x) { return (mod_mul(x, x, n) + 1) % n; };
+	if (!(n &amp; 1)) return 2;
+	for (ull i = 2;; i++) {
+		ull x = i, y = f(x), p;
+		while ((p = __gcd(n + y - x, n)) == 1)
+			x = f(x), y = f(f(y));
+		if (p != n) return p;
+	}
+}
+vector&lt;ull&gt; factor(ull n) {
+	if (n == 1) return {};
+	if (isPrime(n)) return {n};
+	ull x = pollard(n);
+	auto l = factor(x), r = factor(n / x);
+	l.insert(l.end(), all(r));
+	return l;
+}*/
+
+bool is_prime(ll n) { if (n&lt;2) return 0; if (n%2 == 0) return n == 2;
+  ll r = __builtin_ctzll(n-1), d = (n-1)&gt;&gt;r;
+  static const ll wit[] = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
+  for (ll a : wit) { a %= n; if (!a) return 1; if (a == 1 || a == n-1) continue;
+    ll x = modpow(a,d,n), y; for (int i=0; i&lt;r; i++) { //use modmul if overflow
+      y = modmul(x,x,n); if (y == 1 &amp;&amp; x != 1 &amp;&amp; x != n-1) return 0; x = y; }
+    if (x != 1) return 0; } return 1; }
+// Pollard rho factorization - returns a factor of n, not necessarily prime
+// if n is composite, O(sqrt(p)) where p is smallest factor of n
+ll get_factor(ll n) { if (n%2 == 0) return 2; if (is_prime(n)) return n;
+  while (1) { ll x = rng()%(n-1)+1, y = 2, d = 1; // use good random source
+    //! optimization: break when sz becomes too large
+    for (int sz = 2; d == 1 &amp;&amp; sz &lt;= 524288; sz *= 2) { for (int i = 0; i &lt; sz &amp;&amp; d &lt;= 1; i++)
+        x = (modmul(x,x,n)+1) % n, d = __gcd(abs(x-y), n); // use modmul if overflow
+    // can replace 1 by a random c
+    /*! can replace above with the below to reduce number of gcd computations
+      ll z = 1;
+      for (int i = 0; i &lt; sz &amp;&amp; d &lt;= 1; ) { ll px = x;
+        for (int j = 0; i &lt; sz &amp;&amp; d &lt;= 1 &amp;&amp; j &lt; 100; i++, j++)
+          x = (modmul(x,x,n)+c)%n, z = modmul(z, x-y, n);
+        z = abs(z); d = __gcd(z, n);
+        if (d == n) { x = px, d = 1;
+          for (int j = 0; d &lt;= 1 &amp;&amp; j &lt; 100; j++)
+            x = (modmul(x, x, n)+c)%n, d = __gcd(abs(x-y), n); } } */
+      y = x; } if (d &gt; 1 &amp;&amp; d != n) return d; } }
+map&lt;ll, int&gt; prime_factor(ll n) {
+  map&lt;ll, int&gt; ret;
+  //cerr &lt;&lt; is_prime(n) &lt;&lt; endl;
+  while (n &gt; 1) { ll k = get_factor(n);
+  //cerr &lt;&lt; k &lt;&lt; endl;
+    while (!is_prime(k)) k = get_factor(k); // k is prime factor
+    while (n % k == 0) {
+      ret[k]++;
+      n /= k;
+    } }
+  return ret;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  ll c; cin &gt;&gt; c;
+  auto m = prime_factor(c);
+  ll ans = 1;
+  for (const auto&amp; p : m) {
+    if (p.second % 2) ans *= p.first;
+  }
+  cout &lt;&lt; ans &lt;&lt; nl;
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

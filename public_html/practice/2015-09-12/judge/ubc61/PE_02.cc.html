@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+const double PI = 3.14159265358979;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	while(n--) {
+		double r,s; cin &gt;&gt; s &gt;&gt; r;
+		double ans = 0;
+		if (s &gt;= r*2) {
+			ans = PI*r*r;
+		} else if (s*sqrt(2.0) &lt;= r*2) {
+			ans = s*s;
+		} else {
+			double h = r - s/2.0;
+			double theta = 2*acos(1 - h/r);
+			double excess = r*r/2*(theta - sin(theta));
+			ans = PI*r*r - excess*4;
+		}
+		cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

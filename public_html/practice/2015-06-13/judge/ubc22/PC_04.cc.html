@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, L, i, X, Y, C[100005], R[100005], D1[200005], D2[200005];
+
+int main() {
+	cin &gt;&gt; N &gt;&gt; L;
+	for (i = 0; i &lt; N; ++i) {
+		cin &gt;&gt; X &gt;&gt; Y;
+		if (++C[X] &gt;= L ||
+			++R[Y] &gt;= L ||
+			++D1[X + Y] &gt;= L ||
+			++D2[X - Y + 100001] &gt;= L
+			) break;
+	}
+	cout &lt;&lt; ((i == N)? -1 : i + 1) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

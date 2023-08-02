@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+
+using namespace std;
+
+void f(string &amp;s) {
+  int carry=0;
+  for(int i=s.size()-1; i&gt;=0;i--) {
+	if(s[i]=='.')break;
+	int t=(s[i]-'0')*2+carry;
+	//cout &lt;&lt; t&lt;&lt; endl;
+    s[i]='0'+t%10;
+	carry=t/10;
+  }
+}
+
+int main (void) {
+  string s;
+  while(cin&gt;&gt;s) {
+	
+	bool ok=true;
+	while(s.back()=='0') s.pop_back();
+	while(true) {
+	  if(s.back()=='.') break;
+	  
+	  //cout &lt;&lt; s &lt;&lt; endl;
+	  if(s.back()!='5') {
+		ok=false; break;
+	  }
+	  f(s);
+	  while(s.back()=='0') s.pop_back();
+	}
+	if(ok) cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+	else cout&lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

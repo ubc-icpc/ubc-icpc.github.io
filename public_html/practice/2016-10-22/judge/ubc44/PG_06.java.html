@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by D on 10/22/2016.
+ */
+public class m {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] wins = scanner.nextLine().split(&quot;&quot;);
+        int rank = 25;
+        int stars = 0;
+        int winstreak = 0;
+        for (int i = 0; i &lt; wins.length; i++) {
+            if (wins[i].equalsIgnoreCase(&quot;W&quot;)) {
+                winstreak += 1;
+                stars += 1;
+                if (winstreak &gt;= 3 &amp;&amp; rank &lt;= 25 &amp;&amp; rank &gt;= 6) {
+                    stars += 1;
+                }
+                if (rank &lt;= 25 &amp;&amp; rank &gt;= 21 &amp;&amp; stars &gt; 2) {
+                    rank -= 1;
+                    stars -= 2;
+                } else if (rank &lt;= 20 &amp;&amp; rank &gt;= 16 &amp;&amp; stars &gt; 3) {
+                    rank -= 1;
+                    stars -= 3;
+                } else if (rank &lt;= 15 &amp;&amp; rank &gt;= 11 &amp;&amp; stars &gt; 4) {
+                    rank -= 1;
+                    stars -= 4;
+                } else if (rank &lt;= 10 &amp;&amp; rank &gt;= 1 &amp;&amp; stars &gt; 5) {
+                    rank -= 1;
+                    stars -= 5;
+                }
+            } else {
+                winstreak = 0;
+                if (rank &gt;= 1 &amp;&amp; rank &lt;= 20) {
+                    if (rank &lt; 20 &amp;&amp; stars == 0) {
+                        rank += 1;
+                        if (rank &lt;= 25 &amp;&amp; rank &gt;= 21) {
+                            stars = 2;
+                        } else if (rank &lt;= 20 &amp;&amp; rank &gt;= 16) {
+                            stars = 3;
+                        } else if (rank &lt;= 15 &amp;&amp; rank &gt;= 11) {
+                            stars = 4;
+                        } else if (rank &lt;= 10 &amp;&amp; rank &gt;= 1) {
+                            stars = 5;
+                        }
+                    }
+                    if (stars &gt; 0)
+                        stars -= 1;
+                }
+            }
+        }
+        if (rank == 0) {
+            System.out.println(&quot;Legend&quot;);
+        } else {
+            System.out.println(rank);
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

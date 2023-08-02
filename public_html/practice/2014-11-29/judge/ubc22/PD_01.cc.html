@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+using namespace std;
+
+void insert(vector&lt;int&gt; &amp;v, int n) {
+  if (!v.empty() &amp;&amp; v.back() &gt;= n) {
+    for (int i = 0; i &lt; v.size(); i++) {
+      if (v[i] == n) return;
+      else if (v[i] &gt; n) {
+	v.insert(v.begin() + i, n);
+	return;
+      }
+    }
+  } else {
+    v.push_back(n);
+  }
+}
+
+int main() {
+  int N, T;
+  cin &gt;&gt; N &gt;&gt; T;
+  vector&lt;vector&lt;int&gt; &gt; input(N, vector&lt;int&gt;(5));
+  while (N--) {
+    cin &gt;&gt; input[N][0] &gt;&gt; input[N][1] &gt;&gt; input[N][2] &gt;&gt; input[N][3] &gt;&gt; input[N][4];
+  }
+  vector&lt;int&gt; row;
+  vector&lt;int&gt; col;
+  for (vector&lt;int&gt; i : input) {
+    insert(row, i[1]);
+    insert(row, i[3]);
+    insert(col, i[0]);
+    insert(col, i[2]);
+  }
+  vector&lt;vector&lt;unsigned long long&gt; &gt; tint(row.size(), vector&lt;unsigned long long&gt;(col.size(), 0));
+  for (vector&lt;int&gt; i : input)
+    for (int r = 0; r &lt; row.size(); r++)
+      if (row[r] &gt;= i[1] &amp;&amp; row[r] &lt; i[3])
+	for (int c = 0; c &lt; col.size(); c++)
+	  if (col[c] &gt;= i[0] &amp;&amp; col[c] &lt; i[2])
+	    tint[r][c] += i[4];
+  unsigned long long res = 0;
+  for (int r = 0; r &lt; row.size() - 1; r++)
+    for (int c = 0; c &lt; col.size() - 1; c++)
+      if (tint[r][c] &gt;= T)
+      	res += (unsigned long long)(row[r + 1] - row[r]) * (unsigned long long)(col[c + 1] - col[c]);
+  cout &lt;&lt; res &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

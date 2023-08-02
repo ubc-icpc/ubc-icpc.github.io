@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+struct comp {
+    bool operator() (int a, int b) {
+        return a &gt; b;
+    }
+} compt;
+
+int main() {
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        int n, c;
+        scanf(&quot;%d %d&quot;, &amp;n, &amp;c);
+        vector&lt;int&gt; s, v, p;
+        for (int i = 0; i &lt; n; ++i) {
+            int temp;
+            scanf(&quot;%d&quot;, &amp;temp);
+            v.push_back(temp);
+        }
+        for (int i = 0; i &lt; c; ++i) {
+            int temp;
+            scanf(&quot;%d&quot;, &amp;temp);
+            s.push_back(temp);
+        }
+        for (int i = 0; i &lt;= c; ++i) {
+            int temp;
+            scanf(&quot;%d&quot;, &amp;temp);
+            p.push_back(temp);
+        }
+        sort(s.begin(), s.end());
+        sort(v.begin(), v.end(), compt);
+        sort(p.begin(), p.end());
+
+        int cash = 0;
+        int maxcash = p[0];
+        int points = 0;
+        int place = c;
+        for (int i = 0; i &lt; n; ++i) {
+            cash = (i + 1) * (-420);
+            points += v[i];
+            place = c;
+            for (int j = 0; j &lt; c; ++j) {
+                if (s[j] == points) {
+                    place = j;
+                    break;
+                }
+                if (s[j] &gt; points) {
+                    place = j;
+                    break;
+                }
+            }
+            cash += p[place];
+            //printf(&quot;q %d cash %d place %d points %d\n&quot;, i, cash, place + 1, points);
+            if (cash &gt; maxcash) {
+                maxcash = cash;
+            }
+        }
+        printf(&quot;%d\n&quot;, maxcash);
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

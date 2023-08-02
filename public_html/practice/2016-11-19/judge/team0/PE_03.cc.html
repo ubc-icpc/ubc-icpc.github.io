@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+const ll MOD = 1e9 + 7;
+
+ll mem[5005][5005];
+ll mem2[2505][5005];
+
+int N, L, R;
+
+ll dp(int n, int l) {
+  if (mem[n][l] != -1) return mem[n][l];
+  return mem[n][l] = (dp(n-1, l-1) + dp(n-1, l) * (n-1)) % MOD;
+}
+
+ll c(int a, int b) {
+  if (a + a &gt; b) {
+    a = b - a;
+  }
+  if (b == 0 || a == 0) return 1;
+  if (mem2[a][b] != -1) return mem2[a][b];
+  return mem2[a][b] = (c(a-1, b-1) + c(a, b-1)) % MOD;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  memset(mem, -1, sizeof mem);
+  memset(mem2, -1, sizeof mem2);
+  mem[0][0] = 1;
+  for (int i = 1; i &lt; 5005; ++i) {
+    mem[i][0] = mem[0][i] = 0;
+  }
+
+  while (cin &gt;&gt; N &gt;&gt; L &gt;&gt; R) {
+    if (N == 0) break;
+    ll res = 0;
+    for (int i = 0; i &lt; N; ++i) {
+      res = (res + (((c(i, N-1) * dp(i, L-1)) % MOD) * dp(N-1-i, R-1)) % MOD) % MOD;
+    }
+    cout &lt;&lt; res &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+  int n, t = 0, m = 0;
+  while (cin &gt;&gt; n &amp;&amp; n) {
+    m += n;
+    t++;
+    if (m &gt;= 50) {
+      cout &lt;&lt; &quot;Input #&quot; &lt;&lt; t &lt;&lt; &quot;: &quot;;
+      if (m/50 &gt;= 2)
+        cout &lt;&lt; &quot;Totally &quot;;
+      cout &lt;&lt; &quot;Sweet!\n&quot;;
+      m %= 50;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+const int MAXN = 1010;
+
+struct BITree { int freq[MAXN+1]; BITree() { memset(freq, 0, sizeof freq); }
+  void insert(int x, int cnt=1) {
+    for ( ; x &lt;= MAXN; x += x &amp; -x) freq[x] += cnt;
+  }
+  int query(int x) { int sum = 0;
+    for ( ; x; x -= x &amp; -x) sum += freq[x];
+    return sum; }
+  void insert_range(int xl,int xr,int cnt=1) {insert(xl,cnt); insert(xr+1,-cnt);}
+  int query_range(int xl, int xr) { return query(xr) - query(xl-1); }
+} trees[MAXN+1];
+
+int n, w, h;
+int px[MAXN], py[MAXN];
+
+int zzz[MAXN+1][MAXN+1];
+int cum1[MAXN*2+1];
+int cum2[MAXN*2+1];
+
+const int ZX = 5, ZY = 5;
+bool f(int d) {
+    //cerr &lt;&lt; &quot;eval: d = &quot; &lt;&lt; d &lt;&lt; endl;
+    if (d == 0) return true; // assume w*h-n &gt;= 2
+    if (d &gt; w+h) return false;
+    d--;
+
+    for (int i = 0; i &lt;= MAXN; i++) {
+        memset(trees[i].freq, 0, sizeof trees[i].freq);
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        int x = px[i] + ZX;
+        int y = py[i] + ZY;
+        for (int xx = max(2, x-d); xx &lt;= min(MAXN-2, x+d); xx++) {
+            int dy = d - abs(x-xx);
+            int y1 = max(2, y-dy);
+            int y2 = min(MAXN-2, y+dy);
+            if (y1 &lt;= y2) {
+                trees[xx].insert_range(y1, y2);
+            }
+        }
+    }
+
+    memset(zzz, 0, sizeof zzz);
+    for (int i = 0; i &lt; w; i++) {
+        for (int j = 0; j &lt; h; j++) {
+            int x = i+ZX;
+            int y = j+ZY;
+            if (trees[x].query(y) == 0) {
+                //cerr &lt;&lt; &quot;free: &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; endl;
+                zzz[i][j] = 1;
+            }
+        }
+    }
+
+    memset(cum1, 0, sizeof cum1);
+    memset(cum2, 0, sizeof cum2);
+    cum1[0] = zzz[0][0];
+    cum2[0] = zzz[w-1][0];
+    for (int i = 1; i &lt; w+h; i++) {
+        int x, y;
+        cum1[i] = cum1[i-1];
+        x = i; y = 0;
+        if (x &gt; w-1) {
+            y += x-(w-1);
+            x = w-1;
+        }
+        while (x &gt;= 0 &amp;&amp; y &lt; h) {
+            cum1[i] += zzz[x][y];
+            x--; y++;
+        }
+
+        cum2[i] = cum2[i-1];
+        x = (w-1)-i; y = 0;
+        if (x &lt; 0) {
+            y -= x;
+            x = 0;
+        }
+        while (x &lt; w &amp;&amp; y &lt; h) {
+            cum2[i] += zzz[x][y];
+            x++; y++;
+        }
+    }
+
+    for (int i = 0; i &lt; w; i++) {
+        for (int j = 0; j &lt; h; j++) {
+            int x = i;
+            int y = j;
+            if (zzz[x][y] == 1) {
+                int c1 = x+y;
+                int c2 = y-x+(w-1);
+                if (c1-d-1 &gt;= 0 &amp;&amp; cum1[c1-d-1] &gt; 0) return true;
+                if (c1+d &lt; w+h-2 &amp;&amp; cum1[w+h-2] - cum1[c1+d] &gt; 0) return true;
+                if (c2-d-1 &gt;= 0 &amp;&amp; cum2[c2-d-1] &gt; 0) return true;
+                if (c2+d &lt; w+h-2 &amp;&amp; cum2[w+h-2] - cum2[c2+d] &gt; 0) return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int ncase; cin &gt;&gt; ncase;
+    while (ncase--) {
+        cin &gt;&gt; n &gt;&gt; w &gt;&gt; h;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; px[i] &gt;&gt; py[i];
+        }
+
+        int lb = 0, rb = 2100;
+        while (rb - lb &gt; 1) {
+            int mid = lb + (rb-lb)/2;
+            if (f(mid)) lb = mid;
+            else rb = mid;
+        }
+        cout &lt;&lt; lb &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

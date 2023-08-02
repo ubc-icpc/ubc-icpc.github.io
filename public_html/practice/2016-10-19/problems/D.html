@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+
+<h2>Problem D: Treasure Hunt</h2>
+
+<p>
+Jill has created a new smartphone game that leads players to find a treasure. The app uses the phone's GPS
+to determine the player's location. The app then tells the player the direction in which to go on a route to find
+the treasure. When the player reaches some specific location, the app rewards the player with a (virtual)
+treasure.
+</p>
+
+<p>
+Can you help the player determine how long it will take to find the treasure?
+</p>
+
+
+<h3>Input Description</h3>
+
+<p>The first line of input contains two integers <i>R</i> and <i>C</i>, each between
+1 and 200, inclusive.
+These integers define
+the number of
+rows and columns in the playing area, respectively. The next <i>R</i> lines of input
+describe the playing area. Each line contains exactly <i>C</i> letters, and each
+letter defines the action to take in each location in the playing area. There
+are five possible letters:
+<tt>N</tt> indicates a move to the previous row,
+<tt>S</tt> indicates a move to the next row,
+<tt>W</tt> indicates a move to the previous column,
+<tt>E</tt> indicates a move to the next column, and
+<tt>T</tt> indicates the location of the treasure.
+Exactly one location contains the treasure.
+</p>
+
+
+<h3>Output Description</h3>
+
+<p>The player begins playing at the location in the first column of the first row.
+The player follows the directions at each location.
+If the player eventually reaches the treasure by following the directions,
+output a line containing an integer, the number of moves required to reach the treasure.
+If the directions cause the player to leave the playing area,
+output a line containing the word <tt>Out</tt>. If the directions cause the player
+to stay in the playing area but never reach the treasure, output
+a line containing the word <tt>Lost</tt>.
+
+<h3>Sample Input</h3>
+
+<p><code>2 2
+ES
+TW
+</code></p>
+
+<h3>Sample Output</h3>
+
+<p><code>3
+</code></p>
+
+<p><hr />
+<em>Ondřej Lhoták</em></p>
+</body>
+</html>
+

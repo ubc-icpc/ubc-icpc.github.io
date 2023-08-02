@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">n=int(input())
+aa=[]
+ori=[]
+for i in range(n):
+  ss = input().strip()
+  ori.append(ss)
+  while(ss.count(&quot;[]&quot;)&gt;0):
+    ss = ss.replace(&quot;[]&quot;,&quot;&quot;)
+  ind = ss.rfind(']')+1
+  ssr = ss[:ind]
+  while(ssr.count(&quot;++&quot;)&gt;0):
+    ssr = ssr.replace(&quot;++&quot;,&quot;+&quot;)
+  ss = ssr + ss[ind:]
+  ss = ss.replace(&quot;+[&quot;,&quot;[&quot;).replace(&quot;]+]&quot;,&quot;]]&quot;)
+  for i in range(50):
+    ss=ss.replace('['*i + '+' + ']'*i, '('+str(i)+')')
+  cnt=0
+  while(ss.count('[')&gt;0):
+    ind = ss.rfind('[')
+    ssr = ss[ind+2:]
+    ind2 = ssr.find(']')
+    ssm = ssr[:ind2-1]
+    nums = ssm.split(&quot;)(&quot;)
+    ma=0
+    for i in nums:
+      if(int(i)&gt;ma): ma=int(i)
+    ss = ss[:ind] + &quot;(&quot; + str(ma+1) + &quot;)&quot; + ss[ind+2+ind2+1:]
+    cnt+=1
+    if(cnt&gt;100): break
+  ss=ss[1:len(ss)-1].split(&quot;)(&quot;)
+  tt=[]
+  ma=0
+  if(ss[0]==''): ss=[]
+  for i in range(len(ss)-1,-1,-1):
+    no = int(ss[i])
+    if(no&gt;=ma):
+      ma=no
+      tt.insert(0,ma)
+  aa.append(tt)
+for i in range(n):
+  for j in range(i+1,n):
+    mlen = min(len(aa[i]),len(aa[j]))
+    cm = 1 if len(aa[i])== mlen else 0
+    for k in range(mlen):
+      if(aa[i][k]&gt;aa[j][k]):
+        cm=0
+        break
+      elif(aa[i][k]&lt;aa[j][k]):
+        cm=1
+        break
+    if(cm==0):
+      (aa[i],aa[j])=(aa[j],aa[i])
+      (ori[i],ori[j])=(ori[j],ori[i])
+for i in range(n):
+  print(ori[i])
+</code>
+</pre>
+</body>
+</html>

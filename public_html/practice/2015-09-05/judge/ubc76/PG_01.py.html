@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+def isPrime(n):
+    for i in range(2,int(n**0.5)+1):
+        if n%i == 0:
+            return False
+    return True
+    
+test =int(raw_input())
+for i in range(test):
+    check = int(raw_input())
+    result = isPrime(check)
+    if (result):
+        print 'Input value: '+ str(check)
+        print 'Would you believe it; it is a prime!'                         
+        print
+    else:
+        ## go up
+        plus = 0
+        minus = 0
+        while (not result):
+            plus = plus+1
+            result =isPrime((check+plus))
+        result = False
+        while (not result and (check-minus-1)&gt;0):
+            minus = minus+1
+            result = isPrime((check-minus))
+        diff = min(plus,minus)
+        print 'Input value: '+ str(check)
+        print 'Missed it by that much ('+str(diff)+')!'                         
+        print    
+            
+            
+        
+                                  </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

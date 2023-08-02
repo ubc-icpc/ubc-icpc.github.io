@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+# caesar cipher
+
+ed = input()
+s = int(input())
+if ed==&quot;D&quot;:
+    s=-s
+w = [(x-97+s)%26+97 for x in map(ord, input())]
+
+print(''.join(map(chr,w)))
+</code>
+</pre>
+</body>
+</html>

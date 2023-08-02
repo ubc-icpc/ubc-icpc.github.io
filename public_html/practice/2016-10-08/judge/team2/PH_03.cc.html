@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+#define endl    '\n'
+
+using namespace std;
+typedef long long ll;
+
+typedef __int128 bm;
+
+const int maxn = 1e5+4;
+bm bm1 = 1;
+int n, a, b, m, t;
+int cmda[maxn],cmdb[maxn],cmdt[maxn];
+
+bm yes[101];
+bool isnull[101];
+
+vector&lt;int&gt; adj[101];
+vector&lt;int&gt; badj[101];
+vector&lt;int&gt; sadj[101];
+
+bool vis[101];
+bool vis2[101];
+bool ontrack[101];
+
+bool dfs(int a, int b){
+    if (a==b) return true;
+    vis[a] = true;
+    for(auto i:adj[a]){
+        if(!vis[i])
+            if (dfs(i,b)) return true;
+    }
+    return false;
+}
+
+bool sssdfs(int a, int b){
+    if (a==b) return true;
+    vis2[a] = true;
+    for(auto i:adj[a]){
+        if(!vis2[i])
+            if (sssdfs(i,b)) return true;
+    }
+    return false;
+}
+
+bool sdfs(int a, int b){
+    if (a==b) return true;
+    bool toret = false;
+    //cout &lt;&lt; a &lt;&lt; endl;
+    vis[a] = true;
+    for(auto i:badj[a]){
+        //if(i==b) return false;
+        if(!vis[i])
+            if (sdfs(i,b)) toret = true;
+    }
+    for(auto i:sadj[a]){
+        memset(vis2,0,sizeof vis2);
+        if(!vis[i])
+            if (sssdfs(i,b)) toret = true;
+    }
+    return toret;
+}
+
+
+void Bdfs(int a){
+    //backwards dfs
+    vis[a] = true;
+    for(auto i:badj[a]){
+        if(!vis[i]){
+            Bdfs(i);
+        }
+    }
+}
+
+void update(int a){
+    memset(vis,0,sizeof vis);
+    dfs(a,-1);
+   // cout &lt;&lt; &quot; update &quot; &lt;&lt; endl;
+    for(int i=0;i&lt;n+1;i++){
+     //   cout &lt;&lt; vis[i] &lt;&lt; endl;
+        if(vis[i]){
+            yes[i]|=yes[a];
+        }
+    }
+}
+
+void add(int a, int b){
+    // a \subseteq b make directed a to b
+    adj[a].pb(b);
+    badj[b].pb(a);
+}
+
+void both(int a, int b){
+    int d = min(a,b);
+    yes[a]|= bm1 &lt;&lt; d;
+    yes[b]|= bm1 &lt;&lt; d;
+    sadj[a].pb(b);
+    sadj[b].pb(a);
+}
+
+bool ispos(int mm){
+    for(int i=1;i&lt;=n;i++){
+        yes[i] = 0;
+        isnull[i] = 0;
+        adj[i].clear();
+        badj[i].clear();
+        sadj[i].clear();
+    }
+    for(int i=0;i&lt;mm;i++){
+        int a = cmda[i], b = cmdb[i];
+        if (cmdt[i]== 1) add(a, b);
+        if (cmdt[i]== 2) {
+            add(a,b);
+            add(b,a);
+        }
+        if (cmdt[i]== 5) both(a,b);
+    }
+    for(int i=1;i&lt;=n;i++){
+        update(i);
+    }
+    for(int i=0;i&lt;mm;i++){
+        int a = cmda[i], b = cmdb[i];
+        if (cmdt[i]== 4){
+            memset(vis,0,sizeof vis);
+       //     cout &lt;&lt; &quot;from &quot; &lt;&lt; a &lt;&lt; endl;
+            if (yes[a] &amp;&amp; yes[b] &amp;&amp; sdfs(a,b)) {
+     //           cout &lt;&lt; &quot;fail&quot; &lt;&lt; i &lt;&lt; endl;
+                return false;
+            }
+            memset(vis,0,sizeof vis);
+            Bdfs(a);
+            set&lt;int&gt; backs;
+            for(int j=0;j&lt;n+1;j++){
+                if(vis[j]) backs.insert(j);
+            }
+            memset(vis,0,sizeof vis);
+            Bdfs(b);
+            for(int j=0;j&lt;n+1;j++){
+                if(vis[j] &amp;&amp; backs.count(j)) {
+                   // cout &lt;&lt; &quot; is null&quot; &lt;&lt; j &lt;&lt; endl;
+                    isnull[j] = true;
+                    if( yes[j]) return false;
+                }
+            }
+        }
+    }
+    for(int i=0;i&lt;mm;i++){
+        int a = cmda[i], b = cmdb[i];
+        if (cmdt[i]== 3){
+            memset(vis,0,sizeof vis);
+            bool ab= dfs(a,b);
+            memset(vis,0,sizeof vis);
+            bool ba= dfs(b,a);
+            //cout &lt;&lt; ba &lt;&lt; ab &lt;&lt; &quot; bidierections&quot; &lt;&lt; endl;
+            if (ba &amp;&amp; ab) {
+             //   cout &lt;&lt; &quot;fail&quot; &lt;&lt; i &lt;&lt; endl;
+                return false;
+           }
+            if (isnull[a] &amp;&amp; isnull[b]) return false;
+        }
+    }
+    return true;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt;n &gt;&gt; m;
+    int cur = 0;
+    while(n!=0){
+        cur++;
+       // if (cur ==77) cout &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; endl;
+        for(int i=0;i&lt;m;i++){
+            cin &gt;&gt; t&gt;&gt;a &gt;&gt;b;
+        //if (cur ==77) cout &lt;&lt; t &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+            cmda[i] = a;
+            cmdb[i] = b;
+            cmdt[i] = t;
+        }
+        int hi = m+1, lo = 0;
+        while (hi &gt; lo+1){
+            int mid = (hi+lo)/2+((hi+lo)%2);
+       //     mid = 22;
+            //cout &lt;&lt;hi &lt;&lt; &quot; &quot; &lt;&lt; lo &lt;&lt; &quot; &quot;&lt;&lt; mid &lt;&lt; endl;
+            if (ispos(mid)) lo = mid;
+            else hi = mid;
+        //    cin &gt;&gt; mid;
+        }
+        //cout &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt;endl;
+        cout &lt;&lt; lo&lt;&lt;endl;
+        cin &gt;&gt; n &gt;&gt; m;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

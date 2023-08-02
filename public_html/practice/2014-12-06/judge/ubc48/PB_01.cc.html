@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+int main(){
+  int lines;
+  cin &gt;&gt; lines;
+  vector &lt;string&gt; table_l;
+  vector &lt;string&gt; table_v;
+  string temp, code, answer;
+  for(int a = 0; a &lt; lines; a++){
+    cin &gt;&gt; temp;
+    table_l.push_back(temp);
+    cin &gt;&gt; temp;
+    table_v.push_back(temp);
+  }
+  cin &gt;&gt; code;
+  int indexcounter = 0;
+  for(;indexcounter &lt; code.length(); indexcounter ++){
+  indexincrease:
+    for(int a = 0; a &lt; table_v.size(); a++){
+      if(table_v[a] == code.substr(indexcounter, table_v[a].length())){
+	answer += table_l[a];
+	indexcounter += table_v[a].length();
+	goto indexincrease;
+      }
+    }
+  }
+  cout &lt;&lt; answer &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+int n, m, t, cnt[10005];
+pii tree[10005];
+struct qtree {
+	set&lt;int&gt; ycoords;
+	multiset&lt;int, greater&lt;int&gt; &gt; segs;
+	qtree() {
+		ycoords.insert(0); ycoords.insert(m);
+		segs.insert(m);
+		cnt[0] = cnt[m] = 1;
+	}
+	void insert(int y) {
+		cnt[y]++;
+		if (ycoords.count(y)) return;
+		auto it = ycoords.upper_bound(y);
+		auto pit = it; pit--;
+		//remove the previous seg
+		segs.erase(segs.find(*it-*pit));
+		//replace it with two more
+		segs.insert(y-*pit); segs.insert(*it-y);
+		ycoords.insert(y);
+	}
+	void erase(int y) {
+		cnt[y]--;
+		if (cnt[y] == 0) {
+			//join the two segs beside coordinate y
+			auto it = ycoords.find(y);
+			auto pit = it, nit = it;
+			pit--, nit++;
+			segs.erase(segs.find(*nit-y)); segs.erase(segs.find(y-*pit));
+			segs.insert(*nit-*pit);
+			ycoords.erase(it);
+		}
+	}
+	int max() {
+		return *segs.begin();
+	}
+};
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin &gt;&gt; n &gt;&gt; m &gt;&gt; t;
+	for (int i = 0; i &lt; t; i++) {
+		cin &gt;&gt; tree[i].first &gt;&gt; tree[i].second;
+	}
+	tree[t++] = pii(0,0), tree[t++] = pii(n,m);
+	sort(tree, tree+t);
+	
+	int ans = 0;
+	for (int i = 0; i &lt; t-1; i++) {
+		if (tree[i].first == tree[i+1].first) continue;
+		qtree qt;
+		int j = i+1;
+		while (j &lt; n &amp;&amp; tree[j].first == tree[i].first) j++;
+		bool first = true;
+		for (; j &lt; t; j++) {
+			if (!first) qt.insert(tree[j-1].second);
+			int dx = tree[j].first-tree[i].first;
+			ans = max(ans, dx*qt.max());
+			first = false;
+		}
+	}
+	cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

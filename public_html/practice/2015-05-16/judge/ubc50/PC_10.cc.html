@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll n, k;
+string word; int length;
+ll arr[26][1000001];
+ll counts[26];
+
+ll solve(ll a, char c) {
+  ll repeats, prefix, suffix;
+  if (a%2==0)
+    prefix = (((a/2)%length) * ((a-1)%length))%length;
+  else
+    prefix = ((((a-1)/2)%length) * (a%length))%length;
+  repeats = 0;
+  suffix = prefix + a;
+  if (length-prefix &lt;= a) {
+    repeats = 1+(a-(length-prefix))/length;
+    suffix = a - (length-prefix) - (repeats-1)*length;
+  }
+  int ch = c-'A';
+  return arr[ch][length]*repeats + arr[ch][suffix] - arr[ch][prefix];
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin &gt;&gt; n;
+  cin &gt;&gt; word; length = word.length();
+  memset(arr, 0, sizeof arr);
+  memset(counts, 0, sizeof counts);
+  for (int i=0; i&lt;length; i++) {
+    counts[word[i]-'A']++;
+    for (int j=0; j&lt;26; j++) {
+      arr[j][i+1] = counts[j];
+    }
+  }
+  cin &gt;&gt; k;
+  for (int i=0; i&lt;k; i++) {
+    ll a; char c;
+    cin &gt;&gt; a &gt;&gt; c;
+    cout &lt;&lt; solve(a,c) &lt;&lt; '\n';
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

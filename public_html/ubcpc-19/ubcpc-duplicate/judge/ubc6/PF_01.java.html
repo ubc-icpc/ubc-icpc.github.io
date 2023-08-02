@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.StringTokenizer;
+
+public final class F {
+  
+  private static class P {
+    long x, y;
+    P(long x, long y) {
+      this.x = x;
+      this.y = y;
+    }
+    
+    long cross(P p) {
+      return x * p.y - y * p.x;
+    }
+    
+    P minus(P p) {
+      return new P(x - p.x, y - p.y);
+    }
+  }
+  
+  public static void main(String[] args) throws IOException {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    //BufferedReader reader = new BufferedReader(new FileReader(&quot;F1.in&quot;));
+    PrintWriter writer = new PrintWriter(new OutputStreamWriter(System.out));
+    
+    int n = (int) Integer.parseInt(reader.readLine());
+    P[] pts = new P[n];
+    for (int i = 0; i &lt; n; i++) {
+      StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+      long x = Long.parseLong(tokenizer.nextToken());
+      long y = Long.parseLong(tokenizer.nextToken());
+      pts[i] = new P(x, y);
+    }
+    
+    double[] ans = new double[n];
+    long[] crossProduct = new long[n];
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = i+1; j &lt; n; j++) {
+        int leftCount = 0;
+        int rightCount = 0;
+        for (int k = 0; k &lt; n; k++) {
+          if (k == i || k == j) continue;
+          P dij = pts[j].minus(pts[i]);
+          P dik = pts[k].minus(pts[i]);
+          crossProduct[k] = dij.cross(dik);
+          if (crossProduct[k] &gt; 0) {
+            leftCount++;
+          } else if (crossProduct[k] == 0) {
+            double f = (dij.x == 0) ? ((double) dik.y / dij.y) : ((double) dik.x / dij.x); 
+            if (0 &lt; f &amp;&amp; f &lt; 1) {
+              leftCount++;
+              rightCount++;
+            }
+          } else {
+            rightCount++;
+          }
+        }
+        double leftFraction = 2.0 / leftCount / (leftCount + 1) / (leftCount + 2);
+        double rightFraction = 2.0 / rightCount / (rightCount + 1) / (rightCount + 2);
+        for (int k = 0; k &lt; n; k++) {
+          if (k == i || k == j) continue;
+          if (crossProduct[k] &gt; 0) {
+            ans[k] += leftFraction * crossProduct[k] / 2.0;
+          } else if (crossProduct[k] &lt; 0) {
+            ans[k] += rightFraction * crossProduct[k] / -2.0;
+          }
+        }
+      }
+    }
+    
+    for (int i = 0; i &lt; n; i++) {
+      writer.format(&quot;%.16f\n&quot;, ans[i]);
+    }
+
+    writer.close();
+    reader.close();
+  }
+}
+</code>
+</pre>
+</body>
+</html>

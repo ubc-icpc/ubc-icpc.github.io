@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+bool issep(char c) {
+	return c == ' ' || c == ',' || c == '.' || c == '!' || c == ';' || c == '?' || c == '(' || c == ')';
+}
+char lowercase(char c) {
+	if (c &gt;= 'A' &amp;&amp; c &lt;= 'Z') return 'a' + (c - 'A');
+	return c;
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	string dummy;
+	getline(cin, dummy);
+
+	string langname[n];
+	vector&lt;string&gt; dict[n];
+	for (int i = 0; i &lt; n; i++) {
+		string line;
+		getline(cin, line);
+		int start = 0, end = 0;
+		while (start &lt; line.length() &amp;&amp; line[start] == ' ') start++;
+		end = start;
+		while (end &lt; line.length() &amp;&amp; line[end] != ' ') end++;
+		langname[i] = line.substr(start, end-start);
+		while (start &lt; line.length()) {
+			start = end;
+			while (start &lt; line.length() &amp;&amp; line[start] == ' ') start++;
+			end = start;
+			while (end &lt; line.length() &amp;&amp; line[end] != ' ') end++;
+			if (start &lt; line.length() ) {
+				dict[i].push_back(line.substr(start, end-start));
+			}
+		}
+	}
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = 0; j &lt; dict[i].size(); j++) {
+			for (int k = 0; k &lt; dict[i][j].length(); k++) {
+				dict[i][j][k] = lowercase(dict[i][j][k]);
+			}
+		}
+	}
+	getline(cin, dummy);
+	string line;
+	while (getline(cin, line)) {
+		int start = 0, end = 0;
+		while (start &lt; line.length()) {
+			start = end;
+			while (start &lt; line.length() &amp;&amp; issep(line[start])) start++;
+			end = start;
+			while (end &lt; line.length() &amp;&amp; !issep(line[end])) end++;
+			if (start &lt; line.length()) {
+				string word = line.substr(start, end-start);
+				for (int i = 0; i &lt; word.length(); i++) {
+					word[i] = lowercase(word[i]);
+				}
+				for (int i = 0; i &lt; n; i++) {
+					for (int j = 0; j &lt; dict[i].size(); j++) {
+						if (word == dict[i][j]) {
+							cout &lt;&lt; langname[i] &lt;&lt; endl;
+							goto next;
+						}
+					}
+				}
+			}
+		}
+next:
+		int a = 1;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

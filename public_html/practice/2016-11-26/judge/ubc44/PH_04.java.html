@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class paint {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		long N = s.nextLong();
+		int K = s.nextInt();
+		
+		//EARLY IDEA: map startTime to end predec, endTime to end predec; then sparse DP on endtimes
+		//IDEA 2: sort intervals twice (start, end time), rank by endTime, dp on INTERVALS
+		ptvl[] itvlByEnd = new ptvl[K];
+		ptvl[] itvlByStart = new ptvl[K];
+		long[] dp = new long[K];
+		int[] withPred = new int[K]; //predecessor of interval before start (bSearch OR Lsweep to find)
+		//int[] woPred = new int[K];
+		Arrays.fill(withPred, -1);
+		//Arrays.fill(woPred, -1);
+		
+		for (int i=0; i&lt;K; i++) {
+			ptvl itvl = new ptvl(s.nextLong(), s.nextLong());
+			itvlByEnd[i] = itvl;
+			itvlByStart[i] = itvl;
+		}
+		Arrays.sort(itvlByEnd);
+		Arrays.sort(itvlByStart, new startComp() );
+		for (int i=0; i&lt;itvlByEnd.length; i++)
+			itvlByEnd[i].rankByEnd = i;
+		
+		
+		//TODO: Repeat w/ binary search. main2()
+		//SWEEP: --&gt; predecessor array!
+		long activeEnd = -1;
+		int endInd = -1;
+		for (int i=0; i&lt;itvlByStart.length; i++) {
+			//for EACH start time, assign itvl w/ HIGHEST rankByEnd s.t. itvl.right &lt; curr.left
+			//withPred defined on rankByEnd indices!
+			long currStart = itvlByStart[i].left;
+			while (endInd+1&lt;itvlByEnd.length &amp;&amp; itvlByEnd[endInd+1].right&lt;currStart) {
+				endInd++;
+			}
+			//endInd is LAST x s.t. itvlByEnd[x].right &lt; currStart
+			if (endInd &gt; -1) {
+				activeEnd = itvlByEnd[endInd].right; //though not necessary
+				withPred[itvlByStart[i].rankByEnd] = endInd;
+			}
+		}
+		
+		/*int ind = 0;
+		for (ptvl ivl : itvlByEnd) {
+			ivl.rankByEnd = ind++;
+			System.out.println(ivl.rankByEnd +&quot;: &quot; +ivl.left+&quot; &quot; + ivl.right);
+		}
+		for (ptvl ivl : itvlByStart) {
+			System.out.println(ivl.rankByEnd +&quot;: &quot; +ivl.left+&quot; &quot; + ivl.right);
+		}*/ //test GOOD, sorts DOUBLY ref'ed ptvls
+		dp[0] = itvlByEnd[0].dur;
+		for (int i=1; i&lt;dp.length; i++) {
+			long withoutScore = dp[i-1];
+			long withScore = itvlByEnd[i].dur;
+			if (withPred[i] != -1)
+				withScore += dp[withPred[i]];
+			dp[i] = Math.max(withoutScore, withScore);
+		}
+		
+		System.out.println(N - dp[dp.length-1]);
+		
+		s.close();
+		
+	}
+
+}
+
+class ptvl implements Comparable&lt;ptvl&gt; {
+	int rankByEnd; long left; long right; long dur;
+	public ptvl (long left, long right) {
+		this.left = left;
+		this.right = right;
+		this.dur = this.right - this.left + 1;
+	}
+	
+	public int compareTo(ptvl o) {
+		long diff = this.right - o.right;
+		if (diff &gt; 0)
+			return 1;
+		else if (diff == 0)
+			return 0;
+		else
+			return -1;
+		//return (int) (diff != 0 ? diff : this.left - o.left);
+	}
+}
+
+class startComp implements Comparator&lt;ptvl&gt; {
+	public int compare(ptvl o1, ptvl o2) {
+		long diff = o1.left - o2.left;
+		if (diff &gt; 0)
+			return 1;
+		else if (diff == 0)
+			return 0;
+		else
+			return -1;
+		//return (int) diff;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

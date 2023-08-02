@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+double f (int, int, const double, const int, const int, bool);
+
+int main()
+{
+   int cases;
+   cin &gt;&gt; cases;
+
+   for (int a=0; a&lt;cases; a++)
+   {
+      string dummy;
+      getline(cin, dummy);
+      getline(cin, dummy);
+
+      double s;
+      int up, down;
+      cin &gt;&gt; s &gt;&gt; up &gt;&gt; down;
+
+      double win=(20/(s+20.0))*f(1,0,s,up,down,true)+
+	 (1-(20/(s+20.0)))*f(0,1,s,up,down,false);
+      cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; win &lt;&lt; endl;
+   }
+}
+
+double f (int a, int b, const double s, const int up, const int down, bool win)
+   //a: for, b: against)
+{
+   if (a==4)
+      return 1;
+   if (b==4)
+      return 0;
+   if (win)
+      return (20+up)/(s+20.0+up)*f(a+1,b,s,up,down,true)+
+	 (1-(20+up)/(s+20.0+up))*f(a,b+1,s,up,down,false);
+ 
+   return (20-down)/(s+20.0-down)*f(a+1,b,s,up,down,true)+
+      (1-(20-down)/(s+20.0-down))*f(a,b+1,s,up,down,false);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+// we sort the input with 2 comparators:
+// 1) decreasing y, increasing x
+// 2) decreasing x, increasing y
+// then simply count inversions between 1 and 2.
+
+struct s {
+  int x, y, i;
+  s() {}
+  s(int xx, int yy, int ii) : x(xx), y(yy), i(ii) {}
+};
+
+bool c1(const s&amp; a, const s&amp; b) {
+  if (a.y != b.y)
+    return a.y &gt; b.y;
+  return a.x &lt; b.x;
+}
+
+bool c2(const s&amp; a, const s&amp; b) {
+  if (a.x != b.x)
+    return a.x &gt; b.x;
+  return a.y &lt; b.y;
+}
+
+s s1[75000], s2[75000];
+int m1[75000], m2[75000], m3[75000];
+long long inv;
+
+void ms(int a, int b, int* o, int* s) {
+  if (a == b)
+    return;
+  int m = (a+b)/2;
+  ms(a,m,o,s);
+  ms(m+1,b,o,s);
+  int ai = a, bi = m+1, si = a;
+  while (ai &lt; m+1 &amp;&amp; bi &lt; b+1) {
+    while (ai &lt; m+1 &amp;&amp; o[ai] &lt; o[bi]) {
+      s[si] = o[ai];
+      ai++; si++;
+    }
+    while (bi &lt; b+1 &amp;&amp; o[bi] &lt; o[ai]) {
+      s[si] = o[bi];
+      bi++; si++;
+      inv += m+1-ai;
+    }
+  }
+  for (int i = ai; i &lt; m+1; i++) {
+    s[si] = o[i];
+    si++;
+  }
+  for (int i = bi; i &lt; b+1; i++) {
+    s[si] = o[i];
+    si++;
+  }
+  for (int i = a; i &lt;= b; i++)
+    o[i] = s[i];
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    inv = 0;
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+      int x, y;
+      cin &gt;&gt; x &gt;&gt; y;
+      s1[i] = s2[i] = s(x,y,i);
+    }
+    sort(s1, s1+n, c1);
+    sort(s2, s2+n, c2);
+    for (int i = 0; i &lt; n; i++)
+      m1[s1[i].i] = i;
+    for (int i = 0; i &lt; n; i++)
+      m2[i] = m1[s2[i].i];
+    ms(0,n-1,m2,m3);
+    cout &lt;&lt; inv &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

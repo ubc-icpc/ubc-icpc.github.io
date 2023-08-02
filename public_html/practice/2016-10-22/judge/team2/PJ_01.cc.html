@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define endl '\n'
+
+int main() {
+	int n1, n2; cin &gt;&gt; n1 &gt;&gt; n2;
+	int diff1 = (n2 + 360 - n1) % 360;
+	int diff2 = (n2 - 360 - n1) % 360;
+
+	if((int) abs(diff1) &gt; (int) abs(diff2)) {
+		cout &lt;&lt; diff2 &lt;&lt; endl;
+	} else {
+		cout &lt;&lt; diff1 &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
+  string code, word;
+  int shift, i;
+  cin &gt;&gt; code &gt;&gt; shift &gt;&gt; word;
+  if (code[0] == 'D') {
+    shift = 26-shift;
+  }
+  for (i = 0; i&lt;word.length(); i++) {
+    word[i] = ((word[i]-'a'+shift)%26)+'a';
+  }
+  cout &lt;&lt; word &lt;&lt; endl;
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

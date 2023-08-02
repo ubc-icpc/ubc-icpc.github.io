@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int cmax = 0;
+ll psize(int cw) {
+	return 8 + (40*(cw-4) + (cmax-5))/(cmax-4);
+}
+
+ll width(int t, int P) {
+	return (9*t*P+15)/16;
+}
+
+typedef pair&lt;string, int&gt; psi; //wow pressure is on
+int main() {
+	int W, N, c = 0;
+	while (cin &gt;&gt; W &gt;&gt; N) {
+		if (W+N == 0) break;
+		vector&lt;psi&gt; v(N);
+		cmax = 0;
+		for (int i = 0; i &lt; N; i++) {
+			 cin &gt;&gt; v[i].first &gt;&gt; v[i].second;
+			 cmax = max(cmax, v[i].second);
+		}
+		
+		ll curr = 0, tot_ht = 0, curr_ht = 0;
+		for (int i = 0; i &lt; N; i++) {
+			ll word_ht = psize(v[i].second);
+			ll word_len = width(v[i].first.size(), word_ht);
+			if (curr + word_len &gt; W) {
+				tot_ht += curr_ht;
+				curr_ht = 0;
+				curr = 0;
+			}
+			curr_ht = max(curr_ht, word_ht);
+			curr += word_len;
+			curr += 10;
+		}
+		tot_ht += curr_ht;
+		cout &lt;&lt; &quot;CLOUD &quot; &lt;&lt; ++c &lt;&lt; &quot;: &quot; &lt;&lt; tot_ht &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

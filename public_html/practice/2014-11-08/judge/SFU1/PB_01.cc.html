@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// problem B
+// SFU Royal
+
+#include &lt;cstdio&gt;
+#include &lt;set&gt;
+
+using namespace std;
+
+int main() {
+	long long i;
+	char buf[100];
+
+	while(scanf(&quot;%lld&quot;,&amp;i) == 1) {
+		set&lt;char&gt; s;
+		int m;
+
+		for(m=1;true;m++) {
+			long long d = i *m;
+		
+			sprintf(buf,&quot;%lld&quot;,d);
+
+			for(char* p = buf;*p != 0;p++) {
+				s.insert(*p);
+			}
+
+			if(s.size() == 10) { break; }
+		}
+
+		printf(&quot;%d\n&quot;,m);
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

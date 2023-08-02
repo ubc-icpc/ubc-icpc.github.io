@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class acm {
+    public static void main (String[] args) {
+        Scanner Scan = new Scanner(System.in);
+        int iteration = Scan.nextInt();
+        while (iteration &gt; 0) {
+            int s = Scan.nextInt();
+            int[] array = new int[s];
+            for (int i = 0; i &lt; s; i ++) {
+                array[i] = Scan.nextInt();
+            }
+            Arrays.sort(array);
+            boolean flag = false;
+            for (int k = 1; k &lt; s; k ++) {
+                if (array[k] &lt; 2 * array[k -1]) {
+                    flag = true;
+                }
+            }
+            System.out.print(&quot;Denominations: &quot;);
+            for(int n : array) {
+                System.out.print(n + &quot; &quot;);
+            }
+            if (flag) {
+                System.out.print (&quot;\nBad coin denominations!\n\n&quot;);
+            } else {
+                System.out.print (&quot;\nGood coin denominations!\n\n&quot;);
+            }
+            iteration--;
+
+        }
+
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

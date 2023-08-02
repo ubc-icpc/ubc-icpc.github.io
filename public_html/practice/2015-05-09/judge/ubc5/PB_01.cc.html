@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;set&gt;
+using namespace std;
+
+int a[100];
+set&lt;int&gt; f[7];
+
+int main() {
+  int n;
+  while (cin &gt;&gt; n) {
+    for (int i = 1; i &lt; 7; i++)
+      f[i].clear();
+    for (int i = 0; i &lt; n; i++) {
+      cin &gt;&gt; a[i];
+      f[a[i]].insert(i+1);
+    }
+    for (int i = 6; i; i--) {
+      if (f[i].size() == 1) {
+        cout &lt;&lt; *f[i].begin() &lt;&lt; &quot;\n&quot;;
+        goto VELOCIRAPTOR;
+      }
+    }
+    cout &lt;&lt; &quot;none\n&quot;;
+    VELOCIRAPTOR:
+    ;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

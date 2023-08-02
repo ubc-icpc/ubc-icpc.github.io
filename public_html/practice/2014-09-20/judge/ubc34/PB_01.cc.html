@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int enemyh[5];
+int enemyd[5];
+int teamd[5];
+double calc(int * combo) {
+	// greedily kill everything one by one
+	double rate = 0;
+	double enemyrate = 0;
+	for (int i = 0; i &lt; 5; i++) {
+		rate += teamd[i];
+		enemyrate += enemyd[i];
+	}
+	double damage = 0;
+	for (int i = 0; i &lt; 5; i++) {
+		int j = combo[i];
+		double time = enemyh[j] / rate;
+		damage += time * enemyrate;
+		enemyrate -= enemyd[j];
+	}
+	return damage;
+}
+double dfs(int* combo, int count) {
+	if (count == 5) {
+		return calc(combo);
+	}
+	double ans = 1e100;
+	for (int i = 0; i &lt; 5; i++) {
+		bool good = true;
+		for (int j = 0; j &lt; count; j++) {
+			if (combo[j] == i) {
+				good = false;
+				break;
+			}
+		}
+		if (good) {
+			combo[count] = i;
+			ans = min(ans, dfs(combo, count+1));
+		}
+	}
+	return ans;
+}
+
+int main() {
+	int ncase; cin &gt;&gt; ncase;
+	for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+		for (int i = 0; i &lt; 5; i++) {
+			cin &gt;&gt; enemyh[i];
+		}
+		for (int i = 0; i &lt; 5; i++) {
+			cin &gt;&gt; enemyd[i];
+		}
+		for (int i = 0; i &lt; 5; i++) {
+			cin &gt;&gt; teamd[i];
+		}
+		// brute force!
+		int combo[5];
+		double ans = dfs(combo, 0);
+		cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; ans &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+kb = 'qwertyuiop asdfghjkl zxcvbnm'.split(' ')
+cs = {}
+for y, l in enumerate(kb):
+    for x, c in enumerate(l):
+        cs[y, x] = c
+
+ds = {}
+
+def d((x1, y1), (x2, y2)):
+    return abs(x2 - x1) + abs(y2 - y1)
+
+def dw(w1, w2):
+    return sum(ds[c1, c2] for c1, c2 in zip(w1, w2))
+
+for p1, c1 in cs.iteritems():
+    for p2, c2 in cs.iteritems():
+        ds[c1, c2] = d(p1, p2)
+
+I = input
+S = raw_input
+L = lambda: raw_input().split(' ')
+
+for _ in xrange(I()):
+    w, n = L()
+    ws = [ S() for __ in xrange(int(n)) ]
+    ss = [ (w1, dw(w, w1)) for w1 in ws ]
+    for w, d in sorted(ss, key=lambda(w, d): (d, w)):
+        print(&quot;{} {}&quot;.format(w, d))
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

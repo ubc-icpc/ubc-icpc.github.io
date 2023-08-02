@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.*;
+import java.util.*;
+//@SuppressWarnings(&quot;unused&quot;)
+public class PA{
+    public static void main(String[] args) throws Exception{
+	br = new BufferedReader(new InputStreamReader(System.in));
+	pw = new PrintWriter(new OutputStreamWriter(System.out));
+	String a = br.readLine();
+	String b = br.readLine();
+	pw.printf(b+a.toLowerCase());
+	pw.flush();
+    }
+    static BufferedReader br;
+    static PrintWriter pw;
+    static StringTokenizer st;
+    static void fl(){pw.flush();};
+    static void rl() throws Exception{
+	st = new StringTokenizer(br.readLine());
+    }
+    static long nlo(){
+	return Long.parseLong(st.nextToken());
+    }
+    static int nin(){
+	return Integer.parseInt(st.nextToken());
+    }
+    /*private static void te(){
+      }*/
+    static double ndo(){
+	return Double.parseDouble(st.nextToken());
+    }
+    static char[] nca(){
+	return st.nextToken().toCharArray();
+    }
+}
+</code>
+</pre>
+</body>
+</html>

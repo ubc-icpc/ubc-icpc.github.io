@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int dist[505][505], n, m;
+int dx[] = {-1, 0, 1, 0, 1, 1, -1, -1};
+int dy[] = {0, -1, 0, 1, 1, -1, 1, -1};
+
+const int SQ = 1000;
+set&lt;int&gt; updates;
+
+void insert(int i, int j) {
+    updates.insert(i*m+j);
+    if (updates.size() &lt; SQ) return;
+    
+    queue&lt;pair&lt;int, int&gt; &gt; q;
+    
+    for (int v : updates) {
+        dist[v/m][v%m] = 0;
+        q.push({v, v});
+    }
+    updates.clear();
+    
+    while (!q.empty()) {
+        pair&lt;int, int&gt; p = q.front(); q.pop(); 
+        int i = p.second/m, j = p.second%m;
+        int ci = p.first/m, cj = p.first%m;
+        for (int k = 0; k &lt; 8; k++) {
+            int ni = ci + dx[k], nj = cj + dy[k];
+            if (ni &lt; 0 || nj &lt; 0 || ni &gt;= n || nj &gt;= m) continue;
+            
+            int d = (ni-i)*(ni-i) + (nj-j)*(nj-j);
+            int nu = ni*m + nj;
+            if (d &lt; dist[ni][nj]) {
+                dist[ni][nj] = d;
+                q.push({nu, p.second});
+            }
+        }
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    memset(dist, 0x3f, sizeof dist);
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; m; j++) {
+            char c; cin &gt;&gt; c;
+            if (c == 'x') {
+                insert(i, j);
+            }
+        }
+    }
+    
+    int g; cin &gt;&gt; g;
+    while (g--) {
+        int i, j; cin &gt;&gt; i &gt;&gt; j;
+        i--, j--;
+        int ans = dist[i][j];
+        for (int v : updates) {
+            int x = v/m, y = v%m;
+            ans = min(ans, (i-x)*(i-x) + (j-y)*(j-y));
+        }
+        
+        cout &lt;&lt; ans &lt;&lt; '\n';
+        insert(i, j);
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+long long S;
+void sv() {
+	long long a=1, b=1000000000;
+	while (b-a != 1) {
+		long long c = (a+b)/2, s = (c*(c+1))/2;
+		if (s == S) {
+			cout &lt;&lt; &quot;Not bored enough!\n&quot;;
+			return;
+		} else if (s &gt; S) b=c;
+		else a=c;
+	}
+	if ((a*(a+1))/2 == S) {
+		cout &lt;&lt; &quot;Not bored enough!\n&quot;;
+		return;
+	}
+	cout &lt;&lt; ((a+2)*(a+1))/2-S &lt;&lt; '\n';
+}
+
+int main() {
+	while (cin &gt;&gt; S &amp;&amp; S) sv();
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

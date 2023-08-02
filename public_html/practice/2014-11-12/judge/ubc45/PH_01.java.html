@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//package contest;
+
+import java.util.Scanner;
+
+public class BubbleGum {
+	public static void main(String args[]) {
+		Scanner sc = new Scanner(System.in);
+		int numberOfTests = sc.nextInt();
+		
+		for (int i=0; i&lt;numberOfTests; i++) {
+			sc.nextLine();
+			
+			String allNames = sc.nextLine();
+			//System.out.println(allNames);
+			
+			
+			String[] names = new String[allNames.length()/2 + 1];
+			
+			fill(names, allNames);
+			
+			String name = sc.next();
+			int n = sc.nextInt();
+			
+			System.out.println(output(names, name, n));
+		}
+		sc.close();
+	}
+	
+	public static void fill(String[] names, String allNames) {
+		int cell = 0;
+		String acc = new String();
+		for (int i = 0; i &lt; allNames.length(); i++) {
+			String currChar = allNames.substring(i, i+1);
+			if (!currChar.equals(&quot; &quot;)) {
+				acc = acc + currChar;
+			}
+			else {
+				names[cell] = acc;
+				//System.out.println(names[cell]);
+				cell++;
+				acc = new String();
+			}	
+		}
+		names[cell] = acc;
+		//System.out.println(names[cell]);
+				
+	}
+	
+	public static String output(String[] names, String name, int n) {
+		int start = 0;
+		for (int i=0; names[i] != null &amp;&amp; i&lt;names.length; i++) {
+			if (names[i].equals(name)) {
+				start = i;
+				break;
+			}
+		}
+		//System.out.println(name + &quot; &quot; + start + &quot; &quot; + n);
+		return iterate(names, start, n);
+	}
+	
+	public static String iterate(String[] names, int start, int n) {
+		//System.out.println(start + &quot; &quot; + n);
+		//System.out.println(names[start+1]);
+		
+		
+		if (n == 1)
+			return names[start];
+		else if (start+1 &lt; names.length &amp;&amp; names[start+1] != null)
+			return iterate(names, start+1, n-1);
+		else return iterate(names, 0, n-1);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

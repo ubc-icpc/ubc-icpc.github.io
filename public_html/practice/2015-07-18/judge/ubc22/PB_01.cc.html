@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, Z, N, NZ, NB, RS, RZ;
+vector&lt;int&gt; M[10005];
+int D[10005];
+bool V[10005];
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; NZ &gt;&gt; NB;
+        memset(D, -1, sizeof D);
+        while (NZ--) {
+            cin &gt;&gt; Z &gt;&gt; N;
+            M[Z] = vector&lt;int&gt;(N);
+            for (int i = 0; i &lt; N; ++i) cin &gt;&gt; M[Z][i];
+        }
+        while (NB--) {
+            cin &gt;&gt; N;
+            while (N--) {
+                cin &gt;&gt; Z;
+                memset(V, 0, sizeof V);
+                queue&lt;pair&lt;int, int&gt; &gt; q;
+                q.push(make_pair(Z, 0));
+                while(!q.empty()) {
+                    int at = q.front().first;
+                    int d = q.front().second;
+                    q.pop();
+                    if (V[at]) continue;
+                    V[at] = true;
+                    for (int i : M[at]) q.push(make_pair(i, d+1));
+                    D[at] = max(D[at], d);
+                }
+            }
+        }
+        RS = 10000000;
+        for (int i = 0; i &lt; 10000; ++i)
+            if (D[i] != -1 &amp;&amp; D[i] &lt; RS) {
+                RS = D[i];
+                RZ = i;
+            }
+        cout &lt;&lt; RS + 1 &lt;&lt; &quot; &quot; &lt;&lt; RZ &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

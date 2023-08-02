@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &quot;bits/stdc++.h&quot;
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+
+string names[100];
+int hp[100];
+int at[100];
+int df[100];
+
+bool canbeat(int i, int j) {
+    int h1 = hp[i];
+    int a1 = at[i];
+    int d1 = df[i];
+    int h2 = hp[j];
+    int a2 = at[j];
+    int d2 = df[j];
+    
+    int dam1 = max(0, a2-d1);
+    int dam2 = max(0, a1-d2);
+    
+    if(dam1 == 0 &amp;&amp; dam2 == 0) return false;
+    if(dam2 == 0) return false;
+    if(dam1 == 0) return true;
+    return (h1+dam1-1)/dam1 &gt; (h2+dam2-1)/dam2;
+}
+
+int main() {
+    int beat[100][100] = {0};
+    int n;
+    cin &gt;&gt; n;
+    
+    for(int i=0; i&lt;n; i++) {
+        string n;
+        int h,a,d;
+        cin &gt;&gt; n &gt;&gt; h &gt;&gt; a &gt;&gt; d;
+        names[i] = n;
+        hp[i] = h;
+        at[i] = a;
+        df[i] = d;
+    }
+    
+    for(int i=0; i&lt;n; i++) {
+        for(int j=0; j&lt;n; j++) {
+            if(i==j) continue;
+            if(canbeat(i,j)) {
+                beat[i][j] = true;
+            }
+        }
+    }
+    
+    vector&lt;vector&lt;int&gt;&gt; res;
+    for(int i=0; i&lt;n; i++) {
+        for(int j=i+1; j&lt;n; j++) {
+            for(int k=j+1; k&lt;n; k++) {
+                if(beat[i][j] &amp;&amp; beat[j][k] &amp;&amp; beat[k][i]) {
+                    vector&lt;int&gt; cur = {i,j,k};
+                    res.push_back(cur);
+                }
+            }
+        }
+    }
+    for(int i=n-1; i&gt;=0; i--) {
+        for(int j=i-1; j&gt;=0; j--) {
+            for(int k=j-1; k&gt;=0; k--) {
+                if(beat[i][j] &amp;&amp; beat[j][k] &amp;&amp; beat[k][i]) {
+                    vector&lt;int&gt; cur = {i,j,k};
+                    res.push_back(cur);
+                }
+            }
+        }
+    }
+    
+    cout &lt;&lt; res.size() &lt;&lt; endl;
+    for(vector&lt;int&gt; r : res) {
+        for(int i : r) {
+            cout &lt;&lt; names[i] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+}
+</code>
+</pre>
+</body>
+</html>

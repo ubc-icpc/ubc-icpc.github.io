@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+#include&lt;queue&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+
+int lattice[105][105];
+int r, c, n, h;
+
+void drop(int a, int b) {
+  int dx[4] = {-1, 0, 1, 0};
+  int dy[4] = {0, 1, 0, -1};
+  queue&lt;pii&gt; q;
+  q.push(make_pair(a,b));
+  while (!q.empty()) {
+    int x = q.front().first; int y = q.front().second;
+    q.pop();
+    lattice[x][y]++;
+    if (lattice[x][y] &gt; h) {
+      lattice[x][y]-=4;
+      for (int i=0; i&lt;4; i++) {
+	if (y+dy[i] &lt; 1 || x+dx[i] &lt; 1 || x+dx[i] &gt; r || y+dy[i] &gt; c) continue;
+	pii p = make_pair(x+dx[i], y+dy[i]);
+	q.push(p);
+      }
+    }
+  }
+}
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    cin &gt;&gt; r &gt;&gt; c &gt;&gt; n &gt;&gt; h;
+    for (int i=1; i&lt;=r; i++) {
+      for (int j=1; j&lt;=c; j++) {
+	char ch; cin &gt;&gt; ch;
+	lattice[i][j] = ch-'0';
+      }
+    }
+    for (int i=0; i&lt;n; i++) {
+      int a, b; cin &gt;&gt; a &gt;&gt; b;
+      drop(a,b);
+    }
+    for (int i=1; i&lt;=r; i++) {
+      for (int j=1; j&lt;=c; j++) {
+	cout &lt;&lt; lattice[i][j];
+      }
+      cout &lt;&lt; '\n';
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

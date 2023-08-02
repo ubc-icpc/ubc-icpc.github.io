@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+map&lt;char, int&gt; MR, MS;
+char S[4];
+int N, res, val[55], LIS[55];
+string I[55];
+
+int lis();
+
+int calc(int order) {
+  for (int i = 0; i &lt; N; ++i) {
+    val[i] = (order &amp; (1 &lt;&lt; MS[I[i][1]]) ? MR[I[i][0]] : 12 - MR[I[i][0]]) + MS[I[i][1]] * 13;
+  }
+  return N - lis();
+}
+
+int lis() {
+  int MAX = 1;
+  LIS[0] = 1;
+  for (int i = 1; i &lt; N; ++i) {
+    LIS[i] = 1;
+    for (int j = 0; j &lt; i; ++j) {
+      if (val[j] &lt; val[i])
+        LIS[i] = max(LIS[i], LIS[j] + 1);
+    }
+    MAX = max(MAX, LIS[i]);
+  }
+  return MAX;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  res = numeric_limits&lt;int&gt;::max();
+
+  for (char c = '2'; c &lt;= '9'; ++c) {
+    MR[c] = c-'2';
+  }
+  MR['T'] = 8;
+  MR['J'] = 9;
+  MR['Q'] = 10;
+  MR['K'] = 11;
+  MR['A'] = 12;
+
+  S[0] = 'c';
+  S[1] = 'd';
+  S[2] = 'h';
+  S[3] = 's';
+
+  cin &gt;&gt; N;
+  for (int i = 0; i &lt; N; ++i) {
+    cin &gt;&gt; I[i];
+  }
+
+  do {
+    for (int i = 0; i &lt; 4; ++i) {
+      MS[S[i]] = i;
+    }
+    for (int i = 0; i &lt; (1 &lt;&lt; 4); ++i) {
+      //cout &lt;&lt; S[0] &lt;&lt; !!(i &amp; (1 &lt;&lt; 0)) &lt;&lt; &quot; &quot; &lt;&lt; S[1] &lt;&lt; !!(i &amp; (1 &lt;&lt; 1)) &lt;&lt; &quot; &quot; &lt;&lt; S[2] &lt;&lt; !!(i &amp; (1 &lt;&lt; 2)) &lt;&lt; &quot; &quot; &lt;&lt; S[3] &lt;&lt; !!(i &amp; (1 &lt;&lt; 3)) &lt;&lt; &quot; &quot; &lt;&lt; calc(i) &lt;&lt; endl;
+      //for (int i = 0; i &lt; N; ++i) {
+      //  cout &lt;&lt; val[i] &lt;&lt; &quot; &quot; ;
+      //}
+      //cout &lt;&lt; endl;
+      res = min(res, calc(i));
+    }
+  } while (next_permutation(S, S + 4));
+
+  cout &lt;&lt; res &lt;&lt; endl;
+
+  return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

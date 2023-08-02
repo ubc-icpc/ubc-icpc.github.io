@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fstream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;math.h&gt;
+
+using namespace std;
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=0;i&lt;n;i++){
+		int usa[3], rus[3];
+		int usum = 0, rsum = 0;
+		for(int j=0;j&lt;3;j++){
+			cin&gt;&gt;usa[j];
+			cout&lt;&lt;usa[j]&lt;&lt;' ';
+			usum+=usa[j];
+		}
+		for(int j=0;j&lt;3;j++){
+			cin&gt;&gt;rus[j];
+			cout&lt;&lt;rus[j];
+			if(j!=2) cout&lt;&lt;' ';
+			rsum+=rus[j];
+		}
+		cout&lt;&lt;endl;
+		bool count=false, color=false;
+		if(usum&gt;rsum) count=true;
+		if(usa[0]&gt;rus[0]) color=true;
+		if((usa[0]==rus[0]) &amp;&amp; (usa[1]&gt;rus[1])) color=true;
+		if((usa[0]==rus[0]) &amp;&amp; (usa[1]==rus[1]) &amp;&amp; (usa[2]&gt;rus[2])) color=true;
+		
+		if(count&amp;&amp;color) cout&lt;&lt;&quot;both&quot;&lt;&lt;endl;
+		else if(count) cout&lt;&lt;&quot;count&quot;&lt;&lt;endl;
+		else if(color) cout&lt;&lt;&quot;color&quot;&lt;&lt;endl;
+		else cout&lt;&lt;&quot;none&quot;&lt;&lt;endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+//ubc~ TEAM 516
+using namespace std;
+
+typedef long long ll;
+long long dp[400005];
+vector&lt;ll&gt; points;
+
+int main() {
+    ll n, k; cin &gt;&gt; n &gt;&gt; k;
+    memset(dp, -1, sizeof(dp));
+    map&lt;ll, vector&lt;ll&gt; &gt; m;    
+    set&lt;ll&gt; s;
+    for(ll i = 0; i &lt; k; i++) {
+        ll x,y; cin &gt;&gt; x &gt;&gt;  y;
+        x--; y--;
+        m[y].push_back(x);
+        s.insert(x);
+        s.insert(y);
+    }
+    for(auto c : s)
+        points.push_back(c);
+    //cout &lt;&lt; &quot;points&quot; &lt;&lt; endl;
+    //for(auto c : points)
+    //    cout &lt;&lt; c &lt;&lt; &quot; &quot;;
+    //cout &lt;&lt; endl;
+    sort(points.begin(), points.end());
+    map&lt;ll, ll&gt; im;
+    for(int i = 0; i &lt; points.size(); i++) {
+        im[points[i]] = i;
+    }
+    for(ll i = 0; i &lt; points.size(); i++) {
+        if(i == 0)
+            dp[i] = points[i] + 1;
+        else    
+            dp[i] = points[i] - points[i-1] + dp[i-1];
+        if(m.count(points[i])) {
+            for(ll j = 0; j &lt; m[points[i]].size(); j++) {
+                if(im[m[points[i]][j]] == 0)
+                    dp[i] = points[0];
+                else
+                    dp[i] = min(dp[i], dp[im[m[points[i]][j]] - 1] - 1 + m[points[i]][j] - points[im[m[points[i]][j]] - 1]);
+//int t = dp[im[m[points[i]][j]] - 1] - 1 + m[points[i]][j] - points[im[m[points[i]][j]] - 1];
+    //cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt;  t &lt;&lt; endl;
+            }
+        }
+    }
+    //cout &lt;&lt; &quot; IM &quot; &lt;&lt; endl;
+    //for(auto c : im) {
+    //    cout &lt;&lt; c.first &lt;&lt; &quot; &quot; &lt;&lt;  c.second &lt;&lt; endl;
+    //}
+    //for(int i = 0; i &lt; points.size(); i++) {
+    //    cout &lt;&lt; &quot;dp: &quot; &lt;&lt; i &lt;&lt; &quot; :&quot; &lt;&lt; dp[i] &lt;&lt; endl;
+    //    cout &lt;&lt; &quot;points[i]:&quot; &lt;&lt; points[i] &lt;&lt; endl;
+    //}
+    cout &lt;&lt; n - 1 - points[points.size()-1] + dp[points.size() - 1] &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

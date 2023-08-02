@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define pb   push_back
+using namespace std;
+#define int ll
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll,ll&gt; pii;
+
+ll N, M, D;
+
+vector&lt;int&gt; adj[110000];
+vector&lt;int&gt; madj[110000];
+
+int par[111111];
+
+int parent(int a){ return (par[a]&lt;0? a:(par[a]=parent(par[a]))); }
+
+bool merge(int a, int b){
+  int x = parent(a), y = parent(b);
+  if (x==y) return false;
+  if (x&gt;y) swap(x,y);
+  par[x]+=par[y];
+  par[y]=x;
+  return true;
+}
+
+
+ll edges[211111], l[211111][2], dep[111111], inmst[211111];
+
+int pp[111111][20], mine[111111][20];
+
+void build(int cn, int p=-1, int pe=-1, int depth = 0){
+  ll msf = mine[cn][0] = pe;
+  dep[cn] = depth;
+  pp[cn][0] = p;
+  for(int i=1;i&lt;17;i++){
+    if (pp[cn][i-1]==-1) break;
+    pp[cn][i] = pp[pp[cn][i-1]][i-1];
+    int minn = mine[pp[cn][i-1]][i-1];
+    if (edges[minn]&gt;edges[msf]) msf=minn;
+    mine[cn][i] = msf;
+  }
+  for(int i:madj[cn]){
+    if (i==pe) continue;
+    int nn = l[i][0];
+    if (nn==cn) nn = l[i][1];
+    build(nn,cn,i,depth+1);
+  }
+}
+
+int query(int a, int b){ //find min edge on path as you find lca
+  if (dep[b]&gt;dep[a]) swap(a,b);// move a to b's depth
+  //cout&lt;&lt; &quot;Query on &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt;endl;
+  ll mi = 211000;
+  for(int i=16;i&gt;=0;i--){
+    if ((dep[a]-dep[b]) &gt;= (1&lt;&lt;i)){
+      //cout &lt;&lt; mine[a][i] &lt;&lt; &quot; edge&quot; &lt;&lt; &quot; &quot; &lt;&lt; mi &lt;&lt;endl;
+      //cout &lt;&lt; &quot;DEEP&quot; &lt;&lt; dep[a] &lt;&lt; &quot; &quot; &lt;&lt;dep[b] &lt;&lt; &quot; &quot; &lt;&lt; (1&lt;&lt;i) &lt;&lt;endl;
+      if (edges[mine[a][i]]&gt;edges[mi]) mi = mine[a][i];
+      a = pp[a][i];
+      //cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt;endl;
+    }
+  }
+  if (a==b) return mi;
+  for(int i=16;i&gt;=0;i--){
+    if (pp[a][i]!= pp[b][i]){
+      if (edges[mine[a][i]]&gt;edges[mi]) mi = mine[a][i];
+      if (edges[mine[b][i]]&gt;edges[mi]) mi = mine[b][i];
+      a = pp[a][i], b = pp[b][i];
+      //cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt;endl;
+    }
+  }
+  if (a!=b){
+    assert(a!=-1); assert(b!=-1);
+    if (a!=-1 &amp;&amp; mine[a][0]!=-1 &amp;&amp; edges[mine[a][0]]&gt;edges[mi]) mi = mine[a][0];
+    if (b!=-1 &amp;&amp; mine[b][0]!=-1 &amp;&amp; edges[mine[b][0]]&gt;edges[mi]) mi = mine[b][0];
+  }
+  return mi;
+}
+
+#undef int
+int main(){
+#define int ll
+  ios_base::sync_with_stdio(false);cin.tie(0);
+  memset(par,-1,sizeof par);
+  edges[211000] = 0;
+  cin &gt;&gt; N &gt;&gt; M &gt;&gt; D;
+  ll a,b,c;
+  vector&lt;pii&gt; es;
+  D*=2;
+  for(int i=0;i&lt;M;i++){
+    cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+    edges[i]= 2*c;
+    if (i&gt;=N-1) edges[i]++;
+    l[i][0] = a;
+    l[i][1] = b;
+    adj[a].pb(i);
+    adj[b].pb(i);
+    es.pb({c,i});
+  }
+  sort(es.begin(),es.end());
+  memset(pp,-1,sizeof pp);
+  memset(mine,-1,sizeof mine);
+  ll mt=0, onst = 0;
+  for(auto p: es){
+    int e = p.second;
+    if (merge(a=l[e][0],b=l[e][1])){
+      //cout &lt;&lt; &quot;INSERT &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt;endl;
+      if (e&lt;N-1) onst++;
+      inmst[e] = 1;
+      mt+=edges[e];
+      madj[a].pb(e);
+      madj[b].pb(e);
+    }
+  }
+  build(1);
+  int mmt = mt;
+  for(int i=0;i&lt;M;i++){
+    if (inmst[i]){
+      ll delta = min(D,edges[i]);
+      if (mt-delta&lt;mmt){
+        mmt = mt-delta;
+      }
+    }
+  }
+  int e;
+  for(int i=0;i&lt;N-1;i++){
+    if (inmst[i])continue;
+    if ((e=query(l[i][0],l[i][1]))&gt;=N-1)
+      if (mmt &gt;= mt-edges[e]+max(0LL,edges[i]-D)) {
+        //cout &lt;&lt; l[i][0] &lt;&lt; &quot; &quot; &lt;&lt; l[i][1] &lt;&lt;endl;
+        //cout &lt;&lt; mmt &lt;&lt; &quot; &quot; &lt;&lt; mt &lt;&lt; &quot; &quot; &lt;&lt; edges[e] &lt;&lt; &quot; &quot; &lt;&lt; D &lt;&lt;endl;
+        onst++;
+        break;
+      }
+  }
+  cout &lt;&lt; N-1-onst &lt;&lt;endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

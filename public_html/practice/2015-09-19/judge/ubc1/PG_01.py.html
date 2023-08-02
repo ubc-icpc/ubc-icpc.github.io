@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+from fractions import Fraction
+
+for line in sys.stdin:
+    if len(line.strip()) == 0: continue
+    a, b = line.strip().split('.')
+    c, d = int(b), 10**len(b)
+    fr = Fraction(c, d)
+    x = fr.denominator
+    while x%2 == 0: x /= 2
+    if x == 1: print 'Exact.'
+    else: print 'Some precision lost.'
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

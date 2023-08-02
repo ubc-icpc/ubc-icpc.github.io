@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class B
+{
+	//inclusive!
+	static int[] min_until;
+	static int[] max_until;
+	static int[] min_after;
+	static int[] max_after;
+	
+	public static void main(String[] args)
+	{
+		//test();
+		Scanner in = new Scanner(System.in);
+		while(in.hasNextLine())
+		{
+			int len = in.nextInt();
+			if (len==1){System.exit(0);}
+			int[] a = new int[len];
+			for (int i = 0; i &lt; len; i++)
+			{
+				a[i] = in.nextInt();
+			}
+			consider_array(len, a);
+			in.nextLine();
+		}
+	}
+	
+	public static void test()
+	{
+		int[] a1 = {1, 2, 4, 3};
+		int[] a2 = {5, 7, 7, 8, 1, 4, 10, 3};
+		consider_array(4, a1);
+		consider_array(8, a2);
+	}
+	
+	public static void consider_array(int len, int[] a)
+	{
+		//TODO:Handle the length 2, 1, or 0 case
+		//
+		if (len == 2){System.out.println(&quot;1&quot;); return;}//1\leq x &lt; 2
+		
+		//init
+		min_until = new int[len];
+		max_until = new int[len];
+		max_after = new int[len];
+		min_after = new int[len];
+		//Calc rightward
+		min_until[0] = a[0];
+		max_until[0] = a[0];
+		for(int i = 1; i &lt; len; i++)
+		{
+			if (a[i] &gt; max_until[i-1]){max_until[i] = a[i];}
+			else{max_until[i] = max_until[i-1];}
+			if (a[i] &lt; min_until[i-1]){min_until[i] = a[i];}
+			else{min_until[i] = min_until[i-1];}
+		}
+		//Calc leftward
+		min_after[len-1] = a[len-1];
+		max_after[len-1] = a[len-1];
+		for(int i = len-2; i &gt; -1; i--)
+		{
+			if (a[i] &gt; max_after[i+1]){max_after[i] = a[i];}
+			else{max_after[i] = max_after[i+1];}
+			if (a[i] &lt; min_after[i+1]){min_after[i] = a[i];}
+			else{min_after[i] = min_after[i+1];}
+		}
+		//What if we split at x?
+		int best_val = Integer.MAX_VALUE;
+		int best_x = -1;
+		for(int x = len-2; x &gt; -1; x--)
+		{
+			int l_val = max_until[x] - min_until[x];
+			int r_val = max_after[x+1] - min_after[x+1];
+			int val = l_val;
+			if (r_val &gt; l_val){val = r_val;}
+			if (val &lt;= best_val)
+			{
+				best_val = val;
+				best_x = x;
+			}
+		}
+		System.out.println(best_x+1); //1-index
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

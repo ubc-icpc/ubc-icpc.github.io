@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;tuple&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+vector&lt;int&gt; adj[10000];
+vector&lt;tuple&lt;int,int,int&gt;&gt; e;
+int v[10000];
+
+void dfs(int start) {
+	v[start] = 0;
+	for (int i=0; i&lt;adj[start].size(); i++) {
+		if (v[adj[start][i]] == -1) {
+			dfs(adj[start][i]);
+			v[start] += v[adj[start][i]] + 1;
+		}
+	}
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		int n; cin &gt;&gt; n;
+		for (int i=0; i&lt;n; i++) {
+			adj[i].clear();
+			v[i] = -1;
+		}
+		for (int i=0; i&lt;n-1; i++) {
+			int a, b, d;
+			cin &gt;&gt; a &gt;&gt; b &gt;&gt; d;
+			adj[a].push_back(b);
+			adj[b].push_back(a);
+			e.push_back(make_tuple(a,b,d));
+		}
+		dfs(0);
+		double total;
+		for (int i=0; i&lt;n-1; i++) {
+			int tmpa = min(v[get&lt;0&gt;(e[i])],v[get&lt;1&gt;(e[i])]);
+			total += get&lt;2&gt;(e[i])*(tmpa+1)*(n-1-tmpa);
+		}
+		cout &lt;&lt; total/(n*(n-1)/2) &lt;&lt; &quot;\n&quot;;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using std::string;
+ 
+static struct IO {
+	char tmp[1 &lt;&lt; 10];
+ 
+	// fast input routines
+	char cur;
+ 
+//#define nextChar() (cur = getc_unlocked(stdin))
+//#define peekChar() (cur)
+	inline char nextChar() { return cur = getc(stdin); }
+	inline char peekChar() { return cur; }
+ 
+	inline operator bool() { return peekChar(); }
+	inline static bool isBlank(char c) { return (c &lt; '-' &amp;&amp; c); }
+	inline bool skipBlanks() { while (isBlank(nextChar())); return peekChar() != 0; }
+ 
+	inline IO&amp; operator &gt;&gt; (char &amp; c) { c = nextChar(); return *this; }
+ 
+	inline IO&amp; operator &gt;&gt; (char * buf) {
+		if (skipBlanks()) {
+			if (peekChar()) {
+				*(buf++) = peekChar();
+				while (!isBlank(nextChar())) *(buf++) = peekChar();
+			} *(buf++) = 0; } return *this; }
+ 
+	inline IO&amp; operator &gt;&gt; (string &amp; s) {
+		if (skipBlanks()) {	s.clear(); s += peekChar();
+			while (!isBlank(nextChar())) s += peekChar(); }
+		return *this; }
+ 
+	inline IO&amp; operator &gt;&gt; (double &amp; d) { if ((*this) &gt;&gt; tmp) sscanf(tmp, &quot;%lf&quot;, &amp;d); return *this;	}
+ 
+#define defineInFor(intType) \
+	inline IO&amp; operator &gt;&gt;(intType &amp; n) { \
+		if (skipBlanks()) { \
+			int sign = +1; \
+			if (peekChar() == '-') { \
+				sign = -1; \
+				n = nextChar() - '0'; \
+			} else \
+				n = peekChar() - '0'; \
+			while (!isBlank(nextChar())) { \
+				n += n + (n &lt;&lt; 3) + peekChar() - 48; \
+			} \
+			n *= sign; \
+		} \
+		return *this; \
+	}
+ 
+defineInFor(int)
+defineInFor(unsigned int)
+defineInFor(long long)
+ 
+	// fast output routines
+ 
+//#define putChar(c) putc_unlocked((c), stdout)
+	inline void putChar(char c) { putc(c, stdout); }
+	inline IO&amp; operator &lt;&lt; (char c) { putChar(c); return *this; }
+	inline IO&amp; operator &lt;&lt; (const char * s) { while (*s) putChar(*s++); return *this; }
+ 
+	inline IO&amp; operator &lt;&lt; (const string &amp; s) { for (int i = 0; i &lt; (int)s.size(); ++i) putChar(s[i]); return *this; }
+ 
+	char * toString(double d) { sprintf(tmp, &quot;%lf%c&quot;, d, '\0'); return tmp; }
+	inline IO&amp; operator &lt;&lt; (double d) { return (*this) &lt;&lt; toString(d); }
+ 
+ 
+#define defineOutFor(intType) \
+	inline char * toString(intType n) { \
+		char * p = (tmp + 30); \
+		if (n) { \
+			bool isNeg = 0; \
+			if (n &lt; 0) isNeg = 1, n = -n; \
+			while (n) \
+				*--p = (n % 10) + '0', n /= 10; \
+			if (isNeg) *--p = '-'; \
+		} else *--p = '0'; \
+		return p; \
+	} \
+	inline IO&amp; operator &lt;&lt; (intType n) { return (*this) &lt;&lt; toString(n); }
+ 
+defineOutFor(int)
+defineOutFor(long long)
+ 
+#define endl ('\n')
+#define cout __io__
+#define cin __io__
+} __io__;
+
+int shoelace(int a[], int b[], int c[]) {
+	return abs(a[0] * (b[1] - c[1])
+		+ b[0] * (c[1] - a[1])
+		+ c[0] * (a[1] - b[1]));
+}
+
+int main() {
+	int n;
+	while (1) {
+		cin &gt;&gt; n;
+		if (n == 0)
+			break;
+		int points[n][2];
+		for (int i = 0; i &lt; n; i++) {
+			int a, b;
+			cin &gt;&gt; a &gt;&gt; b;
+			points[i][0] = a;
+			points[i][1] = b;
+		}
+		int k = shoelace(points[0], points[1], points[2]);
+		int min = k, max = k;
+		for (int i = 0; i &lt; n-2; i++) {
+			for (int j = i+1; j &lt; n-1; j++) {
+				for (int k = j+1; k &lt; n; k++) {
+					int a = shoelace(points[i], points[j], points[k]);
+					if (a &lt; min)
+						min = a;
+					else if (a &gt; max)
+						max = a;
+				}
+			}
+		}
+		printf(&quot;%.1f %.1f\n&quot;, min / 2.0, max / 2.0);
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

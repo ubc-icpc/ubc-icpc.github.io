@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+using namespace std;
+
+int main() {
+  int sum=0;
+  int cnt=0;
+  while(1) {
+    int amt; cin &gt;&gt; amt;
+    cnt++;
+    if (amt==0) break;
+    sum+=amt;
+    if (sum&gt;=50 &amp;&amp; sum&lt;100) {
+      cout &lt;&lt; &quot;Input #&quot; &lt;&lt; cnt &lt;&lt; &quot;: &quot; &lt;&lt; &quot;Sweet!&quot; &lt;&lt; endl;
+      sum-=50;
+    }
+    else if (sum&gt;=100) {
+      int num=sum/50;
+      sum -= (num*50);
+      cout &lt;&lt; &quot;Input #&quot; &lt;&lt; cnt &lt;&lt; &quot;: &quot; &lt;&lt; &quot;Totally Sweet!&quot; &lt;&lt; endl;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

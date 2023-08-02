@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+using namespace std;
+
+int main()
+{
+    int tc;
+    cin&gt;&gt;tc;
+    while(tc--)
+    {
+        int n,i;
+        cin&gt;&gt;n;
+        list&lt;int&gt; l;
+        for(i=0;i&lt;n;i++)
+        {
+            int t;
+            cin&gt;&gt;t;
+            l.push_back(t);
+        }
+        long long s=0;
+        while(1)
+        {
+            list&lt;int&gt;::iterator it1,it2;
+            it1=l.begin();it2=l.begin();it2++;
+            while(it2!=l.end()&amp;&amp;*it1&lt;=*it2)it1++,it2++;
+            if(it2==l.end())break;
+            list&lt;int&gt;::iterator it3,it4;
+            long long ts=1;int last=-1,k=2,fl=0;
+            for(it3=l.begin();*it3&lt;*it2;it3++)
+            {
+                if(*it3==last)k++;
+                else
+                {
+                    if(fl){
+                    ts*=k;
+                    k=2;}
+                    fl=1;
+                }
+                last=*it3;
+            }
+            if(it3!=l.begin())ts*=k;
+            last=*it2;
+            l.erase(it2);
+            l.insert(it3,last);
+            s+=ts;
+        }
+        cout&lt;&lt;s&lt;&lt;endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+int T, K, N, top = 1;
+ll dp[10005];
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  dp[1] = 2;
+
+  cin &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; K &gt;&gt; N;
+    while (N &gt; top) {
+      ++top;
+      dp[top] = dp[top - 1];
+      for (int i = 1; i &lt; top; ++i) {
+        if (__gcd(i, top) == 1) {
+          dp[top] += 1;
+        }
+      }
+    }
+    cout &lt;&lt; K &lt;&lt; &quot; &quot; &lt;&lt; dp[N] &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

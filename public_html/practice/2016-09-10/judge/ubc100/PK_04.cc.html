@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;cstring&gt;
+#include&lt;set&gt;
+#include&lt;algorithm&gt;
+
+#define pii pair&lt;int,int&gt;
+
+using namespace std;
+
+// struct edge {
+//     int cost, node;  
+// };
+const int infinity = 100000000;
+int n,m,l,air;
+vector&lt;pii&gt; adj[10000];
+int ls[10];
+int res[10000][10000];
+bool seen[10000];
+
+
+int dist[10000];
+struct cmp {
+    bool operator()(const int&amp; u, const int&amp; v) {
+        if ( dist[u] == dist[v] ) return u &lt; v;
+        else return dist[u] &lt; dist[v];
+    }
+};
+void dijkstra( int s ) {
+    for ( int v=0; v&lt;n; v++ ) {
+	dist[v] = infinity;
+	res[s][v] = infinity;
+    }
+    dist[s] = 0;
+    res[s][s] = 0;
+    set&lt;int, cmp&gt; q;
+    q.insert(s);
+    while ( !q.empty() ) {
+        int v = *q.begin();
+        q.erase(q.begin());
+        for ( pii x: adj[v] ) {//each edge e = (v, u) leaving v ) {
+	    int u = x.first;
+            if ( x.second + dist[v]&lt; dist[u] ) {
+                q.erase(u);
+                dist[u] = dist[v] + x.second;
+		res[s][u] = dist[v] + x.second;
+                q.insert(u);
+            }
+        }
+    }
+}
+
+bool recur(int bm, vector&lt;int&gt; &amp;vec) {
+	if(bm == 0) {
+		int cost = 0;
+		cost += res[0][vec[0]];
+		cost += res[vec[vec.size()-1]][0];
+		for(int i=0; i&lt;vec.size()-1; i++) {
+			cost+= res[vec[i]][vec[i+1]];
+		}
+		if(cost &lt;= air) {
+			return true;
+		}
+		else return false;
+	}
+	for(int i=0; i&lt;l; i++) {
+		if(bm &amp; (1&lt;&lt;i)) {
+			vec.push_back(ls[i]);
+			if(recur(bm &amp; ~(1&lt;&lt;i), vec)) {
+				return true;
+			}
+			vec.pop_back();
+		}
+	}
+	return false;
+}
+
+bool ok(int bm) {
+	vector&lt;int&gt; vec;
+	return recur(bm, vec);
+}
+
+
+int main(void) {
+    int T; cin &gt;&gt; T;
+    
+    while(T--) {
+        cin &gt;&gt; n &gt;&gt; m;
+        for(int i=0; i&lt;n; i++) {
+            adj[i].clear();
+        }
+        for(int i=0; i&lt;m; i++) {
+            int u,v,c; cin &gt;&gt; u &gt;&gt; v &gt;&gt; c;
+            adj[u].push_back({v,c});
+            adj[v].push_back({u,c});
+        }
+        cin &gt;&gt; l;
+        for(int i=0; i&lt;l; i++) cin &gt;&gt; ls[i];
+        cin &gt;&gt; air;
+	dijkstra(0);
+        for(int i=0; i&lt;l; i++) {
+       	    memset(seen, 0, sizeof seen);
+	    dijkstra(ls[i]);
+	}
+/*
+	for(int i=0; i&lt;l; i++) {
+		for(int j=0; j&lt;n; j++) {
+			cout &lt;&lt; res[i][j] &lt;&lt; &quot; &quot;;
+		} cout &lt;&lt; endl;
+	}
+I*/
+	int ans = 0;
+	for(int i=1; i&lt;(1&lt;&lt;l); i++) {
+		if(ok(i)) {
+			ans = max(ans, __builtin_popcount(i));
+		}
+	}
+	cout &lt;&lt; ans &lt;&lt; endl;
+    }
+    
+    return 0;
+} 
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

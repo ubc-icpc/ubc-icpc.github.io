@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+const int maxn = 1&lt;&lt;18;
+int seg[2*maxn];
+
+int nums[100005], sorted[100005];
+
+void add(int num, int val)
+{
+	num += maxn;
+	while (num &gt; 0)
+	{
+		seg[num] += val;
+		num &gt;&gt;= 1;
+	}
+}
+
+int get(int num)
+{
+	num += maxn;
+	int ans = seg[num];
+	while (num &gt; 0)
+	{
+		if (num&amp;1)
+			ans += seg[num&amp;(~1)];
+		num &gt;&gt;= 1;
+	}
+	return ans;
+}
+
+
+int main()
+{
+	int N;
+	cin &gt;&gt; N;
+	for (int i = 0; i &lt; N; ++i)
+	{
+		cin &gt;&gt; nums[i];
+		sorted[i] = nums[i];
+	}	
+	sort(sorted, sorted + N);
+
+	for (int i = 0; i &lt; N; ++i)
+		add(i, 1);
+
+	int count = 0;
+	int numLeft = N;
+	for (int i = 0; i &lt; N; ++i, --numLeft)
+	{
+		// Correct!
+		int pos = lower_bound(sorted, sorted + N, nums[i]) - sorted;
+
+		int num_is_below = get(pos);
+		int num_expected_underneath = N - pos - 1;
+		int right = numLeft - num_is_below;
+		int left = num_expected_underneath - right;
+
+		if (left * 2 &lt; right || right * 2 &lt; left)
+			++count;
+		add(pos, -1);
+	}
+	cout &lt;&lt; count &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

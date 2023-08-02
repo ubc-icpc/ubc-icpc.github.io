@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+typedef long long ll;
+
+vector&lt;int&gt; tree1[10000];
+vector&lt;int&gt; tree2[10000];
+char style1[10000];
+char style2[10000];
+
+map&lt;ll, int&gt; map1;
+
+ll prime = 107;
+ll primemod = 1000000009LL;
+
+ll powcache[1000000];
+char blah[1000000];
+
+void addchar(ll &amp;hsh, char c, char * str, int &amp;len) {
+	str[len] = c;
+	hsh = (hsh * prime + (int)c) % primemod;
+	len++;
+}
+
+void addhsh(ll &amp;hsh, ll hsh2, int diff) {
+	hsh = (((hsh * powcache[diff]) % primemod) + hsh2) % primemod;
+}
+
+ll dfs1(int v, char * str, int &amp;len, int &amp;sz) {
+	int start = len; ll hsh = 0;
+
+	// add this node
+	addchar(hsh, style1[v], str, len);
+
+	int size = 1;
+	for (int i = 0; i &lt; tree1[v].size(); i++) {
+		// start subtree
+		addchar(hsh, '(', str, len);
+
+		// dfs on subtree - get hash, string, size
+		int tmplen = len;
+		ll hsh2 = dfs1(tree1[v][i], str, len, size);
+
+		// update hash
+		addhsh(hsh, hsh2, len - tmplen);
+
+		// end subtree
+		addchar(hsh, ')', str, len);
+	}
+
+	// store hash
+	map1[hsh] = size;
+
+	// return subtree size
+	sz += size;
+
+	// return hash
+	return hsh;
+}
+
+ll dfs2(int v, char * str, int &amp;len, int &amp;best) {
+	int start = len; ll hsh = 0;
+
+	// add this node
+	addchar(hsh, style2[v], str, len);
+
+	for (int i = 0; i &lt; tree2[v].size(); i++) {
+		// start subtree
+		addchar(hsh, '(', str, len);
+
+		// dfs on subtree - get hash, string, best
+		int tmplen = len;
+		ll hsh2 = dfs2(tree2[v][i], str, len, best);
+
+		// update hash
+		addhsh(hsh, hsh2, len - tmplen);
+
+		// end subtree
+		addchar(hsh, ')', str, len);
+	}
+
+	// if hash occurs in tree1, we found match, update best
+	if (map1.count(hsh) &gt; 0) best = max(best, map1[hsh]);
+
+	// return hash
+	return hsh;
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+
+	// precompute powers for hashing
+	powcache[0] = 1;
+	for (int i = 1; i &lt; 50000; i++) {
+		powcache[i] = (powcache[i-1] * prime) % primemod;
+	}
+
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		int m, n; cin &gt;&gt; m &gt;&gt; n;
+
+		// clear trees
+		for (int i = 0; i &lt; m; i++) {
+			tree1[i].resize(0);
+		}
+		for (int i = 0; i &lt; n; i++) {
+			tree2[i].resize(0);
+		}
+
+		// construct tree
+		for (int i = 0; i &lt; m; i++) {
+			char style; int parent; cin &gt;&gt; style &gt;&gt; parent;
+			style1[i] = style;
+			if (parent &gt;= 0) {
+				tree1[parent].push_back(i);
+			}
+		}
+		for (int i = 0; i &lt; n; i++) {
+			char style; int parent; cin &gt;&gt; style &gt;&gt; parent;
+			style2[i] = style;
+			if (parent &gt;= 0) {
+				tree2[parent].push_back(i);
+			}
+		}
+
+		// hash first tree
+		map1.clear();
+		int len = 0, sz = 0;
+		dfs1(0, blah, len, sz);
+
+		// check second tree
+		int best = 0;
+		len = 0;
+		dfs2(0, blah, len, best);
+		cout &lt;&lt; best &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

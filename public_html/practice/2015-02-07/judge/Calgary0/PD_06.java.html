@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class D {
+
+	private void work() {
+
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+
+		int MAX_N = 128;
+
+		int[][] adj = new int[MAX_N][MAX_N];
+		int[] cnt = new int[MAX_N];
+		int[] deg = new int[MAX_N];
+		int[] col = new int[MAX_N];
+
+		int[] q = new int[MAX_N];
+		int qs, qe;
+
+		PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;Integer&gt;(MAX_N,
+				Collections.reverseOrder());
+
+		while (true) {
+			int n = sc.nextInt();
+			if (n == 1)
+				break;
+			int m = sc.nextInt();
+			Arrays.fill(deg, 0);
+			Arrays.fill(cnt, 0);
+			while (m-- &gt; 0) {
+				int u = sc.nextInt() - 1;
+				int v = sc.nextInt() - 1;
+				int k = sc.nextInt() &amp; 1;
+				adj[u][cnt[u]++] = v;
+				adj[v][cnt[v]++] = u;
+				deg[u] += k;
+				deg[v] += k;
+			}
+
+			Arrays.fill(col, 0);
+			int comp = 0;
+			for (int i = 0; i &lt; n; i++) {
+				if (col[i] == 0) {
+					col[i] = ++comp;
+					qs = qe = 0;
+					q[qe++] = i;
+					while (qs &lt; qe) {
+						int u = q[qs++];
+						for (int j = 0; j &lt; cnt[u]; j++) {
+							int v = adj[u][j];
+							if (col[v] == 0) {
+								col[v] = comp;
+								q[qe++] = v;
+							}
+						}
+					}
+					// do not connect isolated nodes?
+					if (qe == 1) {
+						col[i] = -1;
+						comp--;
+					}
+				}
+			}
+
+			int oddTotal = 0;
+			int[] odd = new int[comp];
+			for (int i = 0; i &lt; n; i++) {
+				if (col[i] &gt; 0 &amp;&amp; (deg[i] &amp; 1) != 0) {
+					odd[col[i] - 1]++;
+					oddTotal++;
+				}
+			}
+
+			int res = oddTotal / 2;
+			if (comp &gt; 1) {
+				pq.clear();
+				for (int i = 0; i &lt; comp; i++) {
+					pq.add(odd[i]);
+				}
+				res = 0;
+				// System.out.println(pq);
+				while (pq.size() &gt; 1) {
+					int comp0 = pq.poll();
+					int comp1 = pq.poll();
+					if (comp1 == 0) {
+						if (comp0 &gt;= 2) {
+							if (!pq.isEmpty()) {
+								res += 3;
+								oddTotal -= 2;
+								pq.poll();
+								pq.add(comp0 - 2);
+							} else {
+								res += 2;
+								oddTotal -= 2;
+								pq.poll();
+								pq.add(comp0 - 2);
+							}
+						} else {
+							pq.add(comp0);
+							pq.add(comp1);
+							break;
+						}
+					} else {
+						res++;
+						oddTotal -= 2;
+						pq.add(comp0 + comp1 - 2);
+					}
+					// System.out.println(pq);
+				}
+				// System.out.println();
+				res += oddTotal / 2;
+				if (pq.size() &gt; 1)
+					res += pq.size();
+			}
+			System.out.println(res);
+		}
+
+		System.out.close();
+		sc.close();
+	}
+
+	public static void main(String[] args) {
+		D ddd = new D();
+		ddd.work();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct Node
+{
+    Node *win, *lose;
+    long long num, denom;
+    int mod;
+
+	int wins, losses;
+
+	Node() : num(1), denom(1), mod(0), wins(0), losses(0)
+	{
+        win = nullptr;
+        lose = nullptr;
+	}
+	~Node()
+	{
+		if (win)
+		{
+			delete win;
+			win = nullptr;
+		}
+		if (lose)
+		{
+			delete lose;
+			lose = nullptr;
+		}
+	}
+
+	void recurse(int w, int l, int opp, int base)
+	{
+		if (wins &gt; 3 || losses &gt; 3) return;
+
+		win = new Node();
+		win-&gt;num = num * (base + mod);
+		win-&gt;denom = denom * (base + mod + opp);
+		win-&gt;mod = w;
+		win-&gt;wins = wins + 1;
+		win-&gt;losses = losses;
+		win-&gt;recurse(w, l, opp, base);
+
+		lose = new Node();
+		lose-&gt;num = num * (opp);
+		lose-&gt;denom = denom * (base + mod + opp);
+		lose-&gt;mod = l;
+		lose-&gt;wins = wins;
+		lose-&gt;losses = losses + 1;
+		lose-&gt;recurse(w, l, opp, base);
+	}
+
+	void count(long double&amp; prob)
+	{
+		if (wins &gt; 3)
+		{
+			prob += (long double) num / (long double) denom;
+			return;
+		}
+		if (losses &gt; 3)
+		{
+			return;
+		}
+
+		win-&gt;count(prob);
+		lose-&gt;count(prob);
+	}
+};
+
+
+int main()
+{
+	int t; cin &gt;&gt; t;
+	for (int i = 0; i &lt; t; i++)
+	{
+		string s;
+		getline(cin, s);
+        getline(cin, s);
+        int w, l, opp, base = 20;
+		cin &gt;&gt; opp &gt;&gt; w &gt;&gt; l;
+		l = -l;
+        
+		Node* root = new Node();
+		root-&gt;recurse(w, l, opp, base);
+
+		long double total = 0;
+		root-&gt;count(total);
+
+		cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; total &lt;&lt; endl;
+        delete root;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

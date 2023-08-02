@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class F {
+
+	private void work() {
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+
+		int[] a = new int[64];
+		left = new int[64];
+		right = new int[64];
+		memo = new int[2][64][64];
+
+		while (sc.hasNext()) {
+			int n = sc.nextInt();
+			for (int i = 0; i &lt; n; i++) {
+				a[i] = sc.nextInt();
+			}
+			int start = sc.nextInt();
+			Arrays.sort(a, 0, n);
+			int i = 0;
+			while (i &lt; n &amp;&amp; a[i] &lt; start) {
+				i++;
+			}
+			LN = 0;
+			for (int j = i - 1; j &gt;= 0; j--) {
+				left[LN++] = start - a[j];
+			}
+			RN = 0;
+			for (int j = i; j &lt; n; j++) {
+				right[RN++] = a[j] - start;
+			}
+			for (int j = 0; j &lt;= LN; j++) {
+				for (int k = 0; k &lt;= RN; k++) {
+					memo[0][j][k] = memo[1][j][k] = -1;
+				}
+			}
+			int res = oo;
+			if (LN &gt; 0) {
+				res = 1 + left[0] * (n + 1) + go(LEFT, 0, 0, n - 1);
+			}
+			if (RN &gt; 0) {
+				int t = 1 + right[0] * (n + 1) + go(RIGHT, 0, 0, n - 1);
+				if (res &gt; t)
+					res = t;
+			}
+			System.out.println(res);
+		}
+
+		sc.close();
+	}
+
+	private int LN, RN, LEFT = 0, RIGHT = 1, oo = Integer.MAX_VALUE / 4;
+	private int[] left, right;
+	private int[][][] memo;
+
+	private int go(int lor, int curLeft, int curRight, int n) {
+		if (n == 0)
+			return 0;
+		if (memo[lor][curLeft][curRight] &gt;= 0)
+			return memo[lor][curLeft][curRight];
+		int ret = oo;
+		if (lor == LEFT) {
+			if (curLeft &lt; LN - 1) {
+				int t = 1 + (left[curLeft + 1] - left[curLeft]) * (n + 1)
+						+ go(LEFT, curLeft + 1, curRight, n - 1);
+				if (t &lt; ret)
+					ret = t;
+			}
+			if (curLeft &lt; LN &amp;&amp; curRight &lt; RN) {
+				int t = 1 + (left[curLeft] + right[curRight]) * (n + 1)
+						+ go(RIGHT, curLeft + 1, curRight, n - 1);
+				if (t &lt; ret)
+					ret = t;
+			}
+		} else {
+			if (curRight &lt; RN - 1) {
+				int t = 1 + (right[curRight + 1] - right[curRight]) * (n + 1)
+						+ go(RIGHT, curLeft, curRight + 1, n - 1);
+				if (t &lt; ret)
+					ret = t;
+			}
+			if (curLeft &lt; LN &amp;&amp; curRight &lt; RN) {
+				int t = 1 + (left[curLeft] + right[curRight]) * (n + 1)
+						+ go(LEFT, curLeft, curRight + 1, n - 1);
+				if (t &lt; ret)
+					ret = t;
+			}
+		}
+		return memo[lor][curLeft][curRight] = ret;
+	}
+
+	public static void main(String[] args) {
+		F ccc = new F();
+		ccc.work();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

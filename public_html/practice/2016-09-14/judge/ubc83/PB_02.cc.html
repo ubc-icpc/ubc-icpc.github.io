@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+long long factorial(int max, int min) {
+	long long ans = 1;
+	for(int i = min; i &lt;= max; i++) {
+		ans *= i;
+	}
+	return ans;
+}
+
+long long calculate(int lSteps, int sSteps) {
+	int totalSteps = lSteps + sSteps;
+	long long ans = 1;
+	int idx = 2;
+	for(int i = max(lSteps, sSteps) + 1; i &lt;= lSteps + sSteps; i++) {
+		ans *= i;
+		while(ans % idx == 0 &amp;&amp; idx &lt;= min(lSteps, sSteps)) {
+			ans /= idx;
+			idx++;
+		}
+	}
+	return ans;
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int P; cin &gt;&gt; P;
+	while(P--) {
+		int K; cin &gt;&gt; K;
+		int s; cin &gt;&gt; s;
+
+		cout &lt;&lt; K &lt;&lt; &quot; &quot;;
+
+		if(s%2 == 1) {
+			cout &lt;&lt; 0 &lt;&lt; endl;
+			continue;
+		}
+		long long total = 0;
+
+		for(int i = 4; i &lt;= s; i += 4) {
+			if((i / 4) &lt; (s - i) / 2) continue;
+
+			total += calculate(i / 4, (s-i) / 2) * calculate(i / 4, (s-i) / 2);
+		}
+
+		cout &lt;&lt; total &lt;&lt; endl;
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

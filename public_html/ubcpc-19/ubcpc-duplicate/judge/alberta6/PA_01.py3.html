@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">what = input()
+shift = int(input())
+
+text = input()
+newText = &quot;&quot;
+
+if what == &quot;E&quot;:
+	for char in text:
+		if(ord(char) + shift &gt; ord('z')):
+			newText += chr(ord(char) + (shift - 26))
+		else:
+			newText += chr(ord(char) + shift)
+
+else:
+	for char in text:
+		if(ord(char) - shift &lt; ord('a')):
+			newText += chr(ord(char) - shift + 26)
+		else:
+			newText += chr(ord(char) - shift)
+
+print(newText)</code>
+</pre>
+</body>
+</html>

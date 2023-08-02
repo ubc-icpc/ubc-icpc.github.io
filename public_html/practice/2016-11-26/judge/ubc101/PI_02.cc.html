@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+using namespace std;
+int main()
+{
+	string a;
+	cin&gt;&gt;a;
+	int n = a.length();
+	vector&lt;int&gt; mumkun;
+	mumkun.push_back(1);
+	int kok = sqrt(n);
+	for(int i=2; i&lt;=kok; i++)
+	{
+		if(!(n%i))
+		{
+			mumkun.push_back(i);
+				mumkun.push_back(n/i);
+		}
+	}
+	int min = n;
+	for(int i=0; i&lt;mumkun.size(); i++)
+	{
+		int nece = mumkun[i];
+		bool John = true;
+	//	cout&lt;&lt;nece&lt;&lt;endl;
+		for(int j=nece; j&lt;n; j+=nece)
+		{
+			int yoxlanasi = j-nece;
+			int bir = yoxlanasi ;
+			int iki = j+1;
+			for(int x=0; x&lt;nece; x++)
+			{
+			    if(iki==j+nece)
+			    {
+			    	iki = j;
+				}
+				if(a[bir]!=a[iki])
+				{
+	//				cout&lt;&lt;a[bir]&lt;&lt;&quot; &quot;&lt;&lt;a[iki]&lt;&lt;&quot; &quot;&lt;&lt;bir&lt;&lt;&quot; &quot;&lt;&lt;iki&lt;&lt;endl;
+					John=false;
+				}
+				++bir;
+				++iki;
+			}
+		}
+		if(John &amp;&amp; nece&lt;min)
+		{
+			min = nece;
+		}
+	}
+	cout&lt;&lt;min;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

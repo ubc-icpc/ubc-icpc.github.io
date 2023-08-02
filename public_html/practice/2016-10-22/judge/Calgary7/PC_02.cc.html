@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;functional&gt;
+#include &lt;algorithm&gt;
+#include &lt;fstream&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;unordered_set&gt;
+#include &lt;unordered_map&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;string&gt;
+#include &lt;bitset&gt;
+#include &lt;cassert&gt;
+#include &lt;sstream&gt;
+
+using namespace std;
+
+int f(char c) {
+	if (c == 'T') return 10;
+	if (c == 'J') return 11;
+	if (c == 'Q') return 12;
+	if (c == 'K') return 13;
+	if (c == 'A') return 14;
+	return c - '0';
+}
+
+int LIS(const vector&lt;int&gt;&amp; vec) {
+	vector&lt;int&gt; tail;
+	for (int i = 0; i &lt; vec.size(); i++) {
+		auto it = lower_bound(tail.begin(), tail.end(), vec[i]);
+		if (it == tail.end()) tail.push_back(vec[i]);
+		else *it = vec[i];
+	}
+	return tail.size();
+}
+
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	vector&lt;string&gt; cards(n);
+	for (int i = 0; i &lt; n; i++) {
+		string s; cin &gt;&gt; s;
+		cards[i] = s;
+	}
+	/*
+	vector&lt;string&gt; res = { &quot;As&quot;, &quot;2s&quot;, &quot;9d&quot;, &quot;Jd&quot;, &quot;Qd&quot;, &quot;2c&quot;, &quot;8h&quot; };
+	unordered_map&lt;string, int&gt; idx;
+	for (int i = 0; i &lt; res.size(); i++)
+	idx[res[i]] = i;
+	vector&lt;int&gt; V;
+	for (string s : cards) V.push_back(idx[s]);
+	cout &lt;&lt; LIS(V) &lt;&lt; endl;
+	*/
+	int ans = 100;
+	for (int i = 0; i &lt; (1 &lt;&lt; 4); i++) {
+		vector&lt;char&gt; suits = { 'c', 'd', 'h', 's' };
+		do {
+			unordered_map&lt;char, vector&lt;string&gt;&gt; mp;
+			for (string s : cards) {
+				mp[s[1]].push_back(s);
+			}
+			for (int j = 0; j &lt; 4; j++) {
+				if ((1 &lt;&lt; j) &amp; i) {
+					//ascending
+					sort(mp[suits[j]].begin(), mp[suits[j]].end(), [](string a, string b) {
+						return f(a[0]) &lt; f(b[0]);
+					});
+				}
+				else {
+					//descending
+					sort(mp[suits[j]].begin(), mp[suits[j]].end(), [](string a, string b) {
+						return f(a[0]) &gt; f(b[0]);
+					});
+				}
+			}
+			vector&lt;string&gt; res;
+			for (char c : suits) res.insert(res.end(), mp[c].begin(), mp[c].end());
+			unordered_map&lt;string, int&gt; idx;
+			for (int i = 0; i &lt; res.size(); i++)
+				idx[res[i]] = i;
+			vector&lt;int&gt; V;
+			for (string s : cards) V.push_back(idx[s]);
+			ans = min(ans, n - LIS(V));
+		} while (next_permutation(suits.begin(), suits.end()));
+	}
+	cout &lt;&lt; ans &lt;&lt; endl;
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

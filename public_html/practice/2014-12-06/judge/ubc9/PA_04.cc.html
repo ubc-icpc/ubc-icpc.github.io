@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+
+int main()
+{
+	struct comp
+	{
+		std::string name;
+		int R;
+		int S;
+		int D;
+	};
+
+	comp max1;
+	comp max2;
+	int maxVal1 = 0;
+	int maxVal2 = 0;
+
+	int n;
+	int R;
+	int S;
+	int D;
+	std::string name;
+
+	std::cin &gt;&gt; n;
+	std::vector&lt;comp&gt; v(n);
+
+	for (int i = 0; i &lt; n; i++)
+	{
+		std::cin &gt;&gt; name;
+		std::cin &gt;&gt; R;
+		std::cin &gt;&gt; S;
+		std::cin &gt;&gt; D;
+
+		v[i].name = name;
+		v[i].D = D;
+		v[i].R = R;
+		v[i].S = S;
+	}
+
+	for (int i = 0; i &lt; n; i++)
+	{
+		int temp = v[i].D + 2 * v[i].R + 3 * v[i].S;
+		if (temp &gt; maxVal1)
+		{
+			maxVal2 = maxVal1;
+			max2 = max1;
+			maxVal1 = temp;
+			max1 = v[i];
+		}
+		else if (temp &gt; maxVal2)
+		{
+			maxVal2 = temp;
+			max2 = v[i];
+		}
+	}
+
+	if (max1.name != max2.name || max1.D != max2.D || max1.R != max2.R || max1.S != max2.S)
+	{
+		if (maxVal1 != maxVal2)
+		{
+			std::cout &lt;&lt; max1.name &lt;&lt; std::endl;
+			std::cout &lt;&lt; max2.name;
+		}
+		else
+		{
+			if (std::string(max1.name) &lt; std::string(max2.name))
+			{
+				std::cout &lt;&lt; max1.name &lt;&lt; std::endl;
+				std::cout &lt;&lt; max2.name;
+			}
+			else
+			{
+				std::cout &lt;&lt; max2.name &lt;&lt; std::endl;
+				std::cout &lt;&lt; max1.name;
+			}
+		}
+
+	}
+	else
+	{
+		std::cout &lt;&lt; max1.name;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

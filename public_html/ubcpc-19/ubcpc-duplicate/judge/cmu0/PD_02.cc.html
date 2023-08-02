@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+const ll INF = (1e15);
+
+int N, J;
+ll jL[4005], jR[4005];
+ll dpL[4005], dpR[4005]; // dpL[l] : [X - - - - - -] with l -'s
+
+ll dist0[10000];
+ll* dist = dist0 + 5000;
+vector&lt;int&gt; Q[10005];
+bool vis0[10000];
+bool* vis = vis0 + 5000;
+
+int main()
+{
+	cin &gt;&gt; N &gt;&gt; J;
+	for (int i = 0; i &lt; 4005; i++) jL[i] = jR[i] = dpL[i] = dpR[i] = INF;
+	for (int i = 1; i &lt;= J; i++) cin &gt;&gt; jR[i];
+	for (int i = 1; i &lt;= J; i++) cin &gt;&gt; jL[i];
+	dpL[0] = dpR[0] = 0;
+
+	for (int i = 0; i &lt; 10000; i++) dist0[i] = INF;
+	Q[0].push_back(0);
+
+	for (int c = 0; c &lt;= 10000; )
+	{
+		while (Q[c].empty() &amp;&amp; c &lt; 10000) c++;
+		if (c == 10000) break;
+		int v = Q[c].back();
+		Q[c].pop_back();
+		if (vis[v]) continue;
+		vis[v] = true;
+		//cout &lt;&lt; v &lt;&lt; endl;
+		if (v &gt; 0) jR[v] = c;
+		else jL[-v] = c;
+
+		for (int l = 1; l &lt;= J; l++)
+		{
+			int v2 = v - l;
+			ll cost = c + jL[l];
+			if (-J &lt;= v2 &amp;&amp; v2 &lt;= J &amp;&amp; cost &lt;= 10000)
+				Q[cost].push_back(v2);
+		}
+		for (int r = 1; r &lt;= J; r++)
+		{
+			int v2 = v + r;
+			ll cost = c + jR[r];
+			if (-J &lt;= v2 &amp;&amp; v2 &lt;= J &amp;&amp; cost &lt;= 10000)
+				Q[cost].push_back(v2);
+		}
+	}
+	//for (int i = 1; i &lt;= J; i++)
+		//cout &lt;&lt; jL
+	//return 0;
+
+	for (int l = 1; l &lt;= N; l++) 
+	{
+		// start at left and jump right by i: dpL
+		for (int i = 1; i &lt;= l; i++)
+			dpL[l] = min(dpL[l], jR[i] + max(dpR[i - 1], dpL[l - i]));
+		// start at right and jump left by i: dpR
+		for (int i = 1; i &lt;= l; i++)
+			dpR[l] = min(dpR[l], jL[i] + max(dpL[i - 1], dpR[l - i]));
+	}
+
+	cout &lt;&lt; dpL[N - 1] &lt;&lt; endl;
+}
+</code>
+</pre>
+</body>
+</html>

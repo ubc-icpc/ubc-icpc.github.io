@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int m, n, r, rr, cc;
+int g[636][636];
+int v[636][636];
+int casenum;
+
+int dir[4][2] = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
+char eng[4] = {'E', 'N', 'W', 'S'};
+
+int getDistance(int row, int col, int d, int count) {
+  if (v[row][col] || g[row][col]) {
+		v[row][col] = 0;
+    return count;
+  }
+  v[row][col] = 1;
+  int cc = 1;
+  int rp = row + dir[d][0];
+  int cp = col + dir[d][1];
+  if (rp &gt;= 0 &amp;&amp; cp &gt;= 0 &amp;&amp; rp &lt; m &amp;&amp; cp &lt; n &amp;&amp; !v[rp][cp] &amp;&amp; !g[rp][cp]) {
+    int dd = getDistance(rp, cp, d, count + 1);
+		v[row][col] = 0;
+    return 1 + dd;
+  } else {
+    for (int i = 1; i &lt; 4; i += 2) {
+      rp = row + dir[(d + i) &amp; 3][0];
+      cp = col + dir[(d + i) &amp; 3][1];
+      if (rp &gt;= 0 &amp;&amp; cp &gt;= 0 &amp;&amp; rp &lt; m &amp;&amp; cp &lt; n &amp;&amp; !v[rp][cp] &amp;&amp; !g[rp][cp]) {
+        cc = max(cc, 1 + getDistance(rp, cp, (d + i) &amp; 3, count + 1));
+      }
+    }
+  }
+  v[row][col] = 0;
+  return cc;
+}
+
+int wrapper(int row, int col, int d, int count) {
+	int rp = row + dir[d][0];
+  int cp = col + dir[d][1];
+  if (rp &gt;= 0 &amp;&amp; cp &gt;= 0 &amp;&amp; rp &lt; m &amp;&amp; cp &lt; n &amp;&amp; !v[rp][cp] &amp;&amp; !g[rp][cp]) {
+		return getDistance(row, col, d, count);
+	}
+	return -1;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  while (cin &gt;&gt; m &gt;&gt; n &amp;&amp; m + n &gt; 0) {
+    cin &gt;&gt; r;
+		memset(g, 0, sizeof (v));
+		memset(v, 0, sizeof (v));
+		for (int i = 0; i &lt; r; i++) {
+      cin &gt;&gt; rr &gt;&gt; cc;
+      g[rr][cc] = 1;
+    }
+
+    int mmax = 0;
+    int tmax = 0;
+    int dmax = 0;
+    int jmax = 0;
+    int imax = 0;
+    for (int j = 0; j &lt; m; j++) {
+      for (int i = 0; i &lt; n; i++) {
+        if (g[j][i] != 1) { 
+					memset(v, 0, sizeof (v));
+          for (int d = 0; d &lt; 4; d++) {
+            tmax = wrapper(j, i, d, 0);
+            if (tmax &gt; mmax) {
+              mmax = tmax;
+              dmax = d;
+              jmax = j;
+              imax = i;
+            }
+          }
+        }
+      }
+    }
+outtahere:
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++casenum &lt;&lt; &quot;: &quot; &lt;&lt; mmax &lt;&lt; ' ' &lt;&lt; jmax &lt;&lt; ' ' &lt;&lt; imax &lt;&lt; ' ' &lt;&lt; eng[dmax] &lt;&lt; '\n';
+    
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

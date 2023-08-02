@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+def sum_positive(n):
+    return (n*(n+1))/2
+
+def sum_odd(n):
+    return n*n
+
+def sum_even(n):
+    return sum_positive(n)*2
+
+x = int(sys.stdin.readline().strip())
+data = []
+for i in range(x):
+    datum = list(map(int, sys.stdin.readline().strip().split(' ')))
+    K = datum[0]
+    N = datum[1]
+    data.append((K, N))
+
+for i in data:
+    K, N = i
+    print K, int(sum_positive(N)), int(sum_odd(N)), int(sum_even(N))
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

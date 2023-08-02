@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+///* package whatever; // don't place package name! */
+//
+import java.util.*;
+import java.io.*;
+
+
+public class A {
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int[] array = new int[8];
+        for (int i =0; i &lt; 8; i ++ ) {
+            int n = scan.nextInt();
+            array[i] = n;
+        }
+        int output = 0;
+        for (int i=0; i &lt;8; i ++) {
+            int sum = 0;
+            for (int k = 0; k &lt; 4; k++) {
+                int index = i + k;
+                sum += array[index%8];
+            }
+            if (sum &gt; output) {
+                output = sum;
+            }
+        }
+        
+        System.out.print (output);
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

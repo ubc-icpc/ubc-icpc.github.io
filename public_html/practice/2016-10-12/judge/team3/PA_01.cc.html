@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main() {
+	ios::sync_with_stdio(0);
+	int q; cin &gt;&gt; q;
+	string inp[55];
+	getline(cin, inp[0]);
+	for (int i=1; i&lt;=q; i++) {
+		getline(cin, inp[i]);
+	}
+	int r; cin &gt;&gt; r;
+	for (int j=1; j&lt;=r; j++) {
+		int a; cin &gt;&gt; a;
+		cout &lt;&lt; &quot;Rule &quot; &lt;&lt; a &lt;&lt; &quot;: &quot;;
+		if (a &gt;= 1 &amp;&amp; a &lt;= q) {
+			 cout &lt;&lt; inp[a] &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;No such rule&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

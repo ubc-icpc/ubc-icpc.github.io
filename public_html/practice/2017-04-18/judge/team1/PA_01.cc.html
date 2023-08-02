@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+#define endl &quot;\n&quot;
+
+int N;
+struct seg {
+  int size;
+  int d;
+  int mind;
+
+  seg(int d, int mind, int size) {
+    this-&gt;d = d;
+    this-&gt;mind = mind;
+    this-&gt;size = size;
+  }
+
+  bool operator&lt;(const seg&amp; b) const {
+    if (mind != b.mind) {
+      return mind &gt; b.mind;
+    }
+    if (d != b.d) {
+      return d &gt; b.d;
+    }
+    return size &gt; b.size;
+  }
+};
+vector&lt;seg&gt; pos, neg;
+int bestpos[300*300+5], bestneg[300*300+5];
+
+void solve(vector&lt;seg&gt;&amp; a, int* mem) {
+  //cout &lt;&lt; &quot;a&quot; &lt;&lt; endl;
+  for (int i = 0; i &lt; (int)a.size(); ++i) {
+    //cout &lt;&lt; a[i].size &lt;&lt; &quot; &quot; &lt;&lt; a[i].mind &lt;&lt; &quot; &quot; &lt;&lt; a[i].d &lt;&lt; endl;
+    for (int j = 300*300+4-a[i].d; j &gt;= -a[i].mind; --j) {
+      if (mem[j]) {
+        //cout &lt;&lt; (j + a[i].d) &lt;&lt; &quot;=&quot; &lt;&lt; mem[j] + a[i].size &lt;&lt; endl;
+        mem[j + a[i].d] = max(mem[j + a[i].d], mem[j] + a[i].size);
+      }
+    }
+    if (a[i].mind &gt;= 0) {
+      mem[a[i].d] = max(mem[a[i].d], a[i].size);
+    }
+  }
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+
+  cin &gt;&gt; N;
+  while (N--) {
+    string S; cin &gt;&gt; S;
+    int d = 0;
+    for (char c : S) {
+      d += (c == '(' ? 1 : -1);
+    }
+    int dd = 0;
+    int mind = 0;
+    if (d &gt;= 0) {
+      for (int i = 0; i &lt; (int)S.size(); ++i) {
+        dd += (S[i] == '(' ? 1 : -1);
+        mind = min(mind, dd);
+      }
+      pos.push_back(seg(d, mind, (int)S.size()));
+    } else {
+      for (int i = (int)S.size()-1; i &gt;= 0; --i) {
+        dd += (S[i] == ')' ? 1 : -1);
+        mind = min(mind, dd);
+      }
+      neg.push_back(seg(-d, mind, (int)S.size()));
+    }
+  }
+
+  sort(pos.begin(), pos.end());
+  sort(neg.begin(), neg.end());
+  solve(pos, bestpos);
+  solve(neg, bestneg);
+  //for (int i = 0; i &lt; 50; ++i) {
+  //  cout &lt;&lt; bestpos[i] &lt;&lt; &quot; &quot; &lt;&lt; bestneg[i] &lt;&lt; endl;
+  //}
+  int best = 0;
+  for (int i = 0; i &lt; (300*300+5); ++i) {
+    if (i) { if (bestpos[i] &amp;&amp; bestneg[i]) best = max(best, bestpos[i] + bestneg[i]); }
+    else best = max(best, bestpos[i] + bestneg[i]);
+  }
+  cout &lt;&lt; best &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

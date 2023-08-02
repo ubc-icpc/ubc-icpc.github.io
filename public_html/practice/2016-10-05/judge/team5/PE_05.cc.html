@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;ll, pair&lt;int,int&gt;&gt; pii;
+vector&lt;pii&gt; arr;
+const int N = (int)5*(1e4) + 5;
+int rank[N];
+int root[N];
+int find(int a) {
+	if(root[a] == a) return a;
+	root[a] = find(root[a]);
+	return root[a];
+}
+void un(int a, int b) {
+	int ra = find(a);
+	int rb = find(b);
+	if(root[ra] &lt;root[rb]) {
+		root[ra] =rb;
+	} else if(root[rb] &lt;root[ra]) {
+		root[rb] = ra;	
+	} else {
+		root[ra] = rb;
+		root[rb]++;
+	}
+}
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int n, m,l;
+	cin &gt;&gt; n &gt;&gt; m &gt;&gt; l;
+	int d,t,c;
+    ll cost = 0;	
+	for(int i = 0; i &lt; m; i++) {
+		cin &gt;&gt; d &gt;&gt; t &gt;&gt; c;
+		if(i &lt;l) cost += c;
+		arr.push_back({c,{d,t}});	
+	}
+	for(int i = 1; i &lt;=n; i++) {
+		root[i] = i;
+	}
+	set&lt;int&gt; ch;
+	sort(arr.begin(), arr.end());
+	ll to = 0;
+	int s = 0;
+	for(auto pp: arr) {
+		if(find(pp.second.first) == find(pp.second.second))continue;
+		//cout &lt;&lt; pp.second.first &lt;&lt;  &quot; &quot; &lt;&lt;pp.second.second &lt;&lt; endl;
+		to += pp.first;
+		un(pp.second.first, pp.second.second);
+		s++;
+		ch.insert(pp.second.first);
+		ch.insert(pp.second.second);
+		if(s == n-1) break;
+	}
+	if(to &lt;= cost) {
+		if(ch.size() != n) cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+		else cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+	} else {
+		cout &lt;&lt;&quot;impossible&quot; &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

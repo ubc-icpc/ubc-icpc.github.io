@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;iomanip&gt;
+#include&lt;cmath&gt;
+using namespace std;
+
+const double PI = 3.14159265358979;
+
+int main() {
+  int test; cin &gt;&gt; test;
+  while (test--) {
+    double s,r; cin &gt;&gt; s &gt;&gt; r;
+    double diag=2*s*s;
+    if (r&lt;=(s/2)) {
+      cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; PI*r*r &lt;&lt; endl;
+    }
+    else if (r*r&gt;=(s*s*0.5)) {
+      cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; s*s &lt;&lt; endl;
+    }
+    else {
+      double deg=acos(s/(2*r));
+      deg*=2;
+      double x=(2*PI-4*deg)/4;
+      double area_x=r*r*0.5*x;
+      double area_t=0.5*r*r*sin(deg);
+      double ans = 4*(area_x+area_t);
+      cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; ans &lt;&lt; endl;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

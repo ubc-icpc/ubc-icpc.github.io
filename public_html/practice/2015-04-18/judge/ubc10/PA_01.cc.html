@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int a[100000];
+int b[100000];
+bool aa[100001];
+bool bb[100001];
+
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	for (int cs = 0; cs &lt; n; cs++) {
+		int len;
+		cin &gt;&gt; len;
+		for (int i = 0; i &lt; len; i++) {
+			cin &gt;&gt; a[i];
+			aa[a[i]] = false;
+		}
+		for (int i = 0; i &lt; len; i++) {
+			cin &gt;&gt; b[i];
+			bb[b[i]] = false;
+		}
+		int left = 0;
+		int c = 0;
+		for (int i = 0; i &lt; len; i++) {
+			int aaa = a[i];
+			int bbb = b[i];
+			aa[aaa] = true;
+			if (!bb[aaa]) {
+				c++;
+			} else {
+				c--;
+			}
+			bb[bbb] = true;
+			if (!aa[bbb]) {
+				c++;
+			} else {
+				c--;
+			}
+			if (c == 0) {
+				if (left &gt; 0) {
+					cout &lt;&lt; &quot; &quot;;
+				}
+				cout &lt;&lt; (left+1) &lt;&lt; &quot;-&quot; &lt;&lt; (i+1);
+				left = i+1;
+			}
+		}
+		cout &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

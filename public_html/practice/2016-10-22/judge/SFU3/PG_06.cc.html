@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+using namespace std;
+char a[20000];
+int t[30];
+int Rank[30];
+int star = 0;
+int consecutive = 0;
+int pos = 25;
+bool Flag = false;
+int main(){
+    Rank[0]=1000000000000;
+    for (int i = 1; i &lt;= 10; i++) Rank[i] = 5;
+    for (int i = 11; i &lt;= 15; i++) Rank[i] = 4;
+    for (int i = 16; i &lt;= 20 ; i++) Rank[i] = 3;
+    for (int i = 21; i &lt;= 25 ; i++) Rank[i] = 2;
+    for (int i = 1; i &lt;= 25 ; i++) t[i]=Rank[i];
+
+    gets(a);
+    for (int i=0; i &lt; strlen(a); i++){
+        if (a[i]=='W'){
+            consecutive++;
+            if ((consecutive&gt;=3)&amp;&amp;(6&lt;=pos)&amp;&amp;(pos&lt;=25)) {
+                if (Rank[pos]==0) pos--;
+                    Rank[pos]--;
+            }
+            if (Rank[pos]==0) pos--;
+            Rank[pos]--;
+        }
+        if (pos &lt;= 0) {
+            Flag = true;
+            pos = 0;
+        }
+        if (a[i]=='L'){
+            consecutive = 0;
+            if ((1&lt;=pos)&amp;&amp;(pos&lt;20)){
+                Rank[pos]++;
+                if (Rank[pos]&gt;t[pos]){
+                    Rank[pos]=t[pos];
+                    pos++;
+                    Rank[pos]=1;
+                }
+            }
+            else
+            if (pos == 20){
+                Rank[pos]++;
+                if (Rank[pos]&gt;t[pos]) Rank[pos] = t[pos];
+            }
+        }
+    }
+    if (Flag) {
+        cout&lt;&lt;&quot;Legend&quot;;
+    }
+    else
+        cout&lt;&lt;pos;
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

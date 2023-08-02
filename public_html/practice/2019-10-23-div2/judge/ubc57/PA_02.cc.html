@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">/*
+ID: skipian1
+PROB: 
+LANG: C++11
+*/
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+#define INF = 2000000000
+#define sz(a) int((a).size())
+#define pb push_back
+#define mp make_pair
+#define all(c) (c).begin(),(c).end()
+#define X first
+#define Y second
+
+bool ok(double a, double b, double c, double d, double m, double t, double v) {
+  if (a*v*v*v+b*v*v+c*v+d &lt;= t/m) return true;
+  else return false;
+}
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  double a, b, c, d, m, t;
+  while (cin &gt;&gt; a) {
+    cin &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; m &gt;&gt; t;
+    double ans = 0;
+    for (double x = pow(2.0, 30.0)*0.01; x &gt;= 0.01; x /= 2) {
+      while (ok(a, b, c, d, m, t, ans+x)) ans += x;
+    }
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; ans &lt;&lt; &quot;\n&quot;;
+  }
+}
+</code>
+</pre>
+</body>
+</html>

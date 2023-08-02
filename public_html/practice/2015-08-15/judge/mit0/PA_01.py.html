@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+from collections import defaultdict
+import sys
+ 
+sys.setrecursionlimit(20000)
+num_cases = int(sys.stdin.readline())
+ 
+for i in range(num_cases):
+    name = sys.stdin.readline().strip()
+    print name
+    count = 0
+    for char in name:
+        if char=='a' or char=='e' or char=='i' or char=='o' or char=='u':
+            count+=1
+    if count &gt; len(name)/2:
+        print '1'
+    else:
+        print '0'
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

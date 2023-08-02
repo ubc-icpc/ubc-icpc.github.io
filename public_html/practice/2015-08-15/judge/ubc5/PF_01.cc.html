@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int ct(const vector&lt;int&gt;&amp; v) {
+  int c = v.size();
+  for (int i = 1; i &lt; v.size(); i++) {
+    if (v[i] != v[i-1])
+      c++;
+  }
+  return c;
+}
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    string S; cin &gt;&gt; S;
+    int m = atoi(S.substr(0,2).c_str());
+    int s = 60*m+atoi(S.substr(3).c_str());
+    int p; cin &gt;&gt; p;
+    int mm = 42424242, md = 42424242;
+    vector&lt;int&gt; vi = {0};
+    for (int i = ceil((1.0-p/100.0)*s); i &lt;= floor((1.0+p/100.0)*s); i++) {
+      vector&lt;int&gt; v1, v2;
+      int im = i/60, is = i%60;
+      if (im &gt; 9) {
+        v1.push_back(im/10);
+        v1.push_back(im%10);
+      }
+      else if (im)
+        v1.push_back(im);
+      v1.push_back(is/10);
+      v1.push_back(is%10);
+      if (im &amp;&amp; v1[v1.size()-2] &lt; 4) {
+        int im2 = im-1;
+        if (im2 &gt; 9) {
+          v2.push_back(im2/10);
+          v2.push_back(im2%10);
+        }
+        else if (im2)
+          v2.push_back(im2);
+        v2.push_back(is/10+6);
+        v2.push_back(is%10);
+      }
+      else
+        v2 = v1;
+      int c1 = ct(v1), c2 = ct(v2);
+      if (mm &gt; c1 || (mm == c1 &amp;&amp; md &gt; abs(i-s))) {
+        mm = c1;
+        md = abs(i-s);
+        vi = v1;
+      }
+      if (mm &gt; c2 || (mm == c2 &amp;&amp; md &gt; abs(i-s))) {
+        mm = c2;
+        md = abs(i-s);
+        vi = v2;
+      }
+    }
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; T &lt;&lt; &quot;: &quot;;
+    for (int i = 0; i &lt; vi.size(); i++)
+      cout &lt;&lt; vi[i];
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

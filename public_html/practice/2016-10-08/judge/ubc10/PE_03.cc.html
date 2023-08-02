@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; piii;
+typedef pair&lt;pii, pii&gt; piiii;
+typedef pair&lt;int, piiii&gt; piiiii;
+
+int n, m;
+string grid[64];
+
+inline bool ptok(int x, int y) {
+    return x &gt;= 0 &amp;&amp; x &lt; n &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; m &amp;&amp; grid[x][y] != '*';
+}
+
+inline bool kingOK(int x, int y) {
+    return ptok(x, y) &amp;&amp; ptok(x+1, y+1) &amp;&amp;
+           grid[x+1][y] != '*' &amp;&amp; grid[x][y+1] != '*';
+}
+
+int dist[64][64][4][4];
+int visited[64][64];
+int vis2[4][64][64];
+int zdist1[4][64][64];
+int zdist2[4][64][64];
+
+int px1[4] = {-1, 0, 2, 0};
+int py1[4] = {0, -1, 0, 2};
+int px2[4] = {-1, 1, 2, 1};
+int py2[4] = {1, -1, 1, 2};
+
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, -1, 0, 1};
+
+int marker = 0;
+void bfs(int kx, int ky, bool recordDist, bool stopEarly) {
+    int sx1[4], sy1[4], sx2[4], sy2[4];
+    bool ppok[4];
+    for (int pp = 0; pp &lt; 4; pp++) {
+        sx1[pp] = kx+px1[pp];
+        sy1[pp] = ky+py1[pp];
+        sx2[pp] = kx+px2[pp];
+        sy2[pp] = ky+py2[pp];
+        ppok[pp] = ptok(sx1[pp], sy1[pp]) &amp;&amp; ptok(sx2[pp], sy2[pp]);
+    }
+    for (int pp = 0; pp &lt; 4; pp++) {
+
+        //cerr &lt;&lt; &quot;bfs(&quot; &lt;&lt; kx &lt;&lt; &quot;, &quot; &lt;&lt; ky &lt;&lt; &quot;) with start = (&quot; &lt;&lt; sx1[pp] &lt;&lt; &quot;, &quot; &lt;&lt; sy1[pp] &lt;&lt; &quot;) (&quot; &lt;&lt; sx2[pp] &lt;&lt; &quot;, &quot; &lt;&lt; sy2[pp] &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+
+        for (int k = 0; k &lt; 4; k++) {
+            dist[kx][ky][pp][k] = (pp == k ? 0 : -1);
+        }
+        if (recordDist) {
+            for (int i = 0; i &lt; n; i++) {
+                for (int j = 0; j &lt; m; j++) {
+                    zdist1[pp][i][j] = -1;
+                    zdist2[pp][i][j] = -1;
+                }
+            }
+        }
+
+        if (!ppok[pp]) continue;
+
+        int d1[4] = {-1, -1, -1, -1};
+        int d2[4] = {-1, -1, -1, -1};
+        queue&lt;piii&gt; q;
+
+        marker++;
+        q.push(piii(0, pii(sx1[pp], sy1[pp])));
+        while (!q.empty()) {
+            piii curr = q.front(); q.pop();
+            int d = curr.first;
+            int x = curr.second.first, y = curr.second.second;
+
+            if (visited[x][y] == marker) continue;
+            visited[x][y] = marker;
+
+            if (recordDist) {
+                zdist1[pp][x][y] = d;
+            }
+
+            for (int k = 0; k &lt; 4; k++) {
+                if (x == sx1[k] &amp;&amp; y == sy1[k]) {
+                    d1[k] = d;
+                }
+            }
+
+            for (int k = 0; k &lt; 4; k++) {
+                int nx = x+dx[k], ny = y+dy[k];
+                int nd = d+1;
+
+                if (ptok(nx, ny)) {
+                    q.push(piii(nd, pii(nx, ny)));
+                }
+            }
+        }
+
+        marker++;
+        q.push(piii(0, pii(sx2[pp], sy2[pp])));
+        while (!q.empty()) {
+            piii curr = q.front(); q.pop();
+            int d = curr.first;
+            int x = curr.second.first, y = curr.second.second;
+
+            if (visited[x][y] == marker) continue;
+            visited[x][y] = marker;
+
+            if (recordDist) {
+                zdist2[pp][x][y] = d;
+            }
+
+            for (int k = 0; k &lt; 4; k++) {
+                if (x == sx2[k] &amp;&amp; y == sy2[k]) {
+                    d2[k] = d;
+                }
+            }
+
+            for (int k = 0; k &lt; 4; k++) {
+                int nx = x+dx[k], ny = y+dy[k];
+                int nd = d+1;
+
+                if (ptok(nx, ny)) {
+                    q.push(piii(nd, pii(nx, ny)));
+                }
+            }
+        }
+
+        for (int k = 0; k &lt; 4; k++) {
+            if (d1[k] &gt;= 0 &amp;&amp; d2[k] &gt;= 0) {
+                dist[kx][ky][pp][k] = d1[k] + d2[k];
+            }
+        }
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    memset(visited, 0, sizeof visited);
+    memset(vis2, 0, sizeof vis2);
+
+    cin &gt;&gt; n &gt;&gt; m;
+    while (n &gt; 0 || m &gt; 0) {
+        for (int i = 0; i &lt; n; i++) cin &gt;&gt; grid[i];
+
+        // find and check for valid init king
+        bool kfound = false;
+        int skx = -1, sky = -1;
+        for (int i = 0; i+1 &lt; n &amp;&amp; !kfound; i++) {
+            for (int j = 0; j+1 &lt; m &amp;&amp; !kfound; j++) {
+                if (grid[i][j] == 'X') {
+                    skx = i;
+                    sky = j;
+                    kfound = true;
+                }
+            }
+        }
+        if (!kfound ||
+            (grid[skx][sky] != 'X' || grid[skx+1][sky] != 'X' ||
+             grid[skx][sky+1] != 'X' || grid[skx+1][sky+1] != 'X')) {
+            cerr &lt;&lt; &quot;king invalid&quot; &lt;&lt; endl;
+            cout &lt;&lt; -1 &lt;&lt; endl;
+            cin &gt;&gt; n &gt;&gt; m;
+            continue;
+        }
+        if (skx == 0 &amp;&amp; sky == 0) {
+            cout &lt;&lt; 0 &lt;&lt; endl;
+            cin &gt;&gt; n &gt;&gt; m;
+            continue;
+        }
+
+        // find empty square and set king to o
+        int ox1 = -1, oy1 = -1, ox2 = -1, oy2 = -1;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; m; j++) {
+                if (grid[i][j] == 'X') {
+                    grid[i][j] = 'o';
+                } else if (grid[i][j] == '.') {
+                    grid[i][j] = 'o';
+                    if (ox1 == -1) {
+                        ox1 = i; oy1 = j;
+                    } else {
+                        ox2 = i; oy2 = j;
+                    }
+                }
+            }
+        }
+        if (ox1 == -1 || ox2 == -1) {
+            cerr &lt;&lt; &quot;empty space invalid&quot; &lt;&lt; endl;
+            cout &lt;&lt; -1 &lt;&lt; endl;
+            cin &gt;&gt; n &gt;&gt; m;
+            continue;
+        }
+
+        // for every possible 2x2 position
+        // BFS from each of 4 sides to each of the other 4 sides
+        // 
+        // and for initial 2x2 position, BFS from each of 4 sides
+        // to everywhere and record distance
+
+        //cerr &lt;&lt; &quot;begin BFS&quot; &lt;&lt; endl;
+
+        for (int kx = 0; kx+1 &lt; n; kx++) {
+            for (int ky = 0; ky+1 &lt; m; ky++) {
+                if (kingOK(kx, ky)) {
+                    bool z = (skx == kx &amp;&amp; sky == ky);
+                    grid[kx][ky] = grid[kx+1][ky] = grid[kx][ky+1] = grid[kx+1][ky+1] = '*';
+                    bfs(kx, ky, z, !z);
+                    grid[kx][ky] = grid[kx+1][ky] = grid[kx][ky+1] = grid[kx+1][ky+1] = 'o';
+                }
+            }
+        }
+
+        bool found = false;
+        marker++;
+        priority_queue&lt;piiii&gt; q;
+        for (int k = 0; k &lt; 4; k++) {
+            //cerr &lt;&lt; &quot;init: &quot; &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; zdist[k][ox1][oy1][ox2][oy2] &lt;&lt; endl;
+
+            int zz = -1;
+            if (zdist1[k][ox1][oy1] != -1 &amp;&amp; zdist2[k][ox2][oy2] != -1) {
+                zz = zdist1[k][ox1][oy1] + zdist2[k][ox2][oy2];
+            }
+            if (zdist1[k][ox2][oy2] != -1 &amp;&amp; zdist2[k][ox1][oy1] != -1) {
+                int zz2 = zdist1[k][ox2][oy2] + zdist2[k][ox1][oy1];
+                if (zz == -1) zz = zz2;
+                else zz = min(zz, zz2);
+            }
+            if (zz != -1) {
+                q.push(piiii(pii(-zz, k), pii(skx, sky)));
+            }
+        }
+
+        //cerr &lt;&lt; &quot;begin dijkstra&quot; &lt;&lt; endl;
+
+        while (!q.empty()) {
+            piiii curr = q.top(); q.pop();
+            int d = -curr.first.first;
+            int r = curr.first.second;
+            int x = curr.second.first;
+            int y = curr.second.second;
+            if (vis2[r][x][y] == marker) continue;
+            vis2[r][x][y] = marker;
+
+            //cerr &lt;&lt; &quot;visit: (&quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; &quot; &quot; &lt;&lt; r &lt;&lt; &quot;) = &quot; &lt;&lt; d &lt;&lt; endl;
+
+            if (x == 0 &amp;&amp; y == 0) {
+                found = true;
+                cout &lt;&lt; d &lt;&lt; endl;
+                break;
+            }
+
+            // shift sides
+            for (int k = 0; k &lt; 4; k++) {
+                if (k == r) continue;
+                if (dist[x][y][r][k] != -1) {
+                    q.push(piiii(pii(-d-dist[x][y][r][k], k), pii(x, y)));
+                }
+            }
+
+            // move
+            if (kingOK(x+dx[r], y+dy[r]))
+            q.push(piiii(pii(-d-1, (r+2)%4), pii(x+dx[r], y+dy[r])));
+        }
+        if (!found) {
+            //cerr &lt;&lt; &quot;could not find solution&quot; &lt;&lt; endl;
+            cout &lt;&lt; -1 &lt;&lt; endl;
+        }
+
+        cin &gt;&gt; n &gt;&gt; m;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

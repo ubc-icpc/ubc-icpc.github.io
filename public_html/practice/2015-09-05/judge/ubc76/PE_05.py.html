@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import math
+
+test = int(raw_input())
+for re in range(test):
+	V, Y = map(int, raw_input().split())
+	p = []
+	for i in range(V):
+		x, y = map(float, raw_input().split())
+		p.append([x, y])
+	p.append(p[0])
+	a = [0, 0]
+	f = 0
+	X = []
+	for i in range(V):
+		y = [p[i][1], p[i+1][1]]
+		dis = math.sqrt((p[i][0]-p[i+1][0])**2 + (p[i][1]-p[i+1][1])**2)
+		if (y[0] &lt; Y and Y &lt; y[1]) or (y[0] &gt; Y and Y &gt; y[1]):
+			a[f] += dis * (Y - y[0]) / (y[1] - y[0])
+			a[1 - f] += dis * (y[1] - Y) / (y[1] - y[0])
+			f = 1 - f
+
+			x = [p[i][0], p[i+1][0]]
+			X.append((x[1] - x[0]) * (Y - y[0]) / (y[1] - y[0]) + x[0])
+
+		else:
+			a[f] += dis
+		#print a
+	a.sort()
+	X.sort()
+	print 'Case #%d: %.3f %.3f\n' % (re + 1, a[0] + X[1] - X[0], a[1] + X[1] - X[0])
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

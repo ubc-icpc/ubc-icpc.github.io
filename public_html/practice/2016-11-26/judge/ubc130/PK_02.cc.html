@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int n; cin &gt;&gt; n;
+	vector&lt;int&gt; seq;
+	while (n--) {
+		int k; cin &gt;&gt; k;
+		seq.push_back(k);
+	}
+	bool incr = seq[1] &gt; seq[0];
+	int len = (seq.size() == 1 || seq[1] == seq[0] ? 1 : 2);
+	for (int i = 1; i &lt; seq.size()-1; i++) {
+		if ((seq[i+1] &gt; seq[i] &amp;&amp; !incr)
+			|| (seq[i+1] &lt; seq[i] &amp;&amp; incr)) {
+			len++;
+			incr = !incr;
+		}
+	}
+	cout &lt;&lt; len &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

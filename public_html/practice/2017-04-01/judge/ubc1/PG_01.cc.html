@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+const int N = 55;
+
+struct P {
+  ll x, y;
+  P operator-() const {
+    return {-x, -y};
+  }
+  P operator-(const P &amp;p2) const {
+    return {x-p2.x, y-p2.y};
+  }
+};
+
+inline ll cp(const P &amp;a, const P &amp;b) {
+  return a.x*b.y - a.y*b.x;
+}
+
+int n;
+P p[N];
+ll memo[N][N][N][N];
+bool isEmpty[N][N][N];
+
+ll dp(int i, int j, int k, int l) {
+  if (memo[i][j][k][l] != -1) {
+    return memo[i][j][k][l];
+  }
+  P a = p[k] - p[i];
+  P b = p[j] - p[i];
+  P c = p[l] - p[j];
+  if (cp(b, a) &lt;= 0) a = -a;
+  if (cp(b, c) &lt;= 0) c = -c;
+  ll ans = 0;
+  for (int z = 0; z &lt; n; z++) {
+    if (z == i || z == j || z == k || z == l) continue;
+    P d1 = p[z] - p[i];
+    P d2 = p[z] - p[j];
+    if (cp(b, d1) &gt;= 0 &amp;&amp; cp(d1, a) &gt;= 0 &amp;&amp; cp(c, d2) &gt;= 0 &amp;&amp; cp(b, d2) &gt;= 0) {
+      if (!isEmpty[i][j][z]) continue;
+      ll area = cp(b, d1);
+      ans = max(ans, area + max(dp(i, z, k, j), dp(z, j, i, l)));
+    }
+  }
+  return memo[i][j][k][l] = ans;
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  memset(memo, -1, sizeof memo);
+
+  cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; p[i].x &gt;&gt; p[i].y;
+  }
+
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = i+1; j &lt; n; j++) {
+      for (int k = j+1; k &lt; n; k++) {
+        int ii = i, jj = j, kk = k;
+        P p1 = p[i], p2 = p[j], p3 = p[k];
+        if (cp(p2-p1, p3-p1) &lt; 0) {
+          swap(p2, p3);
+          swap(jj, kk);
+        }
+        bool good = true;
+        for (int l = 0; l &lt; n; l++) {
+          if (l == i || l == j || l == k) continue;
+          P p4 = p[l];
+          P d1 = p4-p1, d2 = p4-p2, d3 = p4-p3;
+          if (cp(p2-p1, d1) &gt;= 0 &amp;&amp; cp(p3-p2, d2) &gt;= 0 &amp;&amp; cp(p1-p3, d3) &gt;= 0) {
+            good = false;
+            break;
+          }
+        }
+        isEmpty[ii][jj][kk] = good;
+        isEmpty[jj][kk][ii] = good;
+        isEmpty[kk][ii][jj] = good;
+      }
+    }
+  }
+
+  ll ans = 0;
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = i+1; j &lt; n; j++) {
+      ans = max(ans, dp(i, j, j, i));
+      ans = max(ans, dp(j, i, i, j));
+      //cerr &lt;&lt; &quot;dp: &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; dp(i,j,j,i) &lt;&lt; &quot; &quot; &lt;&lt; dp(j,i,i,j) &lt;&lt; endl;
+    }
+  }
+  cout &lt;&lt; setprecision(1) &lt;&lt; fixed &lt;&lt; (ld)ans/2.0 &lt;&lt; endl;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

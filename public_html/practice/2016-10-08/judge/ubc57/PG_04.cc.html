@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+bool eq(ld a, ld b){ return abs(a-b)&lt;1e-6; }
+ld cx[2005],cy[2005],cz[2005],r[2005];
+ld x[20],y[20],z[20],lvl[20];
+int block[2005];
+bool inter(ld xx, ld yy, ld zz, ld cxx, ld cyy, ld czz, ld rr){
+    //line is {xxt,yyt,zzt} with t in [0,1]; does it inter (x-cxx)^2+...=rr^2 ?
+    ld aa=xx*xx+yy*yy+zz*zz,bb=-2.0*(xx*cxx+yy*cyy+zz*czz),cc=cxx*cxx+cyy*cyy+czz*czz-rr*rr;
+    ld dd=bb*bb-4.0*aa*cc;
+    if (dd&lt;0) return false;
+    ld r1=(-bb+sqrt(dd))/(2.0*aa),r2=(-bb-sqrt(dd))/(2.0*aa);
+    if (eq(r1,0)|eq(r1,1)) return true;
+    if ((0&lt;r1)&amp;&amp;(r1&lt;1)) return true;
+    if (eq(r2,0)|eq(r2,1)) return true;
+    if ((0&lt;r2)&amp;&amp;(r2&lt;1)) return true;
+    return false;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    int b,n,most;
+    while (cin&gt;&gt;b&gt;&gt;n&gt;&gt;most){
+        if (b==0) break;
+        memset(block,0,sizeof block);
+        for (int i=0;i&lt;b;i++) cin&gt;&gt;cx[i]&gt;&gt;cy[i]&gt;&gt;cz[i]&gt;&gt;r[i];
+        for (int i=0;i&lt;n;i++) cin&gt;&gt;x[i]&gt;&gt;y[i]&gt;&gt;z[i]&gt;&gt;lvl[i];
+        ld xx,yy,zz; cin&gt;&gt;xx&gt;&gt;yy&gt;&gt;zz;
+        for (int i=0;i&lt;b;i++){
+            cx[i]-=xx,cy[i]-=yy,cz[i]-=zz;
+        }
+        for (int i=0;i&lt;n;i++){
+            x[i]-=xx,y[i]-=yy,z[i]-=zz;
+        }
+        for (int i=0;i&lt;b;i++) for (int j=0;j&lt;b;j++) block[j]+=inter(x[i],y[i],z[i],cx[j],cy[j],cz[j],r[j])&lt;&lt;i;
+        ld ans=0;
+        for (int mask=0;mask&lt;(1&lt;&lt;n);mask++){
+            int cnt=0;
+            for (int j=0;j&lt;b;j++){
+                if (block[j]&amp;mask) cnt++;
+            }
+            if (cnt&lt;=most){
+                ld tot=0;
+                for (int i=0;i&lt;n;i++) if (mask&amp;(1&lt;&lt;i)) tot+=lvl[i]/(x[i]*x[i]+y[i]*y[i]+z[i]*z[i]);
+                ans=max(ans,tot);
+            }
+        }
+        cout&lt;&lt;fixed&lt;&lt;setprecision(10)&lt;&lt;ans&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

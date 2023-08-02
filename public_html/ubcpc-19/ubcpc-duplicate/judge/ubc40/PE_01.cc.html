@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;queue&gt;
+#include &lt;climits&gt;
+#include &lt;functional&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;math.h&gt;
+#include &lt;iomanip&gt;  
+#include &lt;stack&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+int main() {
+	int n, k; cin &gt;&gt; n &gt;&gt; k;
+	int a[n];
+	for(int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; a[i];
+	}
+	sort(a, a+n);
+	int sum = 0;
+	for (int i = 0; i &lt; k; i++) {
+		sum += a[n - 1 - i];
+	}
+	cout &lt;&lt; sum &lt;&lt; endl;
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

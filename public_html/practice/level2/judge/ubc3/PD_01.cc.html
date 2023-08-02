@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">// A5 - B
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;fstream&gt;
+#include &lt;climits&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;list&gt;
+#include &lt;set&gt;
+#include &lt;bitset&gt;
+
+#include &lt;complex&gt;
+#include &lt;iomanip&gt;
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;cassert&gt;
+
+#define input_crack ios_base::sync_with_stdio(0)
+#define input_coffee std::cin.tie(0)
+
+using namespace std;
+
+typedef vector&lt;int&gt; vi;
+typedef long long ll;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+//const ll INF = 0x3f3f3f3f; 
+//const ld EPS = 1e-9; 
+const ld PI = acos(-1.L);
+const int MAXN = 50, MAXM = 50, N = 100, M = 50;
+
+ld dist(const pt&amp; a, const pt&amp; b) {
+	return abs(a - b);
+}
+
+
+// START - From Stanford Code Archive
+double INF = 1e100;
+double EPS = 1e-12;
+
+
+struct PT {
+	double x, y;
+	PT() {}
+	PT(ld x, ld y) : x(x), y(y) {}
+	PT(const PT&amp; p) : x(p.x), y(p.y) {}
+	PT operator + (const PT&amp; p) { return PT(x + p.x, y + p.y); }
+	PT operator - (const PT &amp;p)  const { return PT(x - p.x, y - p.y); }
+	PT operator * (ld c)     const { return PT(x*c, y*c); }
+	PT operator / (ld c) const { return PT(x / c, y / c); }
+};
+
+double dot(PT p, PT q) { return p.x*q.x + p.y*q.y; }
+double dist2(PT p, PT q) { return dot(p - q, p - q); }
+double cross(PT p, PT q) { return p.x*q.y - p.y*q.x; }
+
+// rotate a point CCW or CW around the origin
+PT RotateCCW90(PT p) { return PT(-p.y, p.x); }
+PT RotateCW90(PT p) { return PT(p.y, -p.x); }
+PT RotateCCW(PT p, double t) {
+	return PT(p.x*cos(t) - p.y*sin(t), p.x*sin(t) + p.y*cos(t));
+}
+
+// determine if lines from a to b and c to d are parallel or collinear
+bool LinesParallel(PT a, PT b, PT c, PT d) {
+	return fabs(cross(b - a, c - d)) &lt; EPS;
+}
+
+bool LinesCollinear(PT a, PT b, PT c, PT d) {
+	return LinesParallel(a, b, c, d)
+		&amp;&amp; fabs(cross(a - b, a - c)) &lt; EPS
+		&amp;&amp; fabs(cross(c - d, c - a)) &lt; EPS;
+}
+
+// determine if line segment from a to b intersects with 
+// line segment from c to d
+bool SegmentsIntersect(PT a, PT b, PT c, PT d) {
+	if (LinesCollinear(a, b, c, d)) {
+		if (dist2(a, c) &lt; EPS || dist2(a, d) &lt; EPS ||
+			dist2(b, c) &lt; EPS || dist2(b, d) &lt; EPS) return true;
+		if (dot(c - a, c - b) &gt; 0 &amp;&amp; dot(d - a, d - b) &gt; 0 &amp;&amp; dot(c - b, d - b) &gt; 0)
+			return false;
+		return true;
+	}
+	if (cross(d - a, b - a) * cross(c - a, b - a) &gt; 0) return false;
+	if (cross(a - c, d - c) * cross(b - c, d - c) &gt; 0) return false;
+	return true;
+}
+// END - From Stanford Code Archive
+
+
+ld degreeToRadians(ld degrees) {		
+	return (PI / (180 / degrees) );
+}
+
+
+void prob_solve() {
+
+	int n;
+	int a, d;
+
+	cin &gt;&gt; n;
+			
+	int myDegrees = 0;
+	PT myPt;
+
+	vector&lt;PT&gt; allPoints;
+	allPoints.push_back(PT(0, 0));
+
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; a &gt;&gt; d;
+		myDegrees += a;
+		myPt = RotateCCW(PT(0, d), degreeToRadians(myDegrees));
+		myPt = myPt + allPoints.back();
+		allPoints.push_back(myPt);
+	}	
+
+	bool flag = false;
+
+	for (int k = 0; k &lt; allPoints.size() - 1; k++) {
+		if (flag) {
+			break;
+		}
+		for (int j = k + 2; j &lt; allPoints.size() - 1; j++) {
+
+			flag = SegmentsIntersect(allPoints[j], allPoints[j+1], allPoints[k], allPoints[k+1]);
+			if (flag) {
+				// DEBUG
+				//cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+				//cout &lt;&lt; &quot;(&quot; &lt;&lt; allPoints[j].x &lt;&lt; &quot;,&quot; &lt;&lt; allPoints[j].y &lt;&lt; &quot;) and (&quot; &lt;&lt; allPoints[j + 1].x &lt;&lt; &quot;,&quot; &lt;&lt; allPoints[j + 1].y &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+				//cout &lt;&lt; &quot;(&quot; &lt;&lt; allPoints[k].x &lt;&lt; &quot;,&quot; &lt;&lt; allPoints[k].y &lt;&lt; &quot;) and (&quot; &lt;&lt; allPoints[k + 1].x &lt;&lt; &quot;,&quot; &lt;&lt; allPoints[k + 1].y &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+				//cout &lt;&lt; endl;
+				cout &lt;&lt; j + 1 &lt;&lt; endl;
+				break;
+			}
+		}
+	}
+
+	if (!flag) {
+		cout &lt;&lt; &quot;SAFE&quot; &lt;&lt; endl;
+	}
+}
+
+
+
+int main() {
+
+	input_crack;
+	input_coffee;
+
+	//std::string filename(&quot;a5b1.in&quot;);
+	//std::ifstream infile(filename.c_str());
+	//std::cin.rdbuf(infile.rdbuf());
+
+	int t;
+	cin &gt;&gt; t;
+
+	//prob_solve();
+
+	while (t--) {
+		prob_solve();
+	}
+	
+	return 0;
+}
+
+</code>
+</pre>
+</body>
+</html>

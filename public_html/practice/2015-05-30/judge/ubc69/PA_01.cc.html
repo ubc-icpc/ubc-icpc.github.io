@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+char alphabet[256];
+int freq[9] = {0};
+
+int main() {
+	string line;
+	cin&gt;&gt;line;
+	
+	alphabet['1'] = alphabet['Q'] = alphabet['A'] = alphabet['Z'] = 1;
+	alphabet['2'] = alphabet['W'] = alphabet['S'] = alphabet['X'] = 2;
+	alphabet['3'] = alphabet['E'] = alphabet['D'] = alphabet['C'] = 3;
+	alphabet['4'] = alphabet['R'] = alphabet['F'] = alphabet['V'] = 
+	alphabet['5'] = alphabet['T'] = alphabet['G'] = alphabet['B'] = 4;
+	alphabet['6'] = alphabet['Y'] = alphabet['H'] = alphabet['N'] = 
+	alphabet['7'] = alphabet['U'] = alphabet['J'] = alphabet['M'] = 5;
+	alphabet['8'] = alphabet['I'] = alphabet['K'] = alphabet[','] = 6;
+	alphabet['9'] = alphabet['O'] = alphabet['L'] = alphabet['.'] = 7;
+	alphabet['0'] = alphabet['P'] = alphabet[';'] = alphabet['/'] = 
+	alphabet['-'] = alphabet['['] = alphabet['\''] = alphabet['='] = 
+	alphabet[']'] = 8;
+	
+	for(int i=0;i&lt;line.size();i++){
+		freq[alphabet[line[i]]]++;
+	}
+	for(int i=1;i&lt;9;i++)
+		cout&lt;&lt;freq[i]&lt;&lt;endl;
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

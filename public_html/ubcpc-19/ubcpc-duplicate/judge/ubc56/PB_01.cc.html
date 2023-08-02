@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">// Practice.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+#include &lt;tuple&gt;
+using namespace std;
+typedef struct unit {
+	string name;
+	int HP;
+	int ATK;
+	int DEF;
+};
+
+enum result{
+	win, loss, draw
+};
+
+// -1 if inf
+int turns_to_kill(unit &amp; attacker, unit &amp; defender){
+	int dmg = max(0, attacker.ATK - defender.DEF);
+	if (dmg == 0) {
+		return -1;
+	}
+	else {
+		int turns = defender.HP / dmg;
+		if (defender.HP % dmg &gt; 0){
+			++turns;
+		}
+		return turns;
+	}
+}
+
+result fight(unit &amp; u1, unit &amp; u2){
+	int turns_u1 = turns_to_kill(u1, u2);
+	int turns_u2 = turns_to_kill(u2, u1);
+	if (turns_u1 == -1 &amp;&amp; turns_u2 == -1){
+		return draw;
+	}
+	if (turns_u1 == -1){
+		return loss;
+	}
+	if (turns_u2 == -1){
+		return win;
+	}
+	if (turns_u1 == turns_u2){
+		return draw;
+	}
+	if (turns_u1 &lt; turns_u2){
+		return win;
+	}
+	else return loss;
+}
+
+
+int main()
+{
+	int n;
+	cin &gt;&gt; n; // max: 100
+	auto units = vector&lt;unit&gt;(n);
+
+	for (int i = 0; i &lt; n; ++i){
+		cin &gt;&gt; units[i].name &gt;&gt; units[i].HP &gt;&gt; units[i].ATK &gt;&gt; units[i].DEF;
+	}
+	if (n &lt; 3){
+		cout &lt;&lt; 0;
+		return 0;
+	}
+
+	vector&lt;tuple&lt;string,string,string&gt;&gt; intransitive_triples;
+
+	for (int i = 0; i &lt; n; ++i){
+		for (int j = i+1; j &lt; n; ++j){
+			auto result = fight (units[i], units[j]);
+			if (result == draw){
+				continue;
+			}
+			if (result == win){
+				// i &gt; j
+				for (int k = j+1; k &lt; n; ++k){
+					if (k == i || k == j){
+						continue;
+					}
+					if (fight(units[j], units[k]) == win &amp;&amp; fight(units[k], units[i]) == win){
+						intransitive_triples.push_back({units[i].name, units[j].name, units[k].name});
+					}
+				}
+			}
+			else{
+				// j &gt; i
+				for (int k = j+1; k &lt; n; ++k){
+					if (k == i || k == j){
+						continue;
+					}
+					if (fight(units[i], units[k]) == win &amp;&amp; fight(units[k], units[j]) == win){
+						intransitive_triples.push_back({units[j].name, units[i].name, units[k].name});
+					}
+				}
+			}
+		}
+	}
+
+	cout &lt;&lt; intransitive_triples.size() &lt;&lt; endl;
+	for (auto &amp; triple : intransitive_triples){
+		cout &lt;&lt; get&lt;0&gt;(triple) &lt;&lt; &quot; &quot; &lt;&lt; get&lt;1&gt;(triple) &lt;&lt; &quot; &quot; &lt;&lt; get&lt;2&gt;(triple) &lt;&lt; endl;
+	}
+
+	return 0;
+}
+
+void E_Exciting_Acts(){
+	int s, a;
+	cin &gt;&gt; s &gt;&gt; a;
+	auto XXX = vector&lt;int&gt;(s);
+	for (int i = 0; i &lt; s; ++i){
+		cin &gt;&gt; XXX[i];
+	}
+	// find the sum of the a biggest numbers
+	sort(XXX.begin(), XXX.end());
+	int sum = 0;
+	for (int i = 0; i &lt; a; ++i){
+		sum += XXX[s-i-1];
+	}
+	cout &lt;&lt; sum;
+}
+</code>
+</pre>
+</body>
+</html>

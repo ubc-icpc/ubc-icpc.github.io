@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+
+ld solve (int w, int l, ld p) {
+	if (w == 4) return 1;
+	if (l == 4) return 0;
+	if (w == 3 &amp;&amp; l == 3) return p*p/(1-2*(1-p)*p);
+	return p*solve(w+1,l,p) + (1-p)*solve(w,l+1,p); 
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		 ld p; cin &gt;&gt; p;
+		 cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; solve(0,0,p) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

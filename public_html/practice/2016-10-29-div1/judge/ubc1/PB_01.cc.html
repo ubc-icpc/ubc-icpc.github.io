@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef double ld;
+
+//dp[k][i][j] := prob i get to state on ith die, bitset of k values already chosen, j interventions left
+
+//dp[*][i][*] only depends on dp[*][i+1][*], so second param can be optimized away.
+
+const int INF = 1e8;
+
+//base[k][i] := sum_{j &lt; i} (q[j][i] if j in k, p[j][i] otherwise}
+int bmemo[1&lt;&lt;20][20], b[20], p[20][20], q[20][20], n, m, M;
+bitset&lt;20&gt; done[1&lt;&lt;20];
+int base(int k, int i) {
+	if (done[k][i]) return bmemo[k][i];
+	
+	done[k][i] = true;
+	int&amp; val = bmemo[k][i];
+	val = b[i];
+	for (int j = 0; j &lt; i; j++) {
+		if ((1&lt;&lt;j) &amp; k) val += p[j][i];
+		else val += q[j][i];
+	}
+	
+	return val;
+}
+
+int intersect(int a, int b, int c, int d) {
+	int l = max(a, c), r = min(b, d);
+	return max(r-l+1, 0);
+}
+
+ld pmin[1005], pmax[1005];
+ld ptwo(int pos, int i) {
+	if (pos) return pmax[i];
+	else return pmin[i];
+}
+
+ld smemo[2][1005][1005];
+bool sdone[2][1005][1005];
+ld sum_two(int pos, int i, int j) {
+	if (j &lt; i) return 0;
+	if (sdone[pos][i][j]) return smemo[pos][i][j];
+	sdone[pos][i][j] = true;
+	return smemo[pos][i][j] = ptwo(pos, i) + sum_two(pos, i+1, j);
+}
+
+ld pr(int pos, int two, int k, int i) {
+	if (!two) {
+		if (pos) {
+			ld nu = intersect(max(1-base(k, i), 1), M, 1, INF);
+			return min(nu/M, ld(1.0));
+		} else {
+			return max(1.0 - pr(!pos, two, k, i), 0.0);
+		}
+	} else {
+		if (pos) {
+			return sum_two(pos, max(1-base(k, i), 1), M); 
+		} else {
+			return sum_two(pos, 1, min(-base(k,i), M));
+		}
+	}
+}
+
+ld dp[1&lt;&lt;20][20];
+ld get(int i, int k, int j) {
+	if (i == n) return (k &amp; (1&lt;&lt;(n-1))) &gt; 0;
+	return dp[(1&lt;&lt;i) | k][j];
+}
+
+ld solve() {
+	for (int i = n-1; i &gt;= 0; i--) {
+		for (int k = 0; k &lt; (1&lt;&lt;i); k++) {
+			for (int j = 0; j &lt;= m; j++) {
+				ld&amp; val = dp[k | (1&lt;&lt;i)][j] = 0;
+				if (j) {
+					ld p0 = pr(1, 1, k, i), p1 = pr(0, 1, k, i);
+					val = max(val, max(p0 * get(i+1, k | (1&lt;&lt;i), j-1) + (1-p0) * get(i+1, k, j-1), 
+									   (1-p1) * get(i+1, k | (1&lt;&lt;i), j-1) + p1 * get(i+1, k, j-1)));
+				}
+				val = max(val, pr(1, 0, k, i) * get(i+1, k | (1&lt;&lt;i), j) + pr(0, 0, k, i) * get(i+1, k, j));
+			}
+		}
+	}
+	return dp[1][m];
+}
+
+int main() {
+	cin &gt;&gt; n &gt;&gt; m &gt;&gt; M;
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; b[i];
+		for (int j = i+1; j &lt; n; j++) {
+			cin &gt;&gt; p[i][j];
+		}
+		for (int j = i+1; j &lt; n; j++) {
+			cin &gt;&gt; q[i][j];
+		}
+	}
+	
+	for (int i = 1; i &lt;= M; i++) {
+		for (int j = 1; j &lt;= M; j++) {
+			pmin[min(i,j)] += 1.0/(M*M);
+			pmax[max(i,j)] += 1.0/(M*M);
+		}
+	}	
+	cout &lt;&lt; setprecision(6) &lt;&lt; fixed &lt;&lt; solve() &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

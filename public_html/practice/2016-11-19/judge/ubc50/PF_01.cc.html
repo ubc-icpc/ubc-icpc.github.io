@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef long long ll;
+struct pt {
+  ll x, y, z;
+  pt() {}
+  pt(ll a, ll b, ll c) : x(a), y(b), z(c) {}
+  bool operator&lt;(const pt &amp;other) const {
+    if (x == other.x) {
+      if (y == other.y) {
+        return z &lt; other.z;
+      }
+      return y &lt; other.y;
+    }
+    return x &lt; other.x;
+  }
+};
+
+ll n, k;
+vector&lt;pt&gt; p;
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  while (cin &gt;&gt; n &gt;&gt; k &amp;&amp; n != 0 &amp;&amp; k != 0) {
+    p.clear();
+    p.resize(n);
+    for (int i = 0; i &lt; n; i++) cin &gt;&gt; p[i].x &gt;&gt; p[i].y &gt;&gt; p[i].z;
+    sort(p.begin(), p.end());
+    ll ans = 0;
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = i+1; j &lt; n &amp;&amp; p[j].x &lt;= p[i].x+k; j++) {
+        if (abs(p[j].y-p[i].y &lt;= k)
+            &amp;&amp; abs(p[j].y-p[i].y &lt;= k)
+            &amp;&amp; abs(p[j].z-p[i].z &lt;= k)
+            &amp;&amp; abs(p[j].z-p[i].z &lt;= k)
+            &amp;&amp; (p[j].x-p[i].x)*(p[j].x-p[i].x)
+            + (p[j].y-p[i].y)*(p[j].y-p[i].y)
+            + (p[j].z-p[i].z)*(p[j].z-p[i].z) &lt; k*k) ans++;
+      }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

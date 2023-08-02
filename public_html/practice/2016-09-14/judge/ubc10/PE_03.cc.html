@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+typedef long long ll;
+
+int main() {
+    int ncase; cin &gt;&gt; ncase;
+    while (ncase--) {
+		char dummy;
+        int k; ll p, q; cin &gt;&gt; k &gt;&gt; p &gt;&gt; dummy &gt;&gt; q;
+		string s;
+		while (p &gt; 1 || q &gt; 1) {
+			while (p &gt; q) {
+				p -= q;
+				s += 'R';
+			}
+			while (q &gt; p) {
+				q -= p;
+				s += 'L';
+			}
+		}
+		reverse(s.begin(), s.end());
+		ll ans = 0;
+		ll idx = 1;
+		for (int i = 0; i &lt; s.length(); i++) {
+			ans += (1LL &lt;&lt; i);
+			if (s[i] == 'L') idx = 2*idx;
+			else idx = 2*idx+1;
+		}
+		ans += idx - (1LL &lt;&lt; s.length());
+		cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; ans+1 &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

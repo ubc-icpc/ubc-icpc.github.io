@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+typedef long long ll;
+
+int main() {
+  ll s;
+  while (cin &gt;&gt; s &amp;&amp; s) {
+    ll n = sqrt(s*2);
+    ll S = n*(n+1)/2;
+    if (S == s) {
+      cout &lt;&lt; &quot;Not bored enough!\n&quot;;
+      continue;
+    }
+    if (s &lt; S)
+      cout &lt;&lt; S-s &lt;&lt; &quot;\n&quot;;
+    else
+      cout &lt;&lt; S+n+1-s &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

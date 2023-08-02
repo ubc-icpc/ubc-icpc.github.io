@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+const int maxn = 305;
+const double maxd = 1e9;
+const double eps = 1e-5;
+
+
+struct Point;
+double cal_r(const Point &amp;p1, const Point &amp;p2, const Point &amp;p3);
+Point cal_c(const Point &amp;p1, const Point &amp;p2, const Point &amp;p3);
+
+
+struct Point {
+	Point(){}
+	Point(double x_, double y_): x(x_), y(y_) {}
+	double x, y;
+
+	Point operator+ (const Point &amp;p) const {
+		return Point(x + p.x, y + p.y);
+	}
+
+	Point operator- (const Point &amp;p) const {
+		return Point(x - p.x, y - p.y);
+	}
+
+	Point operator* (const double c) const {
+		return Point(x * c, y * c);
+	}
+
+	Point operator/ (const double c) const {
+		return Point(x / c, y / c);
+	}
+
+	double dot(const Point &amp;p) const {
+		return x * p.x + y * p.y;
+	}
+
+	double cross(const Point &amp;p) const {
+		return x * p.y - y * p.x;
+	}
+
+	double length() const {
+		return dis(Point(0.0, 0.0));
+	}
+
+	double dis(const Point &amp;p) const {
+		return sqrt( pow(x - p.x, 2.0) + pow(y - p.y, 2.0) );
+	}
+};
+
+double cal_r(const Point &amp;p1, const Point &amp;p2, const Point &amp;p3) {
+	Point a = p1 - p3;
+	Point b = p2 - p3;
+	return a.length() * b.length() * (a-b).length() / (2.0 * fabs(a.cross(b)) );
+}
+
+Point cal_c(const Point &amp;p1, const Point &amp;p2, const Point &amp;p3) {
+	Point a = p1 - p3;
+	Point b = p2 - p3;
+	Point t1 = (b * a.length()*a.length() - a * b.length()*b.length());
+	Point t2 = a * t1.dot(b) - b * t1.dot(a);
+	return t2 / (2.0 * pow(a.cross(b), 2.0)) + p3; 
+}
+
+struct Circle {
+	Circle(){}
+	Circle(Point c_, double r_): c(c_), r(r_) {}
+	Circle(const Point &amp;p1, const Point &amp;p2, const Point &amp;p3){
+		c = cal_c(p1, p2, p3);
+		r = cal_r(p1, p2, p3);
+	}
+
+	Point c;
+	double r;
+
+	bool is_inside(const Point &amp;p) const {
+		return c.dis(p) &lt; r;
+	}
+
+	bool on_circle(const Point &amp;p) const {
+		return fabs(c.dis(p) - r) &lt;= eps;
+	}
+};
+
+Point pp[maxn];
+int type[maxn];
+int n;
+
+
+Point comcenter;
+bool should_flip(int pos) {
+	Point p = pp[pos] - comcenter;
+	return (p.y &lt; 0) || (p.y == 0 &amp;&amp; p.x &lt; 0);	
+}
+
+int comp(const void *pa, const void *pb) {
+	int a = *((int*)pa);
+	int b = *((int*)pb);
+
+	Point la = pp[a] - comcenter, lb = pp[b] - comcenter;
+	if (should_flip(a))  la = la * -1.0;
+	if (should_flip(b))  lb = lb * -1.0;
+	// cout &lt;&lt; &quot;Sorting &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+	// cout &lt;&lt; &quot;   &quot; &lt;&lt; la.x &lt;&lt; &quot; &quot; &lt;&lt; la.y &lt;&lt; &quot; &quot; &lt;&lt; lb.x &lt;&lt; &quot; &quot; &lt;&lt; lb.y &lt;&lt; endl;
+
+	double cr = la.cross(lb);
+
+	if (cr &gt; 0.0)  return 1;
+	else return -1;
+
+	if (cr &gt; 0)  return 1;
+	else if (cr &lt; 0)  return -1;
+	else {
+		if (la.x * lb.x &gt;= 0 &amp;&amp; la.y * lb.y &gt;= 0)  return 0;
+		else if (la.x &gt; 0)  return 1;
+		else if (fabs(la.x) &lt; eps &amp;&amp; la.y &gt; 0)  return 1;
+		else return -1;
+	}
+}
+
+int main () {
+	string s;
+	bool cont = true;
+	cin &gt;&gt; s;
+	while(cont) {
+		cont = false;
+		n = 0;
+		int ccom = 0;
+		int x, y;
+		while (cin &gt;&gt; s) {
+			if (s == &quot;none&quot;)  continue;
+			if (s == &quot;Orcs:&quot;)  break;
+			sscanf(s.c_str(), &quot;(%d,%d)&quot;, &amp;x, &amp;y);
+			pp[n].x = x;
+			pp[n].y = y;
+			type[n] = 0;
+			++n;
+			++ccom;
+		}
+		while (cin &gt;&gt; s) {
+			if (s == &quot;none&quot;)  continue;
+			if (s == &quot;Companions:&quot;)  {
+				cont = true;
+				break;
+			}
+			sscanf(s.c_str(), &quot;(%d,%d)&quot;, &amp;x, &amp;y);
+			pp[n].x = x;
+			pp[n].y = y;
+			type[n] = 1;
+			++n;
+		}
+
+		if (ccom &lt;= 1) {
+			cout &lt;&lt; 0 &lt;&lt; endl;
+			continue;
+		}
+
+		double minr = maxd * 10.0;
+
+		Circle mincir;
+		Point lastp;
+		bool isok = true;
+		bool be;  
+
+		for (int i = 0; i &lt; n; ++i) {
+			for (int j = 0; j &lt; n; ++j) {
+				if (i == j)  continue;
+				if (type[i] == 1 &amp;&amp; type[j] == 1)  continue;
+				// cout &lt;&lt; &quot;Trying &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; endl;
+				mincir = Circle((pp[i] + pp[j]) / 2.0,  ((pp[i] - pp[j]) / 2.0).length() );
+				isok = true;
+				be = true;
+				
+				
+				// Companions
+				for (int k = 0; isok &amp;&amp; k &lt; ccom; ++k) {
+					if (k == i || k == j)  continue;
+
+					if (mincir.on_circle(pp[k])) {
+						// on_cir_list[on_cir_count++] = k;
+					} else if (!mincir.is_inside(pp[k])) {
+						mincir = Circle(pp[i], pp[j], pp[k]);
+						if (!be &amp;&amp; !mincir.is_inside(lastp)) {
+							isok = false;
+							break;
+						} else {
+							lastp = pp[k];
+						}
+						be = false;
+					}
+				}
+
+				// Check Companions
+				int on_cir_list[maxn];
+				int on_cir_count = 0;
+				for (int k = 0; isok &amp;&amp; k &lt; ccom; ++k) {
+					if (k == i || k == j)  continue;
+
+					if (mincir.on_circle(pp[k]) || mincir.is_inside(pp[k])) {
+						if (mincir.on_circle(pp[k]))  on_cir_list[on_cir_count++] = k;
+						continue;
+					} else {
+						isok = false;
+						break;
+					}
+				}
+
+				// Orcs
+				for (int k = ccom; isok &amp;&amp; k &lt; n; ++k) {
+					if (k == i || k == j)  continue;
+
+					// cout &lt;&lt; &quot;Min cir.c = &quot; &lt;&lt; mincir.c.x &lt;&lt; &quot;,&quot; &lt;&lt; mincir.c.y &lt;&lt; &quot; r = &quot; &lt;&lt; mincir.r &lt;&lt; endl;
+					// cout &lt;&lt; &quot;  Orcs #&quot; &lt;&lt; k;
+
+					if (mincir.is_inside(pp[k])) {
+						// cout &lt;&lt; &quot; is inside.&quot; &lt;&lt; endl;
+						isok = false;
+						break;
+					}
+
+					if (mincir.on_circle(pp[k])) {
+						// cout &lt;&lt; &quot; is on circle.&quot; &lt;&lt; endl;
+						on_cir_list[on_cir_count++] = k;
+					}
+					// cout &lt;&lt; &quot;end.&quot; &lt;&lt; endl;
+				}
+
+				// check on corcle
+				if (isok) {
+					on_cir_list[on_cir_count++] = i;
+					on_cir_list[on_cir_count++] = j;
+					comcenter = mincir.c;
+					qsort(on_cir_list, on_cir_count, sizeof(int), comp);
+
+					int sorted_list[maxn], tail = 0;
+					for (int k = 0; k &lt; on_cir_count; ++k) {
+						if (!should_flip(on_cir_list[k]))  sorted_list[tail++] = on_cir_list[k];
+					}
+					for (int k = 0; k &lt; on_cir_count; ++k) {
+						if (should_flip(on_cir_list[k]))  sorted_list[tail++] = on_cir_list[k];
+					}
+					// cout &lt;&lt; &quot;On the circle: &quot;;
+					// for (int k = 0; k &lt; on_cir_count; ++k) {
+					// 	cout &lt;&lt; on_cir_list[k] &lt;&lt; &quot;/&quot; &lt;&lt; type[on_cir_list[k]] &lt;&lt; &quot; &quot;;
+					// }
+					// cout &lt;&lt; endl;
+
+					int hl = 0, lh = 0;
+					for (int kk = 0; kk &lt; on_cir_count - 1; ++kk) {
+						int k = sorted_list[kk], kn = sorted_list[kk+1];
+						if (type[k] &gt; type[kn])  ++hl;
+						if (type[k] &lt; type[kn])  ++lh;
+					}
+					int las = sorted_list[on_cir_count - 1], fir = sorted_list[0];
+					if (type[las] &gt; type[fir])  ++hl;
+					if (type[las] &lt; type[fir])  ++lh;
+					if (hl &gt; 1 || lh &gt; 1) {
+						isok = false;
+					}
+				}
+
+				if (isok) {
+					// cout &lt;&lt; &quot;Ok, mincir.r = &quot; &lt;&lt; mincir.r &lt;&lt; endl;
+					if (minr &gt; mincir.r)  minr = mincir.r;
+				}
+
+			}
+		}
+
+		if (minr &gt;= maxd) {
+			cout &lt;&lt; &quot;The Orcs are close&quot; &lt;&lt; endl;
+		} else {
+			printf(&quot;%.8lf\n&quot;, minr);
+			// cout &lt;&lt; minr &lt;&lt; endl;
+		}
+
+	}
+
+	return 0;
+}
+
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

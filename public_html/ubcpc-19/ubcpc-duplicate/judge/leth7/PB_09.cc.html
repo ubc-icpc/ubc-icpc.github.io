@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+struct fighter {
+   string name;
+   int HP;
+   int AT;
+   int DF;
+};
+
+bool battle(fighter A, fighter B){
+   int aATR, bATR;
+
+   aATR = max(0, A.AT-B.DF);
+   bATR = max(0, B.AT-A.DF);
+
+   if (aATR == 0 &amp;&amp; bATR == 0) {
+      return false;
+   } else if (aATR == 0) {
+      return false;
+   } else if (bATR == 0) {
+      return true;
+   }
+
+   int aTurns=A.HP/bATR, bTurns=B.HP/aATR;
+   if((A.HP%bATR)!=0)
+      aTurns++;
+   if((B.HP%aATR)!=0)
+      bTurns++;
+   
+   if(aTurns &gt; bTurns)
+      return true;
+   else
+      return false;
+}
+
+
+int main(){
+   int x;
+   cin&gt;&gt;x;
+
+   vector&lt;fighter&gt; v;
+   
+   for(int i=0; i&lt;x; i++){
+      v.push_back(fighter());
+
+      int HP, AT, DF;
+      string name;
+      cin&gt;&gt;name&gt;&gt;HP&gt;&gt;AT&gt;&gt;DF;
+
+      v[i].name = name;
+      v[i].HP = HP;
+      v[i].AT = AT;
+      v[i].DF = DF;
+   }
+
+   vector&lt;int&gt; groups;
+   for(int i=0; i&lt;x; i++){
+      for(int j=i+1; j&lt;x; j++){
+	 for(int k=j+1; k&lt;x; k++){
+	    if((battle(v[i], v[j]) &amp;&amp; battle(v[j], v[k]) &amp;&amp; battle(v[k], v[i])) ||
+	       (battle(v[i], v[k]) &amp;&amp; battle(v[k], v[j]) &amp;&amp; battle(v[j], v[i]))) {
+	       groups.push_back(i);
+	       groups.push_back(j);
+	       groups.push_back(k);
+	    }
+	 }
+      }
+   }
+
+   cout&lt;&lt;groups.size()/3&lt;&lt;endl;
+   for(int i=0; i&lt;groups.size(); i+=3){
+      cout&lt;&lt;v[groups[i]].name&lt;&lt;&quot; &quot;&lt;&lt;v[groups[i+1]].name&lt;&lt;&quot; &quot;&lt;&lt;v[groups[i+2]].name&lt;&lt;endl;
+   }
+}
+</code>
+</pre>
+</body>
+</html>

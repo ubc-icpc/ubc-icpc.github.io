@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;stack&gt;
+#include &lt;queue&gt;
+#include &lt;math.h&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;cassert&gt;
+#include &lt;string.h&gt;
+
+#include &lt;time.h&gt;
+#include &lt;random&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+#define ll long long
+#define N 10005
+#define MOD 1000000000L
+
+void mult(ll a[2][2], ll b[2][2]) {
+    ll tl = (a[0][0]*b[0][0])%MOD + (a[0][1]*b[1][0])%MOD;
+    ll tr = (a[0][0]*b[1][0])%MOD + (a[0][1]*b[1][1])%MOD;
+    ll bl = (a[1][0]*b[0][0])%MOD + (a[1][1]*b[1][0])%MOD;
+    ll br = (a[1][0]*b[1][0])%MOD + (a[1][1]*b[1][1])%MOD;
+    b[0][0] = tl;
+    b[0][1] = tr;
+    b[1][0] = bl;
+    b[1][1] = br;
+}
+
+void solve() {
+    ll k, y;
+    cin &gt;&gt; k &gt;&gt; y;
+    
+    ll mat[2][2] =
+        {{1,0},
+        {0,1}};
+    
+    ll one[2][2] =
+        {{0,1},
+        {1,1}};
+    
+    y--;
+    for (ll i = 50; i &gt;= 0; i--) {
+        mult(mat,mat);
+        if (y&amp;(1L&lt;&lt;i))
+            mult(one, mat);
+    }
+    cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; (mat[0][0]+mat[0][1])%MOD &lt;&lt; endl;
+}
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll p;
+    cin &gt;&gt; p;
+    for (ll i = 0; i &lt; p; i++) {
+        solve();
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+inputNumber = int(raw_input())
+
+counter = 0
+teamArrayArray = []
+teamStringArray = []
+while counter &lt; inputNumber:
+    team = raw_input()
+    teamStringArray.append(team)
+    teamArray = []
+
+    inputCounter = 0
+    inputBuffer = &quot;&quot;
+    
+    for i in team:
+        if inputCounter &lt; 2:
+            inputBuffer += i
+        else:
+            inputCounter = -1
+            teamArray.append(int(inputBuffer))
+            inputBuffer = &quot;&quot;
+        inputCounter += 1
+
+    teamArrayArray.append(teamArray)
+    
+    counter += 1
+
+counter = 0
+for i in teamArrayArray:
+    state = 0
+    if 18 in i:
+        state += 2
+    if 17 in i:
+        state += 1
+    print teamStringArray[counter]
+    if state == 0:
+        print &quot;none&quot;
+    if state == 1:
+        print &quot;zack&quot;
+    if state == 2:
+        print &quot;mack&quot;
+    if state == 3:
+        print &quot;both&quot;
+    print &quot;&quot;
+    counter += 1
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+#define s2l(x) atoll((x).c_str())
+
+typedef long long ll;
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    ll p; cin &gt;&gt; p;
+    stringstream ss;
+    ss &lt;&lt; p;
+    string s = ss.str();
+    int ind = s.length()-1;
+    while (s[ind] == '0')
+      ind--;
+    if (ind == 0 &amp;&amp; s[ind] == '5') {
+      cout &lt;&lt; &quot;not absurd\n&quot;;
+      continue;
+    }
+    ll lo, hi;
+    if (s[ind] == '5') {
+      ll d = s2l(s.substr(ind));
+      lo = p-d;
+      hi = p+d;
+    }
+    else if (s[ind] &lt; '5') {
+      string s2 = s;
+      s2[ind] = '0';
+      lo = s2l(s2);
+      s2 = s;
+      s2[ind] = '5';
+      hi = s2l(s2);
+    }
+    else {
+      string s2 = s;
+      s2[ind] = '5';
+      lo = s2l(s2);
+      string s3 = s.substr(ind);
+      s3[0] = '9'+1-(s3[0]-'0');
+      hi = p+s2l(s3);
+    }
+    ll loa = ceil(0.95L*p), hia = floor(1.05L*p);
+    if (loa &lt;= lo || hi &lt;= hia)
+      cout &lt;&lt; &quot;absurd\n&quot;;
+    else
+      cout &lt;&lt; &quot;not absurd\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

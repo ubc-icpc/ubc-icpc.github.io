@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long LL;
+
+int N;
+LL sx[105], sy[105], tx[105], ty[105];
+
+// ===========================================================================
+const int NN = 105;
+bool adjmat[NN][NN], seen[NN];
+int matchL[NN], matchR[NN], m, n;
+bool bpm(int u) {
+  for (int v = 0; v &lt; n; v++) {
+    if (adjmat[u][v] &amp;&amp; !seen[v]) {
+      seen[v] = true;
+      if (matchR[v] == -1 || bpm(matchR[v])) {
+        matchL[u] = v, matchR[v] = u;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+int main3() {
+  memset(matchL, -1, sizeof matchL);
+  memset(matchR, -1, sizeof matchR);
+  m = n = N;
+  int cnt = 0;
+  for (int i = 0; i &lt; m; i++) {
+    memset(seen, 0, sizeof seen);
+    if (bpm(i)) cnt++;
+  }
+  return cnt;
+}
+// ===========================================================================
+
+bool ok(long long val) {
+  memset(adjmat, false, sizeof adjmat);
+  LL c = 0;
+  for (int i = 0; i &lt; N; i++) {
+    for (int j = 0; j &lt; N; j++) {
+      c = abs(sx[i]-tx[j]) + abs(sy[i]-ty[j]);
+      if (c &gt; val) continue;
+      adjmat[i][j] = true;
+    }
+  }
+  return main3() == N;
+}
+
+#undef int
+int main() {
+#define int long long
+  cin &gt;&gt; N;
+  for (int i = 0; i &lt; N; i++) cin &gt;&gt; sx[i] &gt;&gt; sy[i];
+  for (int i = 0; i &lt; N; i++) cin &gt;&gt; tx[i] &gt;&gt; ty[i];
+  int left = 0, right = 1e9, mid = 0;
+  while (left &lt; right) {
+    mid = left + (right - left)/2;
+    if (ok(mid)) {
+      right = mid;
+    } else {
+      left = mid+1;
+    }
+  }
+  cout &lt;&lt; left &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

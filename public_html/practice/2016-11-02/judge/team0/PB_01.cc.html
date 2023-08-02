@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+string S;
+
+bool combo(int i) {
+  int r, b, l;
+  r = b = l = 0;
+  int end = i + 3;
+  if (end &gt; (int)S.size()) return false;
+  for (; i &lt; end; ++i) {
+    if (S[i] == 'R') r++;
+    else if (S[i] == 'B') b++;
+    else if (S[i] == 'L') l++;
+  }
+  return (r == 1 &amp;&amp; b == 1 &amp;&amp; l == 1);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; S;
+  for (int i = 0; i &lt; (int)S.size(); ++i) {
+    if (combo(i)) {
+      i += 2;
+      cout &lt;&lt; 'C';
+    } else if (S[i] == 'R')
+      cout &lt;&lt; 'S';
+    else if (S[i] == 'B')
+      cout &lt;&lt; 'K';
+    else if (S[i] == 'L')
+      cout &lt;&lt; 'H';
+  }
+  cout &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;climits&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cassert&gt;
+
+using namespace std;
+
+struct Trophy
+{
+  int h, w;
+};
+
+int n;
+Trophy T[450];
+
+// ans[i][j] = best answer if the arrangement is i ... n-1 ... j, and only
+// trophies min(i,j), min(i,j)+1, ..., n-1 are in the arrangement
+int ans[451][451];
+
+int f(int i, int j)
+{
+  if (ans[i][j] &gt;= 0) return ans[i][j];
+
+  // last trophy in the middle
+  if (i == n-1 &amp;&amp; j == n-1) return ans[i][j] = 0;
+
+  // just to switch things around so i &lt; j
+  if (i &gt; j) return ans[i][j] = f(j, i);
+
+  assert(i &lt; n-1);
+  
+  // if there is only one side to put things in
+  if (j == n-1)
+    return ans[i][j] = abs(T[i].w - T[i+1].w) + f(i+1, j);
+
+  // if i and j are not consecutive, then i+1 must the next one after i
+  if (j != i+1) 
+    return ans[i][j] = abs(T[i].w - T[i+1].w) + f(i+1, j);
+
+  // j == i+1, the trophy right after i can be any of j+1, ..., n-1,
+  int best = INT_MAX;
+  for (int k = j+1; k &lt; n; k++) {
+    int val = abs(T[i].w - T[k].w) + f(k, j);
+    best = min(best, val);
+  }
+  
+  return ans[i][j] = best;
+  
+}
+
+bool solve()
+{
+  if (!(cin &gt;&gt; n)) return false;
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; T[i].h &gt;&gt; T[i].w;
+  }
+
+  for (int i = 0; i &lt;= n; i++) {
+    fill(ans[i], ans[i]+n+1, -1);
+  }
+
+  int best = INT_MAX;
+  for (int i = 0; i &lt; n; i++) {
+    best = min(best, f(0, i));
+  }
+  cout &lt;&lt; best &lt;&lt; endl;
+  return true;
+}
+
+int main()
+{
+  while (solve())
+    ;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

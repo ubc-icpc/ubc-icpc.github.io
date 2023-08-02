@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int g[500][500];
+
+vector&lt;int&gt; memo[500];
+int memoflag[500];
+
+vector&lt;int&gt; path(int start, vector&lt;int&gt; seen, int v) {
+	if (memoflag[start] != -1) {
+		return memo[start];
+	}
+	vector&lt;int&gt; edges;
+	for (int i=0; i&lt;v; i++) {
+		if (g[start][i] == 1 &amp;&amp;
+			find(seen.begin(),seen.end(),i) == seen.end()) {
+			edges.push_back(i);
+		}
+	}
+	if (edges.size() == 0) {
+		return seen;
+	} else {
+		vector&lt;int&gt; maxpath;
+		for (int i=0; i&lt;edges.size(); i++) {
+			vector&lt;int&gt; seen2 = seen;
+			seen2.push_back(edges[i]);
+			vector&lt;int&gt; newpath = path(edges[i],seen2,v);
+			if (newpath.size() &gt; maxpath.size()) {
+				maxpath = newpath;
+			}
+		}
+		memoflag[start] = 1;
+		memo[start] = maxpath;
+		return maxpath;
+	}
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	while(n--) {
+		int v; cin &gt;&gt; v;
+		//clear memo
+		for (int i=0; i&lt;v; i++) {
+			memo[i].clear();
+		}
+		memset(memoflag,-1,sizeof(memoflag));
+		for (int i=0; i&lt;v; i++) {
+			for (int j=0; j&lt;v; j++) {
+				cin &gt;&gt; g[i][j];
+			}
+		}
+		vector&lt;int&gt; ans;
+		for (int i=0; i&lt;v; i++) {
+			vector &lt;int&gt; s = {i};
+			vector&lt;int&gt; currpath = path(0,s,v);
+			if ( currpath.size() &gt; ans.size()) {
+				ans = currpath;
+			}
+		}
+		for (int i=0; i&lt;ans.size(); i++) {
+			cout &lt;&lt; ans[i] + 1 &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

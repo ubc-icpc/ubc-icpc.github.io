@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int K, T;
+bool matchfast(const vector&lt;int&gt;&amp; a, const vector&lt;int&gt;&amp; b) {
+    int n = a.size(), m = b.size();
+    //check if b can be reached from a by deleting sections
+    int ia = 0, ib = 0, nk = 0;
+    while (ib &lt; m) {
+        int del = 1;
+        while (ia &lt; n &amp;&amp; abs(a[ia]-b[ib]) &gt; T) {
+            del++;
+            ia++;
+        }
+        if (ia &gt;= n) return false;
+        nk += (del-1 + 4)/5;
+        ia++;
+        ib++;
+    }
+    nk += (n-ia + 4)/5;
+    return (nk &lt;= K);
+}
+
+
+int memo[105][105];
+int match(const vector&lt;int&gt;&amp; a, const vector&lt;int&gt;&amp; b, int i, int j) {
+    if (i == -1) return (j == -1 ? 0 : 1000);
+    if (j == -1) return i/5 + 1;
+    if (memo[i][j] != -1) return memo[i][j];
+    
+    memo[i][j] = 1000;
+    if (abs(a[i]-b[j]) &lt;= T) memo[i][j] = match(a,b,i-1,j-1);
+    for (int k = 1; k &lt;= min(5, i+1); k++) {
+        memo[i][j] = min(memo[i][j], 1 + match(a,b,i-k,j));
+    }
+    return memo[i][j];
+}
+
+bool match(const vector&lt;int&gt;&amp; a, const vector&lt;int&gt;&amp; b) {
+    int n = a.size(), m = b.size();
+    if (n &lt; m || n-5*K &gt; m) return false;
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; m; j++) {
+            memo[i][j] = -1;
+        }
+    }
+    return match(a, b, n-1, m-1) &lt;= K;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    /*
+    vector&lt;int&gt; a({6,12,11,6,7,14,25}), b({6,7,7,22});
+    
+    K = 3, T = 5;
+    assert(match(a, b) == true);
+    K = 1, T = 7;
+    assert(match(a, b) == true);
+    K = 1, T = 2;
+    assert(match(a, b) == false);
+    
+    vector&lt;int&gt; c({7,2,3,9,9}), d({1,9,9});
+    K = 1, T = 2;
+    assert(match(c, d) == true);
+    //*/
+    
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++ca &lt;&lt; &quot;:&quot; &lt;&lt; '\n';
+        vector&lt;vector&lt;int&gt;&gt; database;
+        cin &gt;&gt; K &gt;&gt; T;
+
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            int nb; cin &gt;&gt; nb;
+            vector&lt;int&gt; v(nb);
+            for (int j = 0; j &lt; nb; j++) cin &gt;&gt; v[j];
+            database.push_back(v);
+        }
+        int m; cin &gt;&gt; m;
+        for (int i = 0; i &lt; m; i++) {
+            int nb; cin &gt;&gt; nb;
+            vector&lt;int&gt; v(nb);
+            for (int j = 0; j &lt; nb; j++) cin &gt;&gt; v[j];
+            
+            bool bmatch = false;
+            for (int j = 0; j &lt; n; j++) {
+                bmatch = bmatch || matchfast(database[j], v);
+                if (bmatch) break;
+            }
+            
+            if (!bmatch) {
+                for (int j = 0; j &lt; n; j++) {
+                    bmatch = bmatch || match(database[j], v);
+                    if (bmatch) break;
+                }
+            }
+            
+            cout &lt;&lt; &quot;Track #&quot; &lt;&lt; i+1 &lt;&lt; &quot;: &quot;;
+            if (bmatch) cout &lt;&lt; &quot;Match found!&quot; &lt;&lt; '\n';
+            else cout &lt;&lt; &quot;Need to upload this track.&quot; &lt;&lt; '\n';
+        }
+        cout &lt;&lt; '\n';
+    }
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

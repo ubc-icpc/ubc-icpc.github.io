@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+    int n; cin &gt;&gt; n;
+    map&lt;int, vector&lt;int&gt; &gt; m;
+    for (int i = 0; i &lt; n; i++) {
+        int x; cin &gt;&gt; x;
+        m[x].push_back(i+1);
+    }
+    
+    int ans = -1;
+    for (auto it = m.rbegin(); it != m.rend(); it++) {
+        if (it-&gt;second.size() == 1) {
+            ans = it-&gt;second[0];
+            break;
+        }
+    }
+    
+    if (ans == -1) cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+    else cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

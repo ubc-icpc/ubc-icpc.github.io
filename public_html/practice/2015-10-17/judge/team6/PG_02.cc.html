@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+char grid[2005][2005];
+int sgrid[2005][2005];
+vector&lt;pii&gt; pairs;
+int main()
+{
+	int t;
+	cin &gt;&gt; t;
+	while (t--)
+	{
+		int size;
+		cin &gt;&gt; size;
+		int temp_max = 0;
+		memset(sgrid, 0, sizeof(sgrid));
+		for (int i = 0; i &lt; size; i++)
+		{
+			for (int j = 0; j &lt; size; j++)
+			{
+				char c; 
+				cin &gt;&gt; c;
+				grid[i][j] = c;
+			}
+		}
+		for (int i = 0; i &lt; size; i++)
+		{
+			if (grid[0][i] == 'F')
+			{
+				sgrid[0][i] = 0;
+			}
+			else
+			{
+				sgrid[0][i] = 1;
+			}
+			if (grid[i][0] == 'F')
+			{
+				sgrid[i][0] = 0;
+			}
+			else
+			{
+				sgrid[i][0] = 1;
+			}
+		}
+		for (int i = 1; i &lt; size; i++)
+		{
+			for (int j = 1; j &lt; size; j++)
+			{
+				if (grid[i][j] == 'F')
+				{
+					sgrid[i][j] = 0;
+				}
+				else
+				{
+					sgrid[i][j] = min(sgrid[i - 1][j], min(sgrid[i - 1][j - 1], sgrid[i][j - 1])) + 1;
+					if (sgrid[i][j] &gt; temp_max)
+						temp_max = sgrid[i][j];
+				}
+			}
+		}
+		cout &lt;&lt; temp_max &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

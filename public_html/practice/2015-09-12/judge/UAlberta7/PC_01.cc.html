@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+
+int n_practice = 0;
+int n_students = 0;
+int n_brownies = 0;
+int n_approach = 0;
+int n_pergroup = 0;
+
+int main() {
+
+    cin &gt;&gt; n_practice;
+
+    for (int i = 0; i &lt; n_practice; i++) {
+        cin &gt;&gt; n_students;
+        cin &gt;&gt; n_brownies;
+        cin &gt;&gt; n_approach;
+
+        cout &lt;&lt; &quot;Practice #&quot; &lt;&lt; i+1;
+        cout &lt;&lt; &quot;: &quot; &lt;&lt; n_students &lt;&lt; &quot; &quot; &lt;&lt; n_brownies;
+        cout &lt;&lt; &quot;\n&quot;;
+
+        for (int j = 0; j &lt; n_approach; j++){
+
+            cin &gt;&gt; n_pergroup;
+
+            while (n_pergroup &gt;= n_brownies) {
+                n_brownies = n_brownies * 2;
+            }
+            
+            n_brownies = n_brownies - n_pergroup;
+            cout &lt;&lt; n_pergroup &lt;&lt; &quot; &quot; &lt;&lt; n_brownies &lt;&lt; &quot;\n&quot;;
+
+        }
+        cout &lt;&lt; &quot;\n&quot;;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;string&gt;
+#include &quot;stdio.h&quot;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int main()
+{
+    int n;
+    while(scanf(&quot;%d&quot;, &amp;n) != EOF)
+    {
+        // cout &lt;&lt; &quot;n = &quot; &lt;&lt; n &lt;&lt; '\n';
+        vector&lt;int&gt; a(n);
+        for(int i = 0; i &lt; n; i ++)
+        {
+            int temp;
+            scanf(&quot;%d&quot;, &amp;temp);
+            if(temp &gt; 420) temp = 420;
+            a[i] = temp;
+        }
+        sort(a.begin(), a.end());
+        int num = n-1;
+        int res = 0;
+        while(num &gt; 2)
+        {
+            int x = a[num]; int y = a[num-1];
+            res += (a[num]+a[0]);
+            if(a[0]+a[num-1] &lt; 2*a[1])
+                res += (a[0]+a[num-1]);
+            else
+                res += (2*a[1]);
+            num -= 2;
+        }
+        if(num == 1)
+        {
+            res += a[1];
+        }
+        else if(num == 0)
+        {
+            res += a[0];
+        }
+        else
+        {
+            res += (a[0]+a[1]+a[2]);
+        }
+        printf(&quot;%d\n&quot;, res);
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

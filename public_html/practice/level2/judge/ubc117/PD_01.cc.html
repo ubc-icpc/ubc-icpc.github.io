@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;set&gt;
+#include &lt;unordered_set&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;unordered_map&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+
+
+template&lt;class T&gt; struct cplx {
+  T x, y; cplx() {x = 0.0; y = 0.0;}
+  cplx(T nx, T ny=0) {x = nx; y = ny;}
+  cplx operator+(const cplx &amp;c) const {return {x + c.x, y + c.y};}
+  cplx operator-(const cplx &amp;c) const {return {x - c.x, y - c.y};}
+  cplx operator*(const cplx &amp;c) const {return {x*c.x - y*c.y, x*c.y + y*c.x};}
+  cplx&amp; operator*=(const cplx &amp;c) { return *this={x*c.x-y*c.y, x*c.y+y*c.x}; }
+  // Only supports right scalar multiplication like p*c
+  template&lt;class U&gt; cplx operator*(const U &amp;c) const {return {x*c,y*c};}
+  template&lt;class U&gt; cplx operator/(const U &amp;c) const {return {x/c,y/c};} };
+
+typedef cplx&lt;ld&gt; pt;
+
+const ld EPS = 1e-9;
+const ld PI = 3.1415926535897932384626433;
+
+ld cp(const pt&amp; a, const pt&amp; b) { return a.x*b.y - b.x*a.y; }
+ld dp(const pt&amp; a, const pt&amp; b) { return a.x*b.x + a.y*b.y; }
+inline ld abs(const pt &amp;a) {return sqrt(a.x*a.x + a.y*a.y);}
+
+inline bool eq(const pt &amp;a, const pt &amp;b) { return abs(a-b) &lt; EPS; }
+inline ld sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : x/abs(x); }
+
+
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b) {
+  return a.x&lt;b.x-EPS||(a.x&lt;b.x+EPS&amp;&amp;a.y&lt;b.y-EPS);}
+
+bool seg_x_seg(pt a1, pt a2, pt b1, pt b2) {
+  //if (eq(a1,a2) || eq(b1,b2)) return false; // uncomment to exclude endpoints
+  ld za = abs(a2-a1), zb = abs(b2-b1); za=za&gt;EPS?1/za:0; zb=zb&gt;EPS?1/zb:0;
+  int s1 = sgn(cp(a2-a1, b1-a1)*za), s2 = sgn(cp(a2-a1, b2-a1)*za);
+  int s3 = sgn(cp(b2-b1, a1-b1)*zb), s4 = sgn(cp(b2-b1, a2-b1)*zb);
+  if(!s1 &amp;&amp; !s2 &amp;&amp; !s3) { // collinear
+    if (cmp_lex(a2, a1)) swap(a1, a2); if (cmp_lex(b2, b1)) swap(b1, b2);
+    //return cmp_lex(a1, b2) &amp;&amp; cmp_lex(b1, a2);//uncomment to exclude endpoints
+    return !cmp_lex(b2, a1) &amp;&amp; !cmp_lex(a2, b1);
+  } return s1*s2 &lt;= 0 &amp;&amp; s3*s4 &lt;= 0; } //change to &lt; to exclude endpoints
+
+void solve() {
+    int n;
+    cin &gt;&gt; n;
+    ld ang = 0;
+    vector&lt;pt&gt; history;
+    history.push_back(pt(0, 0));
+    bool found = false;
+    int ans = -1;
+
+    for (int i=0; i&lt;n; ++i) {
+        int delta_ang, len;
+        cin &gt;&gt; delta_ang &gt;&gt; len;
+        ang += (ld) delta_ang*PI/180;
+        history.push_back(history.back() + pt(len*cos(ang), len*sin(ang)));
+        //cerr &lt;&lt; &quot; ! &quot; &lt;&lt; history.back().x &lt;&lt; &quot; &quot; &lt;&lt; history.back().y &lt;&lt; endl;
+        if (found) continue;
+        for (int j=0; j&lt;i-1; ++j) {
+            if(seg_x_seg(history[i+1], history[i], history[j], history[j+1])) {
+                found = true;
+                ans = i+1;
+            }
+        }
+    }
+    if (found) {
+        cout &lt;&lt; ans &lt;&lt; &quot;\n&quot;;
+    } else {
+        cout &lt;&lt; &quot;SAFE\n&quot;;
+    }
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int TT;
+    cin &gt;&gt; TT;
+    while (TT--) {
+        solve();
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef double ld;
+typedef complex&lt;ld&gt; pt;
+
+const ld EPS = 1e-8;
+// Return number of intersections. Circles must not be identical.
+int cc_inter(pt p1, ld r1, pt p2, ld r2, pt &amp;i1, pt &amp;i2) {
+  ld dq=norm(p1-p2), rq=r1*r1-r2*r2; pt c=(p1+p2)*0.5 + (p2-p1)*rq*0.5/dq;
+  ld dt=2.0*dq*(r1*r1+r2*r2)-dq*dq-rq*rq;
+  if(dt &lt; -EPS) return 0; if(dt &lt; EPS) { i1=i2=c; return 1; }
+  dt=sqrt(dt)*0.5/dq; i1=c+(p2-p1)*pt(0,1)*dt; i2=c-(p2-p1)*pt(0,1)*dt;
+  return 2; }
+  
+pt p[5005];
+int lbl[5005], sz[5005], c = 1;
+vector&lt;int&gt; g[5005];
+
+int dfs(int v) {
+	if (lbl[v]) return 0;
+	lbl[v] = c;
+	
+	int res = 1;
+	for (int w : g[v]) {
+		res += dfs(w);
+	}
+	return res;
+}
+
+unordered_map&lt;int, vector&lt;int&gt;&gt; m[100005];
+int main() {
+	ios::sync_with_stdio(0);
+	int n; cin &gt;&gt; n;
+	for (int i = 0; i &lt; n; i++) {
+		ld x, y; cin &gt;&gt; x &gt;&gt; y;
+		p[i] = pt(x, y);
+	}
+	
+	vector&lt;pt&gt; inter;
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = i+1; j &lt; n; j++) {
+			if (abs(p[i]-p[j]) &lt;= 2+EPS) {
+				g[i].push_back(j);
+				g[j].push_back(i);
+			}
+			
+			if (abs(p[i]-p[j]) &gt; 4-EPS) continue;
+			pt i1, i2;
+			cc_inter(p[i], 2, p[j], 2, i1, i2);
+			if (i1.real() &gt;= 0 &amp;&amp; i1.imag() &gt;= 0) inter.push_back(i1);
+			if (i2.real() &gt;= 0 &amp;&amp; i2.imag() &gt;= 0) inter.push_back(i2);
+		}
+	}
+	
+	int ans = 0;
+	for (int i = 0; i &lt; n; i++) {
+		if (lbl[i]) continue;
+		sz[c] = dfs(i);
+		ans = max(ans, sz[c++]);
+	}
+	
+	for (int i = 0; i &lt; n; i++) {
+		m[int(p[i].real())][int(p[i].imag())].push_back(i);
+	}
+	
+	for (const auto&amp; q : inter) {
+		set&lt;int&gt; s;
+		int x = int(q.real()), y = int(q.imag());
+		for (int i = max(x-2, 0); i &lt;= x+2; i++) {
+			for (int j = max(y-2, 0); j &lt;= y+2; j++) {
+				for (int k : m[i][j]) {
+					if (abs(p[k] - q) &lt;= 2+EPS) {
+						s.insert(lbl[k]);
+					}
+				}
+			}
+		}
+		int res = 0;
+		for (int i : s) res += sz[i];
+		ans = max(ans, res);
+	}
+	cout &lt;&lt; ans + 1 &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

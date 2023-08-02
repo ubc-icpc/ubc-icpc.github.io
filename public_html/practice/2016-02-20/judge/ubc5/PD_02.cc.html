@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+
+struct e {
+	ld t; string u; char c; bool ato;
+	e(ld tt, string uu, char cc, bool darkopls) : t(tt), u(uu), c(cc), ato(darkopls) {}
+	bool operator&lt;(const e&amp; b) const {
+		return t &lt; b.t;
+	}
+};
+
+ld s2t(string s) {
+	int h = atoi(s.substr(0,2).c_str());
+	int m = atoi(s.substr(3).c_str());
+	return h*60+m;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		map&lt;string,int&gt; ult;
+		set&lt;string&gt; ul, au;
+		set&lt;e&gt; se;
+		int E, to; cin &gt;&gt; E &gt;&gt; to;
+		for (int i = 0; i &lt; E; i++) {
+			string x, y, z;
+			cin &gt;&gt; x &gt;&gt; y;
+			ld time = s2t(x);
+			if (y == &quot;SERVER&quot;) {
+				cin &gt;&gt; z;
+				se.insert(e(time,&quot;&quot;,'R',0));
+			}
+			else {
+				string u;
+				cin &gt;&gt; u &gt;&gt; z;
+				au.insert(u);
+				if (z == &quot;LOG_IN&quot;) {
+					se.insert(e(time,u,'I',0));
+					se.insert(e(time+to-0.1,u,'O',1));
+				}
+				else
+					se.insert(e(time,u,'O',0));
+			}
+		}
+		int mu = 0;
+		for (set&lt;e&gt;::iterator it = se.begin(); it != se.end(); it++) {
+			//cout &lt;&lt; it-&gt;t &lt;&lt; &quot; &quot; &lt;&lt; it-&gt;u &lt;&lt; &quot; &quot; &lt;&lt; it-&gt;c &lt;&lt; endl;
+			if (it-&gt;c == 'I') {
+				au.insert(it-&gt;u);
+				ul.insert(it-&gt;u);
+				ult[it-&gt;u] = it-&gt;t;
+				mu = max(mu, (int)ul.size());
+			}
+			else if (it-&gt;c == 'O') {
+				ul.erase(it-&gt;u);
+				if (!it-&gt;ato) {
+					//cout &lt;&lt; &quot;darko??? &quot; &lt;&lt; ult[it-&gt;u]+to-0.1 &lt;&lt; &quot; &quot; &lt;&lt; it-&gt;u &lt;&lt; &quot; &quot; &lt;&lt; 'O' &lt;&lt; &quot; &quot; &lt;&lt; 1 &lt;&lt; &quot; &quot; &lt;&lt; se.lower_bound(e(ult[it-&gt;u]+to-0.1,it-&gt;u,'0',1))-&gt;t &lt;&lt; &quot; &quot; &lt;&lt; se.lower_bound(e(ult[it-&gt;u]+to-0.1,it-&gt;u,'0',1))-&gt;u &lt;&lt; &quot; &quot; &lt;&lt; se.lower_bound(e(ult[it-&gt;u]+to-0.1,it-&gt;u,'0',1))-&gt;c &lt;&lt; &quot; &quot; &lt;&lt; se.lower_bound(e(ult[it-&gt;u]+to-0.1,it-&gt;u,'0',1))-&gt;ato &lt;&lt; &quot;\n&quot;;
+					se.erase(se.lower_bound(e(ult[it-&gt;u]+to-0.10001,it-&gt;u,'O',1)));
+				}
+			}
+			else if (it-&gt;c == 'R')
+				ul.clear();
+		}
+		cout &lt;&lt; au.size() &lt;&lt; &quot; &quot; &lt;&lt; mu &lt;&lt; &quot;\n&quot;;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

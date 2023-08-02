@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(0);
+
+	double a, b, c, d, m, t;
+
+	while (cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; m &gt;&gt; t) {
+		double epsilon = 1e-9;
+		double left, mid, right;
+		left = 0;
+		right = t/(m*c); // this always works because positive numbers
+		while (right-left &gt; epsilon) {
+			mid = (left + right) / 2;
+			if (m*(a*mid*mid*mid + b*mid*mid + c*mid + d) &lt; t)
+				left = mid;
+			else
+				right = mid;
+		}
+		cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; ((int)(100*mid))/100.0 &lt;&lt; '\n';
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class mahremonadesbringalldemboystodayard {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+
+		int n = sc.nextInt();
+
+		int d; // DAYZZ
+		int x; // # of remons
+		int s; // # of sugar yes plz
+
+		for (int i = 0; i &lt; n; i++) {
+
+			d = sc.nextInt();
+			x = sc.nextInt();
+			s = sc.nextInt();
+
+			int[][] remons = new int[d][3];
+
+			for (int j = 0; j &lt; d; j++) {
+				for (int k = 0; k &lt; 3; k++) {
+					// heheh k &lt;3
+
+					remons[j][k] = sc.nextInt();
+
+				}
+			}
+
+			int remonTotal = 0;
+			int remonMin = remons[0][1];
+
+			for (int j = 0; j &lt; d; j++) {
+				if (remonMin &gt; remons[j][1]) {
+					remonMin = remons[j][1];
+					remonTotal += remonMin * remons[j][0] * x;
+				} else {
+					remonTotal += remonMin * remons[j][0] * x;
+				}
+			}
+
+			int sugahTotal = 0;
+			int sugahMin = remons[0][2];
+			int sugahBags = 0;
+			int sugahCount = 0;
+
+			for (int j = 0; j &lt; d; j++) {
+				sugahBags=0;
+				while (((sugahBags * 80) + sugahCount) &lt; remons[j][0] * s) {
+					sugahBags++;
+				}
+
+				if (sugahMin &gt; remons[j][2]) {
+					sugahMin = remons[j][2];
+				}
+				//System.out.println(&quot;weed bags: &quot; + sugahBags);
+				//System.out.println(&quot;sugarMin: &quot; + sugahMin);
+				sugahTotal += sugahBags*sugahMin;
+				sugahCount = (sugahCount + (sugahBags * 80)) - (remons[j][0] * s);
+
+				
+
+			}
+			
+			System.out.println(remonTotal+sugahTotal);
+			
+		}
+
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

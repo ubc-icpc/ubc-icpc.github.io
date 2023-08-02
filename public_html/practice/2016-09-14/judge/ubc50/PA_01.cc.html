@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  int p; cin &gt;&gt; p;
+  for (int i = 0; i &lt; p; i++) {
+    int k, n; cin &gt;&gt; k &gt;&gt; n;
+    cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+    ll tmp = n;
+    cout &lt;&lt; (n*(n+1))/2 &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; n*n &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; (n*(n+1));
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

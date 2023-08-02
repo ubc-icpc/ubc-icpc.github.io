@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int N = 100005;
+int low[N],vis[N],scomp[N],scompNum,I;
+vector&lt;int&gt; adj[N]; stack&lt;int&gt; verts;
+void scc(int u) { low[u] = vis[u] = ++I; verts.push(u);
+  for (int v : adj[u]) {
+    if (!vis[v]) scc(v);
+    if (scomp[v] == -1) low[u] = min(low[u], low[v]); }
+  if (vis[u] &lt;= low[u]) { int v;
+    do { v=verts.top(); verts.pop(); scomp[v]=scompNum; } while (v != u);
+    ++scompNum; }}
+void get_scc(int n) { assert(verts.empty()); 
+    memset(vis,0,sizeof vis); memset(scomp,-1,sizeof scomp);
+scompNum=I=0; for (int i=0; i&lt;n; ++i) if (!vis[i]) scc(i); }
+  
+set&lt;int&gt; sadj[N];
+int indeg[N], seen[N];
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n, m; cin &gt;&gt; n &gt;&gt; m;
+        for (int i = 0; i &lt; n; i++) {
+            adj[i].clear();
+        }
+        
+        for (int i = 0; i &lt; m; i++) {
+            int a, b; cin &gt;&gt; a &gt;&gt; b;
+            adj[a].push_back(b);
+        }
+        
+        get_scc(n);
+        for (int i = 0; i &lt; scompNum; i++) {
+            sadj[i].clear();
+            indeg[i] = 0;
+            seen[i] = 0;
+        }
+        
+        for (int i = 0; i &lt; n; i++) {
+            for (int j : adj[i]) {
+                if (scomp[i] != scomp[j]) {
+                    sadj[scomp[i]].insert(scomp[j]);
+                    indeg[scomp[j]]++;
+                }
+            }
+        }
+        
+        // check only one node with indegree 0
+        vector&lt;int&gt; locs;
+        for (int i = 0; i &lt; scompNum; i++) {
+            if (indeg[i] == 0) {
+                locs.push_back(i);
+            }
+        }
+        
+        // check connectedness 
+        queue&lt;int&gt; q({locs[0]});
+        seen[locs[0]] = true;
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            for (int w : sadj[u]) {
+                if (!seen[w]) {
+                    q.push(w);
+                    seen[w] = true;
+                }
+            }
+        }
+        
+        bool reachall = true;
+        for (int i = 0; i &lt; scompNum; i++) {
+            if (seen[i] == 0) {
+                reachall = false;
+            }
+        }
+        
+        if (!reachall) {
+            cout &lt;&lt; &quot;Confused\n&quot; &lt;&lt; endl;
+        } else {
+            for (int i = 0; i &lt; n; i++) {
+                if (scomp[i] == locs[0]) {
+                    cout &lt;&lt; i &lt;&lt; '\n';
+                }
+            }
+            cout &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

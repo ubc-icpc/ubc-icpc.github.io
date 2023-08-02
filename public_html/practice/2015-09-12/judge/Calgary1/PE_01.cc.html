@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+const double EP = 1e-9;
+const double PI = 3.14159265358979;
+
+int main() {
+	int tc;
+	cin &gt;&gt; tc;
+	while (tc--) {
+		double ans, S, R;
+		cin &gt;&gt; S &gt;&gt; R;
+		if (R + EP &gt; sqrt(2*0.25*S*S)) {
+			ans = S*S;
+		} else if (R - EP &lt; 0.5*S) {
+			ans = PI*R*R;
+		} else {
+			double theta1 = acos(0.5*S/R);
+			double theta2 = 0.5*M_PI-2.0*theta1;
+			double nca = 0.25*S*S-0.5*S*R*sin(theta1)-0.5*R*R*theta2;
+			ans = S*S - 4*nca;
+		}
+		cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; ans &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

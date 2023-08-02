@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;deque&gt;
+#include &lt;stack&gt;
+#include &lt;bitset&gt;
+#include &lt;algorithm&gt;
+#include &lt;functional&gt;
+#include &lt;numeric&gt;
+#include &lt;utility&gt;
+#include &lt;sstream&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstdio&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+#include &lt;limits&gt;
+#include &lt;string&gt;
+#include &lt;cassert&gt;
+
+using namespace std;
+typedef long long LL;
+typedef pair&lt;int,int&gt; pii;
+
+#define forup(i,a,b) for(int i=a; i&lt;b; ++i)
+#define fordn(i,a,b) for(int i=a; i&gt;b; --i)
+#define rep(i,a) for(int i=0; i&lt;a; ++i)
+
+#define dforup(i,a,b) for(i=a; i&lt;b; ++i)
+#define dfordn(i,a,b) for(i=a; i&gt;b; --i)
+#define drep(i,a) for(i=0; i&lt;a; ++i)
+
+#define slenn(s,n) for(n=0; s[n]!=13 and s[n]!=0; ++n);s[n]=0
+
+#define gi(x) scanf(&quot;%d&quot;,&amp;x)
+#define gl(x) cin&gt;&gt;x
+#define gd(x) scanf(&quot;%lf&quot;,&amp;x)
+#define gs(x) scanf(&quot;%s&quot;,x)
+
+#define pis(x) printf(&quot;%d &quot;,x)
+#define pin(x) printf(&quot;%d\n&quot;,x)
+#define pls(x) cout&lt;&lt;x&lt;&lt;&quot; &quot;
+#define pln(x) cout&lt;&lt;x&lt;&lt;&quot;\n&quot;
+#define pds(x) printf(&quot;%.12f &quot;,x)
+#define pdn(x) printf(&quot;%.12f\n&quot;,x)
+#define pnl() printf(&quot;\n&quot;)
+
+#define fs first
+#define sc second
+
+#define pb push_back
+
+// Min Cost Maximum Flow Codechunk
+
+// MinCostMaxFlow Codechunk
+// Refreshing needs to be handled in case of multiple use (by resetting adjl)
+
+const int max_v=32+5;
+const int inv=1000000000;
+const int hinv=500000000;
+
+// u:neighbour, p:price per unit flow, c:capacity, f:flow
+// oix: if adjlel a belongs to adjl[v] then oix is s.t. adjl[a.u][a.oix].u=v;
+// oix: abbreviation for 'opposite index'
+struct adjlel
+{
+	int u,p,op,c,f,oix;
+	adjlel(){}
+	adjlel(int u_, int p_, int c_, int f_, int oix_){u=u_; p=p_; op=p_; c=c_; f=f_; oix=oix_;}
+};
+
+int s,t;
+int v;
+vector&lt; adjlel &gt; adjl[max_v];
+
+int odst[max_v];
+int dst[max_v];
+int par[max_v];
+int pvix[max_v];
+int vpix[max_v];
+int aug[max_v];
+vector&lt;pii&gt; hp; // For augmentingpath()
+bool burnt[max_v]; // For augmentingpath()
+queue&lt;int&gt; Q; // For initnetwork()
+bool inQ[max_v]; // For initnetwork()
+int augval;
+
+bool augmentingpath()
+{
+	fill(dst,dst+v,inv);
+	fill(burnt,burnt+v,false);
+	
+	odst[s]=0; dst[s]=0; par[s]=s; aug[s]=inv;
+	hp.clear(); hp.pb(pii(dst[s],s));
+	
+	while((int)hp.size()&gt;0)
+	{
+		int vt=hp[0].sc;
+		pop_heap(hp.begin(),hp.end(),greater&lt;pii&gt;()); hp.pop_back();
+
+		if(burnt[vt]) continue;
+		burnt[vt]=true;
+		
+		rep(i,adjl[vt].size())
+		{
+			int nb=adjl[vt][i].u;
+			
+			if(adjl[vt][i].c-adjl[vt][i].f&gt;0 and dst[vt]+adjl[vt][i].p&lt;dst[nb])
+			{
+				dst[nb]=dst[vt]+adjl[vt][i].p;
+				odst[nb]=odst[vt]+adjl[vt][i].op;
+				hp.push_back(pii(dst[nb],nb)); push_heap(hp.begin(),hp.end(),greater&lt;pii&gt;());
+				pvix[nb]=i; vpix[nb]=adjl[vt][i].oix;
+				par[nb]=vt;
+				aug[nb]=min(aug[vt],adjl[vt][i].c-adjl[vt][i].f);
+			}
+		}
+	}
+	
+	augval=aug[t];
+	return burnt[t];
+}
+ 
+void initnetwork()
+{
+	while(!Q.empty()) Q.pop();
+	fill(dst,dst+v,inv);
+	fill(inQ,inQ+v,false);
+	
+	dst[s]=0;
+	Q.push(s);
+	inQ[s]=true;
+	
+	while(!Q.empty())
+	{
+		int vt=Q.front(); Q.pop();
+		inQ[vt]=false;
+		
+		rep(i,adjl[vt].size())
+		{
+			int nb=adjl[vt][i].u;
+			
+			if(adjl[vt][i].c-adjl[vt][i].f&gt;0 and dst[vt]!=inv and dst[vt]+adjl[vt][i].p&lt;dst[nb])
+			{
+				if(not inQ[nb]) { Q.push(nb); inQ[nb]=true; }
+				dst[nb]=dst[vt]+adjl[vt][i].p;
+			}
+		}
+	}
+}
+
+void reducecosts()
+{
+	rep(vt,v)
+		rep(i,adjl[vt].size())
+			if(adjl[vt][i].c-adjl[vt][i].f&gt;0)
+			{
+				adjl[vt][i].p+=(dst[vt]-dst[adjl[vt][i].u]);
+				adjl[adjl[vt][i].u][adjl[vt][i].oix].p=0;
+			}
+}
+ 
+void augmentflow(int vt)
+{
+  if(par[vt]!=vt)
+  {
+    adjl[par[vt]][pvix[vt]].f+=augval;
+    adjl[vt][vpix[vt]].f-=augval;
+    augmentflow(par[vt]);
+  }
+}
+
+int findmincostmaxflow()
+{
+	initnetwork();
+	reducecosts();
+
+	/*rep(vt,v)
+	{
+		rep(i,adjl[vt].size())
+			cout&lt;&lt;&quot;(&quot;&lt;&lt;vt&lt;&lt;&quot;,&quot;&lt;&lt;adjl[vt][i].u&lt;&lt;&quot;) &quot;&lt;&lt;adjl[vt][i].c&lt;&lt;&quot; :: &quot;;
+		cout&lt;&lt;&quot;\n&quot;;
+	}*/
+
+    while(augmentingpath())
+    {
+    	//cout&lt;&lt;&quot;Here\n&quot;;
+    	reducecosts();
+    	augmentflow(t);
+    }
+	
+	int mincostmaxflow=0;
+	/*rep(vt,v)
+		rep(nb,v)
+			if(f[vt][nb]&gt;0)
+				mincostmaxflow+=f[vt][nb]*p[vt][nb];*/
+	rep(vt,v)
+		rep(i,adjl[vt].size())
+		{
+			//cout&lt;&lt;&quot;vt: &quot;&lt;&lt;vt&lt;&lt;&quot; nb: &quot;&lt;&lt;adjl[vt][i].u&lt;&lt;&quot; flow:&quot;&lt;&lt;adjl[vt][i].f&lt;&lt;&quot; price:&quot;&lt;&lt;adjl[vt][i].op&lt;&lt;&quot;\n&quot;;
+			//cout&lt;&lt;adjl[vt][i].f&lt;&lt;&quot;\n&quot;;
+			if(adjl[vt][i].f&gt;0)
+			{
+				mincostmaxflow+=(adjl[vt][i].f*adjl[vt][i].op);
+				//cout&lt;&lt;&quot;Here\n &quot;&lt;&lt;adjl[vt][i].f&lt;&lt;&quot; &quot;&lt;&lt;adjl[vt][i].op&lt;&lt;&quot;\n&quot;;
+			}
+			//cout&lt;&lt;&quot;@@ &quot;&lt;&lt;mincostmaxflow&lt;&lt;&quot;\n&quot;;
+		}
+	return mincostmaxflow;
+}
+
+void addedge(int uu, int vv, int pp, int cc)
+{
+	adjl[uu].pb(adjlel(vv,pp,cc,0,adjl[vv].size()));
+	adjl[vv].pb(adjlel(uu,-pp,0,0,adjl[uu].size()-1));
+}
+
+// End of Codechunk
+
+const int max_n=10+5;
+const int max_m=10+5;
+
+int T;
+int m,n,A,B;
+int a[max_n];
+int b[max_n];
+int c[max_m][max_n];
+
+int main()
+{
+	gi(T);
+
+	rep(z,T)
+	{
+		gi(m); gi(n); gi(A); gi(B);
+
+		v=m+2*n+2;
+		rep(i,v)
+			adjl[i].clear();
+		s=0; t=v-1;
+
+		rep(i,n)
+			gi(a[i]);
+		rep(i,n)
+			gi(b[i]);
+		rep(i,m)
+			rep(j,n)
+			{
+				gi(c[i][j]);
+				//cout&lt;&lt;i&lt;&lt;&quot; &quot;&lt;&lt;j&lt;&lt;&quot; :: c :: &quot;&lt;&lt;c[i][j]&lt;&lt;&quot;\n&quot;;
+			}
+
+		rep(i,n)
+			addedge(s,i+1,0,a[i]);
+		rep(i,n)
+			addedge(i+n+m+1,t,0,b[i]);
+		rep(i,n)
+			rep(j,m)
+				addedge(i+1,j+n+1,A*c[j][i],hinv);
+		rep(i,n)
+			rep(j,m)
+				addedge(j+n+1,i+n+m+1,B*c[j][i],hinv);
+
+		//initnetwork();
+		pin(findmincostmaxflow());
+	}
+	
+	return 0;
+} </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

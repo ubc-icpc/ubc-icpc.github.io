@@ -1,0 +1,47 @@
+<html>
+<head><title>ACM ICPC PacNW 2013 scoreboard</title></head>
+<script type="text/javascript">
+<!--
+var n = 1;
+
+var times = [
+"",
+"13:39",
+"13:46",
+"13:47",
+"13:56",
+"14:01",
+"14:07",
+"14:09",
+"14:11",
+"14:18",
+"14:22",
+"14:34",
+"14:36",
+"14:40",
+"14:54",
+"14:56",
+"15:16",
+"16:02",
+"16:13",
+"16:23",
+"17:01",
+"17:32",
+"(end)"
+]
+
+window.onload = function() {
+    window.setInterval(function() {
+        n = (n % 22) + 1;
+        document.getElementById("image").src = "acmicpc-" + n + ".jpg";
+        document.getElementById("count").innerHTML = n;
+        document.getElementById("time").innerHTML = times[n];
+    }, 2000);
+}
+//-->
+</script>
+<body>
+<img id="image" src="acmicpc-1.jpg" />
+<p>Image <span id="count">1</span> of 22: time <span id="time">13:39</span></p>
+</body>
+</html>

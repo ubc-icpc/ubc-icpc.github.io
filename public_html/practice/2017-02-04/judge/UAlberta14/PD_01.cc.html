@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;sstream&gt;
+
+using namespace std;
+typedef long long ll;
+
+int N;
+ll a, b, dp;
+
+
+ll s(ll x){
+	ll ans=0;
+	stringstream ss;
+	ss&lt;&lt;x;
+	string myS = ss.str();
+	for(char s: myS){
+		ans+= s -'0';	
+	}
+
+	return ans;
+}
+
+ll f(ll x){
+	if (x&lt;=0)	return 0;
+	if(x%10==0)	return	10*f(x/10) + 45*x/10;
+	return f(x-1)+s(x-1);
+}
+
+
+int main(){
+	cin &gt;&gt;N;
+	while(N--){
+		cin &gt;&gt;a&gt;&gt;b;
+		
+		cout&lt;&lt;f(b+1)-f(a)&lt;&lt;endl;
+
+
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+
+int main() {
+  int T;
+  for (cin &gt;&gt; T; T &gt; 0; --T) {
+    int n; cin &gt;&gt; n;
+    vi lengths(n);
+    for (int i = 0; i &lt; n; ++i)
+      cin &gt;&gt; lengths[i];
+    sort(lengths.begin(), lengths.end());
+    int curr_height = lengths[0];
+    for (int i = 1; i &lt; n; ++i) {
+      if (lengths[i] == curr_height)
+        continue;
+      int diff_height = lengths[i] - curr_height;
+      cout &lt;&lt; diff_height &lt;&lt; ' ' &lt;&lt; i &lt;&lt; endl;
+      curr_height = lengths[i];
+    }
+    cout &lt;&lt; endl;
+    
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

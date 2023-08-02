@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.HashSet;
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-09-03.
+ */
+public class Trip {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+
+        int noOfCases = Integer.parseInt(s.nextLine());
+
+        for(int i = 0; i &lt; noOfCases; i++) {
+            String line = s.nextLine();
+            System.out.println(line);
+            String[] theCase = line.split(&quot;\\s+&quot;);
+            int distance = Integer.parseInt(theCase[0]);
+            int gasFrequency = Integer.parseInt(theCase[1]);
+            int foodFrequency = Integer.parseInt(theCase[2]);
+
+            HashSet&lt;Integer&gt; stops = new HashSet&lt;Integer&gt;();
+
+            for(int j = 1; j * gasFrequency &lt; distance; j++){
+                stops.add(j*gasFrequency);
+            }
+
+            for(int k = 1; k * foodFrequency &lt; distance; k++){
+                stops.add(k * foodFrequency);
+            }
+            System.out.println(stops.size());
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

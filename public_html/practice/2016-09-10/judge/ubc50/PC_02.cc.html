@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, pair&lt;int, int&gt;&gt; pipii;
+
+pipii ExtendedGCD(int a, int b) {
+  if (a == 0) {
+    return {b, {0, 1}};
+  }
+  auto tmp = ExtendedGCD(b%a, a);
+  return {tmp.first, {tmp.second.second- (b/a)*tmp.second.first,
+  tmp.second.first}};
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int k, c;
+    cin &gt;&gt; k &gt;&gt; c;
+    if (__gcd(k,c) != 1) {
+      cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+      continue;
+    }
+    auto res = ExtendedGCD(c, k);
+    while (res.second.second &gt; 0 ||res.second.first &lt; 0) {
+      res.second.second -= c;
+      res.second.first += k;
+    }
+    if (res.second.first &gt; 1e9)
+      cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+    cout &lt;&lt; res.second.first &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

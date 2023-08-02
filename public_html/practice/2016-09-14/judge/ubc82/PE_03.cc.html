@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+
+int P, n, a, b;
+
+bool cc[1000];
+
+int main(){
+	scanf(&quot;%d&quot;, &amp;P);
+	for(int i=0;i&lt;P;i++){
+		scanf(&quot;%d&quot;, &amp;n);
+		scanf(&quot;%d/%d&quot;, &amp;a, &amp;b);
+		long long left=0, depth=0;
+		while (a!=b){
+			if (a&gt;b){
+				cc[depth] = 1;
+				depth++;
+				a-=b;
+			}
+			if (a&lt;b){
+				cc[depth] = 0;
+				depth++;
+				b-=a;
+			}
+		}
+		for(int j=depth-1;j&gt;=0;j--){
+			left = (left&lt;&lt;1)+cc[j];
+		}
+		printf(&quot;%d %lld\n&quot;, n, left+(1&lt;&lt;depth));
+	//	cout &lt;&lt; left&lt;&lt; &quot; &quot; &lt;&lt; (1&lt;&lt;depth)&lt;&lt;endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

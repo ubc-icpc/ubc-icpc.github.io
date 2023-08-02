@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+const ll MOD = 1e9;
+// long long fibonacci(int n)
+// {
+//     long long fib[2][2]= {{1,1},{1,0}},ret[2][2]= {{1,0},{0,1}},tmp[2][2]= {{0,0},{0,0}};
+//     int i,j,k;
+//     while(n)
+//     {
+//         if(n&amp;1)
+//         {
+//             memset(tmp,0,sizeof tmp);
+//             for(i=0; i&lt;2; i++) for(j=0; j&lt;2; j++) for(k=0; k&lt;2; k++)
+//                         tmp[i][j]=(tmp[i][j]+ret[i][k]*fib[k][j]);
+//             for(i=0; i&lt;2; i++) for(j=0; j&lt;2; j++) ret[i][j]=tmp[i][j];
+//         }
+//         memset(tmp,0,sizeof tmp);
+//         for(i=0; i&lt;2; i++) for(j=0; j&lt;2; j++) for(k=0; k&lt;2; k++)
+//                     tmp[i][j]=(tmp[i][j]+fib[i][k]*fib[k][j]);
+//         for(i=0; i&lt;2; i++) for(j=0; j&lt;2; j++) fib[i][j]=tmp[i][j];
+//         n/=2;
+//     }
+//     return (ret[0][1]);
+// }
+
+vector&lt;vector&lt;ll&gt;&gt; multiply(const vector&lt;vector&lt;ll&gt;&gt; &amp;a, const vector&lt;vector&lt;ll&gt;&gt; &amp;b) {
+  vector&lt;vector&lt;ll&gt;&gt; ans(2, vector&lt;ll&gt;(2));
+  for (int i = 0; i &lt; 2; i++) {
+    for (int j = 0; j &lt; 2; j++) {
+      ans[i][j] = 0;
+      for (int k = 0; k &lt; 2; k++) {
+        ans[i][j] += (a[i][k]*b[k][j]);
+        ans[i][j] = ans[i][j]%MOD;
+      }
+    }
+  }
+  return ans;
+}
+
+vector&lt;vector&lt;ll&gt;&gt; po(const vector&lt;vector&lt;ll&gt;&gt; &amp;a, ll n) {
+  vector&lt;vector&lt;ll&gt;&gt; ans(2, vector&lt;ll&gt;(2));
+  ans[0][0] = ans[1][1] = 1;
+  ans[1][0] = ans[0][1] = 0;
+  if (n == 0) {
+    return ans;
+  }
+  if (n==1) {
+    return a;
+  }
+  auto r = po(a, n/2);
+  auto tmp = multiply(r,r);
+  if (n%2==1)
+    tmp = multiply(tmp,a);
+  return tmp;
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  int p; cin &gt;&gt; p;
+  vector&lt;vector&lt;ll&gt;&gt; tmp(2, vector&lt;ll&gt;(2));
+  tmp[0][0] = tmp[0][1] = tmp[1][0] = 1;
+  tmp[1][1] = 0;
+  while (p--) {
+    int k; ll y;
+    cin &gt;&gt; k &gt;&gt; y;
+    cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+    // cout &lt;&lt; fibonacci(y) &lt;&lt; endl;
+    auto res = po(tmp,y);
+    //cout &lt;&lt; res[0][0] &lt;&lt; &quot; &quot; &lt;&lt; res[0][1] &lt;&lt; &quot; &quot; &lt;&lt; res[1][0] &lt;&lt; &quot; &quot; &lt;&lt; res[1][1] &lt;&lt; endl;
+    cout &lt;&lt; res[0][1] &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

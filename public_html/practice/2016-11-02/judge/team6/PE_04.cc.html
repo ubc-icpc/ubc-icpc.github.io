@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;algorithm&gt;
+#include &lt;utility&gt;
+#include &lt;iostream&gt;
+
+#define INT_MAX 10e12
+
+using namespace std;
+
+
+typedef struct { long long from, to, length; } edge;
+
+vector&lt;vector&lt;edge&gt;&gt; graph;
+vector&lt;vector&lt;edge&gt;&gt; total_graph;
+
+long long dijkstra(const vector&lt;vector&lt;edge&gt;&gt; &amp;graph, long long source, long long target) {
+  vector&lt;long long&gt; dist(graph.size(), INT_MAX);
+  dist[source] = 0;
+  set&lt;pair&lt;long long,long long&gt;&gt; active_vertices;
+  active_vertices.insert({0,source});
+
+  while (!active_vertices.empty()) {
+    long long where = active_vertices.begin()-&gt;second;
+    if (where == target) {
+      return dist[where];
+    }
+
+    active_vertices.erase(active_vertices.begin());
+    for (auto ed : graph[where])
+      if (dist[ed.to] &gt; dist[where] + ed.length) {
+        active_vertices.erase({dist[ed.to], ed.to});
+        dist[ed.to] = dist[where] + ed.length;
+        active_vertices.insert({dist[ed.to], ed.to});
+      }
+  }
+  return INT_MAX;
+}
+
+
+void build_graph(long long k) {
+  for(long long i = 0; i &lt; total_graph.size(); i++) {
+    graph[i].clear();
+    vector&lt;edge&gt; ve = total_graph[i];
+    for(edge e : ve) {
+      if(e.length &lt;= k) {
+        graph[i].push_back(e);      
+      }
+    }
+  }
+}
+
+int main() {
+  long long n,m,X;
+  cin &gt;&gt; n &gt;&gt; m &gt;&gt; X;
+  long long s, t, w;
+
+  graph = vector&lt;vector&lt;edge&gt;&gt;(n+1, vector&lt;edge&gt;());
+  total_graph = vector&lt;vector&lt;edge&gt;&gt;(n+1, vector&lt;edge&gt;());
+
+  for(long long i = 0; i &lt; m; i++) {
+    cin &gt;&gt; s &gt;&gt; t &gt;&gt; w;
+    total_graph[s].push_back({ .from = s, .to = t, .length = w });
+    total_graph[t].push_back({ .from = t, .to = s, .length = w });
+  }
+
+  build_graph(10e8);
+  double lim = dijkstra(graph, 1, n) * (100 + X);
+
+  long long lo = 0;
+  long long hi = 1e9;
+  long long mid = (lo + hi)/2;
+  while(lo &lt; hi) {
+    mid = (lo + hi)/2;
+    build_graph(mid);
+    if(100*dijkstra(graph, 1, n) &lt;= lim) {
+      hi = mid;
+    } else {
+      lo = mid + 1;
+    }
+  }
+  cout &lt;&lt; hi &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

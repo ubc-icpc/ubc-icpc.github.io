@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, M, I;
+vector&lt;vector&lt;int&gt; &gt; m;
+vector&lt;pair&lt;int, vector&lt;int&gt; &gt; &gt; res;
+vector&lt;int&gt; c, l, g;
+vector&lt;bool&gt; v;
+stack&lt;int&gt; S;
+
+void scc(int n) {
+  c[n] = l[n] = ++I;
+  S.push(n);
+  for (int i = 0; i &lt; m[n].size(); ++i) {
+    if (!c[m[n][i]]) {
+      scc(m[n][i]);
+      //l[n] = min(l[n], l[m[n][i]]);
+    }
+    if (v[m[n][i]]) {
+      l[n] = min(l[n], l[m[n][i]]);
+    }
+  }
+  if (l[n] &gt;= c[n]) {
+    pair&lt;int, vector&lt;int&gt; &gt; temp;
+    int i;
+    do {
+      i = S.top();
+      S.pop();
+      temp.second.push_back(i);
+      g[i] = res.size();
+      v[i] = false;
+    } while (n != i);
+    res.push_back(temp);
+  }
+}
+
+int main() {
+  cin &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; N &gt;&gt; M;
+    I = 0;
+    m = vector&lt;vector&lt;int&gt; &gt;(N);
+    c = vector&lt;int&gt;(N);
+    l = vector&lt;int&gt;(N);
+    g = vector&lt;int&gt;(N);
+    S = stack&lt;int&gt;();
+    v = vector&lt;bool&gt;(N, true);
+    res = vector&lt;pair&lt;int, vector&lt;int&gt; &gt; &gt;();
+    while (M--) {
+      int A, B; cin &gt;&gt; A &gt;&gt; B;
+      m[A].push_back(B);
+    }
+    for (int i = 0; i &lt; N; ++i)
+      if (!c[i])
+	scc(i);
+    for (int i = 0; i &lt; N; ++i)
+      for (int j = 0; j &lt; m[i].size(); ++j)
+	if (g[i] != g[m[i][j]])
+	  ++res[g[m[i][j]]].first;
+    int count = 0, rs = -1;
+    for (int i = 0; i &lt; res.size(); ++i)
+      if(res[i].first == 0) {
+	++count;
+	rs = i;
+      }
+    if (count &gt; 1) cout &lt;&lt; &quot;Confused&quot; &lt;&lt; endl;
+    else {
+      sort(res[rs].second.begin(), res[rs].second.end());
+      for (vector&lt;int&gt;::iterator it = res[rs].second.begin(); it != res[rs].second.end(); ++it)
+	cout &lt;&lt; *it &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

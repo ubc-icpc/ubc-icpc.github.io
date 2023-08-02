@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef unsigned long long ll;
+
+int main()
+{
+	ll C;
+	ll D = 1;
+	cin &gt;&gt; C;
+	for (ll x = 2; x &lt;= 2097151; x++)
+	{
+		if (C % x == 0)
+		{
+			int p = 0;
+			while (C % x == 0)
+			{
+				p++;
+				C /= x;
+			}
+			if (p % 2 == 1)
+				D *= x;
+		}
+	}
+	ll sqrtC = (sqrt(C) + 0.5);
+	//cout &lt;&lt; sqrtC &lt;&lt; endl;
+	if (sqrtC * sqrtC != C)
+		D *= C;
+	cout &lt;&lt; D &lt;&lt; endl;
+}
+</code>
+</pre>
+</body>
+</html>

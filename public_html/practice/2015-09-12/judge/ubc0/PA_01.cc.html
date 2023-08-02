@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+
+using namespace std;
+const int ZACKS_LOC = 17;
+const int MACKS_LOC = 18;
+
+void solveLine() {
+    vector&lt;bool&gt; present(200, false);
+    int player;
+    for (int i = 0; i &lt; 9; i++) {
+        cin &gt;&gt; player;
+        present[player] = true;
+        cout &lt;&lt; player &lt;&lt; &quot; &quot;;
+    }
+
+    cin &gt;&gt; player;
+    present[player] = true;
+    cout &lt;&lt; player &lt;&lt; endl;
+
+    if (present[ZACKS_LOC] &amp;&amp; present[MACKS_LOC]) {
+        cout &lt;&lt; &quot;both&quot; &lt;&lt; endl;
+    } else if (present[ZACKS_LOC] &amp;&amp; !present[MACKS_LOC]) {
+        cout &lt;&lt; &quot;zack&quot; &lt;&lt; endl;
+    } else if (!present[ZACKS_LOC] &amp;&amp; present[MACKS_LOC]) {
+        cout &lt;&lt; &quot;mack&quot; &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+    }
+
+}
+
+int main(int argc, char* argv[]) {
+    // Setup
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+
+    int numSets;
+    cin &gt;&gt; numSets;
+
+    while (numSets--) {
+        solveLine();
+        cout &lt;&lt; endl;
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+const int MAX = 35;
+int A[MAX];
+
+int main(){
+   int n;
+   while(cin &gt;&gt; n &amp;&amp; n){
+      int time = 0;
+      for(int i = 0; i &lt; n; i++){
+	 cin &gt;&gt; A[i];
+      }
+      sort(A,A+n);
+      reverse(A,A+n);
+      int timesave = 0;
+      for(int i = 0; i &lt; n; i++){
+	 time += 30 + A[i];
+	 
+	 if(i != 0){
+	    if(timesave &gt; 30){
+	       time -= 30;
+	       timesave -=30;
+	    }
+	    else{
+	       time -= timesave;
+	       timesave = 0;
+	    }
+	 }
+	 timesave += A[i];
+      }
+	 
+      cout &lt;&lt; time/60 &lt;&lt; &quot;:&quot;;
+      if(time%60 &lt; 10)
+	 cout &lt;&lt; &quot;0&quot;;
+      cout &lt;&lt; time%60 &lt;&lt; endl;
+   }
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

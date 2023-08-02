@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+const ll M=1e9+7;
+ll DP[5010][5010];
+ll fac[5010];
+ll choose(int n, int k){
+    if (n&lt;k) return 0;
+    if (k==0) return 1;
+    if (k==n) return 1;
+    if (DP[n][k]!=-1) return DP[n][k];
+    return DP[n][k]=(choose(n-1,k)+choose(n-1,k-1))%M;
+}
+ll DP2[5010][5010];
+ll dp(int n, int l){ //how many ways to permute n so that from left see l
+    if (n&lt;l) return 0; 
+    if (l==0) {
+        if (n==0) return 1;
+        return 0;
+    }
+    if (l==1) return fac[n-1];
+    if (DP2[n][l]!=-1) return DP2[n][l];
+    ll ans=dp(n-1,l-1)+((n-1)*dp(n-1,l))%M; ans=ans%M;
+    //cout&lt;&lt;n&lt;&lt;&quot; &quot;&lt;&lt;l&lt;&lt;' '&lt;&lt;ans&lt;&lt;endl;
+    return DP2[n][l]=ans;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    memset(DP,-1,sizeof DP);
+    int n,l,r; 
+    fac[0]=1;
+    for (ll i=1;i&lt;=5000;i++) fac[i]=(fac[i-1]*i)%M;
+    while (cin&gt;&gt;n&gt;&gt;l&gt;&gt;r){
+        memset(DP2,-1,sizeof DP2);
+        if (n==0) break;
+        ll ans=0; 
+        for (int i=1;i&lt;=n;i++){
+            ll k=(dp(i-1,l-1)*dp(n-i,r-1))%M;
+            k=(k*choose(n-1,i-1))%M;
+            ans=(ans+k)%M;
+        }
+        cout&lt;&lt;ans&lt;&lt;endl;
+    }
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;code.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

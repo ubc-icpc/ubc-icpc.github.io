@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef pair&lt;int,int&gt; PT;
+typedef vector&lt;pair&lt;int, int&gt;&gt; VP;
+typedef long long LL;
+const int MAX_P = 70000;
+
+vector&lt;int&gt; primes;
+int sp[MAX_P];
+
+void sieve() {
+	for (LL i = 2; i &lt; MAX_P; i++) {
+		if (sp[i]) continue;
+		sp[i] = i;
+		primes.push_back(i);
+		for (LL j=i*i;j&lt;MAX_P;j+=i)
+			if(!sp[j]) sp[j] = i;
+	}
+}
+
+int main() {
+	sieve();
+	int tc; cin &gt;&gt; tc;
+	while (tc--) {
+		int x; cin &gt;&gt; x;
+		cout &lt;&lt; &quot;Input value: &quot; &lt;&lt; x &lt;&lt; endl;
+		if (sp[x] == x) {
+			cout &lt;&lt; &quot;Would you believe it; it is a prime!\n\n&quot;;
+		} else {
+			auto it = lower_bound(begin(primes), end(primes), x);
+			int ans = *it - x;
+			if (it != begin(primes)) {
+				--it;
+				ans = min(ans, x - *it);
+			}
+			cout &lt;&lt; &quot;Missed it by that much (&quot; &lt;&lt; ans &lt;&lt; &quot;)!\n\n&quot;;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

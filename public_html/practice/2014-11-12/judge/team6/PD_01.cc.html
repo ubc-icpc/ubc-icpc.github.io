@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+unordered_map&lt;int, int&gt; memo[16][16];
+int n, val[16][16];
+int dp(int row, int col, int bs) {
+	if (row == n) return 0;
+	if (col &gt;= n) {
+		int next_mask = bs | (bs &lt;&lt; 1) | (bs &gt;&gt; 1);
+		next_mask &amp;= (1&lt;&lt;n)-1;
+		return dp(row+1, 0, next_mask);
+	}
+	if (memo[row][col].count(bs)) return memo[row][col][bs];
+	
+	if (bs &amp; (1&lt;&lt;col)) memo[row][col][bs] = dp(row, col+1, bs^(1&lt;&lt;col));
+	else {
+		//if next bit set, unset it
+		int next_mask = bs ^ (1&lt;&lt;col);
+		if (bs &amp; (1&lt;&lt;(col+1))) next_mask ^= (1&lt;&lt;(col+1));
+		memo[row][col][bs] = max(dp(row, col+1, bs), dp(row, col+2, next_mask) + val[row][col]);
+	}
+	return memo[row][col][bs];
+}
+
+int main() {
+	string line;
+	while (getline(cin, line)) {
+		stringstream ss(line);
+		n = 0;
+		while (ss &gt;&gt; val[0][n]) n++;
+		if (n == 0) continue;
+		
+		for (int i = 1; i &lt; n; i++) {
+			for (int j = 0; j &lt; n; j++) {
+				cin &gt;&gt; val[i][j];
+			}
+		}
+		
+		//clear memory
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; n; j++) {
+				memo[i][j].clear();
+			}
+		}
+		
+		cout &lt;&lt; dp(0, 0, 0) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

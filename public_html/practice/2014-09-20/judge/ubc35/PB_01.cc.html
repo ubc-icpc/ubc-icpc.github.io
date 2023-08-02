@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int H[5], E[5], D[5], d;
+double solve(vector&lt;int&gt; &amp;v, int i) {
+  if (i == 5) return 0;
+  int id = v[i];
+  double t = H[id]*1.0/d;
+  int dt = 0;
+  for (int j=i; j &lt; 5; j++) dt += E[v[j]];
+  return solve(v, i+1) + dt*t;
+}
+int main() {
+    int T; cin &gt;&gt; T;
+    while(T--) {
+        for (int i=0; i &lt; 5; i++) cin &gt;&gt; H[i];
+        for (int i=0; i &lt; 5; i++) cin &gt;&gt; E[i];
+        for (int i=0; i &lt; 5; i++) cin &gt;&gt; D[i];
+        d=0;
+        for (int i=0; i &lt; 5; i++) d += D[i];
+        vector&lt;int&gt; v(5); for (int i=0; i &lt; 5; i++) v[i] = i;
+        double m = 500*500*500.;
+        do {
+          m = min(m, solve(v, 0));
+        } while(next_permutation(v.begin(), v.end()));
+        cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; m &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

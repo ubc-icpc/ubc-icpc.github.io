@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+
+using namespace std;
+
+#define STAND 0
+#define DOWN 1
+#define RIGHT 2
+
+#define pii pair&lt;int, int&gt;
+#define ppiii pair&lt;pii, int&gt;
+#define pppiiii pair&lt;ppiii, int&gt;
+#define qpppiiii queue&lt;pppiiii &gt;
+
+char visited[16][16][4];
+char board[16][16];
+
+
+
+int main() {
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        memset(visited, 0, sizeof(visited));
+        memset(board, 0, sizeof(board));
+        int r, c;
+        scanf(&quot;%d %d&quot;, &amp;r, &amp;c);
+        for (int i = 0; i &lt; r; ++i) {
+            scanf(&quot;%s&quot;, board[i]);
+        }
+        int sx, sy, so;
+        for (int i = 0; i &lt; r; ++i) {
+            for (int j = 0; j &lt; c; ++j) {
+                if (board[i][j] == 'C') {
+                    sx = j;
+                    sy = i;
+                    if (board[i][j+1] == 'C') {
+                        so = RIGHT;
+                    } else {
+                        so = DOWN;
+                    }
+                    goto solve;
+                }
+            }
+        }
+
+
+solve:
+        qpppiiii q;
+        q.push(make_pair(make_pair(make_pair(sx, sy), so), 0));
+
+        while (!q.empty()) {
+            pppiiii curr = q.front();
+            q.pop();
+            int x = curr.first.first.first;
+            int y = curr.first.first.second;
+            int o = curr.first.second;
+            int w = curr.second;
+
+            if (visited[y][x][o]) {
+                continue;
+            }
+
+            if (o == STAND &amp;&amp; board[y][x] == 'X') {
+                printf(&quot;%d\n&quot;, w);
+                goto end;
+            }
+
+            visited[y][x][o] = 1;
+
+            if (o == STAND) {
+                if (y - 2 &gt;= 0 &amp;&amp; board[y-1][x] != '#' &amp;&amp; board[y-2][x] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x, y-2), DOWN), w + 1));
+                }
+                if (x - 2 &gt;= 0 &amp;&amp; board[y][x-1] != '#' &amp;&amp; board[y][x-2] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x-2, y), RIGHT), w + 1));
+                }
+                if (y + 2 &lt; r &amp;&amp; board[y+1][x] != '#' &amp;&amp; board[y+2][x] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x, y+1), DOWN), w + 1));
+                }
+                if (x + 2 &lt; c &amp;&amp; board[y][x+1] != '#' &amp;&amp; board[y][x+2] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x+1, y), RIGHT), w + 1));
+                }
+            } else if (o == RIGHT) {
+                if (y - 1 &gt;= 0 &amp;&amp; board[y-1][x] != '#' &amp;&amp; board[y-1][x+1] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x, y-1), RIGHT), w + 1));
+                }
+                if (y + 1 &lt; r &amp;&amp; board[y+1][x] != '#' &amp;&amp; board[y+1][x+1] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x, y+1), RIGHT), w + 1));
+                }
+                if (x - 1 &gt;= 0 &amp;&amp; board[y][x-1] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x-1, y), STAND), w + 1));
+                }
+                if (x + 2 &lt; c &amp;&amp; board[y][x+2] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x+2, y), STAND), w + 1));
+                }
+            } else {// o == DOWN
+                if (y - 1 &gt;= 0 &amp;&amp; board[y-1][x] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x, y-1), STAND), w + 1));
+                }
+                if (y + 2 &lt; r &amp;&amp; board[y+2][x] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x, y+2), STAND), w + 1));
+                }
+                if (x - 1 &gt;= 0 &amp;&amp; board[y][x-1] != '#' &amp;&amp; board[y+1][x-1] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x-1, y), DOWN), w + 1));
+                }
+                if (x + 1 &lt; c &amp;&amp; board[y][x+1] != '#' &amp;&amp; board[y+1][x+1] != '#') {
+                    q.push(make_pair(make_pair(make_pair(x+1, y), DOWN), w + 1));
+                }
+            }
+        }
+
+        printf(&quot;IMPOSSIBLE\n&quot;);
+end:
+        // dummy
+        r = 0;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

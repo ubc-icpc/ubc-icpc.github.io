@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;cmath&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+int main () {
+
+  int N;
+  cin &gt;&gt; N;
+
+  int map[1001] = {};
+  {
+    int temp;
+    for (int i = 0; i &lt; N; i++) {
+      cin &gt;&gt; temp;
+      map[temp]++;
+    }
+  }
+  int highest_val = -1;
+  int second_highest_val = -1;
+  vector&lt;int&gt; highest;
+  vector&lt;int&gt; second_highest;
+  
+  for (int i = 1; i &lt;= 1000; i++) {
+    if (map[i] &gt; highest_val &amp;&amp; map[i] != 0) {
+      highest_val = map[i];
+      highest.clear();
+      highest.push_back(i);
+    } else if (map[i] == highest_val) {
+      highest.push_back(i);
+    }
+  }
+  for (int i = 1; i &lt;= 1000; i++) {
+    if (map[i] &gt; second_highest_val &amp;&amp; map[i] != 0 &amp;&amp; map[i] != highest_val) {
+      second_highest_val = map[i];
+      second_highest.clear();
+      second_highest.push_back(i);
+    } else if (map[i] == second_highest_val) {
+      second_highest.push_back(i);
+    }
+  }
+
+  int max;
+  
+  if (highest.size() &gt; 1)
+    max = highest.back() - highest.front();
+  else
+    max = std::max(abs(highest.back() - second_highest.back()), abs(highest.back() - second_highest.front()));  
+
+  cout &lt;&lt; max &lt;&lt; endl;
+
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class B {
+    public static Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+
+    public static void main(String[] args) {
+        int numFighters = scanner.nextInt();
+
+
+        scanner.nextLine();
+        ArrayList&lt;Fighter&gt; fighters = new ArrayList&lt;Fighter&gt;();
+        ArrayList&lt;Triple&gt; triples = new ArrayList&lt;Triple&gt;();
+        for (int i = 0; i &lt; numFighters; i++) {
+            String nm = scanner.next();
+            int h = scanner.nextInt();
+            int a = scanner.nextInt();
+            int d = scanner.nextInt();
+            scanner.nextLine();
+            fighters.add(new Fighter(nm, h, a, d));
+        }
+
+        if (numFighters &lt; 3) {
+            System.out.println(&quot;0&quot;);
+            System.exit(0);
+        }
+
+        Fighter first, second, third;
+        for (int i = 0; i &lt; numFighters; i++) {
+
+            first = fighters.get(i);
+
+            for (int j = i+1; j &lt; numFighters; j++) {
+
+                second = fighters.get(j);
+
+                for (int k = j+1; k &lt; numFighters; k++) {
+
+                    third = fighters.get(k);
+                    if ((canBeat(first, second) &amp;&amp; canBeat(second, third) &amp;&amp; canBeat(third, first))
+                        || (canBeat(first, third) &amp;&amp; canBeat(third, second) &amp;&amp; canBeat(second, first))) {
+                        triples.add(new Triple(first.name, second.name, third.name));
+                    }
+                }
+            }
+        }
+
+        System.out.println(triples.size());
+        for (Triple t : triples) {
+            t.print();
+        }
+    }
+
+    private static class Fighter {
+        public String name;
+        public int hp, at, df;
+
+        public Fighter(String nm, int h, int a, int d) {
+            name = nm;
+            hp = h;
+            at = a;
+            df = d;
+        }
+    }
+
+    private static class Triple {
+        public String f, s, t;
+
+        public Triple(String f, String s, String t) {
+            this.f = f;
+            this.s = s;
+            this.t =  t;
+        }
+
+        public void print() {
+            System.out.println(f + &quot; &quot; + s + &quot; &quot; + t);
+        }
+    }
+
+    private static boolean canBeat(Fighter f1, Fighter f2) {
+//        int damage1 = (int)Math.ceil((double)f1.hp/(f2.at-f1.df));
+//        if (damage1 &lt; 0) damage1 = 10000;
+//
+//        int damage2 = (int)Math.ceil((double)f2.hp/(f1.at-f2.df));
+//        if (damage2 &lt; 0) damage2 = 10000;
+//
+//        return damage1 &gt; damage2;
+
+        int damage1 = (f2.at - f1.df &gt; 0) ? f2.at - f1.df : 0;
+        int damage2 = (f1.at - f2.df &gt; 0) ? f1.at - f2.df : 0;
+
+        int rounds1 = (damage1 == 0) ? 100000 : (int)Math.ceil((double)f1.hp/damage1);
+        int rounds2 = (damage2 == 0) ? 100000 : (int)Math.ceil((double)f2.hp/damage2);
+
+        return rounds1 &gt; rounds2;
+
+//        int f1hp = f1.hp;
+//        int f2hp = f2.hp;
+//        while (f1hp != 0 &amp;&amp; f2hp != 0) {
+//            f1hp -= f2.at - f1.df;
+//            if (f1hp &lt; 0) f1hp = 0;
+//
+//            f2hp -= f1.at - f2.df;
+//            if (f2hp &lt; 0) f2hp = 0;
+//        }
+//        return f1hp &gt; f2hp;
+    }
+
+/*
+
+5
+TheStrong 90 60 10
+TheInvincible 10000 10000 10000
+TheTough 70 50 25
+TheBrick 3 1 4159
+TheResilient 160 40 10
+
+5
+TheInvincible 10000 10000 10001
+TheInvincible2 10000 10002 10000
+TheInvincible3 10001 10000 10000
+TheInvincible4 10000 10000 10000
+TheInvincible5 10000 10000 10000
+
+
+8
+TheStrong 90 60 10
+TheRepeat 70 50 25
+TheTough 70 50 25
+TheStrong2 90 60 10
+TheResilient 160 40 10
+TheResilient2 160 40 10
+TheResilient3 160 40 10
+TheResilient4 160 40 10
+ */
+}
+</code>
+</pre>
+</body>
+</html>

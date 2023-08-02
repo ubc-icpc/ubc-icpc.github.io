@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+using namespace std::placeholders;
+
+int query(int x1, int y1, int x2, int y2) {
+  cout &lt;&lt; &quot;Q &quot; &lt;&lt; x1 &lt;&lt; &quot; &quot; &lt;&lt; y1 &lt;&lt; &quot; &quot; &lt;&lt; x2 &lt;&lt; &quot; &quot; &lt;&lt; y2 &lt;&lt; endl;
+  int ans; cin &gt;&gt; ans;
+  return ans;
+}
+
+int bs(int a, int n, function&lt;int(int)&gt; f, bool b) {
+  int l = 0, r = n, ans = -1;
+  while (l &lt;= r) {
+    int m = (l+r)/2;
+    if (f(m) == a) {
+      ans = m;
+      if (b) l = m+1;
+      else r = m-1;
+    } else {
+      if (b) r = m-1;
+      else l = m+1;
+    }
+  }
+  return ans;
+}
+
+int main() {
+  //ios::sync_with_stdio(0);
+  //cin.tie(0);
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    int n; cin &gt;&gt; n;
+    int a = query(0, 0, n, n);
+    int xl = bs(a, n, bind(query, _1, 0, n, n), 1);
+    int xr = bs(a, n, bind(query, 0, 0, _1, n), 0);
+    int yl = bs(a, n, bind(query, 0, _1, n, n), 1);
+    int yr = bs(a, n, bind(query, 0, 0, n, _1), 0);
+    cout &lt;&lt; &quot;A &quot; &lt;&lt; xl &lt;&lt; &quot; &quot; &lt;&lt; yl &lt;&lt; &quot; &quot; &lt;&lt; xr &lt;&lt; &quot; &quot; &lt;&lt; yr &lt;&lt; endl;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;array&gt;
+
+using namespace std;
+
+string decrypt(int s, string manip) {
+   for(int i = 0; i &lt; manip.size(); i++) {
+
+
+      manip.at(i) -= s;
+      if (manip.at(i) &lt; 'a') {
+	 manip.at(i) += 26;
+      }
+   }
+   return manip;
+}
+
+string encrypt(int s, string manip) {
+      for(int i = 0; i &lt; manip.size(); i++) {
+
+	 manip.at(i) = (manip.at(i) - 'a' + s) % 26 + 'a';
+	 if (manip.at(i) &gt; 'z') {
+	    manip.at(i) -= 26;
+	 }
+      }
+      return manip;
+}
+
+string input() {
+   char action;
+   int s = 0;
+   string manip = &quot;&quot;;
+   cin &gt;&gt; action;
+   cin &gt;&gt; s;
+   cin &gt;&gt; manip;
+   string out;
+
+   if (action == 'E') {
+      out = encrypt(s, manip);
+   }
+   else if(action == 'D') {
+      out = decrypt(s, manip);
+   }
+
+   return out;
+   
+      
+}
+
+
+
+int main() {
+   string out;
+   out = input();
+   cout &lt;&lt; out &lt;&lt; endl;
+   
+
+   
+   return 0;
+}
+</code>
+</pre>
+</body>
+</html>

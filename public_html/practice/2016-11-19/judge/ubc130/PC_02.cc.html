@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+using namespace std;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	string s;
+	vector&lt;bool&gt; ping;
+	vector&lt;int&gt; satellites;
+	while (cin &gt;&gt; s) {
+		if (s.length() == 1)
+			break;
+		ping = vector&lt;bool&gt;(s.length(), 0);
+		for (int i = 1; i &lt; s.length(); i++) {
+			if (s[i] == '1' != ping[i]) {
+				satellites.push_back(i);
+				for (int j = i; j &lt; s.length(); j += i) {
+					ping[j] = !ping[j];
+				}
+			}
+		}
+/*		if (s[0] == '1')
+			satellites.erase(satellites.begin());*/
+		for (int i : satellites) {
+			cout &lt;&lt; i &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl;	
+		satellites.clear();
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

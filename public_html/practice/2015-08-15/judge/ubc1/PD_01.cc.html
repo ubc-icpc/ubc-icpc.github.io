@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int ct[205], et[205];
+int main() {
+    int t; cin &gt;&gt; t;
+    for (int c = 1; c &lt;= t; c++) {
+        cout &lt;&lt; &quot;Trip #&quot; &lt;&lt; c &lt;&lt; &quot;: &quot;;
+        
+        int nc; cin &gt;&gt; nc;
+        for (int i = 0; i &lt; nc; i++) {
+            cin &gt;&gt; ct[i];
+        }
+        sort(ct, ct+nc);
+        
+        for (int i = 0; i &lt; 4*nc; i++) {
+            cin &gt;&gt; et[i];
+        }
+        sort(et, et+4*nc);
+        reverse(et, et+4*nc);
+        
+        int ans = 0;
+        for (int i = 0; i &lt; nc; i++) {
+            ans = max(ans, ct[i] + et[4*i]);
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

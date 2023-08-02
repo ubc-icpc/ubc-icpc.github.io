@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+const long double INF = 1e11;
+int T, N, K, A[205];
+long double dp[205][205], mem[205][205];
+
+int main() {
+  cin &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; N &gt;&gt; K;
+    for (int i = 0; i &lt; N; ++i) cin &gt;&gt; A[i];
+    for (int i = 0; i &lt; 205; ++i)
+      for (int j = 0; j &lt; 205; ++j)
+	dp[i][j] = INF;
+    
+    for (int i = 0; i &lt; N; ++i)
+      for (int j = i + 1; j &lt; N; ++j) {
+	long double d = (long double)(A[j] - A[i]) / (j - i);
+	for (int k = i + 1; k &lt; j; ++k) mem[i][j] += abs(A[k] - (A[i] + d * (k - i)));
+      }
+    
+    dp[N - 1][1] = 0;
+    
+    for (int i = N - 2; i &gt;= 0; --i)
+      for (int j = 1; j &lt;= K; ++j)
+	for (int k = i + 1; k &lt; N; ++k)
+	  dp[i][j] = min(dp[i][j], mem[i][k] + dp[k][j - 1]);
+    
+    cout &lt;&lt; fixed &lt;&lt; setprecision(4) &lt;&lt; dp[0][K] / N &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

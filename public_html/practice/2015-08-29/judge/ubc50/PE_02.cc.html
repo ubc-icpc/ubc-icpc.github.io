@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+using namespace std;
+typedef long long ll;
+
+ll gcd(ll a, ll b) {
+  while (b!=0) {
+    ll t=a;
+    a=b;
+    b=t%b;
+  }
+  return a;
+}
+
+int main() {
+  int test; cin &gt;&gt; test;
+  while (test--) {
+    ll x1, x2, y1, y2;
+    cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+    if (gcd(abs(x1),abs(y1))==gcd(abs(x2),abs(y2))) cout &lt;&lt; 1;
+    else cout &lt;&lt; 0;
+    cout &lt;&lt; '\n';
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

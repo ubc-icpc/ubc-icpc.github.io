@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;map&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+map&lt;string, string&gt; dic;
+
+int main() {
+
+    int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) {
+        string word;
+        cin &gt;&gt; word;
+        string prefix;
+        prefix.push_back(word[0]);
+        while (true) {
+            if (dic.find(prefix) == dic.end()) {
+                dic[prefix] = word;
+                break;
+            }
+            string indic = dic[prefix];
+            for (int j = prefix.size(); j &lt; word.size(); j++) {
+                prefix.push_back(word[j]);
+                if (word[j] != indic[j]) {
+                    break;
+                }
+            }
+            if (prefix.size() == word.size()) {
+                if (dic.find(prefix) == dic.end()) {
+                    dic[word] = word;
+                }
+                break;
+            }
+        }
+        //cout &lt;&lt; prefix &lt;&lt; '\n';
+    }
+    for (int i = 0; i &lt; m; i++) {
+        string word;
+        cin &gt;&gt; word;
+        string prefix;
+        prefix.push_back(word[0]);
+        int count = 1;
+        while (prefix.size() != word.size()) {
+            if (dic.find(prefix) == dic.end()) {
+                //cout &lt;&lt; &quot;push1:&quot; &lt;&lt; word[prefix.size()] &lt;&lt; '\n';
+                prefix.push_back(word[prefix.size()]);
+                count++;
+                continue;
+            }
+            string indic = dic[prefix];
+            //cout &lt;&lt; &quot;found:&quot; &lt;&lt; indic &lt;&lt; '\n';
+            int same = 0;
+            for (int j = prefix.size(); j &lt; word.size() &amp;&amp; j &lt; indic.size(); j++) {
+                if (word[j] == indic[j]){
+                    same++;
+                } else {
+                    break;
+                }
+                
+            }
+            int diff = indic.size() - same - prefix.size() + 1;
+            //cout &lt;&lt; &quot;same:&quot; &lt;&lt; same &lt;&lt; &quot;diff:&quot; &lt;&lt; diff &lt;&lt; '\n';
+            if (same &gt; diff) {
+                count += diff;
+            } else {
+                count += same;
+            }
+            int start = prefix.size();
+            for (int j = start; j &lt; start+same; j++) {
+                prefix.push_back(word[j]);
+                //cout &lt;&lt; &quot;push2:&quot; &lt;&lt; word[j] &lt;&lt; '\n';
+            }
+            if (prefix.size() &lt; word.size()) {
+                //cout &lt;&lt; &quot;push3:&quot; &lt;&lt; word[prefix.size()] &lt;&lt; '\n';
+                prefix.push_back(word[prefix.size()]);
+                count++;
+            }
+            //cout &lt;&lt; &quot;count:&quot; &lt;&lt; count &lt;&lt; '\n';
+        }
+        cout &lt;&lt; count &lt;&lt; '\n';
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

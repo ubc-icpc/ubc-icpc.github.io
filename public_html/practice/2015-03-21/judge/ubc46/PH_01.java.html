@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-03-21.
+ */
+public class Discount {
+
+    public static void main(String[] args) {
+        int[] prices;
+        Scanner s = new Scanner(System.in);
+        int noOfTests = Integer.parseInt(s.nextLine());
+        int totalDiscount;
+
+        for (int k = 0; k &lt; noOfTests; k++) {
+            totalDiscount =0;
+            int noOfPrices = Integer.parseInt(s.nextLine());
+            //System.out.println(&quot;noOfPrices: &quot; + noOfPrices);
+            prices = new int[noOfPrices];
+
+            String str =s.nextLine();
+            //System.out.println(&quot;str: &quot; + str);
+
+            String[] line = str.split(&quot;\\s+&quot;);
+
+            for(int i = 0; i &lt; noOfPrices; i++){
+                prices[i] = Integer.parseInt(line[i]);
+            }
+
+            Arrays.sort(prices);
+            int counter = 1;
+            for(int j= prices.length -1 ; j &gt;=0; j--){
+                 if(counter % 3 == 0){
+                     totalDiscount += prices[j];
+                 }
+                counter +=1;
+            }
+            System.out.println(totalDiscount);
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

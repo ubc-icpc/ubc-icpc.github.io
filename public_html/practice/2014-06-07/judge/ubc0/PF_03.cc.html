@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+ 
+int d[100000];
+ 
+int main()
+{
+    int n, g, s, r;
+    //while (scanf(&quot;%d%d&quot;, &amp;n, &amp;g) == 2)
+    // seriously
+    //scanf(&quot;%d%d&quot;, &amp;n, &amp;g);
+    // SERIOUSLY
+    cin &gt;&gt; n &gt;&gt; g;
+    int p = 0;
+    for (int i = 0; i &lt; n; i++)
+    {
+        //scanf(&quot;%d%d&quot;, &amp;s, &amp;r);
+        cin &gt;&gt; s &gt;&gt; r;
+        d[i] = s-r;
+    }
+    sort(d, d+n);
+    for (int i = n-1; i &gt;= 0; i--)
+    {
+        if (d[i] &gt; 0)
+            p += 3;
+        else if (d[i] == 0)
+        {
+            if (g)
+            {
+                g--;
+                p += 3;
+            }
+            else
+                p++;
+        }
+        else if (-d[i] &lt;= g)
+        {
+            g += d[i];
+            p++;
+            if (g)
+            {
+                g--;
+                p += 2;
+            }
+        }
+    }
+    //printf(&quot;%d\n&quot;, p);
+    cout &lt;&lt; p &lt;&lt; endl;
+    //cout &lt;&lt; &quot;1\n&quot;;
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

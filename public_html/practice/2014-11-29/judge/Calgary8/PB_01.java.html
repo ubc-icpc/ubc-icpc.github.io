@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class S2 {
+
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		boolean good = true;
+		int pairs = in.nextInt();
+		ArrayList&lt;String&gt; list1 = new ArrayList&lt;String&gt;(pairs);
+		ArrayList&lt;String&gt; list2 = new ArrayList&lt;String&gt;(pairs);
+		for (int i = 0; i &lt; pairs; i++)
+			list1.add(in.next());
+		for (int i = 0; i &lt; pairs; i++)
+			list2.add(in.next());
+
+		// case1 partner of itself
+		for (int i = 0; i &lt; list1.size(); i++)
+			if (list1.get(i).equals(list2.get(i)))
+				good = false;
+		// case2 different partners
+		for (int i = 0; i &lt; list1.size(); i++)
+			for (int j = 0; j &lt; list2.size(); j++) {
+				String onesPartner = list2.get(i);
+				String twosPartner = list1.get(j);
+				if (list2.get(j).equals(list1.get(i))
+						&amp;&amp; (!(onesPartner.equals(twosPartner))))
+					good = false;
+
+			}
+
+		if (good)
+			System.out.println(&quot;good&quot;);
+		else
+			System.out.println(&quot;bad&quot;);
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

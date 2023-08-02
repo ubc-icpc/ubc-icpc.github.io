@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  int n, q;
+  cin &gt;&gt; n &gt;&gt; q;
+  vector&lt;int&gt; v(n+1);
+  for (int i = 0; i &lt; n; i++)
+    cin &gt;&gt; v[i+1];
+  vector&lt;int&gt; s(n+1);
+  s[1] = v[1];
+  for (int i = 2; i &lt;= n; i++)
+    s[i] = s[i-1] + v[i];
+  for (int i = 0; i &lt; q; i++) {
+    int as, t; cin &gt;&gt; as &gt;&gt; t;
+    cout &lt;&lt; s[t] - s[as-1] &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

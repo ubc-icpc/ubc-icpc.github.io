@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+#define FIL(a,b) memset((a),(b),sizeof(a))
+#define SZ(a) ((int)(a).size())
+#define ALL(a) begin(a),end(a)
+#define PB push_back
+#define FI first
+#define SE second
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+typedef complex&lt;double&gt; PX;
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+typedef vector&lt;PT&gt; VPT;
+template&lt;typename T&gt; ostream&amp; operator&lt;&lt;(ostream&amp; s, vector&lt;T&gt;&amp; v)
+{ s &lt;&lt; '{'; FOR(i,0,v.size()) s &lt;&lt; (i ? &quot;,&quot; : &quot;&quot;) &lt;&lt; v[i]; return s &lt;&lt; '}'; }
+template&lt;typename S, typename T&gt; ostream&amp; operator&lt;&lt;(ostream &amp;s, pair&lt;S,T&gt; const&amp; p)
+{ return s &lt;&lt; '(' &lt;&lt; p.first &lt;&lt; ',' &lt;&lt; p.second &lt;&lt; ')'; }
+
+const int FN = 100002;
+int f[FN];
+
+int sum(int n) {
+	int a = 0;
+	while (n) {
+		a += f[n];
+		n -= (n &amp; -n);
+	}
+	return a;
+}
+
+void upd(int n, int v) {
+	while (n &lt; FN) {
+		f[n] += v;
+		n += (n &amp; -n);
+	}
+}
+
+struct {
+	int l, r;
+} vinfo[100000];
+VVI adj;
+int cn;
+
+void dfs(int n, int p) {
+	vinfo[n].l = cn++;
+	for (int m : adj[n]) if (m != p) {
+		dfs(m, n);
+	}
+	vinfo[n].r = cn;
+}
+
+int main() {
+	int N;
+	scanf(&quot;%d&quot;, &amp;N);
+	VPT pts;
+	FOR(n,0,N) {
+		PT pt;
+		scanf(&quot;%d&quot;, &amp;pt.first);
+		pt.second = n;
+		pts.push_back(pt);
+	}
+	sort(ALL(pts), greater&lt;PT&gt;());
+	adj.resize(N);
+	FOR(n,1,N) {
+		int p; scanf(&quot;%d&quot;, &amp;p); --p;
+		adj[n].push_back(p);
+		adj[p].push_back(n);
+	}
+	dfs(0, -1);
+	VI ans(N);
+	for (auto const&amp; pt : pts) {
+		ans[pt.second] = sum(vinfo[pt.second].r) - sum(vinfo[pt.second].l);
+		upd(vinfo[pt.second].l+1, 1);
+	}
+	FOR(n,0,N) printf(&quot;%d\n&quot;, ans[n]);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

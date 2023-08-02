@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+int w, h;
+string map[1005];
+int burntime[1006][1006];
+int startx, starty;
+
+int globals;
+void test(int i, int x, int y)
+{
+	if (i == 0)
+		return;
+	globals += x + y;
+	test(i - 1, x + 3, y + 1);
+}
+
+struct state {
+	int x, y, t;
+};
+
+void burn(int x, int y) {
+	queue&lt;state&gt; q;
+	q.push({x,y,0});
+	while(!q.empty()) {
+		state s = q.front();
+		q.pop();
+		int x = s.x, y=s.y, t=s.t;
+		if (burntime[y][x] &gt; t) {
+			burntime[y][x] = t;
+			if (x &gt; 0 &amp;&amp; map[y][x-1] == '.')
+				q.push({x-1, y, t+1});
+			if (x &lt; w - 1 &amp;&amp; map[y][x+1] == '.')
+				q.push({x+1, y, t+1});
+			if (y &gt; 0 &amp;&amp; map[y-1][x] == '.')
+				q.push({x, y-1, t+1});
+			if (y &lt; h - 1 &amp;&amp; map[y+1][x] == '.')
+				q.push({x, y+1, t+1});
+		}
+	}
+}
+
+int mintime(int x, int y, int t) {
+	queue&lt;state&gt; q;
+	q.push({x, y, t});
+	int best = 1000000000;
+	while(!q.empty()) {
+		state s = q.front();
+		q.pop();
+		int x = s.x, y=s.y, t=s.t;
+		//cout &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; &quot; &quot; &lt;&lt; t &lt;&lt; &quot; &quot; &lt;&lt; burntime[y][x] &lt;&lt; endl;
+		if (burntime[y][x] &lt;= t)
+			continue;
+		if (x == 0 || y == 0 || x == w-1 || y == h-1) {
+			best = min(best, t+1);
+			break;
+		}
+		burntime[y][x] = t;
+		if (x &gt; 0 &amp;&amp; map[y][x-1] == '.' &amp;&amp; burntime[y][x-1] &gt; t+1)
+			q.push({x-1, y, t+1});
+		if (x &lt; w - 1 &amp;&amp; map[y][x+1] == '.' &amp;&amp; burntime[y][x+1] &gt; t+1)
+			q.push({x+1, y, t+1});
+		if (y &gt; 0 &amp;&amp; map[y-1][x] == '.' &amp;&amp; burntime[y-1][x] &gt; t+1)
+			q.push({x, y-1, t+1});
+		if (y &lt; h - 1 &amp;&amp; map[y+1][x] == '.' &amp;&amp; burntime[y+1][x] &gt; t+1)
+			q.push({x, y+1, t+1});
+	}
+	return best;
+}
+
+int main() {
+	int T;
+	cin &gt;&gt; T;
+	while (T--) {
+		cin &gt;&gt; w &gt;&gt; h;
+		for (int x = 0; x &lt; w; x++)
+			for (int y = 0; y &lt; h; y++) {
+				burntime[y][x] = 1000000000;
+			}
+		getline(cin, map[0]);
+		for (int i = 0; i &lt; h; i++) {
+			getline(cin, map[i]);
+			for (int j = 0; j &lt; w; j++) {
+				if (map[i][j] == '@') {
+					startx = j;
+					starty = i;
+				} else if (map[i][j] == '*') {
+				}
+			}
+		}
+		for (int i = 0; i &lt; h; i++) {
+			for (int j = 0; j &lt; w; j++) {
+				if (map[i][j] == '*') {
+					burn(j, i);
+				}
+			}
+		}
+		int time = mintime(startx, starty, 0);
+		if (time == 1000000000)
+			cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+		else
+			cout &lt;&lt; time &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

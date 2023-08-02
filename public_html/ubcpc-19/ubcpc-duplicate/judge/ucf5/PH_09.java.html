@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+public class h {
+	static int max = 1 &lt;&lt; 21 + 1;
+	static boolean[] prime = new boolean[max];
+	static ArrayList&lt;Integer&gt; primes = new ArrayList&lt;&gt;();
+	public static void main(String[] args) {
+		Arrays.fill(prime, true);
+		prime[0] = false;
+		prime[1] = false;
+		for(int i = 0; i &lt; max; ++i) {
+			if(prime[i]) {
+				for(int j = i + i; j &lt; max; j += i) prime[j] = false;
+			}
+		}
+		
+		for(int i = 0; i &lt; max; ++i) {
+			if(prime[i]) primes.add(i);
+		}
+		Scanner sc = new Scanner(System.in);
+		long c = sc.nextLong();
+		for(int a : primes) {
+			long i = (long)a * a;
+			while(c % i == 0) c /= i;
+		}
+		
+		long out = c;
+		for(int i : primes) {
+			if(c % i == 0) c /= i;
+		}
+		
+		long sqrt = (long)Math.round(Math.sqrt(c));
+		if(sqrt * sqrt == c) out /= c;
+//		double sqrtD = Math.sqrt(c), sqrtI = (int)Math.round(sqrtD);
+//		if(Math.abs(sqrtD - sqrtI) &lt;= 1e-8) out /= c;
+		
+		System.out.println(out);
+	}
+}</code>
+</pre>
+</body>
+</html>

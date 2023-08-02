@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;sstream&gt;
+using namespace std;
+
+int main(){
+   int n;
+   cin &gt;&gt; n;
+   string s;
+   getline(cin,s);
+   while(n--){
+      getline(cin,s);
+      cout &lt;&lt; s &lt;&lt; endl;
+      bool count=false,color=false;
+      istringstream ss(s);
+      for(int i = 0; i &lt; 6; i++){
+	 int g1,g2,s1,s2,b1,b2;
+	 ss &gt;&gt; g1 &gt;&gt; s1 &gt;&gt; b1 &gt;&gt; g2 &gt;&gt; s2 &gt;&gt; b2;
+	 if(g1+s1+b1 &gt; g2+s2+b2)
+	    count = true;
+	 if(g1 &gt; g2 or (g1 == g2 and s1 &gt; s2) or (g1 == g2 and s1 == s2 and b1 &gt; b2)){
+	    color = true;
+	 }	 
+      }
+      if(count and color){
+	 cout &lt;&lt; &quot;both&quot;;
+      }
+      else if(!count and color){
+	 cout &lt;&lt; &quot;color&quot;;
+      }
+      else if(count and !color){
+	 cout &lt;&lt; &quot;count&quot;;
+      }
+      else{
+	 cout &lt;&lt; &quot;none&quot;;
+      }
+      cout &lt;&lt; endl &lt;&lt; endl;
+   }
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

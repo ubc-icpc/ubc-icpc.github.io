@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;set&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+
+using namespace std;
+void dfsArg(string s);
+string rge = &quot;rge&quot;, che = &quot;che&quot;, re = &quot;re&quot;, rec = &quot;rec&quot;, ce = &quot;ce&quot;, ec = &quot;ec&quot;;
+set&lt;string&gt; ackset, argset;
+void findAll(string s, string sub, vector&lt;size_t&gt; &amp;v) {
+  size_t pos = s.find(sub,0);
+  while(pos!=string::npos) {
+	v.push_back(pos);
+	pos=s.find(sub,pos+1);
+  }
+}
+void getAcks(string w, vector&lt;string&gt; &amp;vec) {
+  
+  
+  if(w.back() == 'e') {
+	string s=w; 
+	s[s.size()-1]=s[s.size()-2];
+	s[s.size()-2]='e';
+	vec.push_back(s);
+  }
+  
+  vector&lt;size_t&gt; v;
+  findAll(w,rge,v);
+  for(size_t i:v) {
+	string s=w;
+	s[i]='c'; s[i+1]='h';
+	vec.push_back(s);
+  }
+  
+  v.clear();
+  findAll(w,ce,v);
+  for(size_t i:v) {
+	string s=w;
+	s[i]='e'; s[i+1]='c';
+	vec.push_back(s);
+  }
+  v.clear();
+  findAll(w,re,v);
+  for(size_t i:v) {
+	string s=w;
+	s.insert(i+2,&quot;c&quot;);
+	vec.push_back(s);
+  }
+  
+}
+void getArgs(string w, vector&lt;string&gt; &amp;vec){
+
+  if(w[w.size()-2] == 'e') {
+	string s=w; 
+	s[s.size()-2]=s[s.size()-1];
+	s[s.size()-1]='e';
+	vec.push_back(s);
+  }
+  
+  vector&lt;size_t&gt; v;
+  findAll(w,che,v);
+  for(size_t i:v) {
+	string s=w;
+	s[i]='r'; s[i+1]='g';
+	vec.push_back(s);
+  }
+  
+  v.clear();
+  findAll(w,ec,v);
+  for(size_t i:v) {
+	string s=w;
+	s[i]='c'; s[i+1]='e';
+	vec.push_back(s);
+  }
+  v.clear();
+  findAll(w,rec,v);
+  for(size_t i:v) {
+	string s=w;
+	s.erase(i+2,1);
+	vec.push_back(s);
+  }
+}
+void dfsAck(string s) {
+  ackset.insert(s);
+  vector&lt;string&gt; v;
+  getArgs(s,v);
+  for(string w:v) {
+	if(argset.find(w) == argset.end())
+	  dfsArg(w);
+  }
+}
+void dfsArg(string s) {
+  if(s.size()&gt;12 || s.size()&lt;3) return;
+  argset.insert(s);
+  vector&lt;string&gt; v;
+  getAcks(s,v);
+  for(string w: v) {
+	if(ackset.find(w) == ackset.end())
+	  dfsAck(w);
+  }
+}
+
+int main (void) {
+  string s; int t=1;
+  while(cin &gt;&gt; s) {
+	cout &lt;&lt; &quot;Case &quot; &lt;&lt; t++ &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+	argset.clear();
+	ackset.clear();
+	dfsArg(s);
+	//vector&lt;string&gt; v;
+	//getArgs(s,v);
+	//for(string w : v)
+	//  cout &lt;&lt; w &lt;&lt; endl;
+	for(string str : argset) 
+	  cout &lt;&lt; str &lt;&lt; endl;
+	cout &lt;&lt; endl;
+  }
+  return 0;
+}
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

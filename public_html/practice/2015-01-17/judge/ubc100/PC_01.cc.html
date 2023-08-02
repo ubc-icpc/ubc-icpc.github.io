@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;set&gt;
+#include&lt;vector&gt;
+
+using namespace std;
+
+int main (void) {
+
+  int N;
+  int firsti = -1;
+  int secondi = -1;
+  vector&lt;int&gt; first;
+  vector&lt;int&gt; second;
+
+  cin &gt;&gt; N;
+  multiset&lt;int&gt; myset;
+  set&lt;int&gt; mys;
+  while (N--) {
+    int num;
+    cin &gt;&gt; num;
+    myset.insert(num);
+    mys.insert(num);
+  }
+
+  multiset&lt;int&gt;::iterator it;
+
+  for(it = mys.begin() ; it != mys.end() ; it++) {
+    int num = *it;
+    int count = myset.count(num);
+    if(count &gt; firsti) {
+      secondi = firsti;
+      second = first;
+      firsti = count;
+      first.clear();
+      first.push_back(num);
+    } else if ( count == firsti) {
+      first.push_back(num);
+    } else if( count &gt; secondi) {
+      secondi = count;
+      second.clear();
+      second.push_back(num);
+    } else if( count == secondi) {
+      second.push_back(num);
+    }
+  }
+  /*
+  for(int i = 0; i &lt; first.size(); i++) {
+    cout &lt;&lt; first[i] &lt;&lt; endl;
+  }
+  for(int i = 0; i &lt; second.size(); i++) {
+    cout &lt;&lt; second[i] &lt;&lt; endl;
+    }*/
+  if(first.size() &gt; 1) {
+    int max = 0;
+    for(int k = 0; k &lt; first.size(); k++) {
+      for(int j = k+1; j &lt; first.size(); j++) {
+	int temp = first[k]-first[j];
+	if(temp &lt; 0) {
+	  temp = -temp;
+	}
+	if(temp&gt;max) {
+	  max = temp;
+	}
+      }
+    }
+    cout &lt;&lt; max &lt;&lt; endl;
+  } else {
+    if(second.size() &gt; 1) {
+      int max = 0;
+      for (int i = 0; i &lt; second.size(); i++) {
+	int temp = first[0] - second[i];
+	if(temp &lt; 0) {
+	  temp = -temp;
+	}
+	if(temp &gt; max) {
+	  max = temp;
+	}
+      }
+      cout &lt;&lt; max &lt;&lt; endl;
+    } else {
+      int temp = second[0] - first[0];
+      if(temp &lt; 0) {
+	temp = -temp;
+      }
+      cout &lt;&lt; temp &lt;&lt; endl ;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        int th, tm, ts, mm, ms;
+        scanf(&quot;%d%*c%d%*c%d %d%*c%d&quot;, &amp;th, &amp;tm, &amp;ts, &amp;mm, &amp;ms);
+
+        int micro = 60 * mm + ms;
+        bool ok = false;
+
+        if (mm == th &amp;&amp; ms == tm) {
+            ok = true;
+            goto end;
+        }
+
+        while (micro--) {
+            ++ts;
+            if (ts &gt;= 60) {
+                ts -= 60;
+                ++tm;
+            }
+            if (tm &gt;= 60) {
+                tm -= 60;
+                ++th;
+            }
+            if (th &gt;= 24) {
+                th -= 24;
+            }
+            --ms;
+            if (ms &lt; 0) {
+                ms += 60;
+                --mm;
+            }
+            if (th == mm &amp;&amp; tm == ms) {
+                ok = true;
+                goto end;
+            }
+        }
+
+end:
+        printf(ok ? &quot;Yes\n&quot; : &quot;No\n&quot;);
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct p {
+	int x, y, id;
+} P[55];
+
+int N, C[2][55];
+
+bool comp1 (const p&amp; a, const p&amp; b) {
+	if (a.x != b.x) return a.x &lt; b.x;
+	return a.y &lt; b.y;
+}
+bool comp2 (const p&amp; a, const p&amp; b) {
+	if (a.y != b.y) return a.y &lt; b.y;
+	return a.x &lt; b.x;
+}
+
+int main () {
+	for (int t = 1;; ++t) {
+		cin &gt;&gt; N;
+		if (!N) break;
+		for (int i = 0; i &lt; N; ++i) {
+			cin &gt;&gt; P[i].x &gt;&gt; P[i].y;
+			P[i].id = i;
+		}
+		sort(P, P+N, comp1);
+		for (int i = 0; i &lt; N; ++i)
+			C[0][P[i].id] = P[i-i%2+!(i%2)].id;
+		sort(P, P+N, comp2);
+		for (int i = 0; i &lt; N; ++i)
+			C[1][P[i].id] = P[i-i%2+!(i%2)].id;
+		int at = P[0].id, h = true;
+		cout &lt;&lt; &quot;Polygon #&quot; &lt;&lt; t &lt;&lt; &quot;:&quot;;
+		for (int i = 0; i &lt; N; ++i) {
+			cout &lt;&lt; &quot; &quot; &lt;&lt; at+1;
+			at = C[h][at];
+			h = !h;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

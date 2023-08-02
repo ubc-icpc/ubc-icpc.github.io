@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
+#include &lt;cstring&gt;
+#include &lt;map&gt;
+using namespace std;
+
+typedef pair&lt;int,char&gt; pic;
+typedef pair&lt;int,int&gt; pii;
+
+pic p[101][101];
+map&lt;char,pii&gt; xy;
+map&lt;char,char&gt; rl, rr;
+pii lu[101];
+
+int main() {
+  xy['N'] = make_pair(0,1);
+  xy['S'] = make_pair(0,-1);
+  xy['E'] = make_pair(1,0);
+  xy['W'] = make_pair(-1,0);
+  rl['N'] = 'W';
+  rl['W'] = 'S';
+  rl['S'] = 'E';
+  rl['E'] = 'N';
+  rr['N'] = 'E';
+  rr['E'] = 'S';
+  rr['S'] = 'W';
+  rr['W'] = 'N';
+  int k; cin &gt;&gt; k;
+  while (k--) {
+    memset(p, 0, sizeof p);
+    int a, b, n, m;
+    cin &gt;&gt; a &gt;&gt; b &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) {
+      int x, y; char c;
+      cin &gt;&gt; x &gt;&gt; y &gt;&gt; c;
+      p[x][y] = make_pair(i+1,c);
+      lu[i+1] = make_pair(x,y);
+    }
+    bool ok = true;
+    int c1 = -1, c2 = -1;
+    for (int i = 0; i &lt; m; i++) {
+      int r, e; char t;
+      cin &gt;&gt; r &gt;&gt; t &gt;&gt; e;
+      if (!ok)
+        continue;
+      for (int j = 0; j &lt; e; j++) {
+        if (t == 'L')
+          p[lu[r].first][lu[r].second].second = rl[p[lu[r].first][lu[r].second].second];
+        else if (t == 'R')
+          p[lu[r].first][lu[r].second].second = rr[p[lu[r].first][lu[r].second].second];
+        else {
+          char rd = p[lu[r].first][lu[r].second].second;
+          int xx = lu[r].first+xy[rd].first, yy = lu[r].second+xy[rd].second;
+          if (xx == 0 || xx == a+1 || yy == 0 || yy == b+1) {
+            c1 = r;
+            ok = false;
+            break;
+          }
+          if (p[xx][yy].first != 0) {
+            c1 = r;
+            c2 = p[xx][yy].first;
+            ok = false;
+            break;
+          }
+          p[xx][yy] = make_pair(r,rd);
+          p[lu[r].first][lu[r].second] = make_pair(0,0);
+          lu[r] = make_pair(xx,yy);
+        }
+      }
+    }
+    if (!ok) {
+      cout &lt;&lt; &quot;Robot &quot; &lt;&lt; c1 &lt;&lt; &quot; crashes into &quot;;
+      if (c2 != -1)
+        cout &lt;&lt; &quot;robot &quot; &lt;&lt; c2;
+      else
+        cout &lt;&lt; &quot;the wall&quot;;
+      cout &lt;&lt; &quot;\n&quot;;
+    }
+    else
+      cout &lt;&lt; &quot;OK\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

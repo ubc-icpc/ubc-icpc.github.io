@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int cid, dist[4][100005];
+struct cmp {
+	const bool operator()(const int&amp; l, const int&amp; r) const {
+		if (dist[cid][l] == dist[cid][r]) {
+			return l &lt; r;
+		}
+		return dist[cid][l] &lt; dist[cid][r];
+	}
+};
+
+struct edge {
+	int u, v, w, c;
+	edge() {}
+	edge(int u, int v, int w, int c) : u(u), v(v), w(w), c(c) {}
+};
+
+int cost(int u, int v, int w) {
+	return w + min(dist[0][u] + dist[1][v], dist[2][u] + dist[3][v]);
+}
+
+
+vector&lt;edge&gt; g[2][100005];
+void dijkstra(int st, int id) {
+	cid = id;
+	
+	dist[id][st] = 0;
+	set&lt;int, cmp&gt; q;
+	q.insert(st);
+	while (!q.empty()) {
+		int u = *q.begin(); q.erase(q.begin());
+		for (edge e : g[id%2][u]) {
+			if (dist[id][e.v] &gt; dist[id][u]+e.w) {
+				q.erase(e.v);
+				dist[id][e.v] = dist[id][u]+e.w;
+				q.insert(e.v);
+			}
+		}
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	int n, m, a, b;
+	cin &gt;&gt; n &gt;&gt; m &gt;&gt; a &gt;&gt; b;
+	vector&lt;edge&gt; e;
+	for (int i = 0; i &lt; m; i++) {
+		int x, y, l, c; cin &gt;&gt; x &gt;&gt; y &gt;&gt; l &gt;&gt; c;
+		e.push_back(edge(x,y,l,c));
+		g[0][x].push_back(edge(x,y,l,c));
+		g[1][y].push_back(edge(y,x,l,c));
+	}
+
+	memset(dist, 0x3f, sizeof dist);
+	dijkstra(a, 0);
+	dijkstra(b, 1);
+	dijkstra(a, 2);
+	dijkstra(b, 3);
+
+	vector&lt;pair&lt;int, int&gt; &gt; v;
+	for (edge ed : e) {
+		v.push_back(make_pair(cost(ed.u, ed.v, ed.w), ed.c));	
+	}
+
+	sort(v.begin(), v.end());
+	for (int i = 0; i &lt; v.size(); i++) {
+	}
+
+	for (int i = 1; i &lt; v.size(); i++) {
+		v[i].second += v[i-1].second;
+	}
+
+	int q; cin &gt;&gt; q;
+	while (q--) {
+		int d; cin &gt;&gt; d;
+		auto it = upper_bound(v.begin(), v.end(), make_pair(d, 2000000000));
+		if (it == v.begin()) {
+			cout &lt;&lt; 0 &lt;&lt; '\n';
+		} else {
+			--it;
+			cout &lt;&lt; it-&gt;second &lt;&lt; '\n';
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

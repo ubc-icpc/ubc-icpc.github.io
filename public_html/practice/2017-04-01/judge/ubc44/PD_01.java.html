@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class UAPC_D {
+	static int[] ledges;
+	static int rest;
+	
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		int n = s.nextInt();
+		rest = s.nextInt();
+		int T = s.nextInt();
+		
+		ledges = new int[n+1];
+		ledges[0] = 0;
+		for (int i=1; i&lt;ledges.length; i++) {
+			ledges[i] = s.nextInt();
+		}
+		
+		//bSearch for MINIMUM
+		int lo = 0;
+		int hi = T;
+		while (lo &lt;= hi) {
+			int mid = (lo+hi)/2;
+			if (greedyMinimum(mid) &lt;= T ) {
+				hi = mid-1;
+			} else {
+				lo = mid+1;
+			}
+		}
+		System.out.println(lo);
+		
+		s.close();
+	}
+
+	public static int greedyMinimum(int guess) {
+		int currP = 0;
+		int nextP = 0;
+		int totalSum = 0;
+		while(currP &lt; ledges.length) {
+			while (nextP+1&lt;ledges.length &amp;&amp; ledges[nextP+1]-ledges[currP]&lt;=guess ) {
+				nextP++; //nextP points at min reachable ledge
+			}
+			//System.out.println(&quot;curr:&quot; + currP);
+			//System.out.println(&quot;end:&quot; + nextP);
+			if (nextP == ledges.length-1) {
+				totalSum += (ledges[nextP]-ledges[currP]);
+				break;
+			} else if (ledges[currP+1]-ledges[currP] &gt; guess) {
+				return Integer.MAX_VALUE;
+			} else {
+				totalSum += rest + (ledges[nextP]-ledges[currP]);
+			}
+			currP = nextP;
+			nextP = nextP;
+		}
+
+		return totalSum;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int index(int i, int j, ll N) {
+  return i*N + j;
+}
+
+ll* mmult(ll* a, ll* b, ll N, ll M) {
+  ll* out = new ll[N*N];
+  for (int i = 0; i &lt; N; ++i) {
+    for (int j = 0; j &lt; N; ++j) {
+      out[index(i, j, N)] = 0;
+      for (int k = 0; k &lt; N; ++k) {
+        out[index(i, j, N)] = (out[index(i,j,N)] + a[index(i,k,N)] * b[index(k,j,N)]) % M;
+      }
+    }
+  }
+  return out;
+}
+
+ll* mexp(ll* a, ll T, ll N, ll M) {
+  ll curr = T;
+  ll* currx = new ll[N*N];
+  ll* curry = new ll[N*N];
+  for (int i = 0; i &lt; N; ++i) {
+    for (int j = 0; j &lt; N; ++j) {
+      currx[index(i, j, N)] = a[index(i, j, N)];
+      if (i == j) curry[index(i, j, N)] = 1;
+      else curry[index(i, j, N)] = 0;
+    }
+  }
+  if (T == 0) {
+    delete currx;
+    return curry;
+  }
+  while (curr &gt; 1) {
+    if (curr % 2 == 0) {
+      ll * nextx = mmult(currx,currx,N,M);
+      delete currx;
+      currx = nextx;
+      curr /= 2;
+    }
+    else {
+      ll * nexty = mmult(currx,curry,N,M);
+      delete curry;
+      curry = nexty;
+      
+      ll * nextx = mmult(currx,currx,N,M);
+      delete currx;
+      currx = nextx;
+      
+      curr = (curr - 1)/2;
+    }
+  }
+
+  ll* outm = mmult(currx,curry,N,M);
+  delete currx;
+  delete curry;
+  return outm;
+}
+
+int main() {
+  while (true) {
+    ll N, M, A, B, C, T; cin &gt;&gt; N &gt;&gt; M &gt;&gt; A &gt;&gt; B &gt;&gt; C &gt;&gt; T;
+    if (!N &amp;&amp; !M &amp;&amp; !A &amp;&amp; !B &amp;&amp; !C &amp;&amp; !T) break;
+    vector&lt;ll&gt; states;
+    for (int i = 0; i &lt; N; ++i) {
+      ll s; cin &gt;&gt; s;
+      states.push_back(s);
+    }
+    ll* sm = new ll[N*N];
+    for (int i = 0; i &lt; N; ++i) {
+      for (int j = 0; j &lt; N; ++j) {
+        if (j-i+1 == 0) {
+          sm[index(i,j,N)] = A;
+        }
+        else if (j-i+1 == 1) {
+          sm[index(i,j,N)] = B;
+        }
+        else if (j-i+1 == 2) {
+          sm[index(i,j,N)] = C;
+        }
+        else {
+          sm[index(i,j,N)] = 0;
+        }
+      }
+    }
+    
+    ll* fsm = mexp(sm, T, N, M);
+    delete sm;
+    
+    for (int i = 0; i &lt; N; ++i) {
+      ll total = 0;
+      for (int j = 0; j &lt; N; ++j) {
+        total = (total + fsm[index(i,j,N)]*states[j]) % M;
+      }
+      cout &lt;&lt; total &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+    delete fsm;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-08-22.
+ */
+public class Wheel {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        ArrayList&lt;String&gt; al = new ArrayList&lt;String&gt;();
+        int counter = 0;
+
+        int numberOfWords = Integer.parseInt(s.next());
+        for(int i = 0; i&lt; numberOfWords; i++){
+            al.add(s.next());
+        }
+
+        int noOfPatterns = Integer.parseInt(s.next());
+        for(int j = 0; j &lt; noOfPatterns; j++){
+            counter = 0;
+            String word = s.next();
+            System.out.println(&quot;Word #&quot; + (j+1) + &quot;: &quot; + word);
+            String regexWord = word.replaceAll(&quot;-&quot;, &quot;.&quot;);
+            //System.out.println(regexWord);
+            for(String w : al){
+                if(w.matches(regexWord)){
+                    counter++;
+                    System.out.println(w);
+                }
+            }
+            System.out.println(&quot;Total number of candidate words = &quot; + counter);
+            System.out.println();
+        }
+        //boolean b = subject.matches(&quot;.at&quot;);
+    }
+    private static String FixRegex(String str){
+        return str.replaceAll(&quot;-&quot;, &quot;.&quot;);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

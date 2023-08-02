@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+using namespace std;
+
+int main() {
+  map&lt;string, char&gt; m;
+  int N;
+  cin &gt;&gt; N;
+  while (N--) {
+    string str, code;
+    cin &gt;&gt; str &gt;&gt; code;
+    for (int i = 1; i &lt; code.length(); i++)
+      m[code.substr(0,i)] = 0;
+    m[code] = str[0];
+  }
+  string str;
+  cin &gt;&gt; str;
+  int index = 0;
+  for (int i = 1; i &lt;= str.length(); i++) {
+    char c = m[str.substr(index, i - index)];
+    if (c != 0) {
+      cout &lt;&lt; c;
+      index = i;
+    }
+  }
+  cout &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

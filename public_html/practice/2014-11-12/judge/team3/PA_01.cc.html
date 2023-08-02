@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+int first_win(char a, char b){
+	if (a=='R' &amp;&amp; b=='S') return 1;
+	if (a=='S' &amp;&amp; b=='P') return 1;
+	if (a=='P' &amp;&amp; b =='R') return 1;
+	if (a==b) return 0;
+	return -1;
+}
+
+
+int main(){
+	int test; cin &gt;&gt; test;
+	for (int t = 0; t &lt; test; t++){
+		int n; cin &gt;&gt; n;
+		int f = 0, s = 0;
+		for (int r = 0; r &lt; n; r++){
+			char a, b; cin &gt;&gt; a &gt;&gt; b;
+			int res = first_win(a, b);
+			if (res == 1) f++;
+			else if (res==-1) s++;
+		}
+		if (f &gt; s) cout &lt;&lt; &quot;Player 1&quot; &lt;&lt; endl;
+		else if (f==s) cout &lt;&lt; &quot;TIE&quot; &lt;&lt; endl;
+		else cout &lt;&lt; &quot;Player 2&quot; &lt;&lt; endl;
+	}
+
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

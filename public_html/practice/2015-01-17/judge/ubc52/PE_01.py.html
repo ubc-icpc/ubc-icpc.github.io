@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+R,C=map(int,raw_input().split(&quot; &quot;))
+K=int(raw_input())
+cats=[map(int,raw_input().split(&quot; &quot;)) for i in range(K)]
+cats.append([1,1])
+
+grid=[[0 for y in range(R)] for x in range(C)]
+
+grid[0][0]=1
+
+for x in range(C):
+	for y in range(R):
+		if [y+1,x+1] in cats:
+			pass	#leave at zero
+		elif x==0:
+			grid[x][y]=grid[x][y-1]
+		elif y==0:
+			grid[x][y]=grid[x-1][y]
+		else:
+			grid[x][y]=grid[x-1][y]+grid[x][y-1]
+print grid[C-1][R-1]
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

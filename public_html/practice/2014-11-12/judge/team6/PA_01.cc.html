@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+int main() {
+	int T;
+	std::cin &gt;&gt; T;
+	while(T--) {
+		int N;
+		std::cin &gt;&gt; N;
+		int w1 = 0, w2 = 0;
+		for(int i = 0; i &lt; N; i ++) {
+			char a, b;
+			std::cin &gt;&gt; a &gt;&gt; b;
+			if(a == 'R' &amp;&amp; b == 'P') w2 ++;
+			if(a == 'R' &amp;&amp; b == 'S') w1 ++;
+			if(a == 'S' &amp;&amp; b == 'R') w2 ++;
+			if(a == 'S' &amp;&amp; b == 'P') w1 ++;
+			if(a == 'P' &amp;&amp; b == 'R') w1 ++;
+			if(a == 'P' &amp;&amp; b == 'S') w2 ++;
+		}
+		if(w1 == w2) std::cout &lt;&lt; &quot;TIE&quot; &lt;&lt; std::endl;
+		else if(w1&gt;w2) std::cout &lt;&lt; &quot;Player 1&quot; &lt;&lt; std::endl;
+		else std::cout &lt;&lt; &quot;Player 2&quot; &lt;&lt; std::endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

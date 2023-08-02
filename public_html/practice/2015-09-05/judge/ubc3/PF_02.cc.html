@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;iterator&gt;
+#include &lt;algorithm&gt;
+#include &lt;tuple&gt;
+#include &lt;set&gt;
+#include &lt;stack&gt;
+struct Edge {
+  int to, cap, flow;
+  Edge(int to, int cap):
+    to(to), cap(cap), flow(0) {}
+  Edge(int to, int cap, int flow):
+    to(to), cap(cap), flow(flow) {}
+};
+using namespace std;
+using vi = vector&lt;int&gt;;
+using ve = vector&lt;Edge&gt;;
+using G = vector&lt;ve&gt;;
+using spii = set&lt;pair&lt;int,int&gt;&gt;;
+using sti = stack&lt;int&gt;;
+
+int flow_value(const G&amp; adj_list) {
+  int res = 0;
+  for (auto&amp; e : adj_list[0])
+    res += e.flow;
+  return res;
+}
+
+G residual_graph(G&amp; adj_list) {
+  int n = adj_list.size();
+  G res(n);
+  for (int i = 0; i &lt; n; ++i)
+    for (auto&amp; e : adj_list[i]) {
+      if (e.flow &lt; 0) continue;
+      if (e.cap - e.flow &gt; 0)
+        res[i].push_back(Edge(e.to, e.cap - e.flow, e.flow));
+      if (e.flow &gt; 0)
+        res[e.to].push_back(Edge(i, e.flow, -e.flow));
+    }
+  return res;
+}
+
+int find_ind(G&amp; adj_list, int src, int to) {
+  auto it = find_if(adj_list[src].begin(), adj_list[src].end(),
+      [to](Edge e) {
+        return e.to == to;
+      });
+  return it - adj_list[src].begin();
+}
+
+G edmonds_karp(G&amp; adj_list) {
+  // s = 0, t = n - 1
+  int n = adj_list.size();
+  G flow = adj_list;
+  G res = residual_graph(adj_list);
+  while (true) {
+    // shortest path
+    vi dist(n, -1);
+    vi curr(n, -1);
+    vi prev(n, -1);
+    spii next;
+    next.insert(make_pair(0, 0)); // (dist, vertex)
+    while (!next.empty() &amp;&amp; dist[n-1] == -1) {
+      auto it = next.begin();
+      int dis = it-&gt;first;
+      int ver = it-&gt;second;
+      dist[ver] = dis;
+      next.erase(it);
+      for (auto&amp; e : res[ver]) {
+        if (dist[e.to] != -1) continue; // processed
+        int alt = dis + e.cap;
+        if (alt &lt; curr[e.to]) { // delete if update
+          auto old = next.find(make_pair(curr[e.to], e.to));
+          next.erase(old);
+        }
+        if (curr[e.to] == -1 || alt &lt; curr[e.to]) {
+          next.insert(make_pair(alt, e.to));
+          curr[e.to] = alt;
+          prev[e.to] = ver;
+        }
+      }
+    }
+    if (dist[n-1] == -1) break;
+
+    // reconstructing the path
+    int min_cap = -1;
+    vi from;
+    vi to_ind;
+    for (int to = n - 1; to != 0; to = prev[to]) {
+      int it = prev[to];
+      int jt = find_ind(res, it, to); 
+      if (min_cap == -1) min_cap = res[it][jt].cap;
+      else min_cap = min(min_cap, res[it][jt].cap);
+      from.push_back(it);
+      to_ind.push_back(jt);
+    }
+    // cout &lt;&lt; &quot;min_cap = &quot; &lt;&lt; min_cap &lt;&lt; endl;
+    // cout &lt;&lt; &quot;path&quot; &lt;&lt; endl &lt;&lt; &quot;  &quot;;
+    // for (int i = from.size() - 1; i &gt;= 0; --i) {
+      // cout &lt;&lt; from[i] &lt;&lt; ' ';
+    // }
+    // cout &lt;&lt; n-1 &lt;&lt; endl;
+
+    // augmenting the flow
+    for (int i = 0; i &lt; from.size(); ++i) {
+      int src = from[i];
+      int jt = to_ind[i];
+      int dest = res[src][jt].to;
+      if (res[src][jt].flow &lt; 0) {
+        flow[dest][find_ind(flow, dest, src)].flow -= min_cap;
+      } else {
+        flow[src][find_ind(flow, src, dest)].flow += min_cap;
+      }
+    }
+    // cout &lt;&lt; &quot;f: &quot; &lt;&lt; flow_value(flow) &lt;&lt; endl;
+    res = residual_graph(flow);
+  }
+  return flow;  
+}
+
+/*
+ * 42 shifts to be manned (each by at least 3)
+ * edges
+ *   s -&gt; student i, capacity = 80
+ *   student i -&gt; shift j, capacity = 1
+ *   shift j -&gt; t, capacity = 3
+ * Yes if max flow is numshift * 3
+ */
+int main() {
+  int T; cin &gt;&gt; T;
+  for (int cases = 1; cases &lt;= T; ++cases) {
+    // source[0] + student[1-10] + shift[11-52] + sink[53]
+    int g_size = 1 + 10 + 6 * 7 + 1;
+    G adj_list(g_size);
+    // edges between source and student (max. 20 shifts/student)
+    for (int i = 1; i &lt;= 10; ++i)
+      adj_list[0].push_back(Edge(i, 20));
+    // edges between students and shifts
+    for (int i = 1; i &lt;= 10; ++i) {
+      // available for shift
+      vi possible(6 * 7, 0);
+      int I; cin &gt;&gt; I;
+      for (int j = 0; j &lt; I; ++j) {
+        int d, s, e; cin &gt;&gt; d &gt;&gt; s &gt;&gt; e;
+        int start_shift = (d - 1) * 6 + s / 4;
+        int end_shift = (d - 1) * 6 + e / 4;
+        if (e % 4 == 0)
+          end_shift--;
+        for (int k = start_shift; k &lt;= end_shift; ++k)
+          possible[k] = 1;
+      }
+      for (int j = 0; j &lt; possible.size(); ++j)
+        if (possible[j] == 0)
+          adj_list[i].push_back(Edge(11 + j, 1));
+    }
+    // edges between shifts and sink
+    for (int i = 11; i &lt;= 52; ++i)
+      adj_list[i].push_back(Edge(53, 3));
+
+    // for (int i = 0; i &lt; adj_list.size(); ++i) {
+      // cout &lt;&lt; i &lt;&lt; &quot;: &quot;;
+      // for (int j = 0; j &lt; adj_list[i].size(); ++j) {
+        // cout &lt;&lt; '(' &lt;&lt; adj_list[i][j].to &lt;&lt; &quot;, &quot; &lt;&lt; adj_list[i][j].cap &lt;&lt; &quot;) &quot;;
+      // }
+      // cout &lt;&lt; endl;
+    // }
+
+    G res = edmonds_karp(adj_list);
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; cases &lt;&lt; &quot;: &quot;
+        &lt;&lt; (flow_value(res) == (6 * 7 * 3)? &quot;YES&quot; : &quot;NO&quot;) &lt;&lt; endl &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

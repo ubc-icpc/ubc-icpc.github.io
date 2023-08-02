@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+string remove_head(string nums){
+   int index=0;
+   while(index &lt; nums.size()){
+      if (nums[index] == '.'){
+	 return nums.substr(index + 1);
+      }
+      index++;
+   }
+   return nums;
+}
+
+string remove_tail(string nums){
+   int index= nums.size()-1;
+   while(index &gt;=0){
+      if(nums[index]!= '0'){
+	 return nums.substr(0,index+1);
+      }
+      index--;
+   }
+   return nums;
+}
+
+string add_str(string nums){
+   int carry = 0;
+   int len = nums.size()-1;
+   int last = nums[len] - '0';
+   for(int i = len; i&gt;=0; --i){
+      last = nums[i] - '0';
+      int sum = 2*(last)+carry;
+      nums[i] = sum % 10 + '0';
+      carry = sum / 10;
+   }
+
+   return nums;
+}
+   
+	 
+int main(){
+   string n;
+   while(cin&gt;&gt;n){
+      bool lost= false;
+      n = remove_head(n);
+      n = remove_tail(n);
+      while(n.size()&gt;0){
+	 int len = n.size()-1;
+	 int last = n[len] - '0';
+	 if(n[len]!= '5' and n[len]!='0'){
+	    lost = true;
+	    break;
+	 }
+	 if(n.size() == 1){
+	    break;
+	 }
+	 else{
+	    n = add_str(n);
+	    n = remove_tail(n);
+	 }
+	 
+      }
+   
+   if(lost)
+      cout&lt;&lt; &quot;Some precision lost.&quot;&lt;&lt;endl;
+   else
+      cout&lt;&lt; &quot;Exact.&quot;&lt;&lt;endl;
+      
+   }
+      
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+def solve(arr):
+    stocks = 0
+    money = 100
+    for i in range(len(arr)):
+        # if have stocks
+        if stocks:
+            # should sell? only if this is a local maxima
+            if i == len(arr) - 1 or arr[i] &gt; arr[i+1]:
+                money += arr[i]*stocks
+                stocks = 0
+        else:
+            if i &lt; len(arr) - 1 and money &gt;= arr[i] and arr[i] &lt; arr[i+1]:
+                stocks = min(100000, int(money/arr[i]))
+                money -= stocks * arr[i]
+    return money
+
+d = int(sys.stdin.readline())
+arr = []
+for i in range(d):
+    arr.append(int(sys.stdin.readline()))
+
+print solve(arr)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdio&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+typedef long double ld;
+typedef pair&lt;ld, int&gt; E;
+const int N = 2048;
+const ld EPS = 1e-8;
+const ld alpha = 0.11;
+
+ld a[N], b[N], cx; // (a, b) &lt;--&gt; y = ax - b
+int z[N];
+E nxt[N], badev(0, -1);
+
+bool cmp(const int &amp;i1, const int &amp;i2) {
+    if (abs(a[i1] - a[i2]) &lt; EPS) return -b[i1] &lt; -b[i2];
+    return a[i1] &gt; a[i2];
+}
+
+void updateEvent(set&lt;E&gt; &amp;q, int ii) {
+    q.erase(nxt[ii]);
+    nxt[ii] = badev;
+
+    int i1 = z[ii], i2 = z[ii+1];
+    if (abs(a[i1]-a[i2]) &gt; EPS) {
+        // y = ax-b = cx-d ==&gt; x = (b-d)/(a-c)
+        ld x = (b[i1]-b[i2])/(a[i1]-a[i2]);
+
+        if (x &gt; cx-EPS) {
+            E ev(x, ii);
+            nxt[ii] = ev;
+            q.insert(ev);
+        }
+    }
+}
+
+ld triangle(int i, int j, int k) {
+    ld dxij = a[j] - a[i], dyij = b[j] - b[i];
+    ld dxik = a[k] - a[i], dyik = b[k] - b[i];
+    ld cross = dxij*dyik - dyij*dxik;
+    return abs(cross/2.0);
+}
+
+void printState(int n) {
+    for (int j = 0; j &lt; n; j++) {
+        int jj = z[j];
+        fprintf(stderr, &quot;[%.3f %.3f], &quot;, a[jj], b[jj]);
+    }
+    fprintf(stderr, &quot;\n&quot;);
+}
+
+int main() {
+    int n; scanf(&quot;%d&quot;, &amp;n);
+    while (n &gt; 0) {
+        for (int i = 0; i &lt; n; i++) {
+            int x, y;
+            scanf(&quot;%d %d&quot;, &amp;x, &amp;y);
+            //a[i] = x; b[i] = y;
+            a[i] = x*cos(alpha) - y*sin(alpha); b[i] = x*sin(alpha) + y*cos(alpha);
+            z[i] = i;
+        }
+
+        cx = -1e100;
+        sort(z, z+n, cmp);
+
+        set&lt;E&gt; q;
+        for (int ii = 0; ii+1 &lt; n; ii++) {
+            updateEvent(q, ii);
+        }
+        nxt[n-1] = badev;
+
+        //printState(n);
+
+        ld big = 0, small = 1e100;
+        while (!q.empty()) {
+            E curr = *q.begin();
+            cx = curr.first;
+
+            // find first line in intersection
+            int ii1 = curr.second;
+            while (ii1 &gt; 0 &amp;&amp; nxt[ii1-1].second &gt;= 0 &amp;&amp; abs(nxt[ii1-1].first - cx) &lt; EPS) ii1--;
+
+            // find last line in intersection
+            int ii2 = curr.second+1;
+            while (ii2+1 &lt; n &amp;&amp; nxt[ii2].second &gt;= 0 &amp;&amp; abs(nxt[ii2].first - cx) &lt; EPS) ii2++;
+
+            //fprintf(stderr, &quot;[%2d, %2d] x = %.3f, ii = %2d\n&quot;, ii1, ii2, cx, curr.second);
+
+            // find biggest and smallest triangle
+            for (int j1 = ii1; j1 &lt; ii2; j1++) {
+                int j2 = j1+1;
+                if (ii1 &gt; 0) {
+                    big = max(big, triangle(z[j1], z[j2], z[0]));
+                    small = min(small, triangle(z[j1], z[j2], z[ii1-1]));
+                }
+                if (ii2+1 &lt; n) {
+                    big = max(big, triangle(z[j1], z[j2], z[n-1]));
+                    small = min(small, triangle(z[j1], z[j2], z[ii2+1]));
+                }
+            }
+
+            // colinear points =&gt; smallest triangle has area 0
+            if (ii1+1 &lt; ii2) {
+                //fprintf(stderr, &quot;colinear!\n&quot;);
+
+                small = 0;
+            }
+
+            // reverse their order
+            for (int k = 0; ii1+k &lt; ii2-k; k++) {
+                swap(z[ii1+k], z[ii2-k]);
+            }
+
+            // erase events: these lines won't intersect again
+            for (int k = ii1; k &lt; ii2; k++) {
+                q.erase(nxt[k]);
+                nxt[k] = badev;
+            }
+
+            // fix intersection of ii1-1 to ii1, and ii2 to ii2+1
+            if (ii1 &gt; 0) updateEvent(q, ii1-1);
+            if (ii2+1 &lt; n) updateEvent(q, ii2);
+
+            //printState(n);
+        }
+
+        printf(&quot;%.1f %.1f\n&quot;, (double)small, (double)big);
+
+        scanf(&quot;%d&quot;, &amp;n);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+public class b {
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		int n = scan.nextInt();
+		dood[] arr =new dood[n];
+		for(int i = 0;i&lt;n;i++) {
+			arr[i]=  new dood(scan.next(),scan.nextInt(),scan.nextInt(),scan.nextInt());
+		}
+		ArrayList&lt;ans&gt; ans = new ArrayList&lt;&gt;();
+		for(int i = 0;i&lt;n;i++) {
+			for(int j = i+1;j&lt;n;j++) {
+				for(int k = j+1;k&lt;n;k++) {
+//					if(i==j || i==k || j==k)continue;
+					if((beat(arr[i],arr[j]) &amp;&amp; beat(arr[j],arr[k]) &amp;&amp; beat(arr[k],arr[i])) ||
+							(beat(arr[j],arr[i]) &amp;&amp; beat(arr[k],arr[j])&amp;&amp; beat(arr[i],arr[k])) ) {
+//						ArrayList&lt;String&gt; match = new ArrayList&lt;&gt;();
+//						match.add(arr[i].name);
+//						match.add(arr[j].name);
+//						match.add(arr[k].name);
+						ArrayList&lt;String&gt; add = new ArrayList&lt;&gt;();
+						add.add(arr[i].name);
+						add.add(arr[j].name);
+						add.add(arr[k].name);
+//						int chng = 0;
+//						for(ans curr:ans) {
+//							if(curr.arr.contains(match.get(0))) {
+//								match.remove(0);
+//								chng++;
+//							}
+//							if(curr.arr.contains(match.get(1-chng))) {
+//								match.remove(1-chng);
+//								chng++;
+//							}
+//							if(curr.arr.contains(match.get(2-chng))) {
+//								match.remove(2-chng);
+//							}
+//						}
+//						if(match.size()==0)continue;
+						ans.add(new ans(add));
+					}
+				}
+			}
+		}
+		System.out.println(ans.size());
+		for(int i = 0 ;i&lt;ans.size();i++) {
+			for(int j = 0;j&lt;3;j++) {
+				System.out.print(ans.get(i).arr.get(j)+&quot; &quot;);
+			}
+			System.out.println();
+		}
+	}
+	static class ans{
+		ArrayList&lt;String&gt; arr = new ArrayList&lt;&gt;();
+		public ans(ArrayList&lt;String&gt; arr1) {
+			arr = arr1;
+		}
+	}
+	public static boolean beat(dood one, dood two) {
+		//turns for guy one to kill guy two
+		long turnsa = 0;
+		//turns for guy two to kill guy one
+		long turnsb = 0;
+		if(one.b&lt;=two.c) {
+			turnsa = Long.MAX_VALUE;
+		}else {
+			turnsa = two.a/(one.b-two.c)+1;
+			if(two.a%(one.b-two.c)==0) {
+				turnsa--;
+			}
+		}
+		if(two.b&lt;=one.c) {
+			turnsb = Long.MAX_VALUE;
+		}else {
+			turnsb = one.a/(two.b-one.c)+1;
+			if(one.a%(two.b-one.c)==0) {
+				turnsb--;
+			}
+		}
+		//System.out.println(one.name+&quot; &quot;+two.name+&quot; &quot;+(turnsa&lt;turnsb));
+		if(turnsa&lt;turnsb) {
+			return true;
+		}return false;
+		
+	}
+	static class dood{
+		String name;
+		int a, b,c;
+		public dood(String n ,int a1 ,int b1, int c1) {
+			name = n;
+			a = a1;
+			b = b1;
+			c = c1;
+		}
+	}
+
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+map&lt;int, string&gt; key( { {1,&quot;   &quot;}, {2,&quot;abc&quot;}, {3,&quot;def&quot;},{4,&quot;ghi&quot;},{5,&quot;jkl&quot;},{6,&quot;mno&quot;},{7,&quot;pqrs&quot;},{8,&quot;tuv&quot;},
+    {9,&quot;wxyz&quot;} });
+
+map&lt;int, int&gt; m;
+string word;
+int length;
+
+void solve() {
+  int prev = 0;
+  // find which key actually needed
+  // find which key on modified keypad
+  for (int i=0; i&lt;length; i++) {
+    char ch = word[i];
+    int c = ch-'a';
+    int actual = 0;
+    if (c&gt;=0 &amp;&amp; c&lt;=14)
+    actual = 2+ (c/3);
+    else if (c&gt;=15 &amp;&amp; c&lt;=18)
+      actual = 7;
+    else if (c&gt;=19 &amp;&amp; c&lt;=21)
+      actual =8;
+    else
+      actual = 9;
+    //    cout &lt;&lt; actual &lt;&lt; endl;
+    int modified=0;
+    for (auto it=m.begin(); it!=m.end(); ++it) {
+      if(it-&gt;second == actual)
+	modified = it-&gt;first+1;
+    }
+    //    cout &lt;&lt; modified &lt;&lt; endl;
+    // now find sequence of keys
+    //cout &lt;&lt; actual &lt;&lt; &quot; &quot; &lt;&lt; modified &lt;&lt; endl;
+    //cout &lt;&lt; key[actual] &lt;&lt; endl;
+    int offset=0;
+    for (int it = 0; it &lt; key[actual].length(); it++) {
+      if (key[actual][it]!=ch)
+	offset++;
+      else
+	break;
+    }
+    //cout &lt;&lt; offset &lt;&lt; endl;
+    if (i!=0 &amp;&amp; prev==modified)
+    cout &lt;&lt; &quot;#&quot;;
+    for (int j=0; j&lt;=offset; j++)
+      cout &lt;&lt; modified;
+    prev = modified;
+  }
+}
+
+int main() {
+  //prev = 0;
+  for (int i=0; i&lt;9; i++)
+    cin &gt;&gt; m[i];
+  cin &gt;&gt; word;
+  length = word.length();
+  solve ();
+  cout &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

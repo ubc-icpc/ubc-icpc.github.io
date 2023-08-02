@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+u = [1, 2, 3, 3, 4, 10]
+v = [1, 2, 2, 2, 3, 5, 11]
+n = int(raw_input())
+
+for i in range(n):
+    print &quot;Battle &quot; + str(i + 1) + &quot;: &quot;,
+    g, b = 0, 0
+    g = sum([x * y for (x, y) in zip(u, map(int, raw_input().split()))])
+    b = sum([x * y for (x, y) in zip(v, map(int, raw_input().split()))])
+    if g == b:
+        print &quot;No victor on this battle field&quot;
+    elif g &gt; b:
+        print &quot;Good triumphs over Evil&quot;
+    else:
+        print &quot;Evil eradicates all trace of Good&quot;
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

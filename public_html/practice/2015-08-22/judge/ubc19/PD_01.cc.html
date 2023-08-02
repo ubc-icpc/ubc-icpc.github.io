@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;stdio.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll gcd (ll a, ll b) {
+  if (a == 0) return b;
+  return gcd(b%a, a);
+}
+
+int main() {
+  int n; cin &gt;&gt; n;
+  for (int i=1; i&lt;=n; i++) {
+    cout &lt;&lt; &quot;Ticket #&quot; &lt;&lt; i &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    ll x; cin &gt;&gt; x;
+    bool got = false;
+    for (ll i=10000000; i&gt;0; i/=10) {
+      ll a = x/i; ll b = x%i;
+      if (gcd(a,b) == 1) {
+        got = true;
+        cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+        break;
+      }
+    }
+    if (!got) cout &lt;&lt; &quot;Not relative&quot; &lt;&lt; endl;
+    cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;utility&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll,ll&gt; pll;
+typedef vector&lt;pll&gt; vpll;
+
+vector&lt;int&gt; adj[400001];
+ll d[400001];
+vpll v;
+int nl[400001];
+bool vis[400001];
+vector&lt;int&gt; dp;
+
+ll dfs(int x, int r, const bool&amp; b, const int&amp; dd) {
+  ll mx = d[x];
+  bool l = true;
+  for (int i = 0; i &lt; adj[x].size(); i++) {
+    if (!d[adj[x][i]]) {
+      d[adj[x][i]] = d[x]+1;
+      mx = max(mx,dfs(adj[x][i],r,b,dd));
+      l = false;
+    }
+  }
+  if (b &amp;&amp; l &amp;&amp; d[x] == dd) {
+    nl[r]++;
+  }
+  return mx;
+}
+
+int last;
+queue&lt;int&gt; q;
+
+inline void bfs() {
+  while (q.size()) {
+    int f = q.front();
+    q.pop();
+    for (int i = 0; i &lt; adj[f].size(); i++) {
+      if (!d[adj[f][i]]) {
+        d[adj[f][i]] = d[f]+1;
+        q.push(adj[f][i]);
+      }
+    }
+    last = f;
+  }
+}
+
+bool dfs2(int x, const int&amp; s2) {
+  for (int i = 0; i &lt; adj[x].size(); i++) {
+    if (!vis[adj[x][i]]) {
+      vis[adj[x][i]] = true;
+      if (adj[x][i] == s2 || dfs2(adj[x][i],s2)) {
+        dp.push_back(adj[x][i]);
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int n; cin &gt;&gt; n;
+  int a, b;
+  for (int i = 0; i &lt; n-1; i++) {
+    cin &gt;&gt; a &gt;&gt; b;
+    adj[a].push_back(b);
+    adj[b].push_back(a);
+  }
+  q.push(1);
+  d[1] = 1;
+  bfs();
+  memset(d, 0, sizeof d);
+  int s1 = last;
+  q.push(last);
+  d[last] = 1;
+  bfs();
+  int s2 = last;
+  vis[s1] = true;
+  dfs2(s1,s2);
+  dp.push_back(s1);
+  int s = 0;
+  if (dp.size() % 2)
+    s = dp[dp.size()/2];
+  else {
+    int dp1 = dp[dp.size()/2];
+    int dp2 = dp[dp.size()/2-1];
+    adj[dp1].erase(find(adj[dp1].begin(),adj[dp1].end(),dp2));
+    adj[dp1].push_back(0);
+    adj[dp2].erase(find(adj[dp2].begin(),adj[dp2].end(),dp1));
+    adj[dp2].push_back(0);
+    adj[0].push_back(dp1);
+    adj[0].push_back(dp2);
+  }
+  memset(d, 0, sizeof d);
+  d[s] = 1;
+  for (int i = 0; i &lt; adj[s].size(); i++) {
+    d[adj[s][i]] = 2;
+    v.push_back(make_pair(dfs(adj[s][i],adj[s][i],0,0),adj[s][i]));
+  }
+  memset(d, 0, sizeof d);
+  d[s] = 1;
+  for (int i = 0; i &lt; adj[s].size(); i++) {
+    d[adj[s][i]] = 2;
+    dfs(adj[s][i],adj[s][i],1,v[i].first);
+  }
+  sort(v.begin(),v.end());
+  ll p1 = v.back().first, p2 = v[v.size()-2].first;
+  ll a1 = p1+p2-1;
+  if (!(dp.size() % 2))
+    a1--;
+  ll a2 = 0;
+  if (p1 == p2) {
+    ll ps = 0;
+    for (int i = v.size()-1; i &gt;= 0; i--) {
+      if (v[i].first == p1) {
+        a2 += nl[v[i].second]*ps;
+        ps += nl[v[i].second];
+      }
+    }
+  }
+  else {
+    ll t = 0;
+    for (int i = v.size()-2; i &gt;= 0; i--)
+      if (v[i].first == p2)
+        t += nl[v[i].second];
+    a2 = nl[v.back().second]*t;
+  }
+  cout &lt;&lt; a1 &lt;&lt; &quot; &quot; &lt;&lt; a2 &lt;&lt; &quot;\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

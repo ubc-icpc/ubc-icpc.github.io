@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int MAXN = 2010;
+// valid positions are [1..MAXN], commented lines are hints for a 2D BIT
+// MODES OF USE: point-insert range-query OR range-insert point-query
+struct BITree { int freq[MAXN+1][MAXN+1]; 
+  void reset() { memset(freq, 0, sizeof freq); }
+  void insert(int x, int argy, int cnt=1) {
+    for ( ; x &lt;= MAXN; x += x &amp; -x) 
+      for (int y = argy; y &lt;= MAXN; y += y &amp; -y) freq[x][y] += cnt;
+  }
+  int query(int x, int argy) { int sum = 0;
+	if (x == 0 || argy == 0) return 0;
+    for ( ; x; x -= x &amp; -x) 
+      for (int y = argy; y; y -= y &amp; -y) sum += freq[x][y];
+    return sum; }
+	
+  int query_range(int xl, int yl, int xr, int yr) { 
+	return query(xr, yr) - query(xl-1, yr) - query(xr, yl-1) + query(xl-1, yl-1); 
+  }
+};
+	
+BITree bt;
+int dist[1005][1005], w, h;
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+
+bool good(int m) {
+	bt.reset();
+	vector&lt;pair&lt;int, int&gt;&gt; pt;
+	const int c = 1000;
+	for (int i = 0; i &lt; w; i++) {
+		for (int j = 0; j &lt; h; j++) {
+			if (dist[i][j] &lt; m) continue;
+			int x = i+1, y = j+1;
+			pt.push_back({x+y, x-y+c});
+			bt.insert(x+y, x-y+c);
+		}
+	}
+	
+	m = m-1;
+	for (auto p : pt) {
+		int i = p.first, j = p.second;
+		int li = max(1, i-m), ri = min(2005, i+m);
+		int lj = max(1, j-m), rj = min(2005, j+m);
+		int q = bt.query_range(li, lj, ri, rj);
+		if (q &lt; pt.size()) return true;
+	}
+	return false;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		memset(dist, 0x3f, sizeof dist);
+		int n; cin &gt;&gt; n &gt;&gt; w &gt;&gt; h;
+		
+		queue&lt;pair&lt;int, int&gt;&gt; q;
+		for (int i = 0; i &lt; n; i++) {
+			int x, y; cin &gt;&gt; x &gt;&gt; y;
+			dist[x][y] = 0;
+			q.push({x,y});
+		}
+		
+		while (!q.empty()) {
+			auto p = q.front(); q.pop();
+			int x = p.first, y = p.second;
+			for (int d = 0; d &lt; 4; d++) {
+				int nx = x + dx[d], ny = y + dy[d];
+				if (nx &lt; 0 || ny &lt; 0 || nx &gt;= w || ny &gt;= h) continue;
+				if (dist[nx][ny] &gt; dist[x][y] + 1) {
+					dist[nx][ny] = dist[x][y] + 1;
+					q.push({nx,ny});
+				}
+			}
+		}
+		
+		bt.reset();
+		int l = 0, r = w+h-2;
+		while (r - l &gt; 1) {
+			int m = (l+r)/2;
+			if (good(m)) l = m;
+			else r = m-1;
+		}
+		if (!good(r)) r = l;
+		cout &lt;&lt; r &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

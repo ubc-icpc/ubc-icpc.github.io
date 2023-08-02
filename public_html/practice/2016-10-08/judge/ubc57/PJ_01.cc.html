@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long double ld;
+typedef tuple&lt;int,int,int&gt; pt;
+
+const int sq=2520;
+const ld INF=1e8;
+map&lt;pt,vector&lt;pair&lt;pt,ld&gt;&gt;&gt; G;
+map&lt;pt,ld&gt; dist;
+char A[5][5][5];
+bool eq(ld a, ld b){ return abs(a-b)&lt;1e-4;}
+bool good(int x){
+    x%=sq; 
+    if (x==0) return 1;
+    if (sq%x!=0) return 0;
+    int a=sq/x; 
+    if (a&lt;=9) return 1;
+    return 0;
+}
+void add_edge(pt x, pt y){
+    ld dx=get&lt;0&gt;(x)-get&lt;0&gt;(y),dy=get&lt;1&gt;(x)-get&lt;1&gt;(y),dz=get&lt;2&gt;(x)-get&lt;2&gt;(y);
+    ld d=sqrt(dx*dx+dy*dy+dz*dz);
+    G[x].push_back({y,d});
+    G[y].push_back({x,d});
+}
+struct cmp{
+  bool operator()(const pt &amp;u, const pt &amp;v){
+      ld d1=INF,d2=INF;
+      if (dist.count(u)) d1=dist[u];
+      if (dist.count(v)) d2=dist[v];
+      if (eq(d1,d2)) return u&lt;v;
+      else return d1&lt;d2;
+  }  
+};
+int main(){
+    //freopen(&quot;readable.txt&quot;,&quot;w&quot;,stdout);
+    ios::sync_with_stdio(0);
+    int x1,y1,z1,x2,y2,z2;
+    while (cin&gt;&gt;x1&gt;&gt;y1&gt;&gt;z1&gt;&gt;x2&gt;&gt;y2&gt;&gt;z2){
+        if ((((x1==0)&amp;&amp;(x2==0))&amp;&amp;((y1==0)&amp;&amp;(y2==0)))&amp;&amp;((z1==0)&amp;&amp;(z2==0))) break;
+        G.clear(); dist.clear(); 
+        x1*=sq,y1*=sq,z1*=sq,x2*=sq,y2*=sq,z2*=sq;
+        for (int c=0;c&lt;3;c++) for (int b=0;b&lt;3;b++) for (int a=0;a&lt;3;a++) cin&gt;&gt;A[a+1][b+1][c+1];
+        for (int c=0;c&lt;3;c++) for (int b=0;b&lt;3;b++) for (int a=0;a&lt;3;a++) {
+            if (A[a+1][b+1][c+1]=='#'){
+                //x=a*sq,a*sq+sq
+                for (int j=0;j&lt;2;j++){
+                    int x=a*sq; 
+                    if (j) x+=sq;
+                    if ((j==0)&amp;&amp;(A[a][b+1][c+1]=='#')) continue;
+                    if ((j==1)&amp;&amp;(A[a+2][b+1][c+1]=='#')) continue;
+                    set&lt;pt&gt; face;
+                    for (int y=b*sq;y&lt;=b*sq+sq;y++) if(good(y)){
+                        face.insert(make_tuple(x,y,c*sq));
+                        face.insert(make_tuple(x,y,c*sq+sq));
+                    }
+                    for (int z=c*sq;z&lt;=c*sq+sq;z++) if (good(z)){
+                        face.insert(make_tuple(x,b*sq,z));
+                        face.insert(make_tuple(x,b*sq+sq,z));
+                    }
+                    vector&lt;pt&gt; v; v.assign(face.begin(),face.end());
+                    for (int x=0;x&lt;v.size();x++) for (int y=x+1;y&lt;v.size();y++) add_edge(v[x],v[y]);
+                }
+                //y=b*sq,b*sq+sq
+                for (int j=0;j&lt;2;j++){
+                    int y=b*sq; if (j) y+=sq;
+                    if ((j==0)&amp;&amp;(A[a+1][b][c+1]=='#')) continue;
+                    if ((j==1)&amp;&amp;(A[a+1][b+2][c+1]=='#')) continue;
+                    set&lt;pt&gt; face;
+                    for (int x=a*sq;x&lt;=a*sq+sq;x++) if (good(x)){
+                        face.insert(make_tuple(x,y,c*sq));
+                        face.insert(make_tuple(x,y,c*sq+sq));
+                    }
+                    for (int z=c*sq;z&lt;=c*sq+sq;z++) if (good(z)){
+                        face.insert(make_tuple(a*sq,y,z));
+                        face.insert(make_tuple(a*sq+sq,y,z));
+                    }
+                    vector&lt;pt&gt; v; v.assign(face.begin(),face.end());
+                    for (int x=0;x&lt;v.size();x++) for (int y=x+1;y&lt;v.size();y++) add_edge(v[x],v[y]);
+                }
+                //z=c*sq,c*sq+sq
+                for (int j=0;j&lt;2;j++){
+                    int z=c*sq; if (j) z+=sq;
+                    if ((j==0)&amp;&amp;(A[a+1][b+1][c]=='#')) continue;
+                    if ((j==1)&amp;&amp;(A[a+1][b+1][c+2]=='#')) continue;
+                    set&lt;pt&gt; face;
+                    for (int x=a*sq;x&lt;=a*sq+sq;x++) if (good(x)){
+                        face.insert(make_tuple(x,b*sq,z));
+                        face.insert(make_tuple(x,b*sq+sq,z));
+                    }
+                    for (int y=b*sq;y&lt;=b*sq+sq;y++) if (good(y)){
+                        face.insert(make_tuple(a*sq,y,z));
+                        face.insert(make_tuple(a*sq+sq,y,z));
+                    }
+                    vector&lt;pt&gt; v; v.assign(face.begin(),face.end());
+                    for (int x=0;x&lt;v.size();x++) for (int y=x+1;y&lt;v.size();y++) add_edge(v[x],v[y]);
+                }
+            }
+        }
+        //cout&lt;&lt;&quot;built&quot;&lt;&lt;' '&lt;&lt;G.size()&lt;&lt;endl;
+        for (auto p:G) dist[p.first]=INF;
+        set&lt;pt,cmp&gt; pq; dist[make_tuple(x1,y1,z1)]=0; pq.insert(make_tuple(x1,y1,z1));
+        while (!pq.empty()){
+            pt now=*pq.begin(); pq.erase(pq.begin());
+            //cout&lt;&lt;get&lt;0&gt;(now)&lt;&lt;','&lt;&lt;get&lt;1&gt;(now)&lt;&lt;','&lt;&lt;get&lt;2&gt;(now)&lt;&lt;endl;
+            for (pair&lt;pt,ld&gt; edge:G[now]){
+                pt nex=edge.first; 
+                ld newd=dist[now]+edge.second;
+                if ((dist[nex]&gt;newd)&amp;&amp;(!eq(dist[nex],newd))){
+                    //cout&lt;&lt;get&lt;0&gt;(nex)&lt;&lt;','&lt;&lt;get&lt;1&gt;(nex)&lt;&lt;','&lt;&lt;get&lt;2&gt;(nex)&lt;&lt;&quot; &quot;&lt;&lt;dist[nex]&lt;&lt;endl;
+                    pq.erase(nex);
+                    dist[nex]=newd;
+                    pq.insert(nex);
+                }
+            }
+        }
+        //for (auto p:dist) cout&lt;&lt;get&lt;0&gt;(p.first)&lt;&lt;','&lt;&lt;get&lt;1&gt;(p.first)&lt;&lt;','&lt;&lt;get&lt;2&gt;(p.first)&lt;&lt;' '&lt;&lt;p.second&lt;&lt;endl;
+        cout&lt;&lt;fixed&lt;&lt;setprecision(10)&lt;&lt;dist[make_tuple(x2,y2,z2)]/ld(sq)&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

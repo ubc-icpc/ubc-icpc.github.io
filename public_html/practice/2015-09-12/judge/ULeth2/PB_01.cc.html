@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+using namespace std;
+
+bool col(int U[], int R[])
+{
+   if(U[0]&gt;R[0])
+      return true;
+   else if(U[0]==R[0])
+   {
+      if(U[1]&gt;R[1])
+	 return true;
+      else if(U[1]==R[1])
+	 return (U[2]&gt;R[2]);
+      else
+	 return false;
+   }
+   else
+      return false;
+}
+
+int main()
+{
+   int n;
+   cin &gt;&gt; n;
+   int U[3], R[3];
+   for(int k=0; k&lt;n; k++)
+   {
+      cin &gt;&gt; U[0] &gt;&gt; U[1] &gt;&gt; U[2];
+      cin &gt;&gt; R[0] &gt;&gt; R[1] &gt;&gt; R[2];
+      for(int i=0; i&lt;3; i++)
+      {
+	 if(i==0)
+	    cout &lt;&lt; U[i];
+	 else
+	    cout &lt;&lt; &quot; &quot; &lt;&lt; U[i];
+      }
+      for(int i=0; i&lt;3; i++)
+	 cout &lt;&lt; &quot; &quot; &lt;&lt; R[i];
+      cout &lt;&lt; endl;
+      bool count=false, colour=false;
+      int Ucount=U[0]+U[1]+U[2], Rcount=R[0]+R[1]+R[2];
+      if(Ucount&gt;Rcount)
+	 count=true;
+      colour=col(U, R);
+      if(count and colour)
+	 cout &lt;&lt; &quot;both&quot; &lt;&lt; endl;
+      else if(count and !colour)
+	 cout &lt;&lt; &quot;count&quot; &lt;&lt; endl;
+      else if(colour and !count)
+	 cout &lt;&lt; &quot;color&quot; &lt;&lt; endl;
+      else
+	 cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+      cout &lt;&lt; endl;
+   }
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

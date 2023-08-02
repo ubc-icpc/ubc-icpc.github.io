@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+const int dx[4] = {1,-1,0,0};
+const int dy[4] = {0,0,1,-1};
+
+int n, m;
+int b[102][102];
+int h[100][100];
+bool c[102][102];
+
+int main() {
+  ios::sync_with_stdio(0);
+  int T = 1;
+  while (cin &gt;&gt; n &gt;&gt; m &amp;&amp; n) {
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; T++ &lt;&lt; &quot;: &quot;;
+    memset(b, 0, sizeof b);
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = 0; j &lt; m; j++) {
+        cin &gt;&gt; h[i][j];
+        b[i+1][j+1] = h[i][j];
+      }
+    }
+    int H = 0;
+    while (true) {
+      memset(c, 0, sizeof c);
+      for (int i = 0; i &lt; n+2; i++)
+        for (int j = 0; j &lt; m+2; j++)
+          if (i == 0 || i == n+1 || j == 0 || j == m+1)
+            b[i][j] = H;
+      queue&lt;pii&gt; q;
+      q.push(make_pair(0,0));
+      c[0][0] = true;
+      while (q.size()) {
+        pii f = q.front();
+        q.pop();
+        for (int i = 0; i &lt; 4; i++) {
+          int x = f.first+dx[i], y = f.second+dy[i];
+          if (0 &lt;= x &amp;&amp; x &lt; n+2 &amp;&amp; 0 &lt;= y &amp;&amp; y &lt; m+2 &amp;&amp; b[x][y] &lt;= H &amp;&amp; !c[x][y]) {
+            c[x][y] = true;
+            q.push(make_pair(x,y));
+          }
+        }
+      }
+      int p = 0;
+      for (int i = 1; i &lt;= n; i++) {
+        for (int j = 1; j &lt;= m; j++) {
+          if (!c[i][j]) {
+            q.push(make_pair(i,j));
+            c[i][j] = true;
+            while (q.size()) {
+              pii f = q.front();
+              q.pop();
+              for (int k = 0; k &lt; 4; k++) {
+                int x = f.first+dx[k], y = f.second+dy[k];
+                if (0 &lt;= x &amp;&amp; x &lt; n+2 &amp;&amp; 0 &lt;= y &amp;&amp; y &lt; m+2 &amp;&amp; !c[x][y]) {
+                  c[x][y] = true;
+                  q.push(make_pair(x,y));
+                }
+              }
+            }
+            p++;
+          }
+        }
+      }
+      if (p == 0) {
+        cout &lt;&lt; &quot;Island never splits.\n&quot;;
+        break;
+      }
+      else if (p &gt; 1) {
+        cout &lt;&lt; &quot;Island splits when ocean rises &quot; &lt;&lt; H &lt;&lt; &quot; feet.\n&quot;;
+        break;
+      }
+      H++;
+    }
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

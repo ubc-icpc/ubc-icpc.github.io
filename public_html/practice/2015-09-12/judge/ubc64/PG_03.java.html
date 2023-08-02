@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
+import java.util.*;
+
+
+public class acm {
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int round = scan.nextInt();
+        for (int i = 1; i &lt;=round; i ++) {
+            int d = scan.nextInt();
+            int n = scan.nextInt();
+            if (Math.pow((n -1),2) + 1 &gt;= d) {
+                int step = (2*n-2)*d;
+                System.out.println(&quot;Grid #&quot; + i + &quot;: &quot; + step + &quot;\n&quot;);
+            } else {
+                System.out.println(&quot;Grid #&quot; + i + &quot;: &quot; + &quot;impossible\n&quot;);
+            }
+
+        }
+    }
+
+//            3
+//            2 2
+//            100 8
+//            3 100
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

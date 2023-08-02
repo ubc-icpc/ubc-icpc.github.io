@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+const int N = 1024;
+const int M = 1024*1024;
+const ll INF = 0x3f3f3f3f;
+
+int par[N], first[N], nxt[2*M], ep[2*M], m;
+ll flo[2*M], cap[2*M], cost[2*M];
+void init() { m = 0; memset(first, -1, sizeof first); memset(flo, 0, sizeof flo); }
+void add_edge(int a, int b, ll c=1, ll p=0) {
+    nxt[m] = first[ep[m]=a], first[ep[m]] = m, cap[m] = c, cost[m] =  p, ++m;
+    nxt[m] = first[ep[m]=b], first[ep[m]] = m, cap[m] = 0, cost[m] = -p, ++m; }
+
+ll mf_update(int s, int t, ll del=1) {
+    ll df[N]; memset(df, 0, sizeof df); memset(par, -1, sizeof par);
+    queue&lt;int&gt; q; q.push(s); par[s] = -2; df[s] = INF;
+    while (!q.empty()) { ll cf; int u = q.front(); q.pop();
+        for (int v, e = first[u]; e != -1; e = nxt[e])
+            if (par[v=ep[e^1]] == -1 &amp;&amp; (cf = cap[e]-flo[e]) &gt;= del)
+                q.push(v), par[v] = e, df[v] = min(df[u], cf); }
+    if (par[t] == -1) return 0;
+    for (int e, i = t; i != s; i = ep[e])
+        e = par[i], flo[e] += df[t], flo[e^1] -= df[t];
+    return df[t];
+}
+int nn, mm;
+ll ptime[N];
+ll dtime1[N][N];
+ll dtime2[N][N];
+int fsrc[N], fdst[N]; ll ftime[N];
+
+vector&lt;pii&gt; edges;
+void buildGraph() {
+    for (int i = 0; i &lt; mm; i++) {
+        for (int j = 0; j &lt; mm; j++) {
+            if (i == j) continue;
+            int a = fsrc[i], b = fdst[i], c = fsrc[j], d = fdst[j];
+            ll mintime = ftime[i] + dtime1[a][b] + ptime[b] + dtime2[b][c];
+            if (mintime &lt;= ftime[j]) {
+                edges.push_back(pii(i, j));
+                //cerr &lt;&lt; &quot;edge: &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; endl;
+            }
+        }
+    }
+}
+
+void buildFlowGraph(int z) {
+    int s0 = 0, s1 = 1, s2 = 2, t0 = 3, t1 = 4;
+    int base = 5;
+
+    // flights: in = base + 2*i, out = base + 2*i+1
+
+    // vertex capacity and demand
+    for (int i = 0; i &lt; mm; i++) {
+        int vin = base+2*i;
+        int vout = base+2*i+1;
+
+        // demand of in -&gt; out = 1
+        add_edge(vin, t0, 1);
+        add_edge(s0, vout, 1);
+
+        // cap of in -&gt; out = inf
+        add_edge(vin, vout, INF);
+    }
+
+    // edges
+    for (pii e : edges) {
+        // out(u) -&gt; in(v) = inf
+        add_edge(base + 2*e.first+1, base + 2*e.second, INF);
+    }
+
+    // source 1 -&gt; source 2 with cap = z
+    add_edge(s1, s2, z);
+
+    // source 2 -&gt; all flights with cap = inf
+    // all flights -&gt; sink with cap = inf
+    for (int i = 0; i &lt; mm; i++) {
+        add_edge(s2, base + 2*i, INF);
+        add_edge(base + 2*i+1, t1, INF);
+    }
+
+    // sink 1 -&gt; source 1 with cap = inf
+    add_edge(t1, s1, INF);
+}
+
+bool possible(int z) {
+    init();
+    buildFlowGraph(z);
+    ll flow = 0;
+    for (ll del = INF; del; del /= 2) while (ll df=mf_update(0, 3, del)) flow += df;
+    return flow == mm;
+}
+
+int main() {
+    scanf(&quot;%d %d&quot;, &amp;nn, &amp;mm);
+    for (int i = 0; i &lt; nn; i++) {
+        scanf(&quot;%lld&quot;, &amp;ptime[i]);
+    }
+    for (int i = 0; i &lt; nn; i++) {
+        for (int j = 0; j &lt; nn; j++) {
+            scanf(&quot;%lld&quot;, &amp;dtime1[i][j]);
+        }
+    }
+    for (int i = 0; i &lt; mm; i++) {
+        scanf(&quot;%d %d %lld&quot;, &amp;fsrc[i], &amp;fdst[i], &amp;ftime[i]);
+        fsrc[i]--; fdst[i]--;
+    }
+
+    for (int i = 0; i &lt; nn; i++) {
+        for (int j = 0; j &lt; nn; j++) {
+            dtime2[i][j] = 0;
+            if (i != j) {
+                dtime2[i][j] = dtime1[i][j] + ptime[j];
+            }
+        }
+    }
+    for (int k = 0; k &lt; nn; k++) {
+        for (int i = 0; i &lt; nn; i++) {
+            for (int j = 0; j &lt; nn; j++) {
+                dtime2[i][j] = min(dtime2[i][j], dtime2[i][k] + dtime2[k][j]);
+            }
+        }
+    }
+
+    buildGraph();
+
+    int lb = 0, rb = mm;
+    while (rb - lb &gt; 1) {
+        int mid = lb+(rb-lb)/2;
+        if (possible(mid)) rb = mid;
+        else lb = mid;
+    }
+    printf(&quot;%d\n&quot;, rb);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

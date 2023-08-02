@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+/**
+ * Write a description of class abnormal here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+import java.util.*;
+public class acts
+{
+   
+    public static void main(String args[]){
+        Scanner m = new Scanner(System.in);
+        
+        //System.out.println(&quot;hi&quot;);
+        
+        int N = m.nextInt();
+        int K = m.nextInt();
+        
+        int max = 0;
+        int sum = 0;
+        int[] scenes = new int[N];
+        for (int i = 0; i &lt; N; i++){
+            int temp = m.nextInt();
+            if (temp &gt; max){
+                max = temp;
+            }
+            sum += temp;
+            scenes[i] = temp;
+        }
+        
+        if (K == 1){
+            System.out.println(max);
+            return;
+        } else if (K == N){
+            System.out.println(sum);
+            return;
+        }
+        
+        Arrays.sort(scenes);
+        sum = 0;
+        
+        for (int i = 1; i &lt;= K; i++){
+            sum += scenes[N-i];
+        }
+        System.out.println(sum);
+    }
+    
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+bool mark[10];
+int count;
+
+void scan(long long n) {
+    long long cur = n;
+    while (cur != 0) {
+        if (mark[cur%10] == false) {
+            mark[cur%10] = true;
+            count++;
+        }
+        cur /= 10;
+    }
+}
+
+int main() {
+    long long n;
+    while (cin &gt;&gt; n) {
+        for (int i=0; i&lt;10; i++) mark[i] = false;
+        count = 0;
+        long long k=1;
+        while (true) {
+            scan(k*n);
+            if (count == 10) break;
+            else k++;
+        }
+        cout &lt;&lt; k &lt;&lt; endl;
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

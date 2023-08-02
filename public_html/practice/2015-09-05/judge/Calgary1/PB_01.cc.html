@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+
+int main() {
+	int tc;
+	cin &gt;&gt; tc;
+	while (tc--) {
+		int D, x[10];
+		cin &gt;&gt; D;
+		FOR(d,0,D) cin &gt;&gt; x[d];
+		cout &lt;&lt; &quot;Denominations:&quot;;
+		FOR(d,0,D) cout &lt;&lt; ' ' &lt;&lt; x[d];
+		cout &lt;&lt; endl;
+		sort(x,x+D);
+		bool good = true;
+		FOR(d,1,D) if (x[d] &lt; 2*x[d-1]) good=false;
+		cout &lt;&lt; (good?&quot;Good coin denominations!\n\n&quot;:&quot;Bad coin denominations!\n\n&quot;);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

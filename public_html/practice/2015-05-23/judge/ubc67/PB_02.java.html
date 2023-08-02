@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.*;
+import java.util.*;
+
+public class B {
+	
+	public static void main(String args[]) throws IOException {
+		
+		BufferedReader kinput = new BufferedReader(new InputStreamReader(System.in));
+		
+		int num = Integer.parseInt(kinput.readLine());
+		
+		ArrayList&lt;String&gt; people = new ArrayList&lt;String&gt;();
+		
+		for(int a = 0; a &lt; num; a++) {
+			people.add(kinput.readLine());
+		}
+		
+		Collections.sort(people);
+		
+		ArrayList&lt;String&gt; finish = new ArrayList&lt;String&gt;();
+		
+		for(int a = 0; a &lt; num - 1; a++) {
+			finish.add(kinput.readLine());
+		}
+		
+		Collections.sort(finish);
+		
+		String not = &quot;&quot;;
+		
+		for(int a = 0; a &lt; finish.size(); a++) {
+			
+			if(!(people.get(a).equals(finish.get(a)))) {
+				not = people.get(a);
+				break;
+			}
+			
+			if(a == finish.size()-1) {
+				not = people.get(finish.size());
+			}
+			
+		}
+		
+		System.out.println(not);
+		
+	}
+	
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

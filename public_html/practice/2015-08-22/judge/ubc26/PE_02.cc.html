@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+#define printf(...);
+#define I(x) x; cin &gt;&gt; x;
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define SL(ss, mmm) \
+  vector&lt;string&gt; ss; \
+  int I(mmm); ss.reserve(mmm); \
+  L(iiii, mmm) {string I(tt);ss.push_back(tt);}
+
+#define LL(i, j) L(i, m) L(j, n)
+
+#define M(p, q) ((p) * n + q)
+
+#define E (-1)
+int (*board), (*dp), m, n;
+
+int f(int i, int j) {
+  if (i == 0 &amp;&amp; j == 0) return 0;
+  if (i &lt; 0 || j &lt; 0) return 0;
+  if (dp[M(i, j)] &gt;= 0) return dp[M(i, j)];
+  return dp[M(i, j)] = board[M(i, j)] + max(f(i-1, j), f(i, j-1));
+}
+
+int main() {
+  int I(qqq);
+  L(g, qqq) {
+    int I(mm); int I(nn);
+    m = mm, n = nn;
+    board = new int[m*n];
+    dp = new int[m*n];
+    memset(dp, -1, m*n*sizeof(int));
+
+    LL(i, j) {
+      if ((i==0 &amp;&amp; j==0) || (i==m-1 &amp;&amp; j==n-1)) {
+        char I(c);
+        board[M(i, j)] = 0;
+        continue;
+      }
+      cin &gt;&gt; board[M(i, j)];
+    }
+
+    L(i, m) {
+      L(j, n) printf(&quot;%4d&quot;, board[M(i, j)]);
+      printf(&quot;\n&quot;);
+    }
+    printf(&quot;\n&quot;);
+    L(i, m) {
+      L(j, n) printf(&quot;%4d&quot;, dp[M(i, j)]);
+      printf(&quot;\n&quot;);
+    }
+    printf(&quot;\n&quot;);
+
+    f(m-1, n-1);
+    cout &lt;&lt; &quot;Game Board #&quot; &lt;&lt; (g+1) &lt;&lt; &quot;: &quot; &lt;&lt; dp[M(m-1, n-1)] &lt;&lt; endl &lt;&lt; endl;
+  }
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

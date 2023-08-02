@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n; cin &gt;&gt; n;
+    int deck[4][16];
+    memset(deck, -1, sizeof deck);
+    for (int i = 0; i &lt; n; i++) {
+        string str; cin &gt;&gt; str;
+        int z, s;
+        if ('2' &lt;= str[0] &amp;&amp; str[0] &lt;= '9') z = (int)(str[0] - '0');
+        else if (str[0] == 'T') z = 10;
+        else if (str[0] == 'J') z = 11;
+        else if (str[0] == 'Q') z = 12;
+        else if (str[0] == 'K') z = 13;
+        else z = 14;
+
+        if (str[1] == 's') s = 0;
+        else if (str[1] == 'h') s = 1;
+        else if (str[1] == 'd') s = 2;
+        else if (str[1] == 'c') s = 3;
+
+        deck[s][z] = i;
+
+        //cerr &lt;&lt; z &lt;&lt; &quot; &quot; &lt;&lt; s &lt;&lt; endl;
+    }
+
+    int arr[n];
+    int bestans = n-1;
+
+    int lis[n];
+
+    for (int s1 = 0; s1 &lt; 4; s1++) {
+    for (int s2 = 0; s2 &lt; 4; s2++) {
+    if (s2 == s1) continue;
+    for (int s3 = 0; s3 &lt; 4; s3++) {
+    if (s3 == s1) continue;
+    if (s3 == s2) continue;
+    for (int s4 = 0; s4 &lt; 4; s4++) {
+    if (s4 == s1) continue;
+    if (s4 == s2) continue;
+    if (s4 == s3) continue;
+
+    for (int o1 = 0; o1 &lt; 2; o1++) {
+    for (int o2 = 0; o2 &lt; 2; o2++) {
+    for (int o3 = 0; o3 &lt; 2; o3++) {
+    for (int o4 = 0; o4 &lt; 2; o4++) {
+
+        for (int i = 2; i &lt;= 14; i++) if (deck[s1][i] &gt;= 0) arr[deck[s1][i]] =    (o1 ? i : 15-i);
+        for (int i = 2; i &lt;= 14; i++) if (deck[s2][i] &gt;= 0) arr[deck[s2][i]] = 16+(o2 ? i : 15-i);
+        for (int i = 2; i &lt;= 14; i++) if (deck[s3][i] &gt;= 0) arr[deck[s3][i]] = 32+(o3 ? i : 15-i);
+        for (int i = 2; i &lt;= 14; i++) if (deck[s4][i] &gt;= 0) arr[deck[s4][i]] = 64+(o4 ? i : 15-i);
+
+        int ans = 1;
+        for (int i = 0; i &lt; n; i++) lis[i] = 1;
+        for (int i = 1; i &lt; n; i++) {
+            for (int j = 0; j &lt; i; j++) {
+                if (arr[j] &lt; arr[i]) lis[i] = max(lis[i], lis[j] + 1);
+            }
+            ans = max(ans, lis[i]);
+        }
+
+        //cerr &lt;&lt; s1 &lt;&lt; o1 &lt;&lt; &quot; &quot; &lt;&lt; s2 &lt;&lt; o2 &lt;&lt; &quot; &quot; &lt;&lt; s3 &lt;&lt; o3 &lt;&lt; &quot; &quot; &lt;&lt; s4 &lt;&lt; o4 &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; endl;
+        //for (int i = 0; i &lt; n; i++) cerr &lt;&lt; arr[i] &lt;&lt; &quot; &quot;; cerr &lt;&lt; endl;
+        //for (int i = 0; i &lt; n; i++) cerr &lt;&lt; lis[i] &lt;&lt; &quot; &quot;; cerr &lt;&lt; endl;
+
+        bestans = min(bestans, n - ans);
+
+    }
+    }
+    }
+    }
+
+    }
+    }
+    }
+    }
+
+    cout &lt;&lt; bestans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

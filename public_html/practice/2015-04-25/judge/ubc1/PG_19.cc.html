@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef double ld;
+typedef complex&lt;ld&gt; pt;
+
+//q0 = t + s rot(p0)
+//q1 = t + s rot(p1)
+//q0 - q1 = s rot(p0 - p1)
+
+const ld eps = 1e-8;
+pt p[500005], q[500005];
+int main() {
+    // random sampling is our friend (and succeeds with high probability!)
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            int x, y; cin &gt;&gt; x &gt;&gt; y;
+            p[i] = pt(x, y);
+        }
+        for (int i = 0; i &lt; n; i++) {
+            int x, y; cin &gt;&gt; x &gt;&gt; y;
+            q[i] = pt(x, y);
+        }
+        
+        // O(sqrt(n)) trials are enough to succeed with high probability
+        // (can probably prove through a chernoff bound)
+        int m = 10;
+        int ans = 0;
+        for (int i = 0; i &lt; n; i++) {
+            pt delq = q[(i+1)%n]-q[i], delp = p[1]-p[0];
+            pt rot = polar(ld(1.0), arg(delq/delp));
+
+            delp *= rot;
+            if (abs(delp.real()*delq.real()) &lt; eps &amp;&amp; 
+                abs(delp.real() + delq.real()) &gt; eps) continue;
+                
+            if (abs(delp.imag()*delq.imag()) &lt; eps &amp;&amp; 
+                abs(delp.imag() + delq.imag()) &gt; eps) continue;
+
+            if (abs(delq.real()/delp.real() - delq.imag()/delp.imag()) &gt; eps) continue;
+            
+            ld s = abs(delq/delp);
+            pt t = q[i]-s*rot*p[0];
+            
+            bool yes = true;
+            const int trials = 1; // technically should be log n..
+            for (int l = 0; l &lt; trials; l++) {
+                for (int j = 0; j &lt; m; j++) {
+                    int k = rand()%n;
+                    if (abs(t+s*rot*p[k]-q[(i+k)%n]) &gt; eps) {
+                        yes = false;
+                        goto out;
+                    }
+                }
+            }
+            
+            out:
+            if (yes) {
+                // adaptive number of trials..
+                m += 4*log(n);
+                // do a brute force O(n) check...
+                bool final_yes = true;
+                for (int j = 0; j &lt; n; j++) {
+                    if (abs(t+s*rot*p[j]-q[(i+j)%n]) &gt; eps) {
+                        final_yes = false;
+                        break;
+                    }
+                }
+                if (final_yes) {
+                    ans = i+1;
+                    break;
+                }
+            }
+            
+            // hack... hope this works..
+            if (m &gt; 10*sqrt(n)) break;
+        }
+        
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;unordered_map&gt;
+using namespace std;
+
+// 0 = unvisited, 1 = reached, 2 = visited
+int visited[20000];
+vector&lt;int&gt; graph[20000];
+unordered_map&lt;string, int&gt; m;
+
+bool dfs(int curr) {
+    if (visited[curr] != 2) {
+        visited[curr] = 1;
+        for (int neighbour : graph[curr]) {
+            if (visited[neighbour] == 1)
+                return true;    // graph has a cycle
+            if (dfs(neighbour))
+                return true;
+        }
+        visited[curr] = 2;
+    }
+    return false;
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    string name1, sign, name2;
+    int n, num_names = 0;
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; ++i) {
+        cin &gt;&gt; name1 &gt;&gt; sign &gt;&gt; name2;
+        if (m.find(name1) == m.end())
+            m[name1] = num_names++;
+        if (m.find(name2) == m.end())
+            m[name2] = num_names++;
+        if (sign == &quot;&gt;&quot;)
+            graph[m[name1]].push_back(m[name2]);
+        else
+            graph[m[name2]].push_back(m[name1]);
+    }
+
+    for (int i = 0; i &lt; num_names; ++i) {
+        if (dfs(i)) {
+            cout &lt;&lt; &quot;impossible\n&quot;;
+            return 0;
+        }
+    }
+    cout &lt;&lt; &quot;possible\n&quot;;
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

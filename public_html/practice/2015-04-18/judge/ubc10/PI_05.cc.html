@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+struct N {
+	N* next;
+	N* prev;
+	char c;
+};
+
+N* start;
+
+N* init(char c) {
+	N* ret = (N*)malloc(sizeof(N));
+	ret-&gt;next = NULL;
+	ret-&gt;prev = NULL;
+	ret-&gt;c = c;
+	return ret;
+}
+
+// cursor is after char, will insert after cursor and move cursor right
+void insert(N* &amp;cursor, char c) {
+	N* s = cursor-&gt;next;
+
+	// connect cursor and next
+	cursor-&gt;next = init(c);
+	cursor-&gt;next-&gt;prev = cursor;
+	// connect next and old next
+	cursor-&gt;next-&gt;next = s;
+	if (s != NULL) {
+		s-&gt;prev = cursor-&gt;next;
+	}
+	// move cursor
+	cursor = cursor-&gt;next;
+}
+
+// cursor is after char to delete
+void del(N* &amp;cursor) {
+	if (cursor == start) return;
+	N* s = cursor;
+
+	// connect prev to next
+	cursor-&gt;prev-&gt;next = cursor-&gt;next;
+	if (cursor-&gt;next != NULL) {
+		cursor-&gt;next-&gt;prev = cursor-&gt;prev;
+	}
+	// move cursor back
+	cursor = cursor-&gt;prev;
+
+	// delete
+	free(s);
+}
+
+void deletelst(N* &amp;s) {
+	N* ss = s;
+	while (ss != NULL) {
+		N* nn = ss-&gt;next;
+		free(ss);
+		ss = nn;
+	}
+	s = NULL;
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	while (n--) {
+		string s;
+		cin &gt;&gt; s;
+		start = init(0);
+		N* cursor = start;
+		for (int i = 0; i &lt; s.length(); i++) {
+			if (s[i] == '&lt;') {
+				if (cursor != start) {
+					cursor = cursor-&gt;prev;
+				}
+			} else if (s[i] == '&gt;') {
+				if (cursor-&gt;next != NULL) {
+					cursor = cursor-&gt;next;
+				}
+			} else if (s[i] == '-') {
+				del(cursor);
+			} else {
+				insert(cursor, s[i]);
+			}
+		}
+		cursor = start-&gt;next;
+		while (cursor != NULL) {
+			cout &lt;&lt; cursor-&gt;c;
+			cursor = cursor-&gt;next;
+		}
+		cout &lt;&lt; endl;
+		deletelst(start);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

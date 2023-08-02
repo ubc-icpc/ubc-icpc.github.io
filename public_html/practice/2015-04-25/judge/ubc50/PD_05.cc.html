@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int p, q;
+// m[x] contains people shorter than x
+map&lt;int, vector&lt;int&gt; &gt;m;
+int seen[1000001];
+
+bool solve (int p, int q) {
+    memset(seen, 0, sizeof seen);
+  queue&lt;int&gt; sthng;
+  sthng.push(p);
+  while(!sthng.empty()) {
+    int top = sthng.front();
+    sthng.pop();
+    if (find(m[top].begin(), m[top].end(), q)!=m[top].end())
+      return true;
+    for (auto e : m[top])
+      if (!seen[e]) {
+	seen[e] = 1;
+	sthng.push(e);
+      }
+  }
+  return false;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int n, ma; cin &gt;&gt; n &gt;&gt; ma;
+  for (int i=0; i&lt;ma; i++) {
+    int x, y; cin &gt;&gt; x &gt;&gt; y;
+    m[x].push_back(y);
+  }
+  cin &gt;&gt; p &gt;&gt; q;
+  if (solve(p,q))
+    cout &lt;&lt; &quot;yes\n&quot;;
+  else if (solve(q,p))
+    cout &lt;&lt; &quot;no\n&quot;;
+  else
+    cout &lt;&lt; &quot;unknown\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

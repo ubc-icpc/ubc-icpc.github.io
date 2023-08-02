@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+int t; int temp1, temp2;
+int maxArea, minArea, curArea;
+
+
+int main() {
+	while (1) {
+		scanf(&quot;%d&quot;,&amp;t);
+		if (t==0) break;
+		vector&lt;pii&gt; v; 
+		for (int i=0; i&lt;t; i++) {
+			scanf(&quot;%d&quot;,&amp;temp1);
+			scanf(&quot;%d&quot;,&amp;temp2);
+			v.push_back(make_pair(temp1,temp2));
+		}
+		maxArea = 0;
+		minArea = 8e8;
+		for (int i=0; i&lt;t; i++) {
+			for (int j=i+1; j&lt;t; j++) {
+				for (int k=j+1; k&lt;t; k++) {
+					curArea = abs((v[i].first - v[k].first)*(v[j].second - v[i].second) - (v[i].first - v[j].first)*(v[k].second - v[i].second));
+					if (curArea &gt; maxArea) maxArea = curArea;
+					if (curArea &lt; minArea) minArea = curArea;
+				}
+			}
+		}
+		printf(&quot;%.1f&quot;,minArea/2.0); 
+		printf(&quot; &quot;);
+		printf(&quot;%.1f\n&quot;,maxArea/2.0);
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

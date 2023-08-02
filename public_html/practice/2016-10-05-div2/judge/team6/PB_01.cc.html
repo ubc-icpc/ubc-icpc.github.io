@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;set&gt;
+
+#define INT_MAX 10e8
+
+using namespace std;
+
+struct edge { int to, length; };
+    
+int dijkstra(const vector&lt;vector&lt;edge&gt;&gt; &amp;graph, int source, int target) {
+  vector&lt;int&gt; dist(graph.size(), INT_MAX);
+  dist[source] = 0;
+  set&lt;pair&lt;int,int&gt;&gt; active_vertices;
+  active_vertices.insert({0,source});
+      
+  while (!active_vertices.empty()) {
+    int where = active_vertices.begin()-&gt;second;
+    if (where == target) {
+      return dist[where];
+    }
+
+    active_vertices.erase(active_vertices.begin());
+    for (auto ed : graph[where]) 
+      if (dist[ed.to] &gt; dist[where] + ed.length) {
+        active_vertices.erase({dist[ed.to], ed.to});
+        dist[ed.to] = dist[where] + ed.length;
+        active_vertices.insert({dist[ed.to], ed.to});
+      }
+  }
+  return INT_MAX;
+}
+
+int create_graph(vector&lt;vector&lt;edge&gt;&gt; &amp;graph, int w, int h, vector&lt;string&gt; lines, vector&lt;int&gt; cost, int sink) {
+  int start_node;
+  edge tmp = {};
+  for(int i = 0; i &lt; h; i++) {
+    for(int j = 0; j &lt; w; j++) {
+      vector&lt;edge&gt; outgoing;
+      bool to_sink = false;
+      if(i != 0) {
+        tmp = { .to = (i-1)*w + j, .length = cost[(int) (lines[i-1][j] - 'A')] };
+        outgoing.push_back(tmp);
+      } else {
+        to_sink = true;
+      }
+
+      if(i != h-1) {
+        tmp = { .to = (i+1)*w + j, .length = cost[(int) (lines[i+1][j] - 'A')] };
+        outgoing.push_back(tmp);
+      } else {
+        to_sink = true;
+      }
+
+      if(j != 0) {
+        tmp = { .to = i*w + j - 1, .length = cost[(int) (lines[i][j-1] - 'A')] };
+        outgoing.push_back(tmp);
+      } else {
+        to_sink = true;
+      }
+
+      if(j != w-1) {
+        tmp = { .to = i*w + j + 1, .length = cost[(int) (lines[i][j+1] - 'A')] };
+        outgoing.push_back(tmp);
+      } else {
+        to_sink = true;
+      }
+
+      if(to_sink) {
+        tmp = { .to = sink, .length = 0 };
+        outgoing.push_back(tmp);
+      }
+
+      graph.push_back(outgoing);
+
+      if(lines[i][j] == 'E') {
+        start_node = i*w + j;
+      }
+    }
+  }
+
+  vector&lt;edge&gt; sink_outgoing;
+  graph.push_back(sink_outgoing);
+  return start_node;
+}
+
+int main() {
+  int T,k,w,h;
+  char c;
+  int tmp;
+  cin &gt;&gt; T;
+
+  vector&lt;string&gt; lines;
+  string line;
+  while(T--) {
+    cin &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+    vector&lt;int&gt; costs(26,0);
+
+    for(int i = 0; i &lt; k; i++) {
+      cin &gt;&gt; c &gt;&gt; tmp;
+      costs[(int) (c-'A')] = tmp;
+    }
+   
+    getline(cin, line); 
+    for(int i = 0; i &lt; h; i++) {
+      getline(cin, line); 
+      lines.push_back(line);
+    }
+
+    vector&lt;vector&lt;edge&gt;&gt; graph;
+    int start_node = create_graph(graph, w, h, lines, costs, w*h);
+    
+    cout &lt;&lt; dijkstra(graph, start_node, w*h) &lt;&lt; endl;
+
+    lines.clear();
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

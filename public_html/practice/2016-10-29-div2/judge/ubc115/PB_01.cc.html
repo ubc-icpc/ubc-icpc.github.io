@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+string s;
+int p;
+vector&lt;pair&lt;string, int&gt;&gt; v;
+
+
+int mess(int ii) {
+        for (auto p : v) {
+                int o = p.second;
+                switch (p.first[0]) {
+                        case 'A':
+                                ii += o;
+                                break;
+                        case 'S':
+                                ii -= o;
+                                break;
+                        case 'D':
+                                if (ii % o) {
+                                       return 1;
+                                } 
+                                ii /= o;
+                                break;
+                        case 'M':
+                                ii *= o;
+                                break;
+                        default:
+                                break;
+                }
+                if (ii &lt; 0) {
+                        return 1;
+                }
+        }
+        return 0;
+}
+
+
+
+int main() {
+        int n;
+        cin &gt;&gt; n;
+               for (int i = 0; i &lt; n; i++) {
+                cin &gt;&gt; s &gt;&gt; p;
+                v.push_back({s, p});
+        }
+
+        int count = 0;
+        for (int ii = 1; ii &lt;= 100; ii++) {
+                count += mess(ii);
+        }
+
+        cout &lt;&lt; count &lt;&lt; '\n';
+        
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

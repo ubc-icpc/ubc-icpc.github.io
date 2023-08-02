@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class acm {
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int iteration = scan.nextInt();
+        for (int z=1 ; z &lt; iteration + 1; z++) {
+            int r = scan.nextInt();
+            int c = scan.nextInt();
+            int s = 0;
+            for (int i = 0; i &lt; r; i ++) {
+                for (int k = 0; k &lt; c; k ++) {
+                    if ((i+k)%2 == 0) {
+                        s -= scan.nextInt();
+                    } else {
+                        s += scan.nextInt();
+                    }
+                }
+            }
+            if (s ==0) {
+                System.out.print(&quot;Case #&quot; + z +&quot;: YES\n\n&quot;);
+            } else {
+                System.out.print(&quot;Case #&quot; + z+&quot;: NO\n\n&quot;);
+            }
+
+        }
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

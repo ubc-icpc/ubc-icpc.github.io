@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+
+ll I;
+unordered_map&lt;ll, pii&gt; M;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  for (int i = 1; i &lt;= 4000; ++i) {
+    for (int j = i;  i+j &lt;= 4000; ++j) {
+      ll t = (ll)i * (ll)i * (ll)i;
+      t += (ll)j * (ll)j * (ll)j;
+      if (M.count(t)) {
+        pii p = M[t];
+        if (p.first + p.second &lt; i + j) continue;
+      }
+      M[t] = pii(i, j);
+    }
+  }
+
+  while (true) {
+    cin &gt;&gt; I;
+    if (!I) break;
+    int a, b, c; a = -1;
+    for (int i = 1; i &lt;= 4000; ++i) {
+      ll t = (ll)i * (ll)i * (ll)i;
+      if (M.count(I * t)) {
+        int sa = M[I * t].second;
+        int sc = M[I * t].first;
+        int sb = i;
+        if (sa + sc + sb &gt; 4000) continue;
+        if (a == -1 || a + b + c &gt; sa + sb + sc) {
+          a = sa; b = sb; c = sc;
+        }
+      }
+    }
+    if (a == -1) {
+      cout &lt;&lt; &quot;No value.&quot; &lt;&lt; endl;
+    } else {
+      cout &lt;&lt; &quot;(&quot; &lt;&lt; a &lt;&lt; &quot;/&quot; &lt;&lt; b &lt;&lt; &quot;)^3 + (&quot; &lt;&lt; c &lt;&lt; &quot;/&quot; &lt;&lt; b &lt;&lt; &quot;)^3 = &quot; &lt;&lt; I &lt;&lt; endl;
+    }
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

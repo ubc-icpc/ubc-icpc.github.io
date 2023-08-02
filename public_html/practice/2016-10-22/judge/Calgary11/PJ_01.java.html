@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+import java.math.*;
+public class Main{
+    public static void main (String[] args){
+        Scanner input = new Scanner(System.in);
+        int n = input.nextInt();
+        int n2 = input.nextInt();
+
+        int ans1 = 0;
+        int ans2 = 0;
+        int ans = 0;
+        if (n2 &lt; n){
+            ans1 = 360 - n;
+            ans1 += n2;
+            ans2 = n2 - n;
+            ans = Math.min(ans1, Math.abs(ans2));
+            if (ans == Math.abs(ans2)) ans = ans2;
+        }else{
+            ans1 = n2 - n;
+            ans2 = -n;
+            ans2+= -(360-n2);
+            ans = Math.min(ans1, Math.abs(ans2));
+            if (ans == Math.abs(ans2)) ans = (ans2);
+        }
+        if (ans == -180) ans = 180;
+        System.out.println(ans);
+    }
+   
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

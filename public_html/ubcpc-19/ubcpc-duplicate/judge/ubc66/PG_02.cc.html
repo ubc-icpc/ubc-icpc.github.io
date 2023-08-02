@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//#pragma GCC optimize (&quot;O3&quot;)
+
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int n;
+char str[110][110];
+int len[110];
+int number[110][110];
+int stck[110];
+struct NUM{
+	int id;
+	vector&lt;int&gt; v;
+	inline NUM(){}
+	inline NUM(int a,vector&lt;int&gt; b):id(a),v(b){}
+}VV[110];
+
+inline bool cmp(const NUM&amp;a, const NUM&amp;b){
+	for(int i=0;i&lt;a.v.size();i++)
+		if(a.v[i]&lt;b.v[i])
+			return true;
+		else if(a.v[i]&gt;b.v[i])
+			return false;
+	return false;
+}
+
+int main(){
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++){
+		scanf(&quot;%s&quot;,str[i]);
+		len[i]=strlen(str[i]);
+		int order=0;
+		int num=0;
+		int highorder=0;
+		int numat0=0;
+		for(int j=0;j&lt;len[i];j++){
+			if(str[i][j]=='['){
+				order++,num=0;
+			}else if(str[i][j]==']'){
+				order--,num=0;
+			}else{
+				num++;
+				if(order==0)numat0++;
+				highorder=max(highorder,order);
+			}
+			if(order==0 &amp;&amp; highorder&gt;0){
+				number[i][highorder]++;
+				for(int k=0;k&lt;highorder;k++)
+					number[i][k]=0;
+				highorder=0;
+				numat0=0;
+			}
+		}
+		number[i][0]=numat0;
+		for(int j=100;j&gt;=0;j--){
+//			printf(&quot;%d&quot;,number[i][j]);
+			VV[i].v.push_back(number[i][j]);
+		}
+//		printf(&quot;\n&quot;);
+		VV[i].id=i;
+	}
+
+	sort(VV+1,VV+n+1,cmp);
+
+	for(int i=1;i&lt;=n;i++){
+		printf(&quot;%s\n&quot;,str[VV[i].id]);
+	}
+
+	return 0;
+}
+/*
+10
++
++++++++++[]++
+[+]+
+[+][+]
++++++++
++++[+++]
++[+[+]+]+
+[][[][]][]
+[+][[+]][+]
+[[[+]]][+[+]][+[]]+++++++
+*/</code>
+</pre>
+</body>
+</html>

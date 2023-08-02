@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+#define pb   push_back
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+int n;
+int sw[111111];
+
+int main(){
+  ios_base::sync_with_stdio(false);cin.tie(0);
+  cin &gt;&gt; n;
+  for(int i=0;i&lt;n;i++){
+    cin &gt;&gt; sw[i];
+    if(i!=0) sw[i]+=sw[i-1];
+  }
+  ll fir = -1;
+  ll c = 0, cs=0;
+  for(int i=0;i&lt;n;i++){
+    cin &gt;&gt; c;
+    cs+=c;
+    if (sw[i]==cs) fir = i;
+  }
+  cout &lt;&lt; fir+1 &lt;&lt;endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

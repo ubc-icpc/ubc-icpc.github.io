@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.LinkedList;
+import java.util.Scanner;
+public class Feb07_2015_B {
+	public static void main(String args[]){
+		int n, opt, optind;
+		Scanner sc = new Scanner(System.in);
+		while(true){
+			n = sc.nextInt();
+			if(n == 1)	break;
+			int[] nums = new int[n], maxl = new int[n], minl = new int[n], maxr = new int[n], minr = new int[n];
+			nums[0] = sc.nextInt(); maxl[0] = nums[0]; minl[0] = nums[0];
+			for(int i = 1; i&lt; n; i++){
+				nums[i] = sc.nextInt();
+				maxl[i] = Math.max(nums[i], maxl[i-1]);
+				minl[i] = Math.min(nums[i], minl[i-1]);
+			}
+			maxr[n-1] = nums[n-1]; minr[n-1] = nums[n-1];
+			for(int i = n-2; i&gt;= 0; i--){
+				maxr[i] = Math.max(nums[i], maxr[i+1]);
+				minr[i] = Math.min(nums[i], minr[i+1]);
+			}
+			opt = Math.max(maxl[0] - minl[0], maxr[1] - minr[1]);
+			optind = 1;
+			//System.out.println(opt + &quot; &quot; + maxl[0] + &quot; &quot; + minl[0] + &quot; &quot; + maxr[1] + &quot; &quot; +minr[1] + &quot; &quot; + nums[0] + &quot; &quot;+ optind);
+			for(int i = 1; i&lt;n-1; i++){
+				//System.out.println(opt + &quot; &quot; + maxl[i] + &quot; &quot; + minl[i] + &quot; &quot; + maxr[i+1] + &quot; &quot; +minr[i+1] + &quot; &quot; + nums[i]);
+				if(opt &gt; Math.max(maxl[i] - minl[i], maxr[i+1] - minr[i+1])){
+					opt = Math.max(maxl[i] - minl[i], maxr[i+1] - minr[i+1]);
+					optind = i+1;
+				}
+			}
+			System.out.println(optind);
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

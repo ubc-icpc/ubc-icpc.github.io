@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	for(int N=1; N&lt;=n; N++) {
+		cout &lt;&lt; &quot;String #&quot; &lt;&lt; N &lt;&lt; &quot;: &quot;;
+		string inp; cin &gt;&gt; inp;
+		int startv = -1, numq = 0;
+		double ans = -1;
+		vector&lt;int&gt; qpos;
+		for (int i=0; i&lt;inp.size(); i++) {
+			char c = inp[i];
+			if (c == '?') {
+				numq++;
+				qpos.push_back(i);
+				continue;
+			}
+			if (c == 'a' || c == 'e' || c == 'i' || c == 'o'
+				|| c == 'u' || c == 'y') {
+				if (startv == -1) {
+					startv = i%2;
+					continue;
+				} else {
+					if ((i%2) == startv) {
+						continue;
+					} else {
+						ans = 0;
+						break;
+					}
+				}
+			} else {
+				if (startv == -1) {
+					startv = (i+1)%2;
+					continue;
+				} else {
+					if ((i+1)%2 == startv) {
+						continue;
+					} else {
+						ans = 0;
+						break;
+					}
+				}
+			}
+		}
+		if (numq == inp.size() || startv == -1) {
+			int a = inp.size()/2;
+			int b = inp.size() - a;
+			ans = pow(6,a)*pow(20,b) + pow(6,b)*pow(20,a);
+		} else if (ans == -1) {
+			ans = 1;
+			for (int i=0; i&lt;qpos.size(); i++) {
+				if (qpos[i]%2 == startv) {
+					ans *= 6;
+				} else {
+					ans *= 20;
+				}
+				
+			}
+		}
+		cout &lt;&lt; fixed &lt;&lt; setprecision(0) &lt;&lt; ans &lt;&lt; endl &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+ans = 1
+
+def dfs(node, level):
+	global ans
+	if d[node] &gt; -1:
+		ans *= level - d[node]
+		ans %= 1007
+		return
+	d[node] = level
+	for i in e[node]:
+		if (node, i) not in vis:
+			vis[(node, i)] = 1
+			vis[(i, node)] = 1
+			dfs(i, level + 1)
+
+test = int(raw_input())
+for re in range(test):
+	V, E = map(int, raw_input().split())
+	e = [[] for i in range(V)]
+	d = [-1 for i in range(V)]
+	for i in range(E):
+		x, y = map(int, raw_input().split())
+		x -= 1
+		y -= 1
+		e[x].append(y)
+		e[y].append(x)
+	ans = 1
+	vis = {}
+	dfs(0, 0)
+	print 'Case #'+str(re+1)+': ', ans
+	print</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

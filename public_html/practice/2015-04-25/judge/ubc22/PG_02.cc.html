@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+#define PI 3.1415926535897932
+
+int T, N, PMT[500005];
+complex&lt;long double&gt; OP[500005], MP[500005];
+long double OA[1000005][2], MA[500005][2];
+
+bool equal (long double *a, long double *b) {
+  return (abs(*a - *b) &lt; 0.0000000001 &amp;&amp; abs(*(a + 1) - *(b + 1)) &lt; 0.0000000001);
+}
+
+int main () {
+  cin &gt;&gt; T;
+  while (T--) {
+    memset(PMT, 0, sizeof PMT);
+    cin &gt;&gt; N;
+    for (int i = 0; i &lt; N; ++i) {
+      int A, B; cin &gt;&gt; A &gt;&gt; B;
+      OP[i] = complex&lt;long double&gt;(A, B);
+    }
+    for (int i = 0; i &lt; N; ++i) {
+      int A, B; cin &gt;&gt; A &gt;&gt; B;
+      MP[i] = complex&lt;long double&gt;(A, B);
+    }
+    for (int i = 0; i &lt; N; ++i) {
+      complex&lt;long double&gt; p = OP[i] - OP[(i + N - 1) % N];
+      complex&lt;long double&gt; n = OP[(i + 1) % N] - OP[i];
+      MA[i][0] = arg(p / n); if (MA[i][0] &lt;= -PI) MA[i][0] += PI + PI;
+      MA[i][1] = abs(p / n);
+    }
+    for (int i = 0; i &lt; N; ++i) {
+      complex&lt;long double&gt; p = MP[i] - MP[(i + N - 1) % N];
+      complex&lt;long double&gt; n = MP[(i + 1) % N] - MP[i];
+      OA[i][0] = arg(p / n); if (OA[i][0] &lt;= -PI) OA[i][0] += PI + PI;
+      OA[i][1] = abs(p / n);
+    }
+    for (int i = 0; i &lt; N; ++i) { OA[i + N][0] = OA[i][0]; OA[i + N][1] = OA[i][1]; }
+    for (int i = 2; i &lt; N; ++i) {
+      int j = PMT[i - 1];
+      while (true) {
+        if (equal(MA[i - 1], MA[j])) { PMT[i] = j + 1; break; }
+        if (j != 0) j = PMT[j];
+        else break;
+      }
+    }
+    int res = -1;
+    int at = 0, i = 0;
+    for (; at &lt; 2 * N;) {
+      if (equal(OA[at], MA[i])) { ++at; if (++i == N) {res = at - N; break;} }
+      else if (i == 0) ++at;
+      else i = PMT[i];
+    }
+    cout &lt;&lt; res + 1 &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

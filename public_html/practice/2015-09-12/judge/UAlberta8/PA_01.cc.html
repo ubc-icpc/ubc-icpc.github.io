@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+#include&lt;string&gt;
+#include&lt;fstream&gt;
+#include&lt;vector&gt;
+#include&lt;set&gt;
+#include&lt;algorithm&gt;
+#include&lt;stdio.h&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+int main(){
+	
+	int n,t;
+	string s[4]={&quot;none&quot;,&quot;zack&quot;,&quot;mack&quot;,&quot;both&quot;};
+	cin&gt;&gt;n;
+	while(n--){
+		int r = 0;
+		for(int i=0;i&lt;10;i++){
+			cin&gt;&gt;t;
+			if(i&lt;9)
+				cout&lt;&lt;t&lt;&lt;&quot; &quot;;
+			if(t==17)
+				r+=1;
+			if(t==18)
+				r+=2;
+		}
+		cout&lt;&lt;t&lt;&lt;endl;
+		cout&lt;&lt;s[r]&lt;&lt;endl&lt;&lt;endl;
+	}
+	
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

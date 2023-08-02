@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+#include&lt;vector&gt;
+
+
+using namespace std;
+
+map&lt;char, int&gt; klingons;
+
+int **dist; // distance to a certain node
+map&lt;pair&lt;int, int&gt;, pair&lt;int, int&gt;&gt; parent; // for path printing
+
+
+struct cmp {
+	bool operator()(const pair&lt;int, int&gt; &amp;u, const pair&lt;int, int&gt; &amp;v) const {
+		if (dist[u.first][u.second] == dist[v.first][v.second]) return u &lt; v;
+		else return dist[u.first][u.second] &lt; dist[v.first][v.second];
+	}
+};
+
+
+
+
+int main() {
+	int T, k, w, h, startX, startY;
+
+	cin &gt;&gt; T;
+	for (int t = 0; t &lt; T; t++) {
+		cin &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+
+		int **map = new int*[h]; // map tells us the cost to get to node at i,j
+		dist = new int*[h]; // tells us what the most efficient way is to get to node at i,j
+
+
+		char C;
+
+		// k belongs to [1,25]
+		// read klingon weigths
+		for (int i = 1; i &lt;= k; i++) {
+			cin &gt;&gt; C;
+			cin &gt;&gt; klingons[C];
+		}
+
+
+		// following h lines each have w values
+		for (int i = 0; i &lt; h; i++) {
+			map[i] = new int[w+1];
+			dist[i] = new int[w+1];
+
+
+			for (int j = 0; j &lt; w; j++) {
+				cin &gt;&gt; C;
+				// get the character and insert
+				if (C == 'E') {
+					startX = i;
+					startY = j;
+					map[i][j] = 0;
+					dist[startX][startY] = 0;
+				}
+				else {
+					map[i][j] = klingons[C];
+					dist[i][j] = INT_MAX;
+				}
+				parent[make_pair(i, j)] = make_pair(-1, -1);
+			}
+		}
+
+		// set weigth of finish to 0
+		map[h - 1][w] = 0;
+		dist[h-1][w] = INT_MAX;
+
+		// DIJKSTRA
+
+		set&lt;pair&lt;int, int&gt;, cmp&gt; q;
+		q.insert(make_pair(startX, startY));
+
+		pair&lt;int, int&gt; finish = make_pair(h-1, w);
+
+		while (!q.empty()) {
+			pair&lt;int, int&gt; v = *q.begin();
+			if (v == finish)
+			{
+				break;
+			}
+			q.erase(q.begin());
+
+
+			// for each neighbour
+			pair&lt;int, int&gt; left, right, down, up;
+			// if x is outside
+			if (v.first - 1 &lt; 0) {
+				up = finish;
+			}
+			else { up = make_pair(v.first - 1, v.second); }
+
+			// if x is outside
+			if (v.first + 1 &gt; h-1) {
+				down = finish;
+			}
+			else { down = make_pair(v.first + 1, v.second); }
+
+			// if y is outside
+			if (v.second - 1 &lt; 0) {
+				left = finish;
+			}
+			else { left = make_pair(v.first, v.second - 1); }
+
+			// if y is outside
+			if (v.second + 1 &gt; w-1) {
+				right = finish;
+			}
+			else { right = make_pair(v.first, v.second + 1); }
+
+
+
+			vector&lt;pair&lt;int, int&gt;&gt; neighbours;
+			neighbours.push_back(left);
+			neighbours.push_back(right);
+			neighbours.push_back(up);
+			neighbours.push_back(down);
+
+
+			pair&lt;int, int&gt; u;
+			
+			for (int i = 0; i &lt; neighbours.size(); i++) {
+				u = neighbours[i];
+				int weigth;
+				if (u == finish) {
+					weigth = 0;
+				}
+				else {
+					weigth = map[u.first][u.second];
+				}
+
+				int d = dist[v.first][v.second] + weigth; // dist to v and cost to visit u from v, which is map[u.first][u.second]
+				if (d &lt; dist[u.first][u.second]) {
+					q.erase(u); // take out u and then insert it again so we sort it based on new distance
+					dist[u.first][u.second] = d;
+					
+					q.insert(u); // could insert a finish node
+					parent[u] = v; // u has parent v
+				}
+			}
+		}
+
+
+		cout &lt;&lt; dist[h - 1][w] &lt;&lt; endl; // which should be the shortest path to exit
+
+		// cleanup
+		for (int i = 0; i &lt; h; i++) {
+			free(map[i]);
+			free(dist[i]);
+		}
+		free(dist);
+		free(map);
+	}
+
+	cin.get();
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

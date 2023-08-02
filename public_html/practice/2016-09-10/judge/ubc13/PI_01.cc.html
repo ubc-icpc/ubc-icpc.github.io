@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+unsigned T, L;
+string word;
+
+int X[26], Y[26];
+string keyrow[] = {&quot;qwertyuiop&quot;, &quot;asdfghjkl&quot;, &quot;zxcvbnm&quot;};
+
+int dist(char a, char b){
+	return abs(X[b-'a'] - X[a-'a']) + abs(Y[b-'a'] - Y[a-'a']);
+}
+
+struct WordDist{
+	int d;
+	string w;
+};
+
+vector&lt;WordDist&gt; v;
+
+bool cmp (WordDist a, WordDist b){ 
+	if (a.d == b.d){
+		return a.w &lt; b.w;
+	}
+	else{
+		return (a.d &lt; b.d); 
+	}
+} 
+
+int main(void){
+
+	unsigned row,col;
+	for (row=0; row&lt;3; ++row){
+		for (col=0; col&lt;keyrow[row].length(); ++col){
+			X[keyrow[row][col] - 'a'] = row;
+			Y[keyrow[row][col] - 'a'] = col;
+		}
+	}
+
+	cin &gt;&gt; T;
+
+	unsigned tc;
+	for (tc = 0; tc &lt; T; ++tc){
+		v.clear();
+		cin &gt;&gt; word &gt;&gt; L;
+		unsigned i, j;
+
+		WordDist wd;
+		for (i=0; i&lt;L; ++i){
+			cin &gt;&gt; wd.w;
+			wd.d = 0;
+			for (j=0; j&lt;word.length(); ++j){
+				wd.d +=  dist(word[j], wd.w[j]);
+			}
+			v.push_back(wd);
+		}
+
+		sort(v.begin(), v.end(), cmp);
+
+		for (i=0; i&lt;L; ++i){
+			cout &lt;&lt; v[i].w &lt;&lt; &quot; &quot; &lt;&lt; v[i].d &lt;&lt; '\n';
+		}
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

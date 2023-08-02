@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;new&gt;
+using namespace std;
+
+struct ll{
+    ll(char c) :val(c), next(NULL), rev(NULL){}
+    ll * next, * rev;
+    char val;
+};
+
+string prt(ll * head) {
+    ll * cur = head-&gt;next;
+    string out = &quot;&quot;;
+    while(cur != NULL) {
+        out += cur-&gt;val;
+        cur = cur-&gt;next;
+    }
+    return out;
+}
+
+int get_pos(ll *head, ll * x) {
+    ll *cur = head;
+    int pos = 0;
+    while(cur != NULL &amp;&amp; cur != x) {
+        cur = cur-&gt;next;
+        pos++;
+    }
+    return pos;
+}
+int main(){
+    int tn; cin&gt;&gt;tn;
+    for(int ti=0;ti&lt;tn;++ti) {
+        string s; cin&gt;&gt;s;
+        ll *head = new ll('-'); // dummy 
+        int i=0;
+        ll *ptr = head;
+        string out; //int cur = 0;
+        //cerr &lt;&lt; &quot;start &quot; &lt;&lt; endl;
+        while(i&lt;s.size()) {
+            //cerr &lt;&lt; s[i] &lt;&lt; ':' ;
+            if(s[i] == '&lt;') {
+                //if(cur &gt; 0) cur--;
+                if(ptr != head) {
+                    ptr = ptr-&gt;rev;
+                }
+            }else if(s[i] == '&gt;') {
+                //if(cur &lt; out.size()) cur++;
+                if(ptr-&gt;next != NULL) {
+                    ptr = ptr-&gt;next;
+                }
+            } else if(s[i] == '-') {
+                /*if(cur &gt; 0) {
+                    out = out.substr(0, cur-1) + out.substr(cur, out.size()-cur);
+                    cur--;
+                }*/
+                if(ptr != head) {
+                    ll * tmp = ptr;
+                    ptr = ptr-&gt;rev;
+                    ptr-&gt;next= tmp-&gt;next;
+                    if(tmp-&gt;next != NULL) {
+                        tmp-&gt;next-&gt;rev = ptr;
+                    }
+                    delete tmp;
+                }
+            }else{
+                int j = i;
+                while(j&lt;s.size() &amp;&amp; (s[j] !='&lt;'&amp;&amp;s[j]!='&gt;'&amp;&amp;s[j]!='-')) {
+                    ll * node =  new ll(s[j]);
+                    if(ptr == NULL || node == NULL) {
+                       // cerr &lt;&lt; &quot;something wrong&quot; &lt;&lt; endl; break;
+                    }
+                    node-&gt;rev = ptr;
+                    node-&gt;next= ptr-&gt;next;
+                    ptr-&gt;next = node;
+                    if(node-&gt;next != NULL){
+                        node-&gt;next-&gt;rev = node;
+                    }
+                    ptr = node;
+                    j++;
+                }
+                //out = out.substr(0, cur) + s.substr(i, j-i) + out.substr(cur, out.size()-cur);
+                //cur += j-i;
+                i = j-1;
+            }
+            i++;
+            /*cerr &lt;&lt; i &lt;&lt; ' ' ; int pos = get_pos(head, ptr);
+            if(out != prt(head) || cur != pos){
+                cerr &lt;&lt; endl &lt;&lt; &quot;err: cur=&quot; &lt;&lt; cur &lt;&lt; &quot; ptr pos=&quot; &lt;&lt; pos &lt;&lt; endl;
+                cerr &lt;&lt; s.substr(0, i) &lt;&lt; endl;
+                break;
+            }*/
+        }
+        /*cerr &lt;&lt; &quot;done &quot; &lt;&lt; endl;
+        cerr &lt;&lt; out &lt;&lt; endl;
+        if(head == NULL) {
+            cerr &lt;&lt; &quot;head is null &quot; &lt;&lt; endl;
+        }*/
+        ptr = head-&gt;next;
+        while(ptr != NULL) {
+            //cerr &lt;&lt; ptr-&gt;val;
+            cout &lt;&lt; ptr-&gt;val;
+            ll * tmp = ptr;
+            ptr = ptr-&gt;next;
+            delete tmp;
+        }
+        delete head;
+        cout &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

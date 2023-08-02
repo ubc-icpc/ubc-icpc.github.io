@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+int max(int a, int b) {
+    if (a &gt; b) return a;
+    else return b;
+}
+
+int main() {
+    int requests, server_count;
+    scanf(&quot;%d %d&quot;, &amp;requests, &amp;server_count);
+
+    queue&lt;int&gt; queue;
+    int max_count = 0;
+    for (int i = 0; i &lt; requests; i++) {
+        // Add new process arriving at a certain time.
+        int new_process;
+        scanf(&quot;%d&quot;, &amp;new_process);
+        //printf(&quot;NEW: %d\n&quot;, new_process);
+
+        queue.push(new_process + 1000);
+        while(queue.front() &lt;= new_process) queue.pop();
+        //printf(&quot;%d: %d -&gt; %d\n&quot;, queue.size(), queue.front(), queue.back());
+
+        max_count = max(max_count, queue.size());
+    }
+
+    if (max_count % server_count == 0) printf(&quot;%d\n&quot;, max_count / server_count);
+    else printf(&quot;%d\n&quot;, (max_count + server_count) / server_count);
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

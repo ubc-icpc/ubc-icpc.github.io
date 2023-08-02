@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+ld dp(pt u, pt v) { return real(u*conj(v)); }
+
+pt m[25], mv[25], s[25];
+ld mt[25], st[25], eps = 1e-10, eps2 = 1e-6;
+int cover[25];
+
+bool covered(int i, int j) {
+	//does there exist some time t s.t.
+	//m[j] + (t-mt[j]) * mv[j] is within the sphere s[i] + radius(t-st[i])
+	//i.e. (mj-si)^2 + (t-mtj)^2 mv^2 + 2(t-mtj)dot(mvj, mj-si) &lt;= 1 - (t-st[i]-1)^2
+	auto eval = [&amp;](double t) { 
+					return norm(m[j]-s[i]) + pow(t-mt[j], 2)*norm(mv[j]) 
+					+ 2*(t-mt[j]) * dp(mv[j], m[j]-s[i]) + pow(t-st[i]-1, 2);
+				};
+				
+	//find min of this parabola (guaranteed to be concave up):
+	if (mt[j] &gt; st[i]+2) return false;
+	ld l = st[i], r = st[i]+2;
+	while (r-l &gt; eps) {
+		ld m0 = (2*l+r)/3, m1 = (l+2*r)/3;
+		if (eval(m0) &gt; eval(m1)) {
+			l = m0;
+		} else {
+			r = m1;
+		}
+	}
+	
+	//now we have two parts that we can binary search over
+	ld c = (l+r)/2, lbound, rbound;
+	l = st[i], r = st[i]+2;
+	if (eval(c) &gt; 1) return false;
+	if (eval(l) &lt; 1) lbound = l;
+	else {
+		//bsearch
+		ld ll = l, rr = c;
+		while (rr-ll &gt; eps) {
+			ld mm = (ll+rr)/2;
+			if (eval(mm) &lt; 1) {
+				rr = mm;
+			} else {
+				ll = mm;
+			}
+		}
+		lbound = (ll+rr)/2;
+		assert(abs(eval(lbound)-1) &lt; eps2);
+	}
+	
+	if (eval(r) &lt; 1) rbound = r;
+	else {
+		//bsearch
+		ld ll = c, rr = r;
+		while (rr-ll &gt; eps) {
+			ld mm = (ll+rr)/2;
+			if (eval(mm) &lt; 1) {
+				ll = mm;
+			} else {
+				rr = mm;
+			}
+		}
+		rbound = (ll+rr)/2;
+		assert(abs(eval(rbound)-1) &lt; eps2);
+	}
+	
+	//first of all, if missile hits ground, check that it encounters the shot
+	//before hitting ground
+	if (mv[j].imag() &lt; 0) {
+		ld tground = mt[j] - m[j].imag()/mv[j].imag();
+		if (tground + eps2 &lt; lbound) return false;
+		else return true;
+	}
+	
+	//if the missile does not hit ground, then things are ez
+	return mt[j] &lt; rbound;
+}
+
+int main() {
+	int nb; cin &gt;&gt; nb;
+	while (nb--) {
+		int nm; cin &gt;&gt; nm;
+		for (int i = 0; i &lt; nm; i++) {
+			ld x, y; cin &gt;&gt; x &gt;&gt; y;
+			m[i] = pt(x,y);
+			cin &gt;&gt; x &gt;&gt; y;
+			mv[i] = pt(x,y);
+			cin &gt;&gt; mt[i];
+		}
+		
+		int ns; cin &gt;&gt; ns;
+		for (int i = 0; i &lt; ns; i++) {
+			ld x, y; cin &gt;&gt; x &gt;&gt; y &gt;&gt; st[i];
+			s[i] = pt(x,y);
+		}
+		
+		memset(cover, 0, sizeof cover);
+		//find out which missiles each shot covers
+		int all_covered = 0;
+		for (int i = 0; i &lt; ns; i++) {
+			for (int j = 0; j &lt; nm; j++) {
+				if (covered(i, j)) {
+					cover[i] |= (1&lt;&lt;j);
+				}
+			}
+			all_covered |= cover[i];
+		}
+		
+		//simple set cover
+		int best_cover = 10000, ncover = 0;
+		for (int i = 0; i &lt; (1&lt;&lt;ns); i++) {
+			int bs = 0;
+			for (int j = 0; j &lt; ns; j++) {
+				if (i &amp; (1&lt;&lt;j)) {
+					bs |= cover[j];
+				}
+			}
+			int cnt0 = __builtin_popcount(bs), cnt1 = __builtin_popcount(i);
+			if (cnt0 == ncover) {
+				if (cnt1 &lt; best_cover) {
+					best_cover = cnt1;
+				}
+			} else if (cnt0 &gt; ncover) {
+				best_cover = cnt1;
+				ncover = cnt0;
+			}
+		}
+		
+		//ncover contains max number of enemies covered, best_cover contains the min number of
+		//shots used to achieve that result
+		int ans = ncover - 20*(ns-best_cover);
+		//now look for the number of missiles allowed to hit their target
+		for (int i = 0; i &lt; nm; i++) {
+			if (mv[i].imag() &gt;= 0 || (all_covered &amp; (1&lt;&lt;i))) continue;
+			ans -= 5;
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

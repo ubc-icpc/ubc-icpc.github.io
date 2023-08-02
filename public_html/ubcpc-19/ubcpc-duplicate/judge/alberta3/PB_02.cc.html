@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define MAXN 105
+typedef vector&lt;vector&lt;int&gt; &gt; graph;
+
+int oo = 0x3f3f3f3f;
+int N;
+
+struct fighter {
+	string name;
+	int HP, AT, DF;
+};
+
+fighter fighters[MAXN];
+
+#define DRAW 0
+#define A_WINS 1
+#define B_WINS -1
+
+int fight(int i, int j) {
+	fighter *A = &amp;fighters[i];
+	fighter *B = &amp;fighters[j];
+
+	int A_dec = max(0, B-&gt;AT - A-&gt;DF);
+	int B_dec = max(0, A-&gt;AT - B-&gt;DF);
+
+	// If we have a zero
+	if (A_dec &lt;= 0 &amp;&amp; B_dec &lt;= 0) return DRAW;
+	else if (A_dec &lt;= 0) return A_WINS;
+	else if (B_dec &lt;= 0) return B_WINS;
+
+	int A_HP = A-&gt;HP;
+	int B_HP = B-&gt;HP;
+
+	while (A_HP &gt; 0 and B_HP &gt; 0) {
+		A_HP -= A_dec;
+		B_HP -= B_dec;
+	}
+
+
+
+	if (A_HP &gt; 0) return A_WINS;
+	else if (B_HP &gt; 0) return B_WINS;
+
+	return DRAW;
+
+	// int A_rounds = (A-&gt;HP)/A_dec;
+	// int B_rounds = (B-&gt;HP)/B_dec;
+
+	// // If different
+	// if (A_rounds &gt; B_rounds) return A_WINS;
+	// else if (B_rounds &gt; A_rounds) return B_WINS;
+
+	// int A_HPr = (A-&gt;HP - (A_dec*A_rounds));
+	// int B_HPr = (B-&gt;HP - (B_dec*B_rounds));
+
+	// if (A_HPr &gt; 0 &amp;&amp; B_HPr &lt;= 0) return A_WINS;
+	// else if (A_HPr &lt;= 0 &amp;&amp; B_HPr &gt; 0) return B_WINS; 
+
+	// return DRAW;
+}
+
+void sort3(int &amp;a, int &amp;b, int &amp;c) {
+    if (a &gt; b) swap(a, b);
+    if (b &gt; c) swap(b, c);
+    if (a &gt; b) swap(a, b);
+}
+
+int main() {
+	cin &gt;&gt; N;
+	graph g(N);
+	unordered_map&lt;int, string&gt; i2n;
+	unordered_set&lt;string&gt; T;
+
+	for (int i = 0; i &lt; N; ++i) {
+		cin &gt;&gt; fighters[i].name &gt;&gt; fighters[i].HP &gt;&gt; fighters[i].AT &gt;&gt; fighters[i].DF;
+		i2n[i] = fighters[i].name;
+	}
+
+	for (int i = 0; i &lt; N; ++i) {
+		for (int j = i; j &lt; N; ++j) {
+			if (i == j) continue;
+			int ans = fight(i, j);
+			if (ans == DRAW) continue;
+			else if (ans == A_WINS) g[i].push_back(j);
+			else if (ans == B_WINS) g[j].push_back(i);
+		}
+	}
+
+	// for (int u = 0; u &lt; N; ++u) {
+	// 	cout &lt;&lt; &quot;Node: &quot; + i2n[u] &lt;&lt; &quot;: [&quot;;
+	// 	for (auto v : g[u]) {
+	// 		cout &lt;&lt; i2n[v] &lt;&lt; ' ';
+	// 	}
+	// 	cout &lt;&lt; &quot;]\n&quot;;
+	// }
+
+	for (int u = 0; u &lt; N; ++u) {
+		for (auto v : g[u]) {
+			for (auto w : g[v]) {
+				if (find(g[w].begin(), g[w].end(), u) != g[w].end()) {
+					int a = u, b = v, c = w;
+					sort3(a, b, c);
+					T.insert(i2n[a]+&quot; &quot;+i2n[b]+&quot; &quot;+i2n[c]);
+				}
+			}
+		}
+	}
+
+	cout &lt;&lt; T.size() &lt;&lt; endl;
+
+	for (auto s : T) {
+		cout &lt;&lt; s &lt;&lt; endl;
+	}
+
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

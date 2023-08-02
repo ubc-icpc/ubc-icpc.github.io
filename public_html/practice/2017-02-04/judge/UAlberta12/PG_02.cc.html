@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int N;
+
+const int MaxSize = 155;
+double percentage[MaxSize][MaxSize];
+bool encountered[MaxSize][MaxSize];
+
+double partyChance[MaxSize];
+int partySize[MaxSize];
+
+// Seats needed for majority.
+double GetBest(int party, int seatsLeft)
+{
+	if (seatsLeft &lt;= 0)
+		return 1.0;
+	// Didn't reach complete
+	if (party == N)
+		return 0;
+
+	double&amp; best = percentage[party][seatsLeft];
+	if (!encountered[party][seatsLeft])
+	{
+		encountered[party][seatsLeft] = true;
+		best = GetBest(party + 1, seatsLeft);
+		best = max(best,
+				partyChance[party] * GetBest(party + 1, seatsLeft - partySize[party]));
+	}
+
+	return best;
+}
+
+int main()
+{
+	int T;
+	cin &gt;&gt; T;
+
+	while (T--)
+	{
+		cin &gt;&gt; N;
+		for (int i = 0; i &lt; N; ++i)
+		{
+			cin &gt;&gt; partySize[i] &gt;&gt; partyChance[i];
+			partyChance[i] /= 100.0;
+
+		}
+
+		memset(encountered, 0, sizeof(encountered));
+
+		cout &lt;&lt; GetBest(0, 76) * 100 &lt;&lt; '\n';
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

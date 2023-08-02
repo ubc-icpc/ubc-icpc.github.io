@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+typedef long long ll;
+ll INF = 1000000000000000;
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		int n, kk, m; cin &gt;&gt; n &gt;&gt; kk &gt;&gt; m;
+		ll graph[n][n];
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; n; j++) {
+				if (i==j) graph[i][j] = 0;
+				else graph[i][j] = INF;
+			}
+		}
+		for (int i = 0; i &lt; m; i++) {
+			int u, v; ll d; cin &gt;&gt; u &gt;&gt; v &gt;&gt; d;
+			graph[u][v] = d; graph[v][u] = d;
+		}
+		// floyd warshall
+		for (int k = 0; k &lt; n; k++)
+			for (int i = 0; i &lt; n; i++)
+				for (int j = 0; j &lt; n; j++)
+					graph[i][j] = min(graph[i][j], graph[i][k] + graph[k][j]);
+		ll c1 = 1;
+		ll c2 = 1000000000000000LL;
+		ll g2[n][n];
+		while (c2 - c1 &gt; 5) {
+			ll c3 = (c1+c2)/2;
+			for (int i = 0; i &lt; n; i++) {
+				for (int j = 0; j &lt; n; j++) {
+					if (i == j) g2[i][j] = 0;
+					else if (graph[i][j] &lt;= c3) g2[i][j] = 1;
+					else g2[i][j] = INF;
+				}
+			}
+			for (int k = 0; k &lt; n; k++)
+				for (int i = 0; i &lt; n; i++)
+					for (int j = 0; j &lt; n; j++)
+						g2[i][j] = min(g2[i][j], g2[i][k] + g2[k][j]);
+			bool good = true;
+			for (int i = 0; i &lt; n; i++)
+				for (int j = 0; j &lt; n; j++)
+					good = good &amp;&amp; (g2[i][j] &lt;= kk);
+			if (good) c2 = c3;
+			else c1 = c3;
+		}
+		bool good = false;
+		ll c3 = c1-1;
+		while (c3 &lt; c2 &amp;&amp; !good) {
+			c3++;
+			for (int i = 0; i &lt; n; i++) {
+				for (int j = 0; j &lt; n; j++) {
+					if (i == j) g2[i][j] = 0;
+					else if (graph[i][j] &lt;= c3) g2[i][j] = 1;
+					else g2[i][j] = INF;
+				}
+			}
+			for (int k = 0; k &lt; n; k++)
+				for (int i = 0; i &lt; n; i++)
+					for (int j = 0; j &lt; n; j++)
+						g2[i][j] = min(g2[i][j], g2[i][k] + g2[k][j]);
+			good = true;
+			for (int i = 0; i &lt; n; i++)
+				for (int j = 0; j &lt; n; j++)
+					good = good &amp;&amp; (g2[i][j] &lt;= kk);
+		}
+		cout &lt;&lt; c3 &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

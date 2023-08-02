@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import fileinput
+
+def countCheese(cheeseList):
+	cheeseNum = [0,0,0] # Cheddar Gouda and Havarti
+	for item in cheeseList:
+		if item == &quot;Cheddar&quot;:
+			cheeseNum[0] = cheeseNum[0]+1
+		elif item == &quot;Gouda&quot;:
+			cheeseNum[1] = cheeseNum[1]+1
+		else:
+			cheeseNum[2] = cheeseNum[2]+1
+
+	cheeseNew = []
+	for i in range(0,3):
+		if cheeseNum[i] != 0:
+			cheeseNew.append(cheeseNum[i]);
+
+	mini = min(cheeseNew)
+	maxi = max(cheeseNew)
+
+	res = 0
+	for i in range(mini,maxi+1):
+		sum = 0
+		for j in range(0,len(cheeseNew)):
+			if(cheeseNew[j] &gt;= i):
+				sum = sum+i
+		if sum &gt; res:
+			res = sum
+
+	return res
+
+line = raw_input()
+while True:
+	words = line.split()
+	num = int(words[0])
+	if num == 0:
+		exit()
+	cheese = words[1:]
+
+ 	print countCheese(cheese)
+
+ 	line = raw_input()
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

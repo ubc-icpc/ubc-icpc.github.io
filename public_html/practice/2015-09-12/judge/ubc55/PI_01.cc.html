@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+
+using namespace std;
+
+bool arr[505][505];
+
+int main(void)
+{
+	int n;
+	cin &gt;&gt; n;
+	while (n--)
+	{
+		int nodes;
+		cin &gt;&gt; nodes;
+		for (int j = 0; j &lt; nodes; j++)
+		{
+			for (int i = 0; i &lt; nodes; i++)
+			{
+				cin &gt;&gt; arr[j][i];
+			}
+		}
+		list&lt;int&gt; path;
+		path.insert(path.begin(), 0);
+		for (int i = 1; i &lt; nodes; i++)
+		{
+			auto it = path.begin();
+			for (int j = 0; j &lt; nodes; j++)
+			{
+				if (arr[i][*it])
+				{
+					path.insert(it, i);
+					break;
+				}
+				it++;
+				if (it == path.end())
+				{
+					path.insert(it, i);
+					break;
+				}
+			}
+		}
+		for (auto node : path)
+		{
+			cout &lt;&lt; node + 1 &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

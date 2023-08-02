@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, M[2][512];
+// bitset and # of configurations
+// bits:
+// 0 1 2
+// 3 4 5
+// 6 7 8
+const int con [][2] = {
+  // 1
+  {0x010, 2},
+  // 4 5
+  {0x001, 4},
+  {0x004, 4},
+  {0x040, 4},
+  {0x100, 4},
+  // 4 9
+  {0x007, 3},
+  {0x124, 3},
+  {0x1C0, 3},
+  {0x049, 3},
+  // 8 17
+  {0x013, 1},
+  {0x019, 1},
+  {0x016, 1},
+  {0x034, 1},
+  {0x058, 1},
+  {0x0D0, 1},
+  {0x130, 1},
+  {0x190, 1},
+  // 8 25
+  {0x043, 1},
+  {0x106, 1},
+  {0x00D, 1},
+  {0x148, 1},
+  {0x0C1, 1},
+  {0x184, 1},
+  {0x025, 1},
+  {0x160, 1},
+  // 8 33
+  {0x103, 2},
+  {0x046, 2},
+  {0x109, 2},
+  {0x04C, 2},
+  {0x0C4, 2},
+  {0x181, 2},
+  {0x064, 2},
+  {0x121, 2},
+  // 4 37
+  {0x085, 1},
+  {0x061, 1},
+  {0x142, 1},
+  {0x10C, 1},
+  // 8 45
+  {0x031, 1},
+  {0x091, 1},
+  {0x094, 1},
+  {0x01C, 1},
+  {0x118, 1},
+  {0x112, 1},
+  {0x052, 1},
+  {0x070, 1},
+  // 8 53
+  {0x01F, 1},
+  {0x1D8, 1},
+  {0x136, 1},
+  {0x05B, 1},
+  {0x1F0, 1},
+  {0x037, 1},
+  {0x0D9, 1},
+  {0x1B4, 1},
+  // 4 57
+  {0x04F, 2},
+  {0x127, 2},
+  {0x1E4, 2},
+  {0x1C9, 2},
+  // 8 65
+  {0x10F, 1},
+  {0x1CC, 1},
+  {0x166, 1},
+  {0x14B, 1},
+  {0x1E1, 1},
+  {0x067, 1},
+  {0x0CD, 1},
+  {0x1A5, 1},
+  // 4 69
+  {0x097, 1},
+  {0x13C, 1},
+  {0x1D2, 1},
+  {0x079, 1},
+  // 8 77
+  {0x0C7, 1},
+  {0x187, 1},
+  {0x16C, 1},
+  {0x12D, 1},
+  {0x1C3, 1},
+  {0x1C6, 1},
+  {0x169, 1},
+  {0x06D, 1},
+  // 4 81
+  {0x11B, 1},
+  {0x076, 1},
+  {0x1B1, 1},
+  {0x0DC, 1},
+  // 4 85
+  {0x193, 1},
+  {0x0D6, 1},
+  {0x07C, 1},
+  {0x139, 1},
+  // 8 93
+  {0x07F, 1},
+  {0x13F, 1},
+  {0x1B7, 1},
+  {0x1F6, 1},
+  {0x1FC, 1},
+  {0x1F9, 1},
+  {0x0DF, 1},
+  {0x1DB, 1},
+  // 4 97
+  {0x16F, 1},
+  {0x1E7, 1},
+  {0x1ED, 1},
+  {0x1CF, 1},
+  // 1 98
+  {0x1FF, 1}
+};
+// if (con != correct) smash_keyboard();
+int main () {
+  /*
+  for (int i = 93; i &lt; 98; ++i) {
+    cout &lt;&lt; &quot;# &quot; &lt;&lt; i &lt;&lt; endl;
+    cout &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 0)) &lt;&lt; &quot; &quot; &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 1)) &lt;&lt; &quot; &quot; &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 2)) &lt;&lt; endl;
+    cout &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 3)) &lt;&lt; &quot; &quot; &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 4)) &lt;&lt; &quot; &quot; &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 5)) &lt;&lt; endl;
+    cout &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 6)) &lt;&lt; &quot; &quot; &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 7)) &lt;&lt; &quot; &quot; &lt;&lt; !!(con[i][0] &amp; (1 &lt;&lt; 8)) &lt;&lt; endl;
+    cout &lt;&lt; &quot;C: &quot; &lt;&lt; con[i][1] &lt;&lt; endl &lt;&lt; endl;
+  }
+  */
+  cin &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; N;
+    memset(M[1], 0, sizeof M[1]);
+    M[1][0] = 1;
+    for (int n = 0; n &lt; N; ++n) {
+      int *c = M[n % 2], *p = M[!(n % 2)];
+      memset(c, 0, sizeof M[0]);
+      for (int i = 0; i &lt; 512; ++i)
+        if (*(p + i))
+          for (int j = 0; j &lt; 98; ++j)
+            if (!(~con[j][0] &amp; i))
+              *(c + (con[j][0] ^ i)) += *(p + i) * con[j][1];
+      for (int i = 0; i &lt; 512; ++i)
+        *(c + i) %= 10007;
+    }
+    cout &lt;&lt; M[(N + 1) % 2][0] &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+long long mn[512][512];
+long long md[512][512];
+
+long long px[512];
+long long py[512];
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    for (int qc = 1; qc &lt;= n; ++qc) {
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; qc &lt;&lt; &quot;: &quot;;
+        int p;
+        cin &gt;&gt; p;
+
+        for (int i = 0; i &lt; p; ++i) {
+            cin &gt;&gt; px[i] &gt;&gt; py[i];
+        }
+
+        if (p &lt; 3) {
+            cout &lt;&lt; p &lt;&lt; &quot;\n&quot;;
+            continue;
+        }
+
+        memset(mn, 0, 512*512);
+        memset(md, 0, 512*512);
+
+        for (int i = 0; i &lt; p; ++i) {
+            for (int j = 0; j &lt; p; ++j) {
+                if (i == j) continue;
+
+                mn[i][j] = py[i] - py[j];
+                md[i][j] = px[i] - px[j];
+            }
+        }
+
+        int max = 2;
+
+        for (int i = 0; i &lt; p; ++i) {
+            for (int j = 0; j &lt; p; ++j) {
+                if (i == j) continue;
+                int count = 2;
+                for (int k = j+1; k &lt; p; ++k) {
+                    if (i == k) continue;
+                    if (mn[i][j] * md[i][k] == mn[i][k] * md[i][j]) {
+                        ++count;
+                    }
+                }
+                if (count &gt; max) max = count;
+            }
+        }
+
+        cout &lt;&lt; max &lt;&lt; &quot;\n&quot;;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

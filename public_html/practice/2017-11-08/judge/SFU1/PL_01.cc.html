@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// problem L
+// SFU Royal
+
+#include &lt;cstdio&gt;
+#include &lt;map&gt;
+#include &lt;cctype&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int main() {
+	char line[200];
+	map&lt;char,int&gt; vowels;
+	map&lt;char,int&gt; cons;
+
+	const char* vowS = &quot;aiyeou&quot;;
+	const char* conS = &quot;bkxznhdcwgpvjqtsrlmf&quot;;
+	
+	for(int i = 0;i &lt; strlen(vowS);i++) {
+		vowels[vowS[i]] = i;
+	}
+
+	for(int i = 0;i &lt; strlen(conS);i++) {
+		cons[conS[i]] = i;
+	}
+
+	while(gets(line)) {
+		int len = strlen(line);
+
+		for(int i = 0;i &lt; len;i++) {
+			bool upper = false;
+
+			if(isupper(line[i])) {
+				line[i] = tolower(line[i]);
+				upper = true;
+			}
+
+			if(vowels.count(line[i]) == 1) {
+				line[i] = vowS[(vowels[line[i]]+3)%6];
+			}
+
+			if(cons.count(line[i]) == 1) {
+				line[i] = conS[(cons[line[i]]+10)%20];
+			}
+
+			if(upper) {
+				line[i] = toupper(line[i]);
+			}
+		}
+
+		puts(line);
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

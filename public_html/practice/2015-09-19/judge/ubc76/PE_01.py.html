@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+def dfs(win, lose, buff, p, S, W, L):
+	if win == 4:
+		return p
+	if lose == 4:
+		return 0
+	ret = 0.0
+	ret += dfs(win + 1, lose, W, p * (20+buff)*1.0 / (20+buff+S), S, W, L)
+	ret += dfs(win, lose + 1, -L, p * (1 - (20+buff)*1.0 / (20+buff+S)), S, W, L)
+	return ret
+
+
+T = int(raw_input())
+
+for re in range(T):
+	name = raw_input()
+	S, W, L = map(int, raw_input().split())
+	print '%.5f' % dfs(0, 0, 0, 1, S, W, L)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int main(){
+	bool found = false; 
+	string alphabet = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+	char a;
+	int n; cin &gt;&gt; n; string qq; getline(cin,qq);
+	while(n--){
+	string missing = &quot; &quot;;
+	string line;
+	getline(cin, line);
+	for (char letter: alphabet){
+		found = false;
+		for (char a:line){
+			if (letter == tolower(a)){
+				found = true;
+				break;
+			}
+		}
+		if (found == false){
+		missing.push_back(letter);
+		}
+		
+	}
+	
+	if (missing == &quot; &quot;){ 
+		cout &lt;&lt; &quot;pangram&quot;&lt;&lt; endl;
+	}
+	
+	else{
+		cout &lt;&lt; &quot;missing&quot; &lt;&lt; missing &lt;&lt; endl;
+		 
+	
+	}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

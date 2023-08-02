@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// f.cc
+// Problem F - orthogonal bar graphs
+
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+void graph ();
+
+int main ()
+{
+   int cases;
+
+   cin &gt;&gt; cases;
+
+   while (cases--)
+      graph ();
+
+   return 0;
+}
+
+void graph ()
+{
+   int bars;
+   int a[100001];
+   int b[100001] = {0};
+   
+   cin &gt;&gt; bars;
+
+   for (int i = 0; i &lt; bars; i++)
+      cin &gt;&gt; a[i];
+
+   sort (a, a + bars);
+   
+   for (int i = 0; i &lt; bars - 1; i++)
+   {
+      if (a[i + 1] == a[i])
+	 continue;
+
+      //  if (a[i + 1] &lt; a[i])
+//	 b[bars - i - 1] += (a[i] - a[i + 1]);
+
+      if (a[i + 1] &gt; a[i])
+	 b[i + 1] += (a[i + 1] - a[i]);
+   }
+
+   for (int i = 0; i &lt; bars; i++)
+      if (b[i] &gt; 0)
+	 cout &lt;&lt; b[i] &lt;&lt; &quot; &quot; &lt;&lt; i &lt;&lt; endl;
+   cout &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

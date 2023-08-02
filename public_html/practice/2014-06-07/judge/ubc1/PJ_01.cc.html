@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+vector&lt;int&gt; g[2][50000];
+int deg[2][50000];
+int dist[2][50000];
+int peripheral[2];
+int numc[2];
+ld diameter[2];
+bool seen[50000];
+
+//5,4,4,4,5
+//
+int main() {
+	ios_base::sync_with_stdio(0);
+	memset(dist, -1, sizeof dist);
+	int n, q; cin &gt;&gt; n &gt;&gt; q;
+	//get graph repr
+	int lim[] = {n, q};
+	for (int j = 0; j &lt; 2; j++) {
+		for (int i = 0; i &lt; lim[j]-1; i++) {
+			int x, y; cin &gt;&gt; x &gt;&gt; y;
+			x--, y--;
+			g[j][x].push_back(y);
+			g[j][y].push_back(x);
+			deg[j][x]++, deg[j][y]++;
+		}
+	}
+	
+	for (int j = 0; j &lt; 2; j++) {
+		if (lim[j] == 1) {
+			dist[j][0] = 0;
+			peripheral[j] = 0;
+			diameter[j] = 0;
+			numc[j] = 1;
+			continue;
+		}
+		
+		int num_left = lim[j];
+		memset(seen, false, sizeof seen);
+		queue&lt;int&gt; q[2];
+		int idx = 0;
+		for (int i = 0; i &lt; lim[j]; i++) {
+			if (deg[j][i] == 1) {
+				q[idx].push(i);
+				seen[i] = true;
+				num_left--;
+			}
+		}
+		
+		//iteratively remove leaves to find centre
+		while (true) {
+			int v = q[idx].front(); q[idx].pop();
+			for (int w : g[j][v]) {
+				if (seen[w]) continue;
+				deg[j][w]--;
+				if (deg[j][w] &lt;= 1) {
+					seen[w] = true;
+					q[idx^1].push(w);
+					num_left--;
+				}
+			}
+			if (q[idx].empty()) {
+				idx ^= 1;
+				if (num_left == 0) break;
+			}
+		}
+		
+		//we've got our centre.
+		queue&lt;int&gt; Q;
+		numc[j] = q[idx].size();
+		//bfs from centre to leaf nodes to find longest path in tree
+		while (!q[idx].empty()) {
+			Q.push(q[idx].front());
+			dist[j][q[idx].front()] = 0;
+			q[idx].pop();
+		}
+		
+		while (!Q.empty()) {
+			int v = Q.front(); Q.pop();
+			for (int w : g[j][v]) {
+				if (dist[j][w] == -1) {
+					dist[j][w] = dist[j][v] + 1;
+					Q.push(w);
+				}
+			}
+		}
+		
+		for (int i = 0; i &lt; lim[j]; i++) {
+			peripheral[j] = max(peripheral[j], dist[j][i]);
+		}
+		if (numc[j] == 1) diameter[j] = 2*peripheral[j];
+		else diameter[j] = 2*peripheral[j]+1;
+	}
+	
+	//for (int i = 0; i &lt; lim[1]; i++) cout &lt;&lt; dist[1][i] &lt;&lt; &quot; &quot;;
+	//cout &lt;&lt; endl;
+	
+	//sum up all pairs of road lengths
+	//use binary search to speed things up
+	vector&lt;ld&gt; q_lengths, q_sum;
+	for (int j = 0; j &lt; lim[1]; j++) {
+		ld p = peripheral[1];
+		if (numc[1] == 2) p++;
+		q_lengths.push_back(dist[1][j] + 1 + p);
+	}
+	sort(q_lengths.begin(), q_lengths.end());
+	
+	q_sum.resize(q+1);
+	partial_sum(q_lengths.begin(), q_lengths.end(), q_sum.begin()+1);
+	
+	ld tot_length = 0, max_diam = max(diameter[0], diameter[1]);
+	for (int i = 0; i &lt; lim[0]; i++) {
+		ld p = peripheral[0];
+		if (numc[0] == 2) p++;
+		auto break_even = lower_bound(q_lengths.begin(), q_lengths.end(), max_diam - dist[0][i] - p);
+		int idx = break_even - q_lengths.begin();
+		tot_length += q_sum[q]-q_sum[idx] + (q-idx)*(dist[0][i]+p) + idx*max_diam;
+	}
+	
+	cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; tot_length/(n*q) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

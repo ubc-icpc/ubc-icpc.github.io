@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+typedef long long ll;
+using namespace std;
+int main() {
+    ll a, b;
+    cin&gt;&gt;a&gt;&gt;b;
+        ll a_= 0, b_=0, c=0, d=1, e=1;
+        
+        while(b_ &lt; b){
+            a_ = a &amp; d;
+            b_ = b &amp; d;
+            
+            if(b-a &lt; 2*e &amp;&amp; a_ &lt;= b_) {
+                c += max(b_+1, e) - max(a_, e);
+            }else {
+                c += min(2*e - a_, e); // to end
+                c += max((ll)0, b_+1-e); // to st
+                ll tr = 2*e - a_ + b_;
+                //cerr &lt;&lt; &quot;tr &quot; &lt;&lt; tr &lt;&lt; endl;
+                c += (b-a-tr)/2;
+            }
+
+            d &lt;&lt;= 1;
+            d |= 1;
+            e &lt;&lt;= 1;
+            //cerr &lt;&lt; a_ &lt;&lt; ' ' &lt;&lt; b_ &lt;&lt; ' ' &lt;&lt; c &lt;&lt; endl;
+        }
+        cout &lt;&lt; c &lt;&lt; endl;
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

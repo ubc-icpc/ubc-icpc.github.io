@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    int n, k;
+    cin &gt;&gt; n &gt;&gt; k;
+
+    vector&lt;int&gt; v(n, 0);
+    for (int i = 0; i &lt; n; ++i) {
+        cin &gt;&gt; v[i];
+    }
+
+    sort(v.begin(), v.end());
+
+    int sum = 0;
+    while (k--) {
+        sum += v.back();
+        v.pop_back();
+    }
+
+    cout &lt;&lt; sum &lt;&lt; '\n';
+    return 0;
+}</code>
+</pre>
+</body>
+</html>

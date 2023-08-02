@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+int main() {
+
+	int T;
+	cin&gt;&gt;T;
+	for (int t=0;t&lt;T;t++) {
+		int N;
+		cin&gt;&gt;N;
+		vector&lt;long long&gt; planets;
+		for (int i=0;i&lt;N;i++) {
+			long long x;
+			cin&gt;&gt;x;
+			planets.push_back(x);
+		}
+		sort(planets.begin(),planets.end());
+		long long ans=10000000000;
+		for (int i=0;i&lt;N-1;i++) {
+		
+			long long dist = max(planets[N-1]-planets[i+1],planets[i]-planets[0]);
+			if (dist&lt;ans) ans=dist;
+		}
+				
+
+		cout&lt;&lt;ans&lt;&lt;endl;
+	}
+	
+	return 0;
+}
+
+
+/*
+. .. . . .. .  ....
+partition 
+first i of the planets: 0..i
+wormhole at planets[i]+planets[0]/2
+then the other planets, i+1...N-1
+wormhole at planets[i+1]+planets[N-1]/2
+distance is planets[i]-planets[0]/2 + 
+distance is difference
+
+also possibly difference planets[N-1]-planets[i+1] or the other one
+
+
+*/
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

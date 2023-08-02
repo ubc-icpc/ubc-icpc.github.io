@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+#include&lt;iomanip&gt;
+using namespace std;
+
+double f(const int &amp; me, const int &amp; him, const double &amp; p)
+{
+   if(me==4 and him&lt;=2)
+      return 1.0;
+   else if(him==4 and me&lt;=2)
+      return 0.0;
+   else if(me==3 and him==3)
+      return (p*p)/(1-2*p*(1-p));
+   else
+      return p*f(me+1, him, p) + (1-p)*f(me, him+1, p);
+}
+
+int main()
+{
+   int T;
+   cin &gt;&gt; T;
+   while(T--)
+   {
+      double p;
+      cin &gt;&gt; p;
+      cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; f(0, 0, p) &lt;&lt; endl;
+   }
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

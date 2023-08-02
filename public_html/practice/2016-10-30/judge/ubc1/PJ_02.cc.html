@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+struct pt {
+	ll x, y;
+};
+
+vector&lt;pt&gt; solve_one(const vector&lt;pt&gt;&amp; v) {
+	vector&lt;pt&gt; res;
+	if (v.empty()) return res;
+	
+	map&lt;ll, map&lt;ll, int&gt;&gt; freq;
+	int s = rand()%v.size();
+	for (int i = 0; i &lt; v.size(); i++) {
+		if (i == s) continue;
+		ll dx = v[i].x - v[s].x;
+		ll dy = v[i].y - v[s].y;
+		
+		if (dy &lt; 0) {
+			dx *= -1;
+			dy *= -1;
+		}
+		ll g = __gcd(dx, dy);
+		dx /= g;
+		dy /= g;
+		
+		freq[dy][dx]++;
+	}
+	
+	// find mode
+	int best = 0;
+	ll dy, dx;
+	for (auto&amp; py : freq) {
+		for (auto&amp; px : py.second) {
+			if (px.second &gt; best) {
+				dx = px.first;
+				dy = py.first;
+				best = px.second;
+			}
+		}
+	}
+	
+	ll y0 = v[s].y, x0 = v[s].x;
+	// (y-y0)/(x-x0) = dy/dx
+	// dx * (y-y0) == dy * (x-x0)
+	for (int i = 0; i &lt; v.size(); i++) {
+		if (dx * (v[i].y - y0) != dy * (v[i].x - x0)) {
+			res.push_back(v[i]);
+		}
+	}
+	return res;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n; cin &gt;&gt; n;
+	vector&lt;pt&gt; p(n);
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; p[i].x &gt;&gt; p[i].y;
+	}
+	
+	vector&lt;pt&gt; op = p;
+	int tries = 10;
+	while (tries--) {
+		p = op;
+		p = solve_one(p);
+		p = solve_one(p);
+		if (p.empty()) {
+			cout &lt;&lt; &quot;success&quot; &lt;&lt; endl;
+			return 0;
+		}
+	}
+	cout &lt;&lt; &quot;failure&quot; &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int A[20005];
+
+bool f(int a, int b)
+{
+   return a &gt; b;
+}
+
+int main()
+{
+   int n, k;
+   cin &gt;&gt; n &gt;&gt; k;
+
+   for(int i = 0; i &lt; n; ++i) cin &gt;&gt; A[i];
+
+   long long int ans = 0;
+
+   sort(A, A+n, f);
+
+   for(int i = 0; i &lt; k; ++i) ans += A[i];
+   cout &lt;&lt; ans &lt;&lt; endl;
+}
+</code>
+</pre>
+</body>
+</html>

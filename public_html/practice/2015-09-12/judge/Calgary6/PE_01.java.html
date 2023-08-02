@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.text.DecimalFormat;
+import java.util.Scanner;
+
+
+public class Rain {
+	public final static double PI = 3.14159265358979;
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		int numLines = Integer.parseInt(s.nextLine());
+		
+		for (int i = 0; i &lt; numLines; i++) {
+			int lengthSquareSide = s.nextInt();
+			int radius = s.nextInt();
+			double area = 0;
+			
+			if ((lengthSquareSide / (2.0 * radius)) &gt;= 1) {
+				// Circle fits in square
+				area = PI * radius * radius;
+			} else if (lengthSquareSide * lengthSquareSide &lt;= 2 * radius * radius) {
+				// Square fits in circle
+				area = lengthSquareSide * lengthSquareSide;
+			} else {
+				double theta = Math.acos(lengthSquareSide / (2.0 * radius));
+				double lune = ((PI * radius * radius) / (PI / theta)) - (lengthSquareSide / 2.0 * Math.sqrt((radius * radius) - (lengthSquareSide * lengthSquareSide / 4.0)));
+				//System.out.println(lune + &quot; &quot; + ((PI * radius * radius) / (PI / theta)) + &quot; &quot; + (lengthSquareSide * Math.sqrt(radius * radius - (lengthSquareSide * lengthSquareSide / 4.0))));
+				area = (PI * radius * radius) - (4 * lune);
+			}
+			
+			DecimalFormat df = new DecimalFormat(&quot;#.00&quot;);
+			System.out.println(df.format(area));
+		}
+		s.close();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

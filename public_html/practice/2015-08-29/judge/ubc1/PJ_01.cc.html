@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+ 
+/*
+fix a current r
+to determine if its possible to remove k bulbs
+without uncovering the rectangle
+check that each &quot;interesting point&quot; is STRICTLY INSIDE at least k+1 circles
+where &quot;interesting&quot; is defined as:
+- the 4 corners of the rectangle
+- the intersection points between each pair of circles
+- the center of each circle
+- the intersection points between each circle and the boundary of the rectangle
+pretty ez
+*/
+ 
+using namespace std;
+ 
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+ 
+const ld eps = 1e-8, INF = 0x3f3f3f3f;
+const int maxn = 105;
+pt p[maxn];
+ld r[maxn];
+int n, k, w, h;
+ 
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+ 
+// Line segment (a, b) to pt p distance.
+inline ld lsp_dist(const pt &amp;a, const pt &amp;b, const pt &amp;P) {
+  return dp(b - a, P - a) &gt; 0 &amp;&amp; dp(a - b, P - b) &gt; 0 ?
+    abs(cp(b - a, P - a) / abs(b - a)) : min(abs(a - P), abs(b - P)); }
+ 
+inline vector&lt;ld&gt; qe(ld A, ld B, ld C) {
+  vector&lt;ld&gt; v;
+  v.push_back((-B+sqrt(B*B-4*A*C))/2/A);
+  v.push_back((-B-sqrt(B*B-4*A*C))/2/A);
+  return v;
+}
+ 
+inline vector&lt;pt&gt; circle_line(pt P, ld R, ld x, ld y, ld m) {
+  vector&lt;pt&gt; v;
+  if (m == INF) {
+    v.push_back(pt(x,P.imag()+sqrt(R*R-(P.real()-x)*(P.real()-x))));
+    v.push_back(pt(x,P.imag()-sqrt(R*R-(P.real()-x)*(P.real()-x))));
+  }
+  else {
+    ld a = P.imag()+m*x-P.real();
+    vector&lt;ld&gt; xv = qe(m*m+1,-2*(m*a+P.real()),a*a-R*R+P.real()*P.real());
+    v.push_back(pt(xv[0],P.imag()-sqrt(R*R-(P.real()-xv[0])*(P.real()-xv[0]))));
+    v.push_back(pt(xv[1],P.imag()+sqrt(R*R-(P.real()-xv[1])*(P.real()-xv[1]))));
+  }
+  return v;
+}
+ 
+inline vector&lt;pt&gt; circle_circle(pt p1, ld r1, pt p2, ld r2) {
+	vector&lt;pt&gt; res;
+  ld dq=norm(p1-p2), rq=r1*r1-r2*r2; pt c=(p1+p2)*0.5L + (p2-p1)*rq*0.5L/dq;
+  ld dt=2.0*dq*(r1*r1+r2*r2)-dq*dq-rq*rq;
+  if(dt &lt; -eps) return res; if(dt &lt; eps) { res.push_back(c); return res; }
+  dt=sqrt(dt)*0.5/dq; res.push_back(c+(p2-p1)*pt(0,1)*dt); res.push_back(c-(p2-p1)*pt(0,1)*dt);
+  return res;
+}
+ 
+bool cmp(const pt&amp; a, const pt&amp; b) {
+  if (a.real() != b.real())
+    return a.real() &lt; b.real();
+  return a.imag() &lt; b.imag();
+}
+ 
+bool poss(ld cur) {
+    set&lt;pt,bool(*)(const pt&amp; a, const pt&amp; b)&gt; chk(&amp;cmp);
+//- the 4 corners of the rectangle
+    chk.insert(pt(0,0));
+    chk.insert(pt(w,0));
+    chk.insert(pt(0,h));
+    chk.insert(pt(w,h));
+    //cout &lt;&lt; &quot;at cur &quot; &lt;&lt; cur &lt;&lt; endl;
+   
+//- the intersection points between each pair of circles
+    for (int i = 0; i &lt; n-1; i++) {
+        for (int j = i+1; j &lt; n; j++) {
+            if (abs(p[i]-p[j]) &gt; cur*(r[i]+r[j]) + eps) continue;
+            vector&lt;pt&gt; cc = circle_circle(p[i],r[i]*cur,p[j],r[j]*cur);
+            //cout &lt;&lt; p[i] &lt;&lt; &quot; &quot; &lt;&lt; p[j] &lt;&lt; &quot; r &quot; &lt;&lt; r[i]*cur &lt;&lt; &quot; &quot; &lt;&lt; r[j]*cur &lt;&lt; &quot; c &quot; &lt;&lt; cc[0] &lt;&lt; &quot; &quot; &lt;&lt; cc[1] &lt;&lt; endl;
+            for (pt cck : cc) {
+              if (0 &lt;= cck.real() &amp;&amp; cck.real() &lt;= w &amp;&amp;
+                  0 &lt;= cck.imag() &amp;&amp; cck.imag() &lt;= h)
+                chk.insert(cck);
+            }
+        }
+    }
+    for (int i = 0; i &lt; n; i++) {
+//- the center of each circle
+      chk.insert(p[i]);
+//- the intersection points between each circle and the boundary of the rectangle
+      vector&lt;pt&gt; cc;
+      if (lsp_dist(pt(0,0),pt(w,0),p[i]) &lt;= r[i]*cur + eps) {
+        cc = circle_line(p[i],r[i]*cur,0,0,0);
+            for (pt cck : cc) {
+              if (0 &lt;= cck.real() &amp;&amp; cck.real() &lt;= w &amp;&amp;
+                  0 &lt;= cck.imag() &amp;&amp; cck.imag() &lt;= h)
+                chk.insert(cck);
+            }
+      }
+      if (lsp_dist(pt(w,0),pt(w,h),p[i]) &lt;= r[i]*cur + eps) {
+        cc = circle_line(p[i],r[i]*cur,w,0,INF);
+            for (int k = 0; k &lt; 2; k++) {
+              if (0 &lt;= cc[k].real() &amp;&amp; cc[k].real() &lt;= w &amp;&amp;
+                  0 &lt;= cc[k].imag() &amp;&amp; cc[k].imag() &lt;= h)
+                chk.insert(cc[k]);
+            }
+      }
+      if (lsp_dist(pt(0,0),pt(0,h),p[i]) &lt;= r[i]*cur + eps) {
+        cc = circle_line(p[i],r[i]*cur,0,h,INF);
+            for (int k = 0; k &lt; 2; k++) {
+              if (0 &lt;= cc[k].real() &amp;&amp; cc[k].real() &lt;= w &amp;&amp;
+                  0 &lt;= cc[k].imag() &amp;&amp; cc[k].imag() &lt;= h)
+                chk.insert(cc[k]);
+            }
+      }
+      if (lsp_dist(pt(0,h),pt(w,h),p[i]) &lt;= r[i]*cur + eps) {
+        cc = circle_line(p[i],r[i]*cur,0,h,0);
+            for (int k = 0; k &lt; 2; k++) {
+              if (0 &lt;= cc[k].real() &amp;&amp; cc[k].real() &lt;= w &amp;&amp;
+                  0 &lt;= cc[k].imag() &amp;&amp; cc[k].imag() &lt;= h)
+                chk.insert(cc[k]);
+            }
+      }
+    }
+//check that each &quot;interesting point&quot; is STRICTLY INSIDE at least k+1 circles
+    for (pt P: chk) {
+      //cout &lt;&lt; &quot; checking &quot; &lt;&lt; chk[i] &lt;&lt; endl;
+      int cs = 0;
+      for (int j = 0; j &lt; n; j++) {
+        //cout &lt;&lt; &quot;  pt &quot; &lt;&lt; p[j] &lt;&lt; &quot; dist &quot; &lt;&lt; abs(p[j]-P) &lt;&lt; &quot; rad &quot; &lt;&lt; r[j]*cur &lt;&lt; endl;
+        if (abs(p[j]-P)+eps &lt; r[j]*cur)
+          cs++;
+        //cout &lt;&lt; &quot;  cs now &quot; &lt;&lt; cs &lt;&lt; endl;
+      }
+      if (cs &lt; k+1) {
+        //cout &lt;&lt; &quot;  fail\n&quot;;
+        return false;
+      }
+    }
+    return true;
+}
+ 
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        cin &gt;&gt; n &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+        for (int i = 0; i &lt; n; i++) {
+            ld x, y;
+            cin &gt;&gt; x &gt;&gt; y &gt;&gt; r[i];
+            p[i] = pt(x,y);
+        }
+       
+        ld l = 0, r = w+h;
+        while (abs(r-l) &gt; 1e-4) {
+            ld m = (l+r)/2;
+            if (poss(m)) {
+                r = m;
+            } else {
+                l = m;
+            }
+        }
+        cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; (l+r)/2 &lt;&lt; endl;
+    }
+        return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

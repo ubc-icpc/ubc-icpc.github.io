@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+#define INF 1000000
+
+using namespace std;
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		int g, p;
+		cin&gt;&gt;g&gt;&gt;p;
+		cout&lt;&lt;&quot;Team #&quot;&lt;&lt;i&lt;&lt;endl;
+		cout&lt;&lt;&quot;Games: &quot;&lt;&lt;g&lt;&lt;endl;
+		cout&lt;&lt;&quot;Points: &quot;&lt;&lt;p&lt;&lt;endl;
+		cout&lt;&lt;&quot;Possible records: &quot;&lt;&lt;endl;
+		
+		for(int win=p/3;win&gt;=0;win--){
+			int tie = p-3*win;
+			int lose = g-win-tie;
+			if(tie&gt;=0&amp;&amp;lose&gt;=0)
+				cout&lt;&lt;win&lt;&lt;'-'&lt;&lt;tie&lt;&lt;'-'&lt;&lt;lose&lt;&lt;endl;
+		}
+		cout&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

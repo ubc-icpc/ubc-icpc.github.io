@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int n;
+map&lt;string, int&gt;  contestants;
+
+string solve() {
+  for (auto it=contestants.begin(); it!=contestants.end(); ++it) {
+    if (it-&gt;second != 0)
+      return it-&gt;first;
+  }
+}
+
+int main() {
+  cin &gt;&gt; n;
+  for (int i=0; i&lt;n; i++) {
+    string name; cin &gt;&gt; name;
+    contestants[name]++;
+  }
+  for (int i=0; i&lt;n-1; i++){
+    string name; cin &gt;&gt; name;
+    contestants[name]--;
+  }
+
+  cout &lt;&lt; solve() &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

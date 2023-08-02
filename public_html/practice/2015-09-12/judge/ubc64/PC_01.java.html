@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.util.*;
+
+public class acm {
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int round = scan.nextInt();
+        for (int k  = 1; k &lt;= round; k ++) {
+            int sNum = scan.nextInt();
+            int bNUm = scan.nextInt();
+            System.out.print(&quot;Practice #&quot; + k +&quot;: &quot; + sNum + &quot; &quot; + bNUm +&quot;\n&quot;);
+            int group = scan.nextInt();
+            while (group &gt; 0) {
+                int p = scan.nextInt();
+                if (p &gt;= bNUm) {
+                    while (p &gt;= bNUm) {
+                        bNUm = bNUm * 2;
+                    }
+                }
+                bNUm = (bNUm - p);
+                System.out.println(p + &quot; &quot; + bNUm);
+                group --;
+            }
+            System.out.println();
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+bool query(int a, int b, int c)
+{
+	++a; ++b; ++c;
+	cout &lt;&lt; &quot;? &quot; &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b &lt;&lt; ' ' &lt;&lt; c &lt;&lt; endl;
+	int ret; cin &gt;&gt; ret;
+	return ret;
+}
+
+void output(int a)
+{
+	cout &lt;&lt; &quot;! &quot; &lt;&lt; a+1 &lt;&lt; endl;
+}
+
+void swap(int &amp;a, int &amp;b)
+{
+	int c = b;
+	b = a;
+	a = c;
+}
+
+int main()
+{
+	ios::sync_with_stdio(0);
+
+	int N; cin &gt;&gt; N;
+	int lower, upper, next;
+	lower = 0; upper = 1; next = 2;
+	if (query(lower,upper,next))
+	{
+		++next;
+	}
+	else
+	{
+		swap(lower, upper);
+		++next;
+	}
+	for (; next &lt; N; ++next)
+	{
+		if (query(next,lower,upper))
+		{
+			lower = next;
+		}
+	}
+	output(lower);
+}
+</code>
+</pre>
+</body>
+</html>

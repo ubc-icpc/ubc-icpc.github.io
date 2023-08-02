@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+
+using namespace std;
+
+string main_string;
+
+int x_coordinates[4000];
+int y_coordinates[4000];
+
+int abs(int x) {
+    return (x &gt; 0) ? x : -x;
+}
+
+int distance(char a, char b) {
+    return abs(x_coordinates[a] - x_coordinates[b]) + abs(y_coordinates[a] - y_coordinates[b]);
+}
+
+int distance(string x, string y) {
+    int total = 0;
+    for (int i = 0; i &lt; x.length(); i++) {
+        total += distance(x.at(i), y.at(i));
+    }
+    return total;
+}
+
+bool compare_function(string a, string b) {
+    if (distance(a, main_string) &lt; distance(b,main_string)) {
+        return true;
+    }
+
+    else if ((distance(a, main_string) == distance(b,main_string)) &amp;&amp; a &lt; b) {
+        return true;
+    }
+
+    else return false;
+}
+
+int main() {
+    x_coordinates['q'] = 0;
+    x_coordinates['w'] = 1;
+    x_coordinates['e'] = 2;
+    x_coordinates['r'] = 3;
+    x_coordinates['t'] = 4;
+    x_coordinates['y'] = 5;
+    x_coordinates['u'] = 6;
+    x_coordinates['i'] = 7;
+    x_coordinates['o'] = 8;
+    x_coordinates['p'] = 9;
+
+    y_coordinates['q'] = 0;
+    y_coordinates['w'] = 0;
+    y_coordinates['e'] = 0;
+    y_coordinates['r'] = 0;
+    y_coordinates['t'] = 0;
+    y_coordinates['y'] = 0;
+    y_coordinates['u'] = 0;
+    y_coordinates['i'] = 0;
+    y_coordinates['o'] = 0;
+    y_coordinates['p'] = 0;
+
+    x_coordinates['a'] = 0;
+    x_coordinates['s'] = 1;
+    x_coordinates['d'] = 2;
+    x_coordinates['f'] = 3;
+    x_coordinates['g'] = 4;
+    x_coordinates['h'] = 5;
+    x_coordinates['j'] = 6;
+    x_coordinates['k'] = 7;
+    x_coordinates['l'] = 8;
+
+    y_coordinates['a'] = 1;
+    y_coordinates['s'] = 1;
+    y_coordinates['d'] = 1;
+    y_coordinates['f'] = 1;
+    y_coordinates['g'] = 1;
+    y_coordinates['h'] = 1;
+    y_coordinates['j'] = 1;
+    y_coordinates['k'] = 1;
+    y_coordinates['l'] = 1;
+
+    x_coordinates['z'] = 0;
+    x_coordinates['x'] = 1;
+    x_coordinates['c'] = 2;
+    x_coordinates['v'] = 3;
+    x_coordinates['b'] = 4;
+    x_coordinates['n'] = 5;
+    x_coordinates['m'] = 6;
+
+    y_coordinates['z'] = 2;
+    y_coordinates['x'] = 2;
+    y_coordinates['c'] = 2;
+    y_coordinates['v'] = 2;
+    y_coordinates['b'] = 2;
+    y_coordinates['n'] = 2;
+    y_coordinates['m'] = 2;
+
+    int t;
+    cin &gt;&gt; t;
+
+    for (int i = 0; i &lt; t; i++) {
+        int l;
+        cin &gt;&gt; main_string &gt;&gt; l;
+        vector&lt;string&gt; candidates;
+        for (int j = 0; j &lt; l; j++) {
+            string placeholder;
+            cin &gt;&gt; placeholder;
+            candidates.push_back(placeholder);
+        }
+        sort(candidates.begin(), candidates.end(), compare_function);
+
+        for (auto y: candidates) {
+            cout &lt;&lt; y &lt;&lt; &quot; &quot; &lt;&lt; distance(y,main_string) &lt;&lt; endl;
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

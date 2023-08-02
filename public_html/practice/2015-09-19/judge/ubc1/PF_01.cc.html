@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        vector&lt;int&gt; v(n);
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; v[i];
+        }
+        
+        sort(v.rbegin(), v.rend());
+        vector&lt;pair&lt;int,int&gt;&gt; w;
+        for (int i = 0; i &lt; v.size()-1; i++) {
+            int mult = v[i]-v[i+1], size = v.size()-i-1;
+            if (mult == 0) continue;
+            w.push_back({size, mult});
+        }
+        sort(w.begin(), w.end());
+        
+        for (auto p : w) {
+            cout &lt;&lt; p.second &lt;&lt; &quot; &quot; &lt;&lt; p.first &lt;&lt; '\n';
+        }
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

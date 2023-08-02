@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;algorithm&gt;
+
+char grid[30][30];
+char visitable[30][30];
+bool visited[30][30];
+int r, c;
+
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+
+int visit(int x, int y)
+{
+    if (x &lt; 0 || x &gt;= c || y &lt; 0 || y &gt;= r)
+    {
+        return 0;
+    }
+    if (grid[y][x] == '#' || grid[y][x] == 'P')
+    {
+        return 0;
+    }
+    if (visited[y][x])
+    {
+        return 0;
+    }
+    visited[y][x] = 1;
+    if (grid[y][x] == 'V')
+    {
+        return 1;
+    }
+    int visits = 0;
+    for (int i = 0; i &lt; 4; i++)
+    {
+        visits += visit(x + dx[i], y + dy[i]);
+    }
+    return visits;
+}
+
+int visitTest(int x, int y)
+{
+    if (x &lt; 0 || x &gt;= c || y &lt; 0 || y &gt;= r)
+    {
+        return 0;
+    }
+    if (visitable[y][x])
+    {
+        return 0;
+    }
+    if (grid[y][x] == 'S' || grid[y][x] == '.')
+    {
+        visitable[y][x] = 1;
+        int sum = 0;
+        for (int i = 0; i &lt; 4; i++)
+        {
+            sum += visitTest(x + dx[i], y + dy[i]);
+        }
+        return sum;
+    }
+    else if (grid[y][x] == 'V')
+    {
+        grid[y][x] = 'P';
+        visitable[y][x] = 2;
+        return 1;
+    }
+    // grid[y][x] == '#'
+    return 0;
+}
+
+int solve(int posx, int posy)
+{
+    for (int i = 0; i &lt; r; i++)
+    {
+        for (int j = 0; j &lt; c; j++)
+        {
+            visitable[i][j] = 0;
+        }
+    }
+    int maxVend = visitTest(posx, posy);
+    int withoutPush = maxVend;
+
+    for (int i = 0; i &lt; r; i++)
+    {
+        for (int j = 0; j &lt; c; j++)
+        {
+            if (visitable[i][j] == 2)
+            {
+                for (int k = 0; k &lt; 4; k++)
+                {
+                    int l = (k + 2) % 4;
+                    if (i + dy[k] &lt; 0 || i + dy[k] &gt;= r || i + dy[l] &lt; 0 || i + dy[l] &gt;= r)
+                        continue;
+                    if (j + dx[k] &lt; 0 || j + dx[k] &gt;= c || j + dx[l] &lt; 0 || j + dx[l] &gt;= c)
+                        continue;
+                    if (visitable[i + dy[k]][j + dx[k]] == 1 &amp;&amp; grid[i + dy[l]][j + dx[l]] == '.')
+                    {
+                        for (int q = 0; q &lt; r; q++)
+                        {
+                            for (int p = 0; p &lt; c; p++)
+                            {
+                                visited[q][p] = 0;
+                            }
+                        }
+                        grid[i + dy[l]][j + dx[l]] = 'P';
+                        grid[i][j] = '.';
+                        maxVend = std::max(maxVend, withoutPush + visit(j + dx[k], i + dy[k]));
+                        grid[i + dy[l]][j + dx[l]] = '.';
+                        grid[i][j] = 'P';
+                    }
+                }
+            }
+        }
+    }
+
+    return maxVend;
+}
+
+int main()
+{
+    int t;
+    char str[30];
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--)
+    {
+        scanf(&quot;%d %d&quot;, &amp;r, &amp;c);
+        int posx, posy;
+
+        for (int i = 0; i &lt; r; i++)
+        {
+            scanf(&quot;%s&quot;, str);
+            for (int j = 0; j &lt; c; j++)
+            {
+                grid[i][j] = str[j];
+                if (str[j] == 'S')
+                {
+                    posx = j;
+                    posy = i;
+                }
+            }
+        }
+
+        printf(&quot;%d\n&quot;, solve(posx, posy));
+
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

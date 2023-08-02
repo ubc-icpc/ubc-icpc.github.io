@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+inp=raw_input()
+
+mapping={&quot;I&quot;:1,&quot;V&quot;:5,&quot;X&quot;:10,&quot;L&quot;:50,&quot;C&quot;:100,&quot;D&quot;:500,&quot;M&quot;:1000}
+
+inp=[inp[2*i:2*i+2] for i in range(len(inp)/2)]
+
+inp=[(int(i[0]),mapping[i[1]]) for i in inp]
+
+tot=0
+lastR=0
+
+for A,R in inp[::-1]:
+	if R&lt;lastR:
+		tot-=A*R
+	else:
+		tot+=A*R	
+	lastR=R
+print tot
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

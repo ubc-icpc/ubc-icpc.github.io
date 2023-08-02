@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+vector&lt;bool&gt; prime(20000, true);
+
+void pre() {
+	for (int i = 2; i &lt;= 20000; i++) {
+		if (prime[i]) {
+			for (int j = i*i; j &lt;= 20000; j += i) {
+				prime[j] = false;
+			}
+		}
+	}
+	prime[0] = false;
+	prime[1] = false;
+}
+
+
+int main() {
+	int p; cin &gt;&gt; p;
+	pre();
+/*	for (int i = 0; i &lt; 20000; i++) {
+		if(prime[i]) cout &lt;&lt; i &lt;&lt; endl;
+	}*/
+	for (int i = 0; i &lt; p; i++) {
+		int m, n; cin &gt;&gt; m &gt;&gt; n;
+		if (m == 0) {
+			if (prime[abs(n)] &amp;&amp; abs(n) % 4 == 3) {
+				cout &lt;&lt; &quot;P&quot; &lt;&lt; endl;
+			} else cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+		} else if (n == 0) {
+			if (prime[abs(m)] &amp;&amp; abs(m) % 4 == 3) {
+				cout &lt;&lt; &quot;P&quot; &lt;&lt; endl;				
+			} else cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+		} else {
+			if (prime[m*m + n*n]) {
+				cout &lt;&lt; &quot;P&quot; &lt;&lt; endl;				
+			} else cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

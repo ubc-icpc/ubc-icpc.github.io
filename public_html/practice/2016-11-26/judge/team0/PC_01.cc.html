@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; piii;
+const int INF = 0x3f3f3f3f;
+
+int dx[4] = {-1, 1, 0, 0};
+int dy[4] = {0, 0, -1, 1};
+int n, m, sr, sc, tr, tc;
+string grid[55];
+string str;
+bool visited[55][55];
+int dist[55][55];
+int dp[55][55][55];
+int dir(char c) {
+  if (c == 'L') return 2;
+  if (c == 'R') return 3;
+  if (c == 'U') return 0;
+  return 1;
+}
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cin &gt;&gt; n &gt;&gt; m;
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; grid[i];
+    for (int j = 0; j &lt; m; j++) {
+      if (grid[i][j] == 'R') {
+        sr = i; sc = j;
+      } else if (grid[i][j] == 'E') {
+        tr = i; tc = j;
+      }
+    }
+  }
+  cin &gt;&gt; str;
+  memset(dist, INF, sizeof dist);
+  memset(visited, 0, sizeof visited);
+  queue&lt;piii&gt; q;
+  q.push(piii(0, pii(tr, tc)));
+  while (!q.empty()) {
+    piii curr = q.front(); q.pop();
+    int d = curr.first, x = curr.second.first, y = curr.second.second;
+    if (visited[x][y]) continue;
+    visited[x][y] = true;
+    dist[x][y] = d;
+    for (int k = 0; k &lt; 4; k++) {
+      int nx = x+dx[k];
+      int ny = y+dy[k];
+      if (nx &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; m &amp;&amp; grid[nx][ny] != '#') {
+        q.push(piii(d+1, pii(nx, ny)));
+      }
+    }
+  }
+  memset(dp, INF, sizeof dp);
+  for (int s = str.length(); s &gt;= 0; s--) {
+    for (int x = 0; x &lt; n; x++) {
+      for (int y = 0; y &lt; m; y++) {
+        if (grid[x][y] == '#') continue;
+        dp[x][y][s] = dist[x][y];
+        if (s &lt; str.length()) {
+          int k = dir(str[s]);
+          int nx = x+dx[k], ny = y+dy[k];
+          if (nx &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; m &amp;&amp; grid[nx][ny] != '#') {
+          } else {
+            nx = x; ny = y;
+          }
+          if (x == tr &amp;&amp; y == tc) {
+            dp[x][y][s] == 0;
+          }
+          dp[x][y][s] = min(dp[x][y][s], dp[nx][ny][s+1]);
+          dp[x][y][s] = min(dp[x][y][s], dp[x][y][s+1] + 1);
+          /*
+          for (k = 0; k &lt; 4; k++) {
+            nx = x+dx[k], ny = y+dy[k];
+            if (nx &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; m &amp;&amp; grid[nx][ny] != '#') {
+              dp[x][y][s] = min(dp[x][y][s], dp[nx][ny][s] + 1);
+            } else {
+              nx = x; ny = y;
+            }
+          }
+          */
+        }
+      }
+    }
+    bool done = false;
+    while (s &lt; str.length() &amp;&amp; !done) {
+      done = true;
+      for (int x = 0; x &lt; n; x++) {
+        for (int y = 0; y &lt; m; y++) {
+          if (grid[x][y] == '#') continue;
+          for (int k = 0; k &lt; 4; k++) {
+            int nx = x+dx[k], ny = y+dy[k];
+            if (nx &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; m &amp;&amp; grid[nx][ny] != '#') {
+              if (dp[x][y][s] &gt; dp[nx][ny][s] + 1) {
+                done = false;
+                dp[x][y][s] = dp[nx][ny][s] + 1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  /*
+  for (int s = str.length(); s &gt;= 0; s--) {
+    for (int x = 0; x &lt; n; x++) {
+      for (int y = 0; y &lt; m; y++) {
+        if (dp[x][y][s] &lt; INF) cerr &lt;&lt; dp[x][y][s] &lt;&lt; &quot; &quot;;
+        else cerr &lt;&lt; &quot;# &quot;;
+      }
+      cerr &lt;&lt; endl;
+    }
+    cerr &lt;&lt; endl;
+  }
+  */
+  cout &lt;&lt; dp[sr][sc][0] &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

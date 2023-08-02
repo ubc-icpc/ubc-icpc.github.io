@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int coords[256][3];
+bool graph[256][256];
+
+bool visited[256];
+
+#define WIDTH 200
+
+inline bool touching(int i, int j) {
+    int x1 = coords[i][1];
+    int x2 = coords[j][1];
+    int y1 = coords[i][0];
+    int y2 = coords[j][0];
+    double dist = sqrt(1.0 * (x1 - x2) * (x1 - x2) + 1.0 * (y1 - y2) * (y1 - y2));
+    double maxdist = 1.0 * (coords[i][2] + coords[j][2]);
+    return dist &lt; maxdist;
+}
+
+bool dfs(int from, int to) {
+    if (from == to) return true;
+
+    if (visited[from]) return false;
+    visited[from] = true;
+
+    for (int i = 0; i &lt;= to; ++i) {
+        if (graph[from][i] &amp;&amp; dfs(i, to)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool hasPath(int active) {
+    int LEFT = 0;
+    int RIGHT = active + 1;
+
+    memset(graph, 0, sizeof(graph));
+
+    for (int i = 1; i &lt;= active; ++i) {
+        for (int j = i + 1; j &lt;= active; ++j) {
+            if (touching(i, j)) {
+                graph[i][j] = true;
+                graph[j][i] = true;
+            }
+        }
+    }
+
+    for (int i = 1; i &lt;= active; ++i) {
+        if (coords[i][1] - coords[i][2] &lt;= 0) {
+            graph[i][LEFT] = true;
+            graph[LEFT][i] = true;
+        }
+
+        if (coords[i][1] + coords[i][2] &gt;= WIDTH) {
+            graph[i][RIGHT] = true;
+            graph[RIGHT][i] = true;
+        }
+    }
+
+    /*printf(&quot;active %d\n&quot;, active);
+
+    for (int i = 1; i &lt;= active; ++i) {
+        for (int j = LEFT; j &lt;= RIGHT; ++j) {
+            printf(&quot;%d&quot;, graph[i][j] ? 1 : 0);
+        }
+        printf(&quot;\n&quot;);
+    }
+    printf(&quot;\n&quot;);*/
+
+    memset(visited, 0, sizeof(visited));
+
+    return !dfs(LEFT, RIGHT);
+}
+
+int binarySearch(int yes, int no) {
+    if (yes + 1 == no) return yes;
+
+    int mid = (yes + no) / 2;
+
+    if (hasPath(mid)) {
+        return binarySearch(mid, no);
+    } else {
+        return binarySearch(yes, mid);
+    }
+}
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+
+    for (int i = 1; i &lt;= n; ++i) {
+        int x, y, r;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; r;
+
+        // 0 is y
+        coords[i][0] = y;
+        coords[i][1] = x;
+        coords[i][2] = r;
+    }
+
+    cout &lt;&lt; binarySearch(0, n) &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

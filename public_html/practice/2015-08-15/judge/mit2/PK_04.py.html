@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+d = 0
+lucky = [4, 7, 44, 47, 74, 77, 444]
+num = []
+
+def nbits(x):
+    if x == 0: return 1
+
+    n = 0
+    while x:
+        x &gt;&gt;= 1
+        n += 1
+    return n
+
+def is_lucky(x):
+    if x == 0: return False
+    while x:
+        if x % 10 != 4 and x % 10 != 7: return False
+        x /= 10
+    return True
+
+def factorial(n):
+    prod = 1
+    for i in range(2, n + 1): prod *= i
+    return prod
+
+def choose(n, r):
+    return factorial(n) / factorial(r) / factorial(n - r)
+
+def count(length, n4):
+    if d: print 'choose %d, %d' % (length, n4)
+    if n4 &lt; 0 or length &lt; 0:
+        return 0
+    elif length % 2 == 0 and n4 % 2 == 1:
+        return 0
+    elif n4 &gt; length:
+        return 0
+    else:
+        return choose(length / 2, n4 / 2)
+
+def hi_paul():
+    i = 0
+    
+    for length in lucky:
+        tot = 0;
+        # how many super lucky palindromes have length &quot;length&quot;?
+        i4 = 0
+        while i4 &lt; len(lucky) and lucky[i4] &lt;= length:
+            n4 = lucky[i4]
+            add = count(length, n4)
+
+            if not is_lucky(length - n4):
+                tot += 2 * add
+            else:
+                tot += add
+            i4 += 1
+        num.append(tot);
+
+        i += 1
+
+def hi_lucy(k, t):
+    if d: print 'we are solving for k=%d' % k
+    for i in range(len(lucky)):
+        if d: print 'testing length %d with count %d' % (lucky[i], num[i])
+        if num[i] &gt;= k:
+            if d: print 'correct length!'
+            # pick one character at a time
+            res = ''
+            sofar4 = 0
+            sofar7 = 0
+            for j in range(lucky[i] / 2):
+                if d: print 'figuring out character %d' % j
+                tot = 0
+
+                for n4 in lucky[:i + 1]:
+                    n4 -= sofar4
+                    tot += count(lucky[i] - 2 * (j + 1), n4 - 2)
+                    if d: print 'for n4=%d we added on %d' % (n4, count(lucky[i] - 2 * (j + 1), n4 - 2))
+
+                for n7 in lucky[:i + 1]:
+                    n7 -= sofar7
+                    if is_lucky(lucky[i] - n7 - sofar7): continue
+                    tot += count(lucky[i] - 2 * (j + 1), n7)
+                    if d: print 'for n7=%d we added on %d' % (n7, count(lucky[i] - 2 * (j + 1), n7))
+
+                if d: print 'got tot = %d' % tot
+
+                if tot &gt;= k:
+                    res += '4'
+                    sofar4 += 2
+                    if d: print 'picking 4, k is now %d' % k
+                else:
+                    res += '7'
+                    sofar7 += 2
+                    k -= tot
+                    if d: print 'picking 7, k is now %d' % k
+
+                if d: print
+
+            if lucky[i] % 2 == 1:
+                if k == 1 and (is_lucky(sofar4) or is_lucky(lucky[i] - sofar4)): res = res + '7' + res[::-1]
+                else: res = res + '4' + res[::-1]
+            else:
+                res = res + res[::-1]
+
+            print 'Query #%d: %s' % (t, res)
+            if d: print
+            return
+        else:
+            k -= num[i]
+            if d: print 'wrong length, k is now %d' % k
+
+hi_paul()
+
+T = int(raw_input())
+
+for t in range(T):
+    k = int(raw_input())
+    hi_lucy(k, t + 1)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

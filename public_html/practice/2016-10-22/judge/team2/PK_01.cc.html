@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define endl '\n'
+
+int main() {
+	int n, m;
+	vector&lt;complex&lt;double&gt;&gt; loc1, loc2;
+	cin &gt;&gt; n;
+	for(int i = 0; i &lt; n; i++) {
+		int x, y; cin &gt;&gt; x &gt;&gt; y; loc1.push_back(complex&lt;double&gt;(x, y));
+	}
+	cin &gt;&gt; m;
+	for(int i = 0; i &lt; m; i++) {
+		int x, y; cin &gt;&gt; x &gt;&gt; y; loc2.push_back(complex&lt;double&gt;(x, y));
+	}
+
+	int i = 0, j = 0;
+	
+	complex&lt;double&gt; currLoc1 = loc1[0], currLoc2 = loc2[0];
+
+	double minDist = 1000000;
+
+	while(i &lt; n-1 &amp;&amp; j &lt; m-1) {
+		double dist1 = abs(loc1[i+1]-currLoc1);
+		double dist2 = abs(loc2[j+1]-currLoc2);
+		if(dist1&gt;dist2) {
+			double l =0, r = dist2,lmid = (l+r)/3, rmid = lmid*2;
+			while (l&lt;r - 1e-10){
+				double fl = abs(currLoc1 + (loc1[i+1] - currLoc1) / abs(loc1[i+1]-currLoc1) * lmid
+								- (currLoc2 + (loc2[j+1] - currLoc2) / abs(loc2[j+1]-currLoc2) * lmid));
+				double fr = abs(currLoc1 + (loc1[i+1] - currLoc1) / abs(loc1[i+1]-currLoc1) * rmid
+								- (currLoc2 + (loc2[j+1] - currLoc2) / abs(loc2[j+1]-currLoc2) * rmid));
+				if (fl&lt;fr) r = rmid;
+				else l = lmid;
+				lmid = l+(r-l)/3, rmid = l + 2*(r-l)/3;
+			}
+			minDist = min(minDist, abs(currLoc1 + (loc1[i+1] - currLoc1) / abs(loc1[i+1]-currLoc1) * l
+								- (currLoc2 + (loc2[j+1] - currLoc2) / abs(loc2[j+1]-currLoc2) * l)));
+			j++;
+			currLoc2 = loc2[j];
+			currLoc1 = currLoc1 + (loc1[i+1] - currLoc1) / abs(loc1[i+1]-currLoc1) * dist2;
+		} else {
+			double l =0, r = dist1,lmid = (l+r)/3, rmid = lmid*2;
+			while (l&lt;r - 1e-10){
+				double fl = abs(currLoc1 + (loc1[i+1] - currLoc1) / abs(loc1[i+1]-currLoc1) * lmid
+								- (currLoc2 + (loc2[j+1] - currLoc2) / abs(loc2[j+1]-currLoc2) * lmid));
+				double fr = abs(currLoc1 + (loc1[i+1] - currLoc1) / abs(loc1[i+1]-currLoc1) * rmid
+								- (currLoc2 + (loc2[j+1] - currLoc2) / abs(loc2[j+1]-currLoc2) * rmid));
+				if (fl&lt;fr) r = rmid;
+				else l = lmid;
+				lmid = l+(r-l)/3, rmid = l + 2*(r-l)/3;
+			}
+			minDist = min(minDist, abs(currLoc1 + (loc1[i+1] - currLoc1) / abs(loc1[i+1]-currLoc1) * l
+								- (currLoc2 + (loc2[j+1] - currLoc2) / abs(loc2[j+1]-currLoc2) * l)));
+			i++;
+			currLoc1 = loc1[i];
+			currLoc2 = currLoc2 + (loc2[j+1] - currLoc2) / abs(loc2[j+1]-currLoc2) * dist1;
+		}
+	}
+	cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; minDist &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

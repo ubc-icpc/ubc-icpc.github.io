@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-08-22.
+ */
+public class HowSweet {
+    private static int total = 0;
+    private static int counter = 0;
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+
+        while(s.hasNext()){
+            counter++;
+            int i = Integer.parseInt(s.next());
+            total += i;
+            if(total &gt;= 50*2){
+                System.out.println(&quot;Input #&quot; + counter +  &quot;: Totally Sweet!&quot;);
+            }
+            else if(total &gt;= 50){
+                System.out.println(&quot;Input #&quot; + counter +  &quot;: Sweet!&quot;);
+            }
+            total = total%50;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

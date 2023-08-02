@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+public class E{
+    public static void main (String[] args){
+        Scanner input = new Scanner(System.in);
+        int n = input.nextInt();
+        int k = input.nextInt();
+
+        Integer[] excite = new Integer[n];
+
+        for (int i = 0; i &lt; n; i++){
+            excite[i] = input.nextInt();
+        }
+
+        Queue&lt;Integer&gt; q = new PriorityQueue&lt;&gt;(10000, Collections.reverseOrder());
+        q.addAll(Arrays.asList(excite));
+        int maxExcite = 0;
+
+        for (int i = 0; i &lt; k; i++){
+            maxExcite += q.poll();
+        }
+        System.out.println(maxExcite);
+    }
+}
+</code>
+</pre>
+</body>
+</html>

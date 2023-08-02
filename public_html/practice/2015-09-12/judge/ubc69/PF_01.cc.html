@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fstream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;math.h&gt;
+
+using namespace std;
+
+bool isVowel(char c){
+	if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u'||c=='y')
+		return true;
+	return false;
+}
+
+uint64_t count(string s){
+	for(int i=0;i&lt;s.size();i++){
+		if(s[i]=='?')
+			continue;
+		if(isVowel(s[i])) s[i]='v';
+		else s[i]='c';
+	}
+	char even='?',odd='?';
+	for(int i=0;i&lt;s.size();i+=2){
+		if(s[i]!='?'){
+			even=s[i];
+			break;
+		}
+	}
+	for(int i=1;i&lt;s.size();i+=2){
+		if(s[i]!='?'){
+			odd=s[i];
+			break;
+		}
+	}
+	if(even=='?'&amp;&amp;odd=='c') even='v';
+	if(even=='?'&amp;&amp;odd=='v') even='c';
+	if(even=='c'&amp;&amp;odd=='?') odd='v';
+	if(even=='v'&amp;&amp;odd=='?') odd='c';
+	if(even==odd &amp;&amp; even!='?') return 0;
+	
+	if(even=='?'&amp;&amp;odd=='?'){
+		uint64_t	 z = pow(6,s.size()/2);
+					  z*=pow(20,(1+s.size())/2);
+		uint64_t	 y = pow(20,s.size()/2);
+					  y*=pow(6,(1+s.size())/2);
+		return y+z;
+	}
+	
+	uint64_t count=1;
+	for(int i=0;i&lt;s.size();i+=2){
+		if(s[i]=='?'){
+			if(even=='c') count*=20;
+			else count*=6;
+		}
+		else if(s[i]!=even) return 0;
+	}
+	for(int i=1;i&lt;s.size();i+=2){
+		if(s[i]=='?'){
+			if(odd=='c') count*=20;
+			else count*=6;
+		}
+		else if(s[i]!=odd) return 0;
+	}
+	return count;
+}
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		cout&lt;&lt;&quot;String #&quot;&lt;&lt;i&lt;&lt;&quot;: &quot;;
+		string s; cin&gt;&gt;s;
+		cout&lt;&lt;count(s)&lt;&lt;endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

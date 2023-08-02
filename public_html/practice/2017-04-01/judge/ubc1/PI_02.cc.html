@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+struct N {
+  int c;
+  bool isWord;
+  N* nxt[26];
+  N() {
+    c = 0;
+    isWord = false;
+    memset(nxt, 0, sizeof nxt);
+  }
+  N(int _c) {
+    c = _c;
+    isWord = false;
+    memset(nxt, 0, sizeof nxt);
+  }
+};
+
+N data[2000005];
+N *root1 = &amp;data[0], *root2 = &amp;data[1];
+int nn = 2;
+
+void insert(N* root, const string &amp;s) {
+  N* cur = root;
+  for (int i = 0; i &lt; s.length(); i++) {
+    int c = (int)(s[i]-'a');
+    if (cur-&gt;nxt[c] == 0) {
+      cur-&gt;nxt[c] = new (&amp;data[nn++]) N(c);
+    }
+    cur = cur-&gt;nxt[c];
+  }
+  cur-&gt;isWord = true;
+}
+
+void find(N* root, const string &amp;s, vector&lt;int&gt; &amp;res) {
+  N* cur = root;
+  for (int i = 0; i &lt; s.length(); i++) {
+    int c = (int)(s[i] - 'a');
+    if (cur-&gt;nxt[c] == 0) return;
+    cur = cur-&gt;nxt[c];
+    if (cur-&gt;isWord) {
+      res.push_back(i+1);
+    }
+  }
+}
+
+string ans[3] = {&quot;unknown name&quot;, &quot;simple name&quot;, &quot;compound name&quot;};
+vector&lt;int&gt; res1, res2;
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  int n, q; cin &gt;&gt; n &gt;&gt; q;
+  for (int i = 0; i &lt; n; i++) {
+    string s; cin &gt;&gt; s;
+    insert(root1, s);
+    reverse(s.begin(), s.end());
+    insert(root2, s);
+  }
+  for (int i = 0; i &lt; q; i++) {
+    string s; cin &gt;&gt; s;
+    res1.clear();
+    res2.clear();
+    find(root1, s, res1);
+    reverse(s.begin(), s.end());
+    find(root2, s, res2);
+    if (res1.size() == 0) {
+      cout &lt;&lt; ans[0] &lt;&lt; endl;
+    } else if (res1.back() == s.length()) {
+      cout &lt;&lt; ans[1] &lt;&lt; endl;
+    } else {
+      bool found = false;
+      for (int i1 = (int)res1.size()-1, i2 = 0; i1 &gt;= 0, i2 &lt; res2.size(); ) {
+        while (i2 &lt; res2.size() &amp;&amp; res1[i1] + res2[i2] &lt; s.length()) i2++;
+        if (i2 &lt; res2.size() &amp;&amp; res1[i1] + res2[i2] == s.length()) {
+          cout &lt;&lt; ans[2] &lt;&lt; endl;
+          found = true;
+          break;
+        }
+        i1--;
+      }
+      if (!found) {
+        cout &lt;&lt; ans[0] &lt;&lt; endl;
+      }
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class B {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int times = Integer.parseInt(sc.nextLine());
+		String[] fighters = new String[times];
+		int index = 0;
+		while(times &gt; 0) {
+			fighters[index] = sc.nextLine();
+			index++;
+			times--;
+		}
+		StringBuilder triples = new StringBuilder();
+		int count = 0;
+		
+		for(int a = 0; a &lt; fighters.length - 2; a++) {
+			for(int b = a + 1; b &lt; fighters.length - 1; b++) {
+				for(int c = b + 1; c &lt; fighters.length; c++) {
+					int sim1 = sim(fighters[a], fighters[b]);
+					int sim2 = sim(fighters[b], fighters[c]);
+					int sim3 = sim(fighters[c], fighters[a]);
+					if((sim1 == 1 &amp;&amp; sim2 == 1 &amp;&amp; sim3 == 1) || (sim1 == 2 &amp;&amp; sim2 == 2 &amp;&amp; sim3 == 2)) {
+						triples.append(fighters[a].split(&quot; &quot;)[0] + &quot; &quot; + 
+								fighters[b].split(&quot; &quot;)[0] + &quot; &quot; + 
+								fighters[c].split(&quot; &quot;)[0] + &quot;\n&quot;);
+						count++;
+					}
+				}
+			}
+		}
+		System.out.println(count);
+		System.out.print(triples.toString().trim());
+		
+		sc.close();
+	}
+	
+	/*
+8
+A 90 60 10
+B 1000 1000 1000
+A12 90 60 10
+C 70 50 25
+D 3 1 4159
+A2 90 60 10
+A22 90 60 10
+E 160 40 10
+	 */
+	
+	public static int sim(String A, String B) {
+		//0=draw, 1=A wins, 2=B wins
+		String[] Astats = A.split(&quot; &quot;);
+		String[] Bstats = B.split(&quot; &quot;);
+		int ahp = Integer.parseInt(Astats[1]);
+		int aa = Integer.parseInt(Astats[2]);
+		int ad = Integer.parseInt(Astats[3]);
+		int bhp = Integer.parseInt(Bstats[1]);
+		int ba = Integer.parseInt(Bstats[2]);
+		int bd = Integer.parseInt(Bstats[3]);
+		
+		int evalaa = aa-bd;
+		int evalba = ba-ad;
+		
+		if(evalaa &lt;= 0 &amp;&amp; evalba &lt;= 0)
+			return 0;
+		else if(evalaa &lt;= 0)
+			return 2;
+		else if(evalba &lt;= 0)
+			return 1;
+		double fina = Math.ceil((double)ahp/evalba);
+		double finb = Math.ceil((double)bhp/evalaa);
+		return fina == finb ? 0 : (fina &gt; finb ? 1 : 2);
+	}
+}
+</code>
+</pre>
+</body>
+</html>

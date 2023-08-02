@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef long long ll;
+const int N = 105;
+const int M = 25005;
+
+ll a[N], b[N], t[N];
+ll dp[N][M];
+int main() {
+	int n; cin &gt;&gt; n;
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; a[i] &gt;&gt; b[i] &gt;&gt; t[i];
+	}
+	memset(dp, 0, sizeof dp);
+	for (int i = 0; i &lt; n; i++) {
+		for (int z = 1; z &lt; M; z++) {
+			dp[i+1][z] = dp[i][z];
+			if (b[i] == 0) {
+				if (z-t[i] &gt;= 0) {
+					dp[i+1][z] = max(dp[i+1][z], dp[i+1][z-t[i]] + a[i]);
+				}
+			} else {
+				ll fun = 0;
+				for (int k = 1; ; k++) {
+					int z2 = z-k*t[i];
+					ll f2 = a[i] - (k-1)*(k-1)*b[i];
+					if (z2 &lt; 0 || f2 &lt; 0) break;
+					fun += f2;
+					dp[i+1][z] = max(dp[i+1][z], dp[i][z-k*t[i]] + fun);
+				}
+			}
+		}
+	}
+	int q; cin &gt;&gt; q;
+	while (q--) {
+		int tt; cin &gt;&gt; tt;
+		cout &lt;&lt; dp[n][tt] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

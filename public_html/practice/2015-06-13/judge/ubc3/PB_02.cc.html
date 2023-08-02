@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+
+int main (){
+  int R, S;
+  cin &gt;&gt; R &gt;&gt; S;
+  vi left(R, -1);
+  vi right(R, -1);
+  for (int i = R-1; i &gt;= 0; --i) {
+    string line;
+    cin &gt;&gt; line;
+    for (int j = 0; j &lt; S; ++j) {
+      if (line[j] == 'J') {
+        // track leftmost and rightmost apples of each row
+        if (left[i] == -1) {
+          left[i] = j;
+        }
+        right[i] = j;
+      }
+    }
+    if (i == R - 1 &amp;&amp; left[i] == -1) {
+      --R;
+    }//  else if (left[i] == -1) {
+      // left[i] = left[i + 1];
+      // right[i] = right[i + 1];
+    // }
+  }
+  if (R == 0) {
+    cout &lt;&lt; 0 &lt;&lt; endl;
+    return 0;
+  }
+  
+  int res = R - 1;
+  int pos = 0;
+  for (int i = 0; i &lt; R - 1; ++i) {
+    if (left[i] == -1 &amp;&amp; left[i + 1] == -1) {
+      // cout &lt;&lt; &quot;row &quot; &lt;&lt; i &lt;&lt; &quot; from &quot; &lt;&lt; pos &lt;&lt; &quot; to &quot; &lt;&lt; pos &lt;&lt; endl;
+      continue;
+    }
+    if (i % 2 == 0) { // to the right
+      int next = max(right[i], right[i + 1]);
+      if (right[i + 1] == -1)
+        next = right[i];
+      else if (right[i] == -1)
+        next = max(pos, right[i + 1]);
+      // cout &lt;&lt; &quot;row &quot; &lt;&lt; i &lt;&lt; &quot; from &quot; &lt;&lt; pos &lt;&lt; &quot; to &quot; &lt;&lt; next &lt;&lt; endl;
+      res += next - pos;
+      pos = next;
+    } else { // to the left
+      int next = min(left[i], left[i + 1]);
+      if (left[i + 1] == -1)
+        next = left[i];
+      else if (left[i] == -1)
+        next = min(pos, left[i + 1]);
+      // cout &lt;&lt; &quot;row &quot; &lt;&lt; i &lt;&lt; &quot; from &quot; &lt;&lt; pos &lt;&lt; &quot; to &quot; &lt;&lt; next &lt;&lt; endl;
+      res += pos - next;
+      pos = next;
+    }
+  }
+  if ((R - 1) % 2 == 0) {
+    // cout &lt;&lt; &quot;row &quot; &lt;&lt; R - 1 &lt;&lt; &quot; from &quot; &lt;&lt; pos &lt;&lt; &quot; to &quot; &lt;&lt; right[R - 1] &lt;&lt; endl;
+    res += right[R - 1] - pos;
+  } else {
+    // cout &lt;&lt; &quot;row &quot; &lt;&lt; R - 1 &lt;&lt; &quot; from &quot; &lt;&lt; pos &lt;&lt; &quot; to &quot; &lt;&lt; left[R - 1] &lt;&lt; endl;
+    res += pos - left[R - 1];
+  }
+
+  cout &lt;&lt; res &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

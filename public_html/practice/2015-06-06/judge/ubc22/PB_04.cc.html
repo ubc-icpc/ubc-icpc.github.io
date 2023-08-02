@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N;
+map&lt;int, int&gt; H;
+
+int main () {
+  cin &gt;&gt; N;
+  while (N--) {
+    int temp; cin &gt;&gt; temp;
+    ++H[temp];
+  }
+  while (H.size() &gt; 3) {
+    map&lt;int, int&gt;::iterator begin, end;
+    begin = H.begin(); end = prev(H.end());
+    int m = min(begin-&gt;second, end-&gt;second);
+    begin-&gt;second -= m;
+    end-&gt;second -= m;
+    next(begin)-&gt;second += m;
+    prev(end)-&gt;second += m;
+    if (!begin-&gt;second) H.erase(begin);
+    if (!end-&gt;second) H.erase(end); 
+  }
+  if (H.size() &lt; 3) cout &lt;&lt; &quot;Slavko&quot; &lt;&lt; endl;
+  else if (H.begin()-&gt;second &gt; prev(H.end())-&gt;second) {
+    cout &lt;&lt; &quot;Slavko&quot; &lt;&lt; endl;
+    H.erase(prev(H.end()));
+  } else {
+    cout &lt;&lt; &quot;Mirko&quot; &lt;&lt; endl;
+    H.erase(H.begin());
+  }
+  cout &lt;&lt; H.begin()-&gt;first &lt;&lt; &quot; &quot; &lt;&lt; prev(H.end())-&gt;first &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

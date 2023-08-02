@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using ui = unsigned int;
+using ull = unsigned long long;
+using ll = long long;
+using vs = vector&lt;string&gt;;
+using vi = vector&lt;int&gt;;
+using vull = vector&lt;ull&gt;;
+using vll = vector&lt;ll&gt;;
+using ss = set&lt;string&gt;;
+using si = set&lt;int&gt;;
+using sll = set&lt;ll&gt;;
+using sull = set&lt;ull&gt;;
+using uss = unordered_set&lt;string&gt;;
+using usi = unordered_set&lt;int&gt;;
+using usll = unordered_set&lt;ll&gt;;
+using usull = unordered_set&lt;ull&gt;;
+
+ull binomial(ull n, ull k)
+{
+	ull den = 1, num = 1;
+	for (int i = 1; i &lt;= k; i = i + 1) den = den * i;
+	for (int j = n - k + 1; j &lt;= n; j = j + 1) num = num * j;
+	return num / den;
+}
+
+int main()
+{
+	while (1)
+	{
+		int n, r; cin &gt;&gt; n &gt;&gt; r;
+		if (n == 0 &amp;&amp; r == 0) return 0;
+
+		vector&lt;vector&lt;bool&gt;&gt; relations(n);
+		for (auto&amp; i : relations) i.resize(n);
+
+		for (int i = 0; i &lt; r; i++)
+		{
+			int a, b; cin &gt;&gt; a &gt;&gt; b;
+			relations[a - 1][b - 1] = true;
+		}
+
+		/*
+		for (auto&amp; i : relations)
+		{
+			for (auto j : i)
+			{
+				cout &lt;&lt; j;
+			}
+			cout &lt;&lt; endl;
+		}
+		*/
+
+		vector&lt;int&gt; elems(n);
+		iota(elems.begin(), elems.end(), 0);
+
+		int perms1 = 0, perms2 = 0;
+		do
+		{
+			for (int i = 0; i &lt; n / 2; i++)
+			{
+				for (int j = i + 1; j &lt; n / 2; j++)
+				{
+					if (relations[elems[i]][elems[j]])
+					{
+						goto fail1;
+					}
+				}
+			}
+			perms1++;
+fail1:;
+		} while (next_permutation(elems.begin(), elems.begin() + n / 2));
+
+		do
+		{
+			for (int i = n / 2; i &lt; n; i++)
+			{
+				for (int j = i + 1; j &lt; n; j++)
+				{
+					if (relations[elems[i]][elems[j]])
+					{
+						goto fail2;
+					}
+				}
+			}
+			perms2++;
+fail2:;
+		} while (next_permutation(elems.begin() + n / 2, elems.end()));
+
+		cout &lt;&lt; (ull) perms1 * perms2 * binomial(n, n / 2) &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

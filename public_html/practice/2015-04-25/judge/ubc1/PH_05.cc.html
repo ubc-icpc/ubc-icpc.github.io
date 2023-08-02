@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+/*
+f(i, j) := number of equal pairs of substrings with first substring from s[0..i], second from s[0..j]
+
+g(i, j) := number equal pairs of substrings, with first substring from s[0..i], last character being s[i], and second substring from s[0..j]
+
+
+f(i, j) = f(i-1, j-1) + g(i, j-1) + g(j, i-1) if s[i] != s[j]
+        = 2*f(i-1, j-1) + g(i, j-1) + g(j, i-1) + 1 otherwise
+        
+g(i, j) = f(i, j) - f(i-1, j)
+          
+then we can rewrite f(i, j) as:
+f(i, j) = f(i, j-1) + f(i-1, j) - f(i-1, j-1) if s[i] != s[j]
+        = f(i, j-1) + f(i-1, j) + 1 otherwise
+
+
+answer should be f(i, j) + 1, where the + 1 accounts for the empty sequence
+*/
+
+string s; 
+ll mod, fmemo[10005][10005];
+
+ll f(int i, int j) {
+    if (i &lt; 0 || j &lt; 0) return 0;
+    if (fmemo[i][j] != -1) return fmemo[i][j];
+    
+    fmemo[i][j] = (f(i, j-1) + f(i-1, j) - f(i-1, j-1))%mod;
+    if (s[i] == s[j]) fmemo[i][j] = (fmemo[i][j] + f(i-1, j-1) + 1)%mod;
+    return fmemo[i][j];
+}
+
+int main() {
+    memset(fmemo, -1, sizeof fmemo);
+    
+    cin &gt;&gt; s &gt;&gt; mod;
+    int n = s.size();
+    
+    // poor man's bottom up
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            f(i, j);
+        }
+    }
+    cout &lt;&lt; (f(n-1, n-1)%mod + mod + 1)%mod &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+n = int(raw_input())
+m = 100
+s = 0
+p = int(raw_input())
+for i in range(n - 1):
+    np = int(raw_input())
+    if p &lt; np:
+        d = min(int(m / p), 100000 - s)
+	s += d
+        m -= d * p
+    else:
+        m += s * p
+        s = 0
+    p = np
+m += s * p
+print(m)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

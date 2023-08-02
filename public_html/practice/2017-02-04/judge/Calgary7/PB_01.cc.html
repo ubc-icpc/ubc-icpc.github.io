@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; VI;
+#define xx first
+#define yy second
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+#define FORB(i,a,b) for(int i=int(b)-1;i&gt;=int(a);i--)
+    
+int main() {
+	ios::sync_with_stdio(false);
+	int T; cin &gt;&gt; T;
+	while (T--) {
+		cout &lt;&lt; &quot;5 1 5 6&quot; &lt;&lt; endl;
+		while (1) {
+			string s; cin &gt;&gt; s;
+			if (s == &quot;GAME&quot;) break;
+			int r1, c1, r2, c2;
+			cin &gt;&gt; r1 &gt;&gt; c1 &gt;&gt; r2 &gt;&gt; c2;
+			if (r2 &gt;= 5) r2 = 4;
+			cout &lt;&lt; 5-r2 &lt;&lt; ' ' &lt;&lt; 7-c2 &lt;&lt; ' ' &lt;&lt; 5-r1 &lt;&lt; ' ' &lt;&lt; 7-c1 &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

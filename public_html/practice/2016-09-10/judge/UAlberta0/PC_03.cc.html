@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+/*
+    Compute the modular inverse of a number.
+
+    Author: Zac Friggstad
+
+    Given an integer a and an integer m &gt;= 0, either finds an integer b with
+    m | (a*b - 1) (i.e. a*b == 1 mod m) or determines there is no such integer.
+
+    Returns b in the range 1 &lt;= b &lt;= m if there was a solution
+    Otherwise returns -1
+
+    Running time: O(log(a) + log(m))
+
+    Reliability: UVA 11417
+*/
+
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;cassert&gt;
+
+using namespace std;
+
+// the same one from gcd_ex.cpp
+int gcd_ex(int a, int b, int&amp; s, int&amp; t) {
+    int r0 = a, r1 = b, q;
+    int s0 = 1, s1 = 0;
+    int t0 = 0, t1 = 1;
+
+    //invariant: ri = a*si + b*ti for both i = 0 and i = 1
+    while (r1) {
+        q = r0 / r1;
+
+        r0 -= q*r1;
+        swap(r0, r1);
+
+        s0 -= q*s1;
+        swap(s0, s1);
+
+        t0 -= q*t1;
+        swap(t0, t1);
+    }
+
+    //now r0 = gcd(a, b)
+    s = s0;
+    t = t0;
+
+    return r0;
+}
+
+int mod_inverse(int a, int m) {
+    int s, t;
+
+    a %= m;
+
+    /* can ignore the next line a is never nonnegative
+      The current standard ensures that if m &gt; 0 and a &lt; 0 then
+      a%m wiint be the negative number r closes to 0 such that m | (a-r).
+      example: (-22) % 6 == -4
+
+      http://en.cppreference.com/w/cpp/language/operator_arithmetic
+      http://en.cppreference.com/w/cpp/numeric/math/div
+    */
+    if (a &lt; 0) a += m;
+
+    if (gcd_ex(a, m, s, t) &gt; 1) return -1;
+
+    s %= m;
+
+    //must always have this one, even if a &gt; 0 is guaranteed
+    if (s &lt; 0) s += m;
+
+    return s;
+}
+
+int main() {
+    int t;
+    cin &gt;&gt; t;
+    while (t--) {
+        int k, c, v;
+        cin &gt;&gt; k &gt;&gt; c;
+        if (k == 1) v = (c == 1 ? 2 : 1);
+        else v = mod_inverse(c, k);
+        if (v == -1) cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+        else cout &lt;&lt; v &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

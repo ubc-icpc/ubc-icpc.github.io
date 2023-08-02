@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+using namespace std;
+typedef long long ll;
+struct C {
+	string name;
+	ll score;
+};
+struct cmp {
+	bool operator() (const C &amp;c1, const C &amp;c2) const {
+		return (c1.score &gt; c2.score || (c1.score == c2.score &amp;&amp;
+				c1.name &lt; c2.name));
+	}
+};
+
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;C&gt; computers;
+	for (int i = 0; i &lt; n; i++) {
+		C c; ll r, s, d;
+		cin &gt;&gt; c.name &gt;&gt; r &gt;&gt; s &gt;&gt; d;
+		c.score = 2*r + 3*s + d;
+		computers.push_back(c);
+	}
+	sort(computers.begin(), computers.end(), cmp());
+	if (n &gt;= 1) {
+		cout &lt;&lt; computers[0].name &lt;&lt; endl;
+		if (n &gt;= 2) {
+			cout &lt;&lt; computers[1].name &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

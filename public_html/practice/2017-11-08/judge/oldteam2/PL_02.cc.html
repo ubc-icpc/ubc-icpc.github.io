@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int main() {
+
+	char vowels[] = { 'a', 'i', 'y', 'e', 'o', 'u'};
+	char cons[] = { 'b', 'k', 'x', 'z', 'n', 'h', 'd', 'c', 'w', 'g', 'p', 'v', 'j', 'q', 't', 's', 'r', 'l', 'm', 'f' };
+
+		
+	string line;
+	while(getline(cin, line)) {
+		for (int i=0; i&lt;line.size(); ++i) {
+			char* vend = vowels + sizeof(vowels) / sizeof(vowels[0]);
+			char* cend = cons + sizeof(cons) / sizeof(cons[0]);
+			int p1 = find(vowels, vend, line[i]) - vowels;
+			int p2 = find(cons, cend, line[i]) - cons;
+			int p3 = find(vowels, vend, line[i] + 32) - vowels; // might be an uppercase letter
+			int p4 = find(cons, cend, line[i] + 32) - cons;
+			if (p1 != 6) {
+				char newchar = vowels[(p1 + 3) % 6];
+				line[i] = newchar;
+			} else if (p2 != 20) {
+				char newchar = cons[(p2 + 10) % 20];
+				line[i] = newchar;
+			} else if (p3 != 6) {
+				char newchar = vowels[(p3 + 3) % 6];
+				newchar -= 32;
+				line[i] = newchar;
+			} else if (p4 != 20) {
+				char newchar = cons[(p4 + 10) % 20];
+				newchar -= 32;
+				line[i] = newchar;
+			}
+		}
+		cout &lt;&lt; line &lt;&lt; endl;
+
+	}
+
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

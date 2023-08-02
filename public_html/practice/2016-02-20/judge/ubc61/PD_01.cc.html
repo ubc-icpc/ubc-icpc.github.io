@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int timediff(string a, string b) {
+	int ah = atoi(a.substr(0,2).c_str());
+	int am = atoi(a.substr(3	,2).c_str());
+	int bh = atoi(b.substr(0,2).c_str());
+	int bm = atoi(b.substr(3,2).c_str());
+
+	if (bm &gt;= am) return (bh-ah)*60+bm-am;
+	else return (bh-ah-1)*60+(60-am+bm);
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		int e,to;
+		cin &gt;&gt; e &gt;&gt; to;
+		string tmp;
+		getline(cin,tmp);
+		map&lt;string,string&gt; m;
+		map&lt;string,int&gt; m2;
+		int ans = 0;
+		for (int i=0; i&lt;e; i++) {
+			string inp;
+			getline(cin,inp);
+			stringstream ss; ss.str(inp);
+			string time, entity, user, action;
+			ss &gt;&gt; time &gt;&gt; entity;
+			if (entity == &quot;SERVER&quot;) {
+				m.clear();
+			} else {
+				ss &gt;&gt; user &gt;&gt; action;
+				map&lt;string,string&gt;::iterator it;
+				if (action == &quot;LOG_OUT&quot;) {
+					it = m.find(user);
+					if (it != m.end()) m.erase(it);
+				} else {
+					m[user] = time;
+					m2[user] = 1;
+					int curr = 0;
+					for (auto it : m) {
+						if (timediff(it.second,time) &lt; to) curr++;
+					}
+					ans = max(curr,ans);
+				}
+			}
+		}
+		cout &lt;&lt; m2.size() &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

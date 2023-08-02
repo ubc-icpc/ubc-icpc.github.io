@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+/*
+ID: keyvank2
+TASK: stall4
+LANG: C++
+*/
+
+#include &lt;bits/stdc++.h&gt;
+
+#define ff first
+#define ss second
+#define pb push_back
+#define mp make_pair
+#define FOR(i,j,k) for(int i = j; i &lt; (int)(k); i++)
+#define FORV(i, v) FOR(i, 0, ((v).size()))
+#define REP(i,j,k) for(int i = j; i &gt;= (int)(k); i--)
+#define setmax(i) const int maxn = (int) i;
+#define setmod(i) const int MOD = (int) i;
+#define all(a) a.begin(),a.end()
+#define autodef(x,v) typeof(v) x = (v)
+#define autoref(x,v) typeof(v)&amp; x = (v)
+#define forit(it, c) for (autodef(it, ((c).begin())); it != ((c).end()); ++it)
+
+//typedef complex&lt;double&gt; Point;
+//#define X real()
+//#define Y imag()
+
+using namespace std;
+
+//ifstream fin(&quot;stall4.in&quot;);
+//ofstream fout(&quot;stall4.out&quot;);
+//#define cin fin
+//#define cout fout
+
+typedef long long ll;
+typedef long double ld;
+typedef vector&lt;int&gt; vi;
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;ll,ll&gt; pll;
+typedef pair&lt;ld,ld&gt; pdd;
+typedef pair&lt;pii,int&gt; ppi;
+typedef pair&lt;pll,ll&gt; ppl;
+typedef pair&lt;int,pii&gt; pip;
+typedef pair&lt;ll,pll&gt; plp;
+typedef pair&lt;pii,pii&gt; ppp;
+
+const int INF = (int) 2e9;
+const ll INFL = (ll) 9e18;
+const int MAXINT = ((~0) ^ (1 &lt;&lt; 31));
+const ll MAXLL = ((~0) ^ ((ll)1 &lt;&lt; 63));
+
+template&lt;class T&gt; inline T pow2(T a) { return a*a;}
+template&lt;class T&gt; inline bool mineq(T&amp; a, T b){return (a &gt; b) ? (a=b, true) : false;}
+template&lt;class T&gt; inline bool maxeq(T&amp; a, T b){return (a &lt; b) ? (a=b, true) : false;}
+
+//srand (time(NULL));
+
+
+
+int main()
+{
+    ios_base::sync_with_stdio(0);cin.tie(0);
+
+    char c;
+    int n;
+    string str;
+    cin &gt;&gt; c &gt;&gt; n &gt;&gt; str;
+
+    FOR(i,0,str.size()){
+        str[i] = (str[i]-'a' + (c=='D'?-1:1)*n + 26)%26 + 'a';
+    }
+    cout &lt;&lt; str;
+
+}
+</code>
+</pre>
+</body>
+</html>

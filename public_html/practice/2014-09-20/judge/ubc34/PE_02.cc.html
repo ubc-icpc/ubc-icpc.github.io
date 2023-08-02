@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+double getprob(double q) {
+	int k = (int)(1/q);
+	double prod = 1;
+	double sum = 0;
+	// i = how many misses
+	for (int i = 0; i &lt;= k; i++) {
+		prod *= 1 - i*q;
+		sum += prod * min(1.0, (i+1) * q) * (i+1);
+	}
+	return 1/sum;
+}
+
+int main() {
+	double p;
+	while (cin &gt;&gt; p) {
+		double q1 = 0.0001;
+		double q2 = 0.9999;
+		double q3;
+		double v1 = getprob(q1);
+		double v2 = getprob(q2);
+		double v3;
+		while (q2 - q1 &gt; 1e-8) {
+			q3 = (q1+q2)/2;
+			v3 = getprob(q3);
+			if (v3 &lt; p) {
+				q1 = q3;
+				v1 = v3;
+			} else {
+				q2 = q3;
+				v2 = v3;
+			}
+		}
+		cout &lt;&lt; setprecision(3) &lt;&lt; fixed &lt;&lt; q3 &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

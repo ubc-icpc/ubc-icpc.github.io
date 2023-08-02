@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;deque&gt;
+#include &lt;cassert&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;bitset&gt;
+#include &lt;climits&gt;
+#include &lt;iomanip&gt;
+#include &lt;fstream&gt;
+#include &lt;unordered_set&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+#define ll long long
+#define N 5005
+#define INF (ll)(1e18+3)
+#define EPS (1e-9)
+#define PI (3.14159265358979323846)
+#define ld long double
+#define MOD (int)(1e9+7)
+
+ll n;
+double x[N], y[N];
+ll par[N], sz[N];
+
+ll unite(ll u) { return u==par[u]? u : par[u] = unite(par[u]); }
+
+struct Pt {
+    ll index;
+    double r, theta;
+};
+
+bool merge(ll a, ll b) {
+    if ((a=unite(a)) == (b=unite(b)))
+        return false;
+    if (rand() &amp; 1) {
+        par[a] = b;
+        sz[b] += sz[a];
+    }
+    else {
+        par[b] = a;
+        sz[a] += sz[b];
+    }
+    return true;
+}
+
+double dist(ll a, ll b) {
+    return sqrt(pow(x[a]-x[b],2) + pow(y[a]-y[b],2));
+}
+
+
+
+ll center(ll u) {
+    vector&lt;Pt&gt; pts;    // {index, r, theta}
+    for (ll i = 0; i &lt; n; i++) {
+        double r = dist(u, i);
+        double theta = atan2(y[i]-y[u], x[i]-x[u]);
+        if (i != u &amp;&amp; r &lt;= 4.0) {
+            pts.push_back({i, r, theta});
+        }
+    }
+    
+    vector&lt;vector&lt;double&gt; &gt; events;
+    for (ll i = 0; i &lt; pts.size(); i++) {
+        double dt = acos(pts[i].r / 4.0);
+        double ts = pts[i].theta-dt;
+        double te = pts[i].theta+dt;
+        if (ts &lt; 0)
+            ts += 2*PI;
+        if (ts &gt; 2*PI)
+            ts -= 2*PI;
+        if (te &lt; 0)
+            te += 2*PI;
+        if (te &gt; 2*PI)
+            te -= 2*PI;
+        events.push_back({ts, -1, (double)(pts[i].index)});    //-1 is insert
+        events.push_back({te, 1, (double)(pts[i].index)});     //1 is remove
+    }
+    
+    sort(events.begin(), events.end());
+    
+    ll b[N];
+    memset(b, 0, sizeof(b));
+    
+    ll sum = 0;
+    b[unite(u)] = 10000;
+    sum += sz[unite(u)];
+    
+    for (ll i = 0; i &lt; events.size(); i++) {
+        ll id = (ll)events[i][2];
+        id = unite(id);
+        if (events[i][1] == -1) {
+            if (!b[id])
+                sum += sz[id];
+            b[id]++;
+        }
+        else {
+            b[id]--;
+            if (!b[id])
+                sum -= sz[id];
+            b[id] = max(0LL, b[id]);
+        }
+    }
+    
+    ll best = sum;
+    for (ll i = 0; i &lt; events.size(); i++) {
+        ll id = (ll)events[i][2];
+        id = unite(id);
+        if (events[i][1] == -1) {
+            if (!b[id])
+                sum += sz[id];
+            b[id]++;
+        }
+        else {
+            b[id]--;
+            if (!b[id])
+                sum -= sz[id];
+            b[id] = max(0LL, b[id]);
+        }
+        best = max(best, sum);
+    }
+    return best;
+}
+
+void solve() {
+    cin &gt;&gt; n;
+    for (ll i = 0; i &lt; n; i++) {
+        cin &gt;&gt; x[i] &gt;&gt; y[i];
+    }
+    for (ll i = 0; i &lt; n; i++) {
+        par[i] = i;
+        sz[i] = 1;
+    }
+    
+    for (ll i = 0; i &lt; n; i++) {
+        for (ll j = 0; j &lt; n; j++) {
+            if (dist(i, j) &lt;= 2.0) {
+                merge(i, j);
+            }
+        }
+    }
+    
+//        for (ll i = 0; i &lt; n; i++) {
+//            cout &lt;&lt; par[i] &lt;&lt; &quot; &quot; &lt;&lt; sz[i] &lt;&lt; endl;
+//        }
+    
+    ll best = 0;
+    for (ll i = 0; i &lt; n; i++) {
+        best = max(best,center(i));
+    }
+    cout &lt;&lt; best+1 &lt;&lt; endl;
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    //freopen(&quot;/Users/AndyShih/Desktop/PACNW15/I.in&quot;, &quot;r&quot;, stdin);
+    //freopen(&quot;/Users/AndyShih/Desktop/PACNW15/I2.in&quot;, &quot;r&quot;, stdin);
+    //freopen(&quot;/Users/AndyShih/Desktop/PACNW15/I3.in&quot;, &quot;r&quot;, stdin);
+    solve();
+    
+    //    ll t = 5000;
+    //    cout &lt;&lt; t &lt;&lt; endl;
+    //    for (ll i = 0; i &lt; t; i++) {
+    //        double x = rand()/1000000.0, y = rand()/1000000.0;
+    //        cout &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; endl;
+    //    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+bool cd(string s){
+	for(int i=0;i&lt;s.length()-1;i++){
+		if(s[i]!='C') continue;
+		if(s[i+1]=='D') return true;
+	}
+	return false;
+}
+
+int main() {
+	int N, count = 0;
+	string s;
+	cin&gt;&gt;N;
+	for(int i=0;i&lt;N;i++){
+		cin&gt;&gt;s;
+		if(cd(s)) count++;
+	}
+	cout&lt;&lt;N-count;
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

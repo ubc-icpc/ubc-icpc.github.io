@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main () {
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    int M, N; cin &gt;&gt; M &gt;&gt; N;
+    vector&lt;pair&lt;int, int&gt; &gt; v(M);
+    vector&lt;int&gt; l(N, -1);
+    queue&lt;pair&lt;int, bool&gt; &gt; q;
+    for (int i = 0; i &lt; M; ++i) {cin &gt;&gt; v[i].first &gt;&gt; v[i].second; q.push(make_pair(i, true));}
+    int limit = 50000;
+    while (!q.empty() &amp;&amp; --limit) {
+      int i = q.front().first;
+      bool b = q.front().second;
+      q.pop();
+      if (b) {
+	if (l[v[i].first] == -1) l[v[i].first] = i;
+	else if (l[v[i].second] == -1) l[v[i].second] = i;
+	else {
+	  q.push(make_pair(l[v[i].first], v[l[v[i].first]].second == v[i].first));
+	  l[v[i].first] = i;
+	}
+      } else {
+	if (l[v[i].second] == -1) l[v[i].second] = i;
+	else if (l[v[i].first] == -1) l[v[i].first] = i;
+	else {
+	  q.push(make_pair(l[v[i].second], v[l[v[i].second]].second == v[i].second));
+	  l[v[i].second] = i;
+	}
+      }
+    }
+    if (limit != 0) cout &lt;&lt; &quot;successful hashing&quot; &lt;&lt; endl;
+    else cout &lt;&lt; &quot;rehash necessary&quot; &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

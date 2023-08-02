@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+int N;
+int times[10005];
+
+bool possible(int k, int T)
+{
+	priority_queue&lt;int&gt; off_stage;
+	for (int i = 0; i &lt; k; ++i)
+		off_stage.push(-times[i]);
+	int pos = k;
+
+	while (true)
+	{
+		int off_time = -off_stage.top();
+		off_stage.pop();
+		int next_time = off_time + times[pos++];
+		if (next_time &gt; T)
+			return false;
+		if (pos == N)
+			return true;
+		off_stage.push(-next_time);
+	}
+}
+
+int main()
+{
+	int T;
+	cin &gt;&gt; N &gt;&gt; T;
+
+	for (int i = 0; i &lt; N; ++i)
+		cin &gt;&gt; times[i];
+
+	// Both are inclusive
+	int minK = 1, maxK = N;
+	while (minK &lt; maxK)
+	{
+		int mid = (minK + maxK) / 2;
+		if (possible(mid, T))
+			maxK = mid;
+		else
+			minK = mid + 1;
+	}
+	cout &lt;&lt; minK &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

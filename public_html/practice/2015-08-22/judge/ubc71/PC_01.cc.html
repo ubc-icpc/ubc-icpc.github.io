@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+template &lt;class ForwardIterator&gt;
+  std::size_t min_element_index ( ForwardIterator first, ForwardIterator last )
+{
+  ForwardIterator lowest = first;
+  std::size_t index = 0;
+  std::size_t i = 0;
+  if (first==last) return index;
+  while (++first!=last) {
+    ++i;
+    if (*first&lt;*lowest) {
+      lowest=first;
+      index = i;
+    }
+  }
+  return index;
+}
+
+void printpent(int* pent) {
+	
+	for (int i = 0; i &lt; 5; i++) {
+		cout &lt;&lt; pent[i] &lt;&lt; &quot; &quot;;
+	}
+	
+	cout &lt;&lt; endl;
+}
+
+int* pentastic(int* pent) {
+
+	int mini = min_element_index(pent, pent + 5);
+	
+	while (pent[mini] &lt; 0) {
+		pent[mini] = -pent[mini];
+	
+		int left;
+		int right;
+		if (mini == 0) 
+			left = 4;
+		else
+			left = mini - 1;
+		
+		right = (mini + 1) % 5;
+		 
+		pent[left] -= pent[mini];
+		pent[right] -= pent[mini];
+		mini = min_element_index(pent, pent + 5);
+	}
+	
+	return pent;
+}
+
+int main() {
+
+
+	// get pentagons
+	int n; cin &gt;&gt; n;
+	int* pents[n];
+	
+	for (int i = 0; i &lt; n; i++) {
+		
+		int * pent = new int[5];
+		for (int j = 0; j &lt; 5; j++) {
+			cin &gt;&gt; pent[j];
+		
+		}
+		
+		pents[i] = pent;
+	
+	}
+	
+	for (int i = 0; i &lt; n; i++) {
+		
+		cout &lt;&lt; &quot;Pentagon #&quot; &lt;&lt; i + 1 &lt;&lt; &quot;:\n&quot;;
+		printpent(pentastic(pents[i]));
+	}
+	
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

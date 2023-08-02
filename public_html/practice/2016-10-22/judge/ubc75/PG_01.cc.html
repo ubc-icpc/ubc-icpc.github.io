@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+using namespace std;
+#include &lt;bits/stdc++.h&gt;
+#define rep(i,n) for(auto i=0; i&lt;(n); i++)
+#define mem(x,val) memset((x),(val),sizeof(x));
+#define write(x) freopen(x,&quot;w&quot;,stdout);
+#define read(x) freopen(x,&quot;r&quot;,stdin);
+#define all(x) x.begin(),x.end()
+#define sz(x) ((int)x.size())
+#define sqr(x) ((x)*(x))
+#define pb push_back
+#define clr clear()
+#define inf (1&lt;&lt;30)
+#define ins insert
+#define xx first
+#define yy second
+#define eps 1e-9
+typedef long long ll;
+typedef unsigned long long ull;
+typedef string st;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;ll&gt; vll;
+typedef vector&lt;st&gt; vs;
+typedef map&lt;int,int&gt; mii;
+typedef map&lt;st,int&gt; msi;
+typedef set&lt;int&gt; si;
+typedef set&lt;st&gt; ss;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;pii&gt; vpii;
+#define mx 0
+int main() {
+    ios_base::sync_with_stdio(0);
+    string s; cin &gt;&gt; s;
+    int rank = 25;
+    int stars = 0;
+    int w = 0;
+    int l = 0;
+    bool leg = false;
+    bool crossed = false;
+    for(int i = 0; i&lt;s.size(); i++){
+    	if(s.at(i) == 'W'){
+    		w++;
+    		stars++;
+    		if(rank&gt;=6 &amp;&amp; rank&lt;=25 &amp;&amp; w&gt;=3){
+    			stars++;
+    		}
+    		//stars+=1;
+    		if(rank&gt;=21 &amp;&amp; rank&lt;=25){
+    			if(stars&gt;2){
+    				rank--;
+    				stars = stars - 2;
+    			}
+    		}
+    		else if(rank&gt;=16 &amp;&amp; rank&lt;=20){
+    			if(stars&gt;3){
+    				rank--;
+    				stars = stars - 3;
+    			}	
+    		}
+    		else if(rank&gt;=11 &amp;&amp; rank&lt;=15){
+    			if(stars&gt;4){
+    				rank--;
+    				stars = stars - 4;
+    			}	
+    		}
+    		else if(rank&gt;=1 &amp;&amp; rank&lt;=10){
+    			if(stars&gt;5){
+    				rank--;
+    				stars = stars - 5;
+    			}	
+    		}
+    		if(rank &lt;=20){
+    			crossed = true;
+    		}
+
+    		if(rank&lt;1){
+    			rank = 0;
+    			leg = true;
+    		}
+
+    	}
+
+    	else{
+    		w = 0;
+
+    		if(rank&lt;=20){
+    			stars--;
+    		//stars+=1;
+   	    		if(rank&gt;=15 &amp;&amp; rank&lt;=20){
+	    			if(stars&lt;0){
+	    				rank++;
+	    				stars = 3 + stars;
+	    			}	
+	    		}
+	    		else if(rank&gt;=10 &amp;&amp; rank&lt;15){
+	    			if(stars&lt;0){
+	    				rank++;
+	    				stars = 4+stars;
+	    			}	
+	    		}
+	    		else if(rank&gt;=1 &amp;&amp; rank&lt;10){
+	    			if(stars&lt;0){
+	    				rank++;
+	    				stars = 5+stars;
+	    			}	
+	    		}
+
+
+
+
+    		}
+
+    		if(crossed &amp;&amp; rank&gt;20){
+    			rank = 20;
+    			stars = 0;
+    		}
+
+
+
+    	}
+
+ 
+
+    }
+
+    if(leg){
+    	cout &lt;&lt; &quot;Legend&quot; &lt;&lt; endl;
+    }
+    else
+    	cout &lt;&lt; rank &lt;&lt; endl;
+
+
+
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

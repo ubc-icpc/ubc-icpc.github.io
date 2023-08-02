@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import javafx.scene.Scene;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-08-22.
+ */
+public class Pentagon {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+
+        int noOfCases = Integer.parseInt(s.nextLine());
+
+        for(int i = 0; i &lt; noOfCases; i++){
+            ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+            String str = s.nextLine();
+            String[] strings = str.split(&quot;\\s+&quot;);
+
+            for(String string : strings){
+                list.add(Integer.parseInt(string));
+            }
+
+            ArrayList&lt;Integer&gt; result = Pentagate(list);
+
+            System.out.println(&quot;Pentagon #&quot; + (i+1) + &quot;:&quot;);
+            for(int k = 0; k &lt; result.size(); k++){
+                if(k != 0){
+                    System.out.print(&quot; &quot;);
+                }
+                System.out.print(result.get(k));
+            }
+            System.out.println(&quot;\n&quot;);
+        }
+    }
+
+    public static ArrayList&lt;Integer&gt; Pentagate(ArrayList&lt;Integer&gt; edges){
+        if(AllPositive(edges)){
+            return edges;
+        }
+        else {
+            int locationNegative = LocateNegative(edges);
+            int negativeVal = edges.get(locationNegative);
+            int previousIndex = GetPreviousIndex(locationNegative);
+            int nextIndex = GetNextIndex(locationNegative);
+            edges.set(previousIndex, edges.get(previousIndex) + negativeVal);
+            edges.set(nextIndex,edges.get(nextIndex) + negativeVal);
+            edges.set(locationNegative, edges.get(locationNegative) * -1);
+            return Pentagate(edges);
+        }
+    }
+
+    public static int GetPreviousIndex(int index){
+        if(index == 0){
+            return 4;
+        }
+        return index - 1;
+    }
+
+    public static int GetNextIndex(int index){
+        if(index == 4){
+            return 0;
+        }
+        return index + 1;
+    }
+
+    public static boolean AllPositive(ArrayList&lt;Integer&gt; edges){
+        for(int edge : edges){
+            if(edge &lt; 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int LocateNegative (ArrayList&lt;Integer&gt; edges){
+        for(int i = 0; i &lt; edges.size(); i++){
+            if (edges.get(i) &lt; 0){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+set&lt;int&gt; d;
+bool dfs(int v, int w) {
+    if (w &lt; 0) return false;
+    if (w == 0) return d.count(v);
+    for (int x : d) {
+        if (x != 0 &amp;&amp; v%x == 0) {
+            if (dfs(v/x, w-1)) return true;
+        } else if (v == 0 &amp;&amp; x == 0) {
+            if (dfs(0, w-1)) return true;
+        }
+        if (dfs(v-x, w-1)) return true;
+    }
+    return false;
+}
+
+int main() {
+    int n, w; cin &gt;&gt; w &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        int x; cin &gt;&gt; x;
+        d.insert(x);
+    }
+    int v; cin &gt;&gt; v;
+    while (v--) {
+        int x; cin &gt;&gt; x;
+        if (dfs(x, w)) {
+            cout &lt;&lt; 'Y' &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; 'N' &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

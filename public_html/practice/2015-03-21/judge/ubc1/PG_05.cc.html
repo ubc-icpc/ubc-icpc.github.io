@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+
+pii arr[20005];
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; arr[i].first &gt;&gt; arr[i].second;
+            arr[i].second *= -1;
+        }
+        sort(arr, arr+n);
+        
+        multiset&lt;int&gt; s;
+        for (int i = 0; i &lt; n; i++) {
+            int x = arr[i].second;
+            auto it = s.upper_bound(x);
+            if (s.empty() || it == s.end()) s.insert(x);
+            else {
+                s.erase(it);
+                s.insert(x);
+            }
+        }
+        cout &lt;&lt; s.size() &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

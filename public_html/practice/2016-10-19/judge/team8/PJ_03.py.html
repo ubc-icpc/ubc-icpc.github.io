@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+import math
+input = sys.stdin
+
+t = int(input.readline())
+
+def fd(n, c, a):
+	c['y'] = c['y'] + math.sin(math.radians(a)) * n
+	c['x'] = c['x'] + math.cos(math.radians(a)) * n
+	return c
+
+for ti in range(t):
+	m = int(input.readline())
+
+	a = 0.0
+	c = {'x': 0.0, 'y': 0.0}
+
+	for mi in range(m):
+		[cmd, n] = input.readline().split()
+		n = float(n)
+
+		if (cmd == 'lt'):
+			a = (a + n) % 360
+		elif (cmd == 'rt'):
+			a = (a - n) % 360
+		elif (cmd == 'fd'):
+			c = fd(n, c, a)
+		elif (cmd == 'bk'):
+			c = fd(n, c, a - 180)
+
+	print(int(round(math.sqrt(c['x']**2 + c['y']**2))))</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

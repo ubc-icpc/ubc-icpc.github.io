@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+t = int(raw_input())
+
+for k in range(t):
+	a, b, c = raw_input().split()
+	ready = False
+	if c == '&lt;':
+		if int(a) &lt; int(b): ready = True
+	else:
+		if int(a) &gt; int(b):	ready = True
+		
+	print 'Ready' if ready else 'Reboot'
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

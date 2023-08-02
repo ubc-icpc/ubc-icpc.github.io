@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    while (n--) {
+        bool m = false, z = false;
+        for (int i = 0; i &lt; 10; ++i) {
+            int x;
+            cin &gt;&gt; x;
+            if (x == 17) {
+                z = true;
+            }
+            if (x == 18) {
+                m = true;
+            }
+            if (i) cout &lt;&lt; &quot; &quot;;
+            cout &lt;&lt; x;
+        }
+        cout &lt;&lt; &quot;\n&quot;;
+        if (m) {
+            if (z) {
+                cout &lt;&lt; &quot;both&quot;;
+            } else {
+                cout &lt;&lt; &quot;mack&quot;;
+            }
+        } else {
+            if (z) {
+                cout &lt;&lt; &quot;zack&quot;;
+            } else {
+                cout &lt;&lt; &quot;none&quot;;
+            }
+        }
+        cout &lt;&lt; &quot;\n\n&quot;;
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

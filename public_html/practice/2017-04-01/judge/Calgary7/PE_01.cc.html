@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, ll&gt; pil;
+typedef pair&lt;ll, int&gt; pli;
+typedef vector&lt;int&gt; VI;
+#define pb push_back
+#define xx first
+#define yy second
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+#define FORB(i,a,b) for(int i=int(b)-1;i&gt;=int(a);i--)
+	
+const int N = 1e5+5;
+const ll INF = 1e15;
+int P[N], par[N]; 
+ll dp[2][N];
+vector&lt;pil&gt; adj[N];
+
+ll f(int u, int t, int p) {
+	//printf(&quot;%d %d %d\n&quot;, u, t, p);
+	if (dp[t][u] != -1LL)
+		return dp[t][u];
+	par[u] = p;
+	vector&lt;pli&gt; C;
+	for (pil v : adj[u]) 
+		if (v.xx != p)
+			C.pb({f(v.xx,1,u)-f(v.xx,0,u), v.xx});
+	if (!C.empty())sort(C.begin(), C.end());
+	//if (u == 1) for (auto v : C) cout &lt;&lt; v.xx &lt;&lt; ' ' &lt;&lt; v.yy &lt;&lt; endl;
+	int i;
+	if (t == 0) {
+		if (P[u] != (int)adj[u].size()%2) {
+			if (C.empty()) return dp[t][u] = INF;
+			else i = 1;
+		}
+		else i = 0;
+	} else {
+		if (P[u] != (int)adj[u].size()%2) i = 0;
+		else {
+			if (C.empty()) return dp[t][u] = INF;
+			else i = 1;
+		}
+	}
+	unordered_map&lt;int, ll&gt; mp;
+	for (auto v : adj[u])
+		mp[v.xx] = v.yy;
+	//cout &lt;&lt; u &lt;&lt; ' ' &lt;&lt; t &lt;&lt; ' ' &lt;&lt; i &lt;&lt; ' ' &lt;&lt; (int)C.size()-1 &lt;&lt; endl;
+	while (i&lt;(int)C.size()-1 &amp;&amp; C[i].xx+C[i+1].xx &lt; 0) i += 2;
+	dp[t][u] = 0;
+	FOR(j,0,i) dp[t][u] = min(INF,dp[t][u]+f(C[j].yy,1,u)+mp[C[j].yy]);
+	FOR(j,i,(int)C.size()) dp[t][u] = min(INF,dp[t][u]+f(C[j].yy,0,u));
+	return min(INF,dp[t][u]);
+}
+	
+int main() {
+	ios::sync_with_stdio(false);
+	int n; cin &gt;&gt; n;
+	FOR(i,0,n) cin &gt;&gt; P[i];
+	FOR(i,0,n-1) {
+		int u, v; ll w;
+		cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;
+		adj[u].pb({v,w});
+		adj[v].pb({u,w});
+	}
+	fill(dp[0], dp[0]+N, -1LL);
+	fill(dp[1], dp[1]+N, -1LL);
+	ll v = f(0,0,-1);
+	if (v &gt;= INF) {
+		cout &lt;&lt; &quot;impossible\n&quot;;
+	} else {
+		cout &lt;&lt; v &lt;&lt; ' ';
+		vector&lt;pii&gt; ans;
+		FOR(i,1,n) 
+			if (dp[1][i] &lt; dp[0][i]) {
+				int u = i, v = par[i];
+				if (u &gt; v) swap(u, v);
+				ans.pb({u,v});
+			}
+		sort(ans.begin(), ans.end());
+		cout &lt;&lt; ans.size() &lt;&lt; endl;
+		for (auto p : ans) 
+			cout &lt;&lt; p.xx &lt;&lt; ' ' &lt;&lt; p.yy &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

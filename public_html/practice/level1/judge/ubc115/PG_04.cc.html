@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int case_num = 0;
+int cheatsheet[] = {3, 15, 120, 528, 4095, 17955, 139128, 609960, 4726275, 20720703, 160554240, 703893960};
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int a, b;
+  while (cin &gt;&gt; a &gt;&gt; b &amp;&amp; (a || b)) {
+    int result = 0;
+    for (int val : cheatsheet) {
+      if ((val + 1 &gt; a) &amp;&amp; (val + 1 &lt; b)) {
+        result++;
+      }
+    }
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++case_num &lt;&lt; &quot;: &quot;;
+    cout &lt;&lt; result &lt;&lt; '\n';
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

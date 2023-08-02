@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;iostream&gt;
+#include&lt;fstream&gt;
+#include&lt;cstdio&gt;
+#include&lt;algorithm&gt;
+#include&lt;cmath&gt;
+#include&lt;vector&gt;
+#include&lt;deque&gt;
+#include&lt;set&gt;
+#include&lt;map&gt;
+#include&lt;bitset&gt;
+#include&lt;ctime&gt;
+#include&lt;queue&gt;
+using namespace std;
+#define int long long
+#define mn 100005
+#define inf 4444444444444444444
+#define mod 1000000009
+#define FLN &quot;test&quot; 
+#define pii pair &lt;int, int&gt;
+#define XX first
+#define YY second
+
+int CCW(pii A, pii B, pii C)
+{
+    int ret=(C.XX-B.XX)*(B.YY-A.YY)-(B.XX-A.XX)*(C.YY-B.YY);
+    if (ret&gt;0) return 1;
+    if (ret&lt;0) return -1;
+    return 0;
+}
+
+bool checkInside(pii A, pii B, pii C, pii D)
+{
+    int ab=CCW(D, A, B), bc=CCW(D, B, C), ca=CCW(D, C, A);
+    int ba=CCW(D, B, A), cb=CCW(D, C, B), ac=CCW(D, A, C);
+    // cerr&lt;&lt;ab&lt;&lt;&quot; &quot;&lt;&lt;bc&lt;&lt;&quot; &quot;&lt;&lt;ca&lt;&lt;&quot;\n&quot;;
+
+    if (ab==0) //D lie on ab
+    {
+        return (ca!=cb);
+    }
+    if (bc==0)
+    {
+        return (ab!=ac);
+    }
+    if (ca==0)
+    {
+        return (bc!=ba);
+    }
+
+    return (ab!=ac &amp;&amp; bc!=ba &amp;&amp; ca!=cb);
+    
+} 
+
+int n;
+pii D[mn];
+pii A, B, C;
+
+signed main()
+{
+#ifdef lowie
+    freopen(FLN&quot;.inp&quot;, &quot;r&quot;, stdin);
+    freopen(FLN&quot;.out&quot;, &quot;w&quot;, stdout);
+#endif
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    int T;
+    cin&gt;&gt;T;
+
+    while (T--)
+    {
+        int u, v;
+        cin&gt;&gt;n;
+        cin&gt;&gt;A.XX&gt;&gt;A.YY&gt;&gt;B.XX&gt;&gt;B.YY&gt;&gt;C.XX&gt;&gt;C.YY;
+        for (int i=1; i&lt;=n; i++)
+        {
+            cin&gt;&gt;u&gt;&gt;v;
+            D[i]={u, v};
+        }
+
+        for (int i=1; i&lt;=n; i++)
+        {
+            if (checkInside(A, B, C, D[i])) cout&lt;&lt;&quot;DANGER\n&quot;;
+            else cout&lt;&lt;&quot;SAFE\n&quot;;
+        }
+    }
+}
+
+
+// PLEASE REMOVE cout AND cerr DEBUG LINES BEFORE SUBMITTING PROBLEMS
+// Code by low_
+// Contact me via mail: dung.totuan01@gmail.com
+// ...or codeforces: www.codeforces.com/profiles/low_
+// ...or if you're interested in food: www.instagram.com/lowie_review/</code>
+</pre>
+</body>
+</html>

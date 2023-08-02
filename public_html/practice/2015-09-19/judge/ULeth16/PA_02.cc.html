@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main(){
+	int n;
+
+	while(cin &gt;&gt; n &amp;&amp; n != 0){
+		int arr[30] = {0};
+		int total = 0;
+		int buffer = 0;
+		for(int i = 0;i &lt; n;i++){
+			cin &gt;&gt; arr[i];
+		}
+		sort(arr, arr+30, greater&lt;int&gt;());
+
+		for(int i = 0;i &lt; n;i++){
+			if(i == 0){
+				total += arr[i] + 30;
+				buffer = arr[i];
+			}
+			else{
+				buffer -= 30;
+				if(buffer &lt; 0){
+					total += arr[i] + (buffer*-1);
+					buffer = arr[i];
+				}
+				else{
+					total += arr[i];
+					buffer += arr[i];
+				}
+			}
+		}
+		
+		cout &lt;&lt; (total/60) &lt;&lt; ':' &lt;&lt; ((total%60 &lt; 10) ? (&quot;0&quot;+to_string(total%60)) : (to_string(total%60))) &lt;&lt; endl;
+
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

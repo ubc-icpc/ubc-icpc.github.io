@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;int,pii&gt; node;
+typedef long long ll;
+
+int w,h;
+char G[50][50];
+vector&lt;pair&lt;node,int&gt;&gt; graph[4][50][50]; //0=right,1=down,2=left,3=up
+vector&lt;pii&gt; delta={{0,1},{0,-1},{-1,0},{1,0}};
+ll ddist[4][50][50];
+ll dist1[50][50]; 
+ll dist2[50][50];
+vector&lt;pair&lt;pii,pii&gt;&gt; v;
+bool inRange(pii p){
+    if (p.first&lt;0) return false;
+    if (p.second&lt;0) return false;
+    if (p.first&gt;=h) return false;
+    if (p.second&gt;=w) return false;
+    if (G[p.first][p.second]=='*') return false;
+    return true;
+}
+bool eq(pii a, pii b){ return ((a.first==b.first)&amp;&amp;(a.second==b.second));}
+void bfs1(pii start){
+    memset(dist1,-1,sizeof dist1);
+    queue&lt;pii&gt; q; q.push(start);
+    dist1[start.first][start.second]=0;
+    while (!q.empty()){
+        pii now=q.front(); q.pop();
+        bool finished=true;
+        for (int j=0;j&lt;4;j++){
+            if ((inRange(v[j].first))&amp;&amp;(dist1[v[j].first.first][v[j].first.second]==-1)) finished=false;
+            if ((inRange(v[j].second))&amp;&amp;(dist1[v[j].second.first][v[j].second.second]==-1)) finished=false;
+        }
+        if (finished) break;
+        for (pii dd:delta){
+            pii nex={dd.first+now.first,dd.second+now.second};
+            if ((inRange(nex))&amp;&amp;(dist1[nex.first][nex.second]==-1)){
+                q.push(nex);
+                dist1[nex.first][nex.second]=dist1[now.first][now.second]+1;
+            }
+        }
+    }
+}
+void bfs2(pii start){
+    memset(dist2,-1,sizeof dist2);
+    queue&lt;pii&gt; q; q.push(start);
+    dist2[start.first][start.second]=0;
+    while (!q.empty()){
+        pii now=q.front(); q.pop();
+        bool finished=true;
+        for (int j=0;j&lt;4;j++){
+            if ((inRange(v[j].first))&amp;&amp;(dist2[v[j].first.first][v[j].first.second]==-1)) finished=false;
+            if ((inRange(v[j].second))&amp;&amp;(dist2[v[j].second.first][v[j].second.second]==-1)) finished=false;
+        }
+        if (finished) break;
+        for (pii dd:delta){
+            pii nex={dd.first+now.first,dd.second+now.second};
+            if ((inRange(nex))&amp;&amp;(dist2[nex.first][nex.second]==-1)){
+                q.push(nex);
+                dist2[nex.first][nex.second]=dist2[now.first][now.second]+1;
+            }
+        }
+    }
+}
+int main(){
+    ios::sync_with_stdio(0);
+    while (cin&gt;&gt;h&gt;&gt;w){
+        if (w==0) break;
+        for (int i=0;i&lt;h;i++) for (int j=0;j&lt;w;j++) {
+            cin&gt;&gt;G[i][j]; 
+            for (int k=0;k&lt;4;k++) graph[k][i][j].clear();
+        }
+        //NOW WE DIJKSTRA'S
+        pii corner={-1,-1};
+        for (int i=0;i&lt;h;i++) {
+            for (int j=0;j&lt;w;j++) if (G[i][j]=='X'){
+                corner={i,j}; break;
+            }
+            if (corner.first!=-1) break;
+        }
+        //Wait, not yet. Gotta find the ddist from the initial holes to move them beside start
+        pair&lt;pii,pii&gt; start={{-1,-1},{-1,-1}};
+        for (int i=0;i&lt;h;i++) for (int j=0;j&lt;w;j++) if (G[i][j]=='.'){
+            if (start.first.first==-1) start.first={i,j};
+            else start.second={i,j};
+        }
+        int a=corner.first,b=corner.second;
+        char c1=G[a][b],c2=G[a][b+1],c3=G[a+1][b],c4=G[a+1][b+1];
+        G[a][b]='*',G[a][b+1]='*',G[a+1][b]='*',G[a+1][b+1]='*';
+        v.clear();
+        v.push_back({{a,b+2},{a+1,b+2}});
+        v.push_back({{a+2,b},{a+2,b+1}});
+        v.push_back({{a,b-1},{a+1,b-1}});
+        v.push_back({{a-1,b},{a-1,b+1}});
+        bfs1(start.first),bfs2(start.second);
+        G[a][b]=c1,G[a][b+1]=c2,G[a+1][b]=c3,G[a+1][b+1]=c4;
+        //so Dijkstra's base cases
+        memset(ddist,-1,sizeof ddist);
+        set&lt;pair&lt;ll,node&gt;&gt; pq;
+        for (int j=0;j&lt;4;j++) if (inRange(v[j].first)&amp;inRange(v[j].second)){
+            ll aa=dist1[v[j].first.first][v[j].first.second],bb=dist2[v[j].second.first][v[j].second.second],
+            cc=dist2[v[j].first.first][v[j].first.second],dd=dist1[v[j].second.first][v[j].second.second];
+            ll ddd=-1;
+            if ((aa&gt;=0)&amp;&amp;(bb&gt;=0)){
+                if (ddd==-1) ddd=aa+bb;
+                ddd=min(ddd,aa+bb);
+            }
+            if ((cc&gt;=0)&amp;&amp;(dd&gt;=0)){
+                if (ddd==-1) ddd=cc+dd;
+                ddd=min(ddd,cc+dd);
+            }
+            if (ddd&gt;=0) {
+                pq.insert({ddd,{j,corner}});
+                ddist[j][corner.first][corner.second]=ddd;
+            }
+        }
+        //NOW Dijkstra's
+        while (!pq.empty()){
+            pair&lt;int,node&gt; asd=*pq.begin(); pq.erase(pq.begin());
+            if ((ddist[0][0][0]!=-1)&amp;&amp;(ddist[1][0][0]!=-1)) break;
+            //GENERATE EDGES FROM NOW:
+            node now=asd.second;
+            //cout&lt;&lt;now.first&lt;&lt;' '&lt;&lt;now.second.first&lt;&lt;','&lt;&lt;now.second.second&lt;&lt;&quot;: &quot;&lt;&lt;endl;
+            int a=now.second.first,b=now.second.second;
+            char c1=G[a][b],c2=G[a][b+1],c3=G[a+1][b],c4=G[a+1][b+1];
+            G[a][b]='*',G[a][b+1]='*',G[a+1][b]='*',G[a+1][b+1]='*';
+            v.clear();
+            v.push_back({{a,b+2},{a+1,b+2}});
+            v.push_back({{a+2,b},{a+2,b+1}});
+            v.push_back({{a,b-1},{a+1,b-1}});
+            v.push_back({{a-1,b},{a-1,b+1}});
+            int j=now.first;
+            pair&lt;pii,pii&gt; start=v[j];
+            if (inRange(start.first)&amp;inRange(start.second)){
+                //BFS
+                bfs1(start.first),bfs2(start.second);
+                for (int k=0;k&lt;4;k++) if (k!=j){
+                    if (inRange(v[k].first)&amp;inRange(v[k].second)){
+                        ll aa=dist1[v[k].first.first][v[k].first.second],bb=dist2[v[k].second.first][v[k].second.second],
+                        cc=dist2[v[k].first.first][v[k].first.second],dd=dist1[v[k].second.first][v[k].second.second];
+                        ll ddd=-1;
+                        if ((aa&gt;=0)&amp;&amp;(bb&gt;=0)){
+                            if (ddd==-1) ddd=aa+bb;
+                            ddd=min(ddd,aa+bb);
+                        }
+                        if ((cc&gt;=0)&amp;&amp;(dd&gt;=0)){
+                            if (ddd==-1) ddd=cc+dd;
+                            ddd=min(ddd,cc+dd);
+                        }
+                        //cout&lt;&lt;k&lt;&lt;' '&lt;&lt;a&lt;&lt;','&lt;&lt;b&lt;&lt;' '&lt;&lt;ddd&lt;&lt;endl;
+                        //cout&lt;&lt;aa&lt;&lt;' '&lt;&lt;bb&lt;&lt;' '&lt;&lt;cc&lt;&lt;' '&lt;&lt;dd&lt;&lt;endl;
+                        if (ddd!=-1) graph[j][a][b].push_back({{k,{a,b}},ddd});
+                    }
+                }
+                node asd={(j+2)%4,{-1,-1}};
+                if (j==0) asd.second={a,b+1};
+                if (j==1) asd.second={a+1,b};
+                if (j==2) asd.second={a,b-1};
+                if (j==3) asd.second={a-1,b};
+                int x=asd.second.first,y=asd.second.second;
+                G[a][b]=c1,G[a][b+1]=c2,G[a+1][b]=c3,G[a+1][b+1]=c4;
+                if ((inRange({x,y})&amp;inRange({x+1,y})&amp;&amp;(inRange({x+1,y})&amp;inRange({x+1,y+1})))){
+                    graph[j][a][b].push_back({asd,1});
+                }
+                G[a][b]='*',G[a][b+1]='*',G[a+1][b]='*',G[a+1][b+1]='*';
+            }
+            G[a][b]=c1,G[a][b+1]=c2,G[a+1][b]=c3,G[a+1][b+1]=c4;
+            //
+            for (pair&lt;node,ll&gt; e:graph[now.first][now.second.first][now.second.second]){
+                node nex=e.first; int cost=e.second;
+                //cout&lt;&lt;nex.first&lt;&lt;' '&lt;&lt;nex.second.first&lt;&lt;','&lt;&lt;nex.second.second&lt;&lt;' '&lt;&lt;cost&lt;&lt;endl;
+                ll newd=ddist[now.first][now.second.first][now.second.second]+cost; 
+                if ((newd&lt;ddist[nex.first][nex.second.first][nex.second.second])||(ddist[nex.first][nex.second.first][nex.second.second]==-1)){
+                    pq.erase({ddist[nex.first][nex.second.first][nex.second.second],nex});
+                    ddist[nex.first][nex.second.first][nex.second.second]=newd;
+                    pq.insert({newd,nex});
+                }
+            }
+        }
+        //
+        ll ans=-1;
+        for (int j=0;j&lt;2;j++){
+            if (((ddist[j][0][0]&lt;ans)||(ans==-1))&amp;&amp;(ddist[j][0][0]!=-1)) ans=ddist[j][0][0];
+        }
+        if (eq(corner,{0,0})) ans=0;
+        cout&lt;&lt;ans&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;queue&gt;
+#include &lt;climits&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+
+using namespace std;
+
+struct triple {
+	int a, b, c;
+};
+
+void test(vector&lt;triple&gt; v, int rings) {
+	for (int i = 0; i &lt; v.size(); i++) {
+		if (v[i].a == 0 || v[i].b == 0 || v[i].c == 0) {
+			cout &lt;&lt; &quot;INVALID: NULL RING&quot; &lt;&lt; endl;
+			return;
+		}
+	}
+	for (int i = 0; i &lt; v.size(); i++) {
+		if (v[i].a &gt; rings || v[i].b &gt; rings || v[i].c &gt; rings || v[i].a &lt; -rings || v[i].b &lt; -rings || v[i].c &lt; -rings) {
+			cout &lt;&lt; &quot;INVALID: RING MISSING&quot; &lt;&lt; endl;
+			return;
+		}
+	}
+	for (int i = 0; i &lt; v.size(); i++) {
+		if (v[i].a == v[i].b || v[i].b == v[i].c || v[i].c == v[i].a || v[i].a == -v[i].b || v[i].b == -v[i].c || v[i].c == -v[i].a ) {
+			cout &lt;&lt; &quot;INVALID: RUNE CONTAINS A REPEATED RING&quot; &lt;&lt; endl;
+			return;
+		}
+	}
+	int bitmask = 0; // 1is positive, 0 is negative
+	while(bitmask &lt; (1 &lt;&lt; (rings + 1))) {
+		bool good = true;
+		for (int i = 0; i &lt; v.size(); i++) {
+			int numtrue = 0;
+			if ((v[i].a &gt; 0 &amp;&amp; (bitmask &amp; (1 &lt;&lt; v[i].a))) || (v[i].a &lt; 0 &amp;&amp; (bitmask &amp; (1 &lt;&lt; -v[i].a)) == 0)) {
+				numtrue++;
+			}
+			if ((v[i].b &gt; 0 &amp;&amp; (bitmask &amp; (1 &lt;&lt; v[i].b))) || (v[i].b &lt; 0 &amp;&amp; (bitmask &amp; (1 &lt;&lt; -v[i].b)) == 0)) {
+				numtrue++;
+			}
+			if ((v[i].c &gt; 0 &amp;&amp; (bitmask &amp; (1 &lt;&lt; v[i].c))) || (v[i].c &lt; 0 &amp;&amp; (bitmask &amp; (1 &lt;&lt; -v[i].c)) == 0)) {
+				numtrue++;
+			}
+			if (numtrue == 0) {
+				good = false;
+				break;
+			}
+		}
+		if (good) {
+			cout &lt;&lt; &quot;RUNES SATISFIED!&quot; &lt;&lt; endl;
+			return;
+		}
+		bitmask++;
+	}
+	cout &lt;&lt; &quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!&quot; &lt;&lt; endl;
+}
+
+int main() {
+	int g; cin &gt;&gt; g;		
+	while (g--) {
+		int rings, runes;
+		cin &gt;&gt; rings &gt;&gt; runes;
+		vector&lt;triple&gt; v;
+		for (int i = 0; i &lt; runes; i++) {
+			int a, b, c, d;
+			cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d;
+			triple t; t.a = a; t.b = b; t.c = c;
+			v.push_back(t);
+		}
+		test(v, rings);
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

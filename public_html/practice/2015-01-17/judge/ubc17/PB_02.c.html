@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int getValue(char x) {
+    switch (x) {
+        case 'I':
+            return 1;
+        case 'V':
+            return 5;
+        case 'X':
+            return 10;
+        case 'L':
+            return 50;
+        case 'C':
+            return 100;
+        case 'D':
+            return 500;
+        case 'M':
+            return 1000;
+    }
+    exit(-1);
+}
+
+int main() {
+    char arom[24];
+    scanf(&quot;%s&quot;, arom);
+    int digits = 0;
+    int i;
+    for (i = 0; i &lt; 24; ++i) {
+        if (arom[i] == '\0') {
+            digits = i;
+            break;
+        }
+    }
+    long long value = 0;
+    int prv = getValue(arom[digits-1]);
+    for (i = digits-2; i &gt;= 0; i -= 2) {
+        int a = (int)(arom[i] - 48);
+        char r = arom[i+1];
+        int rv = getValue(r);
+        if (rv &lt; prv) {
+            a *= -1;
+        }
+        value += (a * rv);
+        prv = rv;
+    }
+    printf(&quot;%lld\n&quot;, value);
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

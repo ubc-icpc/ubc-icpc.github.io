@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+#include &lt;math.h&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+
+int main(){
+	int n; cin &gt;&gt; n;
+	while(n--){
+		int days,lems,sugs;
+		cin &gt;&gt; days &gt;&gt; lems &gt;&gt; sugs;
+		int rsf = 0;
+		int lemSurplus = 0;
+		int sugSurplus = 0;
+
+		int cups[days];
+		int lemcost[days];
+		int sugcost[days];
+
+		for (int i = 0; i &lt; days; i++){
+			int cup, lemc, sugc;
+			cin &gt;&gt;cup&gt;&gt;lemc&gt;&gt;sugc;
+			cups[i] = cup;
+			lemcost[i] = lemc;
+			sugcost[i] = sugc;
+		}
+
+		int minlem = lemcost[0];
+		int minsug = sugcost[0];
+
+		for (int i = 0; i &lt; days; i++){
+			minlem = min(lemcost[i], minlem);
+			minsug = min(sugcost[i], minsug);
+
+
+			int lemsNeeded = lems*cups[i];
+			int sugNeeded = sugs*cups[i];
+			if (lemsNeeded &gt;= lemSurplus){
+				lemsNeeded = lemsNeeded - lemSurplus;
+				lemSurplus = 0;
+			}
+			else{
+				lemSurplus = lemSurplus - lemsNeeded;
+				lemsNeeded = 0;
+			}
+			if (sugNeeded &gt;= lemSurplus){
+				sugNeeded = sugNeeded - sugSurplus;
+				sugSurplus = 0;
+			}
+			else{
+				sugSurplus = sugSurplus - sugNeeded;
+				sugNeeded = 0;
+			}
+			rsf += lemsNeeded * minlem;
+			int bags = (sugNeeded + 79)/80;
+			sugSurplus += (bags*80) - sugNeeded;
+			rsf += bags * minsug;
+
+		}
+		cout &lt;&lt; rsf &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

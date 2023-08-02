@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main() {
+	while (true) {
+		double x;
+		cin &gt;&gt; x;
+
+		if (x == 0) return 0;
+
+		double a,b,c;
+		bool found = false;
+		for (b = 1; b &lt; 2000; b++) {
+			for (a = 1; a &lt; min(4000.0,(x * b)); a++) {
+				double ab = pow(a/b,3);
+				c = cbrt((x - ab) * pow(b,3));
+				// cout &lt;&lt; c &lt;&lt; ' ' &lt;&lt; round(c) &lt;&lt; '\n';
+				if (abs(c - round(c)) &lt; 0.000001 &amp;&amp; c &lt;= a &amp;&amp; c &gt; 0 &amp;&amp; a + b + c + b &lt;= 4000) {
+					if (pow(a,3) + pow(round(c),3) - (x * pow(b,3)) == 0) {
+						c = round(c);
+						found = true;
+						goto end;
+					}
+				}
+			}
+		}
+end:
+		if (found)
+			printf(&quot;(%d/%d)^3 + (%d/%d)^3 = %d\n&quot;,(int)a,(int)b,(int)c,(int)b,(int)x);
+		else
+			cout &lt;&lt; &quot;No value.\n&quot;;
+	}
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

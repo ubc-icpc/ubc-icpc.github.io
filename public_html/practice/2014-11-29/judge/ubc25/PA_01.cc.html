@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int friends[101];
+int K;
+int m;
+int r_i;
+
+void init(int max) {
+    for (int i = 1; i &lt; max + 1; i++) {
+        friends[i] = 1;
+    }
+}
+
+void remove(int i) {
+    int count = 0;
+    for (int j = 1; j &lt; K+1; j++) {
+        if (friends[j]) {
+            count = (count + 1) % i;
+        }
+        if (count == 0) {
+            friends[j] = 0;
+        }
+    }
+}
+
+int main() {
+    cin &gt;&gt; K;
+    init(K);
+    cin &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        cin &gt;&gt; r_i;
+        remove(r_i);
+    }
+    for (int i = 1; i &lt; 101; i++) {
+        if (friends[i]) {
+            cout &lt;&lt; i &lt;&lt; endl;
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

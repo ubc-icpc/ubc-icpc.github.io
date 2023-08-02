@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+int len[50005];
+int DP[50005];
+ll cumm[50005];
+int w,n;
+int limit;
+queue&lt;int&gt; q;
+int divide(int a, int b){
+    int res=a/b; 
+    if (res*b==a) return res;
+    else return res+1;
+}
+int dp(int i){
+    if (i&gt;=n) return 0;
+    if (DP[i]!=-2) return DP[i];
+    q.push(i);
+    int x=upper_bound(cumm+i,cumm+n+1,w+cumm[i]-len[i])-cumm-1;
+    int tot=cumm[x]-cumm[i-1]-(x-i+1);
+    //cout&lt;&lt;i&lt;&lt;' '&lt;&lt;x&lt;&lt;' '&lt;&lt;tot&lt;&lt;endl;
+    //len[x],len[x+1],...len[i] can fit in a line, NOTE there are i-x gaps
+    int ans=-1;
+    if (dp(x+1)&gt;=0) ans=max(divide(w-tot,x-i),dp(x+1));
+    if (x==n) ans=1;
+    if (x-i+1&lt;limit) return DP[i]=-1;
+    tot-=len[x];
+    for (int k=x-1;k&gt;i;k--){
+        if (divide(w-tot,k-i)&gt;=ans) break;
+        if (k-i+1&lt;(x-i+1)-300) break;
+        if (dp(k+1)&gt;=0) ans=min(ans,max(divide(w-tot,k-i),dp(k+1)));
+        tot-=len[k];
+    }
+    return DP[i]=ans;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    while (cin&gt;&gt;w&gt;&gt;n){
+        if (n==0) break;
+        memset(DP,-1,sizeof DP);
+        for (int i=1;i&lt;=n;i++) DP[i]=-2;
+        for (int i=1;i&lt;=n;i++) cin&gt;&gt;len[i];
+        cumm[0]=0;
+        for (int i=1;i&lt;=n;i++) cumm[i]=cumm[i-1]+len[i]+1;
+        cout&lt;&lt;dp(1)&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

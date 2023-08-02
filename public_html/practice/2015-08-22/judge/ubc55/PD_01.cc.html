@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int splice(int x)
+{
+	int length = (int)(log10(x));
+	for (int i = 0; i &lt; length; i++)
+	{
+		int number1, number2;
+		number1 = x / pow(10, length - i);
+		number2 = x % (int)pow(10, length - i);
+		int no = 1;
+		for (int j = 2; j &lt; max(number1, number2); j++)
+		{
+			if (number1%j == 0 &amp;&amp; number2%j == 0)
+			{
+				no = 0;
+				break;
+			}
+		}
+		//works
+		if (no)
+		{
+			return length - i;
+		}
+	}
+	return -1;
+}
+
+int main()
+{
+	int n;
+	cin &gt;&gt; n;
+	int count = 0;
+	while (count &lt; n)
+	{
+		count++;
+		cout &lt;&lt; &quot;Ticket #&quot; &lt;&lt; count &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		int number;
+		cin &gt;&gt; number;
+		int space = splice(number);
+		if (space != -1)
+		{
+			cout &lt;&lt;(int) (number / pow(10,space));
+			cout &lt;&lt; &quot; &quot;;
+			cout &lt;&lt; (number % (int) (pow(10, space))) &lt;&lt; endl &lt;&lt; endl;
+		}
+		else
+		{
+			cout &lt;&lt; &quot;Not relative&quot; &lt;&lt; endl &lt;&lt; endl;
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

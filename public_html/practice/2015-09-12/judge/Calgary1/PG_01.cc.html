@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+
+int main() {
+	int TC, d, n;
+	cin &gt;&gt; TC;
+	FOR(tc, 1, TC+1) {
+		cin &gt;&gt; d &gt;&gt; n;
+		cout &lt;&lt; &quot;Grid #&quot; &lt;&lt; tc &lt;&lt; &quot;: &quot;;
+		if (d-1 &gt; (n-1)*(n-1)) {
+			cout &lt;&lt; &quot;impossible\n\n&quot;;
+		} else {
+			cout &lt;&lt; 2*d*(n-1) &lt;&lt; &quot;\n\n&quot;;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

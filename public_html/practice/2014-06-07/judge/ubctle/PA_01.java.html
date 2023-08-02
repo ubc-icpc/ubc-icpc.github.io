@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int n = Integer.parseInt(sc.nextLine());
+		char[][] map = new char[n][];
+		for(int i = 0; i &lt; n; i++) map[i] = sc.nextLine().toCharArray();
+		
+		int[][] v = new int[n][n], h = new int[n][n];
+		int unum = 0;
+		for(int i = 0, j = 0; i &lt; n;) {
+			while(j &lt; n &amp;&amp; map[i][j] == 'X') j++;
+			if(j &lt; n &amp;&amp; map[i][j] == '.') unum++;
+			while(j &lt; n &amp;&amp; map[i][j] == '.') h[i][j++] = unum;
+			if(j &gt;= n) {
+				j = 0;
+				i++;
+			}
+		}
+		
+		int vnum = 0;
+		for(int i = 0, j = 0; j &lt; n;) {
+			while(i &lt; n &amp;&amp; map[i][j] == 'X') i++;
+			if(i &lt; n &amp;&amp; map[i][j] == '.') vnum++;
+			while(i &lt; n &amp;&amp; map[i][j] == '.') v[i++][j] = vnum;
+			if(i &gt;= n) {
+				i = 0;
+				j++;
+			}
+		}
+		
+		ugraph = new List[unum + 1];
+		for(int i = 0; i &lt; unum + 1; i++) ugraph[i] = new ArrayList&lt;Integer&gt;();
+			
+		for(int i = 0; i &lt; n; i++) {
+			for(int j = 0; j &lt; n; j++) {
+				if(map[i][j] == 'X') continue;
+				
+				int top = i, bot = i;
+				while(top &gt;= 0 &amp;&amp; map[top][j] == '.') top--;
+				while(bot &lt; n &amp;&amp; map[bot][j] == '.') bot++;
+				for(int k = top + 1; k &lt; bot; k++) ugraph[h[i][j]].add(v[k][j]);
+				
+			}
+		}
+		
+		int ret = hopcroftKarp(vnum + 1);
+		System.out.println(ret);
+		
+	}
+	
+	
+	static List&lt;Integer&gt;[] ugraph; //set this
+	
+	static int[] umatch, vmatch;
+	static int[] dist;
+	
+	public static int hopcroftKarp(int vnum) {
+		Arrays.fill(umatch = new int[ugraph.length], -1);
+		Arrays.fill(vmatch = new int[vnum], -1);
+		dist = new int[ugraph.length];
+		
+		int sum = 0;
+		while(bfs())
+			for(int i = 0; i &lt; ugraph.length; i++)
+				if(umatch[i] == -1 &amp;&amp; dfs(i)) sum++;
+		return sum;
+	}
+	
+	static boolean bfs() {
+		Queue&lt;Integer&gt; q = new ArrayDeque&lt;Integer&gt;();
+		for(int i = 0; i &lt; umatch.length; i++) {
+			if(umatch[i] == -1) {
+				dist[i] = 0;
+				q.add(i);
+			}
+			else dist[i] = -1;
+		}
+		
+		while(!q.isEmpty()) {
+			int curr = q.poll();
+			for(int v : ugraph[curr]) {
+				if(vmatch[v] == -1) return true;
+				else if(dist[vmatch[v]] == -1) {
+					dist[vmatch[v]] = dist[curr] + 1;
+					q.add(vmatch[v]);
+				}
+			}
+		}
+		return false;
+	}
+	
+	static boolean dfs(int loc) {
+		for(int v : ugraph[loc]) {
+			if(vmatch[v] == -1 || ( dist[vmatch[v]] == dist[loc] + 1 &amp;&amp; dfs(vmatch[v]) ) ) {
+				vmatch[v] = loc;
+				umatch[loc] = v;
+				return true;
+			}
+		}
+		dist[loc] = -1; // needed?
+		return false;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+vector&lt;int&gt; g[2][10];
+int main() {
+    int n, r;
+    while (cin &gt;&gt; n &gt;&gt; r) {
+        if (n == 0 &amp;&amp; r == 0) break;
+        for (int i = 0; i &lt; 10; i++) {
+            g[0][i].clear();
+            g[1][i].clear();
+        }
+        for (int i = 0; i &lt; r; i++) {
+            int a, b; cin &gt;&gt; a &gt;&gt; b;
+            if (a &lt;= n/2) {
+                g[0][a].push_back(b);
+            } else {
+                g[1][a-n/2].push_back(b-n/2);
+            }
+        }
+        
+        long long cnt[2] = {0, 0};
+        vector&lt;int&gt; p;
+        for (int i = 1; i &lt;= n/2; i++) {
+            p.push_back(i);
+        }
+        
+        do {
+            map&lt;int, int&gt; rnk;
+            for (int i = 0; i &lt; n/2; i++) {
+                rnk[p[i]] = i;
+            }
+            
+            for (int k = 0; k &lt; 2; k++) {
+                bool good = true;
+                for (int i = 1; i &lt;= n/2; i++) {
+                    for (int j : g[k][i]) {
+                        if (rnk[i] &gt; rnk[j]) {
+                            good = false;
+                            break;
+                        }
+                    }
+                    if (!good) break;
+                }
+                cnt[k] += good;
+            }
+        } while (next_permutation(p.begin(), p.end()));
+        
+        ll binom = 1;
+        for (int i = 1; i &lt;= n; i++) {
+            binom *= i;
+        }
+        for (int i = 1; i &lt;= n/2; i++) {
+            binom /= i;
+            binom /= i;
+        }
+        cout &lt;&lt; binom * cnt[0] * cnt[1] &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

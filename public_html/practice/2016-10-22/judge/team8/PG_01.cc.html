@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+#define endl '\n'
+using namespace std;
+
+vector&lt;int&gt; minStars = vector&lt;int&gt;(26);
+
+void pre() {
+	int curStars = 0;
+	for (int i = 25; i &gt;= 0; i--) {
+		minStars[i] = curStars;
+		if (i &gt;= 21) curStars += 2;
+		else if (i &gt;= 16) curStars += 3;
+		else if (i &gt;= 11) curStars += 4;
+		else curStars += 5;
+	}
+}
+
+int main() {
+	pre();
+	char c;
+	int stars = 0;
+	bool wprev = false;
+	bool wprev2 = false;
+	bool legend = false;
+	int rank = 25;
+	while (cin &gt;&gt; c) {
+		if (c == 'W') {
+			stars++;
+			if (rank &gt;= 6 &amp;&amp; wprev &amp;&amp; wprev2) stars++;
+			if (stars &gt; minStars[rank-1]) {
+				rank--;
+				if (rank == 0) {
+					legend = true;
+					break;
+				}
+			}
+			wprev2 = wprev;
+			wprev = true;
+		} else {
+			if (rank &lt;= 20 &amp;&amp; stars != minStars[20]) {
+				stars--;
+			}
+			if (stars &lt; minStars[rank]) rank++;
+			wprev2 = wprev;
+			wprev = false;
+		}
+	}
+	if (legend) {
+		cout &lt;&lt; &quot;Legend&quot; &lt;&lt; endl;
+	} else {
+		cout &lt;&lt; rank &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+#include&lt;string&gt;
+#include&lt;cmath&gt;
+
+#define ll long long
+#define ld long double
+
+using namespace std;
+struct coord {
+    ll x,y,z;
+};
+
+int V;
+map&lt;string,int&gt; id;
+map&lt;int,string&gt; rid;
+ld fw[65][65];
+ld g[65][65];
+coord pos[65];
+ld dist(int i, int j) {
+    ll dx=pos[i].x-pos[j].x;
+    ll dy=pos[i].y-pos[j].y;
+    ll dz=pos[i].z-pos[j].z;
+    return sqrt(dx*dx+dy*dy+dz*dz);
+}
+void fwarshall() {
+    int i, j, k;
+ 
+    for (i = 0; i &lt; V; i++)
+        for (j = 0; j &lt; V; j++)
+            fw[i][j] = g[i][j];
+ 
+    for (k = 0; k &lt; V; k++) {
+        for (i = 0; i &lt; V; i++) {
+            for (j = 0; j &lt; V; j++) {
+                if (fw[i][k] + fw[k][j] &lt; fw[i][j])
+                    fw[i][j] = fw[i][k] + fw[k][j];
+            }
+        }
+    }
+}
+int main(void) {
+    int T;cin&gt;&gt;T;int ca=0;
+    while(T--) {
+        
+        cerr &lt;&lt; endl&lt;&lt; &quot;Case &quot; &lt;&lt; ++ca &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+        cout &lt;&lt;&quot;Case &quot; &lt;&lt; ca &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+        cin&gt;&gt;V;
+        id.clear(); rid.clear();
+        for( int i=0; i&lt;V; i++ ) {
+            string str; cin&gt;&gt;str;
+            ll x,y,z; cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;
+            id[str]=i;
+            rid[i]=str;
+            pos[i].x=x; pos[i].y=y; pos[i].z=z;
+        }
+        
+        for( int i=0; i&lt;V; i++)
+            for( int j=0; j&lt;V; j++ )
+                g[i][j] = dist(i,j);
+        
+        
+        for( int i=0; i&lt;V; i++) {
+            for( int j=0; j&lt;V; j++ )
+                cerr &lt;&lt; g[i][j] &lt;&lt; &quot; &quot;;
+            cerr &lt;&lt; endl;
+        }
+        
+        
+        int w; cin&gt;&gt;w;
+        for( int i=0; i&lt;w; i++ ) {
+            
+            string from,to; cin&gt;&gt;from&gt;&gt;to;
+            cerr &lt;&lt; &quot;clearing &quot; &lt;&lt;from&lt;&lt;&quot; to &quot; &lt;&lt; to &lt;&lt; endl;
+            g[id[from]][id[to]]=0;
+        }
+        
+        cerr &lt;&lt; endl;
+        for( int i=0; i&lt;V; i++) {
+            for( int j=0; j&lt;V; j++ )
+                cerr &lt;&lt; g[i][j] &lt;&lt; &quot; &quot;;
+            cerr &lt;&lt; endl;
+        }
+        
+        
+        fwarshall();
+        
+        int q; cin&gt;&gt;q;
+        for( int i=0;i&lt;q;i++ ) {
+            string from,to; cin&gt;&gt;from&gt;&gt;to;
+            cout &lt;&lt; &quot;The distance from &quot; &lt;&lt; from &lt;&lt; &quot; to &quot; &lt;&lt; to &lt;&lt; &quot; is &quot; &lt;&lt; int(fw[id[from]][id[to]]+0.5) &lt;&lt; &quot; parsecs.&quot; &lt;&lt; endl;
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int,int&gt; pii;
+
+string G[3];
+int dist[26][26];
+vector&lt;pii&gt; delta={{0,1},{0,-1},{-1,0},{1,0}};
+bool inGrid(int i, int j){
+    if (i&lt;0) return false; if (i&gt;=3) return false;
+    if (j&lt;0) return false;
+    if (j&gt;=G[i].size()) return false;
+    return true;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    G[0]=&quot;qwertyuiop&quot;,G[1]=&quot;asdfghjkl&quot;,G[2]=&quot;zxcvbnm&quot;;
+    for (int i=0;i&lt;3;i++) for (int j=0;j&lt;10;j++) if (inGrid(i,j)){
+        int start=G[i][j]-'a';
+        memset(dist[start],-1,sizeof dist[start]);
+        queue&lt;pii&gt; q; q.push({i,j}); dist[start][start]=0;
+        while (!q.empty()){
+            pii now=q.front(); q.pop();
+            for (pii dd:delta){
+                pii nex={dd.first+now.first,dd.second+now.second};
+                if ((inGrid(nex.first,nex.second))&amp;&amp;(dist[start][G[nex.first][nex.second]-'a']==-1)){
+                    dist[start][G[nex.first][nex.second]-'a']=dist[start][G[now.first][now.second]-'a']+1;
+                    q.push(nex);
+                }
+            }
+        }
+    }
+    int t; cin&gt;&gt;t;
+    while (t--){
+        string s; int n; cin&gt;&gt;s&gt;&gt;n;
+        set&lt;pair&lt;int,string&gt;&gt; ans;
+        while (n--){
+            string k; cin&gt;&gt;k;
+            int val=0;
+            for (int i=0;i&lt;s.size();i++) val+=dist[s[i]-'a'][k[i]-'a'];
+            ans.insert({val,k});
+        }
+        for (pair&lt;int,string&gt; p:ans) cout&lt;&lt;p.second&lt;&lt;' '&lt;&lt;p.first&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

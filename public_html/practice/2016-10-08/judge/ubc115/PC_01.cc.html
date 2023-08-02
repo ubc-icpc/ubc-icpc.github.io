@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define L 50
+#define ll long long 
+
+ll one[L][L];
+ll mat[L][L];
+ll matr[L][L];
+ll matc[L][L];
+
+ll vec[50];
+ll result[50];
+ll n, m, a, b, c, t;
+
+void make_mat() {
+        memset(mat, 0, sizeof (mat));
+        for (ll j = 0; j &lt; n; j++) {
+                one[j][j] = 1;
+                for (ll i = 0; i &lt; n; i++) {
+                        if (j == i) {
+                                mat[j][i] = b;
+                                if (i &gt; 0) {
+                                        mat[j][i - 1] = a;
+                                }
+                                if (i &lt; n - 1) {
+                                        mat[j][i + 1] = c;
+                                }
+                        }
+                } 
+        }
+        memcpy(matr, mat, sizeof (mat));
+        memcpy(matc, mat, sizeof (mat));
+}
+
+void multab(ll a[][50], ll b[][50]) {
+        memset(matr, 0, sizeof (matr));
+        for (int i = 0; i &lt; n; i++) {
+                for (int j = 0; j &lt; n; j++) {
+                        matr[i][j] = 0;
+                        for (int k = 0; k &lt; n; k++) {
+                                matr[i][j] += a[i][k] * b[k][j];
+                        }
+                        matr[i][j] %= m;
+                }
+        }
+        memcpy(b, matr, sizeof (matr));
+}
+
+void mpow(ll a[][50], int n) {
+        if (n == 0) {
+                memcpy(a, one, sizeof (one));
+                return;
+        }
+
+        if (n == 1) {
+                memcpy(a, matc, sizeof (mat));
+                return;
+        }
+
+        if (n % 2 == 1) {
+                mpow(a, n - 1);
+                multab(matc, a);
+        } else {
+                mpow(a, n / 2);
+                multab(a, a);
+        }
+
+}
+
+int main() {
+        while (cin &gt;&gt; n &gt;&gt; m &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; t &amp;&amp; (n + m + a + b + c + t)) {
+                for (int i = 0; i &lt; n; i++) {
+                        cin &gt;&gt; vec[i];
+                }
+                make_mat();
+                mpow(mat, t);
+
+               for (int i = 0; i &lt; n; i++) {
+                        result[i] = 0;
+                        for (int j = 0; j &lt; n; j++) {
+                                result[i] += mat[i][j] * vec[j];
+                        }
+                        result[i] %= m;
+                        cout &lt;&lt; result[i] &lt;&lt; ' ';
+                }
+
+                cout &lt;&lt; '\n';
+        }
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

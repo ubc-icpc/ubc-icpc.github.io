@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;stack&gt;
+
+using namespace std;
+
+int T;
+
+vector&lt;int&gt; top;
+stack&lt;int&gt; branch;
+int current = 1;
+
+int main() {
+    cin &gt;&gt; T;
+    
+    for (int i = 0; i &lt; T; i++) {
+        int N;
+        cin &gt;&gt; N;
+        for (int j = 0; j &lt; N; j++) {
+            int temp;
+            cin &gt;&gt; temp;
+            top.push_back(temp);
+        }
+        
+        for (int j = N-1; j &gt;= 0; j--) {
+            //cerr &lt;&lt; &quot;top: &quot; &lt;&lt; top[j] &lt;&lt; &quot;branch: &quot; &lt;&lt; (branch.empty() == true ? 0 : branch.top()) &lt;&lt; &quot;current: &quot; &lt;&lt; current &lt;&lt; endl;
+            if (top[j] == current) {
+                // current cart is what we need
+                current++;
+            } else if (!branch.empty() &amp;&amp; branch.top() == current) {
+                // branch has what we need
+                branch.pop();
+                current++;
+                j++;
+            } else {
+                // add cart to branch
+                branch.push(top[j]);
+                //cerr &lt;&lt; branch.top() &lt;&lt; endl;
+            }
+        }
+        
+        while (!branch.empty()) {
+            if (branch.top() == current) {
+                // branch has what we need
+                current++;
+                branch.pop();
+            } else {
+                // something went wrong
+                break;
+            }
+        }
+        
+        if (branch.empty()) {
+            cout &lt;&lt; &quot;Y&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; &quot;N&quot; &lt;&lt; endl;
+        }
+        
+        top.clear();
+        while (!branch.empty()) {
+            branch.pop();
+        }
+        
+        current = 1;
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

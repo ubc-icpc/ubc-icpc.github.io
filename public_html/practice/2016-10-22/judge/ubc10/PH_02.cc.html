@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+
+using namespace std;
+typedef long long ll;
+const int N = 500000;
+
+bool visited[N];
+vector&lt;int&gt; adj[N];
+map&lt;int, int&gt; vmap;
+int vrev[N];
+int nv = 0;
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        int a, b; cin &gt;&gt; a &gt;&gt; b;
+        if (vmap.count(a) == 0) {
+            vrev[nv] = a;
+            vmap[a] = nv;
+            nv++;
+        }
+        if (vmap.count(b) == 0) {
+            vrev[nv] = b;
+            vmap[b] = nv;
+            nv++;
+        }
+        int va = vmap[a], vb = vmap[b];
+        adj[va].push_back(vb);
+        adj[vb].push_back(va);
+    }
+
+    for (int i = 0; i &lt; nv; i++) {
+        visited[i] = false;
+    }
+
+    ll ans = 0;
+    for (int i = 0; i &lt; nv; i++) {
+        if (visited[i]) continue;
+        ll sumv = 0;
+        ll sume = 0;
+        int maxv = 0;
+        int vcnt = 0;
+        int ecnt = 0;
+        queue&lt;int&gt; q;
+        q.push(i);
+        while (!q.empty()) {
+            int curr = q.front(); q.pop();
+            if (visited[curr]) continue;
+            visited[curr] = true;
+
+            maxv = max(maxv, vrev[curr]);
+            sumv += vrev[curr];
+            vcnt++;
+
+            for (int nxt : adj[curr]) {
+                ecnt++;
+                q.push(nxt);
+                sume += vrev[curr] + vrev[nxt];
+            }
+        }
+        ecnt /= 2;
+        sume /= 2;
+        if (vcnt &gt; ecnt) {
+            sumv -= maxv;
+        }
+        ans += sume - sumv;
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

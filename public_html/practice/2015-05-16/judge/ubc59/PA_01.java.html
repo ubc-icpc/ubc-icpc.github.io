@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.*;
+import java.util.*;
+
+public class PROSJEK {
+	
+	public static void main(String args[]) throws IOException {
+		
+		BufferedReader kinput = new BufferedReader(new InputStreamReader(System.in));
+		
+		int length = Integer.parseInt(kinput.readLine());
+		StringTokenizer seq = new StringTokenizer(kinput.readLine());
+		int[] seqB = new int[length];
+		int[] seqA = new int[length];
+		
+		for(int a = 0; a &lt; length; a++) {
+			
+			seqB[a] = Integer.parseInt(seq.nextToken());
+			
+		}
+		
+		seqA[0] = seqB[0];
+		int temp = seqB[0];
+		
+		for(int a = 1; a &lt; length; a++) {
+			
+			seqA[a] = (seqB[a] * (a + 1)) - temp;
+			
+			temp += seqA[a];
+			
+		}
+		
+		for(int a = 0; a &lt; length; a++) {
+			
+			System.out.print(seqA[a] + &quot; &quot;);
+			
+		}
+		
+	}
+	
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

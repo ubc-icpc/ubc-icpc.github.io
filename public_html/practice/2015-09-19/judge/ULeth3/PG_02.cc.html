@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+string no0s (string, int);
+string multiply (string, int);
+
+int main()
+{
+  while (true)
+    {
+      bool exact=false;
+      string value;
+      cin &gt;&gt; value;
+      if (cin.fail())
+	break;
+      if (value.find('.')==string::npos)
+	{
+	  cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+	  continue;
+	}
+      value.erase(0,value.find('.')+1);
+      
+      value=no0s(value, value.length());
+      while (value.at(value.length()-1)=='5'&amp;&amp;value.length()!=0)
+	{
+	  value=multiply(value, value.length());
+	  value=no0s(value, value.length());
+	}
+       
+      if (value==&quot;a&quot;)
+	cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+      else
+	cout &lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+    }
+  return 0;
+}
+
+string no0s (string a, int length)
+{
+  while (length!=0)
+    {
+    if (a.at(length-1)=='0')
+      {
+	if (length==1)
+	  return &quot;a&quot;;
+	a.erase(length-1, 1);
+	length--;
+      }
+    else
+      break;
+    }
+  return a;
+}
+
+string multiply(string a, int length)
+{
+  string that=&quot;&quot;;
+  bool carry=false;
+  for (int i=length-1; i&gt;=0; i--)
+    {
+      int c=(a.at(i)-48)*2+48;
+      if (carry)
+	c+=1;
+      carry=false;
+      if (c&gt;57)
+	{
+	 c-=10;
+	 carry=true;
+	}
+      char b=c;
+      that= b+that;
+    };
+  return that;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

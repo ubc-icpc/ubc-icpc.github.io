@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+s = sys.stdin.readline()[:-1]
+d = {'R': 'S', 'B': 'K', 'L': 'H'}
+ns = []
+i = 0
+while i &lt; len(s):
+  if set(s[i:i+3]) == set(['R', 'B', 'L']):
+    ns.append('C')
+    i+=3
+  else:
+    ns.append(d[s[i]])
+    i += 1
+
+print ''.join(ns)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

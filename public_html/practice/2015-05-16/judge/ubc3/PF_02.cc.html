@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;tuple&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+using vii = vector&lt;tuple&lt;int,int&gt;&gt;;
+using vvii = vector&lt;vii&gt;;
+using ll = long long;
+using vll = vector&lt;ll&gt;;
+
+vvii adj_list; 
+vi is_site;
+vll desc_cost;
+vll far_desc;
+vll round_cost;
+vll far_all;
+
+void compute_desc(int node, int parent) {
+  if (is_site[node] == 1) {
+    desc_cost[node] = 0;
+    far_desc[node] = 0;
+  }
+  for (auto&amp; edge: adj_list[node]) {
+    int neighbor, edge_cost;
+    tie(neighbor, edge_cost) = edge;
+    if (neighbor != parent) {
+      compute_desc(neighbor, node);
+      if (desc_cost[neighbor] != -1) {
+        if (desc_cost[node] == -1)
+          desc_cost[node] = 0;
+        desc_cost[node] += desc_cost[neighbor] + 2 * edge_cost;
+      }
+      if (far_desc[neighbor] != -1) {
+        ll alt = far_desc[neighbor] + edge_cost;
+        far_desc[node] = max(far_desc[node], alt);
+      }
+    }
+  } // for
+}
+
+void compute_round(int node, int parent, int edge_cost_parent) {
+  if (parent == -1)
+    round_cost[node] = desc_cost[node];
+  else if (desc_cost[node] &lt; 0)
+    round_cost[node] = round_cost[parent] + 2 * edge_cost_parent;
+  else if (round_cost[parent] == desc_cost[node] + 2 * edge_cost_parent)
+    round_cost[node] = desc_cost[node];
+  else
+    round_cost[node] = round_cost[parent];
+
+  for (auto&amp; edge : adj_list[node]) {
+    int neighbor, edge_cost;
+    tie(neighbor, edge_cost) = edge;
+    if (neighbor != parent) {
+        compute_round(neighbor, node, edge_cost);
+    }
+  }
+}
+
+void compute_far(int node, int parent, int parent_far) {
+  far_all[node] = parent_far;
+  int far_src = -1;
+  int far_edge_cost = 0;
+  for (auto&amp; edge : adj_list[node]) {
+    int neighbor, edge_cost;
+    tie(neighbor, edge_cost) = edge;
+    if (neighbor != parent
+        &amp;&amp; far_desc[neighbor] != -1
+        &amp;&amp; far_desc[neighbor] + edge_cost &gt; far_all[node]) {
+        far_all[node] = far_desc[neighbor] + edge_cost;
+        far_src = neighbor;
+        far_edge_cost = edge_cost;
+    }
+  }
+
+  ll far_snd = parent_far;
+  for (auto&amp; edge : adj_list[node]) {
+    int neighbor, edge_cost;
+    tie(neighbor, edge_cost) = edge;
+    if (neighbor != parent &amp;&amp; neighbor != far_src) {
+      compute_far(neighbor, node, far_all[node] + edge_cost);
+      if (far_desc[neighbor] != -1) {
+        far_snd = max(far_snd, far_desc[neighbor] + edge_cost);
+      }
+    }
+  }
+  if (far_src != -1) compute_far(far_src, node, far_snd + far_edge_cost);
+}
+  
+int main() {
+  int N, K;
+  cin &gt;&gt; N &gt;&gt; K;
+  adj_list.resize(N);
+  for (int i = 0; i &lt; N - 1; ++i) {
+    int a, b, c;
+    cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+    adj_list[a-1].push_back(make_tuple(b-1, c));
+    adj_list[b-1].push_back(make_tuple(a-1, c));
+  }
+
+  is_site = vi(N, 0);
+  for (int i = 0; i &lt; K; ++i) {
+    int site;
+    cin &gt;&gt; site;
+    is_site[site-1] = 1;
+  }
+
+  desc_cost = vll(N, -1);
+  far_desc = vll(N, -1);
+  compute_desc(0, -1);
+
+  round_cost = vll(N, 0);
+  compute_round(0, -1, 0);
+
+  far_all = vll(N, -1);
+  compute_far(0, -1, -1);
+
+  /*
+  cout &lt;&lt; &quot;desc_cost&quot; &lt;&lt; endl;
+  for (auto cost : desc_cost)
+    cout &lt;&lt; cost &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+
+  cout &lt;&lt; &quot;far_desc&quot; &lt;&lt; endl;
+  for (auto dist : far_desc)
+    cout &lt;&lt; dist &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+
+  cout &lt;&lt; &quot;round_cost&quot; &lt;&lt; endl;
+  for (auto round : round_cost)
+    cout &lt;&lt; round &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+
+  cout &lt;&lt; &quot;far_all&quot; &lt;&lt; endl;
+  for (auto dist : far_all)
+  cout &lt;&lt; dist &lt;&lt; ' ';
+  cout &lt;&lt; endl;
+
+  cout &lt;&lt; &quot;result&quot; &lt;&lt; endl;
+  */
+  for (int i = 0; i &lt; N; ++i) {
+    cout &lt;&lt; round_cost[i] - far_all[i] &lt;&lt; endl;
+  }
+
+  return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

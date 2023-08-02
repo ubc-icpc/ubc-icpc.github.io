@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;algorithm&gt;
+#include &lt;complex&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+#include &lt;set&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+
+typedef std::pair&lt;int, int&gt; II;
+typedef std::vector&lt;int&gt; VI;
+typedef std::vector&lt;II&gt; VII;
+typedef std::vector&lt;VI&gt; VVI;
+
+typedef long double ld;
+
+typedef std::complex&lt;ld&gt; Pt;
+
+typedef std::vector&lt;std::string&gt; VS;
+
+VS map;
+
+struct State {
+    int x, y;
+};
+
+void dump(std::vector&lt;std::string&gt; &amp;m) {
+    for(int r = 0; r &lt; m.size(); r ++) std::cout &lt;&lt; m[r] &lt;&lt; std::endl;
+}
+
+int main() {
+    int T;
+    std::cin &gt;&gt; T;
+    while(T--) {
+        int R, C;
+        std::cin &gt;&gt; R &gt;&gt; C;
+        map.assign(R, std::string());
+        for(int i = 0; i &lt; R; i ++) std::cin &gt;&gt; map[i];
+
+        II begin;
+        for(int i = 0; i &lt; R; i ++) for(int j = 0; j &lt; C; j ++) if(map[i][j] == 'S') begin.first = i, begin.second = j;
+
+        int vcount = 0;
+        std::map&lt;II, int&gt; vids, vpush;
+        for(int i = 0; i &lt; R; i ++) for(int j = 0; j &lt; C; j ++) if(map[i][j] == 'V') vcount ++, vids[II(i, j)] = vcount;
+
+        State initial;
+        initial.x = begin.first, initial.y = begin.second;
+
+        int best = 0;
+
+        int xd[] = {0,0,1,-1};
+        int yd[] = {1,-1,0,0};
+
+        std::queue&lt;State&gt; Q;
+        Q.push(initial);
+        int can_push = 0;
+        int count = 0;
+        while(Q.size()) {
+            State next = Q.front(); Q.pop();
+
+            //std::cout &lt;&lt; &quot;@&quot; &lt;&lt; next.x &lt;&lt; &quot;,&quot; &lt;&lt; next.y &lt;&lt; std::endl;
+
+            if(map[next.x][next.y] == '-') continue;
+            map[next.x][next.y] = '-';
+
+            for(int d = 0; d &lt; 4; d ++) {
+                int nx = next.x + xd[d];
+                int ny = next.y + yd[d];
+
+                if(nx &lt; 0 || ny &lt; 0 || nx &gt;= R || ny &gt;= C) continue;
+
+                if(map[nx][ny] == 'V') {
+                    map[nx][ny] = '*';
+                    count ++;
+                    //std::cout &lt;&lt; &quot;Adding d=&quot; &lt;&lt; d &lt;&lt; std::endl;
+                    vpush[II(nx,ny)] |= (1&lt;&lt;d);
+                    /*if(vids[II(nx,ny)] == S) {
+                        can_push |= (1&lt;&lt;d);
+                    }*/
+                }
+                else if(map[nx][ny] == '*') {
+                    //std::cout &lt;&lt; &quot;Adding d=&quot; &lt;&lt; d &lt;&lt; std::endl;
+                    vpush[II(nx,ny)] |= (1&lt;&lt;d);
+
+                }
+                else if(map[nx][ny] == '.') {
+                    State next;
+                    next.x = nx; next.y = ny;
+                    Q.push(next);
+                }
+            }
+        }
+        int initialc = count;
+        best = count;
+        //dump(map);
+        //std::cout &lt;&lt; &quot;Initial count: &quot; &lt;&lt; count &lt;&lt; std::endl;
+
+        for(std::map&lt;II, int&gt;::iterator ii = vpush.begin(); ii != vpush.end(); ++ii) {
+            for(int d = 0; d &lt; 4; d ++) {
+                if(((1&lt;&lt;d) &amp; ii-&gt;second) == 0) continue;
+                //std::cout &lt;&lt; &quot;Proceeding with d=&quot; &lt;&lt; d &lt;&lt; std::endl;
+                int count = 0;
+
+                int nx = ii-&gt;first.first + xd[d];
+                int ny = ii-&gt;first.second + yd[d];
+                if(nx &lt; 0 || ny &lt; 0 || nx &gt;= R || ny &gt;= C) continue;
+                if(map[nx][ny] != '.' &amp;&amp; map[nx][ny] != '-') continue;
+                //if(map[nx][ny] != '.') continue;
+                VS smap = map;
+                smap[ii-&gt;first.first][ii-&gt;first.second] = '.';
+                smap[nx][ny] = '*';
+                //std::cout &lt;&lt; &quot;Pushing machine at &quot; &lt;&lt; ii-&gt;first.first &lt;&lt; &quot;,&quot; &lt;&lt; ii-&gt;first.second &lt;&lt; &quot; in direction &quot; &lt;&lt; d &lt;&lt; std::endl;
+
+                State initial; initial.x = ii-&gt;first.first; initial.y = ii-&gt;first.second;
+                Q.push(initial);
+
+                while(Q.size()) {
+                    State next = Q.front(); Q.pop();
+
+                    //std::cout &lt;&lt; &quot;@&quot; &lt;&lt; next.x &lt;&lt; &quot;,&quot; &lt;&lt; next.y &lt;&lt; std::endl;
+
+                    if(smap[next.x][next.y] == '-') continue;
+                    smap[next.x][next.y] = '-';
+
+                    for(int d = 0; d &lt; 4; d ++) {
+                        int nx = next.x + xd[d];
+                        int ny = next.y + yd[d];
+
+                        if(nx &lt; 0 || ny &lt; 0 || nx &gt;= R || ny &gt;= C) continue;
+
+                        if(smap[nx][ny] == 'V') {
+                            smap[nx][ny] = '*';
+                            count ++;
+                        }
+                        else if(smap[nx][ny] == '.') {
+                            State next;
+                            next.x = nx; next.y = ny;
+                            Q.push(next);
+                        }
+                    }
+                }
+                //std::cout &lt;&lt; std::endl;
+                //dump(smap);
+                best = std::max(count+initialc, best);
+            }
+        }
+
+        std::cout &lt;&lt; best &lt;&lt; std::endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

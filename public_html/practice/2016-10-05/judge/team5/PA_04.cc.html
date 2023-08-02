@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+#define int long long
+
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; pipii;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;pii&gt; vii;
+typedef vector&lt;pipii&gt; viii;
+
+const int N = 1e5+5;
+
+int n, num = 0, cnt = 0, color[N], dfsnum[N];
+vi adj[N];
+map&lt;string, int&gt; mapper;
+
+bool dfs(int u) {
+  color[u] = 1;
+  dfsnum[u] = ++num;
+  for (const int &amp;v : adj[u]) {
+    if (color[v] == 0) {
+      bool r = dfs(v);
+      if (r) {
+        return true;
+      }
+    } else if (color[v] == 1) {
+      return true;
+    }
+  }
+  color[u] = 2;
+  return false;
+}
+
+#undef int
+int main() {
+#define int long long
+  ios_base::sync_with_stdio(0);
+  memset(color, 0, sizeof color);
+  memset(dfsnum, -1, sizeof dfsnum);
+  cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++) {
+    string s1, symbol, s2;
+    cin &gt;&gt; s1 &gt;&gt; symbol &gt;&gt; s2;
+    if (mapper.find(s1) == mapper.end()) {
+      mapper[s1] = ++cnt;
+    }
+    if (mapper.find(s2) == mapper.end()) {
+      mapper[s2] = ++cnt;
+    }
+    if (symbol == &quot;&lt;&quot;)
+      adj[mapper[s1]].push_back(mapper[s2]);
+    else
+      adj[mapper[s2]].push_back(mapper[s1]);
+  }
+  bool res = false;
+  for (int i = 1; i &lt;= cnt; i++) {
+    if (dfsnum[i] == -1) {
+      res = dfs(i);
+      if (res) {
+        cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+        return 0;
+      }
+    }
+  }
+  cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

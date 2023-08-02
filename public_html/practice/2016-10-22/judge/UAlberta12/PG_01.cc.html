@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main()
+{
+    string s;
+    cin&gt;&gt;s;
+    int i,ran=25,star=0,cwin=0;
+    int sneed[]={1000000,5,5,5,5,5,5,5,5,5,5,4,4,4,4,4,3,3,3,3,3,2,2,2,2,2};
+    for(i=0;i&lt;s.size();i++)
+    {
+        if(ran==0)break;
+        if(s[i]=='W')
+        {
+            star++;
+            cwin++;
+            if(cwin&gt;=3&amp;&amp;ran&gt;=6&amp;&amp;ran&lt;=25)star++;
+            if(star&gt;sneed[ran])
+            {
+                star-=sneed[ran];
+                ran--;
+            }
+        }
+        else if(s[i]=='L')
+        {
+            cwin=0;
+            if(ran&gt;20)continue;
+            star--;
+            if(star&lt;0)
+            {
+                if(ran==20)star=0;
+                else
+                {
+                    ran++;
+                    star=sneed[ran]-1;
+                }
+            }
+        }
+        //cout&lt;&lt;s[i]&lt;&lt;&quot; &quot;&lt;&lt;ran&lt;&lt;&quot; &quot;&lt;&lt;star&lt;&lt;&quot; &quot;&lt;&lt;cwin&lt;&lt;endl;
+    }
+    if(ran==0)cout&lt;&lt;&quot;Legend&quot;&lt;&lt;endl;
+    else cout&lt;&lt;ran&lt;&lt;endl;
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

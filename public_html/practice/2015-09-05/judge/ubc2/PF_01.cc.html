@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+bool avail[42];
+
+const ll INF = 0x3f3f3f3f;
+
+const int N = 60;
+const int M = 500;
+
+int par[N], first[N], nxt[2*M], ep[2*M], m;
+ll flo[2*M], cap[2*M], cost[2*M];
+void init() { m = 0; memset(first,-1,sizeof first); memset(flo,0,sizeof flo); }
+void add_edge(int a, int b, ll c=1, ll p=0) { //a,b - nodes, c, p - cap, price
+  nxt[m] = first[ep[m]=a], first[ep[m]] = m, cap[m] = c, cost[m] =  p, ++m;
+  nxt[m] = first[ep[m]=b], first[ep[m]] = m, cap[m] = 0, cost[m] = -p, ++m; }
+ 
+// Max flow without costs, USAGE: 1) init(); 2) add edges, 3) ll flow=0; and 4)
+// for (ll del=INF; del; del/=2) while (ll df=mf_update(s, t, del)) flow+=df;
+// Then if you want to extract a min cut: for (int e = 0; e &lt; m; ++e)
+// if (par[ep[e]] != -1 &amp;&amp; par[ep[e^1]] == -1) cut.push_back(e);
+// If you want to recover flow paths: get set of edges with flo[e] &gt; 0.
+// E^2logC in general, E*flow on integer capacity graphs
+ll mf_update(int s, int t, ll del=1) {
+  ll df[N]; memset(df, 0, sizeof df); memset(par, -1, sizeof par);
+  queue&lt;int&gt; q; q.push(s); par[s] = -2; df[s] = INF;
+  while (!q.empty()) { ll cf; int u = q.front(); q.pop();
+    for (int v, e = first[u]; e != -1; e = nxt[e])
+      if (par[v=ep[e^1]] == -1 &amp;&amp; (cf = cap[e]-flo[e]) &gt;= del)
+        q.push(v), par[v] = e, df[v] = min(df[u], cf); }
+  if (par[t] == -1) return 0;
+  for (int e, i = t; i != s; i = ep[e])
+    e = par[i], flo[e] += df[t], flo[e^1] -= df[t];
+  return df[t]; }
+/*
+int L[N], cur[N];
+bool bfs(int s, int t) {
+  memset(L, INF, sizeof L);
+  queue&lt;int&gt; q; q.push(s); L[s] = 0;
+  while (!q.empty()) { int u = q.front(); q.pop();
+    for (int v, e = cur[u] = first[u]; e != -1; e = nxt[e])
+      if (L[v=ep[e^1]] == INF &amp;&amp; flo[e] &lt; cap[e])
+        q.push(v), L[v] = L[u]+1;
+  } return L[t] &lt; INF; }
+ll dfs(int u, int t, ll f) {
+  if (u == t) return f;
+  ll cf, df = 0;
+  for (int v, e = cur[u]; e != -1 &amp;&amp; df &lt; f; cur[u] = e = nxt[e])
+    if (flo[e] &lt; cap[e] &amp;&amp; L[v=ep[e^1]] == L[u]+1) {
+      cf = dfs(v, t, min(cap[e]-flo[e], f-df));
+      flo[e] += cf; flo[e^1] -= cf; df += cf;
+    } return df; }
+    */
+
+int main() {
+  int T; cin &gt;&gt; T;
+  for (int t = 1; t &lt;= T; ++t) {
+    init();
+    for (int i = 1; i &lt;= 10; ++i) {
+      add_edge(0, i, 20);
+    }
+    for (int i = 1; i &lt;= 10; ++i) {
+      int I; cin &gt;&gt; I;
+      memset(avail, true, sizeof(avail));
+      while (I--) {
+        int d, s, e; cin &gt;&gt; d &gt;&gt; s &gt;&gt; e;
+        d--;
+        int start = (24*d + s) / 4;
+        int end = (24*d + e - 1) / 4;
+        for (int inter = start; inter &lt;= end; ++inter) {
+          avail[inter] = false;
+        }
+      }
+      for (int inter = 0; inter &lt; 42; ++inter) {
+        if (avail[inter]) {
+          add_edge(i, 11+inter);
+        }
+      }
+    }
+    for (int inter = 0; inter &lt; 42; ++inter) {
+      add_edge(11+inter, 53, 3);
+    }
+    ll flow = 0;
+    for (ll del=INF; del; del/=2) while (ll df=mf_update(0, 53, del)) flow+=df;
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; t &lt;&lt; &quot;: &quot;;
+    if (flow &lt; 3*42) cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl &lt;&lt; endl;
+    else cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl &lt;&lt; endl;
+  }
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

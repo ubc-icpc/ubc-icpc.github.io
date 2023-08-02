@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main(){
+	string a;
+	bool oddNumberOfSatellites, ping, noSpaces;
+	int i, j;
+	std::vector&lt;int&gt; numbers;
+
+	do{
+		cin&gt;&gt;a;
+		noSpaces = true;
+		for(i = 0; i &lt; a.length(); i += 1){
+			if(i == 0){/*do nothing...*/}
+			else{
+				//set ping to 0 initially
+				ping = false;
+
+				//compute expected value for ping
+				for(j = 0; j &lt; numbers.size(); j += 1){
+					if (i % numbers[j] == 0)
+					{
+						//flip value of ping 
+						//(ie: change from 0 to 1 or vice-versa)
+						ping = !ping;
+					}
+				}
+
+				//check if actual != expected
+				if((a[i] == '1') != ping){
+					//then we have a new satellite
+					numbers.push_back(i);
+					
+					if(noSpaces){
+						cout&lt;&lt;i;
+						noSpaces = false;
+					}
+					else{
+						cout&lt;&lt;&quot; &quot;&lt;&lt;i;
+					}
+				}
+			}
+		}
+		cout&lt;&lt;endl;	
+		
+		numbers.clear();
+	}while(a.compare(&quot;0&quot;) != 0);
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

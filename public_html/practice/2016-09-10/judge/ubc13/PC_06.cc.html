@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+int T, K, C;
+
+ll * gcde(ll a, ll b){
+	ll x0=1, x1=0, y0=0, y1=1;
+
+	while (b != 0) {
+		ll q = a/b;
+		ll tmp = a;
+		a = b;
+		b = (tmp % b + b) % b;
+
+		tmp = x1;
+		x1 = x0 - q * x1;
+		x0 = tmp;
+
+		tmp = y1;
+		y1 = y0 - q * y1;
+		y0 = tmp;
+	}
+
+	ll * ret = new ll[3];
+	ret[0] = a; ret[1] = x0; ret[2] = y0;
+	return ret;
+}
+
+int main(void){
+	cin &gt;&gt; T;
+	int tc;
+	for (tc=0; tc&lt;T; ++tc){
+		cin &gt;&gt; K &gt;&gt; C;
+		if (C == 1){
+			cout &lt;&lt; K + 1 &lt;&lt; &quot;\n&quot;;
+			continue;
+		}
+		if (K == 1 &amp;&amp; C &gt; 0){
+			cout &lt;&lt; 1 &lt;&lt; &quot;\n&quot;;
+			continue;
+		}
+
+		ll * a = gcde(K, C);
+
+		if (a[0] != 1){
+			cout &lt;&lt; &quot;IMPOSSIBLE\n&quot;;
+		}
+		else{
+			while (a[2] &lt; 0) a[2] += K;
+			a[2] %= K;
+			if (a[2] == 0){
+				cout &lt;&lt; &quot;IMPOSSIBLE\n&quot;;
+			}
+			else {
+				cout &lt;&lt; a[2] &lt;&lt; &quot;\n&quot;;
+			}
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

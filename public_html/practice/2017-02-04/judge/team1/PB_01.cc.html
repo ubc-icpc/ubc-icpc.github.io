@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;queue&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main(){
+	
+	int ngames;
+	cin &gt;&gt; ngames;
+	
+	while(ngames--){
+		
+		cout &lt;&lt; &quot;3 1 3 6&quot; &lt;&lt; endl;
+		
+		string aux;
+		while(true){
+			
+			cin &gt;&gt; aux;
+			if(aux[0] == 'G') break;
+			
+			int a1, b1, a2, b2;
+			
+			cin &gt;&gt; a1 &gt;&gt; b1 &gt;&gt; a2 &gt;&gt; b2;
+			
+			int ra1, rb1, ra2, rb2;
+			
+			ra1 = 6 - a1;
+			ra2 = 6 - a2;
+			rb1 = 7 - b1;
+			rb2 = 7 - b2;
+			
+			if(ra1 == ra2 &amp;&amp; rb1 &gt; rb2) swap(rb1, rb2);
+			if(rb1 == rb2 &amp;&amp; ra1 &gt; ra2) swap(ra1, ra2);
+			
+			cout &lt;&lt; ra1 &lt;&lt; &quot; &quot; &lt;&lt; rb1 &lt;&lt; &quot; &quot; &lt;&lt; ra2 &lt;&lt; &quot; &quot; &lt;&lt; rb2 &lt;&lt; endl;
+		}
+		
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

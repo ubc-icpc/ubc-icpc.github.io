@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, K, V[100005];
+pair&lt;int, int&gt; W[100005];
+multiset&lt;int&gt; M;
+
+int main () {
+  cin &gt;&gt; N &gt;&gt; K;
+  for (int i = 0; i &lt; N; ++i) { cin &gt;&gt; W[i].first; W[i].second = i; }
+  sort(W, W + N);
+  for (int i = 0; i &lt; N; ++i)
+    V[W[i].second] = i / K;
+  for (int i = 0; i &lt; N; ++i) {
+    multiset&lt;int&gt;::iterator it = M.upper_bound(V[i]);
+    if (it == M.end()) M.insert(it, V[i]);
+    else {
+      it = M.erase(it);
+      M.insert(V[i]);
+    }
+  }
+  cout &lt;&lt; N - M.size() &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

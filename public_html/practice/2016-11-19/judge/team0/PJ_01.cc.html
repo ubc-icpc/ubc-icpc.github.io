@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+const int N = 18;
+const int M = (1&lt;&lt;N);
+
+int dp[M][N];
+int seen[M][N];
+int mark = 0;
+int n;
+string s;
+
+int dfs(int m, int c) {
+    if (seen[m][c] == mark) return dp[m][c];
+    if (m == 0) {
+        seen[m][c] = mark;
+        return dp[m][c] = 0;
+    }
+    if (__builtin_popcount(m) == 1) {
+        int dkey = (int)(s[c] - 'A');
+        dkey = min(dkey, 26-dkey);
+
+        seen[m][c] = mark;
+        return dp[m][c] = dkey+1;
+    }
+
+    int ans = 27*18;
+    for (int i = 0; i &lt; n; i++) {
+        if (i == c) continue;
+        if (m &amp; (1&lt;&lt;i)) {
+            int dkey = ((int)(s[i] - s[c]) + 26) % 26;
+            dkey = min(dkey, 26-dkey);
+
+            int dpos = 0;
+            if (i &lt; c) {
+                for (int j = c-1; j &gt; i &amp;&amp; j &gt;= 1; j--) {
+                    if (m &amp; (1&lt;&lt;j)) {
+                        dpos++;
+                    }
+                }
+            } else {
+                for (int j = c+1; j &lt;= i; j++) {
+                    if (m &amp; (1&lt;&lt;j)) {
+                        dpos++;
+                    }
+                }
+            }
+
+            ans = min(ans, dfs(m - (1&lt;&lt;c), i) + dkey + dpos + 1);
+        }
+    }
+    seen[m][c] = mark;
+    return dp[m][c] = ans;
+}
+
+int main() {
+    memset(seen, 0, sizeof seen);
+    cin &gt;&gt; s;
+    while (s != &quot;0&quot;) {
+        n = s.length();
+        mark++;
+        int ans = 27*18;
+        for (int i = 0; i &lt; n; i++) {
+            ans = min(ans, dfs((1&lt;&lt;n)-1, i));
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+
+        cin &gt;&gt; s;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int L = 25;
+int S = 0;
+int CW = 0;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  string SS; cin &gt;&gt; SS;
+  for (char c : SS) {
+    if (c == 'W') {
+      ++CW;
+      if (L &gt;= 6 &amp;&amp; L &lt;= 25 &amp;&amp; CW &gt;= 3) {
+        S += 2;
+      } else {
+        ++S;
+      }
+      if (L &gt;= 21 &amp;&amp; S &gt; 2) {
+        S -= 2;
+        --L;
+      } else if (L &gt;= 16 &amp;&amp; S &gt; 3) {
+        S -= 3;
+        --L;
+      } else if (L &gt;= 11 &amp;&amp; S &gt; 4) {
+        S -= 4;
+        --L;
+      } else if (L &gt;= 1 &amp;&amp; S &gt; 5) {
+        S -= 5;
+        --L;
+      }
+    } else {
+      CW = 0;
+      if ((L &lt; 20 &amp;&amp; L &gt;= 1) || (L == 20 &amp;&amp; S &gt; 0)) {
+        --S;
+        if (S &lt; 0) {
+          ++L;
+          if (L &gt;= 21) S += 2;
+          else if (L &gt;= 16) S += 3;
+          else if (L &gt;= 11) S += 4;
+          else if (L &gt;= 1) S += 5;
+        }
+      }
+    }
+  }
+  if (L &lt; 1) {
+    cout &lt;&lt; &quot;Legend&quot; &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; L &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,263 @@
+
+<html>
+
+<head>
+<title>University of British Columbia Practice Contest - Clarifications</title>
+</head>
+
+<body>
+
+<div align="center">
+<h1>View Clarifications</h1>
+</div>
+
+<hr><div align="center"><p>
+[ <a href="index.php.html">Contest Page</a> | <a href="scores.php.html">Scoreboard</a> | <a href="submit.php.html">Submissions</a> | Clarifications | <a href="help.php.html">Help</a> | <a href="stuff.php.html">Stuff</a> | <a href="login.php.html">Log In</a> ]
+</p></div>
+   
+<hr>
+<div align="center">
+
+<p><b><big></big></b></p>
+<table border="1" width="75%" cellspacing="0" cellpadding="6">
+<tr bgcolor="#EEEEEE"><th width="25%">Problem</th><th>Clarification</th></tr>
+<tr><td>General</td>
+<td>
+I/O?<br />
+<br>
+<i>Please use standard in and standard out!<br />
+<br />
+Input --<br />
+Java: Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));<br />
+C: scanf("%d %d", &integer1, &integer2);<br />
+C++: int x; cin >> x;<br />
+<br />
+Output --<br />
+Java: System.out.println("asdf");<br />
+C: printf("%d %d", integer1, integer2);<br />
+C++: int x = 5; cout << x << endl;<br />
+</i></td>
+</td></tr>
+<tr><td>General</td>
+<td>
+Java class names?<br />
+<br>
+<i>Java class names?<br />
+<br />
+Please use the following class names (make sure classes are public):<br />
+<br />
+Problem A - public class A { ... }<br />
+Problem B - public class B { ... }<br />
+. . .<br />
+</i></td>
+</td></tr>
+<tr><td>General</td>
+<td>
+Compilers?<br />
+<br>
+<i>gcc 4.8.1<br />
+javac 1.7.0_51<br />
+python 2.7.6<br />
+</i></td>
+</td></tr>
+<tr><td>General</td>
+<td>
+Time Limits?<br />
+<br>
+<i>5 seconds per problem<br />
+</i></td>
+</td></tr>
+<tr><td>C - Coordinated Motions</td>
+<td>
+If a robot is at (0,0), what part of the robot is specifically at (0,0)?<br />
+<br>
+<i>The coordinates given describe the lower left corner of the robot.<br />
+</i></td>
+</td></tr>
+<tr><td>C - Coordinated Motions</td>
+<td>
+Do robots have to be constantly moving? e.g. can one robot wait for another robot to pass?<br />
+<br>
+<i>Yes they can wait. The robots can move in any way they want, and take any amount of time to get to the destination. Only the total distance matters.<br />
+</i></td>
+</td></tr>
+<tr><td>D - Dan and Linton</td>
+<td>
+The smallest strongly connected component containing x and y? Is this correct?<br />
+<br>
+<i>You should output the minimum number of edges in S. We are currently fixing the problem statement.<br />
+</i></td>
+</td></tr>
+<tr><td>G - Golduck and the Three Teddiursas</td>
+<td>
+Does the total of the +/-1s always have to be within [L,R] during the entire path? Or only the total at the bottom right of A?<br />
+<br>
+<i>Only the total at the end of the path must be within [L,R].<br />
+</i></td>
+</td></tr>
+<tr><td>A - Andrew's Annual Race</td>
+<td>
+In the second sample case, either the answer should be infinity or the problem statement doesn't properly explain why the answer should be finite. Which is it?<br />
+<br>
+<i>The optimal sequence of moves for sample 2 is:<br />
+<br />
+leftmost 1 -> rightmost 2 -> 3.<br />
+<br />
+Andy "jumps" from number to number, so when he moves from the leftmost 1 to the rightmost 2, he travels distance = 4 and goes from 1 to 2 directly.<br />
+</i></td>
+</td></tr>
+<tr><td>A - Andrew's Annual Race</td>
+<td>
+Can the trainer revisit checkpoints? if the trainer is supposed to visit a 2 checkpoint is s/he allowed to move through a 3 checkpoint? for the second provided example of 1 1 3 2 2 the path would be 1-1-3-2-2-2(turn back and revisit)-3?<br />
+<br>
+<i>Yes. To clarify, its he "jumps" from checkpoint to checkpoint with distance equal to the difference between the checkpoint's indices.<br />
+</i></td>
+</td></tr>
+<tr><td>B - Bulbasaur Charity</td>
+<td>
+when the journey is to stay in one city, does the traveller earn 0?<br />
+<br>
+<i>Yes.<br />
+</i></td>
+</td></tr>
+<tr><td>G - Golduck and the Three Teddiursas</td>
+<td>
+A test case has a line with n, m, L, R, but also some other lines. Are those describing the matrix?<br />
+<br>
+<i>Yes, please hard refresh the problem statement. This is now corrected.<br />
+</i></td>
+</td></tr>
+<tr><td>H - Here to Battle!</td>
+<td>
+What happens if no gym can be defeated?<br />
+<br>
+<i>It is guaranteed that at least one gym can be defeated.<br />
+</i></td>
+</td></tr>
+<tr><td>B - Bulbasaur Charity</td>
+<td>
+What does m stands for<br />
+<br>
+<i>The amount of Bulbasaurs a city places on its roads is in the interval [-m,m].<br />
+</i></td>
+</td></tr>
+<tr><td>B - Bulbasaur Charity</td>
+<td>
+What does m represent?<br />
+<br>
+<i>The amount of Bulbasaurs a city places on its roads is in the interval [-m,m].<br />
+</i></td>
+</td></tr>
+<tr><td>A - Andrew's Annual Race</td>
+<td>
+Can you move arbitrarily within contiguous segments? [ie. Is this movement allowed?]<br />
+<br>
+<i>You cannot move back and forth between two of the same numbers forever, if this is what you are asking. Each movement must move in one direction towards the next higher numbered checkpoint.<br />
+</i></td>
+</td></tr>
+<tr><td>A - Andrew's Annual Race</td>
+<td>
+Do you start at position 0, or the first checkpoint?<br />
+<br>
+<i>You can start at any checkpoint that is marked by a 1<br />
+</i></td>
+</td></tr>
+<tr><td>F - Fearsome Travelling Gang</td>
+<td>
+What's the bound on T?<br />
+<br>
+<i>Reasonable (~100).<br />
+</i></td>
+</td></tr>
+<tr><td>C - Coordinated Motions</td>
+<td>
+Can we assume A and B doesn't start at the same location and/or doesn't go to the same destination?<br />
+<br>
+<i>Yes. Specifically, A does not equal B and A' does not equal B'.<br />
+</i></td>
+</td></tr>
+<tr><td>B - Bulbasaur Charity</td>
+<td>
+It says starting at one city ending at another, can the traveller decide to not visit all(any?) of the cities ?<br />
+<br>
+<i>Yes. This is poor wording on the problems part. The statement has been corrected.<br />
+</i></td>
+</td></tr>
+<tr><td>E - Evil vs. Good</td>
+<td>
+What happens if a Type 2 cannon shot hits cannons that have finished charging at the exact same time they are hit?<br />
+<br>
+<i>The cannon fires. Cannons on both sides finish charging before firing, so the cannon can finish charging before the Type 2 fires (and it fires as well).<br />
+</i></td>
+</td></tr>
+<tr><td>C - Coordinated Motions</td>
+<td>
+>the two robots cannot intersect<br />
+<br />
+Does this mean their paths cannot intersect? Or that the two robots cannot occupy the same space at the same time?<br />
+<br>
+<i>The two robots cannot occupy the same space at the same time, but they may touch.<br />
+</i></td>
+</td></tr>
+<tr><td>D - Dan and Linton</td>
+<td>
+Are two roads (x, y) and (y, x) considered to be the same road for counting purposes?<br />
+<br>
+<i>No, the roads are one-way so (x,y) and (y,x) are different, counting as 2 roads.<br />
+</i></td>
+</td></tr>
+<tr><td>E - Evil vs. Good</td>
+<td>
+can a cannon fire the same second it finishes charging?<br />
+<br>
+<i>Yes, once a cannon finishes charging it fires.<br />
+</i></td>
+</td></tr>
+<tr><td>E - Evil vs. Good</td>
+<td>
+Can a cannon have W_i = 0 and C_i = 0, so that it doesn't have to wait before starting to charge, and doesn't takes time to charge?<br />
+<br>
+<i>It is guaranteed that at least one of W_i or C_i is positive (i.e. this does not occur).<br />
+</i></td>
+</td></tr>
+<tr><td>C - Coordinated Motions</td>
+<td>
+can one robot stay at its place while the other one moves or should they move synchronically ?<br />
+<br>
+<i>Please read all the clarifications carefully.<br />
+</i></td>
+</td></tr>
+<tr><td>E - Evil vs. Good</td>
+<td>
+can a cannon charge the same second it's cooldown time (Wi) expires?<br />
+<br>
+<i>Once Wi finishes the cannon begins charging, i.e. if cooldown starts at T=5, Wi=7, then it starts charging at T=12.<br />
+</i></td>
+</td></tr>
+<tr><td>E - Evil vs. Good</td>
+<td>
+if a cannon has 0 charge time and 0 wait time, does its city automatically win<br />
+<br>
+<i>refresh the problem statement. this case does not exist in the test data.<br />
+</i></td>
+</td></tr>
+<tr><td>C - Coordinated Motions</td>
+<td>
+can distance be negative?<br />
+<br>
+<i>you mean like time travel? (no)<br />
+</i></td>
+</td></tr>
+</table><br>
+
+</div>
+
+
+<hr><p><small>
+Ultra Cool Programming Contest Control Centre v1.8<br>
+Copyright (c) 2005-2010 by Sonny Chan<br>
+</small></p>
+
+</body>
+
+</html>

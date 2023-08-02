@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+// Graph layout
+//  -- Each problem has its own Edge structure.
+// If you see &quot;typedef int Edge;&quot; at the top of an algorithm, change
+//    vector&lt;vector&lt;Edge&gt; &gt; nbr; ---&gt;  vector&lt;vector&lt;int&gt; &gt; nbr;
+
+typedef pair&lt;int,int&gt; pii;
+typedef int Edge;
+
+const int MAX_N = 100000;
+
+int p1[MAX_N];
+struct Graph {
+  vector&lt;vector&lt;Edge&gt; &gt; nbr;
+   int num_nodes;
+  Graph(int n) : nbr(n), num_nodes(n) { }
+  
+  // No check for duplicate edges!
+  // Add (or remove) any parameters that matter for your problem
+   // void add_edge_directed(int u, int v, int weight, double cost, ...) {
+   //   Edge e = {v,weight,cost, ...};    nbr[u].push_back(e);
+  
+  void add_edge_undirected(int u, int v) {
+    Edge e1 = v;   nbr[u].push_back(e1);
+    Edge e2 = u;   nbr[v].push_back(e2);
+  }
+   /*
+  // Does not allow for duplicate edges between u and v.
+  //    (Note that if &quot;typedef int Edge;&quot;, do not write the &quot;.to&quot;)
+  void add_edge_directed_no_dup(int u, int v, int weight, double cost, ...) {
+    for(int i=0;i&lt;nbr[u].size();i++)
+      if(nbr[u][i].to == v) {
+	// An edge between u and v is already here.
+	// Add tie breaking here if necessary (for example, keep the smallest cost).
+	nbr[u][i].cost = min(nbr[u][i].cost,cost);
+	return;
+      } 
+    Edge e = {v,weight,cost, ...};    nbr[u].push_back(e);
+
+  }
+  void add_edge_undirected_no_dup(int u, int v, int weight, double cost, ...) {
+    add_edge_directed_no_dup(u,v,weight,cost, ...);
+    add_edge_directed_no_dup(v,u,weight,cost, ...);
+    }*/
+};
+
+// Get path from (src) to (v). Stored in path[0], .. ,path[k-1]
+int get_path(int v, int P[], int path[]) {
+  int k = 0;
+  path[k++] = v;
+  while (P[v] != -1) path[k++] = v = P[v];
+  reverse(path,path+k);
+  return k;
+}
+
+// NOTE: For trees only!
+
+// Returns a node that is the furthest from u -- O(n)
+int furthest(const Graph&amp; G,int u,int&amp; max_depth,int par[],int p=-1,int d=0){
+  if(d == 0 || d &gt; max_depth) max_depth = d;
+  int D,v,ans = u;  par[u] = p;
+  for(int i=0;i&lt;G.nbr[u].size();i++){
+    if(p == G.nbr[u][i]) continue;
+    D = max_depth; v = furthest(G,G.nbr[u][i],max_depth,par,u,d+1);
+    if(max_depth &gt; D) ans = v;
+  }
+  return ans;
+}
+
+// The diameter of G is the maximum distance between two nodes -- O(n)
+int diam(const Graph&amp; G, int root){
+  int max_d; furthest(G,furthest(G,root,max_d,p1),max_d,p1); return max_d;
+}
+
+int main ()
+{
+   int c, l;
+
+   cin &gt;&gt; c &gt;&gt; l;
+
+   if (c &gt; 2 &amp;&amp; l == 0)
+   {
+      cout &lt;&lt; 2 &lt;&lt; endl;
+      return 0;
+   }
+
+   Graph G (c);
+   int u, v;
+   for (int i = 0; i &lt; l; i++)
+   {
+      cin &gt;&gt; u &gt;&gt; v;
+      G.add_edge_undirected (u, v);
+   }
+ 
+   fill (p1, p1 + c, -2);
+
+   vector&lt;int&gt; max1;
+   
+   for (int i = 0; i &lt; c; i++)
+   {
+      if (p1[i] == -2)
+      {
+	 int m = diam (G, i);
+	 max1.push_back (m);
+      }
+   }
+   
+   sort(max1.begin(), max1.end());
+   reverse(max1.begin(), max1.end());
+
+   int ans = max1.at(0);
+   
+   if(max1.size() &gt;= 2){
+   	ans = max(static_cast&lt;int&gt;(ceil(max1.at(0)/2.0) + ceil(max1.at(1)/2.0)) + 1, ans);
+   }
+   
+   if(max1.size() &gt;= 3){
+   	ans = max(static_cast&lt;int&gt;(ceil(max1.at(1)/2.0) + ceil(max1.at(2)/2.0)) + 2, ans);
+   }
+
+   cout &lt;&lt; ans &lt;&lt; endl;
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

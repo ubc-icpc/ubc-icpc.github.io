@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+typedef long long ll;
+using namespace std;
+
+vector&lt;ll&gt; dp; //dp[i] = # of slats unpainted to the left if selecting painter i (assuming optimal selection of painters &lt; i)
+vector&lt;pair&lt;ll, ll&gt;&gt; painters;
+ll n, k;
+ll globalMin;
+
+ll bin_search_1(vector&lt;pair&lt;ll,ll&gt;&gt; &amp;search, ll target, ll l) { //assumes target is in search
+	ll r = search.size();
+	ll mid = (l+r) / 2;
+	while (r - l &gt; 1) {
+		if (search[mid].first &gt; target) r = mid;
+		else l = mid;
+		mid = (l+r) / 2;
+	}
+	return mid;
+}
+
+ll bin_search_2(vector&lt;pair&lt;ll,ll&gt;&gt; &amp;search, ll target, ll r) { //assumes target is in search
+	ll l = 0;
+	ll mid = (l+r) / 2;
+	while (r - l &gt; 1) {
+		if (search[mid].second &gt;= target) r = mid;
+		else l = mid;
+		mid = (l+r) / 2;
+	}
+	return mid;
+}
+
+ll solve(ll i) {
+//	cout &lt;&lt; i &lt;&lt; endl;
+	if (dp[i] != -1)
+		return dp[i];
+	if (i == 0)
+		return painters[i].first - 1;
+	ll r = bin_search_2(painters, painters[i].first, i);
+//	r = min((ll) painters.size()-1, min(i-1, r+1)) - 1;
+	for (ll j = min((ll) painters.size()-1, min(i-1, r+1)); j &gt;= 0; j--) {
+		if (painters[j].second &lt; painters[i].first) {
+			r = j;
+			break;
+		}
+	}
+//	cout &lt;&lt; &quot;r: &quot; &lt;&lt; r &lt;&lt; endl;
+	ll min = painters[i].first - 1;
+	for (ll j = r; j &gt;= 0; j--) {
+		if (painters[j].second &lt; painters[i].first) {
+			if (painters[i].first - painters[j].second &gt; min)
+				break;
+			ll a = solve(j) + painters[i].first - painters[j].second - 1;
+			if (a &lt; min)
+				min = a;
+		}
+	}
+	dp[i] = min;
+	return min;
+}
+
+bool comp(const pair&lt;ll, ll&gt; &amp;a, const pair&lt;ll, ll&gt; &amp;b) {
+	return a.second &lt; b.second;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cin &gt;&gt; n &gt;&gt; k;
+	for (int i = 0; i &lt; k; i++) {
+		ll a, b; cin &gt;&gt; a &gt;&gt; b;
+		painters.push_back({a, b});
+	}
+	sort(painters.begin(), painters.end(), comp);
+	dp = vector&lt;ll&gt;(k, -1);
+	globalMin = n;
+	for (int i = 0; i &lt; k; i++) {
+		ll a = solve(i) + n - painters[i].second;
+		if (a &lt; globalMin)
+			globalMin = a;
+	}
+	cout &lt;&lt; globalMin &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;  
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+#define pii pair&lt;int, int&gt;
+#define vpii vector&lt;pii &gt;
+
+struct adsfasdfadsfadf {
+    bool operator() (pii a, pii b) {
+        return (a.first &lt; b.first);
+    }
+} comp;
+
+int prizes[128];
+int tickets[128];
+
+double dp[128][128];
+
+int main() {
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        int k, p;
+        scanf(&quot;%d %d&quot;, &amp;k, &amp;p);
+        for (int i = 0; i &lt; p; ++i) {
+            scanf(&quot;%d&quot;, prizes + i);
+        }
+        for (int i = 0; i &lt; p; ++i) {
+            scanf(&quot;%d&quot;, tickets + i);
+        }
+        memset(dp, 0, sizeof(dp));
+        vpii v;
+        for (int i = 0; i &lt; p; ++i) {
+            v.push_back(make_pair(prizes[i], tickets[i]));
+        }
+        sort(v.begin(), v.end(), comp);
+
+        for (int i = 0; i &lt; p; ++i) {
+            int prizeValue = v[i].first;
+            int prizeTix = v[i].second;
+            for (int j = 1; j &lt;= k; ++j) {
+                double max = prizeValue * j * 1.0 / (prizeTix + j);
+                if (i &gt; 0) {
+                    for (int k = 0; k &lt; j; ++k) {
+                        double prob = k * 1.0 / (prizeTix + k);
+                        double currmax = prob * prizeValue;
+                        currmax += (1.0 - prob) * dp[i-1][j-k];
+                        if (currmax &gt; max) max = currmax;
+                    }
+                }
+                dp[i][j] = max;
+            }
+        }
+
+        printf(&quot;%.5f\n&quot;, dp[p-1][k]);
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

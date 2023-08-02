@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+
+using namespace std;
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		string s; cin &gt;&gt; s;
+		int n; cin &gt;&gt; n;
+		int arr[n]; char c; cin &gt;&gt; c;
+		for(int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; arr[i] &gt;&gt; c;
+		}
+		if(n==0) cin &gt;&gt; c;
+		bool front = true; int start = 0, end = n;
+		for(int i = 0; i &lt; s.size(); i++) {
+			if(s[i] == 'R') front = !front;
+			else {
+				if(front)
+					start++;
+				else
+					end--;
+			}
+		}
+		if(start &gt; end) {
+			cout &lt;&lt; &quot;error&quot; &lt;&lt; endl;
+			continue;
+		}
+		if(start == end) {
+			cout &lt;&lt; &quot;[]&quot; &lt;&lt; endl;
+			continue;
+		}
+		cout &lt;&lt; '[';
+		if(front) {
+			for(int i = start; i &lt; end - 1; i++) {
+				cout &lt;&lt; arr[i] &lt;&lt; ',';
+			}
+			cout &lt;&lt; arr[end - 1];
+		}
+		else {
+			for(int i = end - 1; i &gt; start; i--) {
+				cout &lt;&lt; arr[i] &lt;&lt; ',';
+			}
+			cout &lt;&lt; arr[start];
+		}
+		cout &lt;&lt; ']' &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

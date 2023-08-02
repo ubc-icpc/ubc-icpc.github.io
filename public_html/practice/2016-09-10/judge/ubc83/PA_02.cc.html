@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main(){
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		int w, h, n; cin &gt;&gt; w &gt;&gt; h &gt;&gt; n;
+
+		int p1 = 0, p2 = 0;
+		vector&lt;string&gt; p1Map, p2Map;
+		for(int i = 0; i &lt; h; i++) {
+			string curr; cin &gt;&gt; curr; p1Map.push_back(curr);
+			p1 += count(curr.begin(), curr.end(), '#');
+		}
+		for(int i = 0; i &lt; h; i++) {
+			string curr; cin &gt;&gt; curr; p2Map.push_back(curr);
+			p2 += count(curr.begin(), curr.end(), '#');
+		}
+
+		vector&lt;pair&lt;int, int&gt;&gt; orders;
+		for(int i = 0; i &lt; n; i++) {
+			int x, y; cin &gt;&gt; x &gt;&gt; y; orders.push_back({x, y});
+		}
+
+		int i = 0;
+		while(i &lt; n) {
+			//p1's turn
+			bool hit = false;
+			do {
+				pair&lt;int, int&gt; order = orders[i];
+				i++;
+				if(p2Map[h-1-order.second][order.first] == '#') {
+					p2Map[h-1-order.second][order.first] = '_';
+					p2--;
+					hit = true;
+				} else {
+					hit = false;
+				}
+			} while (hit &amp;&amp; i &lt; n &amp;&amp; p2 &gt; 0);
+			if(i &gt;= n) break;
+			//p2's turn
+			hit = false;
+			do {
+				pair&lt;int, int&gt; order = orders[i];
+				i++;
+				if(p1Map[h-1-order.second][order.first] == '#') {
+					p1Map[h-1-order.second][order.first] = '_';
+					p1--;
+					hit = true;
+				} else {
+					hit = false;
+				}
+			} while (hit &amp;&amp; i &lt; n &amp;&amp; p1 &gt; 0);
+			if(i &gt;= n) break;
+			if(p1 == 0 || p2 == 0) break;
+		}
+
+		if(p1 == 0 &amp;&amp; p2 == 0) {
+			cout &lt;&lt; &quot;draw&quot; &lt;&lt; endl;
+		} else if (p1 == 0) {
+			cout &lt;&lt; &quot;player two wins&quot; &lt;&lt; endl;
+		} else if (p2 == 0) {
+			cout &lt;&lt; &quot;player one wins&quot; &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;draw&quot; &lt;&lt; endl;
+		}
+
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+const int N = 100005;
+const int MAXN = 131072;
+
+struct RTreeX {
+    unordered_map&lt;ll, ll&gt; a;
+    RTreeX() {}
+
+    ll update(int x, int y, int i=1, int l=0, int r=MAXN-1) {
+        if (y &lt; l || r &lt; x || l == r) { if (a.count(i) == 0) return 0; return a[i]; }
+        int m = (l+r)/2;
+        return a[i] = max(update(x, y, 2*i, l, m), update(x, y, 2*i+1, m+1, r));
+    }
+    void insert(int x, ll v) {
+        a[MAXN+x] = max(a[MAXN+x], v); update(x, x);
+    }
+    ll query(int x, int y, int i = 1, int l = 0, int r = MAXN-1) {
+        if (y &lt; l || r &lt; x) return 0;
+        if (x &lt;= l &amp;&amp; r &lt;= y) { if (a.count(i) == 0) return 0; return a[i]; }
+        int m = (l+r)/2;
+        return max(query(x, y, 2*i, l, m), query(x, y, 2*i+1, m+1, r));
+    }
+};
+struct RTree {
+    unordered_map&lt;ll, RTreeX&gt; a;
+    RTree() {}
+
+    void insert(int x, int u, ll val, int i=1, int l=0, int r=MAXN-1) {
+        if (x &lt; l || r &lt; x) return;
+        a[i].insert(u, val);
+        if (l == r) return;
+
+        int m = (l+r)/2;
+        insert(x, u, val, 2*i, l, m); insert(x, u, val, 2*i+1, m+1, r);
+    }
+    ll query(int x, int y, int u, int v, int i = 1, int l = 0, int r = MAXN-1) {
+        if (y &lt; l || r &lt; x) return 0;
+        if (x &lt;= l &amp;&amp; r &lt;= y) { if (a.count(i) == 0) return 0; return a[i].query(u, v); }
+        int m = (l+r)/2;
+        return max(query(x, y, u, v, 2*i, l, m), query(x, y, u, v, 2*i+1, m+1, r));
+    }
+};
+
+RTree tt;
+ll a[1000][1000];
+void testTree() {
+    ll ans = 0;
+    ll ans2 = 0;
+    for (int i = 0; i &lt; 100; i++) {
+        for (int j = 0; j &lt; 100; j++) {
+            a[i][j] = rand();
+            tt.insert(i, j, a[i][j]);
+            if (i &lt;= 12 &amp;&amp; j &lt;= 45)ans = max(ans, a[i][j]);
+            if (i == 0 &amp;&amp; j &lt;= 45)ans2 = max(ans, a[i][j]);
+        }
+    }
+    cerr &lt;&lt; tt.query(0, 12, 0, 45) &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; endl;
+    cerr &lt;&lt; tt.query(0, 0, 0, 45) &lt;&lt; &quot; &quot; &lt;&lt; ans2 &lt;&lt; endl;
+}
+
+RTree tree;
+ll dp[N];
+pll pts[N];
+int main() {
+    //testTree();
+    int n; ll r, w, h; scanf(&quot;%d %lld %lld %lld&quot;, &amp;n, &amp;r, &amp;w, &amp;h);
+    set&lt;ll&gt; xvals, yvals;
+    for (int i = 0; i &lt; n; i++) {
+        ll x, y; scanf(&quot;%lld %lld&quot;, &amp;x, &amp;y);
+        ll a = y + r*x, b = y - r*x;
+        xvals.insert(a);
+        yvals.insert(b);
+        pts[i] = pll(a, b);
+    }
+    int ii = 0;
+    map&lt;ll, ll&gt; mapx, mapy;
+    for (ll z : xvals) {
+        mapx[z] = ii++;
+    }
+    ii = 0;
+    for (ll z : yvals) {
+        mapy[z] = ii++;
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        ll a = pts[i].first, b = pts[i].second;
+        pts[i] = pll(mapx[a], mapy[b]);
+        //cerr &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; mapx[a] &lt;&lt; &quot; &quot; &lt;&lt; mapy[b] &lt;&lt; endl;
+    }
+    sort(pts, pts+n);
+
+    ll ans = 0;
+    for (int i = 0; i &lt; n; i++) {
+        dp[i] = tree.query(0, pts[i].first, 0, pts[i].second) + 1;
+        tree.insert(pts[i].first, pts[i].second, dp[i]);
+        ans = max(ans, dp[i]);
+    }
+    printf(&quot;%lld\n&quot;, ans);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

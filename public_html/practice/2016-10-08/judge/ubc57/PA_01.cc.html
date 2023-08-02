@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef complex&lt;int&gt; pt;
+
+bool isInt(long double x){
+    int f=x;
+    if (abs(f-x)&lt;1e-6) return true;
+    f++;
+    if (abs(f-x)&lt;1e-6) return true;
+    return false;
+}
+int main(){
+    int t; cin&gt;&gt;t;
+    while (t--){
+        int a,b; cin&gt;&gt;a&gt;&gt;b; 
+        pt c(a,b);
+        int size=a*a+b*b;
+        int f=0;
+        for (int x=0;x*x&lt;=size;x++){
+            for (int y=0;y*y+x*x&lt;=size;y++) if (((x*x+y*y)&gt;0)&amp;&amp;((size%(x*x+y*y))==0)){
+                //cout&lt;&lt;x&lt;&lt;' '&lt;&lt;y&lt;&lt;endl;
+                pt res=c/pt(x,y);
+                
+                if ((isInt(real(res)))&amp;&amp;(isInt(imag(res)))) f+=2;
+            }
+        }
+        if (f==8) cout&lt;&lt;&quot;P&quot;&lt;&lt;endl;
+        else cout&lt;&lt;&quot;C&quot;&lt;&lt;endl;
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

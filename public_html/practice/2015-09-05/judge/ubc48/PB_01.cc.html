@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main(){
+	int n; cin &gt;&gt; n;
+	for (int tc = 1; tc &lt;= n; ++tc){
+		int d; cin &gt;&gt; d;
+		vector &lt; int &gt; c(d);
+		cout &lt;&lt; &quot;Denominations: &quot;;
+		for (int i = 0; i &lt; d; ++i){
+			cin &gt;&gt; c[i];
+			if (i == d - 1){
+				cout &lt;&lt; c[i] &lt;&lt; endl;
+			}
+			else{
+				cout &lt;&lt; c[i] &lt;&lt; &quot; &quot;;
+			}
+		}
+		bool prop = true;
+		for (int i = 1; i &lt; c.size(); ++i)
+			if (!(c[i] &gt;= 2 * c[i - 1])) prop = false;
+		
+		if (prop) cout &lt;&lt; &quot;Good coin denominations!&quot; &lt;&lt; endl;
+		else cout &lt;&lt; &quot;Bad coin denominations!&quot; &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// July 18 A.cpp : Defines the entry point for the console application.
+//
+
+//#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;tuple&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstring&gt;
+using namespace std;
+vector&lt;vector&lt;int&gt; &gt; Lvl;
+tuple&lt;int, int, int&gt; E[10005];
+vector&lt;vector&lt;int&gt; &gt; C;
+bool Vis[10005] = {0};
+int dist[10005];
+int Sup_C[10005];
+
+int main()
+{
+	Lvl.resize(10005);
+	C.resize(10005);
+	int t, n,a,b,w;
+	cin &gt;&gt; t;
+	for (int i = 1; i &lt;= t; i++){
+		memset(Vis, 0, sizeof Vis);
+		memset(Sup_C, 0, sizeof(Sup_C));
+		cin &gt;&gt; n;
+		for (int i = 0; i &lt; n-1; i++){
+			cin &gt;&gt; a &gt;&gt; b &gt;&gt; w;
+			E[i] = tuple&lt;int, int, int&gt; (a, b, w);
+			if (a&lt;b) C[a].push_back(b);
+			else C[b].push_back(a);
+		}
+		queue&lt;int&gt; Q;
+		int s;
+		Q.push(0);
+		int l = 0;
+		int ml = -1;
+		dist[1] = 0;
+		while (!Q.empty()){ //BFS
+			s = Q.front();
+			Q.pop();
+			for (int i = 0; i &lt; C[s].size(); i++){
+				if (!Vis[C[s][i]]){
+					dist[C[s][i]] = dist[s] + 1;
+					ml = max(ml, dist[s] + 1);
+					Q.push(C[s][i]);
+				}
+			}
+			Vis[s] = true;
+		}
+		for (int i = 0; i &lt; n; i++) Lvl[dist[i]].push_back(i);
+		for (int i = ml; i &gt;=0; i--){
+			for (int j = 0; j &lt; Lvl[i].size(); j++){
+				Sup_C[Lvl[i][j]] = 1;
+				for (int ji = 0; ji &lt; C[Lvl[i][j]].size(); ji++) Sup_C[Lvl[i][j]] += Sup_C[C[Lvl[i][j]][ji]];
+			}
+		}
+		int answer = 0;
+		for (int i = 0; i &lt; n - 1; i++){
+			tuple&lt;int, int, int&gt; t = E[i];
+			int bg = max(get&lt;0&gt;(t), get&lt;1&gt;(t));
+			answer += Sup_C[bg] * (n -Sup_C[bg])*get&lt;2&gt;(t);
+		}
+		long double asd = (n*n - n) / 2;
+		long double sol = answer / asd;
+		cout &lt;&lt; fixed &lt;&lt; setprecision(8) &lt;&lt; sol &lt;&lt; endl;
+	}
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

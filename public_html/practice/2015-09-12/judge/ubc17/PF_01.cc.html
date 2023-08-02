@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+#define VOWELS 6
+#define CONSONANTS 20
+
+#define ll long long
+
+using namespace std;
+
+bool isVowel(char x) {
+    return x == 'a' || x == 'e' || x == 'i' || x == 'o' || x == 'u' || x == 'y';
+}
+
+bool isQuestion(char x) {
+    return x == '?';
+}
+
+bool isVowelQ(char x) {
+    return isVowel(x) || isQuestion(x);
+}
+
+bool isConsQ(char x) {
+    return !isVowel(x);
+}
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    for (int qn = 1; qn &lt;= n; ++qn) {
+        printf(&quot;String #%d: &quot;, qn);
+        string s;
+        cin &gt;&gt; s;
+
+        ll result = 1LL;
+
+        if (isQuestion(s[0])) {
+            // try both as vowel and consonant, might get both answers
+
+            ll r1 = 1LL, r2 = 1LL;
+
+            // assume first is vowel
+            int v = 1;
+            int c = 0;
+
+            string sa = s;
+
+            sa[0] = 'a';
+
+            for (int i = 1; i &lt; sa.length(); ++i) {
+                char curr = sa[i];
+                char prev = sa[i-1];
+                if (isConsQ(curr) &amp;&amp; isVowelQ(prev)) {
+                    if (isQuestion(curr)) {
+                        ++c;
+                        sa[i] = 'b';
+                    }
+                } else if (isVowelQ(curr) &amp;&amp; isConsQ(prev)) {
+                    if (isQuestion(curr)) {
+                        ++v;
+                        sa[i] = 'a';
+                    }
+                } else {
+                    r1 = 0LL;
+                    break;
+                }
+            }
+
+            for (int i = 0; i &lt; v; ++i) {
+                r1 *= VOWELS;
+            }
+
+            for (int i = 0; i &lt; c; ++i) {
+                r1 *= CONSONANTS;
+            }
+
+            // assume first is consonant
+            v = 0;
+            c = 1;
+
+            sa = s;
+
+            sa[0] = 'b';
+
+            for (int i = 1; i &lt; sa.length(); ++i) {
+                char curr = sa[i];
+                char prev = sa[i-1];
+                if (isConsQ(curr) &amp;&amp; isVowelQ(prev)) {
+                    if (isQuestion(curr)) {
+                        ++c;
+                        sa[i] = 'b';
+                    }
+                } else if (isVowelQ(curr) &amp;&amp; isConsQ(prev)) {
+                    if (isQuestion(curr)) {
+                        ++v;
+                        sa[i] = 'a';
+                    }
+                } else {
+                    r2 = 0LL;
+                    break;
+                }
+            }
+
+            for (int i = 0; i &lt; v; ++i) {
+                r2 *= VOWELS;
+            }
+
+            for (int i = 0; i &lt; c; ++i) {
+                r2 *= CONSONANTS;
+            }
+
+            result = r1 + r2;
+        } else {
+            int v = 0;
+            int c = 0;
+
+            for (int i = 1; i &lt; s.length(); ++i) {
+                char curr = s[i];
+                char prev = s[i-1];
+                if (isConsQ(curr) &amp;&amp; isVowelQ(prev)) {
+                    if (isQuestion(curr)) {
+                        ++c;
+                        s[i] = 'b';
+                    }
+                } else if (isVowelQ(curr) &amp;&amp; isConsQ(prev)) {
+                    if (isQuestion(curr)) {
+                        ++v;
+                        s[i] = 'a';
+                    }
+                } else {
+                    result = 0LL;
+                    break;
+                }
+            }
+
+            for (int i = 0; i &lt; v; ++i) {
+                result *= VOWELS;
+            }
+
+            for (int i = 0; i &lt; c; ++i) {
+                result *= CONSONANTS;
+            }
+        }
+
+        printf(&quot;%lld\n&quot;, result);
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

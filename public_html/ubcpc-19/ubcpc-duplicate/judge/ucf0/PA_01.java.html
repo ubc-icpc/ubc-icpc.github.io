@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class caesar {
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		
+		boolean mode = in.next().equals(&quot;D&quot;) ? true : false;
+		
+		int shift = in.nextInt();
+		if (mode) {
+			shift = 26 - shift;
+			char[] letters = in.next().toCharArray();
+			for (int i = 0; i &lt; letters.length; i++) {
+				letters[i] = (char) ('a' + ((shift + letters[i] - 'a') % 26));
+			}
+			System.out.println(new String(letters));
+		} else {
+			char[] letters = in.next().toCharArray();
+			for (int i = 0; i &lt; letters.length; i++) {
+				letters[i] = (char) ('a' + ((shift + letters[i] - 'a') % 26));
+			}
+			System.out.println(new String(letters));
+		}
+		
+		
+		in.close();
+	}
+}
+</code>
+</pre>
+</body>
+</html>

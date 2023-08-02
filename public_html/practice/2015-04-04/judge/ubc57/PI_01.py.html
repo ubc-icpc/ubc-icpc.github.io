@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+cases=int(raw_input())
+for i in range(0,cases):
+    Dic={}
+    for i in range(0,16):
+        a=raw_input().split()
+        if a[1] not in Dic:
+            Dic[a[1]]=0
+        if a[0] not in Dic:
+            Dic[a[0]]=0
+        if int(a[3])&gt;int(a[2]):
+            Dic[a[1]]=Dic[a[1]]+1
+        else:
+            Dic[a[0]]=Dic[a[0]]+1
+    for x in Dic.keys():
+        if Dic[x]==4:
+            print(x)
+            break
+    
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

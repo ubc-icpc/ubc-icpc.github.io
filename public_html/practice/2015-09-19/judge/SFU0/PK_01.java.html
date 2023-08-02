@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+/***************************************
+*                                      *
+*            Lord Klotski              *
+*                                      *
+****************************************/
+
+import java.util.* ;
+import java.math.* ;
+import java.io.* ;
+
+public class Tr0phyCase 
+{
+    static class Trophy implements Comparable
+    {
+        int h, w ;
+        public Trophy(int a, int b) { h = a ; w = b ;}
+        public int compareTo(Object A)
+        {
+            Trophy T = (Trophy) A ;
+            return T.h - this.h ; // DECREASING order
+        }
+    }
+    
+    static Trophy[] arr ;
+    static int[][][] DP ;
+    static int N ;
+    
+    static int solve(int I, int L, int R)
+    {
+        if (I == N) return 0 ;
+        if (DP[I][L][R] != -1) return DP[I][L][R] ;
+        int ans = 1&lt;&lt;25 ;
+        if (L == N+2 &amp;&amp; R == N+2)
+            return solve(I+1,I,I) ;
+        ans = Math.min(ans,solve(I+1,I,R) + Math.abs(arr[L].w - arr[I].w)) ;
+        ans = Math.min(ans,solve(I+1,L,I) + Math.abs(arr[R].w - arr[I].w)) ;
+
+        return DP[I][L][R] = ans ;
+    }
+    
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in) ;
+        while(input.hasNext())
+        {
+            N = input.nextInt() ;
+            arr = new Trophy[N] ;
+            for (int i = 0; i &lt; N; i ++)
+            {
+                arr[i] = new Trophy(input.nextInt(), input.nextInt()) ;
+            }
+            Arrays.sort(arr) ;
+            DP = new int[N+1][N+3][N+3] ;
+            
+            for (int i = 0 ; i &lt;= N ; i ++) 
+                for (int j = 0 ; j &lt;= N+2 ; j ++)
+                    Arrays.fill(DP[i][j],-1) ;
+            System.out.println(solve(0,N+2,N+2));
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

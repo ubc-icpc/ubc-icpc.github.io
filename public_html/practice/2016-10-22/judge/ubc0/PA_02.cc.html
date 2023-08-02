@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;deque&gt;
+#include &lt;cassert&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;bitset&gt;
+#include &lt;climits&gt;
+#include &lt;iomanip&gt;
+#include &lt;sstream&gt;
+using namespace std;
+
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+typedef pair&lt;int, int&gt; PII;
+typedef double T;
+typedef vector&lt;T&gt; VT;
+typedef vector&lt;VT&gt; VVT;
+
+int n, m, q;
+
+int find(vector&lt;int&gt; &amp;group, int n){
+    if(group[n] == n)
+        return n;
+    
+    return group[n] = find(group, group[n]);
+}
+
+void merge(vector&lt;int&gt; &amp;group, int a, int b){
+    group[find(group, a)] = find(group, b);
+}
+
+int main(){
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    
+    cin &gt;&gt; m &gt;&gt; n &gt;&gt; q;
+    bool grid[1000][1000] = {0};
+    stack&lt;pair&lt;int, int&gt; &gt; commands; // {-1, -1} is next stroke
+    
+    for(int i = 0; i &lt; q; i++){
+        int x1, y1, x2, y2;
+        cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+        x1--;
+        y1--;
+        x2--;
+        y2--;
+        swap(x1, y1);
+        swap(x2, y2);
+        if(x1 != x2){
+            for(int a = x1; a &lt;= x2; a++){
+                if(!grid[a][y1]){
+                    grid[a][y1] = true;
+                    commands.push({a, y1});
+                }
+            }
+        }
+        else if(y1 != y2){
+            for(int a = y1; a &lt;= y2; a++){
+                if(!grid[x1][a]){
+                    grid[x1][a] = true;
+                    commands.push({x1, a});
+                }
+            }
+        }
+        else{
+            if(!grid[x1][y1]){
+                grid[x1][y1] = true;
+                commands.push({x1, y1});
+            }
+        }
+        commands.push({-1, -1});
+    }
+    
+    vector&lt;int&gt; groups(n * m, -1);
+    int currGroup = 0;
+    int regions = 0;
+    for(int i = 0; i &lt; n; i++){
+        for(int j = 0; j &lt; m; j++){
+            int index = i * m + j;
+            if(groups[index] != -1){
+                currGroup++;
+                continue;
+            }
+            
+            if(grid[i][j]){
+                groups[index] = currGroup;
+                currGroup++;
+                continue;
+            }
+            
+            queue&lt;pair&lt;int, int&gt; &gt; q;
+            q.push({i, j});
+            groups[index] = currGroup;
+            
+            while(!q.empty()){
+                PII curr = q.front();
+                int r = curr.first, c = curr.second;
+                index = r * m + c;
+                q.pop();
+                if(r &gt; 0 &amp;&amp; !grid[r - 1][c] &amp;&amp; groups[index - m] == -1){
+                    groups[index - m] = currGroup;
+                    q.push({r - 1, c});
+                }
+                if(r &lt; n - 1 &amp;&amp; !grid[r + 1][c] &amp;&amp; groups[index + m] == -1){
+                    groups[index + m] = currGroup;
+                    q.push({r + 1, c});
+                }
+                if(c &gt; 0 &amp;&amp; !grid[r][c - 1] &amp;&amp; groups[index - 1] == -1){
+                    groups[index - 1] = currGroup;
+                    q.push({r, c - 1});
+                }
+                if(c &lt; m - 1 &amp;&amp; !grid[r][c + 1] &amp;&amp; groups[index + 1] == -1){
+                    groups[index + 1] = currGroup;
+                    q.push({r, c + 1});
+                }
+            }
+            
+            currGroup++;
+            regions++;
+        }
+    }
+    
+    stack&lt;int&gt; ans;
+    int numGroups = regions;
+    
+    while(!commands.empty()){
+        PII curr = commands.top();
+        commands.pop();
+        
+        if(curr.first == -1 &amp;&amp; curr.second == -1){
+            ans.push(numGroups);
+            continue;
+        }
+        
+        int r = curr.first, c = curr.second;
+        int index = r * m + c;
+        
+        vector&lt;int&gt; neighbors;
+        
+        if(r &gt; 0 &amp;&amp; !grid[r - 1][c])
+            neighbors.push_back(index - m);
+        if(r &lt; n - 1 &amp;&amp; !grid[r + 1][c])
+            neighbors.push_back(index + m);
+        if(c &gt; 0 &amp;&amp; !grid[r][c - 1])
+            neighbors.push_back(index - 1);
+        if(c &lt; m - 1 &amp;&amp; !grid[r][c + 1])
+            neighbors.push_back(index + 1);
+        
+        set&lt;int&gt; neighborGroups;
+        
+        for(int i = 0; i &lt; neighbors.size(); i++)
+            neighborGroups.insert(find(groups, neighbors[i]));
+        
+        numGroups -= neighborGroups.size() - 1;
+        
+        for(auto it = neighbors.begin(); it != neighbors.end(); it++)
+            merge(groups, index, *it);
+        
+        grid[r][c] = false;
+    }
+    
+    while(!ans.empty()){
+        cout &lt;&lt; ans.top() &lt;&lt; endl;
+        ans.pop();
+    }
+    
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

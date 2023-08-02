@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+# points on line
+
+def maxP(points):
+    lp = len(points)
+    m = 0
+    for i in range(lp):
+        d = {'i':1}
+        for j in range(i+1,lp):
+            x,y = points[j][0],points[j][1]
+            if (points[i][0] == x):
+                slope = 'i'
+            else:
+                slope = (points[i][1] -y)*1.0/(points[i][0]-x)
+            if (slope not in d):
+                d[slope] = 2
+                        
+            else:
+                d[slope] = d[slope]+1
+        m = max(m,max(d.values()))
+    return m           
+    
+
+
+
+
+
+test = int(raw_input())
+
+for t in range(test):
+    num_p = int(raw_input())
+    points = []
+    for p in range(num_p):
+        x,y = [int(x) for x in raw_input().split()]
+        points.append([x,y])
+    print 'Case #'+str(t+1)+': '+str(maxP(points))    
+        
+        
+        
+        </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

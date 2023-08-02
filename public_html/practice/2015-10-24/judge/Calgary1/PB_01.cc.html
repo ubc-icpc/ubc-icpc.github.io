@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+
+void pi(int i, int N) {
+	FOR(n,0,N) {
+		printf(&quot;%c%c&quot;, (i&amp;7)+'1', n == N-1 ? '\n' : ' ');
+		i &gt;&gt;= 3;
+	}
+}
+
+int swp(int cur, int i) {
+	int p1 = (cur &gt;&gt; 3*i) &amp; 7, p2 = (cur &gt;&gt; 3*(i+1)) &amp; 7;
+	cur &amp;= ~(0b111111 &lt;&lt; 3*i);
+	cur |= p1 &lt;&lt; 3*(i+1);
+	cur |= p2 &lt;&lt; 3*i;
+	return cur;
+}
+
+vector&lt;int&gt; sv(int n) {
+	if (n == 0) return vector&lt;int&gt;(1, 0);
+	bool left = true;
+	vector&lt;int&gt; ans;
+	for (int x : sv(n-1)) {
+		x = left ? x | n&lt;&lt;3*n : x &lt;&lt; 3 | n;
+		ans.push_back(x);
+		for (int i = left ? n-1 : 0; i &gt;= 0 &amp;&amp; i &lt; n; left ? i-- : i++) {
+			x = swp(x, i);
+			ans.push_back(x);
+		}
+		left = !left;
+	}
+	return ans;
+}
+
+int main() {
+	int N;
+	scanf(&quot;%d&quot;, &amp;N);
+	for (int x : sv(N-1)) pi(x, N);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

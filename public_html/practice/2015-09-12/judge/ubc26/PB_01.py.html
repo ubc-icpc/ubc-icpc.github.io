@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+for __ in range(int(raw_input())):
+    ii = raw_input()
+    a,b,c,d,e,f = map(int, ii.split(' '))
+    us, ru = [a,b,c], [d,e,f]
+    count = sum(us) &gt; sum(ru)
+    color = us &gt; ru
+    print ii
+    if count and color: print &quot;both&quot;
+    elif count: print &quot;count&quot;
+    elif color: print &quot;color&quot;
+    else: print &quot;none&quot;
+    print
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

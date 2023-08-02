@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define endl '\n'
+
+double a, b, c, d, m, t;
+
+double f(double x) {
+	return a * m * x*x*x
+		+ b * m * x*x
+		+ c * m * x
+		+ d * m - t;
+}
+
+int main() {
+	while (cin &gt;&gt; a) {
+		cin &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; m &gt;&gt; t;
+		double l = 0.001;
+		double r = t / (c * m);
+		while (r - l &gt; 2e-6) {
+			if (f((l+r) / 2) &gt; 0) {
+				r = (l+r) / 2;
+			} else {
+				l = (l+r) / 2;
+			}
+		}
+		// int numDigits = ceil(log10((l+r)/2));
+		// int ans = (int) (l+r) / 2 * pow(10, numDigits+2);
+		// double k = (double) ans / pow(10, numDigits+2);
+		// cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; k &lt;&lt; endl;
+		int ans = (int) ((l + r) / 2 * 100 + 1e-10);
+		double ansd = ans / 100.0;
+		cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; ansd &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

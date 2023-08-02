@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;stack&gt;
+#include &lt;queue&gt;
+#include &lt;math.h&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;cassert&gt;
+#include &lt;string.h&gt;
+
+#include &lt;time.h&gt;
+#include &lt;random&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+#define ll long long
+#define N 10005
+
+pair&lt;ll,ll&gt; pts[N];
+
+double getAngle(pair&lt;ll,ll&gt; a, pair&lt;ll,ll&gt; b, pair&lt;ll,ll&gt; c) {
+    pair&lt;ll,ll&gt; v1, v2;
+    
+    v1 = {b.first-a.first, b.second-a.second};
+    v2 = {b.first-c.first, b.second-c.second};
+    
+    ll dot = v1.first*v2.first + v1.second*v2.second;
+    ll det = v1.first*v2.second - v1.second*v2.first;
+    
+    return atan2(det, dot);
+}
+
+void solve() {
+    ll r, n;
+    cin &gt;&gt; r &gt;&gt; n;
+    double jagged = 0;
+    double angle = 0;
+    pair&lt;ll,ll&gt; pt;
+    for (ll i = 0; i &lt; n; i++) {
+        cin &gt;&gt; pts[i].first &gt;&gt; pts[i].second;
+    }
+    
+    for (ll i = 0; i &lt; n; i++) {
+        ll iP = (i-1)%n;
+        ll iN = (i+1)%n;
+        if (iP &lt; 0)
+            iP += n;
+        jagged += sqrt(pow(pts[iP].first-pts[i].first, 2)+pow(pts[iP].second-pts[i].second,2));
+        
+        double ang = getAngle(pts[iP], pts[i], pts[iN]);
+        if (ang &lt; 0)
+            ang += 2*M_PI;
+        ang = abs(M_PI-ang);
+        //cout &lt;&lt; ang &lt;&lt; endl;
+        angle += ang;
+    }
+    
+    double angleTotal = angle*r;
+    
+    if (angleTotal &gt; jagged)
+        cout &lt;&lt; &quot;Not possible&quot; &lt;&lt; endl;
+    else {
+        double factor = (jagged-angleTotal)/jagged;
+        cout &lt;&lt; factor &lt;&lt; endl;
+    }
+}
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll t;
+    cin &gt;&gt; t;
+    for (ll i = 0; i &lt; t; i++) {
+        solve();
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

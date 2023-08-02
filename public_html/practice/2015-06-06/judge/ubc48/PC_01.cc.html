@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+bool comp(int i, int j){ return (i &gt; j);}
+int main(){
+	int n; cin &gt;&gt; n;
+	vector &lt; int &gt; num(n);
+	for (int i = 0; i &lt; n; ++i){
+		cin &gt;&gt; num[i];
+	}
+	sort(num.begin(), num.end(), comp);
+	if (num.size() == 1){
+		cout &lt;&lt; num[0] * 2 &lt;&lt; endl;
+	}
+	else if (num.size() == 2){
+		if (num[0] == num[1]) cout &lt;&lt; num[0] &lt;&lt; endl;
+		else cout &lt;&lt; num[1] + num[1] + num[1] - num[0] &lt;&lt; endl;
+	}
+	else{
+		vector &lt; long long &gt; s(3);
+		s[2] = num[0];
+		s[1] = num[1];
+		s[0] = num[2];
+		for (int i = 3; i &lt; n; ++i){
+			s[0] += num[i];
+			sort(s.begin(), s.end());
+		}
+		if (s[0] + s[1] &gt; s[2] &amp;&amp; s[1] + s[2] &gt; s[0] &amp;&amp; s[2] + s[0] &gt; s[1]){
+			cout &lt;&lt; s[0] + s[1] + s[2] &lt;&lt; endl;
+		}
+		else{
+			cout &lt;&lt; s[0] + s[1] + s[2] + s[2] - s[0] - s[1] &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef pair&lt;int,int&gt; pii;
+typedef long long ll;
+typedef tuple&lt;int,int,int,int,int,int&gt; tii;
+
+map&lt;tii,int&gt; M;
+vector&lt;tii&gt; v; 
+int main(){
+    ios::sync_with_stdio(0);
+    for (int a=0;a&lt;=15;a++) for (int b=0;b&lt;=15;b++) for (int c=0;c&lt;=15;c++) for (int d=0;d&lt;=15;d++) for (int e=0;e&lt;=15;e++){
+        int f=15-a-b-c-d-e;
+        if ((0&lt;=f)&amp;&amp;(f&lt;=15)) v.push_back(make_tuple(a,b,c,d,e,f));
+    }
+    for (int i=0;i&lt;v.size();i++) M[v[i]]=i;
+    char t; int ca=1;
+    while (cin&gt;&gt;t){
+        if (t=='e') break;
+        cout&lt;&lt;&quot;Case &quot;&lt;&lt;ca&lt;&lt;&quot;:&quot;;
+        if (t=='m'){
+            int a,b,c,d,e,f; cin&gt;&gt;a&gt;&gt;b&gt;&gt;c&gt;&gt;d&gt;&gt;e&gt;&gt;f;
+            cout&lt;&lt;&quot; &quot;&lt;&lt;M[make_tuple(a,b,c,d,e,f)]&lt;&lt;endl;
+        }
+        if (t=='u'){
+            int x; cin&gt;&gt;x;
+            cout&lt;&lt;' '&lt;&lt;get&lt;0&gt;(v[x])&lt;&lt;' '&lt;&lt;get&lt;1&gt;(v[x])&lt;&lt;' '&lt;&lt;get&lt;2&gt;(v[x])&lt;&lt;' '&lt;&lt;get&lt;3&gt;(v[x])&lt;&lt;' ';
+            cout&lt;&lt;get&lt;4&gt;(v[x])&lt;&lt;' '&lt;&lt;get&lt;5&gt;(v[x])&lt;&lt;endl;
+        }
+        ca++;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

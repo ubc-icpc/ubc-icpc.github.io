@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+const int MAXN = 700;
+struct BITree { ll freq[MAXN+1][MAXN+1]; 
+  BITree() { memset(freq, 0, sizeof freq); }
+  void insert(int x, int argy, ll cnt=1) {
+    for ( ; x &lt;= MAXN; x += x &amp; -x) 
+      for (int y = argy; y &lt;= MAXN; y += y &amp; -y) freq[x][y] += cnt;
+  }
+  ll query(int x, int argy) { ll sum = 0;
+    for ( ; x; x -= x &amp; -x) 
+      for (int y = argy; y; y -= y &amp; -y) sum += freq[x][y];
+    return sum; }
+  ll query_range(int xl, int xr, int yl, int yr) { 
+    return query(xr, yr) - query(xl-1, yr) - query(xr, yl-1) + query(xl-1, yl-1); 
+  }
+};
+    
+const int maxn = 500005;
+int x[maxn], y[maxn];
+BITree bt;
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; x[i] &gt;&gt; y[i];
+        x[i]++, y[i]++;
+        bt.insert(x[i], y[i]);
+    }
+    
+    for (int i = 0; i &lt; n; i++) {
+        int extra = 0;
+        int tx = x[i]-650, ty = y[i]-650;
+        if (tx &gt; 0) extra += bt.query_range(tx, tx, y[i], y[i]);
+        if (ty &gt; 0) extra += bt.query_range(x[i], x[i], ty, ty);
+        cout &lt;&lt; 1 + bt.query_range(x[i]+1, 651, y[i]+1, 651) &lt;&lt; &quot; &quot; 
+             &lt;&lt; n - bt.query_range(1, x[i]-1, 1, y[i]-1) - extra &lt;&lt; '\n';
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

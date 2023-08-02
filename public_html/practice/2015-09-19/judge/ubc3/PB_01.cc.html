@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+using vs = vector&lt;string&gt;;
+
+int main() {
+  string line;
+  while (cin &gt;&gt; line) {
+    vs grid(16);
+    grid[0] = line;
+    for (int i = 1; i &lt; 16; ++i)
+      cin &gt;&gt; grid[i];
+
+    vi res;
+    // for each player i
+    //   for each 4 subset not including i (65000)
+    //     if (i wins against winner)
+    //       for each pair not in the 4 subset (110)
+    //         if (i wins against winner)
+    //           res.insert(i);
+    for (int i = 0; i &lt; 16; ++i) {
+      int count = 0;
+      for (int j = 0; j &lt; 16; ++j)
+        if (grid[i][j] == '1')
+          count++;
+      if (count &lt; 3)
+        continue;
+      bool found = false;
+      for (int a = 0; a &lt; 16 &amp;&amp; !found; ++a) {
+        for (int b = 0; b &lt; 16 &amp;&amp; !found; ++b) {
+          for (int c = 0; c &lt; 16 &amp;&amp; !found; ++c) {
+            for (int d = 0; d &lt; 16 &amp;&amp; !found; ++d) {
+              if (a == i || b == i || c == i || d == i)
+                continue;
+              if (a == b || a == c || a == d || b == c || b == d || c == d)
+                continue;
+              int snd_a = grid[a][b] == '1'? a : b;
+              int snd_b = grid[c][d] == '1'? c : d;
+              int winner = grid[snd_a][snd_b] == '1'? snd_a : snd_b;
+              if (grid[i][winner] == '1') {
+                for (int x = 0; x &lt; 16 &amp;&amp; !found; ++x) {
+                  for (int y = 0; y &lt; 16 &amp;&amp; !found; ++y) {
+                    if (x == i || y == i || x == y
+                        || x == a || x == b || x == c || x == d
+                        || y == a || y == b || y == c || y == d)
+                      continue;
+                    int fir_win = grid[x][y] == '1'? x : y;
+                    if (grid[i][fir_win] == '1') {
+                      int used = 0;
+                      if (grid[i][a] == '1')
+                        used++;
+                      if (grid[i][b] == '1')
+                        used++;
+                      if (grid[i][c] == '1')
+                        used++;
+                      if (grid[i][d] == '1')
+                        used++;
+                      if (grid[i][x] == '1')
+                        used++;
+                      if (grid[i][y] == '1')
+                        used++;
+                      if (count - used &gt; 0) {
+                        found = true;
+                        res.push_back(i);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    for (int i = 0; i &lt; res.size(); ++i) {
+      cout &lt;&lt; res[i] + 1;
+      if (i != res.size() - 1)
+        cout &lt;&lt; &quot;, &quot;;
+    }
+    cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

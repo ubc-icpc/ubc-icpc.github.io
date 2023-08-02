@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+
+using namespace std;
+typedef long long ll;
+
+int n, a[4004], b, c;
+
+vector&lt;int&gt; f,v;
+
+int dp[4001][2001];
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt; n;
+    int k = n;
+    while (k--){
+        cin &gt;&gt; b;
+        f.pb(b);
+    }
+    vector&lt;int&gt; e(f);
+    sort(e.begin(),e.end());
+    map&lt;int, int&gt; ma;
+    for(int i = 0;i&lt;n;i++){
+        ma[e[i]] = i+1;
+    }
+    for(int i = 0;i&lt;n;i++){
+        f[i] = ma[f[i]];
+    }
+    for(int i=n-1;i&gt;=0;i--){
+        v.pb(f[i]);
+    }
+    for(int i=0;i&lt;n;i++){
+        v.pb(f[i]);
+    }
+    //for(auto i:v) cout &lt;&lt; i &lt;&lt; endl;
+    int m = 2*n;
+    for(int i=0;i&lt;m;i++){
+        for(int j=0;j&lt;n+1;j++){
+            // i is position base 
+            if (j&gt;0){
+                dp[i][j] = max(dp[i][j],dp[i][j-1]);
+                dp[i+1][j] = max(dp[i+1][j],dp[i+1][j-1]);
+            }
+            dp[i+1][j] = max(dp[i+1][j],dp[i][j]);
+            if (v[i]&gt;j)
+                dp[i+1][v[i]] = max(dp[i+1][v[i]],dp[i][j]+1);
+        }
+    }
+    /*
+    for(int i=0;i&lt;m+1;i++){
+        for(int j=0;j&lt;m;j++){
+            cout &lt;&lt; dp[i][j] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+    */
+    cout &lt;&lt; dp[m][n] &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+int parent[100005];
+ll val[100005];
+ll dist[100005];
+int find(int x){
+    vector&lt;int&gt; path;
+    int now=x,root;
+    while (now!=-1){
+        path.push_back(now);
+        if (parent[now]==-1) root=now;
+        now=parent[now];
+    }
+    for (int k=path.size()-2;k&gt;=0;k--){
+        int now=path[k];
+        val[now]=val[parent[now]]+dist[now];
+        dist[now]=val[now];
+        parent[now]=root;
+    }
+    return root;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    int n,m;
+    while (cin&gt;&gt;n&gt;&gt;m){
+        if (n==0) break;
+        memset(parent,-1,sizeof parent);
+        memset(val,0,sizeof val);
+        memset(dist,0,sizeof dist);
+        while (m--){
+            char c; cin&gt;&gt;c;
+            if (c=='!'){
+                int a,b; ll w; cin&gt;&gt;a&gt;&gt;b&gt;&gt;w;
+                int aRoot=find(a),bRoot=find(b);
+                if (aRoot!=bRoot){
+                    //val[aRoot]+val[a]+w=val[bRoot]+val[b]
+                    dist[bRoot]=val[a]+w-val[b];
+                    parent[bRoot]=aRoot;
+                }
+            }
+            else{
+                int a,b; cin&gt;&gt;a&gt;&gt;b; 
+                if (find(a)!=find(b)){
+                    cout&lt;&lt;&quot;UNKNOWN&quot;&lt;&lt;endl;
+                }
+                else{
+                    cout&lt;&lt;val[b]-val[a]&lt;&lt;endl;
+                }
+            }
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

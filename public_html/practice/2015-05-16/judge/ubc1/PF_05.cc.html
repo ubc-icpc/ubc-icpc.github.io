@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+// dp[x][i] := min cost of centering at x, with final path down child i
+//           = min(sum_c tour[c] + g[i] + wt(i, x))
+
+// g[x] := our solution for node x
+//       = min_c dp[x][c]
+
+// tour[x] := tour of all marked houses in the subtree of x
+//          = sum_c tour[c] + wt(x,c) [if subtree c has a marked node]
+
+const int MAXN = 500005;
+
+map&lt;int, ll&gt; cnt[MAXN], tour[MAXN], memo[MAXN];
+map&lt;int, int&gt; wt[MAXN];
+vector&lt;int&gt; tree[MAXN];
+bool marked[MAXN];
+
+ll dp(int v, int p) {
+    if (memo[v].count(p)) return memo[v][p];
+
+    // recurse on subtrees
+    for (int w : tree[v]) {
+        if (w == p) continue;
+        dp(w, v);
+    }
+    
+    // set up count and tour values
+    ll tot = 0;
+    cnt[v][p] = marked[v];
+    for (int w : tree[v]) {
+        if (w == p) continue;
+        cnt[v][p] += cnt[w][v];
+        if (cnt[w][v]) {
+            tour[v][p] += 2*wt[v][w] + tour[w][v];
+            tot += tour[w][v] + 2*wt[v][w];
+        }
+    }
+    
+    ll&amp; mval = memo[v][p];
+    mval = tot;
+    for (int w : tree[v]) {
+        if (w == p) continue;
+        if (cnt[w][v]) {
+            mval = min(mval, tot - tour[w][v] - wt[v][w] + dp(w, v));
+        }
+    }
+    return mval;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int n, k; cin &gt;&gt; n &gt;&gt; k;
+    for (int i = 0; i &lt; n-1; i++) {
+        int u, v, w; cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;
+        u--, v--;
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+        wt[u][v] = wt[v][u] = w;
+    }
+    
+    for (int i = 0; i &lt; k; i++) {
+        int u; cin &gt;&gt; u;
+        marked[u-1] = true;
+    }
+    
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; dp(i, -1) &lt;&lt; '\n';
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

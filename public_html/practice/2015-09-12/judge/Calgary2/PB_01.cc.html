@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main(){
+	int n;cin&gt;&gt;n;
+	while(n--){
+		int usum=0,rsum=0;
+		vector&lt;int&gt; usa(3),rus(3);
+		for(int i=0;i&lt;3;i++){
+			cin&gt;&gt;usa[i];
+			cout&lt;&lt;usa[i]&lt;&lt;' ';
+			usum+=usa[i];
+		}
+		for(int i=0;i&lt;3;i++){
+					cin&gt;&gt;rus[i];
+					cout&lt;&lt;rus[i]&lt;&lt;' ';
+					rsum+=rus[i];
+				}
+		if(usa&gt;rus){
+			if(usum&gt;rsum){
+				cout&lt;&lt;&quot;\nboth\n\n&quot;;
+			}else cout&lt;&lt;&quot;\ncolor\n\n&quot;;
+		}else{
+			if(usum&gt;rsum){
+				cout&lt;&lt;&quot;\ncount\n\n&quot;;
+			}else cout&lt;&lt;&quot;\nnone\n\n&quot;;
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

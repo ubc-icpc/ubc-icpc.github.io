@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;complex&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+
+using namespace std;
+
+typedef  pair &lt; int, int &gt; pii ;
+typedef complex&lt;double&gt; cd;
+
+int main()
+{
+	double lengths[20005];
+	vector&lt;pii&gt; goblins;
+	vector&lt;pii&gt;sprinklers;
+	int g;
+	cin &gt;&gt; g;
+	for (int i = 0; i &lt; g; i++)
+	{
+		int x, y;
+		cin &gt;&gt; x &gt;&gt; y;
+		goblins.push_back(pii(x, y));
+	}
+	int s;
+	cin &gt;&gt; s;
+	for (int i = 0; i &lt; s; i++)
+	{
+		int x, y;
+		cin &gt;&gt; x &gt;&gt; y;
+		sprinklers.push_back(pii(x, y));
+		cin &gt;&gt; lengths[i];
+	}
+	int count = 0;
+	for (int i = 0; i &lt; g; i++)
+	{
+		bool alive = true;
+		for (int j = 0; j &lt; s; j++)
+		{
+			int dx = sprinklers[j].first - goblins[i].first;
+			int dy = sprinklers[j].second - goblins[i].second;
+			if (dx*dx + dy*dy &lt;= lengths[j]*lengths[j])
+			{
+				alive = false;
+				break;
+			}
+		}
+		if (alive)
+			count++;
+	}
+	cout &lt;&lt; count &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

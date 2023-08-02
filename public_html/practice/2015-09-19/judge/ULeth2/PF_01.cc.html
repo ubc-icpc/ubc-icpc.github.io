@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+const int MAX = 1000010;
+int A[MAX];
+const int MAX2 = 100010;
+int B[MAX2];
+int main(){
+   int T;
+   cin &gt;&gt; T;
+   while(T--){
+      int n; cin &gt;&gt; n;
+      for(int i = 0; i &lt; n; i++){
+	 cin &gt;&gt; B[i];
+      }
+      sort(B,B+n);
+      reverse(B,B+n);
+      fill(A,A+B[0]+1,0);
+      int pos = n-1;
+      int length = 0;
+      for(int i = 0; i &lt;= B[0]; i++){
+	 //cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; B[pos] &lt;&lt; &quot; &quot; &lt;&lt; length &lt;&lt; endl;
+	 while(i &gt; B[pos]){
+	    pos--;
+	    length++;
+	 }
+	 A[length]++;
+      }
+      for(int i = 1; i &lt;= B[0]; i++){
+	 if(A[i] != 0){
+	    cout &lt;&lt; A[i] &lt;&lt; &quot; &quot; &lt;&lt; i &lt;&lt; endl;
+	 }
+      }
+      cout &lt;&lt; endl;
+   }
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

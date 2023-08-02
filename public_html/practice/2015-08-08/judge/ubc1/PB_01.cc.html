@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+struct evt {
+    ld x; int c;
+    evt() {}
+    evt(ld x, int c) : x(x), c(c) {}
+    bool operator&lt;(const evt&amp; o) const {
+        return x &lt; o.x || (x == o.x &amp;&amp; c &gt; o.c);
+    }
+} e[105];
+
+const ld R = 1000;
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n, m = 0; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            ld x, y; int c; cin &gt;&gt; x &gt;&gt; y &gt;&gt; c;
+            if (abs(y) &gt; R) continue;
+            e[m++] = evt(x-sqrt(R*R-y*y), +c);
+            e[m++] = evt(x+sqrt(R*R-y*y), -c);
+        }
+        sort(e, e+m);
+        
+        int ans = 0, cur = 0;
+        for (int i = 0; i &lt; m; i++) {
+            cur += e[i].c;
+            ans = max(ans, cur);
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

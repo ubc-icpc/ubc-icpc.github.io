@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class K {
+	/*
+	public static long factorial(int n){
+		long total = 1;
+		for (int i = 2; i &lt;= n; i++){
+			total *= i;
+		}
+		return total;
+	}
+	*/
+	
+	public static long choose3(int n){
+		return ((n+2)*(n+1)*n / 6);
+	}
+	public static void main (String [] args){
+		Scanner scan = new Scanner (System.in);
+		
+		int tests = scan.nextInt();
+		for (int i = 0; i &lt; tests; i++){
+			int n = scan.nextInt();
+			System.out.println(i + 1 + &quot;: &quot; + n + &quot; &quot; + choose3(n));
+		}
+		scan.close();
+	}
+}
+</code>
+</pre>
+</body>
+</html>

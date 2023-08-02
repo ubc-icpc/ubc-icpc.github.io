@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+#define N 5
+typedef long double ld;
+int h[N], e[N], d[N], o[N], t[N];
+
+
+int main() {
+    int T;
+    cin&gt;&gt; T;
+    while(T &gt; 0) {
+        T--;
+        for(int i=0; i&lt; N;++i) cin&gt;&gt; h[i];
+        for(int i=0; i&lt; N;++i) cin&gt;&gt; e[i];
+        for(int i=0; i&lt; N;++i) cin&gt;&gt; d[i];
+
+
+        int dt = 0;
+
+        int et = 0;
+        for(int i=0; i&lt; N;++i) {
+            dt += d[i]; 
+            o[i] = i;
+            et += e[i];
+        }
+
+        int mn = -1;
+        do {
+            int dam = 0;
+            int tt = 0;
+            int left = et;
+            
+            for(int i=0; i&lt; N; ++i) {
+                int j = o[i];
+                dam += h[j] * left;
+                left -= e[j];
+            }
+
+            if(mn &lt; 0 || dam &lt; mn) {
+                mn = dam;
+                //cerr &lt;&lt; ' ' &lt;&lt; dam &lt;&lt; endl;
+                //for(int i=0; i&lt; N; ++i) {
+                //    cerr &lt;&lt; o[i] &lt;&lt; ' ';
+                //}
+                //cerr &lt;&lt; endl;
+                /*for(int i=0; i&lt; N; ++i) {
+                    cerr &lt;&lt; e[o[i]] &lt;&lt; ' ' &lt;&lt; h[o[i]] &lt;&lt; endl;
+                }
+                cerr &lt;&lt; endl;*/
+            }
+        } while( next_permutation(o, o +N) );
+        
+        ld ans =  (ld)mn / (ld)dt;
+        cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; ans &lt;&lt; endl;    
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

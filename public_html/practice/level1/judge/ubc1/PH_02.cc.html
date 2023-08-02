@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+int a[105][105], n, m;
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+
+bool seen[105][105], seen2[105][105];
+int ncomp(int w) {
+	memset(seen, false, sizeof seen);
+	memset(seen2, false, sizeof seen2);
+	
+	queue&lt;pair&lt;int, int&gt;&gt; q;
+	q.push({0, 0});
+	while (!q.empty()) {
+		int x = q.front().first, y = q.front().second;
+		q.pop();
+		for (int d = 0; d &lt; 4; d++) {
+			int nx = x + dx[d], ny = y + dy[d];
+			if (nx &lt; 0 || ny &lt; 0 || nx &gt; n+1 || ny &gt; m+1) continue;
+			if (seen2[nx][ny]) continue;
+			if (a[nx][ny] &gt; w) continue;
+			seen2[nx][ny] = true;
+			q.push({nx, ny});
+		}
+	}
+			
+	int res = 0;
+	for (int i = 1; i &lt;= n; i++) {
+		for (int j = 1; j &lt;= m; j++) {
+			if (seen[i][j] || seen2[i][j]) continue;
+			res++;
+			seen[i][j] = true;
+			q.push({i, j});
+			while (!q.empty()) {
+				int x = q.front().first, y = q.front().second;
+				q.pop();
+				for (int d = 0; d &lt; 4; d++) {
+					int nx = x + dx[d], ny = y + dy[d];
+					if (seen[nx][ny] || seen2[nx][ny]) continue;
+					seen[nx][ny] = true;
+					q.push({nx, ny});
+				}
+			}
+		}
+	}
+	return res;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	while (cin &gt;&gt; n &gt;&gt; m) {
+		if (n+m == 0) break;
+		memset(a, 0, sizeof a);
+		for (int i = 1; i &lt;= n; i++) {
+			for (int j = 1; j &lt;= m; j++) {
+				cin &gt;&gt; a[i][j];
+			}
+		}
+		
+		int l = 0;
+		while (l &lt; 1000 &amp;&amp; ncomp(l) != 2) l++;
+		
+		static int ca = 0;
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot;;
+		if (l == 1000) cout &lt;&lt; &quot;Island never splits.&quot; &lt;&lt; endl;
+		else {
+			cout &lt;&lt; &quot;Island splits when ocean rises &quot; &lt;&lt; l &lt;&lt; &quot; feet.&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

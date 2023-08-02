@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;complex&gt;
+#include &lt;stack&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+int main() {
+    int N;
+    cin &gt;&gt; N;
+    while(N--) {
+        int r, c;
+        cin &gt;&gt; r &gt;&gt; c;
+        vector&lt;string&gt; v(r);
+        vector&lt;vector&lt;int&gt; &gt; vis(r, vector&lt;int&gt;(c,0));
+        int dx[4] = {0,1,0,-1}, dy[4] = {1,0,-1,0};
+        int sx, sy;
+        map&lt;pair&lt;int, int&gt;, int&gt;m;
+        set&lt;pair&lt;int, int&gt; &gt; sigh;
+        for(int _y=0; _y&lt;r; _y++) {
+            cin &gt;&gt; v[_y];
+            if(v[_y].length() != c) {
+                // cerr &lt;&lt; &quot;MALFORMED INPUT&quot; &lt;&lt; endl;
+                while(1);
+                return 1;
+            }
+            for(int _x=0; _x&lt;c; _x++) {
+                if(v[_y][_x] == 'S') {
+                    sx = _x;
+                    sy = _y;
+                    v[_y][_x] = '.';
+                }
+                // cerr &lt;&lt; v[_y][_x];
+                if(v[_y][_x] != '.' &amp;&amp; v[_y][_x] != '#' &amp;&amp; v[_y][_x] != 'V') {
+                    // cerr &lt;&lt; &quot;MALFORMED INPUT&quot; &lt;&lt; endl;
+                    while(1);
+                    return 1;
+                }
+            }
+            // cerr &lt;&lt; endl;
+        }
+        queue&lt;pair&lt;int, int&gt; &gt; q;
+        q.push(make_pair(sx, sy));
+        int best = 0;
+        while(q.size()) {
+            pair&lt;int, int&gt; a = q.front();
+            q.pop();
+            int x = a.first, y = a.second;
+            vis[y][x] = 1;
+            for(int d=0; d&lt;4; d++) {
+                int xx = x+dx[d], yy = y+dy[d];
+                if(xx &lt; 0 || yy &lt; 0 || xx &gt;= c || yy &gt;= r) {
+                    continue;
+                }
+                if(!vis[yy][xx] &amp;&amp; v[yy][xx] == '.') {
+                    vis[yy][xx] = 1;
+                    q.push(make_pair(xx, yy));
+                }
+                if(!vis[yy][xx] &amp;&amp; v[yy][xx] == 'V') {
+                    vis[yy][xx] = 1;
+                    best++;
+                    sigh.insert(make_pair(xx, yy));
+                }
+            }
+        }
+        for(int _y=0; _y&lt;r; _y++) {
+            for(int _x=0; _x&lt;c; _x++) {
+                if(v[_y][_x] == 'V') {
+                    int qwer = 0;
+                    for(int d=0; d&lt;4; d++) {
+                        int xx = _x+dx[d], yy = _y+dy[d];
+                        int xx2 = _x-dx[d], yy2 = _y-dy[d];
+                        if(xx &lt; 0 || yy &lt; 0 || xx &gt;= c || yy &gt;= r) {
+                            continue;
+                        }
+                        if(xx2 &lt; 0 || yy2 &lt; 0 || xx2 &gt;= c || yy2 &gt;= r) {
+                            continue;
+                        }
+                        if(vis[yy][xx] &amp;&amp; v[yy2][xx2] == '.' &amp;&amp; v[yy][xx] == '.') {
+                            qwer |= (1&lt;&lt;d);
+                        }
+                    }
+                    m[make_pair(_x, _y)] = qwer;
+                }
+            }
+        }
+        int thebest = best;
+        for(auto it = m.begin(); it!= m.end(); it++) {
+            int vx = (it-&gt;first).first, vy = (it-&gt;first).second;
+            for(int d=0; d&lt;4; d++) {
+                if((it-&gt;second) &amp; (1&lt;&lt;d)) {
+                    int answer = best;
+                    int xx2 = vx-dx[d], yy2 = vy-dy[d];
+                    vector&lt;string&gt; wowe = v;
+                    for(int ii=0; ii&lt;r; ii++) {
+                        for(int jj=0; jj&lt;c; jj++) {
+                            wowe[ii][jj] = v[ii][jj];
+                        }
+                    }
+                    wowe[vy][vx] = '.';
+                    wowe[yy2][xx2] = '#';
+                    for(int zz=0; zz&lt;r; zz++) {
+                        // cerr &lt;&lt; wowe[zz] &lt;&lt; endl;
+                    }
+                    // cerr &lt;&lt; endl;
+                    queue&lt;pair&lt;int, int&gt; &gt; qq;
+                    vector&lt;vector&lt;int&gt; &gt; vvv(r, vector&lt;int&gt;(c,0));
+                    qq.push(make_pair(sx, sy));
+                    while(qq.size()) {
+                        pair&lt;int, int&gt; a = qq.front();
+                        qq.pop();
+                        int x = a.first, y = a.second;
+                        vvv[y][x] = 1;
+                        for(int d=0; d&lt;4; d++) {
+                            int xx = x+dx[d], yy = y+dy[d];
+                            if(xx &lt; 0 || yy &lt; 0 || xx &gt;= c || yy &gt;= r) {
+                                continue;
+                            }
+                            if(!vvv[yy][xx] &amp;&amp; wowe[yy][xx] == '.') {
+                                vvv[yy][xx] = 1;
+                                qq.push(make_pair(xx, yy));
+                            }
+                            if(!vvv[yy][xx] &amp;&amp; wowe[yy][xx] == 'V') {
+                                vvv[yy][xx] = 1;
+                                if(sigh.count(make_pair(xx,yy))==0) answer++;
+                            }
+                        }
+                    }
+                    if(!vvv[vy][vx]) {
+                        qq.push(make_pair(vx, vy));
+                        while(qq.size()) {
+                            pair&lt;int, int&gt; a = qq.front();
+                            qq.pop();
+                            int x = a.first, y = a.second;
+                            vvv[y][x] = 1;
+                            for(int d=0; d&lt;4; d++) {
+                                int xx = x+dx[d], yy = y+dy[d];
+                                if(xx &lt; 0 || yy &lt; 0 || xx &gt;= c || yy &gt;= r) {
+                                    continue;
+                                }
+                                if(!vvv[yy][xx] &amp;&amp; wowe[yy][xx] == '.') {
+                                    vvv[yy][xx] = 1;
+                                    qq.push(make_pair(xx, yy));
+                                }
+                                if(!vvv[yy][xx] &amp;&amp; wowe[yy][xx] == 'V') {
+                                    vvv[yy][xx] = 1;
+                                    if(sigh.count(make_pair(xx,yy))==0) answer++;
+                                }
+                            }
+                        }
+                    }
+                    // cerr &lt;&lt; answer &lt;&lt; endl;
+                    thebest = max(thebest, answer);
+                }
+            }
+        }
+        for(int zz=0; zz&lt;r; zz++) {
+            // cerr &lt;&lt; v[zz] &lt;&lt; endl;
+        }
+        cout &lt;&lt; thebest &lt;&lt; endl;
+    }
+
+    return 0;    
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

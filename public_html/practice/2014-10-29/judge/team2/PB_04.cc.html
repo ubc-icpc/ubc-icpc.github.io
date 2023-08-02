@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+
+#define ull unsigned long long
+
+#define pipui pair&lt;int, pair&lt;ull, int&gt; &gt;
+
+using namespace std;
+
+ull path[102][102];
+char visited[102];
+
+struct comp {
+    bool operator() (pipui &amp; a, pipui &amp; b) {
+        if (a.second.second &gt; b.second.second) return true;
+        if (a.second.second &lt; b.second.second) return false;
+        return (a.second.first &lt; b.second.first);
+    }
+};
+
+#define pqpipui priority_queue&lt;pipui, vector&lt;pipui &gt;, comp&gt;
+
+bool canReachAll(const int from, const int n, const ull range, const int k) {
+    pqpipui pq;
+    pq.push(make_pair(from, make_pair(0, 0)));
+    while (!pq.empty()) {
+        pipui curr = pq.top();
+        pq.pop();
+        //printf(&quot;size %lu curr second first %llu second second %d\n&quot;, pq.size() + 1, curr.second.first, curr.second.second);
+        if (curr.second.second &gt; k) break;
+        if (visited[curr.first]) continue;
+        visited[curr.first] = true;
+        for (int i = 0; i &lt; n; ++i) {
+            if (visited[i]) continue;
+            if (i == curr.first) continue;
+            ull neededRange = path[curr.first][i];
+            if (neededRange &amp;&amp; neededRange &lt;= range) {
+                ull nf = curr.second.first;
+                int nk = curr.second.second;
+                if (nf &lt; neededRange) {
+                    nf = range;
+                    ++nk;
+                }
+                pq.push(make_pair(i, make_pair(nf - neededRange, nk)));
+            }
+        }
+    }
+    for (int i = 0; i &lt; n; ++i) {
+        if (!visited[i]) return false;
+    }
+    return true;
+}
+
+bool canReach(const ull range, const int n, const int k) {
+    for (int i = 0; i &lt; n; ++i) {
+        memset(visited, 0, sizeof(visited));
+        if (!canReachAll(i, n, range, k)) return false;
+    }
+    return true;
+}
+
+ull bst(ull lo, ull hi, const int n, const int k) {
+    while (lo &lt; hi) {
+        ull mid = (lo + hi) / 2;
+        //printf(&quot;lo %llu mid %llu hi %llu\n&quot;, lo, mid, hi);
+        if (canReach(mid, n, k)) {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    return lo;
+}
+
+void solve() {
+    int n, k, m;
+    scanf(&quot;%d %d %d&quot;, &amp;n, &amp;k, &amp;m);
+    memset(path, 0, sizeof(path));
+    ull total = 0;
+    for (int i = 0; i &lt; m; ++i) {
+        int a, b;
+        ull c;
+        scanf(&quot;%d %d %llu&quot;, &amp;a, &amp;b, &amp;c);
+        path[a][b] = c;
+        path[b][a] = c;
+        total += c;
+    }
+    printf(&quot;%llu\n&quot;, bst(0L, total, n, k));
+}
+
+int main() {
+    memset(visited, 0, sizeof(visited));
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        solve();
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

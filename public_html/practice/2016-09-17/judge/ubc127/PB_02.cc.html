@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int main() {
+	// Basically want to find min (x,y) such that sum of dist from all points to (x,y) is minimized
+	// Finding median of x and y.
+	int n, j=1;
+	cin &gt;&gt; n;
+	while(n &gt; 0) {
+		int x[n], y[n];
+
+		for(int i=0; i&lt;n; i++) {
+			cin &gt;&gt; x[i] &gt;&gt; y[i];
+		}
+
+		sort(x, x+n);
+		sort(y, y+n);
+
+		int ansx = x[(n-1)/2], ansy = y[(n-1)/2];
+		int dist = 0;
+		for(int i=0; i&lt;n; i++) {
+			dist += abs(x[i]-ansx);
+			dist += abs(y[i]-ansy);
+		}
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; j &lt;&lt; &quot;: (&quot; &lt;&lt; ansx &lt;&lt; &quot;,&quot; &lt;&lt; ansy &lt;&lt; &quot;) &quot; &lt;&lt; dist &lt;&lt; endl;
+		j++;
+		cin &gt;&gt; n;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

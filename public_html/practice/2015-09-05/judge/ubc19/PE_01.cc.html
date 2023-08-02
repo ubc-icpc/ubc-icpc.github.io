@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+  int t; cin &gt;&gt; t;
+  
+  for (int w=0; w&lt;t; w++) {
+    double v, y; cin &gt;&gt; v &gt;&gt; y;
+    vector&lt;pair&lt;double, double&gt;&gt; vx;
+    for (int i=0; i&lt;v; i++) {
+      double x, z; cin &gt;&gt; x &gt;&gt; z;
+      pair&lt;double,double&gt; vt (x, z);
+      vx.push_back(vt);
+    }
+    vx.push_back(vx[0]);
+    
+    double periup = 0;
+    double peridn = 0;
+    
+    double inter1 = 0;
+    double inter2 = 0;
+    
+    for (int i=1; i&lt;=v; i++) {
+      double length = sqrt((vx[i].second - vx[i-1].second)*(vx[i].second - vx[i-1].second) +
+                          (vx[i].first - vx[i-1].first)*(vx[i].first - vx[i-1].first));
+      if (vx[i].second &gt; y &amp;&amp; vx[i-1].second &gt; y) {
+        periup += length;
+      } else if (vx[i].second &lt; y &amp;&amp; vx[i-1].second &lt; y) {
+        peridn += length;
+      } else if (vx[i].second &gt; y) {
+        periup += length*(vx[i].second - y)/(vx[i].second - vx[i-1].second);
+        peridn += length*(y - vx[i-1].second)/(vx[i].second - vx[i-1].second);
+        inter2 = vx[i].first + (vx[i-1].first - vx[i].first)*(vx[i].second - y)/(vx[i].second - vx[i-1].second);
+      } else {
+        periup += length*(vx[i-1].second - y)/(vx[i-1].second - vx[i].second);
+        peridn += length*(y - vx[i].second)/(vx[i-1].second - vx[i].second);
+        inter1 = vx[i-1].first + (vx[i].first - vx[i-1].first)*(vx[i-1].second - y)/(vx[i-1].second - vx[i].second);
+      }
+    }
+    
+    periup += abs(inter2 - inter1);
+    peridn += abs(inter2 - inter1);
+    
+    if (peridn &lt; periup) {
+      printf(&quot;Case #%d: %.3f %.3f\n\n&quot;, w+1, peridn, periup);
+    } else {
+      printf(&quot;Case #%d: %.3f %.3f\n\n&quot;, w+1, periup, peridn);
+    }
+    
+  }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

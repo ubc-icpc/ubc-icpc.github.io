@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">/**
+ * @Author: Riley Weasel Fat &lt;wear3620&gt;
+ * @Date:   28-Sep-2019
+ * @Email:  riley.weaselfat@uleth.ca
+ * @Project: DES
+ * @Last modified by:   wear3620
+ * @Last modified time: 28-Sep-2019
+ */
+
+
+
+#include &lt;iostream&gt;
+
+
+using namespace std;
+
+
+int main() {
+  char input;
+  int shift;
+  string words;
+
+  cin &gt;&gt; input;
+  cin &gt;&gt; shift;
+  cin &gt;&gt; words;
+  for(int i=0; i&lt;words.size(); i++) {
+    char temp = words[i];
+
+    if(input=='E') {
+      if(temp+shift &gt; 'z') {
+        cout &lt;&lt; char(((temp-'a'+shift)%26)+'a');
+      } else if(temp+shift&lt;='z') {
+        cout &lt;&lt; char(temp+shift);
+      }
+    }
+    if(input=='D') {
+      if(temp-shift &lt; 'a') {
+        cout &lt;&lt; char(temp-shift+26);
+      } else if(temp-shift&lt;='z') {
+        cout &lt;&lt; char(temp-shift);
+      }
+    }
+  }
+  cout &lt;&lt; endl;
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

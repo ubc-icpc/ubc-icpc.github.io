@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int arr[36][36];
+int main()
+{
+	int n; cin &gt;&gt; n;
+	int count = 0;
+	while (n--)
+	{
+		count++;
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; count &lt;&lt; &quot;: &quot;;
+		int y, x;
+		cin &gt;&gt; y &gt;&gt; x;
+		for (int j = 0; j &lt; y; j++)
+		{
+			for (int i = 0; i &lt; x; i++)
+			{
+				int num; cin &gt;&gt; num;
+				arr[j][i] = num;
+			}
+		}
+		//sum rows
+		for (int j = 0; j &lt; y; j++)
+		{
+			for (int i = 0; i &lt; x - 1; i++)
+			{
+				if (arr[j][i] &gt; 0)
+				{
+					do
+					{
+						arr[j][i + 1]--;
+					} while (--arr[j][i]);
+				}
+				else if (arr[j][i] &lt; 0)
+				{
+					do
+					{
+						arr[j][i + 1]++;
+					} while (++arr[j][i]);
+				}
+			}
+		}
+		//sum columns
+		for (int j = 0; j &lt; y - 1; j++)
+		{
+			if (arr[j][x-1] &gt; 0)
+			{
+				do
+				{
+					arr[j+1][x-1]--;
+				} while (--arr[j][x-1]);
+			}
+			else if (arr[j][x-1] &lt; 0)
+			{
+				do
+				{
+					arr[j+1][x-1]++;
+				} while (++arr[j][x-1]);
+			}
+		}
+		if (arr[y - 1][x - 1] == 0)
+		{
+			cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl &lt;&lt; endl;
+		}
+		else
+		{
+			cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl &lt;&lt; endl;
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

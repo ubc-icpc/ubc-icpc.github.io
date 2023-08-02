@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef pair&lt;double,double&gt; pii;
+typedef pair&lt;double,double&gt; pdd;
+int N; double S;
+vector&lt;pii&gt; arr;
+map&lt;pii, string&gt; ma;
+
+vector&lt;int&gt; getState(int curs) {
+  if(curs ==1) {
+    return {5,1,1,7};
+   } 
+
+  if(curs == 2) return {8,2,2,6};
+  if(curs ==3) return {6,3,3,8};
+  if(curs ==4) return {7,4,4,5};
+  if(curs == 5) return {1,5,5,4};
+  if(curs == 6) return {3,6,6,2};
+  if(curs == 7) return {4,7,7,1};
+  if(curs == 8) return {2,8,8,3};
+
+}
+
+vector&lt;int&gt; getQua(int curs) {
+  if(curs ==1) return {1,2,3,4};
+  if(curs ==2) return {4,3,2,1};
+  if(curs == 3) return {2,1,4,3};
+  if(curs == 4) return {3,4,1,2};
+  if(curs ==5) return {1,4,3,2};
+  if(curs == 6) return {2,3,4,1};
+  if(curs == 7) return {3,2,1,4};
+  if(curs == 8) return {4,1,2,3};
+
+}
+
+bool inra(pii &amp; curp, pair&lt;pdd,pdd&gt; &amp; co) {
+  return curp.first &gt;= co.first.first &amp;&amp; curp.first &lt;=  co.second.first &amp;&amp; curp.second &gt;= co.first.second &amp;&amp; curp.second &lt;= co.second.second;
+
+}
+void recur(vector&lt;pii&gt;&amp; points, pdd x, pdd y, int sta) {
+  if(points.size() == 0) return;
+  if(points.size() == 1) { 
+    cout &lt;&lt; ma[points[0]] &lt;&lt; endl;
+    return;
+  }
+  vector&lt;int&gt; alls = getState(sta);
+  vector&lt;int&gt; allQuas = getQua(sta);
+  vector&lt;pii&gt; newPoints[5];
+  pair&lt;pdd,pdd&gt; coor[5];
+  coor[1] = {x, {(y.first + x.first) /2,(y.second + x.second)/2}};
+  coor[2] = {{x.first, (x.second + y.second)/2},{(x.first + y.first)/2,y.second}};
+  coor[3] = {{(x.first + y.first)/2, (x.second + y.second)/2}, y};
+  coor[4] = {{(x.first + y.first)/2, x.second}, {y.first, (x.second + y.second)/2}};
+  for(pii &amp;p: points) {
+    for(int i = 1; i &lt;=4;i++) {
+      if(inra(p,coor[i])) {
+          newPoints[i].push_back(p);
+          break;
+      }
+    }
+  }
+  for(int i = 0; i &lt; 4; i++) {
+    int curqua = allQuas[i];
+    recur(newPoints[curqua], coor[curqua].first, coor[curqua].second, alls[i]);
+  }
+
+}
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  cin &gt;&gt; N &gt;&gt; S;
+  int a, b; string st;
+  for(int i = 0; i &lt; N; i++) {
+      cin &gt;&gt; a &gt;&gt; b &gt;&gt; st;
+      arr.push_back({a,b});
+      ma[{a,b}] = st;
+  }
+  recur(arr, {0,0}, {S,S}, 1);
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

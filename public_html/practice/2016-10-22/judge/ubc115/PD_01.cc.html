@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+vector&lt;long long&gt; pp;
+int main() {
+        int d;
+        long long p;
+        cin &gt;&gt; d;
+        for (int i = 0; i &lt; d; i++) {
+                cin &gt;&gt; p;
+                pp.push_back(p);
+        }
+        int q = 0;
+        while (pp[q] != 100) {
+                q++;
+        }
+        long long M = 100;
+        int N = 0;
+        for (int i = 0; i &lt; d - 1; i++) {
+                if (pp[i + 1] &gt; pp[i]) {
+                        N = min((long long) 100000, M / pp[i]);
+                        M = M - N * pp[i];
+                        M += N * pp[i + 1];
+                }
+        }
+        cout &lt;&lt; M &lt;&lt; endl;
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

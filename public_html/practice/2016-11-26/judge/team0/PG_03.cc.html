@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//
+//  islands.cpp
+//
+//  Created by Lucca Siaudzionis on 2016-11-26.
+//
+//
+
+#include &lt;set&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+
+//----------------------------
+#define MAXR 550
+
+int r, c;
+int mapa[MAXR][MAXR];
+
+vector&lt;pii&gt; fila;
+
+int vr[] = {+1, -1,  0,  0};
+int vc[] = { 0,  0, +1, -1};
+
+bool visited[MAXR][MAXR];
+
+set&lt;int&gt; conn;
+
+int pai[MAXR*MAXR];
+//----------------------------
+
+int trans(int i, int j){
+    return (i-1)*c + j;
+}
+
+int find(int x){
+    return pai[x] = (pai[x] == x)?x:find(pai[x]);
+}
+
+void join(int a, int b){
+    a = find(a);
+    b = find(b);
+    pai[a] = b;
+}
+
+int main(){
+    
+    cin &gt;&gt; r &gt;&gt; c;
+    
+    for(int i = 1;i &lt;= r;i++)
+    for(int j = 1;j &lt;= c;j++){
+        
+        char cur;
+        scanf(&quot; %c&quot;, &amp;cur);
+        
+        if(cur == 'W') mapa[i][j] = 0;
+        else if(cur == 'C') mapa[i][j] = -1;
+        else if(cur == 'L') mapa[i][j] =  1,
+                            fila.push_back(pii(i, j)),
+                            visited[i][j] = true;
+    }
+    
+    for(int i = 1;i &lt;= r*c;i++) pai[i] = i;
+    
+    int beg = 0;
+    while(beg &lt; (int)fila.size()){
+        
+        int cr = fila[beg].first;
+        int cc = fila[beg].second;
+        beg++;
+        
+        for(int k = 0;k &lt; 4;k++){
+            
+            int nr = cr + vr[k];
+            int nc = cc + vc[k];
+            
+            if(!mapa[nr][nc]) continue;
+            
+            //join(trans(cr, cc), trans(nr, nc));
+            
+            if(!visited[nr][nc]){
+                visited[nr][nc] = true;
+                fila.push_back(pii(nr, nc));
+            }
+        }
+    }
+    
+    for(int i = 1;i &lt;= r;i++)
+    for(int j = 1;j &lt;= c;j++){
+        
+        if(!visited[i][j]) continue;
+        
+        for(int k = 0;k &lt; 4;k++){
+            
+            int nr = i + vr[k];
+            int nc = j + vc[k];
+            
+            if(!visited[nr][nc]) continue;
+            
+            join(trans(i, j), trans(nr, nc));
+        }
+    }
+    
+    for(int i = 1;i &lt;= r;i++)
+    for(int j = 1;j &lt;= c;j++)
+        if(visited[i][j])
+            conn.insert(find(trans(i, j)));
+    
+    cout &lt;&lt; (int)conn.size() &lt;&lt; endl;
+    
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+
+    static List&lt;Integer&gt; answer = new LinkedList&lt;Integer&gt;();
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String nextS = sc.nextLine();
+
+        while (!(nextS.equals(&quot;0&quot;))) {
+            List&lt;Integer&gt; l = new LinkedList&lt;Integer&gt;();
+            for (int a = 0; a &lt; nextS.length(); a++) {
+                int c = Character.getNumericValue(nextS.charAt(a));
+                l.add(c);
+            }
+                Solve(l);
+                for (int b = 0; b &lt; answer.size(); b++) {
+                    if (b == answer.size() - 1) {
+                        System.out.println(answer.get(b));
+                    } else {
+                        System.out.print(answer.get(b) + &quot; &quot;);
+                    }
+                }
+            answer.clear();
+            nextS = sc.nextLine();
+        }
+    }
+    private static void Solve(List&lt;Integer&gt; l) {
+        if (l.get(1) == 1) {
+            answer.add(1);
+        }
+        for (int a = 2; a &lt; l.size(); a++) {
+            int tryy = l.get(a);
+                for (int b : answer) {
+                    if (a % b == 0) {
+                        if (tryy == 0) {
+                            tryy = 1;
+                        }
+                        else {
+                            tryy = 0;
+                        }
+                    }
+                }
+                if (tryy == 1) {
+                    answer.add(a);
+                }
+            }
+        }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

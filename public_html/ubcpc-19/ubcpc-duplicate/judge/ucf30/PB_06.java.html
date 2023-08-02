@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Scanner;
+
+public class B
+{
+	static int[][] fights;
+	static int[] hp;
+	static int[] at;
+	static int[] df;
+
+	static class Triple
+	{
+		int[] x;
+
+		public Triple(int a, int b, int c)
+		{
+			x = new int[3];
+			x[0] = a;
+			x[1] = b;
+			x[2] = c;
+		}
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			if (obj == null)
+				return false;
+			if (this == obj)
+				return true;
+
+			if (obj instanceof Triple)
+			{
+				Triple that = (Triple)obj;
+				boolean[] used = new boolean[3];
+
+				for (int i = 0; i &lt; 3; i++)
+				{
+					for (int j = 0; j &lt; 3; j++)
+					{
+						if (!used[j] &amp;&amp; this.x[i] == that.x[j])
+							used[j] = true;
+					}
+				}
+
+				return used[0] &amp;&amp; used[1] &amp;&amp; used[2];
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return x[0] * x[1] * x[2];
+		}
+	}
+
+	// 1 if A wins, -1 if B wins, draw == 0
+	public static int fight(int a, int b)
+	{
+		// int healthA = hp[a];
+		// int healthB = hp[b];
+
+		// while (healthA &gt; 0 &amp;&amp; healthB &gt; 0)
+		// {
+		// 	healthA -= at[b] - df[a];
+		// 	healthB -= at[a] - df[b];
+		// }
+
+		int attB = Math.max(0, at[b] - df[a]);
+		int attA = Math.max(0, at[a] - df[b]);
+
+		if (attB == 0)
+		{
+			if (attA == 0)
+			{
+				return 2;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+		else if (attA == 0)
+		{
+			return -1;
+		}
+
+		int scA = hp[a] / attB;
+		int scB = hp[b] / attA;
+
+		int remA = hp[a] % attB;
+		int remB = hp[b] % attA;
+
+		if (remA &gt; 0)
+			scA++;
+		
+		if (remB &gt; 0)
+			scB++;
+
+		// System.out.printf(&quot;A(%d): %d, B(%d): %d\n&quot;,a, scA, b, scB);
+
+		if (scA &gt; scB)
+			return 1;
+		else if (scA &lt; scB)
+			return -1;
+		
+		return 2;
+
+		// System.out.printf(&quot;remaining A: %d, B: %d\n&quot;, remA, remB);
+
+		// if (remA == 0 &amp;&amp; remB != 0)
+		// 	return -1;
+		// else if (remB == 0 &amp;&amp; remA != 0)
+		// 	return 1;
+		
+		// return 2;
+	}
+
+	public static void main(String[] args)
+	{
+		Scanner sc = new Scanner(System.in);
+
+		int n = sc.nextInt();
+
+		String[] names = new String[n];
+		hp = new int[n];
+		at = new int[n];
+		df = new int[n];
+
+		for (int i = 0; i &lt; n; i++)
+		{
+			names[i] = sc.next();
+			hp[i] = sc.nextInt();
+			at[i] = sc.nextInt();
+			df[i] = sc.nextInt();
+		}
+
+		fights = new int[n][n];
+
+		LinkedHashSet&lt;Triple&gt; wins = new LinkedHashSet&lt;&gt;();
+
+		// ArrayList&lt;LinkedHashSet&lt;Integer&gt;&gt; wins = new ArrayList&lt;&gt;(n);
+		// // LinkedHashSet&lt;Integer&gt;[] wins = new LinkedHashSet&lt;Integer&gt;()[n];
+
+		// for (int i = 0; i &lt; n; i++)
+		// 	wins.add(new LinkedHashSet&lt;&gt;());
+
+		// n^2
+		for (int i = 0; i &lt; n; i++)
+		{
+			for (int j = i + 1; j &lt; n; j++)
+			{
+				if (fights[i][j] == 0)
+				{
+					fights[i][j] = fight(i, j);
+					fights[j][i] = -1 * fights[i][j];
+				}
+
+				// if (fights[i][j] == 1)
+				// 	wins.get(i).add(j);
+				// else if (fights[i][j] == -1)
+				// 	wins.get(j).add(i);
+			}
+		}
+
+		
+		// int cnt = 0;
+		// ArrayList&lt;Integer&gt; triples = new ArrayList&lt;&gt;();
+
+
+		for (int i = 0; i &lt; n; i++)
+		{
+			for (int j = 0; j &lt; n; j++)
+			{
+				if (i == j)
+					continue;
+				
+				if (fights[i][j] == 1)
+				{
+					for (int k = 0; k &lt; n; k++)
+					{
+						if (k == i || k == j)
+							continue;
+						
+						if (fights[j][k] == 1 &amp;&amp; fights[k][i] == 1)
+						{
+							// boolean seen = false;
+							// for (int g = 0; g &lt; cnt; g++)
+							// {
+							// 	if (triples.get(g) == i || triples.get(g) == j || triples.get(g) == k)
+
+							// }
+							wins.add(new Triple(i, j, k));
+
+							// cnt++;
+							// triples.add(i);
+							// triples.add(j);
+							// triples.add(k);
+
+							// fights[j][k] = fights[k][j] = fights[k][i] = fights[i][k] = 0;
+						}
+					}
+
+					// fights[i][j] = fights[j][i] = 0;
+				}
+				
+			}
+		}
+
+		// for (int i = 0; i &lt; n; i++)
+		// {
+		// 	for (int j : wins.get(i))
+		// 	{
+
+		// 		if (wins.get(j).contains(o))
+		// 		for (int k : wins.get(j))
+		// 		{
+		// 			if (wins.get(k).contains(i))
+		// 			{
+		// 				cnt++;
+		// 				triples.add(i);
+		// 				triples.add(j);
+		// 				triples.add(k);
+
+		// 				wins.get(i).remove(j);
+		// 				wins.get(j).remove(k);
+		// 				wins.get(k).remove(i);
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+
+		// for (int i = 0; i &lt; n; i++)
+		// {
+		// 	for (int j = i + 1; j &lt; n; j++)
+		// 	{
+		// 		if (fights[i][j] == 1)
+		// 		{
+		// 			for (int k = 0; k &lt; n; k++)
+		// 			{
+		// 				if (k == i || k == j)
+		// 					continue;
+						
+		// 				if (fights[j][k] == 1 &amp;&amp; fights[k][i] == 1)
+		// 				{
+		// 					cnt++;
+		// 					triples.add(i);
+		// 					triples.add(j);
+		// 					triples.add(k);
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+
+		System.out.println(wins.size());
+
+		for (Triple win : wins)
+		{
+			System.out.println(names[win.x[0]] + &quot; &quot; + names[win.x[1]] + &quot; &quot; + names[win.x[2]]);
+		}
+		
+		// for (int i = 0; i &lt; cnt; i++)
+		// {
+		// 	System.out.println(names[triples.get(3 * i)] + &quot; &quot; + names[triples.get(3 * i + 1)] + &quot; &quot; + names[triples.get(3 * i + 2)]);
+		// }
+	}
+}
+</code>
+</pre>
+</body>
+</html>

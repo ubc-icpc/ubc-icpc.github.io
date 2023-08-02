@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+int main()
+{
+    int t;
+    cin&gt;&gt;t;
+    for(int l=0; l&lt;t; l++)
+    {
+        int n;
+        cin&gt;&gt;n;
+        double arr[151];
+        set&lt;int&gt; yollar[151];
+        for(int i=0; i&lt;151 ; i++)
+        {
+            arr[i]=0;
+        }
+        double max = 0;
+        vector&lt;int &gt; qosulanlar;
+        vector&lt;pair&lt;int,double&gt; &gt; hamisi;
+        for(int i=0; i&lt;n; i++)
+        {
+            double prob;
+            int say;
+            cin&gt;&gt;say&gt;&gt;prob;
+            prob/=100;
+            if(prob&gt;arr[say])
+            {
+                arr[say]=prob;
+                yollar[say].clear();
+                yollar[say].insert(i);
+                if(say&lt;76)
+                qosulanlar.push_back(say);
+                else if(prob&gt;max)
+                max=prob;
+            }
+            hamisi.push_back(make_pair(say,prob));
+        }
+        while(qosulanlar.size())
+        {
+            int say  = qosulanlar[0];
+            double prob = arr[qosulanlar[0]];
+        //  cout&lt;&lt;say&lt;&lt;&quot; &quot;&lt;&lt;prob&lt;&lt;endl;
+            for(int i=0; i&lt;n; i++)
+            {
+                if( prob*hamisi[i].second&gt;arr[say+hamisi[i].first] &amp;&amp; yollar[say].find(i)==yollar[say].end())
+                {
+                    arr[say+hamisi[i].first] = prob*hamisi[i].second;
+                    yollar[say+hamisi[i].first] = yollar[say];
+                    yollar[say+hamisi[i].first].insert(i);
+                    if(say+hamisi[i].first&lt;76)
+                    qosulanlar.push_back(say+hamisi[i].first);
+                    else if(prob*hamisi[i].second&gt;max)
+                    {
+            //          cout&lt;&lt;prob*hamisi[i].second&lt;&lt;&quot; &quot;&lt;&lt;say+hamisi[i].first&lt;&lt;endl;
+                        max= prob*hamisi[i].second;
+                    }
+                }
+            }
+            qosulanlar.erase(qosulanlar.begin());
+        }
+        max*=100;
+        cout&lt;&lt;setprecision(6)&lt;&lt;fixed&lt;&lt;max&lt;&lt;endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

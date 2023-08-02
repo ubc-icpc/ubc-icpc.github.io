@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+using namespace std;
+int main()
+{
+	int n,m;
+	cin&gt;&gt;n&gt;&gt;m;
+	char arr[n][m];
+	vector&lt;vector&lt;int&gt; &gt; kohne_serfeli;
+	kohne_serfeli.resize(n);
+	int x_s, y_s , x_e, y_e;
+	for(int i=0; i&lt;n; i++)
+	{
+		kohne_serfeli[i].resize(m);
+		for(int j=0; j&lt;m; j++)
+		{
+			kohne_serfeli[i][j]=pow(10,6);
+			cin&gt;&gt;arr[i][j];
+			if(arr[i][j]=='R')
+			{
+				x_s = i;
+				y_s = j;
+			}
+			else if(arr[i][j]=='E')
+			{
+				x_e = i;
+				y_e = j;
+			}
+		}
+	}
+//	cout&lt;&lt;x_s&lt;&lt;&quot; &quot;&lt;&lt;y_s&lt;&lt;endl;
+	string hell;
+	cin&gt;&gt;hell;
+	int len = hell.length();
+	kohne_serfeli[x_s][y_s]=0;
+	int min = pow(10,6);
+	for(int l=-1; l&lt;len; l++)
+	{
+		vector&lt;vector&lt;int&gt; &gt; yeni_serfeli ;
+		yeni_serfeli.resize(n);
+		vector&lt;pair&lt;int,int&gt; &gt; qow;
+//		cout&lt;&lt;l&lt;&lt;endl;
+		for(int i=0; i&lt;n; i++)
+		{
+			yeni_serfeli[i].resize(m);
+		for(int j=0; j&lt;m; j++)
+		{
+			yeni_serfeli[i][j]=pow(10,6);
+//		 cout&lt;&lt;kohne_serfeli[i][j]&lt;&lt;&quot; &quot;;
+	    }
+//		 cout&lt;&lt;endl;
+	    }
+//		 cout&lt;&lt;endl;
+		if(l&lt;0)
+		{
+			qow.push_back(make_pair(x_s,y_s));
+			yeni_serfeli[x_s][y_s] = 0;
+		}
+		else
+		{
+			for(int i=0; i&lt;n; i++)
+			{
+				for(int j=0; j&lt;m; j++)
+				{
+					if(hell[l]=='R' &amp;&amp; arr[i][j]!='#')
+					{
+						if(j&lt;m-1 &amp;&amp; arr[i][j+1]!='#' &amp;&amp; kohne_serfeli[i][j]&lt;yeni_serfeli[i][j+1])
+						{
+					    	yeni_serfeli[i][j+1] = kohne_serfeli[i][j];
+					    	qow.push_back(make_pair(i,j+1));
+					    }
+						else if( (j==m-1 || arr[i][j+1]=='#') &amp;&amp; (kohne_serfeli[i][j]&lt;yeni_serfeli[i][j]))
+						{
+							yeni_serfeli[i][j] = kohne_serfeli[i][j];
+							qow.push_back(make_pair(i,j));
+						}
+					}
+					else if(hell[l]=='L' &amp;&amp; arr[i][j]!='#')
+					{
+						if(j&gt;0 &amp;&amp; arr[i][j-1]!='#' &amp;&amp; kohne_serfeli[i][j]&lt;yeni_serfeli[i][j-1])
+						{
+					    	yeni_serfeli[i][j-1] = kohne_serfeli[i][j];
+					    	qow.push_back(make_pair(i,j-1));
+					    }
+						else if( (!j || arr[i][j-1]=='#') &amp;&amp; (kohne_serfeli[i][j]&lt;yeni_serfeli[i][j]))
+						{
+							yeni_serfeli[i][j] = kohne_serfeli[i][j];
+							qow.push_back(make_pair(i,j));
+						}
+					}
+					else if(hell[l]=='U' &amp;&amp; arr[i][j]!='#')
+					{
+						if(i&gt;0 &amp;&amp; arr[i-1][j]!='#' &amp;&amp; kohne_serfeli[i][j]&lt;yeni_serfeli[i-1][j])
+						{
+					    	yeni_serfeli[i-1][j] = kohne_serfeli[i][j];
+					    	qow.push_back(make_pair(i-1,j));
+					    }
+						else if( (!i || arr[i-1][j]=='#') &amp;&amp; (kohne_serfeli[i][j]&lt;yeni_serfeli[i][j]))
+						{
+							yeni_serfeli[i][j] = kohne_serfeli[i][j];
+							qow.push_back(make_pair(i,j));
+						}
+					}
+					else if(hell[l]=='D' &amp;&amp; arr[i][j]!='#')
+					{
+						if(i&lt;n-1 &amp;&amp; arr[i+1][j]!='#' &amp;&amp; kohne_serfeli[i][j]&lt;yeni_serfeli[i+1][j])
+						{
+					    	yeni_serfeli[i+1][j] = kohne_serfeli[i][j];
+					    	qow.push_back(make_pair(i+1,j));
+					    }
+						else if( (i==n-1 || arr[i+1][j]=='#') &amp;&amp; (kohne_serfeli[i][j]&lt;yeni_serfeli[i][j]))
+						{
+							yeni_serfeli[i][j] = kohne_serfeli[i][j];
+							qow.push_back(make_pair(i,j));
+						}
+					}
+				}
+			}
+			
+		}
+		int j=0;
+		while(j&lt;qow.size())
+		{
+			int x = qow[j].first;
+			int y = qow[j].second;
+			if(x&gt;0 &amp;&amp; arr[x-1][y]!='#' &amp;&amp; yeni_serfeli[x][y]+1&lt;yeni_serfeli[x-1][y])
+			{
+				yeni_serfeli[x-1][y] = yeni_serfeli[x][y]+1;
+				qow.push_back(make_pair(x-1,y));
+			}
+			if(x&lt;n-1 &amp;&amp; arr[x+1][y]!='#' &amp;&amp; yeni_serfeli[x][y]+1&lt;yeni_serfeli[x+1][y])
+			{
+				yeni_serfeli[x+1][y] = yeni_serfeli[x][y]+1;
+				qow.push_back(make_pair(x+1,y));
+			}
+			if(y&gt;0 &amp;&amp; arr[x][y-1]!='#' &amp;&amp; yeni_serfeli[x][y]+1&lt;yeni_serfeli[x][y-1])
+			{
+				yeni_serfeli[x][y-1] = yeni_serfeli[x][y]+1;
+				qow.push_back(make_pair(x,y-1));
+			}
+			if(y&lt;m-1 &amp;&amp; arr[x][y+1]!='#' &amp;&amp; yeni_serfeli[x][y]+1&lt;yeni_serfeli[x][y+1])
+			{
+				yeni_serfeli[x][y+1] = yeni_serfeli[x][y]+1;
+				qow.push_back(make_pair(x,y+1));
+			}
+			++j;
+		}
+/*		for(int i=0; i&lt;n; i++)
+		{
+		for(int j=0; j&lt;m; j++)
+		{
+		 cout&lt;&lt;yeni_serfeli[i][j]&lt;&lt;&quot; &quot;;
+	    }
+		 cout&lt;&lt;endl;
+	    }
+	    
+//		cout&lt;&lt;l&lt;&lt;&quot; &quot;&lt;&lt;len-l-1&lt;&lt;&quot; &quot;&lt;&lt;yeni_serfeli[x_e][y_e]&lt;&lt;&quot; &quot;&lt;&lt;min&lt;&lt;endl;
+		cout&lt;&lt;endl;
+*/		if(yeni_serfeli[x_e][y_e]&lt;min)
+		{
+			min = yeni_serfeli[x_e][y_e];
+		}
+		kohne_serfeli = yeni_serfeli;
+	}
+	cout&lt;&lt;min;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

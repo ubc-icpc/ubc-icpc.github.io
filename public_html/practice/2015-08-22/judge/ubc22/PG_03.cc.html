@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, Q;
+double Sx[255], Sy[255], Sr[255], A[255][255];
+
+int main () {
+	cin &gt;&gt; T;
+	for (int t = 1; t &lt;= T; ++t) {
+		cin &gt;&gt; N;
+		for (int i = 0; i &lt; N; ++i) cin &gt;&gt; Sx[i] &gt;&gt; Sy[i] &gt;&gt; Sr[i];
+		cin &gt;&gt; Q;
+		for (int i = 0; i &lt; 2*Q; ++i) {
+		    cin &gt;&gt; Sx[i+N] &gt;&gt; Sy[i+N];
+		    Sr[i+N] = 0;
+		}
+		for (int i = 0; i &lt; N+2*Q; ++i)
+			for (int j = 0; j &lt; N+2*Q; ++j)
+				A[i][j] = max(.0, sqrt(
+					(Sx[i] - Sx[j]) * (Sx[i] - Sx[j]) +
+					(Sy[i] - Sy[j]) * (Sy[i] - Sy[j])
+				) - Sr[i] - Sr[j]);
+		for (int i = 0; i &lt; N+2*Q; ++i)
+			for (int j = 0; j &lt; N+2*Q; ++j)
+				for (int k = 0; k &lt; N+2*Q; ++k)
+					A[i][j] = min(A[i][j], A[i][k] + A[k][j]);
+		cout &lt;&lt; &quot;Campus #&quot; &lt;&lt; t &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		for (int i = 0; i &lt; Q; ++i)
+			cout &lt;&lt; &quot;  Path #&quot; &lt;&lt; i+1
+				 &lt;&lt; &quot;: Shortest sun distance is &quot;
+				 &lt;&lt; fixed &lt;&lt; setprecision(1) &lt;&lt; A[N+i*2][N+i*2+1]
+				 &lt;&lt; &quot;.&quot; &lt;&lt; endl;
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

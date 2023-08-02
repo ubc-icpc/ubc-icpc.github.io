@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+#define endl '\n'
+
+
+int main() {
+	ios::sync_with_stdio(false); cin.tie(0);
+	int n; cin &gt;&gt; n;
+	string t; getline(cin,t);
+	while(n--) {
+		string s; getline(cin,s);
+		set &lt;char&gt; alphabet;
+		string a = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+		for (int i=0; i&lt;a.size(); i++) {
+			alphabet.insert(a[i]);
+		}
+		for(int i=0; i&lt;s.size(); i++) {
+			if (s[i] &lt;= 'z' &amp;&amp; s[i] &gt;= 'A') alphabet.erase(tolower(s[i]));
+		}
+
+		if (!alphabet.empty()) {
+			cout &lt;&lt; &quot;missing &quot;;
+			set&lt;char&gt;::iterator it;
+			for (it=alphabet.begin(); it!= alphabet.end(); it++) {
+				cout &lt;&lt; *it;
+			}
+			cout &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;pangram&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+  map&lt;int, int&gt; horizontal, vertical, diagonal, revdiagonal;
+  int ans = -1;
+  int n, k;
+  cin &gt;&gt; n &gt;&gt; k;
+  for (int i=0; i&lt;n; i++) {
+    int x, y;
+    cin &gt;&gt; x &gt;&gt; y;
+    horizontal[x]++;
+    vertical[y]++;
+    diagonal[y-x]++;
+    revdiagonal[x+y]++;
+    if(max(max(horizontal[x], vertical[y]), max(diagonal[y-x], revdiagonal[x+y])) &gt;= k) {
+      ans = i+1;
+      break;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">from math import ceil
+
+nFighters = int(input())
+
+class Fighter:
+    def __init__(self, name, HP, AT, DF):
+        self.name = name
+        self.HP = HP
+        self.AT = AT
+        self.DF = DF
+
+fighters = []
+for i in range(nFighters):
+    text = input().split()
+    name = text[0]
+    HP = int(text[1])
+    AT = int(text[2])
+    DF = int(text[3])
+    fighters.append(Fighter(name, HP, AT, DF))
+
+winMatrix = []
+
+blanks = 1
+for i in range(nFighters):
+    winLoss = [0] * blanks
+    for j in range(blanks, nFighters):
+        iDmgPerTurn = max(0, fighters[i].AT - fighters[j].DF)
+        jDmgPerTurn = max(0, fighters[j].AT - fighters[i].DF)
+        if iDmgPerTurn &lt;= 0 and jDmgPerTurn &gt; 0:
+            winLoss.append(-1)
+        elif iDmgPerTurn &gt; 0 and jDmgPerTurn &lt;= 0:
+            winLoss.append(1)
+        elif iDmgPerTurn &lt;= 0 and jDmgPerTurn &lt;= 0:
+            winLoss.append(0)
+        else:
+            iTurnsToWin = ceil(fighters[j].HP / iDmgPerTurn)
+            jTurnsToWin = ceil(fighters[i].HP / jDmgPerTurn)
+            if iTurnsToWin &lt; jTurnsToWin:
+                winLoss.append(1)
+            elif jTurnsToWin &lt; iTurnsToWin:
+                winLoss.append(-1)
+            else:
+                winLoss.append(0)
+    blanks += 1
+    winMatrix.append(winLoss)
+
+blanks = 0
+for i in range(nFighters):
+    for j in range(blanks):
+        winMatrix[i][j] = winMatrix[j][i] * -1
+    blanks += 1
+
+intransitiveTriples = set()
+for f1 in range(nFighters):
+    for f2 in range(nFighters):
+        #If f1 wins against f2
+        if winMatrix[f1][f2] == 1:
+            #Check all the fighters f2 wins against. If f1 loses to them, add the set
+            for f3 in range(nFighters):
+                if winMatrix[f2][f3] == 1 and winMatrix[f1][f3] == -1:
+                    intransitiveTriples.add(tuple(sorted([f1, f2, f3])))
+
+print(len(intransitiveTriples))
+for item in intransitiveTriples:
+    result = &quot;&quot;
+    for f in item:
+        result += fighters[f].name + &quot; &quot;
+    result = result[:-1]
+    print(result)</code>
+</pre>
+</body>
+</html>

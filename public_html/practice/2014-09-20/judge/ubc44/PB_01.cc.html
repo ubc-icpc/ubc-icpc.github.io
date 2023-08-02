@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;algorithm&gt;
+#include &lt;complex&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+#include &lt;set&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;cstdio&gt;
+
+typedef std::pair&lt;int, int&gt; II;
+typedef std::vector&lt;int&gt; VI;
+typedef std::vector&lt;II&gt; VII;
+typedef std::vector&lt;VI&gt; VVI;
+
+typedef long double ld;
+
+typedef std::complex&lt;ld&gt; Pt;
+
+int main() {
+    int T;
+    std::cin &gt;&gt; T;
+    while(T--) {
+        VI H(5);
+        VI E(5);
+        VI D(5);
+        for(int i = 0; i &lt; 5; i ++) std::cin &gt;&gt; H[i];
+        for(int i = 0; i &lt; 5; i ++) std::cin &gt;&gt; E[i];
+        for(int i = 0; i &lt; 5; i ++) std::cin &gt;&gt; D[i];
+        int d = 0;
+        for(int i = 0; i &lt; 5; i ++) d += D[i];
+
+
+        VI order(5);
+        for(int i = 0; i &lt; 5; i ++) order[i] = i;
+
+        long double best = 1e99;
+        do {
+            std::set&lt;int&gt; still;
+            for(int i = 0; i &lt; 5; i ++) still.insert(i);
+
+            long double time = 0;
+            long double taken = 0;
+            for(int i = 0; i &lt; 5; i ++) {
+                long double req = H[order[i]]/(long double)d;
+                //std::cout &lt;&lt; &quot;Health: &quot; &lt;&lt; H[i] &lt;&lt; &quot; damage: &quot; &lt;&lt; d &lt;&lt; &quot; req: &quot; &lt;&lt; req &lt;&lt; std::endl;
+                int ed = 0;
+                //for(auto i : still) ed += E[i];
+                for(std::set&lt;int&gt;::iterator it = still.begin(); it != still.end(); ++it) ed += E[*it];
+                taken += req * ed;
+                time += ed;
+                still.erase(order[i]);
+            }
+            best = std::min(best, taken);
+        } while(std::next_permutation(order.begin(), order.end()));
+        std::printf(&quot;%.5Lf\n&quot;, best);
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

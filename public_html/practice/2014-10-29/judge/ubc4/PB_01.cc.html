@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;complex&gt;
+#include &lt;stack&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+
+using namespace std;
+typedef long double ld;
+typedef long long ll;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+const long long INF = 1000000000000000000LL;
+
+int main() {
+    int T; cin &gt;&gt; T;
+    ll dist[101][101];
+    while(T--) {
+        int n, k, m;
+        cin &gt;&gt; n &gt;&gt; k &gt;&gt; m;
+        for(int i=0; i&lt;=n; i++)
+            for(int j=0; j&lt;=n; j++)
+                dist[i][j] = INF;
+
+        for(int i=0; i&lt;m; i++) {
+            ll u, v, d;
+            cin &gt;&gt; u &gt;&gt; v &gt;&gt; d;
+            dist[u][v] = dist[v][u] = d;
+        }
+        for(int k=0; k&lt;n; k++) {
+            for(int i=0; i&lt;n; i++) {
+                for(int j=0; j&lt;n; j++) {
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[j][k]);
+                }
+            }
+        }
+        ll best = INF;
+        ll lo = 0, hi = INF;
+        while(lo &lt;= hi) {
+            ll range = (lo + hi)/2;
+            ll adjmat[101][101];
+            for(int i=0; i&lt;n; i++)
+                for(int j=0; j&lt;n; j++)
+                    adjmat[i][j] = dist[i][j] &lt;= range ? 1 : INF;
+            for(int k=0; k&lt;n; k++) {
+                for(int i=0; i&lt;n; i++) {
+                    for(int j=0; j&lt;n; j++) {
+                        adjmat[i][j] = min(adjmat[i][j], adjmat[i][k] + adjmat[j][k]);
+                    }
+                }
+            }
+            bool works = true;
+            for(int i=0; i&lt;n; i++) {
+                for(int j=0; j&lt;n; j++) {
+                    if(adjmat[i][j] &gt; k) {
+                        works = false;
+                        i = n;
+                        break;
+                    }
+                }
+            }
+            if(works) {
+                hi = range-1;
+                best = min(best, range);
+            } else {
+                lo = range+1;
+            }
+        }
+        cout &lt;&lt; best &lt;&lt; endl;
+
+    }
+
+    return 0;    
+}
+ </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

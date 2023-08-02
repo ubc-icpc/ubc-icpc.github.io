@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;stdio.h&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+char cipher[101];
+char text[101];
+char vowel[] = {'a', 'i', 'y', 'e', 'o', 'u'};
+char consonant[] = {'b', 'k', 'x', 'z', 'n', 'h', 'd', 'c', 'w', 'g', 'p', 'v', 'j', 'q', 't', 's', 'r', 'l', 'm','f'};
+string s;
+int main() {
+
+	while(getline(cin,s)) {
+		for(int i = 0; i &lt; s.length(); i++) {
+			bool upper = false;
+			if(s[i] &gt;= 'A' &amp;&amp; s[i] &lt;= 'Z') {
+				upper = true;
+				s[i] = s[i] - 'A'+ 'a';
+			}
+			bool vowel_f = false;
+			int index = 0;
+			for(int j = 0; j &lt; 6; j++) {
+				if(s[i] == vowel[j]){
+					vowel_f = true;
+					index = j;
+					break;
+				}
+			}
+			if(vowel_f) {
+				s[i] = vowel[( index + 3) % 6];
+				if(upper) 
+					s[i] = s[i] + 'A' - 'a';
+			}
+			if(!vowel_f) {
+				bool c_f = false;
+				for(int j = 0; j &lt; 20; j++) {
+					if(consonant[j] == s[i]) {
+						c_f = true;
+						index = j;
+						break;
+					}
+				}
+				if(c_f) {
+					s[i] = consonant[(index + 10) % 20];
+					if(upper)
+						s[i] = s[i] + 'A' - 'a';
+				}
+			}
+		}
+		cout&lt;&lt;s&lt;&lt;endl;
+	}
+	
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

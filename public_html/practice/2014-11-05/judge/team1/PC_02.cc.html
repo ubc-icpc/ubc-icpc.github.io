@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+vector &lt;int&gt; chars;
+vector &lt;char&gt; rev;
+long long n;
+
+long long fact(int n) {
+	if (n==0) return 1;
+	return n*fact(n-1);
+}
+
+int main(){
+	vector&lt;long long&gt; facts;
+	for (int i=0;i&lt;=16;i++) {
+		facts.push_back(fact(i));
+	}
+
+	while(true) {
+		chars.clear();
+		rev.clear();
+
+		string str;
+		cin &gt;&gt; str &gt;&gt; n;
+		if (str == &quot;#&quot;)	break;
+
+		vector &lt;char&gt; temp;
+		for(int i = 0; i &lt; str.length(); i++){
+			temp.push_back(str[i]);
+		}
+
+		sort(temp.begin(), temp.end());
+		char prv = temp[0];
+		int cnt = 0;
+		for(int i = 0; i &lt; temp.size(); i++){
+			if (temp[i] == prv)
+				cnt++;
+			else{
+				rev.push_back(prv);
+				chars.push_back(cnt);
+				cnt = 1;
+				prv = temp[i];
+			}
+		}
+		rev.push_back(prv);
+		chars.push_back(cnt);
+		
+		for (int i=0;i&lt;str.length() &amp;&amp; n;i++) {
+			long long t = facts[str.length()-1-i];
+			if (t&gt;1) {
+				for (int j=0;j&lt;chars.size();j++) {
+					t=t/facts[chars[j] ];
+				}
+			}
+			int next=0;
+			
+			while(true) {
+				long long t = facts[str.length()-1-i]*chars[next];
+				if (t&gt;1) {
+					for (int j=0;j&lt;chars.size();j++) {
+						t=t/facts[chars[j]];
+					}
+				}
+				
+				if(n-t&gt;0) {
+					n=n-t;
+					next++;
+				}				
+				else {
+					cout&lt;&lt;rev[next];
+					chars[next]--;
+					break;
+				}
+			}
+		}
+		cout&lt;&lt;endl;
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

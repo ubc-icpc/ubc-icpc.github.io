@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+using namespace std;
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int test=1; test&lt;=t; test++) {
+    int s=0,b=0,m=0;
+    cin &gt;&gt; s &gt;&gt; b &gt;&gt; m;
+    vector&lt;int&gt; g;
+    for (int i=0; i&lt;m; i++) {
+      int x; cin &gt;&gt; x; g.push_back(x);
+    }
+    cout &lt;&lt; &quot;Practice #&quot; &lt;&lt; test &lt;&lt; &quot;: &quot; &lt;&lt; s &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+    for (int i=0; i&lt;m; i++) {
+      while (b&lt;=g[i]) b*=2;
+      b-=g[i];
+      cout &lt;&lt; g[i] &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

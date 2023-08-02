@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main()
+{
+    int t = 0;
+    while (1)
+    {
+        int n; cin &gt;&gt; n;
+        if (!n) break;
+        
+        vector&lt;int&gt; x(n);
+        vector&lt;int&gt; y(n);
+        for (int i = 0; i &lt; n; i++)
+        {
+            cin &gt;&gt; x[i] &gt;&gt; y[i];
+        }
+        
+        sort(x.begin(), x.end());
+        sort(y.begin(), y.end());
+        int xm = x[(n - 1) / 2];
+        int ym = y[(n - 1) / 2];
+        int s = 0;
+        for (int i = 0; i &lt; n; i++)
+        {
+            s += abs(x[i] - xm);
+            s += abs(y[i] - ym);
+        }
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++t &lt;&lt; &quot;: (&quot; &lt;&lt; xm &lt;&lt; &quot;,&quot; &lt;&lt; ym &lt;&lt; &quot;) &quot; &lt;&lt; s &lt;&lt; endl;
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

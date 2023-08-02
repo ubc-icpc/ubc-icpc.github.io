@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; VI;
+#define xx first
+#define yy second
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+#define FORB(i,a,b) for(int i=int(b)-1;i&gt;=int(a);i--)
+
+string G[21];
+bool vis[21][21][21][21][4][4];
+
+//U = 0, R = 1, D = 2, L = 3
+struct S {
+	int x1, y1;
+	int x2, y2;
+	int d1, d2;
+	int v;
+};
+queue&lt;S&gt; Q; int n;
+
+void forward(int d, int&amp; x, int&amp; y) {
+	if (x == 0 &amp;&amp; y == n-1) return;
+	int nx=x, ny=y;
+	if (d == 0) nx--;
+	else if (d == 1) ny++;
+	else if (d == 2) nx++;
+	else ny--;
+	if (nx&gt;=0 &amp;&amp; ny&gt;=0 &amp;&amp; nx&lt;n &amp;&amp; ny&lt;n &amp;&amp; G[nx][ny]=='E') x=nx, y=ny;
+}
+
+int bfs() {
+	Q.push({n-1, 0, n-1, 0, 0, 1, 0});
+	while (!Q.empty()) {
+		S c = Q.front();
+		Q.pop();
+		vis[c.x1][c.y1][c.x2][c.y2][c.d1][c.d2] = true;
+		if (c.x1==0 &amp;&amp; c.y1==n-1 &amp;&amp; c.x2==0 &amp;&amp; c.y2==n-1) return c.v;
+		//F
+		{
+			S n = c; n.v++;
+			forward(n.d1, n.x1, n.y1);
+			forward(n.d2, n.x2, n.y2);
+			if (!vis[n.x1][n.y1][n.x2][n.y2][n.d1][n.d2])
+				Q.push(n);
+		}
+		//L
+		{
+			S n = c; n.v++;
+			n.d1=(n.d1+1)%4;
+			n.d2=(n.d2+1)%4;
+			if (!vis[n.x1][n.y1][n.x2][n.y2][n.d1][n.d2])
+				Q.push(n);
+		}
+		//R
+		{
+			S n = c; n.v++;
+			n.d1=(n.d1+3)%4;
+			n.d2=(n.d2+3)%4;
+			if (!vis[n.x1][n.y1][n.x2][n.y2][n.d1][n.d2])
+				Q.push(n);
+		}
+	}
+	return -1;
+}
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin &gt;&gt; n;
+	FOR(i,0,n) cin &gt;&gt; G[i];
+	cout &lt;&lt; bfs() &lt;&lt; endl;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

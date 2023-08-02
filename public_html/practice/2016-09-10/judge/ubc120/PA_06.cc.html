@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+#include &quot;iostream&quot;
+using namespace std;
+
+// problem A http://www.cs.ubc.ca/~acm-web/practice/2016-09-10/problems/problemset_2012.pdf
+
+int main()
+{
+	int t, w, h, n, x, y;
+	cin &gt;&gt; t;
+
+	char s;
+	// we need 2 matrixes that are w x h
+	// h rows and w columns
+
+
+
+	for (int i = 0; i &lt; t; i++) {
+		int ships1 = 0, ships2 = 0;
+		int playerATurns = 0, playerBTurns = 0;
+
+		cin &gt;&gt; w &gt;&gt; h &gt;&gt; n;
+
+		// create maps
+		int** map1 = new int*[h];
+		for (int j = 0; j &lt; h; ++j)
+		{
+			map1[j] = new int[w];
+
+			for (int k = 0; k &lt; w; k++)
+			{
+				cin &gt;&gt; s;
+				if (s == '#') {
+					ships1++;
+					map1[j][k] = 1;
+				}
+				else {
+					map1[j][k] = 0;
+				}
+			}
+		}
+
+		int** map2 = new int*[h];
+		for (int j = 0; j &lt; h; ++j)
+		{
+			map2[j] = new int[w];
+			for (int k = 0; k &lt; w; k++)
+			{
+				cin &gt;&gt; s;
+				if (s == '#') {
+					ships2++;
+					map2[j][k] = 1;
+				}
+				else {
+					map2[j][k] = 0;
+				}
+			}
+		}
+
+		bool earlyVictory = false;
+		bool turn1 = true;
+		int j = 0;
+		// start game
+		for (j = 0; j &lt; n; j++) {
+
+			if (turn1) {
+				// P1 attacks
+				while (true) {
+					if (j &gt;= n) { break; }
+
+					cin &gt;&gt; x &gt;&gt; y;
+
+					if (map2[h - 1 - y][x] == 1) // a hit
+					{
+						ships2--;
+						map2[h - 1 - y][x] = 0;
+						j++;
+
+						// continue if they have ships left
+						if (ships2 == 0)
+						{
+							// we cannot continue turn anymore
+							j--;
+							turn1 = false;
+							break;
+						}
+						
+					}
+					else {
+						turn1 = false;
+						break;
+					}
+				}
+				playerATurns++;
+			}
+			else {
+				// P2 attacks
+				while (true) {
+					if (j &gt;= n) { break; }
+					cin &gt;&gt; x &gt;&gt; y;
+
+					if (map1[h - 1 - y][x] == 1) // a hit
+					{
+						ships1--;
+						map1[h - 1 - y][x] = 0;
+						j++;
+
+						// continue if they have ships left
+						if (ships1 == 0)
+						{
+							// we cannot continue turn anymore
+							j--;
+							turn1 = true;
+							break;
+						}
+
+					}
+					else {
+						turn1 = true;
+						break;
+					}
+				}
+				playerBTurns++;
+			}
+			// check if one player won already
+			if ((ships1 == 0 || ships2 == 0) &amp;&amp; (playerATurns == playerBTurns)) {
+
+				earlyVictory = true;
+				break;
+			}
+		}
+
+		// eat the rest of the shit
+		if (earlyVictory) {
+			for (int l = 0; l &lt; n - 1 - j; l++) {
+				cin &gt;&gt; x &gt;&gt; y;
+			}
+		}
+
+		// end game conditions
+		if ((ships1 == 0 &amp;&amp; ships2 == 0) || (ships1 &gt; 0 &amp;&amp; ships2 &gt; 0)) {
+			cout &lt;&lt; &quot;draw&quot; &lt;&lt; endl;
+		}
+		else {
+			if (ships1 &gt; 0) {
+				cout &lt;&lt; &quot;player one wins&quot; &lt;&lt; endl;
+			}
+			else {
+				cout &lt;&lt; &quot;player two wins&quot; &lt;&lt; endl;
+			}
+		}
+
+		// cleanup
+		for (int j = 0; j &lt; h; ++j)
+		{
+			free(map1[j]);
+			free(map2[j]);
+		}
+
+		free(map1);
+		free(map2);
+	}
+
+
+
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

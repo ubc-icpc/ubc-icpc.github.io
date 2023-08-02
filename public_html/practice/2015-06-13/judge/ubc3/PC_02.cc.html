@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+
+int main (){
+  int N, K;
+  cin &gt;&gt; N &gt;&gt; K;
+  vi vert(100001, 0);
+  vi hori(100001, 0);
+  vi dial(200001, 0); // top left - bottom right
+  vi diar(200001, 0); // top right - bottom left
+  for (int i = 0; i &lt; N; ++i) {
+    int X, Y;
+    cin &gt;&gt; X &gt;&gt; Y;
+    vert[X]++;
+    hori[Y]++;
+    int dial_ind = (Y + X) % 200001;
+    int diar_ind = ((Y - X) + 200001) % 200001;
+    dial[dial_ind]++;
+    diar[diar_ind]++;
+
+    if (vert[X] == K || hori[Y] == K
+        || dial[dial_ind] == K || diar[diar_ind] == K) {
+      cout &lt;&lt; i + 1 &lt;&lt; endl; 
+      break;
+    }
+    if (i == N - 1)
+      cout &lt;&lt; -1 &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+typedef long long ll;
+
+int dp[50005][105];
+int song[50005];
+int main() {
+	cin.sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n, m;
+		cin &gt;&gt; n &gt;&gt; m;
+		
+		int pc, ps;
+		cin &gt;&gt; pc &gt;&gt; ps;
+		
+		for (int i = 0; i &lt; n; i++) cin &gt;&gt; song[i];
+		
+		memset(dp, 0x3f, sizeof dp);
+		//base case
+		for (int k = 0; k &lt;= m; k++) {
+			if (k &gt; song[0]) {
+				dp[0][k] = (k-song[0])*ps;
+			} else {
+				dp[0][k] = (song[0]-k)*pc;
+			}
+		}
+		
+		for (int i = 1; i &lt; n; i++) {
+			for (int j = 0; j &lt;= m; j++) {
+				for (int k = max(song[i]-j, 0); k &lt;= song[i]; k++) {
+					//how many minutes to we cut from current block?
+					dp[i][j] = min(dp[i][j], dp[i-1][j-(song[i]-k)] + k*pc);
+				}
+				//what if dp[i][j] is reached by finishing previous block
+				//and filling up to j minutes in this block?
+				for (int k = 0; k &lt;= m; k++) {
+					if (j &gt; song[i]) {
+						dp[i][j] = min(dp[i][j], dp[i-1][k] + (m-k)*ps + (j-song[i])*ps);
+					} else {
+						dp[i][j] = min(dp[i][j], dp[i-1][k] + (m-k)*ps + (song[i]-j)*pc);
+					}
+				}
+			}
+		}
+		/*
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt;= m; j++) {
+				cout &lt;&lt; dp[i][j] &lt;&lt; &quot; &quot;;
+			}
+			cout &lt;&lt; endl;
+		}*/
+		cout &lt;&lt; dp[n-1][m] &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

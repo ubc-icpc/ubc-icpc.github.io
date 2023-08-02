@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+const ld EPS = 1e-7;
+const ld pi = 3.1415926535897932384626433832795L;
+
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+
+ld r;
+int n;
+
+inline ld perimeter(const pol&amp; p, ld s) {
+  ld x = 0;
+  for (int i = 0; i &lt; n; i++)
+    x += abs(p[i]*s-p[(i+1)%n]*s);
+  return x;
+}
+
+inline ld arcs(const pol&amp; p, ld s) {
+  ld x = 0;
+  for (int i = 0; i &lt; p.size(); i++) {
+    pt a = p[i]*s, b = p[(i+1)%n]*s, c = p[(i+2)%n]*s;
+    pt A = a-b, B = c-b;
+    if (abs(A.real()+B.real()) &lt; 1e-9 &amp;&amp; abs(A.imag()+B.imag()) &lt; 1e-9)
+      continue;
+    ld t = acos(dp(A,B)/(abs(A)*abs(B)));
+    x += r*(pi-t);
+  }
+  return x;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    pol p;
+    cin &gt;&gt; r &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+      ld x, y; cin &gt;&gt; x &gt;&gt; y;
+      p.push_back(pt(x,y));
+    }
+    ld X = perimeter(p,1.0L);
+    if (perimeter(p,1e-9)+arcs(p,1e-9) &gt; X) {
+      cout &lt;&lt; &quot;Not possible\n&quot;;
+      continue;
+    }
+    ld lo = EPS, hi = 1;
+    while (hi-lo &gt; EPS) {
+      ld mid = (lo+hi)/2;
+      if (perimeter(p,mid)+arcs(p,mid) &lt; X)
+        lo = mid;
+      else
+        hi = mid;
+    }
+    cout &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; lo &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

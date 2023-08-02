@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+struct E {
+	int dst, cost, time; bool sun;
+	E(){}
+	E(int ldst, int lc, bool ls) {
+		dst = ldst; cost = lc; sun = ls;
+	}
+	E(int ldst, int lc, int lt) {
+		dst = ldst; cost = lc; time = lt;
+	}
+};
+
+struct cmpE {
+	bool operator() (const E &amp;e1, const E &amp;e2) const {
+		return e1.cost &gt; e2.cost;
+	}
+};
+
+bool visited[1600][3600];
+
+int main() {
+	int maxsun; cin &gt;&gt; maxsun;
+	int nv, ne; cin &gt;&gt; nv &gt;&gt; ne;
+	vector&lt;E&gt; adj[nv];
+
+	for (int i = 0; i &lt; ne; i++) {
+		int s, t, d, underground;
+		cin &gt;&gt; s &gt;&gt; t &gt;&gt; d &gt;&gt; underground;
+		bool sun = underground ? true : false;
+		adj[s].push_back(E(t, d, sun));
+		adj[t].push_back(E(s, d, sun));
+	}
+
+	priority_queue&lt;E, vector&lt;E&gt;, cmpE&gt; q;
+	memset(visited, 0, sizeof visited);
+	q.push(E(0, 0, 0));
+	
+	while (!q.empty()) {
+		E e = q.top();
+		q.pop();
+		if (visited[e.dst][e.time]) continue;
+		visited[e.dst][e.time] = true;
+		if (e.dst == nv-1) {
+			cout &lt;&lt; e.cost &lt;&lt; endl;
+			return 0;
+		}
+
+		for (int i = 0; i &lt; adj[e.dst].size(); i++) {
+			E e2 = adj[e.dst][i];
+			int newtime = e.time;
+			if (e2.sun) newtime += e2.cost;
+			int newcost = e.cost + e2.cost;
+			if (newtime &lt;= maxsun) {
+				q.push(E(e2.dst, newcost, newtime));
+			}
+		}
+	}
+	cout &lt;&lt; -1 &lt;&lt; endl;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

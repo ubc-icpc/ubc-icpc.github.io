@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+#define debug printf
+typedef long long ll;
+
+struct node_t {
+    node_t *next[26];
+    bool yes;
+} nodes[2000022];
+int node_top = 2;
+
+node_t *forward_root = nodes;
+node_t *backward_root = nodes + 1;
+
+char input[1000011];
+bool validf[1000011], validb[1000011];
+
+int main() {
+    int n, q; scanf(&quot;%d%d&quot;, &amp;n, &amp;q);
+    while (n--) {
+        scanf(&quot; %s&quot;, input);
+        char *c;
+        node_t *cur = forward_root;
+        for (c = input; *c != 0; c++) {
+            if (!cur-&gt;next[*c-'a'])
+                cur-&gt;next[*c-'a'] = &amp;nodes[node_top++];
+            cur = cur-&gt;next[*c-'a'];
+        }
+        cur-&gt;yes = true;
+
+        cur = backward_root;
+        for (c = c - 1; c &gt;= input; c--) {
+            if (!cur-&gt;next[*c-'a'])
+                cur-&gt;next[*c-'a'] = &amp;nodes[node_top++];
+            cur = cur-&gt;next[*c-'a'];
+        }
+        cur-&gt;yes = true;
+    }
+    while (q--) {
+        scanf(&quot; %s&quot;, input);
+        int len = strlen(input);
+        memset(validf, 0, len);
+        memset(validb, 0, len);
+
+        node_t *cur = forward_root;
+        for (int i = 0; i &lt; len &amp;&amp; cur; i++) {
+            if (cur-&gt;yes)
+                validf[i] = true;
+            cur = cur-&gt;next[input[i]-'a'];
+        }
+        if (cur &amp;&amp; cur-&gt;yes) {
+            printf(&quot;simple name\n&quot;);
+            continue;
+        }
+
+        cur = backward_root;
+        for (int i = len-1; i &gt;= 0 &amp;&amp; cur; i--) {
+            if (cur-&gt;yes)
+                validb[i+1] = true;
+            cur = cur-&gt;next[input[i]-'a'];
+        }
+
+        bool ok = false;
+        for (int i = 1; i &lt; len; i++)
+            if (validf[i] &amp;&amp; validb[i]) {
+                printf(&quot;compound name\n&quot;);
+                ok = true;
+                break;
+            }
+
+        if (!ok) printf(&quot;unknown name\n&quot;);
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

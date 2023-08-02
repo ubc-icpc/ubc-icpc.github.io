@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+numberOfDataSets = raw_input()
+numberOfDataSets = int(numberOfDataSets)
+
+
+
+
+for i in range (0,numberOfDataSets,1):
+    input = raw_input()
+    print input
+    input = input.split()
+    
+    us = []
+    us.append (int(input[0]))
+    us.append (int(input[1]))
+    us.append (int(input[2]))
+    
+    russia =[]
+    russia.append(int(input[3]))
+    russia.append (int(input[4]))
+    russia.append (int(input[5]))
+    
+    
+    usTotal = us[0] + us[1] + us[2]
+    russiaTotal = russia[0] + russia[1] + russia[2]
+    
+    if (usTotal &gt; russiaTotal):
+        total = True
+    else:
+        total = False
+        
+    
+    if (us[0] &lt; russia[0]):
+        color = False
+    elif(us[0] &gt; russia[0]):
+        color = True
+    elif (us[0] == russia[0]):
+          if (us[1]&gt;russia[1]):
+            color = True
+          elif (us[1]&lt;russia[1]):
+            color = False
+          elif (us[1]==russia[1]):
+            if (us[2] &gt; russia[2]):
+                color = True
+            elif (us[2]&lt;=russia[2]):
+                color = False
+          
+    
+            
+    if (color &amp; total):
+          print &quot;both&quot;
+    elif (color):
+          print &quot;color&quot;
+    elif (total):
+          print &quot;count&quot;
+    else:
+          print &quot;none&quot;
+        
+            
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

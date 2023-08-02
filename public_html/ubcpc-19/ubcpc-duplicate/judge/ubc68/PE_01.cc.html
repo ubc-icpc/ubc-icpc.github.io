@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define MAX_I 2028
+
+int N,K;
+unsigned long a[MAX_I];
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin &gt;&gt; N &gt;&gt; K;
+	for(unsigned n = 0; n &lt; N; n++) {
+		cin &gt;&gt; a[n];
+	}
+	sort(a, a+N);
+	unsigned long sum = 0;
+	for(unsigned k = 1; k &lt;= K; k++) {
+		sum += a[N-k];
+#ifdef DEBUG
+		cout &lt;&lt; &quot;Picked: &quot; &lt;&lt; a[N-k] &lt;&lt; endl;
+#endif
+	}
+	cout &lt;&lt; sum &lt;&lt; &quot;\n&quot;;
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

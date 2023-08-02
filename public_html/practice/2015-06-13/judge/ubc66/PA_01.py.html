@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+def sum4pieces(mysublist):
+    mysum = 0
+    for num in mysublist:
+        mysum = mysum + num
+    return mysum
+
+
+mylist= [0]*11
+for i in range(8):
+    mylist[i] = int(input())
+    
+mylist[8] = mylist[0]
+mylist[9] = mylist[1]
+mylist[10] = mylist[2]
+
+max = 0
+for i in range(11):
+    sum = sum4pieces(mylist[i:i+4])
+    if sum &gt; max:
+        max = sum
+
+print(max)
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

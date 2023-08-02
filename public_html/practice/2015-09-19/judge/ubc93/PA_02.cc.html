@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+	int numLoads;
+	cin &gt;&gt; numLoads;
+
+	while (numLoads != 0) {
+		vector&lt;int&gt; dryTimes;
+		for (int i = 0; i &lt; numLoads; i++) {
+			int dryTime;
+			cin &gt;&gt; dryTime;
+			dryTimes.push_back(dryTime);
+		}
+
+		sort(dryTimes.begin(), dryTimes.end(), [](int x, int y) { return y &lt; x; });
+
+		int totalWash = 30;
+		int totalDry = totalWash;
+		for (int i = 0; i &lt; numLoads; i++) {
+			if (totalWash &gt; totalDry) {
+				totalDry = totalWash;
+			}
+
+			totalDry += dryTimes.at(i);
+			totalWash += 30;
+		}
+
+		int hours = totalDry / 60;
+		int minutes = totalDry % 60;
+
+		if (minutes &lt; 10) {
+			cout &lt;&lt; hours &lt;&lt; &quot;:&quot; &lt;&lt; &quot;0&quot; &lt;&lt; minutes &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; hours &lt;&lt; &quot;:&quot; &lt;&lt; minutes &lt;&lt; endl;
+		}
+		cin &gt;&gt; numLoads;
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

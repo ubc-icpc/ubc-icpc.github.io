@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int mintime(int end, vector&lt;int&gt;&amp; times, unordered_map&lt;int,int&gt;&amp; soln) {
+  if (end == 1) return times[1];
+  if (end == 2) return times[0] + times[1] + times[2];
+  if (soln.find(end) != soln.end()) return soln[end];
+  else {
+    soln[end] = min(times[0]+times[end]+mintime(end-1, times, soln),
+      times[0]+2*times[1]+times[end]+mintime(end-2, times, soln));
+    return soln[end];
+  }
+}
+
+int main() {
+  int N; cin &gt;&gt; N;
+  vector&lt;int&gt; v;
+  while (N--) {
+    int num; cin &gt;&gt; num;
+    v.push_back(num);
+  }
+  sort(v.begin(), v.end());
+  unordered_map&lt;int, int&gt; soln;
+  cout &lt;&lt; mintime(v.size()-1, v, soln) &lt;&lt; endl;
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

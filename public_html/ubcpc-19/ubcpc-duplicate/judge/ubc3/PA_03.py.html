@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">cmd = raw_input()
+shift = int(raw_input())
+string = raw_input()
+results = []
+if cmd == 'E':
+    for i in string:
+        results.append(chr ( ord('a')+ (ord(i)-ord('a') + shift ) %26))
+    print(''.join(results))
+if cmd == 'D':
+    for i in string:
+        results.append(chr ( ord('a')+ (ord(i)-ord('a') - shift ) %26))
+    print(''.join(results))</code>
+</pre>
+</body>
+</html>

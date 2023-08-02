@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+#define int long long
+
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; pipii;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;pii&gt; vii;
+typedef vector&lt;pipii&gt; viii;
+
+int c, m, ans = 0;
+int p[105][105], memo[105][105];
+
+#undef int
+int main() {
+#define int long long
+  ios_base::sync_with_stdio(0);
+  cin &gt;&gt; c &gt;&gt; m;
+  memset(p, 0, sizeof p);
+  for (int i = 0; i &lt; m; i++) {
+    for (int j = 1; j &lt;= c; j++) {
+      cin &gt;&gt; p[i][j];
+    }
+  }
+  memset(memo, -1, sizeof memo);
+  for (int i = 0; i &lt;= c; i++)
+    memo[0][i] = p[0][i];
+
+  for (int i = 1; i &lt; m; i++) {
+    for (int j = 0; j &lt;= c; j++) {
+      memo[i][j] = memo[i-1][j];
+      for (int k = 1; k &lt;= j; k++) {
+        memo[i][j] = max(memo[i][j], memo[i-1][j-k] + p[i][k]);
+      }
+    }
+  }
+
+  for (int i = 0; i &lt;= c; i++)
+    ans = max(ans, memo[m-1][i]);
+  cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

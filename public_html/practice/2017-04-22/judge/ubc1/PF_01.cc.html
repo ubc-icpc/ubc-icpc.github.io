@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+//-------------------
+#define MAXN 2020
+
+int n;
+int l[2*MAXN];
+int bestw[2*MAXN];
+//-------------------
+
+int main(){
+
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+
+  cin &gt;&gt; n;
+  for(int i = 1;i &lt;= n;i++){
+    int x;
+    cin &gt;&gt; x;
+    l[x]++;
+  }
+
+  for(int h = 1;h &lt;= 4000;h++){
+    for(int i = 1;2*i &lt;= h;i++){
+      assert(h-i &gt;= 0);
+      assert(h-i &lt; 2*MAXN);
+      assert(i &gt;= 0);
+      assert(i &lt; 2*MAXN);
+      if(2*i == h) bestw[h] += (l[i]/2);
+      else bestw[h] += min(l[i], l[h-i]);
+    }
+  }
+
+  int answ = -1, anst = 0;
+  for(int i = 1;i &lt;= 4000;i++){
+    if(bestw[i] &gt; answ){
+      answ = bestw[i];
+      anst = 0;
+    }
+    if(bestw[i] == answ) anst++;
+  }
+
+  cout &lt;&lt; answ &lt;&lt; &quot; &quot; &lt;&lt; anst &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

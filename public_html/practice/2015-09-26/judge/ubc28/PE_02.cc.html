@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+int STATE[4][3][2] = {
+    {
+        {0, 0},
+        {0, 1},
+        {1, 0}
+    },
+    
+    {
+        {0,0},
+        {1,0},
+        {0,-1}
+    },
+        
+    {
+        {0, 0},
+        {-1, 0},
+        {0, -1}
+    },
+    
+    {
+        {0,0},
+        {-1,0},
+        {0,1}
+    }
+
+};
+
+
+struct state {
+    int x, y, t;
+    state(int x, int y, int t) : x(x), y(y), t(t) {}
+    bool operator==(const state&amp; o) const {
+        if (x == o.x &amp;&amp; y == o.y &amp;&amp; t == o.t) return true;
+        return false;
+    }
+};
+
+int r, c;
+bool board[25][25];
+bool collide(state s) {
+    for (int i = 0; i &lt; 3; i++) {
+        int dx = STATE[s.t][i][0], dy = STATE[s.t][i][1];
+        if (s.x+dx &gt;= r) return true;
+        if (s.x+dx &lt; 0) return true;
+        if (s.y+dy &gt;= c) return true;
+        if (s.y+dy &lt; 0) return true;
+        if (board[s.x+dx][s.y+dy]) return true;
+    }
+    return false;
+}
+
+bool eq(vector&lt;pair&lt;int, int&gt;&gt; pos, state s) {
+    int found = 0;
+    for (int i = 0; i &lt; 3; i++) {
+        int dx = STATE[s.t][i][0], dy = STATE[s.t][i][1];
+        if (find(pos.begin(), pos.end(), make_pair(s.x+dx, s.y+dy)) != pos.end()) found++;
+    }
+    if (found == 3) return true;
+    return false;
+}
+
+int rnxt[] = {0,1,0,-1};
+int cnxt[] = {1,0,-1,0};
+
+state rotate(state s) {
+    state ns = s;
+    int dx = rnxt[s.t], dy = cnxt[s.t];
+    ns.t = (ns.t+1)%4;
+    ns.x += dx;
+    ns.y += dy;
+    return ns;
+}
+
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, -1, 0, 1};
+int dist[25][25][5];
+int main() {
+    while (cin &gt;&gt; r &gt;&gt; c) {
+        if (r == 0 &amp;&amp; c == 0) break;
+        memset(board, false, sizeof board);
+        vector&lt;pair&lt;int, int&gt;&gt; pos[2];
+        for (int i = 0; i &lt; r; i++) {
+            for (int j = 0; j &lt; c; j++) {
+                char c; cin &gt;&gt; c;
+                if (c == 'S') pos[0].push_back(make_pair(i,j));
+                else if (c == 'E') pos[1].push_back(make_pair(i,j));
+                else if (c == 'X') board[i][j] = true;
+            }
+        }
+        
+        if (r &lt; 2 || c &lt; 2) {
+            cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+            continue;
+        }
+        
+        vector&lt;state&gt; ends;
+        for (int k = 0; k &lt; 2; k++) {
+            for (int i = 0; i &lt; pos[k].size(); i++) {
+                int x = pos[k][i].first, y = pos[k][i].second;
+                for (int t = 0; t &lt; 4; t++) {
+                    if (eq(pos[k], state(x,y,t))) {
+                        ends.push_back(state(x,y,t));
+                        goto done;
+                    }
+                }
+            }
+            done:;
+        }
+        
+        memset(dist, -1, sizeof dist);
+        state st = ends[0], en = ends[1];
+        dist[st.x][st.y][st.t] = 0;
+        queue&lt;state&gt; q({st});
+        while (!q.empty()) {
+            state s = q.front(); q.pop();
+            int D = dist[s.x][s.y][s.t];
+            //rotate
+            state ns = rotate(s);
+            if (!collide(ns) &amp;&amp; dist[ns.x][ns.y][ns.t] == -1) {
+                dist[ns.x][ns.y][ns.t] = D+1;
+                q.push(ns);
+            }
+            
+            ns = rotate(rotate(rotate(s)));
+            if (!collide(ns) &amp;&amp; dist[ns.x][ns.y][ns.t] == -1) {
+                dist[ns.x][ns.y][ns.t] = D+1;
+                q.push(ns);
+            }
+            
+            for (int i = 0; i &lt; 4; i++) {
+                state ns = s;
+                ns.x += dx[i];
+                ns.y += dy[i];
+                if (!collide(ns) &amp;&amp; dist[ns.x][ns.y][ns.t] == -1) {
+                    dist[ns.x][ns.y][ns.t] = D+1;
+                    q.push(ns);
+                }
+            }
+        }
+        if (dist[en.x][en.y][en.t] == -1) cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+        else cout &lt;&lt; dist[en.x][en.y][en.t] &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

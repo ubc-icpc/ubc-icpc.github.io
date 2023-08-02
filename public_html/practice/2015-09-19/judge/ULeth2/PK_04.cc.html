@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cstdlib&gt;
+#include&lt;climits&gt;
+#include&lt;cassert&gt;
+using namespace std;
+const int MAX = 455;
+int DP[MAX][MAX];
+int n;
+int W[MAX];
+
+int solve(int left, int right){
+   assert(left &gt;= 0 or left &lt; n or right &gt;= 0 or right &lt; n );
+	  //cout &lt;&lt; left &lt;&lt; &quot; &quot; &lt;&lt; right &lt;&lt; endl;
+   
+   if(DP[left][right] != -1)
+      return DP[left][right];
+   if(left &gt; right)
+      DP[left][right] = solve(right,left);
+   else if(left+1 &lt; right){
+      DP[left][right] = solve(right-1,right);
+      for(int i = left+1; i &lt;= right-1; i++){
+	 DP[left][right] += abs(W[i] - W[i-1]);
+      }
+   }
+   else if(right == n-1 and left == n-2){
+      DP[left][right] = abs(W[left]- W[right]);
+   }
+   else{
+      int minimum = INT_MAX;
+      for(int i = right+1; i &lt; n; i++){
+	 minimum = min(minimum, solve(i,right)+abs(W[left]-W[i]));
+      }
+      DP[left][right] = minimum;
+   }
+   return DP[left][right];
+}
+
+int main(){
+   while(cin &gt;&gt; n){
+      //cout &lt;&lt; n &lt;&lt; endl;
+      
+      for(int i = 0; i &lt; n; i++){
+	 for(int j = 0; j &lt; n; j++){
+	    DP[i][j] = -1;
+	 }
+      }
+
+      for(int i = 0; i &lt; n; i++){
+	 int x; cin &gt;&gt; x;
+	 cin &gt;&gt; W[i];
+      }
+      if(n == 0 or n == 1){
+	 cout &lt;&lt; 0 &lt;&lt; endl;
+	 continue;
+      }
+      int minimum = INT_MAX;
+      for(int i = 1; i &lt; n; i++){
+	 minimum = min(minimum,solve(0,i));
+      }
+      cout &lt;&lt; minimum &lt;&lt; endl;
+   }
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

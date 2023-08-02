@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+
+int main(){
+	int t;
+
+	scanf(&quot;%d&quot;,&amp;t);
+	for(int k=0;k&lt;t;k++){
+		int n,d;
+		int count = 0;
+		scanf(&quot;%d %d&quot;,&amp;n,&amp;d);
+		for(int i=0;i&lt;n;i++){
+			int v,f,c;
+			scanf(&quot;%d %d %d&quot;,&amp;v,&amp;f,&amp;c);
+			if((double)f / c * v &gt;= d) count++;
+		}
+		printf(&quot;%d\n&quot;,count);
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

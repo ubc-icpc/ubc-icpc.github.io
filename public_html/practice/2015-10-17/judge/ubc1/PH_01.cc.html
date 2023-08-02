@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;complex&gt;
+#include &lt;cmath&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+typedef double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+const ld EPS = 1e-13;
+
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b) {
+  return a.real() &lt; b.real() || (a.real() == b.real() &amp;&amp; a.imag() &lt; b.imag()); }
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+
+inline ld sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : x/abs(x); }
+
+// Does NOT include points on the ends of the segment.
+inline bool on_segment(const pt &amp;a, const pt &amp;b, const pt &amp;p) {
+  return abs(cp(b-a, p-a)) &lt; EPS &amp;&amp; dp(b-a, p-a) &gt; 0 &amp;&amp; dp(a-b, p-b) &gt; 0; }
+
+  
+// Checks if p lies on the boundary of a polygon v.
+inline bool on_boundary(const pol &amp;v, const pt &amp;p) { bool res = false;
+  for(int i=v.size()-1,j=0;j&lt;v.size();i=j++) res |= on_segment(v[i], v[j], p);
+  return res; }
+  
+// orientation does not matter !!!
+bool pt_in_polygon(const pt &amp;p, const pol &amp;v){ if(on_boundary(v,p)) return true;
+  ld res = 0; for(int i = v.size() - 1, j = 0; j &lt; v.size(); i = j++)
+    res += atan2(cp(v[i] - p, v[j] - p), dp(v[i] - p, v[j] - p));
+  return abs(res) &gt; 1; } // will be either 2*PI or 0
+  
+// handles ALL cases, change occurences of &lt;= to &lt; to exclude endpoints
+bool seg_x_seg(pt a1, pt a2, pt b1, pt b2) {
+  //if (a1==a2 || b1==b2) return false; // uncomment to exclude endpoints
+  int s1 = sgn(cp(a2 - a1, b1 - a1)), s2 = sgn(cp(a2 - a1, b2 - a1));
+  int s3 = sgn(cp(b2 - b1, a1 - b1)), s4 = sgn(cp(b2 - b1, a2 - b1));
+  if(!s1 &amp;&amp; !s2 &amp;&amp; !s3) { // collinear
+    if (cmp_lex(a2, a1)) swap(a1, a2); if (cmp_lex(b2, b1)) swap(b1, b2);
+    //return cmp_lex(a1, b2) &amp;&amp; cmp_lex(b1, a2);//uncomment to exclude endpoints
+    return !cmp_lex(b2, a1) &amp;&amp; !cmp_lex(a2, b1);
+  } return s1*s2 &lt;= 0 &amp;&amp; s3*s4 &lt;= 0; }
+  
+struct edge {
+	int v; ld wt;
+	edge() {};
+	edge(int v, ld w) : v(v), wt(w) {}
+};
+
+ld dist[305];
+struct comp {
+	bool operator()(const int&amp; u, const int&amp; v) const {
+		if (dist[u] == dist[v]) return u &lt; v;
+		return dist[u] &lt; dist[v];
+	}
+};
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n; cin &gt;&gt; n;
+		vector&lt;pt&gt; p;
+		for (int i = 0; i &lt; n; i++) {
+			ld x, y; cin &gt;&gt; x &gt;&gt; y;
+			p.push_back(pt(x,y));
+		}
+		
+		pt st[2];
+		for (int i = 0; i &lt; 2; i++) {
+			ld x, y; cin &gt;&gt; x &gt;&gt; y;
+			st[i] = pt(x,y);
+		}
+
+		vector&lt;vector&lt;edge&gt; &gt; g(n+2);		
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = i+1; j &lt; n; j++) {
+				bool bad = false;
+				for (int k = 0; k &lt; n; k++) {
+                    if (k == i || k == j) continue;
+                    if ((k+1)%n == i || (k+1)%n == j) continue;
+					if (seg_x_seg(p[k], p[(k+1)%n], p[i], p[j])) {
+						bad = true;
+						break;
+					}
+				}
+                pt dir = (p[j]-p[i])/abs(p[j]-p[i]);
+				if (!bad &amp;&amp; pt_in_polygon(p[i]+0.5*dir, p)) {
+					ld wt = abs(p[i]-p[j]);
+					g[i].push_back(edge(j, wt));
+					g[j].push_back(edge(i, wt));
+				}
+			}
+		}
+		
+		for (int i = 0; i &lt; 2; i++) {
+			for (int j = 0; j &lt; n; j++) {
+				bool bad = false;
+				for (int k = 0; k &lt; n; k++) {
+                    if (k == j) continue;
+                    if ((k+1)%n == j) continue;
+					if (seg_x_seg(p[k], p[(k+1)%n], st[i], p[j])) {
+						bad = true;
+						break;
+					}
+				}
+				
+				if (!bad) {
+					ld wt = abs(st[i]-p[j]);
+					g[n+i].push_back(edge(j, wt));
+					g[j].push_back(edge(n+i, wt));
+				}
+			}
+		}
+		
+		bool bad = false;
+		for (int k = 0; k &lt; n; k++) {
+			if (seg_x_seg(p[k], p[(k+1)%n], st[0], st[1])) {
+				bad = true;
+				break;
+			}
+		}
+
+		if (!bad) {
+			ld wt = abs(st[0]-st[1]);
+			g[n+1].push_back(edge(n, wt));
+			g[n].push_back(edge(n+1, wt));
+		}
+
+		for (int k = 0; k &lt; n; k++) {
+			ld wt = abs(p[k]-p[(k+1)%n]);
+			g[k].push_back(edge((k+1)%n, wt));
+			g[(k+1)%n].push_back(edge(k, wt));
+		}
+		
+		for (int i = 0; i &lt; n+2; i++) {
+			dist[i] = 1e10;
+		}
+		set&lt;int, comp&gt; q;
+		q.insert(n);
+		dist[n] = 0;
+
+		while (!q.empty()) {
+			int u = *q.begin(); q.erase(q.begin());
+			if (u == n+1) break;
+			for (int i = 0; i &lt; g[u].size(); i++) {
+				edge e = g[u][i];
+				int v = e.v;
+				if (dist[v] &gt; dist[u] + e.wt) {
+					q.erase(v);
+					dist[v] = dist[u] + e.wt;
+					q.insert(v);
+				}
+			}
+		}
+		
+		cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; dist[n+1] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

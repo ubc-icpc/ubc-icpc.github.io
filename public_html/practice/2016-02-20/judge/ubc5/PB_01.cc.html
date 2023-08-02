@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;string,string&gt; pss;
+typedef pair&lt;int,int&gt; pii;
+
+struct s {
+	string first, last;
+	int i;
+	s() {}
+	s(string f, string l, int ii) : first(f), last(l), i(ii) {}
+	bool operator&lt;(const s&amp; b) const {
+		if (last != b.last)
+			return last &lt; b.last;
+		return first &lt; b.first;		
+	}
+};
+
+s p[100000];
+string fn[100000], ln[100000];
+map&lt;pss,int&gt; m;
+map&lt;int,pii&gt; m2;
+
+int main() {
+	ios::sync_with_stdio(0);
+	int n; cin &gt;&gt; n;
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; fn[i] &gt;&gt; ln[i];
+		p[i] = s(fn[i],ln[i],i);
+	}
+	sort(p,p+n);
+	for (int i = 0; i &lt; n; i++) {
+		vector&lt;int&gt; v;
+		for (int j = i-3; j &lt;= i+3; j++) {
+			if (j &lt; 0 || j/3 != i/3 || i == j)
+				continue;
+			v.push_back(j);
+			if (v.size() == 2)
+				break;
+		}
+		m[make_pair(p[i].first,p[i].last)] = i;
+		m2[i] = make_pair(v[0],v[1]);
+	}
+	int q; cin &gt;&gt; q;
+	for (int i = 0; i &lt; q; i++) {
+		string f, l; cin &gt;&gt; f &gt;&gt; l;
+		int qi = m[make_pair(f,l)];
+		cout &lt;&lt; p[m2[qi].first].first &lt;&lt; &quot; &quot; &lt;&lt; p[m2[qi].first].last &lt;&lt; &quot;\n&quot;;
+		cout &lt;&lt; p[m2[qi].second].first &lt;&lt; &quot; &quot; &lt;&lt; p[m2[qi].second].last &lt;&lt; &quot;\n&quot;;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

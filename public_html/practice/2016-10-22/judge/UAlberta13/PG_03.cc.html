@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int numStarsNeeded[26];
+
+void AddStar(int&amp; rank, int&amp; numStars)
+{
+    ++numStars;
+    
+    if (numStars &gt; numStarsNeeded[rank])
+    {
+        --rank;
+        numStars = 1;
+    }
+}
+
+void Update(int&amp; rank, int&amp; numStars, bool won, int&amp; numConsec)
+{
+    // Legend, can't change
+    if (rank == 0)
+        return;
+    
+    if (!won)
+    {
+        numConsec = 0;
+        // No penalty
+        if (rank &gt; 20)
+            return;
+        
+        if (numStars)
+            --numStars;
+        else
+        {
+            // Does not reduce at rank 20
+            if (rank == 20)
+            {
+                numStars = 0;
+            }
+            else
+            {
+                ++rank;
+                numStars = numStarsNeeded[rank] - 1;
+            }
+        }
+    }
+    else
+    {
+        ++numConsec;
+        if (rank &gt; 5 &amp;&amp; numConsec &gt;= 3)
+            AddStar(rank, numStars);
+        
+        AddStar(rank, numStars);
+    }
+}
+
+int main()
+{
+    numStarsNeeded[0] = 1e8;
+    for (int i = 1; i &lt;= 10; ++i)
+        numStarsNeeded[i] = 5;
+    for (int i = 11; i &lt;= 15; ++i)
+        numStarsNeeded[i] = 4;
+    for (int i = 16; i &lt;= 20; ++i)
+        numStarsNeeded[i] = 3;
+    for (int i = 21; i &lt;= 25; ++i)
+        numStarsNeeded[i] = 2;
+    
+    
+    string line;
+    cin &gt;&gt; line;
+    int rank = 25, numStars = 0, numConsec = 0;
+    
+    for (int i = 0; i &lt; line.size(); ++i)
+    {
+        Update(rank, numStars, (line[i] == 'W'), numConsec);
+    }
+    
+    if (rank != 0)
+        cout &lt;&lt; rank &lt;&lt; '\n';
+    else
+        cout &lt;&lt; &quot;Legend\n&quot;;
+
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

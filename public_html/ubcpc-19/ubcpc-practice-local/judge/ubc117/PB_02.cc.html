@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+ld p, q;
+
+vector&lt;string&gt; notes = {&quot;A&quot;, &quot;A#&quot;, &quot;B&quot;, &quot;C&quot;, &quot;C#&quot;, &quot;D&quot;, &quot;D#&quot;, &quot;E&quot;, &quot;F&quot;, &quot;F#&quot;, &quot;G&quot;, &quot;G#&quot;};
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    cin &gt;&gt; p &gt;&gt; q;
+    swap(p, q);
+    ll x = round(log((ld) p / q)/log((ld) 2)*1200);
+    ll y = (x + 50)/100;
+    if (x &lt; -50) y -= 1;
+    ll cts = x - y*100;
+    ll m = (y + 12*10000)/12;
+    ll r = (y + 12*10000)%12;
+
+    ll d1 = cts/2;
+    ll d2 = cts - d1;
+    d1 *= -1;
+    
+    cout &lt;&lt; 'A' &lt;&lt; &quot; &quot; &lt;&lt; d1 &lt;&lt; endl;
+    cout &lt;&lt; notes[r] &lt;&lt; &quot; &quot; &lt;&lt; d2 &lt;&lt; endl;
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

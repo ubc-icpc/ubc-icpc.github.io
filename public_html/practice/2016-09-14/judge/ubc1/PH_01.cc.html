@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+ 
+using namespace std;
+ 
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+ 
+// BEGIN CODEARCHIVE COPYPASTA
+ld cp(const pt &amp;a, const pt &amp;b) { return a.real()*b.imag() - b.real()*a.imag();}
+inline pt line_inter(const pt &amp;a, const pt &amp;b, const pt &amp;c, const pt &amp;d){
+  return a + cp(c - a, d - c)/cp(b - a, d - c) * (b - a); }
+// END CODEARCHIVE COPYPASTA
+ 
+const ld pi = acos(-1.0L);
+const ld eps = 1e-12;
+ 
+pt a, b, c, trans, rot;
+ld f(ld theta) {
+  pt rot = polar(1.0L, theta);
+  pt a1 = a, a2 = a + (b-a)*rot;
+  pt b1 = b, b2 = b + (c-b)*rot;
+  pt c1 = c, c2 = c + (a-c)*rot;
+  pt p1 = line_inter(a1,a2,b1,b2);
+  pt p2 = line_inter(b1,b2,c1,c2);
+  pt p3 = line_inter(c1,c2,a1,a2);
+  return abs(cp(p1-p2,p1-p3)/2);
+}
+ 
+int main() {
+  int t; cin &gt;&gt; t;
+  ld ax, ay, bx, by, cx, cy;
+  while (t--) {
+	int ca; cin &gt;&gt; ca;
+	cin &gt;&gt; ax &gt;&gt; ay &gt;&gt; bx &gt;&gt; by &gt;&gt; cx &gt;&gt; cy;
+    a = pt(ax,ay); b = pt(bx,by); c = pt(cx, cy);
+    if (abs(a)+abs(b)+abs(c) &lt; eps) break;
+
+    trans = a; rot = polar(1.0L, arg(b-a));
+    //translate to origin
+    a -= trans; b -= trans; c -= trans;
+    //rotate to align with x axis
+    b /= rot;
+    c /= rot;
+     
+    ld thetal = 0, thetar = arg(c-a);
+    while (f((thetal+thetar)/2) &gt; eps) {
+      ld t1 = thetal + (thetar-thetal)/3;
+      ld t2 = thetal + 2*(thetar-thetal)/3;
+      if (f(t1) &gt; f(t2)) {
+        thetal = t1;
+      } else {
+        thetar = t2;
+      }
+    }
+    ld angle = (thetal+thetar)/2;
+     
+    pt a1 = a, a2 = a + (b-a)*polar(1.0L, angle);
+    pt b1 = b, b2 = b + (c-b)*polar(1.0L, angle);
+    pt ans1 = line_inter(a1,a2,b1,b2);
+     
+    ans1 *= rot; ans1 += trans;
+     
+	cout &lt;&lt; ca &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; ans1.real() &lt;&lt; &quot; &quot; &lt;&lt; ans1.imag() &lt;&lt; endl;
+  }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt; 
+#include &lt;utility&gt;
+#include &lt;math.h&gt;
+#include &lt;cmath&gt;
+#include &lt;climits&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include&lt;string&gt;
+#include &lt;tuple&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;stdexcept&gt;
+#include &lt;complex&gt;
+
+using namespace std;
+typedef complex&lt;long double&gt; point;
+const long double PI = acos(-1.0L);
+
+int main() {
+	ios::sync_with_stdio(0); 
+	
+	int T, C;
+	cin &gt;&gt; T;
+
+	for (int i = 0; i &lt; T; i++) {
+		cin &gt;&gt; C;
+		string command;
+		long double argument;
+
+		tuple&lt;double, double, int&gt; res;
+		point c(0, 0), d(1, 0);
+
+		// for each command
+		for (int j = 0; j &lt; C; j++) {
+			cin &gt;&gt; command &gt;&gt; argument;
+			
+			if (command == &quot;lt&quot;) {
+				d *= polar(1.0L, argument / 180.0 * PI);
+			}
+			else if (command == &quot;rt&quot;) {
+				d *= polar(1.0L, -argument / 180.0 * PI);
+			}
+			// the following lines kinda make sense. You travel x points in d direction
+			else if (command == &quot;fd&quot;) {
+				c += argument * d;
+			}
+			else {// bk
+				c -= argument * d; 
+			}
+
+
+		}
+
+		cout &lt;&lt; (long long)(abs(c) + 0.5) &lt;&lt; endl;
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

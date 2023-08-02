@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+map&lt;char,int&gt; mi;
+bool b[625][625];
+int m, n;
+int mx, mxx, mxy; char mxd;
+
+inline bool ct(const int&amp; x, const int&amp; y, const char&amp; d) {
+  switch (d) {
+    case 'N':
+      return x &gt; 0 &amp;&amp; !b[x-1][y];
+    case 'S':
+      return x &lt; m-1 &amp;&amp; !b[x+1][y];
+    case 'W':
+      return y &gt; 0 &amp;&amp; !b[x][y-1];
+    case 'E':
+      return y &lt; n-1 &amp;&amp; !b[x][y+1];
+    default:
+      return false;
+  }
+}
+
+inline void cm(const int&amp; nt, const int&amp; sx, const int&amp; sy, const char&amp; sd) {
+  bool nm = false;
+  if (nt &gt; mx)
+    nm = true;
+  else if (nt == mx) {
+    if (sx &lt; mxx || (sx == mxx &amp;&amp; sy &lt; mxy))
+      nm = true;
+    else if (sx == mxx &amp;&amp; sy == mxy &amp;&amp; mi[sd] &lt; mi[mxd])
+      nm = true;
+  }
+  if (nm) {
+    mx = nt;
+    mxx = sx;
+    mxy = sy;
+    mxd = sd;
+  }
+}
+
+void dfs(int x, int y, char d, int nt, const int&amp; sx, const int&amp; sy, const char&amp; sd) {
+  bool e = true;
+  if (ct(x,y,d)) {
+    e = false;
+    switch (d) {
+      case 'N': x--; break;
+      case 'S': x++; break;
+      case 'W': y--; break;
+      case 'E': y++; break;
+      default: break;
+    }
+    b[x][y] = true;
+    dfs(x,y,d,nt+1,sx,sy,sd);
+    b[x][y] = false;
+    switch (d) {
+      case 'N': x++; break;
+      case 'S': x--; break;
+      case 'W': y++; break;
+      case 'E': y--; break;
+      default: break;
+    }
+  }
+  else {
+    if (d == 'E' || d == 'W') {
+      if (ct(x,y,'N')) {
+        e = false;
+        x--;
+        b[x][y] = true;
+        dfs(x,y,'N',nt+1,sx,sy,sd);
+        b[x][y] = false;
+        x++;
+      }
+      if (ct(x,y,'S')) {
+        e = false;
+        x++;
+        b[x][y] = true;
+        dfs(x,y,'S',nt+1,sx,sy,sd);
+        b[x][y] = false;
+        x--;
+      }
+    }
+    else {
+      if (ct(x,y,'E')) {
+        e = false;
+        y++;
+        b[x][y] = true;
+        dfs(x,y,'E',nt+1,sx,sy,sd);
+        b[x][y] = false;
+        y--;
+      }
+      if (ct(x,y,'W')) {
+        e = false;
+        y--;
+        b[x][y] = true;
+        dfs(x,y,'W',nt+1,sx,sy,sd);
+        b[x][y] = false;
+        y++;
+      }
+    }
+  }
+  if (!e)
+    cm(nt+1,sx,sy,sd);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  mi['E'] = 0;
+  mi['N'] = 1;
+  mi['S'] = 2;
+  mi['W'] = 3;
+  mi['X'] = 42424242;
+  int T = 1;
+  while (cin &gt;&gt; m &gt;&gt; n &amp;&amp; m) {
+    mx = 0; mxx = 42424242; mxy = 42424242; mxd = 'X';
+    for (int i = 0; i &lt; m; i++)
+      for (int j = 0; j &lt; n; j++)
+        b[i][j] = 0;
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; T++ &lt;&lt; &quot;: &quot;;
+    int r; cin &gt;&gt; r;
+    for (int i = 0; i &lt; r; i++) {
+      int x, y; cin &gt;&gt; x &gt;&gt; y;
+      b[x][y] = true;
+    }
+    for (int i = 0; i &lt; m; i++) {
+      for (int j = 0; j &lt; n; j++) {
+        if (b[i][j])
+          continue;
+        b[i][j] = true;
+        if (ct(i,j,'E'))
+          dfs(i,j,'E',1,i,j,'E');
+        if (ct(i,j,'W'))
+          dfs(i,j,'W',1,i,j,'W');
+        if (ct(i,j,'S'))
+          dfs(i,j,'S',1,i,j,'S');
+        if (ct(i,j,'N'))
+          dfs(i,j,'N',1,i,j,'N');
+        b[i][j] = false;
+      }
+    }
+    cout &lt;&lt; mx &lt;&lt; &quot; &quot; &lt;&lt; mxx &lt;&lt; &quot; &quot; &lt;&lt; mxy &lt;&lt; &quot; &quot; &lt;&lt; mxd &lt;&lt; &quot;\n&quot;;
+    if (mx == 0)
+      return 1;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

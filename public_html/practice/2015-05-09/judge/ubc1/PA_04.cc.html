@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int dp[4][3005];
+int main() {
+    int n;
+    string s;
+    cin &gt;&gt; n &gt;&gt; s;
+    
+    const int lim = 3*s.size();
+    for (int j = 0; j &lt;= lim; j++) {
+        dp[0][j] = j/3;
+    }
+    
+    for (int i = 1; i &lt;= s.size(); i++) {
+        for (int j = 0; j &lt;= lim; j++) {
+            dp[i%4][j] = dp[(i+3)%4][j]; // dp[i-1][j]
+            if (i &gt;= 3 &amp;&amp; s.substr(i-3, 3) == &quot;ATG&quot; &amp;&amp; (i+j-3)%3 == 0) {
+                dp[i%4][j] = max(dp[i%4][j], dp[(i+1)%4][j] + 1); // dp[i-3][j]
+            }
+            
+            if ((i+j-3)%3 == 0 &amp;&amp; j &gt;= 2) {
+                // if considering just the last letter and inserting 2 letters,
+                // the position of the ith letter will be (i-1)+(j-2)
+                if (s[i-1] != 'C') {
+                    // insert two letters
+                    dp[i%4][j] = max(dp[i%4][j], dp[(i+3)%4][j-2] + 1); // dp[i-1][j-2]
+                }
+            }
+            
+            if ((i+j-3)%3 == 0 &amp;&amp; j &gt;= 1 &amp;&amp; i &gt;= 2) {
+                // look at last two letters and insert one letter
+                // the position of the ith letter will be (i-2)+(j-1)
+                string t = s.substr(i-2, 2);
+                if (t == &quot;AT&quot; || t == &quot;AG&quot; || t == &quot;TG&quot;) {
+                    dp[i%4][j] = max(dp[i%4][j], dp[(i+2)%4][j-1] + 1); // dp[i-2][j-1]
+                }
+            }
+            
+            //printf(&quot;dp[%d][%d] is %d\n&quot;, i, j, dp[i%4][j]);
+        }
+    }
+    
+    int ans = 1000000000;
+    for (int j = 0; j &lt;= lim; j++) {
+        if (dp[s.size()%4][j] &gt;= n) {
+            ans = j;
+            break;
+        } else {
+            int to_add = 3 * ((s.size() + j + 2)/3) - s.size();
+            int num_req = 3 * (n - dp[s.size()%4][j]);
+            ans = min(ans, num_req + to_add);
+        }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class S1{
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int k=sc.nextInt();
+		ArrayList&lt;Integer&gt; al=new ArrayList&lt;Integer&gt;();
+		for(int i=1;i&lt;k+1;i++){
+			al.add(i);
+		}
+		int m=sc.nextInt();
+		for(int i=0;i&lt;m;i++){
+			int r=sc.nextInt();
+			for(int x=al.size()/r;x&gt;0;x--){
+				al.remove(x*r-1);
+			}
+		}
+		for(int i:al){
+			System.out.println(i);
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

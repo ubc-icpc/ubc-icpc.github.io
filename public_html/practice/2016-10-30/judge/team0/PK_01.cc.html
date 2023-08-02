@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef vector&lt;int&gt; vi;
+const int MAXN = 256;
+
+int pp[MAXN];
+int f(int x) { return x == pp[x] ? x : (pp[x] = f(pp[x])); }
+void u(int x, int y) {pp[x] = y;}
+
+vi graph[MAXN]; int p[MAXN], m[MAXN], d[MAXN], c1[MAXN], c2[MAXN], n;
+int q[2*MAXN], *qf, *qb;
+
+int v[MAXN];
+int lca(int x, int y, int r) { int i = f(x), j = f(y);
+  while (i != j &amp;&amp; v[i] != 2 &amp;&amp; v[j] != 1) { v[i] = 1; v[j] = 2;
+    if (i != r) i = f(p[i]); if (j != r) j = f(p[j]); }
+  int b = i, z = j; if (v[j] == 1) swap(b, z);
+  for (i = b; i != z; i = f(p[i])) v[i] = -1; v[z] = -1; return b; }
+
+void path(int r, int x) { if (r == x) return;
+  if (d[x] == 0){ path(r, p[p[x]]); int i=p[x], j=p[p[x]]; m[i]=j; m[j]=i; }
+  else if (d[x] == 1) { path(m[x], c1[x]); path(r, c2[x]);
+    int i = c1[x], j = c2[x]; m[i] = j; m[j] = i; } }
+
+void shrink_one_side(int x, int y, int b) {
+  for (int i=f(x); i!=b; i=f(p[i])){u(i, b);if(d[i]==1)c1[i]=x,c2[i]=y,*qb++=i;}}
+
+bool BFS(int r) { if (graph[r].empty()) return false;
+  for (int i = 0; i&lt;n; ++i) pp[i] = i;
+  memset(v, -1, sizeof(v)); memset(d, -1, sizeof(d)); d[r] = 0;
+  qf = qb = q; *qb++ = r; while (qf &lt; qb)
+    for (int x = *qf++, i = 0, y = graph[x][0];
+        i &lt; (int)graph[x].size(); ++i, y = graph[x][i])
+      if (m[y] != y &amp;&amp; f(x) != f(y)) { if (d[y] == -1) {
+        if (m[y] == -1) { path(r, x); m[x] = y; m[y] = x; return true; }
+        else { p[y] = x; p[m[y]] = y; d[y] = 1; d[m[y]] = 0; *qb++ = m[y]; }
+      } else if (d[f(y)] == 0) {
+        int b = lca(x, y, r);
+        shrink_one_side(x, y, b); shrink_one_side(y, x, b); } }
+  return false; }
+
+int match() { memset(m, -1, sizeof(m)); int c = 0;
+  for (int i=0; i&lt;n; ++i) if (m[i] == -1) { if (BFS(i)) c++; else m[i] = i; }
+  return c; }
+
+bool seen[MAXN];
+int xx[MAXN], yy[MAXN];
+int main() {
+  int nn, mm; cin &gt;&gt; nn &gt;&gt; mm;
+  for (int i = 0; i &lt; mm; i++) {
+    cin &gt;&gt; xx[i] &gt;&gt; yy[i];
+  }
+
+  for (int i = 0; i &lt; mm; i++) {
+    for (int j = i+1; j &lt; mm; j++) {
+      if (xx[i] == xx[j] || xx[i] == yy[j] || yy[i] == xx[j] || yy[i] == yy[j]) {
+        graph[i].push_back(j);
+        graph[j].push_back(i);
+      }
+    }
+  }
+
+  n = mm;
+  int ans = match();
+  if (mm % 2 == 0 &amp;&amp; ans == mm/2) {
+    memset(seen, 0, sizeof seen);
+    for (int i = 0; i &lt; mm; i++) {
+      if (!seen[i]) {
+        seen[i] = true; seen[m[i]] = true;
+        cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; m[i] &lt;&lt; endl;
+      }
+    }
+  } else {
+    cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

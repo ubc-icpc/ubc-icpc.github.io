@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+vector&lt;char&gt; commands;
+vector&lt;int&gt; vals;
+
+bool ok(long long p) {
+  for (int j = 0; j &lt; commands.size(); j++) {
+    switch(commands[j]){
+      case 'A':
+        p += vals[j];
+        break;
+      case 'S':
+        p -= vals[j];
+        if (p &lt; 0) return true;
+        break;
+      case 'M':
+        p *= vals[j];
+        break;
+      case 'D':
+        if (p % vals[j]) return true;
+        p /= vals[j];
+        break;
+    }
+  }
+
+  return false;
+}
+
+
+
+int main() {
+  int n; cin &gt;&gt; n;
+  while (n--) {
+    string c; int d; cin &gt;&gt; c &gt;&gt; d;
+    commands.push_back(c[0]);
+    vals.push_back(d);
+  }
+  int q = 0;
+  for (int i = 1; i &lt;= 100; i++) {
+    long long p = i;
+    q += ok(p);
+  }
+
+  cout &lt;&lt; q &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

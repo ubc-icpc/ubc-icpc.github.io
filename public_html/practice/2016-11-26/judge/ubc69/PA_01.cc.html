@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+    string s;
+    cin &gt;&gt; s;
+    vector&lt;int&gt; arr(s.size(), 1);
+    for (int i = 0; i &lt; s.size(); ++i) {
+        for (int j = 0; j &lt; i; ++j)
+            if (s[i] &gt; s[j])
+                arr[i] = max(arr[i], 1 + arr[j]);
+    }
+
+    int res = 0;
+    for (int i = 0; i &lt; arr.size(); ++i)
+        res = max(res, arr[i]);
+    cout &lt;&lt; max(0, 26 - res) &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

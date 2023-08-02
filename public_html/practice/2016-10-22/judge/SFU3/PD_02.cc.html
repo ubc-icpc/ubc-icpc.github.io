@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;stdio.h&gt;
+using namespace std;
+
+int n;
+long a[400];
+long minn;
+long profit=100;
+long many=0;
+int main()
+{
+    scanf(&quot;%d&quot;,&amp;n);
+    for (int i=1; i &lt;= n; i++){
+        cin&gt;&gt;a[i];
+    }
+    for (int i=2; i &lt;= n; i++){
+        if (a[i] &gt; a[i-1]){
+            profit = profit + many*a[i-1];
+            if (profit/a[i-1]&gt;100000)
+                many = 100000;
+            else
+                many = profit/a[i-1];
+            profit-= many*a[i-1];
+        }
+        else
+        if (a[i] &lt; a[i-1]){
+            profit = profit + many*a[i-1];
+            if (profit/a[i-1]&gt;100000)
+                many = 100000;
+            else
+                many = profit/a[i-1];
+            profit -= many*a[i];
+        }
+    }
+    profit = profit + many*a[n];
+    cout&lt;&lt;profit;
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

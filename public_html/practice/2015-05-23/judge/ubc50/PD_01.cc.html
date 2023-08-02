@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int n, m;
+int grid[1001][1001];
+int dp[1001][1001];
+ll ans;
+
+int main() {
+  ios::sync_with_stdio(0);
+  ans=0;
+  memset(dp, 0, sizeof dp);
+  cin &gt;&gt; n &gt;&gt; m;
+  for (int i=0; i&lt;n; i++)
+    for(int j=0;j&lt;m;j++)
+      cin &gt;&gt; grid[i][j];
+  for (int i=0; i&lt;n; i++) {
+    for (int j=0; j&lt;m; j++) {
+      dp[i][j] = 1;
+      // if the one to the left is the same elevation, can add this cell
+      if (j&gt;0 &amp;&amp; grid[i][j-1] == grid[i][j]) {
+	dp[i][j] = 1+ dp[i][j-1];
+      }
+      ll x=0; int tmp = dp[i][j];
+      // go up the rows, keep adding the possibilities at cell to counter
+      for (int m=i; m&gt;=0; m--) {
+	tmp = min(tmp, dp[m][j]);
+	x+=tmp;
+	if (grid[m][j]!=grid[m-1][j]) break;
+      }
+      ans+=x;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

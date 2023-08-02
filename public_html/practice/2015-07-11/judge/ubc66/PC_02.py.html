@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+testCases = int(raw_input())
+
+wins = 0
+for T in range(testCases):
+    currCase= raw_input()
+
+    winThisBattle = True
+    prevChar = None
+    for char in currCase:
+        if prevChar == 'C' and char == 'D':
+            winThisBattle = False
+            break
+        prevChar = char
+        
+    if winThisBattle:
+        wins += 1
+
+print(wins)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef unsigned long long ull;
+
+const int max_pow_2 = 55;
+
+// first index i, second j as in (i choose j)
+ull c[max_pow_2][max_pow_2];
+
+vector&lt;ll&gt; zero_mod_3(max_pow_2);
+vector&lt;ll&gt; one_mod_3(max_pow_2);
+vector&lt;ll&gt; two_mod_3(max_pow_2);
+
+ll helper(ll N) {
+	ll tot = 0;
+	int r = 0;
+	while (N &gt; 0) {
+		// cout &lt;&lt; &quot;at N=&quot; &lt;&lt; N &lt;&lt; &quot; r=&quot; &lt;&lt; r &lt;&lt; endl;
+		int b = log2(N + 1e-1);
+		switch(r) {
+			case 0 : tot += zero_mod_3[b]; break;
+			case 1 : tot += one_mod_3[b]; break;
+			case 2 : tot += two_mod_3[b]; break;
+		}	
+		// cout &lt;&lt; &quot;tot = &quot; &lt;&lt; tot &lt;&lt; endl;
+		N -= (1LL &lt;&lt; b);
+		r = (r+2) % 3; // thinking r - 1
+		if (r == 0) tot++;
+	}
+
+	return tot;
+}
+
+
+int main() {
+	memset(c, 0, sizeof(c));
+	for (int j=0; j&lt;max_pow_2; ++j) {
+		c[j][j] = 1;
+		for (int i=j+1; i&lt;max_pow_2; ++i) {
+			c[i][j] = c[i-1][j]*i/(i-j);
+		}
+	}
+
+	for (int i=0; i&lt;max_pow_2; ++i) {
+		zero_mod_3[i] = 0;
+		one_mod_3[i] = 0;
+		two_mod_3[i] = 0;
+		for (int j=3; j&lt;max_pow_2; j+=3) {
+			zero_mod_3[i] += c[i][j];
+		}
+		for (int j=1; j&lt;max_pow_2; j+=3) {
+			one_mod_3[i] += c[i][j];
+		}
+		for (int j=2; j&lt;max_pow_2; j+=3) {
+			two_mod_3[i] += c[i][j];
+		}
+	}
+
+
+	ll N;
+	while (cin &gt;&gt; N) {
+		cout &lt;&lt; &quot;Day &quot; &lt;&lt; N &lt;&lt; &quot;: Level = &quot; &lt;&lt; helper(N) &lt;&lt; endl;
+	}
+
+    // int cnt = 0;
+    // for (int i = 1; i &lt; 1000000; i++) {
+    //     cnt += (__builtin_popcount(i)%3 == 0);
+    //     if (helper(i) != cnt) {
+    //         cout &lt;&lt; &quot;yolo &quot; &lt;&lt; i &lt;&lt; endl;
+    //         cout &lt;&lt; helper(i) &lt;&lt; &quot; &quot; &lt;&lt; cnt &lt;&lt; endl;
+    //     }
+    // }
+
+	return 0;
+} </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

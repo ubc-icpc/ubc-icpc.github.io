@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+struct S {
+	int r, c, d, len;
+	S(){}
+	S(int lr, int lc, int ld, int llen) {
+		r = lr; c = lc; d = ld; len = llen;
+	}
+};
+
+int main() {
+	int ncase; cin &gt;&gt; ncase;
+	for (int cs = 1; cs &lt;= ncase; cs++) {
+		int nrow, ncol; cin &gt;&gt; nrow &gt;&gt; ncol;
+		string grid[nrow];
+		for (int i = 0; i &lt; nrow; i++) {
+			cin &gt;&gt; grid[i];
+		}
+		// find start
+		int r1 = -1, r2 = -1, c1 = -1, c2 = -1;
+		for (int i = 0; i &lt; nrow; i++) {
+			for (int j = 0; j &lt; ncol; j++) {
+				if (grid[i][j] == 'C') {
+					if (r1 == -1) {
+						r1 = i; c1 = j;
+					} else {
+						r2 = i; c2 = j;
+					}
+				}
+			}
+		}
+		S start; // 0 = horizontal, 1 = vertical, 2 = upwards
+		if (r1 == r2) {
+			if (c1 &lt; c2) {
+				start = S(r1, c1, 0, 0);
+			} else {
+				start = S(r1, c2, 0, 0);
+			}
+		} else {
+			// assume c1 == c2
+			if (r1 &lt; r2) {
+				start = S(r1, c1, 1, 0);
+			} else {
+				start = S(r2, c1, 1, 0);
+			}
+		}
+
+		bool visited[nrow][ncol][3];
+		bool found = false;
+		memset(visited, 0, sizeof visited);
+		queue&lt;S&gt; q;
+		q.push(start);
+		while (!q.empty()) {
+			S curr = q.front();
+			q.pop();
+			if (visited[curr.r][curr.c][curr.d]) continue;
+			visited[curr.r][curr.c][curr.d] = true;
+			if (grid[curr.r][curr.c] == 'X' &amp;&amp; curr.d == 2) {
+				found = true;
+				cout &lt;&lt; curr.len &lt;&lt; endl;
+				break;
+			}
+			
+			int nr[4][2], nc[4][2], nd[4];
+			int r1, c1, r2, c2;
+			if (curr.d == 0) {
+				// horizontal
+				r1 = curr.r; c1 = curr.c; r2 = curr.r; c2 = curr.c+1;
+				// roll up 
+				nr[0][0] = r1-1; nc[0][0] = c1;
+				nr[0][1] = r2-1; nc[0][1] = c2;
+				nd[0] = 0;
+				// roll down
+				nr[1][0] = r1+1; nc[1][0] = c1;
+				nr[1][1] = r2+1; nc[1][1] = c2;
+				nd[1] = 0;
+				// stand left
+				nr[2][0] = r1; nc[2][0] = c1-1;
+				nr[2][1] = r1; nc[2][1] = c1-1;
+				nd[2] = 2;
+				// stand right
+				nr[3][0] = r1; nc[3][0] = c2+1;
+				nr[3][1] = r1; nc[3][1] = c2+1;
+				nd[3] = 2;
+			} else if (curr.d == 1) {
+				// vertical
+				r1 = curr.r; c1 = curr.c; r2 = curr.r+1; c2 = curr.c;
+				// stand up
+				nr[0][0] = r1-1; nc[0][0] = c1;
+				nr[0][1] = r1-1; nc[0][1] = c1;
+				nd[0] = 2;
+				// stand down
+				nr[1][0] = r2+1; nc[1][0] = c1;
+				nr[1][1] = r2+1; nc[1][1] = c1;
+				nd[1] = 2;
+				// roll left
+				nr[2][0] = r1; nc[2][0] = c1-1;
+				nr[2][1] = r2; nc[2][1] = c1-1;
+				nd[2] = 1;
+				// roll right
+				nr[3][0] = r1; nc[3][0] = c1+1;
+				nr[3][1] = r2; nc[3][1] = c1+1;
+				nd[3] = 1;
+			} else {
+				// d == 2
+				// stand up
+				r1 = curr.r; c1 = curr.c; r2 = r1; c2 = c1;
+				// roll left
+				nr[0][0] = r1; nc[0][0] = c1-2;
+				nr[0][1] = r1; nc[0][1] = c1-1;
+				nd[0] = 0;
+				// roll right
+				nr[1][0] = r1; nc[1][0] = c1+1;
+				nr[1][1] = r1; nc[1][1] = c1+2;
+				nd[1] = 0;
+				// roll up
+				nr[2][0] = r1-2; nc[2][0] = c1;
+				nr[2][1] = r1-1; nc[2][1] = c1;
+				nd[2] = 1;
+				// roll down
+				nr[3][0] = r1+1; nc[3][0] = c1;
+				nr[3][1] = r1+2; nc[3][1] = c1;
+				nd[3] = 1;
+			}
+			for (int k = 0; k &lt; 4; k++) {
+				bool good = true;
+				for (int p = 0; p &lt; 2; p++) {
+					if (nr[k][p] &gt;= 0 &amp;&amp; nr[k][p] &lt; nrow &amp;&amp;
+						nc[k][p] &gt;= 0 &amp;&amp; nc[k][p] &lt; ncol &amp;&amp;
+						grid[nr[k][p]][nc[k][p]] != '#') {
+						// good
+					} else {
+						good = false;
+						break;
+					}
+				}
+				if (good) {
+					q.push(S(nr[k][0], nc[k][0], nd[k], curr.len+1));
+				}
+			}
+		}
+		if (!found) {
+			cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

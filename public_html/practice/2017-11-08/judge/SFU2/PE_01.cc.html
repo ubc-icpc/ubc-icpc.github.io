@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+bool bitmap[23];
+int riddle[101][4];
+int rings;
+int runes;
+bool verify() {
+	bool f1;
+	int state = 0;
+	// cout&lt;&lt;&quot;config: &quot;;
+	// for(int i = 0; i &lt; rings; i++) {
+	// 	if(!bitmap[i])
+	// 		cout&lt;&lt;&quot;-&quot;;
+	// 	cout&lt;&lt;i + 1&lt;&lt;&quot; &quot;;
+	// }
+	// cout&lt;&lt;endl;
+	for(int i = 0; i &lt; runes; i++) {
+		f1 = false;
+		for(int j = 0; j &lt; rings; j++) {
+			state = j + 1;
+			if(!bitmap[j]) {
+				state =  -state;
+			}
+			for(int k = 0; k &lt; 3; k++) {
+				if(state == riddle[i][k]) {
+					f1 = true;
+					break;
+				}
+			}
+			if(f1)
+				break;
+		}
+		if(!f1) {
+			//cout&lt;&lt;&quot;line: &quot;&lt;&lt;i&lt;&lt;endl;
+			return false;
+		}
+	}
+	return true;
+}
+bool dfs(int depth) {
+	if(depth == rings) {
+		if(verify()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	bitmap[depth] = true;
+	if(dfs(depth + 1))
+		return true;
+	bitmap[depth] = false;
+	if(dfs(depth + 1))
+		return true;
+}
+bool rule_1(int r[4]) {
+	//cout&lt;&lt;&quot;rule1:&quot;;
+	for(int i = 0;i &lt; 3; i++) {
+		//cout&lt;&lt;r[i]&lt;&lt;&quot; &quot;;
+		if(r[i] == 0 || r[i] == -0)
+			return false;
+	}
+	//cout&lt;&lt;endl;
+	return true;
+}
+bool rule_2(int r[4]) {
+	for(int i = 0;i &lt; 3; i++) {
+		if(r[i] &gt; rings || ((r[i]&lt;0)&amp;&amp; (-r[i]) &gt; rings)) {
+			//cout&lt;&lt;&quot;missing: &quot;&lt;&lt;r[i]&lt;&lt;&quot; &quot;&lt;&lt;rings&lt;&lt;&quot; &quot;&lt;&lt;endl;
+			return false;
+		}
+	}
+	return true;
+}
+bool rule_3(int r[4]) {
+	bool mark[23];
+	fill(mark, mark + rings + 1, false);
+	for(int i = 0; i &lt; 3; i++) {
+		if(mark[(int)abs(r[i])]) {
+			// cout&lt;&lt;&quot;rule3: &quot;;
+			// for(int j = 0;j &lt; 3; j++) 
+			// 	cout&lt;&lt;r[j]&lt;&lt;&quot; &quot;;
+			// cout&lt;&lt;endl;
+			return false;
+		}
+		else {
+			mark[(int)abs(r[i])] = true;
+		}
+	}
+	return true;
+}
+int main() {
+	int g;
+	cin&gt;&gt;g;
+	for(int z = 0; z &lt; g; z++) {
+		cin&gt;&gt;rings&gt;&gt;runes;
+		for(int i = 0; i &lt; runes; i++) {
+			for(int j = 0; j &lt; 4; j++) {
+				cin&gt;&gt;riddle[i][j];
+				//cout&lt;&lt;riddle[i][j]&lt;&lt;&quot; &quot;;
+			}
+			//cout&lt;&lt;endl;
+		}
+		bool fault[3];
+		fill(fault, fault + 3, false);
+		for(int i = 0; i &lt; runes; i++) {
+			if(!rule_1(riddle[i])) {
+				fault[0] = true;
+				
+			}
+			if(!rule_2(riddle[i])){
+				fault[1] = true;
+				
+			}
+			if(!rule_3(riddle[i])) { 
+				fault[2] = true;
+				
+			}
+		}
+		// cout&lt;&lt;&quot;fault: &quot;;
+		// for(int i = 0; i &lt; 3; i++) {
+		// 	cout&lt;&lt;fault[i]&lt;&lt;&quot; &quot;;
+		// }
+		// cout&lt;&lt;endl;
+		if(fault[0]) {
+			cout&lt;&lt;&quot;INVALID: NULL RING&quot;&lt;&lt;endl;
+			continue;
+		}
+		if(fault[1]) {
+			cout&lt;&lt;&quot;INVALID: RING MISSING&quot;&lt;&lt;endl;
+			continue;
+		}
+		if(fault[2]) {
+			cout&lt;&lt;&quot;INVALID: RUNE CONTAINS A REPEATED RING&quot;&lt;&lt;endl;
+			continue;
+		}
+		if(dfs(0)) {
+			cout&lt;&lt;&quot;RUNES SATISFIED!&quot;&lt;&lt;endl;
+		}
+		else {
+			cout&lt;&lt;&quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!&quot;&lt;&lt;endl;
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

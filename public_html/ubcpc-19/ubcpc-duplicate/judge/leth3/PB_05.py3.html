@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import math
+
+N = int(input())
+
+players = []
+
+for i in range(N):
+    name, hp, at, df = [x for x in input().strip().split()]
+    players.append({&quot;n&quot;:name, &quot;hp&quot;:int(hp), &quot;at&quot;:int(at), &quot;df&quot;:int(df)})
+
+
+# solve it
+def winner(a, b):
+    adiff = max(0, b[&quot;at&quot;] - a[&quot;df&quot;])
+    bdiff = max(0, a[&quot;at&quot;] - b[&quot;df&quot;])
+
+    if bdiff == 0:
+        return False
+    if adiff == 0:
+        return True
+
+    ta = a[&quot;hp&quot;] // adiff
+    if a['hp'] % adiff != 0:
+        ta += 1
+    tb = b[&quot;hp&quot;] // bdiff
+    if b['hp'] % bdiff != 0:
+        tb += 1
+
+    return ta &gt; tb
+
+count = 0
+ans = set() 
+for i in range(N):
+    for j in range(i+1, N):
+        for k in range(j+1, N):
+            if ((winner(players[i], players[j]) and winner(players[j], players[k]) and winner(players[k], players[i])) or
+                    (winner(players[k], players[j]) and winner(players[j], players[i]) and winner(players[i], players[k]))):
+                ans.add(&quot; &quot;.join([players[i]['n'], players[j]['n'], players[k]['n']]))
+                count += 1
+
+print(count)
+for p in ans:
+    print(p)
+</code>
+</pre>
+</body>
+</html>

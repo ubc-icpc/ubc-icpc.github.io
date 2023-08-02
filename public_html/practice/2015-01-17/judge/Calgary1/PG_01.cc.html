@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; PT;
+
+int main() {
+	int V, E;
+	cin &gt;&gt; V &gt;&gt; E;
+	vector&lt;PT&gt; adj[V];
+	for (int e = 0; e &lt; E; e++) {
+		int a, b, l;
+		cin &gt;&gt; a &gt;&gt; b &gt;&gt; l;
+		a--; b--;
+		adj[a].emplace_back(b, l);
+	}
+	vector&lt;int&gt; d1(V, -1), d2(V, -1);
+	priority_queue&lt;PT, vector&lt;PT&gt;, greater&lt;PT&gt;&gt; pq;
+	pq.emplace(0,0);
+	d1[0] = 0;
+	while (!pq.empty()) {
+		PT pt = pq.top();
+		pq.pop();
+		int n = pt.second, d = pt.first;
+		for (PT pt2 : adj[n]) {
+			int m = pt2.first, nd = d + pt2.second;
+			if (d1[m] == -1) {
+				d1[m] = nd;
+				pq.emplace(nd, m);
+			} else if (nd &lt; d1[m]) {
+				d2[m] = d1[m];
+				d1[m] = nd;
+				pq.emplace(nd, m);
+			} else if (nd &gt; d1[m] &amp;&amp; (d2[m] == -1 || nd &lt; d2[m])) {
+				d2[m] = nd;
+				pq.emplace(nd, m);
+			}
+		}
+	}
+	cout &lt;&lt; d2[V-1] &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

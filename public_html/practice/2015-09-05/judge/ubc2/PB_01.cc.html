@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+  int N; cin &gt;&gt; N;
+  while (N--) {
+    int D; cin &gt;&gt; D;
+    bool bad = false;
+    cout &lt;&lt; &quot;Denominations:&quot;;
+    int prev = 0;
+    while (D--) {
+      int curr; cin &gt;&gt; curr;
+      cout &lt;&lt; &quot; &quot; &lt;&lt; curr;
+      if (curr &lt; 2*prev) {
+        bad = true;
+      }
+      prev = curr;
+    }
+    cout &lt;&lt; endl;
+    if (bad) {
+      cout &lt;&lt; &quot;Bad coin denominations!&quot; &lt;&lt; endl &lt;&lt; endl;
+    }
+    else {
+      cout &lt;&lt; &quot;Good coin denominations!&quot; &lt;&lt; endl &lt;&lt; endl;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

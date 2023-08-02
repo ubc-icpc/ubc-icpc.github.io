@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+#include&lt;cstdlib&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	int n,r;
+	cin&gt;&gt;n;
+	map&lt;int,int&gt; data;
+	while(n--)
+	{
+		int r;
+		cin&gt;&gt;r;
+		pair&lt;map&lt;int,int&gt;::iterator,bool&gt; ret;
+		ret = data.insert(make_pair(r,1));
+		if(ret.second == false)
+		{
+			ret.first-&gt;second +=1;
+		}
+	}
+	int freq_value[1000];
+	int j =0;
+	int high_count = 0;
+	for(map&lt;int,int&gt;::iterator i = data.begin();i!=data.end();++i)
+	{
+		if(i-&gt;second &gt; high_count)
+		{
+			high_count = i-&gt;second;
+			freq_value[0] = i-&gt;first;
+			j = 1;
+		}
+		else if(i-&gt;second == high_count)
+		{
+			freq_value[j] = i-&gt;first;
+			j++;
+		}
+	}
+	if(j &gt; 1)
+	{
+		int highest = 0;
+		int lowest = 1001;
+		for(int i = 0;i&lt;j;i++)
+		{
+			if(freq_value[i] &gt; highest)
+				highest = freq_value[i];
+			if(freq_value[i] &lt; lowest)
+				lowest = freq_value[i];
+		}
+		cout&lt;&lt;abs(highest - lowest)&lt;&lt;&quot;\n&quot;;
+	}
+	else
+	{
+		int second_high_count = 0;
+		int k = 0;
+		int second_freq_value[1000];
+		
+		for(map&lt;int,int&gt;::iterator i =data.begin();i!=data.end();++i)
+		{
+			if(i-&gt;second == second_high_count)
+			{
+				second_freq_value[k] = i-&gt;first;
+				k++;
+			}
+			else if(i-&gt; second &gt; second_high_count &amp;&amp; i-&gt;second &lt; high_count)
+			{
+				second_high_count = i-&gt;second;
+				second_freq_value[0] = i-&gt;first;
+				k = 1;
+			}
+
+		}
+		if(k &gt; 1)
+		{
+			int highest = 0;
+			int lowest = 1001;
+			for(int i = 0;i&lt;k;i++)
+			{
+				if(second_freq_value[i] &gt; highest)
+					highest = second_freq_value[i];
+				if(second_freq_value[i] &lt; lowest)
+					lowest = second_freq_value[i];
+			}
+			int answer = max(abs(freq_value[0] - highest),abs(freq_value[0] - lowest));
+			cout&lt;&lt;answer&lt;&lt;&quot;\n&quot;;
+		}
+		else
+		{
+			cout&lt;&lt;abs(freq_value[0] - second_freq_value[0])&lt;&lt;&quot;\n&quot;;
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

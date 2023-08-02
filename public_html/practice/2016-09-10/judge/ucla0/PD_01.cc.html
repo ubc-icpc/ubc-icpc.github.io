@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;stack&gt;
+#include &lt;queue&gt;
+#include &lt;math.h&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;cassert&gt;
+#include &lt;string.h&gt;
+
+#include &lt;time.h&gt;
+#include &lt;random&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+#define ll long long
+#define N 255
+#define M 100005
+
+ll M1, N1, K1, M2, N2, K2;
+
+vector&lt;vector&lt;ll&gt; &gt; g1[N];
+map&lt;ll, ll&gt; g2[N];    // map[op, dest]
+
+vector&lt;vector&lt;ll&gt; &gt; f2[N];
+map&lt;ll, ll&gt; f1[N];    // map[op, dest]
+
+bool edges1[M];
+bool node1[N];
+
+bool dfs(ll u, vector&lt;vector&lt;ll&gt; &gt; g[N], vector&lt;bool&gt; &amp;seen, bool edges[N]) {
+    if (seen[u])
+        return u==(N1-1);
+    seen[u] = true;
+    bool canReachEndNode = false;
+    for (ll i = 0; i &lt; g[u].size(); i++) {
+        ll cur = g[u][i][0];
+        if (dfs(cur, g, seen, edges)) {
+            canReachEndNode = true;
+        }
+    }
+    node1[u] |=  canReachEndNode || (u==N1-1);
+    return node1[u];
+}
+
+bool dfs2(ll u1, ll u2, vector&lt;vector&lt;ll&gt; &gt; gg1[N], map&lt;ll, ll&gt; gg2[N], vector&lt;bool&gt; &amp;ss1) {
+    if (ss1[u1])
+        return true;
+    ss1[u1] = true;
+    
+    bool isGood = true;
+    for (ll i = 0; i &lt; gg1[u1].size(); i++) {
+        if (!edges1[gg1[u1][i][2]])
+            continue;
+        
+        ll op = gg1[u1][i][1];
+        ll dest = gg1[u1][i][0];
+        if (gg2[u2].find(op) == gg2[u2].end())
+            return false;
+        if (dest == N1-1 &amp;&amp; gg2[u2][op] != N2-1)
+            return false;
+        isGood = isGood &amp;&amp; dfs2(dest, gg2[u2][op], gg1, gg2, ss1);
+    }
+    return isGood;
+}
+
+
+bool solve2() {
+    vector&lt;bool&gt; seen(N1, false);
+    dfs(0, g1, seen, edges1);
+    
+    for (ll i = 0; i &lt; N1; i++) {
+        for (ll j = 0; j &lt; g1[i].size(); j++) {
+            ll dest = g1[i][j][0];
+            if (node1[dest])
+                edges1[g1[i][j][2]] = true;
+        }
+    }
+    
+    
+    vector&lt;bool&gt; ss1(N1, false);
+    bool good = dfs2(0, 0, g1, g2, ss1);
+    
+    return good;
+}
+
+void solve() {
+    for (ll i = 0; i &lt; N; i++) {
+        g1[i].clear();
+        f2[i].clear();
+        f1[i].clear();
+        g2[i].clear();
+        node1[i] = false;
+    }
+    for (ll i = 0; i &lt; M; i++) {
+        edges1[i] = false;
+    }
+    
+    cin &gt;&gt; M1 &gt;&gt; N1 &gt;&gt; K1 &gt;&gt; M2 &gt;&gt; N2 &gt;&gt; K2;
+    for (ll i = 0; i &lt; M1; i++) {
+        ll Tin, Tout, S;
+        cin &gt;&gt; Tin &gt;&gt; Tout &gt;&gt; S;
+        g1[Tin].push_back({Tout,S,i});
+        f1[Tin][S] = Tout;
+    }
+    for (ll i = 0; i &lt; M2; i++) {
+        ll Tin, Tout, S;
+        cin &gt;&gt; Tin &gt;&gt; Tout &gt;&gt; S;
+        g2[Tin][S] = Tout;
+        f2[Tin].push_back({Tout,S,i});
+    }
+    
+    bool good1 = solve2();
+    for (ll i = 0; i &lt; N; i++) {
+        g2[i] = f1[i];
+        g1[i] = f2[i];
+        node1[i] = false;
+    }
+    for (ll i = 0; i &lt; M; i++) {
+        edges1[i] = false;
+    }
+    swap(N1, N2);
+    swap(M1, M2);
+    swap(K1, K1);
+    bool good2 = solve2();
+    if (good1&amp;&amp;good2)
+        cout &lt;&lt; &quot;eligible&quot; &lt;&lt; endl;
+    else
+        cout &lt;&lt; &quot;not eligible&quot; &lt;&lt; endl;
+}
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll t;
+    cin &gt;&gt; t;
+    for (ll i = 0; i &lt; t; i++) {
+        solve();
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

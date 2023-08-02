@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+using si = set&lt;int&gt;;
+using vsi = vector&lt;si&gt;;
+ 
+constexpr int kMaxDist = 2 * 500 * 500;
+ 
+int main (){
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int R, S;
+  cin &gt;&gt; R &gt;&gt; S;
+  vsi trees(R);
+  for (int i = 0; i &lt; R; ++i) {
+    string line;
+    cin &gt;&gt; line;
+    for (int j = 0; j &lt; S; ++j)
+      if (line[j] == 'x')
+        trees[i].insert(j);
+  }
+  int G;
+  cin &gt;&gt; G;
+  for (int g = 0; g &lt; G; ++g) {
+    int r, s;
+    cin &gt;&gt; r &gt;&gt; s;
+    --r; --s;
+    int minimum = kMaxDist;
+    for (int i = r; i &lt; R; ++i) {
+      if (trees[i].empty())
+        continue;
+      int r_d = (r - i &gt; 0)? (r - i) : (i - r);
+      if (r_d * r_d &gt;= minimum) break;
+      auto l_b = trees[i].lower_bound(s);
+      if (l_b != trees[i].end()) {
+        int c_d = *l_b - s;
+        minimum = min(minimum, r_d * r_d + c_d * c_d);
+      }
+      if (l_b != trees[i].begin()) {
+        int c_d = s - *(--l_b);
+        minimum = min(minimum, r_d * r_d + c_d * c_d);
+      }
+    }
+    for (int i = r - 1; i &gt;= 0; --i) {
+      if (trees[i].empty())
+        continue;
+      int r_d = (r - i &gt; 0)? (r - i) : (i - r);
+      if (r_d * r_d &gt;= minimum) break;
+      auto l_b = trees[i].lower_bound(s);
+      if (l_b != trees[i].end()) {
+        int c_d = *l_b - s;
+        minimum = min(minimum, r_d * r_d + c_d * c_d);
+      }
+      if (l_b != trees[i].begin()) {
+        int c_d = s - *(--l_b);
+        minimum = min(minimum, r_d * r_d + c_d * c_d);
+      }
+    }
+    cout &lt;&lt; minimum &lt;&lt; '\n';
+    trees[r].insert(s);
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

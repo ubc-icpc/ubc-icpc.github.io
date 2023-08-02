@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+typedef long double ld;
+
+const ld NT = 1.23, MT = 3.21;
+
+int main() {
+  int n, m;
+  while (cin &gt;&gt; n &gt;&gt; m) {
+    int nd = 0, md = 0;
+    ld t = 0, nt = 0, mt = 0;
+    while (true) {
+      if (nd &gt;= n*4 || md &gt;= m*27)
+        break;
+      if (nt &lt; mt) {
+        t = nt;
+        nt += NT;
+        md += n-(nd &gt; 3*n ? nd-3*n : 0);
+      }
+      else if (mt &lt; nt) {
+        t = mt;
+        mt += MT;
+        nd += m-(md/27);
+      }
+      else {
+        t = nt;
+        nt += NT;
+        int mmd = md;
+        md += n-(nd &gt; 3*n ? nd-3*n : 0);
+        mt += MT;
+        nd += m-(mmd/27);
+      }
+    }
+    if (nd &gt;= n*4 &amp;&amp; md &gt;= m*27)
+      cout &lt;&lt; &quot;draw\n&quot;;
+    else if (nd &gt;= n*4)
+      cout &lt;&lt; &quot;lose\n&quot;;
+    else
+      cout &lt;&lt; &quot;win\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

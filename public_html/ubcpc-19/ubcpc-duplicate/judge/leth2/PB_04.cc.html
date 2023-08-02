@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+string N[105];
+int HP[105], AT[105], DF[105];
+
+/* true if A wins against B */
+bool f(int A, int B)
+{
+   /*
+   if(HP[B] &lt;= AT[A] &amp;&amp; HP[A] &gt; AT[B]) return true;
+
+   if(max(0, AT[A] - DF[B]) == 0) return false;
+
+   int t = HP[B] / (AT[A] - DF[B]);
+   if(HP[B] % (AT[A] - DF[B]) != 0) ++t;
+
+   if(max(0, AT[B] - DF[A])*t &gt;= HP[A]) return false;
+   return true;
+   */
+
+   int adiff = max(0, AT[A] - DF[B]);
+   int bdiff = max(0, AT[B] - DF[A]);
+
+   if(adiff == 0) return false;
+   if(bdiff == 0) return true;
+
+   int aturns = HP[B] / adiff;
+   if(HP[B] % adiff != 0) ++aturns;
+
+   int bturns = HP[A] / bdiff;
+   if(HP[A] % bdiff != 0) ++bturns;
+
+   return aturns &lt; bturns;
+}
+
+int main()
+{
+   int n; cin &gt;&gt; n;
+   for(int i = 0; i &lt; n; ++i) cin &gt;&gt; N[i] &gt;&gt; HP[i] &gt;&gt; AT[i] &gt;&gt; DF[i];
+
+   int ans = 0;
+   set&lt;pair&lt;pair&lt;string, string&gt;, string&gt;&gt; S;
+   for(int i = 0; i &lt; n; ++i)
+   {
+      for(int j = i+1; j &lt; n; ++j)
+      {
+	 for(int k = j+1; k &lt; n; ++k)
+	 {
+	    if((f(i,j) &amp;&amp; f(j,k) &amp;&amp; f(k,i)) || (f(i, k) &amp;&amp; f(k, j) &amp;&amp; f(j, i)))
+	    {
+	       ++ans;
+	       S.emplace(pair&lt;pair&lt;string, string&gt;, string&gt;(pair&lt;string, string&gt;(N[i], N[j]), N[k]));
+	    }
+	 }
+      }
+   }
+
+   cout &lt;&lt; ans &lt;&lt; endl;
+   for(pair&lt;pair&lt;string, string&gt;, string&gt; s : S)
+   {
+      cout &lt;&lt; s.first.first &lt;&lt; &quot; &quot; &lt;&lt; s.first.second &lt;&lt; &quot; &quot; &lt;&lt; s.second &lt;&lt; endl;
+   }
+}
+</code>
+</pre>
+</body>
+</html>

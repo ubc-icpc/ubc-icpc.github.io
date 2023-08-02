@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+  int t;
+  int g[1000][1000];
+  
+  cin &gt;&gt; t;
+  while (t--) {
+    int n;
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; ++i)
+      for (int j = 0; j &lt; n; ++j)
+	cin &gt;&gt; g[i][j];
+
+    vector&lt;int&gt; seq(1, 0);
+
+    for (int i = 1; i &lt; n; ++i) {
+      if (g[i][seq[0]]) seq.insert(seq.begin(), i);
+      else if (g[seq[i-1]][i]) seq.insert(seq.end(), i);
+      else {
+	for (int j = 0; ; ++j)
+	  if (g[seq[j]][i] &amp;&amp; g[i][seq[j+1]]) {
+	    seq.insert(seq.begin()+j+1, i);
+	    break;
+	  }
+      }
+    }
+
+    for (int i = 0; i &lt; n; ++i)
+      cout &lt;&lt; seq[i]+1 &lt;&lt; (i+1==n?'\n':' ');
+  }
+
+  return 0;
+  
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

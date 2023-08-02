@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+long memo[501][501], items[501];
+int s;
+long dp(int i, int j) {
+	if (i==s) return 0;
+	if (memo[i][j] != -1) return memo[i][j];
+	if (i!=0 &amp;&amp; j+1 &gt; (i+1)/2) return dp(i+1,j);
+	memo[i][j] = max(items[i]+dp(i+1,j+1),dp(i+1,j));
+	
+	return memo[i][j];
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	for (int d=1; d&lt;=n; d++) {
+		cin &gt;&gt; s;
+		for (int i=0; i&lt;s; i++) {
+			cin &gt;&gt; items[i];
+		}
+		memset(memo,-1,sizeof memo);
+		cout &lt;&lt; &quot;Spree #&quot; &lt;&lt; d &lt;&lt; &quot;: &quot; &lt;&lt; dp(0,0) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

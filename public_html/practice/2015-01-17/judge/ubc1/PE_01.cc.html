@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+bool blocked[50][50];
+int dp[50][50];
+int main() {
+    int r, c; cin &gt;&gt; r &gt;&gt; c;
+    int k; cin &gt;&gt; k;
+    for (int i = 0; i &lt; k; i++) {
+        int r, c; cin &gt;&gt; r &gt;&gt; c;
+        blocked[r-1][c-1] = true;
+    }
+    
+    dp[0][0] = 1;
+    for (int i = 1; i &lt; r; i++) {
+        dp[i][0] = dp[i-1][0];
+        if (blocked[i][0]) dp[i][0] = 0;
+    }
+    for (int i = 1; i &lt; c; i++) {
+        dp[0][i] = dp[0][i-1];
+        if (blocked[0][i]) dp[0][i] = 0;
+    }
+    
+    for (int i = 1; i &lt; r; i++) {
+        for (int j = 1; j &lt; c; j++) {
+            if (!blocked[i][j-1]) {
+                dp[i][j] += dp[i][j-1];
+            }
+            
+            if (!blocked[i-1][j]) {
+                dp[i][j] += dp[i-1][j];
+            }
+        }
+    }
+    cout &lt;&lt; dp[r-1][c-1] &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

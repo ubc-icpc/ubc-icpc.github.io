@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+sys.setrecursionlimit(4000000)
+
+n, m = [int(x) for x in raw_input().split()]
+n = n/2 + 1
+
+memo = {}
+def solve(i, j):
+	if i &lt; j or i &gt;= n or j &gt;= n: 
+		return 0
+	if i == n-1 and j == n-1:
+		return 1
+	if (i, j) in memo:
+		return memo[i, j]
+	
+	memo[i, j] = solve(i+1, j) + solve(i, j+1)
+	return memo[i, j]
+
+i, j = 0, 0
+ans = []
+while i != n-1 or j != n-1:
+	if solve(i+1, j) &gt;= m:
+		ans.append('(')
+		i += 1
+	else:
+		m -= solve(i+1, j)
+		ans.append(')')
+		j += 1
+		
+print &quot;&quot;.join(ans)</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

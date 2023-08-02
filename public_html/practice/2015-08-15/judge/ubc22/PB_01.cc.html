@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, G, P;
+
+int main () {
+    cin &gt;&gt; N;
+    for (int n = 1; n &lt;= N; ++n) {
+        cin &gt;&gt; G &gt;&gt; P;
+        printf(&quot;Team #%d\n&quot;, n);
+        printf(&quot;Games: %d\n&quot;, G);
+        printf(&quot;Points: %d\n&quot;, P);
+        printf(&quot;Possible records:\n&quot;);
+        for (int i = G; i &gt;= 0; --i)
+            if (3 * i &lt;= P &amp;&amp; P - 3 * i + i &lt;= G)
+                printf(&quot;%d-%d-%d\n&quot;, i, P - 3 * i, G - (P - 3 * i + i));
+        printf(&quot;\n&quot;);
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

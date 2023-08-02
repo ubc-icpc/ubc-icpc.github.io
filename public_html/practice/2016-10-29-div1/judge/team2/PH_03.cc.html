@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define EPS 1e-10
+
+vector&lt;int&gt; solve(pair&lt;int, int&gt; coords, int rot, bool flip, long double x, long double y, long double size) {
+	if(size &lt;= 1) {
+		return vector&lt;int&gt;();
+	}
+
+	long double newX, newY;
+	int currQuad, newRot, newFlip;
+
+	if((long double) coords.first &lt; x + size / 2 + EPS) {
+		if((long double) coords.second &lt; y + size / 2 + EPS) {
+			newX = x;
+			newY = y;
+			currQuad = (rot) % 4;
+			if(flip) currQuad = 3 - currQuad;
+		} else {
+			newX = x;
+			newY = y + size/2;
+			currQuad = (rot + 1) % 4;
+			if(flip) currQuad = 3 - currQuad;
+		}
+	} else {
+		if((long double) coords.second &lt; y + size / 2 + EPS) {
+			newX = x + size/2;
+			newY = y;
+			currQuad = (rot + 3) % 4;
+			if(flip) currQuad = 3 - currQuad;
+		} else {
+			newX = x + size/2;
+			newY = y + size/2;
+			currQuad = (rot + 2) % 4;
+			if(flip) currQuad = 3 - currQuad;
+		}
+	}
+	switch (currQuad) {
+		case 0: 
+			if(!flip) {
+				newRot = (rot + 3) % 4;
+			} else {
+				newRot = (rot + 1) % 4;
+			}
+			newFlip = !flip;
+			break;
+		case 1:
+		case 2:
+			newRot = rot;
+			newFlip = flip;
+			break;
+		case 3:
+			if(!flip) {
+				newRot = (rot + 1) % 4;
+			} else {
+				newRot = (rot + 3) % 4;
+			}
+			newFlip = !flip;
+			break;
+	}
+
+	vector&lt;int&gt; out = solve(coords, newRot, newFlip, newX, newY, size / 2);
+
+	out.push_back(currQuad);
+	return out;
+}
+
+int main() {
+	int n, S; cin &gt;&gt; n &gt;&gt; S;
+	vector&lt;pair&lt;vector&lt;int&gt;, pair&lt;int, int&gt;&gt;&gt; coords;
+	map&lt;pair&lt;int, int&gt;, string&gt; names;
+	for(int i = 0; i &lt; n; i++) {
+		int x, y; cin &gt;&gt; x &gt;&gt; y;
+		string s; cin &gt;&gt; s;
+		names[{x, y}] = s;
+		vector&lt;int&gt; priority = solve({x, y}, 0, false, 0, 0, S);
+		reverse(priority.begin(), priority.end());
+		coords.push_back({priority, {x, y}});
+	}
+
+	sort(coords.begin(), coords.end());
+	for(pair&lt;vector&lt;int&gt;, pair&lt;int, int&gt;&gt; val : coords) {
+		cout &lt;&lt; names[val.second] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

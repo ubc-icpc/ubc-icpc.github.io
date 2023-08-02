@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+typedef long long ll;
+
+/*
+for every query, we want to figure out three things:
+1. R: how many times the entire string is repeated in a row
+2. P: the length of the prefix that is removed at the start of the row
+3. S: the length of the prefix that ends the row
+
+P is easy - for row i there have been t_(i-1) preceding letters, where
+t_i = i*(i+1)/2. so let's say the length of the string is L, then the number of
+letters in the prefix is t_(N-1) % L.
+
+now if L-P, the length of the remaining string, is &gt; N, then R is 0. otherwise,
+R = 1+floor((N-(L-P))/L).
+
+finally to find S, if R is 0 then S is P+N; otherwise, it's N-(L-P)-(R-1)*L.
+
+we preprocess the string, to create a 2D array A with the dimensions
+-string prefix length
+-letter
+with the value being the frequency of the letter in the string prefix.
+
+then we can just do lookups: the answer is A[L][c]*R+A[S][c]-A[P][c], where c
+is the given character.
+note that if P &gt; S and R = 0, then the prefix P is subtracted and the suffix S
+is added.
+
+one note on calculating t_(N-1) % L when N could be as large as 10^18: we can
+separate this into
+(((N-1)/2) % L) * (N % L) if N is odd, and
+((N-1) % L) * ((N/2) % L) if N is even.
+*/
+
+int A[1000001][26];
+int rf[26];
+
+int main() {
+  ios::sync_with_stdio(0);
+  ll N; cin &gt;&gt; N;
+  string s; cin &gt;&gt; s;
+  ll L = s.size();
+  for (int i = 1; i &lt;= L; i++) {
+    rf[s[i-1]-'A']++;
+    for (int j = 0; j &lt; 26; j++)
+      A[i][j] = rf[j];
+  }
+  int k; cin &gt;&gt; k;
+  while (k--) {
+    char c;
+    cin &gt;&gt; N &gt;&gt; c;
+    c -= 'A';
+    ll P = (N % 2 ? (((((N-1)/2) % L) * (N % L)) % L) : ((((N-1) % L) * ((N/2) % L)) % L));
+    ll R = 0;
+    ll S = P+N;
+    if (L-P &lt;= N) {
+      R = 1+(N-(L-P))/L;
+      S = N-(L-P)-(R-1)*L;
+    }
+    cout &lt;&lt; A[L][c]*R+A[S][c]-A[P][c] &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

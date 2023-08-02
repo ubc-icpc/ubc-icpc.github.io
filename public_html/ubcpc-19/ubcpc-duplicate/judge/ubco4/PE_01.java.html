@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+
+public class E {
+	public static void main(String[] args) {
+		Scanner input = new Scanner(System.in);
+		String a = input.nextLine();
+		String b = input.nextLine();
+		Scanner input2 = new Scanner(a);
+		int c=0,d=0,e=0,f=0;
+		while(input2.hasNext()) {
+			c = input2.nextInt();
+			d = input2.nextInt();
+		}
+		Scanner input3 = new Scanner(b);
+		int[] arr = new int[2000];
+		int z = 0;
+		while(input3.hasNext()) {
+			arr[z] = input3.nextInt();
+			z++;
+		}
+		int count = 0;
+		int max = 0;
+		int sum = 0;
+		int index = 0;
+		while(count&lt;d) {
+			for(int i = 0; i&lt;arr.length; i++) {
+				if(arr[i]&gt;max) {
+					max = arr[i];
+					index = i;
+				}
+			}
+			sum += max;
+			count++;
+			arr[index] = 0;
+			max = 0;
+		}
+		System.out.println(sum);
+	}
+}
+</code>
+</pre>
+</body>
+</html>

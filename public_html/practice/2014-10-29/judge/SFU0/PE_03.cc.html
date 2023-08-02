@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+
+
+using namespace std;
+
+struct Grid{
+	int val;
+	int x,y;
+};
+
+class CmpGrid{
+public:
+	bool operator() (Grid&amp; g1,Grid &amp;g2){
+		if(g1.val &gt; g2.val) return 1;
+		else return 0;
+	}
+};
+
+//priority_queue&lt;Grid,vector&lt;Grid&gt;,CmpGrid&gt; pq;
+
+const int MAXW = 1005;
+const int MAXH = 1005;
+
+int vals[30];
+char s[MAXW];
+
+int Matrix[MAXH][MAXW];
+int sx,sy;
+bool visited[MAXH][MAXW];
+
+int dx[] = {-1,0,1,0};
+int dy[] = {0,1,0,-1};
+
+int main(){
+	int t;
+
+	scanf(&quot;%d&quot;,&amp;t);
+
+	for(int k=0;k&lt;t;k++){
+
+		for(char ch='A';ch&lt;='Z';ch++) vals[ch-'A'] = 0;
+
+		int K,W,H;
+		scanf(&quot;%d %d %d&quot;,&amp;K,&amp;W,&amp;H);
+		for(int i=0;i&lt;K;i++){
+			char c;
+			int v;
+			scanf(&quot; %c %d &quot;,&amp;c,&amp;v);
+			vals[c-'A'] = v;
+		}
+		vals['E'-'A'] = 0;
+
+		for(int i=0;i&lt;H;i++){
+			gets(s);
+			for(int j=0;j&lt;W;j++)
+				if(s[j]=='E'){ sx=i; sy=j; Matrix[i][j] = 0; }
+				else Matrix[i][j] = vals[s[j]-'A'];
+		}
+
+		// ---------------------------------------------
+
+		/*
+		printf(&quot;sx = %d, sy = %d\n&quot;,sx,sy);
+
+		for(int i=0;i&lt;H;i++){
+			for(int j=0;j&lt;W;j++)
+				printf(&quot;%d &quot;,Matrix[i][j]);
+			printf(&quot;\n&quot;);
+		}
+		*/
+		
+		// ---------------------------------------------
+
+		priority_queue&lt;Grid,vector&lt;Grid&gt;,CmpGrid&gt; pq;
+		//printf(&quot;queue is %s\n&quot;,pq.empty()?&quot;empty&quot;:&quot;not empty&quot;);
+
+		Grid st = {0,sx,sy};
+		//printf(&quot;%d %d %d\n&quot;,st.val,st.x,st.y);
+		
+		pq.push(st);
+
+		memset(visited,0,sizeof(visited));
+
+		while(!pq.empty()){
+			Grid g = pq.top();
+			pq.pop();
+
+			if(visited[g.x][g.y]) continue;
+			visited[g.x][g.y] = true;
+
+			if(g.x == 0 || g.x == H-1 || g.y == 0 || g.y == W-1){
+				printf(&quot;%d\n&quot;,g.val);
+				break;
+			}
+			for(int i=0;i&lt;4;i++){
+				int newx,newy,newval;
+				newx = g.x + dx[i];
+				newy = g.y + dy[i];
+				if(newx&gt;=0 &amp;&amp; newx&lt;H &amp;&amp; newy&gt;=0 &amp;&amp; newy&lt;W &amp;&amp; !visited[newx][newy]){
+					newval = g.val + Matrix[newx][newy];
+					Grid t = {newval,newx,newy};
+					pq.push(t);
+				}
+			}
+		}
+
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

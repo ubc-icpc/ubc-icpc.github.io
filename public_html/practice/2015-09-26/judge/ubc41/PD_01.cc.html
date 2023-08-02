@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+using ull = unsigned long long;
+using ld = long double;
+
+using mm_t = vector&lt;vector&lt;short&gt;&gt;;
+const short sm = numeric_limits&lt;short&gt;::max();
+
+short dp(mm_t&amp; mm, short e, short E)
+{
+	if (e &gt; E) return sm;
+	if (mm[e][E]) return mm[e][E];
+
+	short best = sm;
+	if (e &gt; 0)
+	{
+		best = min(best, (short) (1 + dp(mm, max(e - E / 2, 0), E)));
+	}
+
+	int ss = 10;
+	for (int i = 1; e + ss &lt;= E - i; i++)
+	{
+		best = min(best, (short) (1 + dp(mm, e + ss, E - i)));
+		ss += 10 + 3 * i;
+	}
+	return mm[e][E] = best;
+}
+
+int main()
+{
+	/*
+	const int M = 7729;
+	mm_t mm(M);
+	for (auto&amp; i : mm)
+	{
+		i.resize(M);
+	}
+
+	for (int i = 0; i &lt;= 100; i++)
+	{
+		for (int j = 0; j &lt;= 100; j++)
+		{
+			mm[i][j] = 1;
+		}
+	}
+	for (int i = 0; i &lt; M; i++)
+	{
+		for (int j = i; j &lt; M; j++)
+		{
+			dp(mm, i, j);
+		}
+	}
+
+	int ss = 0;
+	for (int i = 0; ss &lt; M; i++)
+	{
+		short best = sm;
+		for (int j = ss; j &lt; M; j++)
+		{
+			best = min(best, dp(mm, ss, j));
+		}
+
+		cout &lt;&lt; best &lt;&lt; &quot;, &quot;;
+
+		ss += 10 + 3 * i;
+	}
+	*/
+
+	vector&lt;short&gt; s(
+		{
+			1, 1, 1, 1, 1, 1, 4, 18, 31, 43, 55, 67, 78, 90, 101, 111, 122, 133, 143, 153, 164, 174, 184, 194,
+			204, 214, 224, 233, 243, 253, 263, 272, 282, 291, 301, 310, 320, 329, 339, 348, 357, 367, 376, 385,
+			395, 404, 413, 422, 432, 441, 450, 459, 468, 477, 487, 496, 505, 514, 523, 532, 541, 550, 559, 568,
+			577, 586, 595, 604, 613, 622
+		});
+	int t; cin &gt;&gt; t;
+	while (t--)
+	{
+		int x; cin &gt;&gt; x;
+		cout &lt;&lt; s[x] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

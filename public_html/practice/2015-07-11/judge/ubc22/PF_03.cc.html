@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct moose {
+  int y, p, k;
+  bool operator&lt; (const moose&amp; b) const { return p &lt; b.p; }
+} M[200005];
+bool comp (const moose&amp; a, const moose&amp; b) { 
+  if (a.y != b.y) return a.y &lt; b.y;
+  return a.p &lt; b.p;
+}
+int K, N, RES;
+priority_queue&lt;moose&gt; q;
+
+int main () {
+  cin &gt;&gt; K &gt;&gt; N;
+  cin &gt;&gt; M[0].y &gt;&gt; M[0].p; M[0].k = true;
+  for (int i = 1; i &lt;= K + N - 2; ++i) { cin &gt;&gt; M[i].y &gt;&gt; M[i].p; M[i].k = false; }
+  sort(M, M + K + N - 1, comp);
+  for (int i = 0; i &lt; K - 1; ++i) q.push(M[i]);
+  for (int i = K - 1; i &lt;= K + N - 2; ++i) {
+    q.push(M[i]);
+    if (q.top().k == true) { RES = M[i].y; break; }
+    q.pop();
+  }
+  if (RES) cout &lt;&lt; RES &lt;&lt; endl;
+  else cout &lt;&lt; &quot;unknown&quot; &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

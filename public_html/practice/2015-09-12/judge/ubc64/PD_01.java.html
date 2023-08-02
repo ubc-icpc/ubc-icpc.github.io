@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
+import java.util.*;
+
+
+public class acm {
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int round = scan.nextInt();
+        while (round &gt; 0) {
+            int d = scan.nextInt();
+            int l = scan.nextInt();
+            int s = scan.nextInt();
+            int lLevel = 0;
+            int sLevel = 0;
+            int sum = 0;
+            int [] cArray = new int[d];
+            int [] lArray = new int[d];
+            int [] sArray = new int[d];
+
+            for (int i = 0; i &lt; d; i ++) {
+                cArray[i] = scan.nextInt();
+                lArray[i] = scan.nextInt();
+                sArray[i] = scan.nextInt();
+            }
+
+            for (int i =0; i &lt; d; i ++) {
+                int dailyL = cArray[i] * l;
+                int dailyS = cArray[i] * s;
+                //lemon
+                if (lLevel &lt; dailyL) {
+                    for (int k = i; k &lt;d; k++) {
+                        if (lArray[i]&lt;=lArray[k]) {
+                            lLevel += cArray[k] * l;
+                            // error : I used k as i
+                            sum += cArray[k] * l * lArray[i];
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                //sugar
+                int level = sLevel;
+                for (int k = i; k &lt;d; k ++) {
+                    int need = cArray[k] * s;
+                    if (sArray[i] &lt;= sArray[k]) {
+                        if (level &lt; need) {
+                            while (level &lt; need) {
+                                level += 80;
+                                sLevel += 80;
+                                sum += sArray[i];
+                            }
+                        }
+                            level -= need;
+                    } else {
+                        break;
+                    }
+                }
+
+                lLevel -= dailyL;
+                sLevel -= dailyS;
+
+            }
+            System.out.println(sum);
+            round--;
+        }
+    }
+
+//            2 3 3 2
+//            200 10 399 300 8 499 400 12 499 2 5 10
+//            9 10 199 8 20 99
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

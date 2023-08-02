@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-08-23.
+ */
+public class Lottery {
+    public static void main(String[] args) {
+
+        Scanner s = new Scanner(System.in);
+
+        int noOfCases = Integer.parseInt(s.nextLine());
+
+        for(int i = 0; i &lt; noOfCases; i++){
+            boolean foundCommonFactor = false;
+            String line = s.nextLine();
+
+            System.out.println(&quot;Ticket #&quot; + (i+1) + &quot;:&quot;);
+            for(int j = 1; j &lt; line.length(); j++){
+                int a = Integer.parseInt(line.substring(0,j));
+                int b = Integer.parseInt(line.substring(j));
+                if(!HaveCommonFactor(a,b)){
+                    System.out.println(&quot;&quot; + a + &quot; &quot; + b);
+                    foundCommonFactor = true;
+                    break;
+                }
+
+            }
+            if(!foundCommonFactor){
+                System.out.println(&quot;Not relative&quot;);
+            }
+            System.out.println();
+        }
+        //System.out.println(HaveCommonFactor(4, 7108));
+        //System.out.println(HaveCommonFactor(1, 697203));
+        //System.out.println(HaveCommonFactor(2, 2));
+    }
+
+    public static boolean HaveCommonFactor(int a, int b){
+        for(int i = 2; i &lt;= a; i++){
+            if(a%i == 0 &amp;&amp; b%i == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

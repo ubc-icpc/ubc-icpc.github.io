@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+public class abnormWords {
+
+	public static void main(String[] args) {
+
+		Scanner input = new Scanner(System.in);
+		
+		char request = input.next().charAt(0);
+		int shift = input.nextInt();
+		input.nextLine();
+		char[] word = input.nextLine().toCharArray();
+		
+		if(request == 'E') {
+			
+			for(int i = 0; i &lt; word.length; i++) {
+				
+				if((char)(word[i] + shift) &gt; 'z') {
+					
+					word[i] = (char) ('a' + ( (word[i] - 'z') + shift) - 1);
+					System.out.print(word[i]);
+				}
+				
+				else {
+				
+					word[i] = (char) (word[i] + shift);
+					System.out.print(word[i]);
+				
+				}
+					
+			}//End for
+		
+		}//End request == 'E'
+		
+		else {
+							
+				for(int i = 0; i &lt; word.length; i++) {
+					
+					if((char)(word[i] - shift) &lt; 'a') {
+						
+						word[i] = (char) ( ('z' -  ('a' - word[i]) ) - shift + 1);
+						System.out.print(word[i]);
+					}
+					
+					else {
+					
+						word[i] = (char) (word[i] - shift);
+						System.out.print(word[i]);
+					
+					}
+						
+				}//End for			
+			
+		}//End request == 'D'
+		
+		
+		
+	}//End main
+
+}//End class
+</code>
+</pre>
+</body>
+</html>

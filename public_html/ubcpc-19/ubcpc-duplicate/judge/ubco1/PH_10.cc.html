@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+
+bool is_square(ll x){
+
+	ll root = (ll)sqrt(x);
+
+	return (root*root == x);
+
+}
+
+int main(){
+
+	ll N;
+	ll ans = 1;
+	cin &gt;&gt; N;
+
+	int cnt2 = 0;
+	while(N % 2 == 0){
+		cnt2++;
+		N = N/2;
+	}
+	if(cnt2 % 2 == 1) ans *= 2; 
+
+	ll limit = (ll)cbrt(N) + 1;
+
+	for(ll i = 3; i &lt;= limit; i+= 2){
+		if(N % i != 0) continue;
+		int cnt = 0;
+		while(N % i == 0){
+			cnt++;
+			N = N/i;
+		}
+		if(cnt % 2 == 1) ans *= i;
+	}
+
+	limit = (ll)cbrt(N) + 1;
+	
+	ll minP = N;
+	for(ll i = 1; i &lt;= limit; i++){
+		if(N % i == 0){
+			ll Q2 = N/i;
+			if(is_square(Q2)){
+				minP = min(minP, i);
+			}
+			ll j = i*i;
+			if(N % j == 0){
+				minP = min(minP, N/j);
+			}
+		}
+	}
+	ans *= minP;
+
+	cout &lt;&lt; ans &lt;&lt; endl;
+
+	return 0;
+
+}</code>
+</pre>
+</body>
+</html>

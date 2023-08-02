@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class mosquito {
+
+	public static void main(String[] args) {
+		Scanner s= new Scanner(System.in);
+		int T = s.nextInt();
+		int minX = 100;
+		int maxX = 1;
+		int minY = 100;
+		int maxY = 1;
+		while(T--&gt;0) {
+			int thisX = s.nextInt();
+			int thisY = s.nextInt();
+			minX = (thisX &lt; minX) ? thisX: minX;
+			minY = (thisY &lt; minY) ? thisY: minY;
+			maxX = (thisX &gt; maxX) ? thisX: maxX;
+			maxY = (thisY &gt; maxY) ? thisY: maxY;
+		}
+		int Xlen = maxX - minX;
+		int Ylen = maxY - minY;
+		int length = (Xlen &lt; Ylen) ? Ylen : Xlen;
+		int area = length*length;
+		System.out.println(area);
+		s.close();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

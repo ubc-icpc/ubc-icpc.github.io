@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    char which_code;
+    int shift;
+    char word[101];
+
+    scanf(&quot;%c %d %s&quot;, &amp;which_code, &amp;shift, &amp;word);
+
+    if (which_code =='E'){
+        int i=0;
+        while(word[i]!= '\0'){
+            int letnum = (int)word[i];
+            int shifted_character = letnum + shift;
+
+            if (shifted_character&gt; 122){
+                int new_int = shifted_character - 122;
+                shifted_character = new_int + 96;
+            }
+            word[i] = shifted_character;
+            i++;
+        }
+    } else {
+        int i =0;
+        while(word[i]!= '\0'){
+            int letnum = (int)word[i];
+            int shifted_character = letnum - shift;
+
+            if (shifted_character &lt; 97){
+                int new_int = shifted_character + 122;
+                shifted_character = new_int - 97 + 1;
+            }
+            word[i] = (char)shifted_character;
+            i++;
+        }
+    }
+
+    printf(&quot;%s&quot;, word);
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

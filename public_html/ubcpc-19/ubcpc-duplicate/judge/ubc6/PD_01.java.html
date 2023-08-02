@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class D {
+  
+  static class Pair {
+    int u;
+    long dist;
+    Pair(int u, long dist) {
+      this.u = u;
+      this.dist = dist;
+    }
+  }
+  public static void main(String[] args) throws Exception {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    //BufferedReader reader = new BufferedReader(new FileReader(new File(&quot;D3.in&quot;)));
+    PrintWriter writer = new PrintWriter(new OutputStreamWriter(System.out));
+    
+    StringTokenizer tokens = new StringTokenizer(reader.readLine());
+    int n = Integer.parseInt(tokens.nextToken());
+    int d = Integer.parseInt(tokens.nextToken());
+    
+    tokens = new StringTokenizer(reader.readLine());
+    long[] d1 = new long[d+1];
+    for (int i = 1; i &lt;= d; i++) {
+      d1[i] = Integer.parseInt(tokens.nextToken());
+    }
+    
+    tokens = new StringTokenizer(reader.readLine());
+    long[] d2 = new long[d+1];
+    for (int i = 1; i &lt;= d; i++) {
+      d2[i] = Integer.parseInt(tokens.nextToken());
+    }
+    
+    // Do Dijkstra
+    int maxHop = n/2 + 1;
+    int mid = n/2 + 1;
+    int numNodes = maxHop*2 + 1;
+    long inf = Math.max(d1[1] * numNodes, d2[1] * numNodes) * 10000;
+    long[] dist = new long[numNodes];
+    boolean[] visited = new boolean[numNodes];
+    Arrays.fill(dist, inf);
+    dist[mid] = 0;
+    for (int iter = 0; iter &lt; numNodes; iter++) {
+      int u = 0;
+      long curDist = inf;
+      for (int i = 0; i &lt; numNodes; i++) {
+        if (!visited[i] &amp;&amp; dist[i] &lt; curDist) {
+          u = i;
+          curDist = dist[i];
+        }
+      }
+      visited[u] = true;
+      for (int i = 1; i &lt;= d; i++) {
+        int v = u + i;
+        if (v &lt; numNodes) {
+          long newDist = curDist + d1[i];
+          if (newDist &lt; dist[v]) {
+            dist[v] = newDist;
+          }
+        }
+      }
+      for (int i = 1; i &lt;= d; i++) {
+        int v = u - i;
+        if (v &gt;= 0) {
+          long newDist = curDist + d2[i];
+          if (newDist &lt; dist[v]) {
+            dist[v] = newDist;
+          }
+        }
+      }
+    }
+    
+    // dp[i][dir] = worst case of interval of size i in direction dir (0 = left, 1 = right)
+    long[][] dp = new long[n][2];
+    for (int i = 1; i &lt; n; i++) {
+      dp[i][0] = inf;
+      dp[i][1] = inf;
+      for (int j = 1; j &lt;= i &amp;&amp; j &lt;= d; j++) {
+        dp[i][0] = Math.min(dp[i][0], dist[mid - j] + Math.max(dp[j-1][1], dp[i-j][0]));
+        dp[i][1] = Math.min(dp[i][1], dist[mid + j] + Math.max(dp[j-1][0], dp[i-j][1]));
+      }
+    }
+    
+    long ans = dp[n-1][1];
+    writer.println(ans);
+    
+    writer.close();
+    reader.close();
+  }
+}
+</code>
+</pre>
+</body>
+</html>

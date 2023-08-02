@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+
+int s, wf, lf;
+double solve(int w, int l, int last) {
+	if (l == 4) return 0;
+	if (w == 4) return 1;
+	int str = 20;
+	if (last == 1) str += wf;
+	if (last == -1) str -= lf;
+	double p = str/ld(s+str);
+	return p*(solve(w+1,l,1))+(1-p)*(solve(w,l+1,-1));
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	while(n--) {
+		string name;
+		getline(cin,name);
+		getline(cin,name);
+		cin &gt;&gt; s &gt;&gt; wf &gt;&gt; lf;
+		double ans;
+		cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; solve(0,0,0) &lt;&lt; endl;
+
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

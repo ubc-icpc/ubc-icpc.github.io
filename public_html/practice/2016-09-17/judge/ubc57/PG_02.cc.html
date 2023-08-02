@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef pair&lt;int,int&gt; pii;
+typedef long long ll;
+typedef long double ld;
+
+ld change[9][9]; //1 b = change[a][b] dollars of a
+bool visited[9]; 
+set&lt;int&gt; adj[9];
+ld simple[9]; //simple[i] of i = 1 dollar of a
+map&lt;string,int&gt; key;
+int main(){
+    ios::sync_with_stdio(0);
+    int n;
+    int ca=1;
+    while (cin&gt;&gt;n){
+        memset(change,0,sizeof change); memset(visited,0,sizeof visited); memset(simple,0,sizeof simple);
+        key.clear();
+        if (n==0) break;
+        vector&lt;tuple&lt;int,string,int,string&gt;&gt; stuff; 
+        set&lt;string&gt; names;
+        for (int i=0;i&lt;n;i++){
+            int a,b; string x,y; char c; cin&gt;&gt;a&gt;&gt;x&gt;&gt;c&gt;&gt;b&gt;&gt;y; 
+            stuff.push_back(make_tuple(a,x,b,y));
+            names.insert(x); names.insert(y); 
+        }
+        vector&lt;string&gt; currencies; currencies.assign(names.begin(),names.end());
+        for (int i=0;i&lt;currencies.size();i++) key[currencies[i]]=i;
+        for (int i=0;i&lt;currencies.size();i++) adj[i].clear();
+        for (tuple&lt;int,string,int,string&gt; t:stuff){
+            int a=get&lt;0&gt;(t),x=key[get&lt;1&gt;(t)],b=get&lt;2&gt;(t),y=key[get&lt;3&gt;(t)];
+            change[y][x]=ld(b)/ld(a); //a of x = b of y -&gt; 1 of x = b/a of y
+            change[x][y]=1.0/change[y][x];
+            adj[x].insert(y); adj[y].insert(x);
+        }
+        
+        int want; string what; cin&gt;&gt;want&gt;&gt;what; 
+        //bfs, determine conversion
+        int start=key[what];
+        queue&lt;int&gt; q; q.push(start); simple[start]=1; visited[start]=1;
+        while (!q.empty()){
+            int now=q.front(); q.pop();
+            for (int nex:adj[now]) if (!visited[nex]){
+                simple[nex]=simple[now]*change[nex][now];
+                visited[nex]=true;
+                q.push(nex);
+            }
+        }
+        //for (int i=0;i&lt;currencies.size();i++) cout&lt;&lt;simple[i]&lt;&lt;' '; cout&lt;&lt;endl;
+        //solve:
+        pair&lt;int,string&gt; solution; ld minerr=1e7;
+        for (int i=0;i&lt;currencies.size();i++) if ((i!=start)&amp;&amp;(simple[i]&gt;1e-6)){
+            ld ch=simple[i]*ld(want);  
+            ld pick=int(ch); 
+            if (abs(ch-pick)&gt;1e-6) pick++;
+            if (pick&lt;1e5+1e-6){
+                ld error=pick/simple[i];
+                if (error&lt;minerr) {
+                    solution={pick,currencies[i]}; minerr=error;
+                }
+            }
+        }
+        cout&lt;&lt;&quot;Case &quot;&lt;&lt;ca&lt;&lt;&quot;: &quot;&lt;&lt;solution.first&lt;&lt;' '&lt;&lt;solution.second&lt;&lt;endl;
+        ca++;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

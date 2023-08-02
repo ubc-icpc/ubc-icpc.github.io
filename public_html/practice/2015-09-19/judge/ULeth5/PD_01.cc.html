@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+using namespace std;
+
+int gcd(const int &amp; a, const int &amp; b)
+{return b==0? a : gcd(b, a%b);}
+// Note: Applying operations to reduced fractions should yield a reduced answer
+//       Make sure you reduce the fraction when you store it into the structure.
+//  EXCEPT: 0 may be 0/x until reduce is called (then changed to 0/1)
+typedef long long ll;
+struct frac{  ll num,den; };
+
+frac make_frac(ll n,ll d){ frac f; f.num = n,f.den = d; return f; }
+
+frac reduce(frac a){
+  if(a.num == 0) return make_frac(0,1); if(a.den &lt; 0) { a.num *= -1; a.den *= -1; }
+  ll g = gcd(a.num,a.den); return make_frac(a.num/g,a.den/g);
+}
+frac recip(frac a){ return reduce(make_frac(a.den,a.num)); }
+
+frac operator+(frac a,frac b){
+  ll g = gcd(a.den,b.den);
+  return reduce(make_frac(a.num*(b.den/g) + b.num*(a.den/g), (a.den/g)*b.den));
+}
+frac operator-(frac a,frac b){ return a + make_frac(-b.num,b.den); }
+frac operator*(frac a,frac b){
+  ll g1 = gcd(a.num,b.den), g2 = gcd(a.den,b.num);
+  return make_frac((a.num / g1) * (b.num / g2),(a.den / g2) * (b.den / g1));
+}
+frac operator/(frac a,frac b){ return a * recip(b); } // Watch division by 0
+
+bool operator==(frac a,frac b){
+  a=reduce(a); b=reduce(b);
+  return a.num==b.num &amp;&amp; a.den==b.den;
+}
+
+// Choose one. First one may overflow. Second one has rounding errors.
+bool operator&lt;(frac a,frac b){ return (a.num*b.den) &lt; (b.num*a.den); }
+
+
+int main()
+{
+   int T;
+   cin &gt;&gt; T;
+   for(int k=0; k&lt;T; k++)
+   {
+      int N;
+      cin &gt;&gt; N;
+      int X[405], Y[405];
+      for(int i=0; i&lt;N; i++)
+	 cin &gt;&gt; X[i] &gt;&gt; Y[i];
+      if(N==0)
+      {
+	 cout &lt;&lt; &quot;Case #&quot; &lt;&lt; k+1 &lt;&lt; &quot;: &quot; &lt;&lt; 0 &lt;&lt; endl;
+	 continue;
+      }
+      int BEST=1;
+      for(int i=0; i&lt;N; i++)
+      {
+	 int x=X[i], y=Y[i];
+	 map&lt;frac, int&gt; m;
+	 for(int j=0; j&lt;N; j++)
+	 {
+	    if(i==j)
+	       continue;
+	    frac slope=make_frac(Y[j]-y, X[j]-x);
+	    m[slope]++;
+	 }
+	 for(map&lt;frac,int&gt;::iterator it=m.begin(); it!=m.end(); it++)
+	 {
+	    //cerr &lt;&lt; &quot;got &quot; &lt;&lt; (it-&gt;first).num &lt;&lt; &quot; &quot; &lt;&lt; (it-&gt;first).den &lt;&lt; endl;
+	    BEST=max(BEST, (it-&gt;second)+1);
+	 }
+      }
+      cout &lt;&lt; &quot;Case #&quot; &lt;&lt; k+1 &lt;&lt; &quot;: &quot; &lt;&lt; BEST &lt;&lt; endl;
+   }
+   
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

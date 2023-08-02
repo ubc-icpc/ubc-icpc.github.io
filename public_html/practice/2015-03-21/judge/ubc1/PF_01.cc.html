@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+struct edge {
+    int v, w;
+    edge() {}
+    edge(int v, int w) : v(v), w(w) {}
+};
+
+int price[1005];
+vector&lt;edge&gt; g[1005];
+int dist[1005][100];
+
+struct comp {
+    bool operator()(const pii&amp; u, const pii&amp; v) const {
+        if (dist[u.first][u.second] == dist[v.first][v.second]) return u &lt; v;
+        return dist[u.first][u.second] &lt; dist[v.first][v.second];
+    }
+};
+
+int dijkstras(int s, int e, int c) {
+    memset(dist, 0x3f, sizeof dist);
+    set&lt;pii, comp&gt; q;
+    dist[s][0] = 0;
+    q.insert(pii(s, 0));
+    int res = -1;
+    while (!q.empty()) {
+        pii u = *q.begin(); q.erase(q.begin());
+        if (u.first == e) {
+            res = dist[u.first][u.second];
+            break;
+        }
+        
+        // recharge fuel.
+        if (u.second &lt; c &amp;&amp; dist[u.first][u.second]+price[u.first] &lt; dist[u.first][u.second+1]) {
+            pii nxt(u.first, u.second+1);
+            q.erase(nxt);
+            dist[u.first][u.second+1] = dist[u.first][u.second]+price[u.first];
+            q.insert(nxt);
+        }
+        
+        for (auto e : g[u.first]) {
+            if (e.w &lt;= u.second) {
+                pii nxt(e.v, u.second-e.w);
+                if (dist[u.first][u.second] &lt; dist[nxt.first][nxt.second]) {
+                    q.erase(nxt);
+                    dist[nxt.first][nxt.second] = dist[u.first][u.second];
+                    q.insert(nxt);
+                }
+            }
+        }
+    }
+    return res;
+}
+
+int main() {
+    int n, m; cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; price[i];
+    }
+    
+    for (int i = 0; i &lt; m; i++) {
+        int u, v, w; cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;
+        g[u].push_back(edge(v, w));
+        g[v].push_back(edge(u, w));
+    }
+    
+    int q; cin &gt;&gt; q;
+    for (int i = 0; i &lt; q; i++) {
+        int s, e, c; cin &gt;&gt; c &gt;&gt; s &gt;&gt; e;
+        int res = dijkstras(s, e, c);
+        if (res == -1) {
+            cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; res &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

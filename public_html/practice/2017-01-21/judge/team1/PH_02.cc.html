@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// dp[i][j][k][l] = what's the length of LIS that
+//   - we use elements from i to j
+//   - the values we use have to be between [k, l]
+int memo[64][64][64][64];
+int a[64];
+
+int dp(int i, int j, int k, int l) {
+    if (i &gt; j) return 0;
+    if (i == j) return (k &lt;= a[i] &amp;&amp; a[i] &lt;= l) ? 1 : 0;
+    if (memo[i][j][k][l] &gt;= 0) return memo[i][j][k][l];
+
+    // now we have i &lt; j, k &lt;= l
+    int ans = max(dp(i+1, j, k, l), dp(i, j-1, k, l));
+
+    if (k &lt;= a[i] &amp;&amp; a[i] &lt;= l) ans = max(ans, 1+dp(i+1, j, a[i], l));
+    if (k &lt;= a[j] &amp;&amp; a[j] &lt;= l) ans = max(ans, 1+dp(i, j-1, k, a[j]));
+    if (k &lt;= a[i] &amp;&amp; a[i] &lt;= a[j] &amp;&amp; a[j] &lt;= l) ans = max(ans, 2+dp(i+1, j-1, a[i], a[j]));
+
+    if (k &lt;= a[j] &amp;&amp; a[j] &lt;= l) ans = max(ans, 1+dp(i+1, j-1, a[j], l));
+    if (k &lt;= a[i] &amp;&amp; a[i] &lt;= l) ans = max(ans, 1+dp(i+1, j-1, k, a[i]));
+    if (k &lt;= a[j] &amp;&amp; a[j] &lt;= a[i] &amp;&amp; a[i] &lt;= l) ans = max(ans, 2+dp(i+1, j-1, a[j], a[i]));
+
+    return memo[i][j][k][l] = ans;
+}
+
+int main() {
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    memset(memo, -1, sizeof memo);
+    int ans = dp(0, n-1, 1, 50);
+    cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

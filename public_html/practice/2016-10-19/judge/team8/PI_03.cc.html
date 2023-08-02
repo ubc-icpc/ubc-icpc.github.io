@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int next(vector&lt;int&gt; left, int n) {
+	for (int i = 0; i &lt; n; i++) {
+		if (left[i]) return i;
+	}
+	return -1;
+}
+
+void printn(vector&lt;int&gt; left, int n) {
+	cout &lt;&lt; &quot;[&quot; &lt;&lt; endl;
+	for (int i = 0; i &lt; n; i++) {
+		if (left[i]) cout &lt;&lt; i &lt;&lt; endl;
+	}
+	cout &lt;&lt; &quot;]&quot; &lt;&lt; endl;
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n, m;
+		cin &gt;&gt; n &gt;&gt; m;
+
+		vector&lt;int&gt; in(n);
+		vector&lt;vector&lt;int&gt;&gt; d(n);
+
+		while (m--) {
+			int d1, d2;
+			cin &gt;&gt; d1 &gt;&gt; d2;
+			d[d1 - 1].push_back(d2 - 1);
+			d[d2 - 1].push_back(d1 - 1);
+			in[d2 - 1]++;
+		}
+
+		vector&lt;int&gt; left(n + 2);
+		for (int i = 0; i &lt; n; i++) left[i] = 1;
+
+		queue&lt;int&gt; queue;
+		int count = 0;
+
+		int s = next(left, n);
+		while (s != -1) {
+			queue.push(s);
+
+			int ni = 0;
+			while (queue.size()) {
+				int dom = queue.front();
+				queue.pop();
+
+				if (!left[dom]) continue;
+				left[dom] = 0;
+
+				if (in[dom] == 0) {
+					ni++;
+				}
+
+				vector&lt;int&gt; n = d[dom];
+				for (int i = 0; i &lt; n.size(); i++)
+					queue.push(n[i]);
+			}
+
+			if (ni == 0) ni++;
+			count += ni;
+			s = next(left, n);
+		}
+
+		cout &lt;&lt; count &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

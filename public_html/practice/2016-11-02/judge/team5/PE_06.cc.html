@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;limits&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+
+const ll N = 1e4+5;
+vector&lt;pii&gt; adj[N], adj2[N];
+ll shortest, dist[N];
+ll n, m, x;
+
+struct cmp {
+  bool operator()(const ll &amp;a, const ll &amp;b) {
+    if (dist[a] == dist[b])
+      return a &lt;= b;
+    return dist[a] &lt; dist[b];
+  }
+};
+
+ll dijkstra() {
+  for (ll i = 0; i &lt; n+1; i++) dist[i] = numeric_limits&lt;ll&gt;::max()/4;
+  set&lt;ll, cmp&gt; q;
+  dist[1] = 0;
+  q.insert(1);
+  while (!q.empty()) {
+    ll u = *q.begin();
+    q.erase(q.begin());
+    ll d = 0, w = 0;
+    ll v = 0;
+    for (const pii &amp;ne : adj[u]) {
+      v = ne.first, w = ne.second;
+      d = w + dist[u];
+      if (d &lt; dist[v]) {
+        q.erase(v);
+        dist[v] = d;
+        q.insert(v);
+      }
+    }
+  }
+  return dist[n];
+}
+
+ll dijkstra2() {
+  for (ll i = 0; i &lt;= n; i++) dist[i] = numeric_limits&lt;ll&gt;::max()/10000;
+  set&lt;ll, cmp&gt; q;
+  dist[1] = 0;
+  q.insert(1);
+  while (!q.empty()) {
+    ll u = *q.begin();
+    q.erase(q.begin());
+    ll d = 0, w = 0;
+    ll v = 0;
+    for (const pii &amp;ne : adj2[u]) {
+      v = ne.first, w = ne.second;
+      d = w + dist[u];
+      if (d &lt; dist[v]) {
+        q.erase(v);
+        dist[v] = d;
+        q.insert(v);
+      }
+    }
+  }
+  return dist[n];
+}
+
+bool ok(ll val) {
+  for (ll i = 0; i &lt;= n; i++)
+    adj2[i].clear();
+  for (ll i = 1; i &lt;= n; i++) {
+    for (const pii &amp;ne : adj[i]) {
+      if (ne.second &gt; val) continue;
+      adj2[i].push_back(ne);
+    }
+  }
+  ll cost = dijkstra2();
+  return cost*100 &lt;= (100+x)*shortest;
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin &gt;&gt; n &gt;&gt; m &gt;&gt; x;
+  ll c1, c2; ll t;
+  for (ll i = 0; i &lt; m; i++) {
+    cin &gt;&gt; c1 &gt;&gt; c2 &gt;&gt; t;
+    adj[c1].push_back({c2,t});
+    adj[c2].push_back({c1,t});
+  }
+  shortest = dijkstra();
+  ll lo = 1, hi = 1e9+1;
+  ll mid = 0;
+  while (lo &lt; hi) {
+    mid = lo + (hi - lo) / 2;
+    if (ok(mid)) {
+      hi = mid;
+    } else {
+      lo = mid+1;
+    }
+  }
+  cout &lt;&lt; lo &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

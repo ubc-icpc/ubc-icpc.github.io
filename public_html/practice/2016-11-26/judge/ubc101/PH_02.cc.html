@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+using namespace std;
+typedef long long int lli;
+bool John (pair&lt;lli,lli&gt; a, pair&lt;lli,lli&gt; b)
+{
+	return a.second &lt; b.second;
+}
+
+int main()
+{
+	lli n,k;
+	cin&gt;&gt;n&gt;&gt;k;
+	vector&lt;pair&lt;lli,lli&gt; &gt; qaqa;
+	for(int i=0; i&lt;k; i++)
+	{
+		lli a, b;
+		cin&gt;&gt;a&gt;&gt;b;
+		qaqa.push_back(make_pair(a,b));
+	}
+	map&lt;lli,lli&gt; hamisi;
+	lli max = 0;
+	sort(qaqa.begin(),qaqa.end(), John);
+	for(lli i=0; i&lt;k; i++)
+	{
+		bool girdi = true;
+		lli bas = qaqa[i].first;
+		lli son = qaqa[i].second;
+		lli evvel = hamisi.size();
+		hamisi.insert(make_pair(bas,-1));
+		lli sonra = hamisi.size();
+		if(evvel==sonra)
+		{
+			girdi = false;
+		}
+		map&lt;lli,lli&gt; :: iterator it = hamisi.find(bas);
+		map&lt;lli,lli&gt; :: iterator ito = it;
+		--ito;	
+		lli gelir = 0;
+		if(it!=hamisi.begin())
+		{
+			gelir =(*ito).second;
+	    }
+			gelir+=son-bas+1;
+			if(gelir&gt;max)
+			{
+				max = gelir;
+			}
+			if(girdi)
+			{
+				hamisi.erase(it);
+			}
+			ito = hamisi.find(son);
+			if(ito==hamisi.end())
+			{
+				hamisi.insert(make_pair(son,gelir));
+				ito = hamisi.find(son);
+				if(ito!=hamisi.begin())
+				{
+					--ito;
+					if((*ito).second&gt;gelir)
+					{
+						++ito;
+						hamisi.erase(ito);
+					}
+				}
+			}
+			else
+			{
+				if(gelir&gt;(*ito).second)
+				{
+					hamisi.erase(ito);
+					hamisi.insert(make_pair(son,gelir));
+				}
+			}
+	}
+	cout&lt;&lt;n-max;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

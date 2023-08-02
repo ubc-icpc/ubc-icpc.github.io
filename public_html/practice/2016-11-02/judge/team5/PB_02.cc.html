@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+
+using namespace std;
+
+string s;
+
+void solveSmall(int j) {
+  for (int i = j; i &lt; s.size(); i++) {
+    if (s[i] == 'R') cout &lt;&lt; 'S';
+    else if (s[i] == 'B') cout &lt;&lt; 'K';
+    else if (s[i] == 'L') cout &lt;&lt; 'H';
+  }
+}
+
+int main() {
+  cin &gt;&gt; s;
+  int cur = 0;
+  while (cur &lt; s.size()) {
+    if (cur+2 &lt; s.size()) {
+      set&lt;char&gt; ma;
+      ma.insert(s[cur]);
+      ma.insert(s[cur+1]);
+      ma.insert(s[cur+2]);
+      if (ma.size() == 3) {
+        cout &lt;&lt; 'C';
+        cur = cur+3;
+      } else {
+        if (s[cur] == 'R') cout &lt;&lt; 'S';
+        else if (s[cur] == 'B') cout &lt;&lt; 'K';
+        else if (s[cur] == 'L') cout &lt;&lt; 'H';
+        cur++;
+      }
+    } else {
+      solveSmall(cur);
+      return 0;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

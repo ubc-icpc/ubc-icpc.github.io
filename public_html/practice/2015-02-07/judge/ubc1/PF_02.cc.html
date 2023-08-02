@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+//memo[i][left][right] := at location i, delivered left papers to my left (including curr), right papers to my right
+int n, memo[55][55][55], a[55];
+int dp(int i, int l, int r) {
+    if (l+r == n+1) return 0;
+    if (memo[i][l][r] != -1) return memo[i][l][r];
+    
+    memo[i][l][r] = 1000000000;
+    //try moving left if possible
+    if (i-l &gt;= 0) {
+        memo[i][l][r] = min(memo[i][l][r], (a[i]-a[i-l])*(n-l-r+2) + dp(i-l, 1, l+r));
+    } 
+    if (i+r+1 &lt;= n) {
+        memo[i][l][r] = min(memo[i][l][r], (a[i+r+1]-a[i])*(n-l-r+2) + dp(i+r+1, l+r+1, 0));
+    }
+    return memo[i][l][r];
+}
+
+int main() {
+    while (cin &gt;&gt; n) {
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; a[i];
+        }
+        
+        cin &gt;&gt; a[n];
+        int cur = a[n];
+        sort(a, a+n+1);
+        int st = 0;
+        for (int i = 0; i &lt;= n; i++) {
+            if (a[i] == cur) {
+                st = i;
+                break;
+            }
+        }
+        
+        memset(memo, -1, sizeof memo);
+        cout &lt;&lt; dp(st, 1, 0) + n &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

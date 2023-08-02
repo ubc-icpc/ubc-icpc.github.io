@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+
+vector&lt;vector&lt;int&gt; &gt; gen_palin(int d, int b, bool first) {
+    if (d == 0) return vector&lt;vector&lt;int&gt; &gt;({});
+    vector&lt;vector&lt;int&gt; &gt; v = gen_palin(d-1, b, false), res;
+    for (int i = first; i &lt; b; i++) {
+        for (vector&lt;int&gt; w : v) {
+            w.push_back(i);
+            res.push_back(w);
+        }
+    }
+    return res;
+}
+
+// in base X, 1..X-1 are palindromes
+// in base X-1, 1..X-2 and 11 is a palindrome
+// in base X-2, 1..X-3 and 11 is a palindrome
+// in base X-3...
+// if want 22 as a palindrome, need 2*b+2 = X
+// b = (X-2)/2
+// c*b+c = X
+// b = (X-c)/c
+//  
+int main() {
+    int X; cin &gt;&gt; X;
+    set&lt;int&gt; s;
+    for (int i = 1; (X-i)/i &gt; i; i++) {
+        if ((X-i)%i == 0) {
+            s.insert((X-i)/i);
+        }
+    }
+    
+    //and now we should only consider 2 digit or more palindromes
+    //but this is easy, since we can assume b &lt;= sqrt(X)
+    for (int b = 2; b*b &lt;= 2*X; b++) {
+        vector&lt;int&gt; v;
+        int Y = X;
+        while (Y &gt; 0) {
+            v.push_back(Y%b);
+            Y /= b;
+        }
+        
+        bool good = true;
+        for (int j = 0; j &lt; v.size()/2; j++) {
+            if (v[j] != v[v.size()-j-1]) {
+                good = false;
+            }
+        }
+        if (good) s.insert(b);
+    }
+    
+    for (int b : s) {
+        cout &lt;&lt; b &lt;&lt; '\n';
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

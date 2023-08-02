@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int smin(int a, int b, int c) {
+	int res = (a &lt; b) ? a : b;
+	res = (res &lt; c) ? res : c;
+	return res;
+}
+
+int main() {
+	int N;
+	cin &gt;&gt; N;
+	vector&lt;string&gt; map;
+	for (int i = 0; i &lt; N; i++) {
+		string temp;
+		cin &gt;&gt; temp;
+		temp = &quot;.&quot; + temp + &quot;.&quot;;
+		map.push_back(temp);
+	}
+	vector&lt; vector&lt;unsigned long long&gt; &gt; trollcount(N + 1, vector&lt;unsigned long long&gt;(N + 2, 0));
+	for (int i = N - 1; i &gt;= 0; i--)
+		for (int j = 1; j &lt; N + 1; j++)
+			if (map[i][j] == '#')
+				trollcount[i][j] = smin(trollcount[i + 1][j - 1], trollcount[i + 1][j], trollcount[i + 1][j + 1]) + 1;
+	unsigned long long total = 0;
+	for (int i = N - 1; i &gt;= 0; i--)
+		for (int j = 1; j &lt; N + 1; j++)
+			total += trollcount[i][j];
+	cout &lt;&lt; total &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

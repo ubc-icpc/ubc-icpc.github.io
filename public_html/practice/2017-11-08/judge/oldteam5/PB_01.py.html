@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import fileinput
+
+final = set(map(str, range(10)))
+
+def digits(n):
+    return set(str(n))
+
+for line in fileinput.input():
+    n = int(line.strip())
+    x = n
+    digit = digits(x)
+    count = 1
+    while digit != final:
+        x += n
+        digit = digit.union(digits(x))
+        count += 1
+    print(count)
+    
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

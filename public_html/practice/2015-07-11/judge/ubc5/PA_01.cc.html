@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+typedef long long ll;
+
+string g[1000];
+ll p[1000][1000];
+bool v[1000][1000], v2[1000][1000];
+
+const ll mod = 2147483647LL;
+const int dx[4] = {1,0,0,-1};
+const int dy[4] = {0,1,-1,0};
+
+int main() {
+  int n; cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++)
+    cin &gt;&gt; g[i];
+  queue&lt;pii&gt; q;
+  q.push(make_pair(0,0));
+  p[0][0] = 1;
+  while (q.size()) {
+    pii f = q.front();
+    q.pop();
+    if (v[f.first][f.second])
+      continue;
+    v[f.first][f.second] = true;
+    for (int i = 0; i &lt; 2; i++) {
+      int x = f.first+dx[i], y = f.second+dy[i];
+      if (0 &lt;= x &amp;&amp; x &lt; n &amp;&amp; 0 &lt;= y &amp;&amp; y &lt; n &amp;&amp; !v[x][y] &amp;&amp; g[x][y] == '.') {
+        q.push(make_pair(x,y));
+        p[x][y] = (p[x][y]+p[f.first][f.second])%mod;
+      }
+    }
+  }
+  if (v[n-1][n-1])
+    cout &lt;&lt; p[n-1][n-1] &lt;&lt; &quot;\n&quot;;
+  else {
+    queue&lt;pii&gt; q2;
+    q2.push(make_pair(0,0));
+    while (q2.size()) {
+      pii f = q2.front();
+      q2.pop();
+      if (v2[f.first][f.second])
+        continue;
+      v2[f.first][f.second] = true;
+      for (int i = 0; i &lt; 4; i++) {
+        int x = f.first+dx[i], y = f.second+dy[i];
+        if (0 &lt;= x &amp;&amp; x &lt; n &amp;&amp; 0 &lt;= y &amp;&amp; y &lt; n &amp;&amp; !v2[x][y] &amp;&amp; g[x][y] == '.')
+          q2.push(make_pair(x,y));
+      }
+    }
+    cout &lt;&lt; (v2[n-1][n-1] ? &quot;THE GAME IS A LIE&quot; : &quot;INCONCEIVABLE&quot;) &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

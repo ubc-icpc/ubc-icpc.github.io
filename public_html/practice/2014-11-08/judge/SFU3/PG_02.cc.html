@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;stdio.h&gt;
+#include&lt;string.h&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+long long n,i,t,l,k,num,ans;
+
+long long f[100][3];
+
+long long getNum(long long num,long long l)
+{
+	if (num==0)
+	{
+		if (l==0)	
+			return 1;
+		else 
+			return 0;
+	}
+	long long i = 0,tmp = 1;
+	while (tmp&lt;=num)
+	{
+		i++;
+		tmp*=2;
+	}
+	i--;
+	long long ans,t;
+	t = num-tmp/2;	
+//	cout&lt;&lt;num&lt;&lt;' '&lt;&lt;t&lt;&lt;' '&lt;&lt;i&lt;&lt;' '&lt;&lt;l&lt;&lt;' '&lt;&lt;f[i][l]&lt;&lt;endl;
+	ans = f[i][l]+getNum(t,(l+2)%3);
+//	cout&lt;&lt;num&lt;&lt;&quot;   &quot;&lt;&lt;ans&lt;&lt;endl;
+	return ans;
+}
+
+int main()
+{
+	memset(f,0,sizeof(f));
+	f[0][0] = 1;
+	for (i=1;i&lt;100;i++)
+		for (k=0;k&lt;3;k++)
+			f[i][k] = f[i-1][(k+2)%3]+f[i-1][k];
+	//for (i=0;i&lt;100;i++)
+	//	f[i][0]--;
+	int mark;
+	mark = scanf(&quot;%lld&quot;,&amp;num);
+	while (mark != EOF)
+	{
+		ans = getNum(num,0);
+		//cout&lt;&lt;getNum(num,0)&lt;&lt;' '&lt;&lt;getNum(num,1)&lt;&lt;' '&lt;&lt;getNum(num,2)&lt;&lt;endl;
+		cout&lt;&lt;&quot;Day &quot;&lt;&lt;num&lt;&lt;&quot;: Level = &quot;&lt;&lt;ans-1&lt;&lt;endl;
+		mark = scanf(&quot;%lld&quot;,&amp;num);
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

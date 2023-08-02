@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;list&gt;
+using namespace std;
+
+inline void rot(list&lt;char&gt;&amp; l) {
+  l.push_back(l.front());
+  l.pop_front();
+}
+
+int main() {
+  int n; cin &gt;&gt; n;
+  string s;
+  while (n--) {
+    cin &gt;&gt; s;
+    while (s.size()) {
+      int ind = s.size()-1;
+      while (ind &gt;= 0) {
+        list&lt;char&gt; l, l2;
+        for (int i = 0; i &lt;= ind; i++) {
+          l.push_back(s[i]);
+          l2.push_back(s[i]);
+        }
+        bool ok = true;
+        for (int i = 0; i &lt; ind; i++) {
+          rot(l2);
+          bool okr = true;
+          list&lt;char&gt;::iterator it = l.begin(), it2 = l2.begin();
+          while (true) {
+            if (*it &lt; *it2)
+              break;
+            else if (*it &gt; *it2) {
+              okr = false;
+              break;
+            }
+            ++it;
+            ++it2;
+            if (it == l.end())
+              break;
+          }
+          if (!okr) {
+            ok = false;
+            break;
+          }
+        }
+        if (ok)
+          break;
+        ind--;
+      }
+      cout &lt;&lt; &quot;(&quot; &lt;&lt; s.substr(0,ind+1) &lt;&lt; &quot;)&quot;;
+      s.erase(0,ind+1);
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

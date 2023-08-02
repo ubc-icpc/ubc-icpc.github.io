@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	int N; cin &gt;&gt; N;
+	int K; cin &gt;&gt; K;
+	map&lt;string, int&gt; cards;
+	set&lt;string&gt; matchableCards;
+	set&lt;string&gt; matchedCards;
+	set&lt;string&gt; unmatched;
+	for(int i = 0; i &lt; K; i++) {
+		int C1, C2; cin &gt;&gt; C1 &gt;&gt; C2;
+		string p1, p2; cin &gt;&gt; p1 &gt;&gt; p2;
+		if(p1 == p2) {
+			matchedCards.insert(p1);
+			matchableCards.erase(p1);
+			unmatched.erase(p1);
+		} else {
+			if(cards.count(p1) &amp;&amp; cards[p1] != C1 &amp;&amp; !matchedCards.count(p1)) {
+				matchableCards.insert(p1);
+				unmatched.erase(p1);
+			} else if(!matchableCards.count(p1)){
+				cards[p1] = C1;
+				unmatched.insert(p1);
+			}
+			if(cards.count(p2) &amp;&amp; cards[p2] != C2 &amp;&amp; !matchedCards.count(p2)) {
+				matchableCards.insert(p2);
+				unmatched.erase(p2);
+			} else if(!matchableCards.count(p2)){
+				cards[p2] = C2;
+				unmatched.insert(p2);
+			}
+		}
+	}
+	
+	if(matchableCards.size() + unmatched.size() + matchedCards.size() == N / 2) {
+		cout &lt;&lt; matchableCards.size() + unmatched.size() &lt;&lt; endl;
+	} else if (matchableCards.size() + matchedCards.size() == N/2 - 1) {
+		cout &lt;&lt; matchableCards.size() + 1 &lt;&lt; endl;
+	} else {
+		cout &lt;&lt; matchableCards.size() &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

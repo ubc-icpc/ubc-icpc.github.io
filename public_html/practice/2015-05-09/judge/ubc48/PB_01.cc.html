@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main() {
+	int n; cin &gt;&gt; n;
+	vector &lt; pair &lt; int, int &gt; &gt; cust(n);
+	vector &lt; int &gt; roll(7);
+	for (int i = 0; i &lt; n; ++i) {
+		int temp; cin &gt;&gt; temp;
+		cust[i] = make_pair(i, temp);
+		++roll[temp];
+	}
+	vector &lt; int &gt; list;
+	for (int i = 0; i &lt; roll.size(); ++i) {
+		if (roll[i] == 1) {
+			list.push_back(i);
+		}
+	}
+
+	if (list.size() == 0) {
+		cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+	}
+	else {
+		sort(list.begin(), list.end());
+		for (int i = 0; i &lt; cust.size(); ++i) {
+			if (cust[i].second == list[list.size() - 1]) {
+				cout &lt;&lt; cust[i].first + 1 &lt;&lt; endl;
+				return 0;
+			}
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

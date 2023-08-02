@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll,ll&gt; pii;
+
+const int MAXN = 65536;
+const ll INF = 0x3f3f3f3f;
+
+////////////////////////////////////////////////////////////////////////////////
+// Range Query Tree (operation=max, works for any associative binary operation)
+////////////////////////////////////////////////////////////////////////////////
+// entries [0...MAXN-1] are stored in a[MAXN..2*MAXN-1], MAXN must be power of 2
+struct RQTree { ll a[2*MAXN]; RQTree() { memset(a, -INF, sizeof a); }
+  // use after manually changing entries in [x..y], costs O(log(MAXN) + y-x)
+  ll update(int x, int y, int i=1, int l=0, int r=MAXN-1) {
+    if (y&lt;l || r&lt;x || l==r) return a[i]; int m = (l+r)/2;
+    return a[i] = max(update(x,y,2*i,l,m), update(x,y,2*i+1,m+1,r)); }
+  void insert(int x, ll v) { a[MAXN+x] = v; update(x,x); }
+  ll query(int x, int y, int i=1, int l=0, int r=MAXN-1) {
+    if (y&lt;l || r&lt;x) return -INF; if (x&lt;=l &amp;&amp; r&lt;=y) return a[i]; int m = (l+r)/2;
+    return max(query(x,y,2*i,l,m), query(x,y,2*i+1,m+1,r)); }
+};
+
+int main() {
+  ios::sync_with_stdio(0);
+  //cin.tie(0);
+  int n, m, x, y;
+  while (cin &gt;&gt; n) {
+    if (!n)
+      break;
+    RQTree rq;
+    map&lt;ll,pii&gt; m;
+    for (int i = 0; i &lt; n; i++) {
+      cin &gt;&gt; x &gt;&gt; y;
+      m[x] = make_pair(y,i);
+      rq.insert(i,y);
+    }
+    int q; cin &gt;&gt; q;
+    while (q--) {
+      //cout &lt;&lt; &quot;at &quot; &lt;&lt; q &lt;&lt; endl;
+      cin &gt;&gt; y &gt;&gt; x;
+      if (!m.count(y) &amp;&amp; !m.count(x))
+        cout &lt;&lt; &quot;maybe\n&quot;;
+      else if (!m.count(y) &amp;&amp; m.count(x)) {
+        if (m[x].first == 1) {
+          cout &lt;&lt; &quot;false\n&quot;;
+          continue;
+        }
+        if (rq.query(m.lower_bound(y)-&gt;second.second,m.find(x)-&gt;second.second-1) &gt;= m[x].first)
+          cout &lt;&lt; &quot;false\n&quot;;
+        else
+          cout &lt;&lt; &quot;maybe\n&quot;;
+      }
+      else if (m.count(y) &amp;&amp; !m.count(x)) {
+        if (m[y].first == 1) {
+          cout &lt;&lt; &quot;false\n&quot;;
+          continue;
+        }
+        if (rq.query(m.upper_bound(y)-&gt;second.second,m.lower_bound(x)-&gt;second.second-1) &gt;= m[y].first)
+          cout &lt;&lt; &quot;false\n&quot;;
+        else
+          cout &lt;&lt; &quot;maybe\n&quot;;
+      }
+      else {
+        if (m[x].first &gt; m[y].first) {
+          cout &lt;&lt; &quot;false\n&quot;;
+          continue;
+        }
+        bool ok = (rq.query(m.find(y)-&gt;second.second+1,m.find(x)-&gt;second.second-1) &lt; m[x].first);
+        bool maybe = (m.find(x)-&gt;second.second-m.find(y)-&gt;second.second != m.find(x)-&gt;first-m.find(y)-&gt;first);
+        if (ok &amp;&amp; !maybe)
+          cout &lt;&lt; &quot;true\n&quot;;
+        else if (ok &amp;&amp; maybe)
+          cout &lt;&lt; &quot;maybe\n&quot;;
+        else
+          cout &lt;&lt; &quot;false\n&quot;;
+      }
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int desktop_num;
+int main() {
+  int n, m;
+  int r, c, h, w, cr, cc;
+  class Window {
+   public:
+    int r, c, w, h;
+    Window(int r, int c, int w, int h) : r(r), c(c), w(w), h(h) {}
+    bool inWindow(int r, int c) {
+      return r &gt;= this-&gt;r &amp;&amp; c &gt;= this-&gt;c &amp;&amp; r &lt; this-&gt;r + this-&gt;h &amp;&amp; c &lt; this-&gt;c + this-&gt;w;
+    }
+  };
+
+  while (true) {
+    cin &gt;&gt; n;
+    if (n == 0) {
+      break;
+    }
+    cout &lt;&lt; &quot;Desktop &quot; &lt;&lt; ++desktop_num &lt;&lt; &quot;:\n&quot;;
+    vector&lt;Window*&gt; windows;
+    while (n--) {
+      cin &gt;&gt; r &gt;&gt; c &gt;&gt; w &gt;&gt; h;
+      windows.push_back(new Window(r, c, w, h));
+    }
+    cin &gt;&gt; m;
+    while (m--) {
+      cin &gt;&gt; cr &gt;&gt; cc;
+      int atWindow = 0;
+      for (int i = 0; i &lt; windows.size(); i++) {
+        if (windows[i]-&gt;inWindow(cr, cc)) {
+          atWindow = i + 1;
+        }
+      }
+      if (atWindow == 0)
+        cout &lt;&lt; &quot;background\n&quot;;
+      else
+        cout &lt;&lt; &quot;window &quot; &lt;&lt; atWindow &lt;&lt; '\n';
+    }
+
+  }
+
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

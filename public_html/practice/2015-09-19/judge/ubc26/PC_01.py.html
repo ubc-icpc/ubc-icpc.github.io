@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+import itertools as it
+
+def f(ss):
+    m = len(ss)
+    if 0 == m:
+        pass
+    elif 2 == m and ss[1] == 'e':
+        yield 'e' + ss[0]
+    elif ss.startswith('rge'):
+        yield 'che' + ss[3:]
+        for z in f(ss[1:]):
+            yield ss[0] + z
+    elif ss.startswith('re'):
+        yield 'rec' + ss[2:]
+        for z in f(ss[1:]):
+            yield ss[0] + z
+    elif ss.startswith('ce'):
+        yield 'ec' + ss[2:]
+        for z in f(ss[1:]):
+            yield ss[0] + z
+    else:
+        for z in f(ss[1:]):
+            yield ss[0] + z
+
+
+def g(ss):
+    m = len(ss)
+    if 0 == m:
+        pass
+    elif 2 == m and ss[0] == 'e':
+        yield ss[1] + 'e'
+    elif ss.startswith('che'):
+        yield 'rge' + ss[3:]
+        for z in g(ss[1:]):
+            yield ss[0] + z
+    elif ss.startswith('rec'):
+        yield 're' + ss[3:]
+        for z in g(ss[1:]):
+            yield ss[0] + z
+    elif ss.startswith('ec'):
+        yield 'ce' + ss[2:]
+        for z in g(ss[1:]):
+            yield ss[0] + z
+    else:
+        for z in g(ss[1:]):
+            yield ss[0] + z
+
+def cm(f, xs):
+    return it.chain.from_iterable(it.imap(f, xs))
+
+
+def explode(xs):
+    while True:
+        ys = it.ifilter((lambda x:3 &lt;= len(x) &lt;= 12),
+                        cm(g, cm(f, xs)))
+        ys = sorted(list(set(ys)))
+        if ys == xs:
+            return ys
+        else:
+            xs = ys
+
+
+i=1
+for l in sys.stdin:
+    l = l[:-1]
+    print &quot;Case %d:&quot; % (i,)
+    print &quot;\n&quot;.join(list(explode([l])))
+    print
+    i+=1
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

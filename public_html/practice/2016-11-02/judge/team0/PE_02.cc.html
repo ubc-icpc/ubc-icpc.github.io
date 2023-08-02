@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+//min size of largest edge
+//binary search
+
+struct edge {
+	ll v, w;
+};
+
+ll n, m, X, D;
+const int MAXN = 10005;
+vector&lt;edge&gt; g[MAXN];
+ll dist[MAXN];
+struct comp {
+	bool operator()(int u, int v) const {
+		if (dist[u] == dist[v]) return u &lt; v;
+		return dist[u] &lt; dist[v];
+	}
+};
+
+const ll INF = 0x3f3f3f3f3f3f3f3fLL;
+ll dijkstra(int s, int t, ll M) { 
+	memset(dist, 0x3f, sizeof dist);
+	dist[s] = 0;
+	set&lt;int, comp&gt; q;
+	q.insert(s);
+	while (!q.empty()) {
+		int u = *q.begin(); q.erase(q.begin());
+		if (u == t) break;
+		for (auto e : g[u]) {
+			if (e.w &gt; M) continue;
+			if (dist[u] + e.w &lt; dist[e.v]) {
+				q.erase(e.v);
+				dist[e.v] = dist[u] + e.w;
+				q.insert(e.v);
+			}
+		}
+	}
+	return dist[t];
+}
+
+ll good(ll M) {
+	return dijkstra(1, n, M) &lt;= (100+X)*D / 100;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin &gt;&gt; n &gt;&gt; m &gt;&gt; X;
+	for (int i = 0; i &lt; m; i++) {
+		ll x, y, w; cin &gt;&gt; x &gt;&gt; y &gt;&gt; w;
+		g[x].push_back({y, w});
+		g[y].push_back({x, w});
+	}
+	
+	D = dijkstra(1, n, INF);
+	ll l = 1, r = 1000000000L;
+	while (r-l &gt; 1) {
+		ll m = (l+r)/2;
+		if (good(m)) r = m;
+		else l = m+1;
+	}
+	if (good(l)) r = l;
+	cout &lt;&lt; r &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

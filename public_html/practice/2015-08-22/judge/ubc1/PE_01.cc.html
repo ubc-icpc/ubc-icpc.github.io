@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int val[105][105], memo[105][105], lx, ly, rx, ry;
+int dp(int i, int j) {
+    if (i &lt; lx || j &lt; ly) return -1e9;
+    if (i == lx &amp;&amp; j == ly) return 0;
+    if (memo[i][j] != -1) return memo[i][j];
+    return memo[i][j] = val[i][j] + max(dp(i-1, j), dp(i, j-1));
+}
+
+int main() {
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        memset(val, 0, sizeof val);
+        int n, m; cin &gt;&gt; n &gt;&gt; m;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; m; j++) {
+                string s; cin &gt;&gt; s;
+                if (s[0] == 'P') {
+                    lx = i, ly = j;
+                } else if (s[0] == 'E') {
+                    rx = i, ry = j;
+                } else {
+                    stringstream ss(s); ss &gt;&gt; val[i][j];
+                }
+            }
+        }
+        
+        memset(memo, -1, sizeof memo);
+        cout &lt;&lt; &quot;Game Board #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot; &lt;&lt; dp(rx, ry) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

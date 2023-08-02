@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+a=list(map(int,raw_input().split()))
+N=a[0]
+M=a[1]
+P=a[2]
+Visited=[False]*M
+H=[-1]*M #H[i] is the youngest who hates channel i
+L=[-1]*N #L[i] is th channel i loves
+for i in range (0,N):
+    a=list(map(int,raw_input().split()))
+    L[i]=a[0]
+    if H[a[1]-1]==-1:
+        H[a[1]-1]=i
+count=0
+while True:
+    if H[P-1]==-1:
+        print(count)
+        break
+    P=L[H[P-1]]
+    count=count+1
+    if Visited[P-1]:
+        print(-1)
+        break
+    Visited[P-1]=True
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

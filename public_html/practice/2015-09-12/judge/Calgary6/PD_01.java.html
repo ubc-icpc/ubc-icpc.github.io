@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Lemonade {
+	public static final double NUM_OZ_IN_SUGAR_BAG = 16 * 5.0;
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		int numTests = Integer.parseInt(s.nextLine());
+		
+		for (int i = 0; i &lt; numTests; i++) {
+			int numDays = s.nextInt();
+			int lemonsPerCup = s.nextInt();
+			int sugarOzPerCup = s.nextInt();
+			
+			ArrayList&lt;Integer&gt; lemonPrices = new ArrayList&lt;Integer&gt;();
+			ArrayList&lt;Integer&gt; sugarBagPrices = new ArrayList&lt;Integer&gt;();
+			ArrayList&lt;Integer&gt; numCupsByDay = new ArrayList&lt;Integer&gt;();
+			for (int j = 0; j &lt; numDays; j++) {
+				numCupsByDay.add(s.nextInt());
+				lemonPrices.add(s.nextInt());
+				sugarBagPrices.add(s.nextInt());
+			}
+			
+			int minCost = 0;
+			
+			// Set optimal prices per day
+			ArrayList&lt;Integer&gt; optimalLemonPrices = new ArrayList&lt;Integer&gt;();
+			ArrayList&lt;Integer&gt; optimalSugarBagPrices = new ArrayList&lt;Integer&gt;();
+			int bestLemonPrice = Integer.MAX_VALUE;
+			int bestSugarBagPrice = Integer.MAX_VALUE;
+			for (int j = 0; j &lt; lemonPrices.size(); j++) {
+				if (lemonPrices.get(j) &lt; bestLemonPrice) {
+					bestLemonPrice = lemonPrices.get(j);
+				}
+				optimalLemonPrices.add(bestLemonPrice);
+			}
+			for (int j = 0; j &lt; sugarBagPrices.size(); j++) {
+				if (sugarBagPrices.get(j) &lt; bestSugarBagPrice) {
+					bestSugarBagPrice = sugarBagPrices.get(j);
+				}
+				optimalSugarBagPrices.add(bestSugarBagPrice);
+			}
+			
+			minCost = minLemonCost(optimalLemonPrices, numCupsByDay, lemonsPerCup) + minSugarCost(optimalSugarBagPrices, numCupsByDay, sugarOzPerCup);
+			
+			System.out.println(minCost);
+		}
+		s.close();
+	}
+	
+	public static int minLemonCost(ArrayList&lt;Integer&gt; lemonPrices, ArrayList&lt;Integer&gt; cupsByDay, int lemonsPerCup) {
+		int cost = 0;
+		
+		for (int i = 0; i &lt; lemonPrices.size(); i++) {
+			cost += lemonPrices.get(i) * lemonsPerCup * cupsByDay.get(i);
+		}
+		
+		return cost;
+	}
+
+	public static int minSugarCost(ArrayList&lt;Integer&gt; sugarPrices, ArrayList&lt;Integer&gt; cupsByDay, int sugarOzPerCup) {
+		int cost = 0, sugarOzInventory = 0;
+		
+		for (int i = 0; i &lt; sugarPrices.size(); i++) {
+			int sugarOzNeededToday = cupsByDay.get(i) * sugarOzPerCup;
+			int sugarOzMustBuyToday = (sugarOzNeededToday - sugarOzInventory) &gt; 0 ? (sugarOzNeededToday - sugarOzInventory) : 0;
+			int sugarBagsMustBuyToday = (int) Math.ceil(sugarOzMustBuyToday / NUM_OZ_IN_SUGAR_BAG);
+			cost += sugarBagsMustBuyToday * sugarPrices.get(i);
+			sugarOzInventory += sugarBagsMustBuyToday * NUM_OZ_IN_SUGAR_BAG;
+			sugarOzInventory -= sugarOzNeededToday;
+		}
+		
+		return cost;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll a[2005][2005], b[2005][2005];
+int main() {
+	int n, m; cin &gt;&gt; n &gt;&gt; m;
+	
+	for (int i = 1; i &lt;= n; i++) {
+		for (int j = 1; j &lt;= m; j++) {
+			cin &gt;&gt; a[i][j];
+		}
+	}
+	
+	if (m == 1) {
+		for (int i = 1; i &lt;= n; i++) {
+			b[i][1] = a[i][1];
+			if (b[i][1]) continue;
+			b[i][1] = b[i-1][1] + 1;
+		}
+		
+		ll val = 0;
+		bool good = true;
+		for (int i = 1; i &lt;= n; i++) {
+			val += b[i][1];
+			if (b[i][1] &lt;= b[i-1][1]) {
+				good = false;
+			}
+		}
+		if (good) cout &lt;&lt; val &lt;&lt; endl;
+		else cout &lt;&lt; -1 &lt;&lt; endl;
+		return 0;
+	} else if (n == 1) {
+		for (int i = 1; i &lt;= m; i++) {
+			b[1][i] = a[1][i];
+			if (b[1][i]) continue;
+			b[1][i] = b[1][i-1] + 1;
+		}
+		
+		ll val = 0;
+		bool good = true;
+		for (int i = 1; i &lt;= m; i++) {
+			val += b[1][i];
+			if (b[1][i] &lt;= b[1][i-1]) good = false;
+		}
+		
+		if (good) cout &lt;&lt; val &lt;&lt; endl;
+		else cout &lt;&lt; -1 &lt;&lt; endl;
+		return 0;
+	}
+	
+	ll ans = 1000000000000000LL;
+	for (int k = 0; k &lt; 2; k++) {
+		for (int i = 1; i &lt;= n; i++) {
+			for (int j = 1; j &lt;= m; j++) {
+				b[i][j] = a[i][j];
+				if (b[i][j]) continue;
+				b[i][j] = max(b[i-1][j]+1, b[i][j-1]+1);
+				b[i][j] += ((i+k)%2 - b[i][j]%2 + 2)%2;
+			}
+		}
+		
+		ll val = 0;
+		bool good = true;
+		for (int i = 1; i &lt;= n; i++) {
+			for (int j = 1; j &lt;= m; j++) {
+				val += b[i][j];
+				if (b[i][j]%2 != (i+k)%2 || b[i-1][j] &gt;= b[i][j] || b[i][j-1] &gt;= b[i][j]) {
+					good = false;
+				}
+			}
+		}
+		
+		if (good) ans = min(ans, val);
+	}
+	
+	for (int k = 0; k &lt; 2; k++) {
+		for (int i = 1; i &lt;= n; i++) {
+			for (int j = 1; j &lt;= m; j++) {
+				b[i][j] = a[i][j];
+				if (b[i][j]) continue;
+				b[i][j] = max(b[i-1][j]+1, b[i][j-1]+1);
+				b[i][j] += ((j+k)%2 - b[i][j]%2 + 2)%2;
+			}
+		}
+		
+		ll val = 0;
+		bool good = true;
+		for (int i = 1; i &lt;= n; i++) {
+			for (int j = 1; j &lt;= m; j++) {
+				val += b[i][j];
+				if (b[i][j]%2 != (j+k)%2 || b[i-1][j] &gt;= b[i][j] || b[i][j-1] &gt;= b[i][j]) {
+					good = false;
+				}
+			}
+		}
+		
+		if (good) ans = min(ans, val);
+	}
+	
+	if (ans == 1000000000000000LL) {
+		cout &lt;&lt; -1 &lt;&lt; endl;
+	} else {
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+	int r,c;cin&gt;&gt;r&gt;&gt;c;
+	vector&lt;vector&lt;char&gt;&gt; map(r, vector&lt;char&gt;(c));
+	vector&lt;vector&lt;bool&gt;&gt; visited(r, vector&lt;bool&gt;(c, 0));
+	int tr = -1, tc = -1;
+	for (int i = 0; i &lt; r; i++) {
+		for (int j = 0; j &lt; c; j++) {
+			char c;cin&gt;&gt;c;
+			map[i][j] = c;
+			if (c == 'T') {
+				tr = i; tc = j;
+			}
+		}
+	}
+
+	int cr = 0, cc = 0;
+	int t = 0;
+	while (true) {
+		if (cr &lt; 0 || cr &gt;= r || cc &lt; 0 || cc &gt;= c) {
+			cout &lt;&lt; &quot;Out&quot; &lt;&lt; endl;
+			return 0;
+		}
+		if (visited[cr][cc]) {
+			cout &lt;&lt; &quot;Lost&quot; &lt;&lt; endl;
+			return 0;
+		}
+
+		visited[cr][cc] = true;
+
+		switch(map[cr][cc]) {
+			case 'T':
+				cout &lt;&lt; t &lt;&lt; endl;
+				return 0;
+			case 'N':
+				cr--;
+				break;
+			case 'S':
+				cr++;
+				break;
+			case 'W':
+				cc--;
+				break;
+			case 'E':
+				cc++;
+				break;
+		}
+
+		t++;
+	}
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

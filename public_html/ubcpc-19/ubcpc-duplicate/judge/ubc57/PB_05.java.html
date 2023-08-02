@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class C {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int n = sc.nextInt();
+        String[] names = new String[n];
+        int[][] stats = new int[n][3];
+
+        for(int i = 0 ; i &lt; n; i++) {
+            names[i] = sc.next();
+            stats[i][0] = sc.nextInt();
+            stats[i][1] = sc.nextInt();
+            stats[i][2] = sc.nextInt();
+        }
+        int first;
+        boolean first1;
+        int second;
+        boolean second2;
+        int third;
+        boolean third3;
+        int res = 0;
+        String result = &quot;&quot;;
+
+        StringBuilder str = new StringBuilder();
+
+        for(int i = 0; i &lt; n - 2; i++) {
+            for (int j = i+1; j &lt; n -1; j ++) {
+                for(int k = j+1; k &lt; n; k++) {
+                    first = i;
+                    second = j;
+                    third = k;
+                    first1 = false;
+                    second2 = false;
+                    third3 = false;
+
+
+                    double fight11 = 0;
+                    double test11 = (double)Math.max(0, stats[j][1] - stats[i][2]);
+
+                    if(test11 &gt; 0) {
+
+                        fight11 = Math.ceil((double)stats[i][0] / (double)(stats[j][1] - stats[i][2]));
+                    }
+                    if (stats[j][1] == stats[i][2] || stats[j][1] &lt; stats[i][2]) {
+                        fight11 = Integer.MAX_VALUE;
+                    }
+                    double fight12 = 0;
+                    double test12 = Math.max(0, stats[i][1] - stats[j][2]);
+                    if(test12 &gt; 0) {
+                        fight12 = Math.ceil((double)stats[j][0] / (double)(stats[i][1] - stats[j][2]));
+                    }
+                    if (stats[i][1] == stats[j][2] || stats[i][1] &lt; stats[j][2]) {
+                        fight12 = Integer.MAX_VALUE;
+                    }
+
+                    double fight21 = 0;
+                    double test21 = Math.max(0, stats[k][1] - stats[j][2]);
+                    if(test21 &gt; 0) {
+                        fight21 = Math.ceil((double)stats[j][0] / (double)(stats[k][1] - stats[j][2]));
+                    }
+                    if (stats[k][1] == stats[j][2] || stats[k][1] &lt; stats[j][2]) {
+                        fight21 = Integer.MAX_VALUE;
+                    }
+
+                    double fight22 = 0;
+                    double test22 = Math.max(0, stats[j][1] - stats[k][2]);
+                    if(test22 &gt; 0) {
+                        fight22  = Math.ceil((double)stats[k][0] / (double)(stats[j][1] - stats[k][2]));
+                    }
+                    if (stats[j][1] == stats[k][2] || stats[j][1] &lt; stats[k][2]) {
+                        fight22 = Integer.MAX_VALUE;
+                    }
+
+                    double fight31 = Math.max(0, stats[k][1] - stats[i][2]);
+                    if(fight31 &gt; 0) {
+                        fight31 = Math.ceil((double)stats[i][0] / (double)(stats[k][1] - stats[i][2]));
+                    }
+                    if (stats[k][1] == stats[i][2] || stats[k][1] &lt; stats[i][2]) {
+                        fight31 = Integer.MAX_VALUE;
+                    }
+                    double fight32 = Math.max(0, stats[i][1] - stats[k][2]);
+                    if(fight32 &gt; 0) {
+                        fight32 = Math.ceil((double)stats[k][0] / (double)(stats[i][1] - stats[k][2]));
+                    }
+                    if (stats[i][1] == stats[k][2] || stats[i][1] &lt; stats[k][2]) {
+                        fight32 = Integer.MAX_VALUE;
+                    }
+
+                    if(((fight11 &gt; fight12) &amp;&amp; (fight11 != fight12)) || ((fight31 &gt; fight32) &amp;&amp; (fight31 != fight32))) {
+                        first1 = true;
+                    }
+                    if(((fight21 &gt; fight22) &amp;&amp; (fight21 != fight22)) || ((fight12 &gt; fight11) &amp;&amp; (fight12 != fight11))) {
+                        second2 = true;
+                    }
+                    if(((fight22 != fight21) &amp;&amp; (fight22 &gt; fight21)) || ((fight32 &gt; fight31) &amp;&amp; (fight32 != fight31))) {
+                        third3 = true;
+                    }
+                    if (first1 == true &amp;&amp; second2 == true&amp;&amp; third3 == true) {
+                        res++;
+                        str.append(names[first] + &quot; &quot; + names[second] + &quot; &quot; + names[third] + &quot;\n&quot;);
+                        //System.out.println(fight11 + &quot; &quot; + fight12 + &quot; &quot; + fight21 + &quot; &quot; + fight22 + &quot; &quot; + fight31 + &quot; &quot; +fight32);
+                    }
+                }
+            }
+        }
+        System.out.println(res);
+        System.out.println(str);
+    }
+}
+</code>
+</pre>
+</body>
+</html>

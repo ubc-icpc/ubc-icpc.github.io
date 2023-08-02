@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;iomanip&gt;
+
+using namespace std;
+int n,k;
+int p[100000+5];
+
+bool ok(long long m) {
+    int i=0, at=p[0],ku=0;
+    while(i&lt;n) {
+        while(i&lt;n &amp;&amp; p[i]&lt;at+m) i++;
+        at=p[i];
+        ku++;
+    }
+    return ku&lt;=k;
+}
+int main(void) {
+    int T;cin&gt;&gt;T;
+    while(T--) {
+        cin&gt;&gt;n&gt;&gt;k;
+        for(int i=0; i&lt;n; i++) {
+            cin&gt;&gt;p[i];
+            p[i]*=2;
+        }
+        
+        
+        long long l=0,r=10e9,m=r/2;
+        while(r-l&gt;1) {
+            if(ok(m))
+                r=m;
+            else
+                l=m;
+            m=(l+r)/2;
+        }
+        cout &lt;&lt; fixed &lt;&lt; setprecision(1) &lt;&lt; (double)m/4 &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class a {
+	public static void main(String[] args) {
+		Scanner stdin = new Scanner(System.in);
+		
+		char ch = stdin.next().charAt(0);
+		stdin.nextLine();
+		int s = stdin.nextInt();
+		
+		if(ch == 'D')
+			s = (0-s);
+		
+		stdin.nextLine();
+		
+		String str = stdin.nextLine();
+		
+		String res = &quot;&quot;;
+		
+		for(int i = 0; i &lt; str.length(); i++) {
+			int num = ((int)str.charAt(i) + s);
+			
+			if(num &lt;= (int)'z' &amp;&amp; num &gt;= 'a')
+				res = res + (char)num;
+			
+			else if(num &gt;= 'z'){
+				num -= 26;
+				res = res + (char)num;
+			}
+			
+			else {
+				num += 26;
+				res = res + (char)num;
+			}
+			
+		}
+		System.out.println(res);
+		stdin.close();
+	}
+}
+</code>
+</pre>
+</body>
+</html>

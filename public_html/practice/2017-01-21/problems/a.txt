@@ -1,0 +1,25 @@
+Farmer John is arranging his N cows in a line to take a photo (1<= N <= 100,000). The height of the ith cow in sequence is h_i, and the heights of all cows are distinct.
+As with all photographs of his cows, FJ wants this one to come out looking as nice as possible. He decides that cow i looks "unbalanced" if Li and Ri differ by more than factor of 2, where Li and Ri are the number of cows taller than i on her left and right, respectively. That is, i is unbalanced if the larger of Li and Ri is strictly more than twice the smaller of these two numbers. FJ is hoping that not too many of his cows are unbalanced.
+
+Please help FJ compute the total number of unbalanced cows.
+
+INPUT FORMAT:
+The first line of input contains N. The next N lines contain h_1...h_N, each a nonnegative integer at most 1,000,000,000.
+
+OUTPUT FORMAT:
+Please output a count of the number of cows that are unbalanced.
+
+SAMPLE INPUT:
+7
+34
+6
+23
+0
+5
+99
+2
+
+SAMPLE OUTPUT:
+3
+
+In this example, the cows of heights 34, 5, and 2 are unbalanced.

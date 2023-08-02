@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main() {
+	ios::sync_with_stdio(0);
+	string inp; cin &gt;&gt; inp;
+	int rank = 25;
+	int stars = 0;
+	int wins = 0;
+	for (char&amp; c : inp) {
+		if (c == 'W') {
+			wins++;
+			stars++;
+		} else {
+			wins = 0;
+			if (rank &lt;= 20) stars--;
+		}
+		if (wins &gt;= 3 &amp;&amp; rank &gt;= 6) {
+			stars++;
+		}
+		if (rank &gt;= 21) {
+			if (stars &gt; 2) {
+				rank--;
+				stars -= 2;
+			}
+		} else if (rank &gt;= 16) {
+			if (stars &gt; 3) {
+				rank--;
+				stars -= 3;
+			} else if (stars &lt; 0) {
+				if (rank == 20) {
+					stars = 0;
+				} else {
+					rank++;
+					stars = 2;
+				}
+			}
+		} else if (rank &gt;= 11) {
+			if (stars &gt; 4) {
+				rank--;
+				stars -= 4;
+			} else if (stars &lt; 0) {
+				rank++;
+				stars = 3;
+				if (rank == 16) stars = 2;
+			}
+		} else if (rank &gt;= 1) {
+			if (stars &gt; 5) {
+				rank--;
+				stars -= 5;
+			} else if (stars &lt; 0) {
+				rank++;
+				stars = 4;
+				if (rank == 11) stars = 3;
+			}
+		}
+		if (rank == 0) break;
+	}
+	if (rank == 0) {
+		cout &lt;&lt; &quot;Legend&quot; &lt;&lt; endl;
+	} else {
+		cout &lt;&lt; rank &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

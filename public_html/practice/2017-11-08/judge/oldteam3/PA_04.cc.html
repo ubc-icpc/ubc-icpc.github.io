@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+#define N 10
+int g[6] = {1, 2,3,3,4,10};
+int e[7] = {1, 2, 2, 2, 3, 5, 11};
+
+int main() {
+	int T, Tn;
+	cin&gt;&gt;T;
+	Tn = 1;
+	
+	while(Tn &lt;= T) {
+		int gg= 0, ee = 0, x;
+		for(int i = 0 ;i &lt; 6;++i) {
+			cin&gt;&gt;x;
+			gg += g[i] * x;
+		}
+		for(int i=0; i&lt; 7; ++i) {
+			cin&gt;&gt;x;
+			ee += e[i] * x;
+		}
+		cout &lt;&lt; &quot;Battle &quot; &lt;&lt; Tn++ &lt;&lt; &quot;: &quot;;
+		if(gg &lt; ee) {
+			cout &lt;&lt; &quot;Evil eradicates all trace of Good&quot; &lt;&lt; endl;
+		}else if (gg == ee ) {
+			cout &lt;&lt; &quot;No victor on this battle field&quot; &lt;&lt; endl;
+
+		} else {
+			cout &lt;&lt; &quot;Good triumphs over Evil&quot; &lt;&lt; endl;
+		}		
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(0);
+    int n; cin &gt;&gt; n;
+    set&lt;int&gt; uniq;
+    map&lt;int, int&gt; cnt;
+    
+    for (int i = 0; i &lt; n; i++) {
+        int x; cin &gt;&gt; x;
+        uniq.insert(x);
+        cnt[x]++;
+    }
+    
+    bool slavko = true;
+    while (uniq.size() &gt; 2) {
+        auto it = --uniq.end();
+        int x0 = *uniq.begin(), x1 = *it;
+        int v0 = *(++uniq.begin()), v1 = *(--it);
+        if (cnt[x0] &lt; cnt[x1]) {
+            cnt[v0] += cnt[x0];
+            cnt[v1] += cnt[x0];
+            cnt[x1] -= cnt[x0];
+            cnt[x0] = 0;
+            
+            if (uniq.size() == 3) {
+                slavko = false;
+            }
+            
+            uniq.erase(x0);
+        } else if (cnt[x0] &gt; cnt[x1]) {
+            cnt[v1] += cnt[x1];
+            cnt[v0] += cnt[x1];
+            cnt[x0] -= cnt[x1];
+            cnt[x1] = 0;
+            
+            uniq.erase(x1);
+        } else {
+            if (uniq.size() == 4) {
+                uniq.erase(x0);
+                uniq.erase(x1);
+                break;
+            } else if (uniq.size() == 3) {
+                uniq.erase(x0);
+                slavko = false;
+                break;
+            } else {
+                uniq.erase(x0);
+                uniq.erase(x1);
+                
+                cnt[v0] += cnt[x0];
+                cnt[v1] += cnt[x1];
+                
+                cnt[x0] = cnt[x1] = 0;
+            }
+        }
+    }
+    
+    cout &lt;&lt; (slavko ? &quot;Slavko&quot; : &quot;Mirko&quot;) &lt;&lt; endl;
+    cout &lt;&lt; *uniq.begin() &lt;&lt; &quot; &quot; &lt;&lt; *(--uniq.end()) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

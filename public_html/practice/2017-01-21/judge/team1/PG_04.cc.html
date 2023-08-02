@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;ll, int&gt; pli;
+const int N = 100005;
+const int MAXN = N*2;
+
+struct BITree { ll freq[MAXN+1]; BITree() { memset(freq, 0, sizeof freq); }
+  void insert(int x, ll cnt=1) {
+    for ( ; x &lt;= MAXN; x += x &amp; -x) freq[x] += cnt;
+  }
+  ll query(int x) { ll sum = 0;
+    for ( ; x; x -= x &amp; -x) sum += freq[x];
+    return sum; }
+  ll query_range(int xl, int xr) { return query(xr) - query(xl-1); }
+};
+BITree tree;
+
+vector&lt;int&gt; adj[N];
+vector&lt;pli&gt; peep;
+
+int nn = 2;
+int first[N], last[N];
+int euler(int u) {
+    first[u] = nn++;
+    for (int v : adj[u]) {
+        euler(v);
+    }
+    last[u] = nn++;
+}
+
+int ans[N];
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        ll p; cin &gt;&gt; p;
+        peep.push_back({p, i});
+    }
+    sort(peep.begin(), peep.end());
+
+    for (int i = 1; i &lt; n; i++) {
+        int p; cin &gt;&gt; p; p--;
+        adj[p].push_back(i);
+    }
+    euler(0);
+
+    for (int i = n-1; i &gt;= 0; i--) {
+        int id = peep[i].second;
+        ans[id] = tree.query_range(first[id], last[id])/2;
+        tree.insert(first[id]);
+        tree.insert(last[id]);
+    }
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; ans[i] &lt;&lt; '\n';
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

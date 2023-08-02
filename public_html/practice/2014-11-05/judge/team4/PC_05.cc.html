@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt; //abs
+#include &lt;fstream&gt;
+#include &lt;numeric&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+
+typedef long long int ll;
+const long double EPS = 1e-9;
+
+using namespace std;
+
+map&lt;char, ll&gt; M;
+vector&lt;char&gt; A;
+
+ll fact(ll n){
+	if(n==0){
+		return 1;
+	}else{
+		return n*fact(n-1);
+	}
+}
+
+ll comb(ll n){ //returns number of combinations;
+	ll a=fact(n);
+	for(map&lt;char, ll&gt;::iterator it = M.begin(); it!=M.end(); it++){
+		if(it-&gt;second!=0){
+			a/=fact(it-&gt;second);
+		}
+	}
+	return a;
+}
+
+bool done;
+void gogo(ll id, ll rem){ //at the end, A should contain the requested anagram
+	// cout &lt;&lt; &quot;called gogo: &quot; &lt;&lt; id &lt;&lt; &quot; &quot; &lt;&lt; rem &lt;&lt; endl;
+	ll count = 0;
+	if(rem==0){
+		done = true;
+		return;
+	}
+	for(map&lt;char, ll&gt;::iterator it = M.begin(); it!=M.end(); it++){
+		if(it-&gt;second&gt;0){
+			it-&gt;second-=1;
+			count += comb(rem-1);
+			// cout &lt;&lt; &quot;count is &quot; &lt;&lt; count &lt;&lt; endl;
+			if(id&lt;=count){ //if id is within this set of combintations, then pursue the sequence.
+				A.push_back(it-&gt;first);
+				gogo(id-count + comb(rem-1), rem-1);
+				if(done){
+				return;
+				}
+			}
+			it-&gt;second+=1;
+		}
+	}
+	// cout &lt;&lt; &quot;Error, id is greater than all combinations&quot; &lt;&lt; endl;
+}
+
+int main(){
+ll n;
+string w;
+while(cin&gt;&gt;w &amp;&amp; w!=&quot;#&quot; ){
+if(!(cin &gt;&gt; n) || n==0){
+	break;
+}
+A.clear();
+M.clear();
+done = false;
+//populate map;
+for(int i=0; i&lt;w.length(); i++){
+	M[w[i]]++;
+}
+gogo(n, w.length());
+
+for(int i=0; i&lt;A.size(); i++){
+	cout &lt;&lt; A[i]; 
+}
+cout &lt;&lt; endl;
+}
+
+
+
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

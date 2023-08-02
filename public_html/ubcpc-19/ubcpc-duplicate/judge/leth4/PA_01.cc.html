@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define debug(a) cerr &lt;&lt; #a &lt;&lt; &quot; = &quot; &lt;&lt; (a) &lt;&lt; endl;
+#define get(t, i) get&lt;(i)&gt;((t))
+#define fst first
+#define snd second
+#define all(X) begin(X), end(X)
+
+template&lt;typename T&gt; ostream&amp; operator&lt;&lt;(ostream&amp; o, const vector&lt;T&gt;&amp; v) {
+  o &lt;&lt; '['; int b = 0; for (const auto&amp; a : v) o &lt;&lt; (b++ ? &quot;, &quot; : &quot;&quot;) &lt;&lt; a; o &lt;&lt; ']'; return o;
+}
+
+template&lt;typename T, typename U&gt; ostream&amp; operator&lt;&lt;(ostream&amp; o, const pair&lt;T, U&gt;&amp; p) {
+  o &lt;&lt; '(' &lt;&lt; p.fst &lt;&lt; &quot;, &quot; &lt;&lt; p.snd &lt;&lt; ')'; return o;
+}
+
+template&lt;typename T&gt; ostream&amp; operator&lt;&lt;(ostream&amp; o, const set&lt;T&gt;&amp; s) {
+  o &lt;&lt; '{'; int b = 0; for (auto&amp; e : s) o &lt;&lt; (b++ ? &quot;, &quot; : &quot;&quot;) &lt;&lt; e; o &lt;&lt; '}'; return o;
+}
+
+int main() {
+  ios::sync_with_stdio(0); cin.tie(0);
+  int k, x;
+  char op;
+  string s, ans;
+  cin &gt;&gt; op &gt;&gt; k &gt;&gt; s;
+  int n = s.size();
+  ans = s;
+  if (op == 'E') {
+    for (int i = 0; i &lt; n; i++) {
+      x = s[i] - 'a';
+      x += k;
+      x %= 26;
+      ans[i] = 'a' + x;
+    }
+  } else {
+    for (int i = 0; i &lt; n; i++) {
+      x = s[i] - 'a';
+      x -= k;
+      x += 26;
+      x %= 26;
+      ans[i] = 'a' + x;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+}
+
+</code>
+</pre>
+</body>
+</html>

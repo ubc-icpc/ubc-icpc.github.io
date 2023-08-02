@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+
+public class B {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		int N = Integer.parseInt(s.nextLine());
+		ArrayList&lt;ArrayList&lt;String&gt;&gt; names = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();
+		// names.get(0)
+		names.add(new ArrayList&lt;String&gt;());
+		// names.get(1)
+		names.add(new ArrayList&lt;String&gt;());
+		
+		String line = s.nextLine();
+		Scanner l = new Scanner(line);
+		while (l.hasNext()) {
+			names.get(0).add(l.next());
+		}
+		line = s.nextLine();
+		l = new Scanner(line);
+		while (l.hasNext()) {
+			names.get(1).add(l.next());
+		}
+		s.close();
+		
+		for (int i = 0; i &lt; names.get(0).size(); i++) {
+			if (names.get(0).get(i).equals(names.get(1).get(i))) {
+				System.out.println(&quot;bad&quot;);
+				return;
+			} else if (names.get(1).indexOf(names.get(0).get(i)) != names.get(0).indexOf(names.get(1).get(i))) {
+				System.out.println(&quot;bad&quot;);
+				return;				
+			}
+		}
+		System.out.println(&quot;good&quot;);
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

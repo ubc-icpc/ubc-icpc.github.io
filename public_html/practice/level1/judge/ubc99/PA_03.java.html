@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+
+import static java.lang.System.out;
+
+/**
+ * Created by Vince on 2017-01-14.
+ */
+public class levelone {
+
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        long mem[] = new long[(2 * T)];
+        for (int i = 0; i &lt; (2 * T); i++)
+            mem[i] = sc.nextInt();
+
+
+        for (int i = 0; i &lt; (2 * T); i = i + 2) {
+            out.printf(String.valueOf((mem[i] + mem[i + 1]))+&quot; &quot;+
+                    String.valueOf((mem[i] - mem[i + 1]))+&quot; &quot;+
+                    String.valueOf((mem[i] * mem[i + 1])) + &quot;\n&quot;);
+        }
+    }
+}
+</code>
+</pre>
+</body>
+</html>

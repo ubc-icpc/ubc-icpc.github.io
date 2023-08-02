@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+using ll = long long;
+const ll int_max = numeric_limits&lt;ll&gt;::max();
+
+int main()
+{
+	ll n; cin &gt;&gt; n;
+	vector&lt;ll&gt; e(n);
+	for (ll i = 0; i &lt; n; i++)
+	{
+		cin &gt;&gt; e[i];
+	}
+
+	sort(e.begin(), e.end());
+	for (ll i = 1; i &lt; n; i++)
+	{
+		ll diff = e[i] - e[i-1];
+		ll sum = e[i] + e[i-1];
+
+		ll ei = e[i];
+		ll eim1 = e[i-1];
+
+		e[i] = int_max;
+		e[i-1] = int_max;
+		
+		if (*upper_bound(e.begin(), e.end(), diff) &lt; sum)
+		{
+			// cout &lt;&lt; &quot;a = &quot; &lt;&lt; ei &lt;&lt; &quot; b = &quot; &lt;&lt; eim1 &lt;&lt; &quot; c = &quot; &lt;&lt; *lower_bound(e.begin(), e.end(), diff) &lt;&lt; endl;
+			cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+			return 0;
+		}
+
+		e[i] = ei;
+		e[i-1] = eim1;
+	}
+	cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

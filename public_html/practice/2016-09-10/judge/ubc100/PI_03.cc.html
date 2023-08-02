@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include&lt;utility&gt;
+#include&lt;stdlib.h&gt; 
+#include&lt;algorithm&gt;
+
+#define pii pair&lt;int, int&gt;
+
+using namespace std;
+
+char kb[3][10] = {
+    {'q','w','e','r','t','y','u','i','o','p'},
+    {'a','s','d','f','g','h','j','k','l','\0'},
+    {'z','x','c','v','b','n','m','\0' , '\0', '\0'}
+};
+
+pii pos[500];
+
+struct st{
+    string str;
+    int cost;
+};
+bool comp(st a, st b) { 
+    if(a.cost == b.cost) {
+        if(a.str.compare(b.str) &lt; 0 || a.str.compare(b.str) == 0) {
+            return true;
+        }
+        return false;
+    }
+    return a.cost &lt; b.cost;
+    
+}
+int main(void) {
+    int T; cin &gt;&gt; T;
+    
+    while(T--) {
+        string s; cin &gt;&gt; s;
+        int n; cin &gt;&gt; n;
+        vector&lt;string&gt; ss;
+        for(int i=0; i&lt;n; i++) {
+            string x; cin &gt;&gt; x;
+            ss.push_back(x);
+        }
+        
+        for(int i=0; i&lt;3; i++) {
+            for(int j=0; j&lt;10; j++) {
+                if(kb[i][j] &gt;= 'a' &amp;&amp; kb[i][j] &lt;= 'z') {
+                    pos[ (int)kb[i][j] ] = {i,j};
+                }
+            }
+        }
+        
+        vector&lt;st&gt; vans;
+        
+        for(string xx: ss) {
+            int cost = 0;
+            for(int i=0; i&lt;xx.size(); i++) {
+                cost += abs( pos[xx[i]].second - pos[s[i]].second ) + abs( pos[xx[i]].first - pos[s[i]].first );
+            }
+            st y; y.str = xx;
+            y.cost = cost;
+            vans.push_back(y);
+        }
+        sort(vans.begin(), vans.end(), comp);
+        for(st x : vans) {
+            cout &lt;&lt; x.str &lt;&lt; &quot; &quot; &lt;&lt; x.cost &lt;&lt; endl;
+        }
+    }
+    
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

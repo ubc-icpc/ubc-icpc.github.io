@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef pair&lt;int,int&gt; pii;
+typedef long long ll;
+
+int x[1005],y[1005];
+int main(){
+    ios::sync_with_stdio(0);
+    int n; int ca=0;
+    while (cin&gt;&gt;n){
+        ca++; 
+        if (n==0) break;
+        for (int i=1;i&lt;=n;i++) cin&gt;&gt;x[i]&gt;&gt;y[i];
+        sort(x+1,x+n+1); sort(y+1,y+n+1);
+        int minx=1e9+5,solx=0;
+        for (int i=1;i&lt;=n;i++){
+            int now=0; 
+            for (int j=1;j&lt;=n;j++) now+=abs(x[i]-x[j]); 
+            if (now&lt;minx){
+                minx=now,solx=x[i];
+            }
+        }
+        int miny=1e9+5,soly=0;
+        for (int i=1;i&lt;=n;i++){
+            int now=0;
+            for (int j=1;j&lt;=n;j++) now+=abs(y[i]-y[j]);
+            if (now&lt;miny){
+                miny=now,soly=y[i];
+            }
+        }
+        cout&lt;&lt;&quot;Case &quot;&lt;&lt;ca&lt;&lt;&quot;: &quot;&lt;&lt;'('&lt;&lt;solx&lt;&lt;','&lt;&lt;soly&lt;&lt;&quot;) &quot;&lt;&lt;minx+miny&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

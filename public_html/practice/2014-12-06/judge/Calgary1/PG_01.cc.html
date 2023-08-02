@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+struct PT {
+	int t, d, u;
+	bool operator&lt;(const PT&amp; pt2) const {return d &gt; pt2.d;}
+};
+
+int main() {
+	int S, N, E;
+	cin &gt;&gt; S &gt;&gt; N &gt;&gt; E;
+	vector&lt;vector&lt;PT&gt;&gt; adj(N);
+	for (int e = 0; e &lt; E; e++) {
+		int s, t, d, u;
+		cin &gt;&gt; s &gt;&gt; t &gt;&gt; d &gt;&gt; u;
+		adj[s].push_back(PT{t,d,u?d:0});
+		adj[t].push_back(PT{s,d,u?d:0});
+	}
+	int ans = 2000000000;
+	vector&lt;PT&gt; best(N, PT{0, 2000000000, 2000000000});
+	best[0].d = best[0].u = 0;
+	priority_queue&lt;PT&gt; pq;
+	pq.push(PT{0,0,0});
+	while (!pq.empty()) {
+		PT a = pq.top();
+		pq.pop();
+		if (a.t == N-1) ans = min(ans, a.d);
+		for (PT const&amp; b : adj[a.t]) {
+			if (a.u + b.u &lt;= S &amp;&amp; (best[b.t].d &gt; a.d + b.d || best[b.t].u &gt; a.u + b.u)) {
+				best[b.t].d = min(best[b.t].d, a.d + b.d);
+				best[b.t].u = min(best[b.t].u, a.u + b.u);
+				pq.push(PT{b.t, a.d + b.d, a.u + b.u});
+			}
+		}
+	}
+	cout &lt;&lt; ((ans==2000000000)?-1:ans) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

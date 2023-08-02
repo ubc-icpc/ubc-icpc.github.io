@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+const int N = 200005;
+const ll INF = 1000000000000000LL;
+int id = 0;
+struct node { node *l, *r, *p; ll id, key, val, cnt, lazy, acc; bool rev;
+  node(ll i=0, ll k=0, ll v=0);
+  inline int dir() { return this == p-&gt;l; }
+  inline void set_cld(node* c, bool left) { (left?l:r) = c; c-&gt;p = this; }
+} _null, *null, data[N*10];
+node::node(ll i, ll k, ll v) { id=i; key=k; val=v; cnt=1; lazy=INF; acc=v; rev=0;
+  if (!null) { null=&amp;_null; null-&gt;cnt=0; null-&gt;acc=INF; } l=r=p=null;} //RMQ
+struct SplayTree { node *root; SplayTree() { root = null; }
+//%%== Code for upwards propagating property (eg. count, min)
+void update(node* x) { if (x != null) { x-&gt;cnt = 1 + x-&gt;l-&gt;cnt + x-&gt;r-&gt;cnt;
+  x-&gt;acc = min(x-&gt;l-&gt;acc, min(x-&gt;key, x-&gt;r-&gt;acc)); } }                 //RMQ
+//%%== Code for downward lazy propagating property (eg. reverse subtree, add)
+void rev(node* x) { if (x != null) { x-&gt;rev ^= 1; swap(x-&gt;l, x-&gt;r); } }
+void modifyNode(node* x, ll v) { if (x != null) {
+  x-&gt;key = min(x-&gt;key, v); x-&gt;acc = min(x-&gt;acc, v); x-&gt;lazy = min(x-&gt;lazy, v); } }                          //RMQ
+void fix(node* x) { /*if (x-&gt;rev) { rev(x-&gt;l); rev(x-&gt;r); x-&gt;rev=0; }*/    //REV
+  modifyNode(x-&gt;l, x-&gt;lazy); modifyNode(x-&gt;r, x-&gt;lazy); x-&gt;lazy=INF; }   //RMQ
+//%%== Core splay tree code (rotate, splay, delete)
+inline void rot(node* x) { node *p = x-&gt;p; fix(p), fix(x); bool d = x-&gt;dir();
+  p-&gt;set_cld(d ? x-&gt;r : x-&gt;l, d); p-&gt;p-&gt;set_cld(x, p-&gt;dir()); x-&gt;set_cld(p, !d);
+  update(p); update(x); if (p == root) root = x; }
+// splays node x until it is a child of node to
+void splay(node* x, node* to = null) { if (x == null) return; while(x-&gt;p != to)
+  if(x-&gt;p-&gt;p==to) rot(x); else (x-&gt;dir()==x-&gt;p-&gt;dir()?rot(x-&gt;p):rot(x)),rot(x);}
+void del(node* x){ splay(x); x = x-&gt;r; while (fix(x), x-&gt;l != null) x = x-&gt;l;
+  if (x==null) x = root-&gt;l; else { splay(x, root); x-&gt;set_cld(root-&gt;l, 1); }
+  x-&gt;p = null; update(root = x); }
+//%%== BST methods (lb, find, insert) (conflicts with other features, see above)
+node* lb(ll k, node* c) { if (c == null) return c; fix(c);
+  if(c-&gt;key &gt;= k){ node* l=lb(k,c-&gt;l); return l==null?c:l; } return lb(k,c-&gt;r);}
+node* lb(ll k) { return lb(k, root); }
+node* find(ll k) { node* c=lb(k); if (c-&gt;key!=k) c=null; splay(c); return c; }
+void insert(node* x) { node *c=root,*p; if(c==null){root=x;return;} ll k=x-&gt;key;
+  while(c!=null) p=c, c=(p-&gt;key&gt;k?p-&gt;l:p-&gt;r); p-&gt;set_cld(x,p-&gt;key&gt;k); splay(x);}
+//%%== Utility code (rank, nth order statistic) (requires count maintained)
+int rank(node* x) { splay(x); return x-&gt;l-&gt;cnt; }
+node* nth(int n) { node* c = root; while(c != null) { fix(c); int l=c-&gt;l-&gt;cnt;
+  if (n==l) break; if (n &lt; l) c = c-&gt;l; else n = n-l-1, c = c-&gt;r; } return c; }
+//%%== Iterator-based access, returns null when iterator exhausted
+node*  begin(){node *c=root;while(c!=null&amp;&amp;(fix(c),c-&gt;l!=null))c=c-&gt;l;return c;}
+node* rbegin(){node *c=root;while(c!=null&amp;&amp;(fix(c),c-&gt;r!=null))c=c-&gt;r;return c;}
+node* prv(node* x) { splay(x); if (x-&gt;l == null) return null; x = x-&gt;l;
+  while (fix(x), x-&gt;r != null) x=x-&gt;r; return x; }
+node* nxt(node* x) { splay(x); if (x-&gt;r == null) return null; x = x-&gt;r;
+  while (fix(x), x-&gt;l != null) x=x-&gt;l; return x; }
+//%%== Iterator-based insert, does NOT work with BST code unless key sorted
+void insertBefore(node* at, node* x) { // to insert &quot;last&quot;, use at = null
+  if(at==null) { if(root==null) root=x; else rbegin()-&gt;set_cld(x,0); } else {
+  node* p=prv(at);if(p==null)at-&gt;set_cld(x,1); else p-&gt;set_cld(x,0);} splay(x);}
+//%%== Range query and update operations by iterator, range is EXCLUSIVE!
+node* rGet(node* l, node* r) { // splay (l, r) into 1 subtree &amp; return its root
+  if(l==null) { if(r==null) return root; splay(r); return r-&gt;l; }
+  splay(l); if (r==null) return l-&gt;r; splay(r, l); return r-&gt;l; }
+ll pQuery(node* x) { splay(x); return x-&gt;val; }
+ll rQuery(node* l, node* r) { return rGet(l, r)-&gt;acc; }
+void pUpdate(node* x, ll v) { splay(x); x-&gt;key = min(x-&gt;key, v); update(x); }          //RMQ
+void rUpdate(node* l,node* r,ll v){node* u=rGet(l,r);modifyNode(u,v);splay(u);}
+//%%== Rope operations: split and merge, null = right end
+SplayTree splitBefore(node* x) { SplayTree ret; if (x == null) return ret;
+  splay(x); fix(x); if (x-&gt;l != null) fix(x-&gt;l); ret.root=x; root=x-&gt;l;
+  x-&gt;l-&gt;p=null; x-&gt;l=null; update(root); update(ret.root); return ret; }
+void append(SplayTree &amp;other) { // 'other' is destroyed after merge
+  node*&amp; c=other.root; if (root == null) { root = c; c = null; return; }
+  if (c == null) return; node* x = rbegin(); splay(x); fix(x); fix(c);
+  x-&gt;set_cld(c, 0); c = null; update(x-&gt;r); update(x); } };
+
+ll val[N];
+int par[N];
+vector&lt;int&gt; adj[N];
+SplayTree trees[N];
+
+void printTree(SplayTree &amp;t) {
+  //cerr &lt;&lt; &quot;size=&quot; &lt;&lt; t.root-&gt;cnt &lt;&lt; &quot; tree=&quot;;
+  for (auto it = t.begin(); it != null; it = t.nxt(it)) {
+    //cerr &lt;&lt; it-&gt;key &lt;&lt; &quot; &quot;;
+  }
+  //cerr &lt;&lt; endl;
+}
+
+node* makeNode(int key) {
+  node* ret = new (&amp;data[id]) node(id, key, 0); id++;
+  return ret;
+}
+
+void dfs(int u, int depth) {
+  SplayTree cur;
+  if (adj[u].size() == 0) {
+    cur.insert(makeNode(val[u]));
+  } else {
+    for (int i = 0; i &lt; (int)adj[u].size(); i++) {
+      int v = adj[u][i];
+      dfs(v, depth+1);
+      //cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;Merge: &quot;; printTree(trees[v]);
+      //cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;With : &quot;; printTree(cur);
+      if (i == 0) {
+        cur = trees[v];
+      } else {
+        SplayTree other = trees[v];
+        if (other.root-&gt;cnt &gt; cur.root-&gt;cnt) {
+          swap(cur, other);
+        }
+        for (auto it = other.begin(); it != null; it = other.nxt(it)) {
+          cur.insert(makeNode(it-&gt;key));
+        }
+      }
+      //cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;Result 3: &quot;; printTree(cur);
+    }
+    node* x = cur.lb(val[u]);
+    if (x == null) {
+      cur.insert(makeNode(val[u]));
+    }
+    x-&gt;key = val[u];
+
+    //cerr &lt;&lt; string(depth, ' ') &lt;&lt; &quot;Final: &quot;; printTree(cur);
+  }
+  trees[u] = cur;
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  int n; cin &gt;&gt; n;
+  for (int i = 1; i &lt;= n; i++) {
+    cin &gt;&gt; val[i] &gt;&gt; par[i];
+    adj[par[i]].push_back(i);
+  }
+  dfs(1, 0);
+  cout &lt;&lt; trees[1].root-&gt;cnt &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

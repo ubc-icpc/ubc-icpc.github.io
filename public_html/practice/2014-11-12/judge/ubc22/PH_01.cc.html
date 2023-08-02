@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+#include&lt;sstream&gt;
+
+using namespace std;
+stringstream ss;
+string str;
+
+int main() {
+  getline(cin, str);
+  ss &lt;&lt; str;
+  int N;
+  ss &gt;&gt; N;
+  ss.clear();
+  while (N--) {
+    getline(cin, str);
+    ss &lt;&lt; str;
+    string s;
+    vector&lt;string&gt; list;
+    while (ss &gt;&gt; s) {
+      list.push_back(s);
+    }
+    ss.clear();
+    getline(cin, str);
+    ss &lt;&lt; str;
+    string start;
+    ss &gt;&gt; start;
+    ss.clear();
+    int startindex = -10000;
+    for (unsigned int i = 0; i &lt; list.size(); i++)
+      if (start == list[i]) {
+	startindex = i;
+	break;
+      }
+    getline(cin, str);
+    ss &lt;&lt; str;
+    int count;
+    ss &gt;&gt; count;
+    ss.clear();
+    int res = (count + startindex - 1) % (int)list.size();
+    cout &lt;&lt; list[res] &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html><head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="Michael Goldwasser">
+  <title>Problem D: The Leprechaun Hunt</title>
+
+  
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style>
+</head><body>
+<h1>Problem D: The Leprechaun Hunt</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <tt>hunt.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+      </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>hunt.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+In Irish mythology, a Leprechaun is a small sprite who stores all his
+treasure in a hidden pot of gold at the end of the rainbow. If someone
+is able to catch the Leprechaun, he must give that person his pot of
+gold. In this problem, we explore the difficulty of capturing a
+Leprechaun.
+</p>
+
+<p>
+We model a search with <em>V</em> villagers trying to catch a single
+Leprechaun as a game on a simple undirected graph having <nobr><em>N &ge;
+1+V</em></nobr> nodes. To begin the game, the villagers position themselves
+at a subset of <em>V</em> distinct nodes. After that, the Leprechaun
+chooses a remaining node as a starting position. In each round of the
+game that follows, one villager moves from his or her current node to
+an adjacent node that is unoccupied by another villager. If that node
+has the Leprechaun, the villagers win the pot of gold. Otherwise, the
+Leprechaun now has the option of either staying at his current node,
+or moving to an adjacent, unoccupied node.
+Given a specific graph, and a fixed number of villagers, we are
+interested in the minimum number of turns the villagers need to
+capture the most clever of Leprechauns.
+</p>
+
+<p>
+As examples, consider the two figures below. For the graph in
+Figure&nbsp;1, a single villager can never capture a Leprechaun, as
+the Leprechaun can easily stay away from the villager. However, two
+villagers can capture the Leprechaun after at most 2 turns. For
+example, the villagers might begin at nodes <tt>A</tt> and <tt>D</tt>,
+in which case a clever Leprechaun will start at node <tt>F</tt>. But
+after the villager at <tt>A</tt> moves to <tt>G</tt> the villagers can
+capture the Leprechaun on their second turn, no matter whether the
+Leprechaun moves to <tt>E</tt> or remains at&nbsp;<tt>F</tt>.
+</p>
+<p>
+For the graph in Figure&nbsp;2, a single villager
+is unable to catch a clever Leprechaun. To see why this is
+the case, we describe a possible strategy of the Leprechaun, which is to always
+stay within the square made by BCDE, and opposite of the villager if
+the villager is in that square. If the villager were ever to go to A,
+the Leprechaun can remain still. In contrast, two villagers are able
+to capture the Leprechaun on their first move by picking initial
+positions such as B and E.
+</p>
+
+
+<center>
+<table style="text-align: center; width: 406px; height: 204px;"
+  border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+  <tr>
+    <td>
+	<img alt="cycle graph" height="200" src="cycle.png"><br>
+    </td>
+    <td>
+	<img alt="house graph" height="200" src="house.png"><br>
+    </td>
+  </tr>
+  <tr>
+    <td>Figure 1</td>
+    <td>Figure 2</td>
+  </tr>
+  </tbody>
+</table>
+</center>
+
+
+
+<p class="page"><b>Input:</b>
+Each tests begins with a line containing three
+integers: <nobr><em>V N E</em></nobr>. The value of <em>V</em> denotes the number
+of villagers such that <nobr>1 &le; <em>V</em> &le; 7</nobr>. The number of nodes
+<em>N</em> in the graph will satisfy <nobr>1 + <em>V</em> &le;
+<em>N</em> &le; 15</nobr>. The value
+<nobr>1 &le; <em>E</em> &le; 45</nobr>
+designates the number of edges in the graph. Following the initial line of parameters will be one or more lines describing the
+edges of the graph, with up to 15 edges per line. 
+Nodes of the graph are implicitly denoted with the first <em>N</em> uppercase letters <nobr>(<tt>A</tt>,
+<tt>B</tt>, <tt>C</tt>, ...)</nobr>, and edges are explicitly denoted
+as two-character strings; for example the string <tt>AC</tt> denotes an edge connecting nodes <tt>A</tt>
+and <tt>C</tt> to each other.
+The <em>E</em> edges will be distinct, each edge connects two distinct
+nodes, and any node will have at most 6&nbsp;incident edges.
+A line with the single value <tt>0</tt>
+designates the end of the input.
+</p>
+
+
+<p><b>Output:</b> For each test case, output a line, prefaced with the
+case number as shown in the example output below, followed by the
+minimum  number of moves that the villagers need to guarantee capture of the
+Leprechaun, or the word <tt>NEVER</tt> if the villagers are unable to
+capture the Leprechaun.
+</p>
+
+<table class="example">
+
+  <thead> <tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+<kbd>
+1 7 7<br/>
+AB BC CD DE EF FG GA<br/>
+2 7 7<br/>
+AB BC CD DE EF FG GA<br/>
+1 5 6<br/>
+AB AC BC BD DE EC<br/>
+2 5 6<br/>
+AB AC BC BD DE EC<br/>
+2 10 15<br/>
+AB BC CD DE EA AF BG CH DI EJ FH HJ JG GI IF<br/>
+3 10 15<br/>
+AB BC CD DE EA AF BG CH DI EJ FH HJ JG GI IF<br/>
+3 14 10<br/>
+AB BC CD EF FG GH IJ JK LM MN<br/>
+4 14 10<br/>
+AB BC CD EF FG GH IJ JK LM MN<br/>
+0
+</kbd>
+      </td>
+      <td>
+<kbd>
+CASE 1: NEVER<br/>
+CASE 2: 2<br/>
+CASE 3: NEVER<br/>
+CASE 4: 1<br/>
+CASE 5: NEVER<br/>
+CASE 6: 1<br/>
+CASE 7: NEVER<br/>
+CASE 8: 2
+</kbd>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+
+</body></html>

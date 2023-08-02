@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	int n;cin&gt;&gt;n;
+	while (n--) {
+		int l;
+		cin &gt;&gt; l;
+		vector&lt;int&gt; v(l);
+		for (int i = 0; i &lt; l; i++) {
+			cin &gt;&gt; v[i];
+		}
+		for (int i = 1; i &lt; l; i++) {
+			if (v[i] &lt; v[i - 1] * 2) {
+				goto bad;
+			}
+		}
+
+		cout &lt;&lt; &quot;Denominations: &quot;;
+		for (int i = 0; i &lt; l; i++) {
+			cout &lt;&lt; v[i]&lt;&lt;&quot; &quot;;
+		}
+		cout &lt;&lt; &quot;\nGood coin denominations!\n\n&quot;;
+		continue;
+
+		bad: cout &lt;&lt; &quot;Denominations: &quot;;
+		for (int i = 0; i &lt; l; i++) {
+			cout &lt;&lt; v[i]&lt;&lt;&quot; &quot;;
+		}
+		cout &lt;&lt; &quot;\nBad coin denominations!\n\n&quot;;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

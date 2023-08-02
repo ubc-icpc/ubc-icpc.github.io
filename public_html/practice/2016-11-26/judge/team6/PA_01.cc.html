@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+/*
+Source: http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+
+1. If A[i] is smallest among all end 
+   candidates of active lists, we will start 
+   new active list of length 1.
+2. If A[i] is largest among all end candidates of 
+  active lists, we will clone the largest active 
+  list, and extend it by A[i].
+
+3. If A[i] is in between, we will find a list with 
+  largest end element that is smaller than A[i]. 
+  Clone and extend this list by A[i]. We will discard all
+  other lists of same length as that of this modified list.
+*/
+
+
+int ci(std::vector&lt;int&gt; &amp;v, int l, int r, int key) {
+  while (r-l &gt; 1) {
+    int m = l + (r-l)/2;
+    if (v[m] &gt;= key)
+      r = m;
+    else
+      l = m;
+  }
+
+  return r;
+}
+
+int lis(std::vector&lt;int&gt; &amp;v) {
+  if (v.size() == 0)
+    return 0;
+
+  std::vector&lt;int&gt; tail(v.size(), 0);
+  int length = 1; // always points empty slot in tail
+
+  tail[0] = v[0];
+  for (size_t i = 1; i &lt; v.size(); i++) {
+    if (v[i] &lt; tail[0])
+      // new smallest value
+      tail[0] = v[i];
+    else if (v[i] &gt; tail[length-1])
+      // v[i] extends largest subsequence
+      tail[length++] = v[i];
+    else
+      // v[i] will become end candidate of an existing subsequence or
+      // Throw away larger elements in all LIS, to make room for upcoming grater elements than v[i]
+      // (and also, v[i] would have already appeared in one of LIS, identify the location and replace it)
+      tail[ci(tail, -1, length-1, v[i])] = v[i];
+  }
+
+  return length;
+}
+
+int main() {
+  std::string s;
+  std::cin &gt;&gt; s;
+  std::vector&lt;int&gt; v;
+  for(char c : s) {
+    v.push_back((int) c);
+  }
+
+  std::cout &lt;&lt; 26 - lis(v) &lt;&lt; '\n';
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

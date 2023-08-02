@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;stdio.h&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;math.h&gt;
+#include &lt;vector&gt;
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+
+
+#define input_crack ios_base::sync_with_stdio(0)
+#define input_coffee std::cin.tie(0)
+
+
+using namespace std;
+#define INF 1000000000
+const double eps = 1e-8;
+const double pi = acos(-1.0);
+
+int cmp(double x)
+{
+	if (fabs(x) &lt; eps) return 0;
+	if (x &gt; 0) return 1;
+	return -1;
+}
+inline double sqr(double x) { return x*x; }
+struct point
+{
+	double x, y;
+	point() {}
+	point(double a, double b) :x(a), y(b) {}
+	void input()
+	{
+		scanf(&quot;%lf%lf&quot;, &amp;x, &amp;y);
+	}
+	friend point operator + (const point &amp;a, const point &amp;b)
+	{
+		return point(a.x + b.x, a.y + b.y);
+	}
+	friend point operator - (const point &amp;a, const point &amp;b)
+	{
+		return point(a.x - b.x, a.y - b.y);
+	}
+	friend bool operator == (const point &amp;a, const point &amp;b)
+	{
+		return cmp(a.x - b.x) == 0 &amp;&amp; cmp(a.y - b.y) == 0;
+	}
+	friend point operator * (const point &amp;a, const double &amp;b)
+	{
+		return point(a.x*b, a.y*b);
+	}
+	friend point operator * (const double &amp;a, const point &amp;b)
+	{
+		return point(a*b.x, a*b.y);
+	}
+	friend point operator / (const point &amp;a, const double &amp;b)
+	{
+		return point(a.x / b, a.y / b);
+	}
+	bool operator&lt;(const point&amp; a)const
+	{
+		if (cmp(x - a.x) != 0) return x&lt;a.x;
+		return y&lt;a.y;
+	}
+	double norm()
+	{
+		return sqrt(sqr(x) + sqr(y));
+	}
+};
+double det(const point &amp;a, const point &amp;b)
+{
+	return a.x*b.y - a.y*b.x;
+}
+double dot(const point &amp;a, const point &amp;b)
+{
+	return a.x*b.x + a.y*b.y;
+}
+
+double dis_point_segment(point p, point s, point t)
+{
+	if (cmp(dot(p - s, t - s)) &lt; 0) return (p - s).norm();
+	if (cmp(dot(p - t, s - t)) &lt; 0) return (p - t).norm();
+	return fabs(det(s - p, t - p)) / (s - t).norm();
+}
+
+double caldis(point a, point b, point c, point d)
+{
+	if (cmp(det(a - c, d - c) * det(b - c, d - c)) &lt; 0 &amp;&amp;
+		cmp(det(c - a, b - a) * det(d - a, b - a)) &lt; 0) return 0.0;
+	double t1 = min(dis_point_segment(a, c, d), dis_point_segment(b, c, d));
+	double t2 = min(dis_point_segment(c, a, b), dis_point_segment(d, a, b));
+	return min(t1, t2);
+}
+
+int W, n;
+vector&lt;point&gt; con[110];
+double dis[110][110];
+int fa[110];
+
+int get_fa(int x)
+{
+	if (fa[x] == x) return x;
+	fa[x] = get_fa(fa[x]);
+	return fa[x];
+}
+
+void merge(int x, int y)
+{
+	x = get_fa(x); y = get_fa(y);
+	fa[x] = y;
+}
+
+bool check(double d)
+{
+	for (int i = 0; i&lt;n + 2; i++) fa[i] = i;
+	for (int i = 0; i&lt;n + 2; i++)
+	{
+		for (int j = i + 1; j&lt;n + 2; j++)
+			if (cmp(dis[i][j] - d)&lt;0)
+				merge(i, j);
+	}
+	int x = get_fa(n), y = get_fa(n + 1);
+	if (x == y) return false;
+	return true;
+}
+
+int main()
+{
+
+	input_crack;
+	input_coffee;
+
+
+	int t;
+
+	// std::string filename(&quot;a5_h1.in&quot;);
+	// std::ifstream infile(filename.c_str());
+	// std::cin.rdbuf(infile.rdbuf());
+
+	cin &gt;&gt; t;
+
+	while (t--) {
+
+		cin &gt;&gt; W &gt;&gt; n;
+
+		if (W == 0 &amp;&amp; n == 0) break;
+		double w = W / 2.0;
+		for (int i = 0; i&lt;n; i++)
+		{
+			int k;
+			//scanf(&quot;%d&quot;, &amp;k);
+			cin &gt;&gt; k;
+
+			con[i].clear();
+			for (int j = 1; j &lt;= k; j++)
+			{
+				double x, y;
+				//scanf(&quot;%lf%lf&quot;, &amp;x, &amp;y);
+				cin &gt;&gt; x &gt;&gt; y;
+				con[i].push_back(point(x, y));
+			}
+			con[i].push_back(con[i][0]);
+			for (int j = 0; j&lt;i; j++)
+			{
+				dis[i][j] = INF;
+				for (int k = 0; k + 1&lt;con[i].size(); k++)
+					for (int d = 0; d + 1&lt;con[j].size(); d++)
+						dis[i][j] = min(dis[i][j], caldis(con[i][k], con[i][k + 1], con[j][d], con[j][d + 1]));
+				dis[j][i] = dis[i][j];
+			}
+			dis[i][n] = dis[i][n + 1] = INF;
+
+			for (int j = 0; j&lt;con[i].size(); j++)
+			{
+				dis[i][n] = min(dis[i][n], w - con[i][j].y);
+				dis[i][n + 1] = min(dis[i][n + 1], w + con[i][j].y);
+			}
+			dis[n][i] = dis[i][n];
+			dis[n + 1][i] = dis[i][n + 1];
+		}
+		dis[n][n + 1] = dis[n + 1][n] = w * 2.0;
+		double L = 0.0, r = w, mid;
+		for (int i = 0; i&lt;n; i++)
+			for (int j = 0; j + 1&lt;con[i].size(); j++)
+				r = min(r, dis_point_segment(point(0, 0), con[i][j], con[i][j + 1]));
+		r *= 2.0;
+		while ((r - L)&gt;eps)
+		{
+			mid = (L + r) / 2.0;
+			if (check(mid)) L = mid;
+			else r = mid;
+		}
+
+		if (cmp(L) &gt; 0) {
+			printf(&quot;%.2lf\n&quot;, L / 2.0);
+		}
+		else {
+			printf(&quot;Impossible\n&quot;);
+		}
+	}
+
+
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

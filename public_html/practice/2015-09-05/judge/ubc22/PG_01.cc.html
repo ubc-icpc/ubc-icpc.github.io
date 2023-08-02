@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, M;
+bool S[10500];
+vector&lt;int&gt; P;
+
+int main () {
+    for (int i = 2; i &lt; 10500; ++i)
+        if (!S[i])
+            for (int j = i+i; j &lt; 10500; j+=i)
+                S[j] = true;
+    for (int i = 2; i &lt; 10500; ++i)
+        if (!S[i]) P.push_back(i);
+    cin &gt;&gt; N;
+    while (N--) {
+        cin &gt;&gt; M;
+        vector&lt;int&gt;::iterator it = upper_bound(P.begin(), P.end(), M)-1;
+        cout &lt;&lt; &quot;Input value: &quot; &lt;&lt; M &lt;&lt; &quot;\n&quot;;
+        if (*it == M) cout &lt;&lt; &quot;Would you believe it; it is a prime!\n\n&quot;;
+        else cout &lt;&lt; &quot;Missed it by that much (&quot; &lt;&lt; min(M-*it, *(it+1)-M) &lt;&lt; &quot;)!\n\n&quot;;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

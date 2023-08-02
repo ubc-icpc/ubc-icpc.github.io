@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+void strip0(string &amp;s)
+{
+  while (s.back() == '0') {
+    s.pop_back();
+  }
+}
+
+// multiply by 2 and ignore carry, strip trailing 0's
+void mul2(string &amp;s)
+{
+  int carry = 0;
+  for (int i = s.length()-1; i &gt;= 0; i--) {
+    int digit = s[i] - '0';
+    int value = digit*2 + carry;
+    s[i] = (value % 10) + '0';
+    carry = value/10;
+  }
+
+  strip0(s);
+}
+
+void solve(string s)
+{
+  // first we will remove everything up to the decimal place
+  size_t pos = s.find('.');
+  if (pos != string::npos) {
+    s.erase(0, pos+1);
+  }
+
+  // now remove all trailing 0's
+  strip0(s);
+  
+  while (s.length() &gt; 0) {
+    // if last digit is not a 5 (we stripped 0's), it is not going to terminate
+    if (s.back() != '5') {
+      cout &lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+      return;
+    }
+
+    mul2(s);
+  }
+
+  // everything disappears
+  cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+}
+
+int main()
+{
+  string s;
+  while (cin &gt;&gt; s) {
+    solve(s);
+  }
+  
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

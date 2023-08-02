@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class A {
+
+	class Comp implements Comparable&lt;Comp&gt; {
+		String name;
+		int r, s, d, score;
+
+		Comp(String name, int r, int s, int d) {
+			this.name = name;
+			this.r = r;
+			this.s = s;
+			this.d = d;
+			score = 2 * r + 3 * s + d;
+		}
+
+		@Override
+		public int compareTo(Comp o) {
+			if (score == o.score)
+				return name.compareTo(o.name);
+			return o.score - score;
+		}
+	}
+
+	private void work() {
+		Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+
+		int n = sc.nextInt();
+		Comp[] all = new Comp[n];
+		for (int i = 0; i &lt; n; i++) {
+			String name = sc.next();
+			int r = sc.nextInt();
+			int s = sc.nextInt();
+			int d = sc.nextInt();
+			all[i] = new Comp(name, r, s, d);
+		}
+		Arrays.sort(all);
+		if (n &gt; 0)
+			System.out.println(all[0].name);
+		if (n &gt; 1)
+			System.out.println(all[1].name);
+
+		sc.close();
+	}
+
+	public static void main(String[] args) {
+		new A().work();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

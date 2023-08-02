@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+import java.util.List;
+import java.util.*;
+import java.lang.Double;
+
+public class Triangle {
+    public static void main(String[] args) {
+      Scanner scanner = new Scanner( System.in );
+
+      // num of test
+      String firstString = scanner.nextLine();
+      int firstNumber = Integer.parseInt(firstString);
+
+      List&lt;String&gt; check = new ArrayList&lt;String&gt;();
+      for(int j=0; j&lt;firstNumber; j++){
+        // num of ppl
+        String secondString = scanner.nextLine();
+        int secondNumber = Integer.parseInt(secondString);
+        //System.out.println(&quot;the second string is &quot;+secondString);
+
+        String thirdString = scanner.nextLine();
+        String[] splited = thirdString.split(&quot;\\s+&quot;);
+
+        int x1=Integer.parseInt(splited[0]);
+        int y1=Integer.parseInt(splited[1]);
+        int x2=Integer.parseInt(splited[2]);
+        int y2=Integer.parseInt(splited[3]);
+        int x3=Integer.parseInt(splited[4]);
+        int y3=Integer.parseInt(splited[5]);
+
+        for(int i=0;i&lt;secondNumber; i++){
+          String fourthString = scanner.nextLine();
+          String[] splitedPpl = fourthString.split(&quot;\\s+&quot;);
+          int x=Integer.parseInt(splitedPpl[0]);
+          int y=Integer.parseInt(splitedPpl[1]);
+          check.add(checkSafety(x1,y1,x2,y2,x3,y3,x,y));
+        }
+      }
+      for(int i=0; i&lt;check.size(); i++){
+        System.out.println(check.get(i));
+      }
+
+      //System.out.println(&quot;third line is&quot; + thirdString);
+    }
+
+    public static String checkSafety(int x1,int y1, int x2, int y2, int x3, int y3, int x, int y){
+      Double area  =getArea(x1,y1,x2,y2,x3,y3);
+
+      Double sumArea = getArea(x,y,x2,y2,x3,y3)
+      + getArea(x,y,x1,y1,x3,y3)
+      +getArea(x,y,x2,y2,x1,y1);
+      double eps = 0.0000001;
+      //System.out.println(&quot;the area for triange is &quot;+area + &quot; the area for the sum of area is &quot;+sumArea);
+      if((sumArea-area) &lt; eps){
+        return &quot;DANGER&quot;;
+      }else{
+        return &quot;SAFE&quot;;
+      }
+    }
+
+    public static Double getArea(int x1,int y1, int x2, int y2, int x3, int y3){
+      return Math.abs(new Double(0.5*((x2-x1)*(y3-y1) - (x3-x1)*(y2-y1))));
+    }
+}
+</code>
+</pre>
+</body>
+</html>

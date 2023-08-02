@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main(){
+	int s; cin &gt;&gt; s;
+
+		bool mack, zack;
+		for (int i = 1; i &lt;= 10*s; i++){
+			int k;
+			cin &gt;&gt; k;
+			if (k == 17){zack = true;}
+			if (k == 18){mack = true;}
+			if (i%10 == 0){
+				cout &lt;&lt; k &lt;&lt; endl;
+				if (zack &amp;&amp; mack){
+					cout &lt;&lt; &quot;both&quot; &lt;&lt; endl;
+					zack = false;
+					mack = false;
+				}
+				else if (zack){
+					zack = false;
+					cout &lt;&lt; &quot;zack&quot; &lt;&lt; endl;
+				}
+				else if (mack){
+					mack = false;
+					cout &lt;&lt; &quot;mack&quot; &lt;&lt; endl;
+				}
+				else {cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;}		
+				
+			}
+			else{
+				cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+			}
+		}
+
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

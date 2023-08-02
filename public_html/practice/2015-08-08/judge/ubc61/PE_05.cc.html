@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll,ll&gt; pll;
+
+pll isles[75005];
+
+bool compx(const pll &amp;a, const pll &amp;b) {
+	return (a.first &lt; b.first) || (a.first == b.first &amp;&amp; a.second &gt; b.second);
+}
+
+bool compy(const pll &amp;a, const pll &amp;b) {
+	return (a.second &gt; b.second) || (a.second == b.second &amp;&amp; a.first &lt; b.first);
+}
+
+ll sol(int start, int end) {
+	if (end-start &lt; 2) return 0;
+	int mid = (start+end)/2;
+	ll ans = sol(start,mid) + sol(mid,end);
+
+	sort(isles+mid,isles+end,compy);
+	for (int i=start; i&lt;mid; i++) {
+		// int j=mid;
+		// while (j&lt;end &amp;&amp; isles[j].second &gt; isles[i].second) {
+		// 	j++;
+		// }
+		// ans += end-j;
+		ans += isles+end-lower_bound(isles+mid,isles+end,make_pair(-1e9,isles[i].second),compy);
+	}
+	return ans;
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n; cin &gt;&gt; n;
+		for (int i=0; i&lt;n; i++) {
+			ll x,y; cin &gt;&gt; x &gt;&gt; y;
+			isles[i] = make_pair(x,y);
+		}
+		sort(isles,isles+n,compx);
+		cout &lt;&lt; sol(0,n) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

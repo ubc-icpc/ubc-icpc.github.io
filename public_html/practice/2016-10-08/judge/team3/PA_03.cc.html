@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main()
+{
+	int t; cin &gt;&gt; t;
+	while (t--) 
+	{
+		int a, b; cin &gt;&gt; a &gt;&gt; b;
+		int lenab = a * a + b * b;
+		int max = (int) sqrt(lenab) + 1;
+		int d = 0;
+
+		if (lenab &lt;= 1)
+		{
+			cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+			continue;
+		}
+
+		for (int m = -max; m &lt; max; m++)
+		{
+			int nmax = (int) sqrt(lenab - m * m) + 1;
+			for (int n = -nmax; n &lt; nmax; n++)
+			{
+				int lenmn = m * m + n * n;
+				if (lenmn &lt;= 1) continue;
+
+				if (lenab % lenmn != 0) continue;
+
+				// remainder = (a + ib) / (m + in)
+
+				if ((a * m + b * n) % lenmn == 0 &amp;&amp; (b * m - a * n) % lenmn == 0)
+				{
+					d++;
+					if (d &gt; 4) goto done;
+				}
+			}
+		}
+done:
+		cout &lt;&lt; (d &gt; 4 ? 'C' : 'P') &lt;&lt; endl;
+		// cout &lt;&lt; flush &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

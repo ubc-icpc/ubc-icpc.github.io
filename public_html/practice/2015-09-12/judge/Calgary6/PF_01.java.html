@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Balance {
+	public static ArrayList&lt;Character&gt; VOWELS = new ArrayList&lt;Character&gt;();
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		int numTests = Integer.parseInt(s.nextLine());
+		VOWELS.add('a');
+		VOWELS.add('e');
+		VOWELS.add('i');
+		VOWELS.add('o');
+		VOWELS.add('u');
+		VOWELS.add('y');
+		
+		for (int i = 0; i &lt; numTests; i++) {
+			String line = s.nextLine();
+			boolean startVowel = false;
+			
+			System.out.print(&quot;String #&quot; + (i+1) + &quot;: &quot;);
+			
+			int firstNonQIndex = 0;
+			while (firstNonQIndex &lt; line.length() &amp;&amp; line.charAt(firstNonQIndex) == '?') {
+				firstNonQIndex++;	// keep going until you don't hit a question mark
+			}
+			if (firstNonQIndex &lt; line.length()) {
+				//System.out.println(line.charAt(firstNonQIndex));
+				if (VOWELS.contains(line.charAt(firstNonQIndex))) {
+					//System.out.println(line.charAt(firstNonQIndex) + &quot; is a vowel&quot;);
+					startVowel = true;
+				}
+			} else {
+				long startConsSum = 1, startVowelSum = 1;
+				for (int j = 0; j &lt; line.length(); j++) {
+					if (j % 2 == 0) {
+						startConsSum *= (26 - VOWELS.size());
+						startVowelSum *= VOWELS.size();
+					} else {
+						startConsSum *= VOWELS.size();
+						startVowelSum *= (26 - VOWELS.size());
+					}
+				}
+				System.out.println(startConsSum + startVowelSum);
+				System.out.println();
+				continue;
+			}
+			
+			long numBalanced = 1;
+			
+			boolean onVowel1Cons0 = startVowel, noBalanced = false;
+			if (firstNonQIndex % 2 == 1) {
+				onVowel1Cons0 = !onVowel1Cons0;	// flip vowel-consonant in this case
+			}
+			for (int pointerIndex = 0; pointerIndex &lt; line.length(); pointerIndex++) {
+				char currentChar = line.charAt(pointerIndex);
+				boolean currOnVowel = VOWELS.contains(currentChar);
+				if (currOnVowel != onVowel1Cons0 &amp;&amp; currentChar != '?') {
+					noBalanced = true;
+					break;
+				}
+				
+				if (currentChar == '?') {
+					if (onVowel1Cons0) {
+						numBalanced *= VOWELS.size();
+					} else {
+						numBalanced *= (26 - VOWELS.size());
+					}
+				}
+				
+				onVowel1Cons0 = !onVowel1Cons0;	// toggle it
+			}
+			
+			if (noBalanced) {
+				System.out.println(&quot;0&quot;);
+			} else {
+				System.out.println(numBalanced);
+			}
+			System.out.println();
+		}
+		s.close();
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

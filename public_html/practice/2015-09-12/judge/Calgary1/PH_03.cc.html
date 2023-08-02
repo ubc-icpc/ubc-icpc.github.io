@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+
+int TC, R, C, dp[9][1&lt;&lt;5][1&lt;&lt;5], gdbs[9];
+char gd[10][10];
+
+int sv(int r, int prevBs, int curBs) {
+	int&amp; ans = dp[r][prevBs][curBs];
+	if (ans != -1) return ans;
+
+	ans = -2;
+
+	int maxMidSetBs = (r == 0 || r == R-1) ? 1 : 1&lt;&lt;max(0,C-4);
+	FOR(midSetBs, 0, maxMidSetBs) {
+		// calculate set BS
+		int setBs = midSetBs &lt;&lt; 2;
+		if (r != 0 &amp;&amp; r != R-1 &amp;&amp; gd[r][0] == '#') setBs |= 1&lt;&lt;1;
+		if (r != 0 &amp;&amp; r != R-1 &amp;&amp; gd[r][C-1] == '#') setBs |= 1&lt;&lt;(C-2);
+
+		// calculate effective BS
+		int effBs = curBs &lt;&lt; 2, effPrevBs = prevBs &lt;&lt; 2;
+
+		if (r &gt;= 2 &amp;&amp; gd[r-1][0] == '#') effPrevBs |= 3;
+		if (r &gt;= 2 &amp;&amp; gd[r-1][C-1] == '#') effPrevBs |= 3&lt;&lt;(C-2);
+
+		if (r&gt;=3 &amp;&amp; gd[r-2][0] == '#') effPrevBs |= 1&lt;&lt;1;
+		if (r&gt;=3 &amp;&amp; gd[r-2][C-1] == '#') effPrevBs |= 1&lt;&lt;(C-2);
+
+		FOR(c,1,C-1) if (effBs &amp; (1&lt;&lt;c)) {
+			effPrevBs |= 1&lt;&lt;c-1 | 1&lt;&lt;c | 1&lt;&lt;c+1;
+		}
+
+		if (r &gt;= 2 &amp;&amp; gd[r-1][0] == '#') effBs |= 1&lt;&lt;1;
+		if (r &lt;= R-3 &amp;&amp; gd[r+1][0] == '#') effBs |= 1&lt;&lt;1;
+
+		if (r &gt;= 2 &amp;&amp; gd[r-1][C-1] == '#') effBs |= 1&lt;&lt;(C-2);
+		if (r &lt;= R-3 &amp;&amp; gd[r+1][C-1] == '#') effBs |= 1&lt;&lt;(C-2);
+
+		FOR(c,1,C-1) if (setBs &amp; (1&lt;&lt;c)) {
+			effBs |= 1&lt;&lt;c-1 | 1&lt;&lt;c | 1&lt;&lt;c+1;
+			effPrevBs |= 1&lt;&lt;c;
+		}
+
+		//printf(&quot;Trying dp [%d][%d][%d] %d %d %d %d\n&quot;, r, prevBs, curBs, midSetBs, effBs, effPrevBs, gdbs[r-1]);
+
+		// effective prev BS must be correct
+		if (r &amp;&amp; effPrevBs != gdbs[r-1]) continue;
+
+		// effective BS must not be extraneous
+		if (effBs &amp; ~gdbs[r]) continue;
+
+		// last row case
+		if (r == R-1) {
+			if (effBs == gdbs[r]) ans = 0;
+		} else {
+			int mask = (C &gt;= 4) ? (1&lt;&lt;C-4)-1 : 0;
+			int ans2 = sv(r+1, (effBs&gt;&gt;2)&amp;mask, midSetBs);
+			if (ans2 &gt;= 0) {
+				int new_ans = ans2 + __builtin_popcount(setBs);
+				if (ans == -2) ans = new_ans; else ans = min(ans, new_ans);
+			}
+		}
+	}
+	//printf(&quot;Got dp[%d][%d][%d] = %d\n&quot;, r, prevBs, curBs, ans);
+	return ans;
+}
+
+int main() {
+	scanf(&quot;%d&quot;, &amp;TC);
+	FOR(tc, 1, TC+1) {
+		scanf(&quot;%d%d&quot;, &amp;R, &amp;C);
+		int allMask = 0;
+		FOR(r,0,R) {
+			scanf(&quot;%s&quot;, gd[r]);
+			gdbs[r] = 0;
+			FOR(c,0,C) if (gd[r][c] == '#') gdbs[r] |= (1&lt;&lt;c);
+			allMask |= gdbs[r];
+		}
+		memset(dp, -1, sizeof dp);
+		int ans = (R &lt; 3 || C &lt; 3) ? (allMask ? -2 : 0) : sv(0,0,0);
+		printf(&quot;Image #%d: &quot;, tc);
+		if (ans &lt; 0) {
+			printf(&quot;impossible\n\n&quot;);
+		} else {
+			printf(&quot;%d\n\n&quot;, ans);
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

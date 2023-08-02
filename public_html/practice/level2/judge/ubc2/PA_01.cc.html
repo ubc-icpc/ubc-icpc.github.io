@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  ld r, x, y; cin &gt;&gt; r &gt;&gt; x &gt;&gt; y;
+  cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; min(y, r - sqrt(x*x + y*y)) &lt;&lt; nl;
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

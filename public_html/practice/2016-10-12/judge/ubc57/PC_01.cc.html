@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+int main(){
+    ios::sync_with_stdio(0);
+    ll n; 
+    //freopen(&quot;readable.txt&quot;,&quot;w&quot;,stdout);
+    while (cin&gt;&gt;n){
+        if (n==0) break;
+        vector&lt;pair&lt;int,pair&lt;int,int&gt;&gt;&gt; sols;
+        for (ll b=1;b&lt;3998;b++){
+            ll tot=n*b*b*b; 
+            for (ll a=1;a+2*b&lt;=4000LL;a++){
+                ll c=pow(tot-a*a*a,1.0/3.0); 
+                if (((a*a*a+c*c*c)==tot)&amp;&amp;(c&gt;0)) if ((a&gt;=c)&amp;&amp;(a+b+c+b&lt;4000)) {
+                    sols.push_back({b,{a,c}});
+                    //cout&lt;&lt;b&lt;&lt;' '&lt;&lt;a&lt;&lt;' '&lt;&lt;c&lt;&lt;endl;
+                }
+                c++;
+                if (((a*a*a+c*c*c)==tot)&amp;&amp;(c&gt;0)) if ((a&gt;=c)&amp;&amp;(a+b+c+b&lt;4000)) {
+                    sols.push_back({b,{a,c}});
+                    //cout&lt;&lt;b&lt;&lt;' '&lt;&lt;a&lt;&lt;' '&lt;&lt;c&lt;&lt;endl;
+                }
+            }
+        }
+        if (sols.size()==0) cout&lt;&lt;&quot;No value.&quot;&lt;&lt;endl;
+        else{
+            pair&lt;int,pair&lt;int,int&gt;&gt; ans=sols[0];
+            //cout&lt;&lt;'('&lt;&lt;ans.second.first&lt;&lt;'/'&lt;&lt;ans.first&lt;&lt;')'&lt;&lt;&quot;^3 + (&quot;&lt;&lt;ans.second.second&lt;&lt;'/'&lt;&lt;ans.first&lt;&lt;')'&lt;&lt;&quot;^3 = &quot;&lt;&lt;n&lt;&lt;endl;
+            for (int i=1;i&lt;sols.size();i++) if (sols[i].first+sols[i].second.first+sols[i].second.second&lt;ans.first+ans.second.first+ans.second.second) {
+                ans=sols[i];
+            }
+            cout&lt;&lt;'('&lt;&lt;ans.second.first&lt;&lt;'/'&lt;&lt;ans.first&lt;&lt;')'&lt;&lt;&quot;^3 + (&quot;&lt;&lt;ans.second.second&lt;&lt;'/'&lt;&lt;ans.first&lt;&lt;')'&lt;&lt;&quot;^3 = &quot;&lt;&lt;n&lt;&lt;endl;
+        }
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

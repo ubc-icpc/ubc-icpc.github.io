@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;vector&lt;int&gt;&gt; gears;
+	for (int i = 0; i &lt; n; i++) {
+		vector&lt;int&gt; gear;
+		int x, y, r; cin &gt;&gt; x &gt;&gt; y &gt;&gt; r;
+		gear.push_back(x); gear.push_back(y); gear.push_back(r);
+		gears.push_back(gear);
+	}
+	vector&lt;vector&lt;int&gt;&gt; graph(n);
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = i+1; j &lt; n; j++) {
+			int r = pow(gears[i][0] - gears[j][0], 2) + pow(gears[i][1] - gears[j][1], 2);
+			if (r == pow(gears[i][2] + gears[j][2], 2)) {
+				graph[i].push_back(j); graph[j].push_back(i);
+			}
+		}
+	}
+	vector&lt;pair&lt;long long, long long&gt;&gt; fracs(n, pair&lt;long long, long long&gt;(1, 1));
+	vector&lt;bool&gt; visited(n, 0);
+	vector&lt;int&gt; todo;
+	vector&lt;int&gt; prevs;
+	todo.push_back(0); prevs.push_back(0);
+	while (!todo.empty()) {
+		int cur = todo.back(); todo.pop_back();
+		int prev = prevs.back(); prevs.pop_back();
+		if (visited[cur]) {
+			long long num = -1 * fracs[prev].first * gears[cur][2]; long long dem = fracs[prev].second * gears[prev][2];
+			long long g = __gcd(abs(num), abs(dem));
+			num /= g; dem /= g;
+			if (num != fracs[cur].first || dem != fracs[cur].second) {
+				cout &lt;&lt; &quot;The input gear cannot move.&quot; &lt;&lt; endl;
+				return 0;
+			}
+			continue;
+		}
+		long long num = -1 * fracs[prev].first * gears[cur][2]; long long dem = fracs[prev].second * gears[prev][2];
+		long long g = __gcd(abs(num), abs(dem));
+		num /= g; dem /= g;
+		fracs[cur] = pair&lt;long long, long long&gt;(num, dem);		
+		for (int i : graph[cur]) {
+			todo.push_back(i);
+			prevs.push_back(cur);
+		}
+		visited[cur] = 1;
+	}
+	if (!visited[n-1]) cout &lt;&lt; &quot;The input gear is not connected to the output gear.&quot; &lt;&lt; endl;
+	else {
+		long long num = fracs[n-1].first; long long dem = fracs[n-1].second;
+		long long g = __gcd(abs(num), abs(dem));
+		num /= g; dem /= g;
+		num *= -1;
+		bool opp = ((double) num / dem) &lt; 0;
+		if (opp){ num *= -1; dem *= -1; }
+		cout &lt;&lt; dem &lt;&lt; &quot;:&quot; &lt;&lt; num &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

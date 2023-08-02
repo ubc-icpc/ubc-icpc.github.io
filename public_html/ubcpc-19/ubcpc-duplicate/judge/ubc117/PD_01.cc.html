@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+const int N = 4040;
+const ll INFLL = 0x3f3f3f3f3f3f3f3fll;
+
+vector&lt;vector&lt;pii&gt;&gt; edges;
+vector&lt;ll&gt; dist;
+ll ff[N];
+ll fb[N];
+
+int n, J;
+
+void build() {
+    edges = vector&lt;vector&lt;pii&gt;&gt;(n*2);
+    for(int i=1; i&lt;2*n; ++i) {
+        for(int j=1; j&lt;=J; ++j) {
+            if(i+j &lt; 2*n) {
+                edges[i].emplace_back(ff[j], i+j);
+            }
+            if(i-j &gt; 0) {
+                edges[i].emplace_back(fb[j], i-j);
+            }
+        }
+    }
+    dist = vector&lt;ll&gt;(n*2, INFLL);
+}
+
+void dijkstra(int init) {
+    priority_queue&lt;pii, vector&lt;pii&gt;, greater&lt;pii&gt;&gt; pq;
+    pq.push(pii(0, init));
+    dist[init] = 0;
+    while(!pq.empty()) {
+        pii p = pq.top(); pq.pop();
+        int u = p.second;
+        if(dist[u] &lt; p.first) continue;
+        for(auto&amp; q : edges[u]) {
+            int v = q.second;
+            ll nxt = q.first + p.first;
+            if (dist[v] &gt; nxt) {
+                dist[v] = nxt;
+                pq.push(pii(dist[v], v));
+            }
+        }
+    }
+}
+
+ll cost(int x) {
+    return dist[x+n];
+}
+
+ll dp[N][2];
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    cin &gt;&gt; n &gt;&gt; J;
+    for(int i=1; i&lt;=J; ++i) {
+        cin &gt;&gt; ff[i];
+    }
+    for(int i=1; i&lt;=J; ++i) {
+        cin &gt;&gt; fb[i];
+    }
+    build();
+    dijkstra(n);
+
+    memset(dp, INFLL, sizeof dp);
+
+    dp[1][0] = 0;
+    dp[1][1] = 0;
+
+    for(int i=2; i&lt;=n; ++i) {
+        for(int j=1; j&lt;=i-1; ++j) {
+            dp[i][0] = min(dp[i][0], cost(j)+max(dp[j][1], dp[i-j][0]));
+            dp[i][1] = min(dp[i][1], cost(-j)+max(dp[j][0], dp[i-j][1]));
+        }
+    }
+
+    cout &lt;&lt; dp[n][0] &lt;&lt; endl;
+
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

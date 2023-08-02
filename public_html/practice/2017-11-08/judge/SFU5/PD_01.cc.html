@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;algorithm&gt;
+#include &lt;math.h&gt;
+using namespace std;
+
+const int MAXN = 50010;
+const double PI = atan2(0, -1);
+
+struct P {
+	int x, y;
+	double a;
+}p[MAXN];
+
+bool cmp(const P&amp; a, const P&amp; b) {
+	return a.a &lt; b.a;
+}
+
+int main() {
+	int N, W, H;
+	while (scanf(&quot;%d%d%d&quot;, &amp;N, &amp;W, &amp;H) != EOF) {
+		for (int i = 0; i &lt; N; i++) {
+			scanf(&quot;%d%d&quot;, &amp;p[i].x, &amp;p[i].y);
+			p[i].x *= 2;
+			p[i].y *= 2;
+			p[i].a = atan2(p[i].x, p[i].y) + PI;
+		}
+		sort(p, p + N, cmp);
+		//for (int i = 0; i &lt; N; i++) {printf(&quot;%lf\n&quot;, p[i].a);}
+		for (int i = 0; i &lt; N; i++) {
+			int j = (i + N / 2 + N) % N;
+			int k = (j + 1) % N;
+			double d1 = p[j].a - p[i].a, d2 = p[k].a - p[i].a;
+			if (d1 &lt; 0) d1 += 2 * PI;
+			if (d2 &lt; 0) d2 += 2 * PI;
+			//printf(&quot;%lf %lf\n&quot;, d1, d2);
+			if (d1 &lt;= PI + 1e-10 &amp;&amp; (d2 + 1e-10 &gt;= PI || d2 &lt;= 0 + 1e-10)) {
+				//printf(&quot;i = %d\n&quot;, i);
+				for (int l = (i + 1) % N; l != k; l = (l + 1) % N) {
+					printf(&quot;%d %d\n&quot;, p[l].x / 2, p[l].y / 2);
+				}
+				break;
+			}
+		}
+		//puts(&quot;&quot;);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

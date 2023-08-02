@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+from sys import stdin
+
+N, K = [int(i) for i in stdin.readline().strip().split()]
+excitement = sorted([int(i) for i in stdin.readline().strip().split()], reverse = True)
+
+print(sum(excitement[0 : K]))
+</code>
+</pre>
+</body>
+</html>

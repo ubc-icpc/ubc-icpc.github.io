@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+typedef pair&lt;int,int&gt; ints ;
+
+int main(){
+	int T, M, N, tot;
+	ints start;
+	vector&lt;ints&gt; blocks;
+	char c;
+
+	cin&gt;&gt;T;
+
+	while(T--){
+		blocks.clear();
+		cin&gt;&gt;M;
+		cin&gt;&gt;N;
+		for(int m=0; m&lt;M;m++){
+			for (int n=0;n&lt;=N;n++){
+				cin.get(c);
+				switch (c){
+					case 'B':
+						blocks.push_back(pair&lt;int,int&gt;(m,n));
+						break;
+					case 'S':
+						start=pair&lt;int,int&gt;(m,n);
+				}
+			}
+		}
+
+		//sum everything up
+		tot=0;
+		for(vector&lt;ints &gt;::iterator i=blocks.begin();i&lt;blocks.end();i++){
+			tot+=2*abs((*i).first-start.first);
+			tot+=2*abs((*i).second-start.second);
+		}
+
+	cout&lt;&lt;tot&lt;&lt;&quot; seconds to blocks get!&quot;&lt;&lt;endl;
+	}
+
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

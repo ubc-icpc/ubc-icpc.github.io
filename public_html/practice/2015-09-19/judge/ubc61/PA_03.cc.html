@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main() {
+	int n;
+	while(cin &gt;&gt; n &amp;&amp; n!= 0) {
+		int h=0, m=0;
+		vector&lt;int&gt; loads;
+		for(int i=0; i&lt;n; i++) {
+			int l; cin &gt;&gt; l;
+			loads.push_back(l);
+		}
+		sort(loads.begin(), loads.end());
+		reverse(loads.begin(), loads.end());
+		int last = 0;
+		for (int i=0; i&lt;n; i++) {
+			m = max((i+1)*30,m) + loads[i];
+		}
+		while(m &gt;= 60) {
+			m -= 60;
+			h++;
+		}
+		cout &lt;&lt; h &lt;&lt; &quot;:&quot;;
+		if (m == 0) {
+			cout &lt;&lt; &quot;00&quot;;
+		} else if (m&lt;10) {
+			cout &lt;&lt; &quot;0&quot; &lt;&lt; m;
+		} else {
+			cout &lt;&lt; m;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

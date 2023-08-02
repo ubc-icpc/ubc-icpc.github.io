@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+//typedef long double ld;
+#define double long double
+
+#define epsilon 0.000001
+
+//------------------
+int d;
+double f[1000];
+//------------------
+
+double calc_val(int x, int forbid1, int forbid2){
+
+  double ret = 0.0;
+  for(int i = 0;i &lt;= d+2;i++){
+
+      if(i == forbid1 || i == forbid2) continue;
+
+      double p = f[i];
+      for(int j = 0;j &lt;= d+2;j++){
+
+        if(j == forbid1 || j == forbid2 || j == i) continue;
+
+        p *= (double)(x - j);
+        p /= (double)(i - j);
+      }
+
+      ret += p;
+  }
+
+  return ret;
+}
+
+
+bool check(int k){
+
+  for(int i = 0;i &lt;= d+2;i++){
+
+    if(i == k) continue;
+
+    double val = calc_val(k, i, k);
+
+    if(abs(val - f[k]) &lt; 0.5) return false;
+  }
+
+  return true;
+}
+
+int main(){
+
+  while( scanf(&quot;%d&quot;, &amp;d) &amp;&amp; d ){
+
+    for(int i = 0;i &lt;= d+2;i++) cin &gt;&gt; f[i];
+
+    //cout &lt;&lt; answer() &lt;&lt; endl;
+    for(int i = 0;i &lt;= d+2;i++)
+      if(check(i)){
+        cout &lt;&lt; i &lt;&lt; endl;
+        break;
+      }
+  }
+
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

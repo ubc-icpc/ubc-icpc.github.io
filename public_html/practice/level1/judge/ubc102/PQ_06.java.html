@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.text.DecimalFormat;
+import java.util.Scanner;
+
+public class Q {
+	public static double equationSolver(double A, double B){
+		double r = 10000000000.0;
+		while (compute(r, B) &lt; A){
+			r *= 2;
+		}
+
+		double low = B / (2 * Math.PI);
+		double high = r;
+		double mid = r/2;
+		while (Math.abs(compute(mid, B) - A) &gt;= Math.pow(10, -25)){
+			if (compute(mid, B) - A &gt;= 0){
+				high = mid;
+			}
+			else {
+				low = mid;
+			}
+			mid = (high + low) / 2;
+		}
+		
+		return mid;
+	}
+	
+	public static double compute(double r, double B){
+		return 2 * r * Math.sin(B / 2 / r);
+	}
+	
+	
+	public static void main (String [] args){
+		Scanner scan = new Scanner(System.in);
+		
+		while (true){
+			double length = scan.nextDouble();
+			double tempChange = scan.nextDouble();
+			double coef = scan.nextDouble();
+			
+			if (length &lt; 0 &amp;&amp; tempChange &lt; 0 &amp;&amp; coef &lt; 0){
+				break;
+			}
+			
+			if (tempChange == 0 || coef == 0){
+				System.out.println(&quot;0.000&quot;);
+				continue;
+			}
+			
+			double newLength = length * (1 + tempChange * coef);
+			
+			//System.out.println(length + &quot; &quot; + newLength);
+			
+			double r = equationSolver(length, newLength);
+			//System.out.println(r);
+			
+			double angle = newLength / r;
+			
+			double result = r * (1-Math.cos(angle / 2));
+		
+			result = Math.round(result * 1000d) / 1000d;
+			
+			DecimalFormat formatter = new DecimalFormat(&quot;0.000&quot;);
+			System.out.println(formatter.format(result));
+		}
+
+		
+		scan.close();
+	}
+}</code>
+</pre>
+</body>
+</html>

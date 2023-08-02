@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int maxn = 105;
+int a[maxn][maxn];
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int r, c, n, h; cin &gt;&gt; r &gt;&gt; c &gt;&gt; n &gt;&gt; h;
+        memset(a, 0xc0, sizeof a);
+        for (int i = 1; i &lt;= r; i++) {
+            for (int j = 1; j &lt;= c; j++) {
+                char x; cin &gt;&gt; x;
+                a[i][j] = x-'0';
+            }
+        }
+        
+        for (int i = 0; i &lt; n; i++) {
+            int x, y; cin &gt;&gt; x &gt;&gt; y;
+            queue&lt;pair&lt;int, int&gt;&gt; q({{x, y}});
+            while (!q.empty()) {
+                x = q.front().first, y = q.front().second;
+                q.pop();
+                a[x][y]++;
+                if (a[x][y] &gt; h) {
+                    a[x][y] -= 4;
+                    for (int d = 0; d &lt; 4; d++) {
+                        q.push({x+dx[d], y+dy[d]});
+                    }
+                }
+            }
+        }
+        
+        for (int i = 1; i &lt;= r; i++) {
+            for (int j = 1; j &lt;= c; j++) {
+                cout &lt;&lt; a[i][j];
+            }
+            cout &lt;&lt; '\n';
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

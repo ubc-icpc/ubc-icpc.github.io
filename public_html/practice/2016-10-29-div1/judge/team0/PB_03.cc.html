@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef double ld;
+const int N = 21;
+const int NN = 1048576;
+
+int n, ni, m;
+int base[N], succ[N][N], fail[N][N];
+
+int val[N];
+int vals[NN][N];
+void dfs(int mask, int i) {
+    vals[mask][i] = val[i];
+
+    if (i+1 &lt; n) {
+        // try success
+        for (int j = i+1; j &lt; n; j++) val[j] += succ[i][j];
+        dfs(mask|(1&lt;&lt;i), i+1);
+
+        // try failure
+        for (int j = i+1; j &lt; n; j++) val[j] += fail[i][j] - succ[i][j];
+        dfs(mask, i+1);
+
+        for (int j = i+1; j &lt; n; j++) val[j] -= fail[i][j];
+    }
+}
+
+ld bigdie[1001];   // p(die &gt; k | always choose bigger of 2 die)
+ld smalldie[1001]; // p(die &gt; k | always choose smaller of 2 die)
+void compDie() {
+    ld tmp1[1001], tmp2[1001]; // p(die == k | always choose bigger or smaller of 2 die)
+    memset(tmp1, 0, sizeof tmp1);
+    memset(tmp2, 0, sizeof tmp2);
+
+    ld p = 1.0/m/m;
+    for (int i = 1; i &lt;= m; i++) {
+        for (int j = 1; j &lt;= m; j++) {
+            tmp1[min(i, j)] += p;
+            tmp2[max(i, j)] += p;
+        }
+    }
+
+    bigdie[m] = 0;
+    smalldie[m] = 0;
+    for (int i = m-1; i &gt;= 0; i--) {
+        bigdie[i] = bigdie[i+1] + tmp1[i+1];
+        smalldie[i] = smalldie[i+1] + tmp2[i+1];
+    }
+}
+
+ld dp[NN][N][2]; // dp[mask][k][i] = max p(end is positive | events 0..i-1 = mask, k interventions left, curr=i)
+
+int main() {
+    cin &gt;&gt; n &gt;&gt; ni &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; base[i];
+        val[i] = base[i];
+        for (int j = i+1; j &lt; n; j++) cin &gt;&gt; succ[i][j];
+        for (int j = i+1; j &lt; n; j++) cin &gt;&gt; fail[i][j];
+    }
+    dfs(0, 0);
+    compDie();
+
+    // i = n-1
+    for (int k = 0; k &lt;= ni; k++) {
+        for (int z = 0; z &lt; (1&lt;&lt;(n-1)); z++) {
+            int v = max(0, min(m, -vals[z][n-1])); // need to have dice &gt; -val for positive outcome
+            ld p = (ld)(m-v)/(ld)(m);
+
+            dp[z][k][(n-1)%2] = p;
+            if (k &gt; 0) {
+                dp[z][k][(n-1)%2] = max(dp[z][k][(n-1)%2], max(bigdie[v], smalldie[v]));
+            }
+        }
+    }
+    // i &lt; n-1
+    for (int i = n-2; i &gt;= 0; i--) {
+        for (int k = 0; k &lt;= ni; k++) {
+            for (int z = 0; z &lt; (1&lt;&lt;i); z++) {
+                int v = max(0, min(m, -vals[z][i]));
+                ld p = (ld)(m-v)/(ld)(m);
+
+                dp[z][k][i%2] = p * dp[z|(1&lt;&lt;i)][k][(i+1)%2] + (1-p) * dp[z][k][(i+1)%2];
+                if (k &gt; 0) {
+                    dp[z][k][i%2] = max(dp[z][k][i%2],
+                        max(bigdie[v]   * dp[z|(1&lt;&lt;i)][k-1][(i+1)%2] + (1-bigdie[v])   * dp[z][k-1][(i+1)%2],
+                            smalldie[v] * dp[z|(1&lt;&lt;i)][k-1][(i+1)%2] + (1-smalldie[v]) * dp[z][k-1][(i+1)%2]));
+                }
+            }
+        }
+    }
+    cout &lt;&lt; setprecision(6) &lt;&lt; fixed &lt;&lt; dp[0][ni][0] &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

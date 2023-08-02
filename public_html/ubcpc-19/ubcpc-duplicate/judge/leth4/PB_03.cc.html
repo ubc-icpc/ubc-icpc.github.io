@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define debug(a) cerr &lt;&lt; #a &lt;&lt; &quot; = &quot; &lt;&lt; (a) &lt;&lt; endl;
+#define get(t, i) get&lt;(i)&gt;((t))
+#define fst first
+#define snd second
+#define all(X) begin(X), end(X)
+
+template&lt;typename T&gt; ostream&amp; operator&lt;&lt;(ostream&amp; o, const vector&lt;T&gt;&amp; v) {
+  o &lt;&lt; '['; int b = 0; for (const auto&amp; a : v) o &lt;&lt; (b++ ? &quot;, &quot; : &quot;&quot;) &lt;&lt; a; o &lt;&lt; ']'; return o;
+}
+
+template&lt;typename T, typename U&gt; ostream&amp; operator&lt;&lt;(ostream&amp; o, const pair&lt;T, U&gt;&amp; p) {
+  o &lt;&lt; '(' &lt;&lt; p.fst &lt;&lt; &quot;, &quot; &lt;&lt; p.snd &lt;&lt; ')'; return o;
+}
+
+template&lt;typename T&gt; ostream&amp; operator&lt;&lt;(ostream&amp; o, const set&lt;T&gt;&amp; s) {
+  o &lt;&lt; '{'; int b = 0; for (auto&amp; e : s) o &lt;&lt; (b++ ? &quot;, &quot; : &quot;&quot;) &lt;&lt; e; o &lt;&lt; '}'; return o;
+}
+
+int n;
+int h[111], a[111], d[111];
+string s[111];
+
+// i = 1, j = -1
+int win(int i, int j) {
+  int di = max(0, a[i] - d[j]);
+  int dj = max(0, a[j] - d[i]);
+
+  if (di == 0 and dj == 0) {
+    return 0;
+  } else if (di == 0 or dj == 0) {
+    return di == 0 ? -1 : 1;
+  } else {
+    // a == # of moves for i win
+    int a = h[j]/di + (h[j] % di ? 1 : 0);
+    int b = h[i]/dj + (h[i] % dj ? 1 : 0);
+    if (a == b) return 0;
+    else return a &lt; b ? 1 : -1;
+  }
+}
+
+bool check(int i, int j, int k) {
+  if (win(i, j) == 1 and win(j, k) == 1 and win(k, i) == 1) {
+    return 1;
+  }
+
+  if (win(i, j) == -1 and win(j, k) == -1 and win(k, i) == -1) {
+    return 1;
+  }
+
+  return 0;
+}
+
+int main() {
+  ios::sync_with_stdio(0); cin.tie(0);
+  cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; s[i] &gt;&gt; h[i] &gt;&gt; a[i] &gt;&gt; d[i];
+  }
+
+  vector&lt;int&gt; ans;
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = i+1; j &lt; n; j++) {
+      for (int k = j+1; k &lt; n; k++) {
+        if (check(i, j, k)) {
+          ans.push_back(i);
+          ans.push_back(j);
+          ans.push_back(k);
+        }
+      }
+    }
+  }
+
+
+  cout &lt;&lt; ans.size()/3 &lt;&lt; endl;
+  for (int x = 0; x &lt; ans.size(); x += 3) {
+    int i = ans[x];
+    int j = ans[x+1];
+    int k = ans[x+2];
+    cout &lt;&lt; s[i] &lt;&lt; ' ' &lt;&lt; s[j] &lt;&lt; ' ' &lt;&lt; s[k] &lt;&lt; endl;
+  }
+}
+
+</code>
+</pre>
+</body>
+</html>

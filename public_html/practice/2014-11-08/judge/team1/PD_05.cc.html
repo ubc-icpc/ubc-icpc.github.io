@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+#define FOR(i, n) for(LL i = 0; i &lt; (n); i++)
+#define SZ(A) ((int)(A).size())
+#define PB push_back
+
+#define show(x) cerr&lt;&lt;&quot;XXXX----&gt; &quot;&lt;&lt;#x&lt;&lt;&quot; = &quot;&lt;&lt;x&lt;&lt;endl;
+
+typedef long long LL;
+typedef pair&lt;double ,double&gt; Point;
+
+#define X first
+#define Y second
+#define PI M_PI
+
+Point center;
+Point p[50*1000 +2];
+LL n;
+
+double deg(Point a){
+	if (a.X == 0 &amp;&amp; a.Y == 0)	return 0;
+	double ret = atan2(a.Y, a.X);
+	if (ret &lt; 0)	ret += 2. * PI;
+	return ret;
+}
+
+/*
+	if (a.X != 0){
+	       	return atan2(a.Y / a.X);
+	}
+	if (a.Y &gt; 0) return PI / 2.;
+	return 3.0 * PI / 2.;
+}*/
+
+inline bool isLess(Point a, Point b){
+	return deg(a) &lt; deg(b);
+}
+
+bool good(int k){
+	int t1 = (k + n/2 - 1 + n) % n;
+	int t2 = (t1 + 1) % n;
+
+
+	double d1 = deg(p[t1]);
+	if (t1 &lt; k)
+		d1 += 2*PI;
+	double d2 = deg(p[t2]);
+	if (t2 &lt; k)
+		d2 += 2*PI;
+
+	return (d1 - deg(p[k]) &lt;= PI &amp;&amp; d2 -deg(p[k]) &gt;= PI);
+}
+
+int main(){
+	double	w, h;
+	while(cin &gt;&gt; n &gt;&gt; w &gt;&gt; h){
+		if (n == 0) break;
+		FOR(i, n){
+			cin &gt;&gt; p[i].X &gt;&gt; p[i].Y;
+		}
+		center.X = w / 2.;
+		center.Y = h / 2.;
+
+		FOR(i, n){
+			p[i].X -= center.X;
+			p[i].Y -= center.Y;
+		}
+
+		sort(p, p + n, isLess);
+
+
+		FOR(i, n){
+			if (good(i)){
+				FOR(k, n/2){
+					int t = (k + i) % n;
+					cout &lt;&lt; (int)(p[t].X + center.X) &lt;&lt; &quot; &quot; &lt;&lt; (int)(p[t].Y + center.Y) &lt;&lt; endl;
+				}
+				break;
+			}
+
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

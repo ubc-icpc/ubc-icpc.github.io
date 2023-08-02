@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+void getinput(__int128&amp; i) {
+  i = 0;
+  string s; cin &gt;&gt; s;
+  for (char c : s) {
+    i *= 10;
+    i += c - '0';
+  }
+}
+
+int main() {
+  __int128 a11, a12, a21, a22;
+  getinput(a11);
+  getinput(a12);
+  getinput(a21);
+  getinput(a22);
+  string bitstring = &quot;&quot;;
+  while(!(a11 == 1 &amp;&amp; a12 == 0 &amp;&amp; a21 == 0 &amp;&amp; a22 == 1)) {
+    if(a11 &gt; a12 || a21 &gt; a22) {
+      a11 -= a12;
+      a21 -= a22;
+      bitstring.append(&quot;0&quot;);
+    } else {
+      a12 -= a11;
+      a22 -= a21;
+      bitstring.append(&quot;1&quot;);
+    }
+  }
+
+  reverse(bitstring.begin(), bitstring.end());
+  cout &lt;&lt; bitstring &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

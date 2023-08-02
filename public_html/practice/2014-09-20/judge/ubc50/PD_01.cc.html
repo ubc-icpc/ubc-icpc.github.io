@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;string&gt;
+#include &quot;stdio.h&quot;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+
+int rows[4] = {0, 0, 1, -1};
+int cols[4] = {1, -1, 0, 0};
+
+int calc2(vector&lt;string&gt; &amp;aq, int x, int y, int r, int c, vector&lt;vector&lt;bool&gt; &gt; &amp;visited)
+{
+    if(visited[x][y]) return 0;
+    visited[x][y] = true;
+    if(aq[x][y] == 'V')
+    {
+        return 1;
+    }
+    if(aq[x][y] == '#' || aq[x][y] == 'H') return 0;
+    int res = 0;
+    // cout &lt;&lt; &quot;x = &quot; &lt;&lt; x &lt;&lt; &quot; y = &quot; &lt;&lt; y &lt;&lt; '\n';
+    for(int i = 0; i &lt; 4; i ++)
+    {
+        int newx = x+rows[i];
+        int newy = y+cols[i];
+        if(newx &gt;= 0 &amp;&amp; newx &lt; r &amp;&amp; newy &gt;= 0 &amp;&amp; newy &lt; c)
+            res += calc2(aq, newx, newy, r, c, visited);
+    }
+    return res;
+}
+
+int calc(vector&lt;string&gt; &amp;aq, int x, int y, int r, int c, vector&lt;vector&lt;bool&gt; &gt; &amp;visited)
+{
+    if(visited[x][y]) return 0;
+    visited[x][y] = true;
+    if(aq[x][y] == 'V')
+    {
+        aq[x][y] = 'H';
+        return 1;
+    }
+    if(aq[x][y] == '#' || aq[x][y] == 'H') return 0;
+    int res = 0;
+    // cout &lt;&lt; &quot;x = &quot; &lt;&lt; x &lt;&lt; &quot; y = &quot; &lt;&lt; y &lt;&lt; '\n';
+    for(int i = 0; i &lt; 4; i ++)
+    {
+        int newx = x+rows[i];
+        int newy = y+cols[i];
+        if(newx &gt;= 0 &amp;&amp; newx &lt; r &amp;&amp; newy &gt;= 0 &amp;&amp; newy &lt; c)
+            res += calc(aq, newx, newy, r, c, visited);
+    }
+    return res;
+}
+
+int solve(vector&lt;string&gt; &amp;aq, int x, int y, int r, int c)
+{
+    int res = 0;
+    vector&lt;vector&lt;bool&gt; &gt; visited(r, vector&lt;bool&gt;(c, false));
+    visited[x][y] = true;
+    for(int i = 0; i &lt; 4; i ++)
+    {
+        int newx = x+rows[i];
+        int newy = y+cols[i];
+        if(newx &gt;= 0 &amp;&amp; newx &lt; r &amp;&amp; newy &gt;= 0 &amp;&amp; newy &lt; c)
+            res += calc(aq, newx, newy, r, c, visited);
+    }
+    int withoutPush = res;
+    int best = res;
+    // cout &lt;&lt; &quot;best = &quot; &lt;&lt; res &lt;&lt; '\n';
+    for(int i = 0; i &lt; r; i ++)
+    {
+        for(int j = 0; j &lt; c; j ++)
+        {
+            if(aq[i][j] == 'H' &amp;&amp; visited[i][j])
+            {
+                // cout &lt;&lt; &quot;i = &quot; &lt;&lt; i &lt;&lt; &quot;j = &quot; &lt;&lt; j &lt;&lt; '\n';
+                for(int k = 0; k &lt; 4; k ++)
+                {
+                    int newres = 0;
+                    int curx = i+rows[k]; int newx = i-rows[k];
+                    int cury = j+cols[k]; int newy = j-cols[k];
+                    // cout &lt;&lt; curx &lt;&lt; &quot; &quot; &lt;&lt; cury &lt;&lt; '\n';
+                    // cout &lt;&lt; newx &lt;&lt; &quot; &quot; &lt;&lt; newy &lt;&lt; '\n';
+                    if(curx &gt;= 0 &amp;&amp; curx &lt; r &amp;&amp; newx &gt;= 0 &amp;&amp; newx &lt; r
+                        &amp;&amp; cury &gt;= 0 &amp;&amp; cury &lt; c &amp;&amp; newy &gt;= 0 &amp;&amp; newy &lt; c
+                            &amp;&amp; aq[curx][cury] == '.' &amp;&amp; visited[newx][newy] &amp;&amp; aq[newx][newy] == '.')
+                    {
+                        aq[i][j] = '.';
+                        aq[curx][cury] = '#';
+                        vector&lt;vector&lt;bool&gt; &gt; newvisited(r, vector&lt;bool&gt;(c, false));
+                        newres += calc2(aq, i, j, r, c, newvisited);
+                        // cout &lt;&lt; &quot;newres = &quot; &lt;&lt; newres &lt;&lt; '\n';
+                        aq[i][j] = 'H';
+                        aq[curx][cury] = '.';
+                        best = max(best, withoutPush+newres);
+                    }
+                }
+                
+            }
+        }
+    }
+    return best;
+}
+
+int main()
+{
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while(t --)
+    {
+        int r, c;
+        scanf(&quot;%d %d&quot;, &amp;r, &amp;c);
+        vector&lt;string&gt; aq(r);
+        bool hasS = false;
+        int sx = 0;
+        int sy = 0;
+        int totalV = 0;
+
+        for(int i = 0; i &lt; r; i ++)
+        {
+            cin &gt;&gt; aq[i];
+            for(int j = 0; j &lt; c; j ++)
+            {
+                if(aq[i][j] == 'S')
+                {
+                    sx = i; sy = j;
+                    aq[i][j] = '.';
+                }
+            }
+        }
+        int res = solve(aq, sx, sy, r, c);
+        printf(&quot;%d\n&quot;, res);
+    }
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

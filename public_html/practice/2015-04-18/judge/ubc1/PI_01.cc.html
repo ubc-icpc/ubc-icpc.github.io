@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        list&lt;char&gt; lst;
+        string s; cin &gt;&gt; s;
+        
+        auto it = lst.begin();
+        for (char c : s) {
+            if (c == '&gt;') {
+                if (it != lst.end()) it++;
+            } else if (c == '&lt;') {
+                if (it != lst.begin()) it--;
+            } else if (c == '-') {
+                if (it != lst.begin()) {
+                    auto t = it;
+                    lst.erase(--t);
+                }
+            } else {
+                lst.insert(it, c);
+            }
+        }
+        
+        for (char c : lst) cout &lt;&lt; c;
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

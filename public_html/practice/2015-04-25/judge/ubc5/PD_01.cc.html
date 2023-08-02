@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+vector&lt;int&gt; adj[1000001];
+bool v[1000001];
+
+bool bfs(int s, int e) {
+  memset(v,0,sizeof v);
+  queue&lt;int&gt; q;
+  q.push(s);
+  while (q.size()) {
+    int f = q.front();
+    q.pop();
+    if (f == e)
+      return true;
+    for (int i = 0; i &lt; adj[f].size(); i++) {
+      if (!v[adj[f][i]]) {
+        v[adj[f][i]] = true;
+        q.push(adj[f][i]);
+      }
+    }
+  }
+  return false;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int n, m;
+  cin &gt;&gt; n &gt;&gt; m;
+  for (int i = 0; i &lt; m; i++) {
+    int x, y;
+    cin &gt;&gt; x &gt;&gt; y;
+    adj[x].push_back(y);
+  }
+  int p, q;
+  cin &gt;&gt; p &gt;&gt; q;
+  if (bfs(p,q))
+    cout &lt;&lt; &quot;yes\n&quot;;
+  else if (bfs(q,p))
+    cout &lt;&lt; &quot;no\n&quot;;
+  else
+    cout &lt;&lt; &quot;unknown\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

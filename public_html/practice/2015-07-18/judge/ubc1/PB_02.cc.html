@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int maxn = 10005;
+vector&lt;int&gt; g[maxn];
+int dist[maxn], tdist[maxn], seen[maxn];
+
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n, m; cin &gt;&gt; n &gt;&gt; m;
+        memset(seen, 0, sizeof seen);
+        memset(dist, -1, sizeof dist);
+        for (int i = 1; i &lt; maxn; i++) {
+            g[i].clear();
+        }
+        
+        for (int i = 0; i &lt; n; i++) {
+            int u; cin &gt;&gt; u;
+            int d; cin &gt;&gt; d;
+            for (int j = 0; j &lt; d; j++) {
+                int v; cin &gt;&gt; v;
+                g[u].push_back(v);
+            }
+        }
+        
+        set&lt;int&gt; z;
+        for (int i = 0; i &lt; m; i++) {
+            int d; cin &gt;&gt; d;
+            for (int j = 0; j &lt; d; j++) {
+                int x; cin &gt;&gt; x;
+                z.insert(x);
+            }
+        }
+        
+        for (int x : z) {
+            memset(seen, 0, sizeof seen);
+            queue&lt;int&gt; q({x});
+            seen[x] = true;
+            tdist[x] = 0;
+            while (!q.empty()) {
+                int u = q.front(); q.pop();
+                dist[u] = max(dist[u], tdist[u]);
+                for (int v : g[u]) {
+                    if (!seen[v]) {
+                        seen[v] = true;
+                        tdist[v] = tdist[u] + 1;
+                        q.push(v);
+                    }
+                }
+            }
+        }
+        
+        int ans = 100000, nz = -1;
+        for (int i = 1; i &lt;= 10000; i++) {
+            if (dist[i] != -1) {
+                if (dist[i] &lt; ans) {
+                    ans = dist[i];
+                    nz = i;
+                }
+            }
+        }
+        cout &lt;&lt; ans+1 &lt;&lt; &quot; &quot; &lt;&lt; nz &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

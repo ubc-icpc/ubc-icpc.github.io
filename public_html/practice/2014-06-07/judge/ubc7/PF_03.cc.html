@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstring&gt;
+using namespace std;
+#define MAXN 100000
+int d[MAXN];
+
+int main() {
+    int n,g,s,r,p,t,l;
+    cin&gt;&gt;n&gt;&gt;g;
+        memset(d, 0, sizeof(d));
+        p=0, t=0;
+        for(int i=0;i &lt;n;++i) {
+            cin&gt;&gt;s&gt;&gt;r;
+            if(s &gt; r) p++;
+            else if(s==r) t++;
+            else d[i-p-t]=r-s;
+        }
+        l = n-p-t;
+        sort(d, d+l);
+        p *= 3;
+        p += t;
+        if(g &gt; 0) {
+            p += min(g, t) * 2;
+        }
+        g -= t;
+        for(int i=0;i&lt;l &amp;&amp; g &gt;= d[i];++i) {
+            p += 1, g -= d[i];
+            if(g &gt; 0) p += 2, g--;
+        }
+        cout &lt;&lt; p &lt;&lt; endl;
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

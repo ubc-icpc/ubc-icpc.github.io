@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;queue&gt;
+#include &lt;climits&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+int main() {
+	string vowels = &quot;aiyeou&quot;;
+	string consonants = &quot;bkxznhdcwgpvjqtsrlmf&quot;;
+	string s;
+	while (getline(cin, s)) {
+		for (int i = 0; i &lt; s.size(); i++) {
+			bool isUpper = false;
+			if (s[i] &gt;= 'A' &amp;&amp; s[i] &lt;= 'Z') {
+				isUpper = true;
+				s[i] = s[i] - 'A' + 'a';
+			}
+			int vi = vowels.find(s[i]);
+			int ci = consonants.find(s[i]);
+			//cout &lt;&lt; vi &lt;&lt; ' ' &lt;&lt; ci &lt;&lt; endl;
+			char c;
+			if (vi != -1) {
+				c = vowels[(vi + 3) % 6];
+			} else if (ci != -1) {
+				c = consonants[(ci + 10) % 20];
+			} else {
+				c = s[i];
+			}
+			if (isUpper) {
+				c += 'A' - 'a';
+			}
+			cout &lt;&lt; c;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

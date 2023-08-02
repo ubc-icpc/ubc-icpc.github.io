@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+int main()
+{
+    int t;
+    cin&gt;&gt;t;
+    for(int i=0; i&lt;t; i++)
+    {
+        string a;
+        cin&gt;&gt;a;
+        int uzunluq = a.length();
+        uzunluq = sqrt(uzunluq);
+        string arr[uzunluq] ;
+        for(int i=0; i&lt;uzunluq; i++)
+        {
+            arr[i]=&quot;&quot;;
+        }
+        for(int i=0; i&lt;a.length(); i++)
+        {
+            arr[i%uzunluq]+=a[i];
+        }
+        for(int i=uzunluq-1; i&gt;=0; i--)
+        {
+            cout&lt;&lt;arr[i];
+        }
+        cout&lt;&lt;endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

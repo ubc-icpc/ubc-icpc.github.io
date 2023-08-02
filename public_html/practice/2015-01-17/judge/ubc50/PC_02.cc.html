@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;list&gt;
+#include&lt;cstdlib&gt;
+#include&lt;map&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+int main()
+{
+  long n;
+  cin &gt;&gt; n;
+  map&lt;int,long&gt; m;
+  int r;
+  int ans = 0;
+  for(int i=0;i&lt;n;i++)
+    {
+      cin &gt;&gt; r;
+      m[r]+=1;
+    }
+  map&lt;int,vector&lt;int&gt; &gt;v;
+  for(auto e : m)
+    {
+      v[e.second].push_back(e.first);
+    }
+  for(auto e : v)
+    sort(e.second.begin(),e.second.end());
+  auto it = v.end();
+  --it;
+  if((it-&gt;second).size() &gt;=2)
+    {
+      ans = abs((it-&gt;second).front()-(it-&gt;second).back());
+    }
+  else
+    {
+      int h1 = (it-&gt;second).back();
+      --it;
+      ans =max(abs(h1-(it-&gt;second).front()), abs(h1-(it-&gt;second).back()));
+    }
+  cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

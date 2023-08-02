@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class G {
+	public static void main (String [] args){
+		Scanner scan = new Scanner (System.in);
+		int testNo = 1;
+		while (true){
+			long a = scan.nextLong() - 1;
+			long b = scan.nextLong() - 1;
+			
+			if (a == -1 &amp;&amp; b == -1){
+				break;
+			}
+			
+			int total = 0;
+			
+			for (int i = 1; i &lt; 50000; i++){
+				long num = i * (i + 1) / 2;
+				if (num &lt; b &amp;&amp; num &gt; a){
+					num++;
+					if (Math.abs(Math.sqrt(num) - (int)(Math.sqrt(num))) &lt; 0.000001){
+						total ++;
+					}
+				}
+			}
+			System.out.println(&quot;Case &quot; + testNo + &quot;: &quot;+ total);
+			testNo++;
+		}
+		scan.close();
+	}
+}</code>
+</pre>
+</body>
+</html>

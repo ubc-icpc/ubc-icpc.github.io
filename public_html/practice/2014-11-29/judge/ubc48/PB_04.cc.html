@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+	int student, tempind;
+	cin &gt;&gt; student;
+	string s1[student], s2[student], answer, temp;
+	for(int a = 0; a &lt; student; a++){
+		cin &gt;&gt; s1[a];
+	}
+	for(int a = 0; a &lt; student; a++){
+		cin &gt;&gt; s2[a];
+	}
+	for(int a = 0; a &lt; student; a++){
+		temp = s2[a];
+		for(int b = 0; b &lt; student; b++){
+			if(temp == s1[b]){
+				tempind = b;
+				break;
+			}
+		}
+		if(s2[tempind] == s1[a]){
+			if(s2[a] != s1[a]){
+				answer = &quot;good&quot;;
+			}else{
+				answer = &quot;bad&quot;;
+				break;
+			}
+		}else{
+			answer = &quot;bad&quot;;
+			break;
+		}
+	}
+	cout &lt;&lt; answer;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

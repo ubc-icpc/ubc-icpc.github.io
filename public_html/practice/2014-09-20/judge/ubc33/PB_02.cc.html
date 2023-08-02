@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+// have all guys attack one guy
+// rank by attack strength / seconds to kill
+
+int D[5];
+double tot_damage;
+
+struct enemy {
+	int H, E;
+	double ratio() const {
+		return ((double)E)/((double)H);
+	}
+	bool operator&lt;(const enemy&amp; other) const {
+		return this-&gt;ratio() &gt; other.ratio();
+	}
+};
+
+
+int main() {
+
+	int T;
+	cin &gt;&gt; T;
+	for (int i=0; i&lt;T; ++i) {
+
+		vector&lt;enemy&gt; e(5);
+
+		for (int j1=0; j1&lt;5; ++j1) cin &gt;&gt; e[j1].H;
+		for (int j2=0; j2&lt;5; ++j2) cin &gt;&gt; e[j2].E;
+		for (int j3=0; j3&lt;5; ++j3) cin &gt;&gt; D[j3];
+
+		tot_damage = 0;
+		sort(e.begin(), e.end());
+
+		double tot_attack = D[0]+D[1]+D[2]+D[3]+D[4];
+		double tot_time = 0;
+		for (int i=0; i&lt;5; ++i) {
+			tot_time += (e[i].H / tot_attack);
+			tot_damage += tot_time*e[i].E;
+		}
+
+
+		cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; tot_damage &lt;&lt; endl;
+
+
+
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

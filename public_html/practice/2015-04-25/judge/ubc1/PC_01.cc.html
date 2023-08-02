@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int res[4][4], t;
+vector&lt;int&gt; xpos, ypos;
+
+int dfs(int k) {
+    if (k == xpos.size()) {
+        int s[4] = {0, 0, 0, 0};
+        for (int i = 0; i &lt; 4; i++) {
+            for (int j = i+1; j &lt; 4; j++) {
+                if (res[i][j] == 1) {
+                    s[i] += 3;
+                } else if (res[i][j] == 2) {
+                    s[j] += 3;
+                } else {
+                    assert(res[i][j] == 0);
+                    s[i]++;
+                    s[j]++;
+                }
+            }
+        }
+        
+        for (int i = 0; i &lt; 4; i++) {
+            if (i == t) continue;
+            if (s[i] &gt;= s[t]) return 0;
+        }
+        return 1;
+    }
+    
+    int ans = 0;
+    for (int i = 0; i &lt; 3; i++) {
+        assert(res[xpos[k]][ypos[k]] == -1);
+        res[xpos[k]][ypos[k]] = i;
+        ans += dfs(k+1);
+        res[xpos[k]][ypos[k]] = -1;
+    }
+    return ans;
+}
+
+int main() {
+    cin &gt;&gt; t;
+    t--;
+    
+    int g; cin &gt;&gt; g;
+    
+    memset(res, -1, sizeof res);
+    for (int i = 0; i &lt; g; i++) {
+        int x, y, sx, sy;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; sx &gt;&gt; sy;
+        if (sx &gt; sy) {
+            res[x-1][y-1] = 1;
+        } else if (sx &lt; sy) {
+            res[x-1][y-1] = 2;
+        } else if (sx == sy) {
+            res[x-1][y-1] = 0;
+        }
+    }
+    
+    for (int i = 0; i &lt; 4; i++) {
+        for (int j = i+1; j &lt; 4; j++) {
+            if (res[i][j] == -1) {
+                xpos.push_back(i);
+                ypos.push_back(j);
+            }
+        }
+    }
+    
+    cout &lt;&lt; dfs(0) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

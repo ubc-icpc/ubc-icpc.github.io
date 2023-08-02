@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+struct N
+{
+	N* ref;
+	int diff;
+
+	N() : ref(nullptr), diff(0) { }
+};
+
+pair&lt;N*, int&gt; trace(N* n)
+{
+	int a = 0;
+	N* r = n;
+	while (r-&gt;ref)
+	{
+		a += r-&gt;diff;
+		r = r-&gt;ref;
+	}
+
+	int ta = a;
+	N* t = n;
+	while (t-&gt;ref)
+	{
+		int newdiff = ta;
+		N* next = t-&gt;ref;
+
+		ta -= t-&gt;diff;
+		t-&gt;ref = r;
+		t-&gt;diff = newdiff;
+
+		t = next;
+	}
+
+	return make_pair(r, a);
+}
+
+int main()
+{
+	while (true)
+	{
+		int n, m; cin &gt;&gt; n &gt;&gt; m;
+		if (n == 0 &amp;&amp; m == 0)
+		{
+			break;
+		}
+
+		vector&lt;N&gt; v(n + 1);
+
+		while (m--)
+		{
+			char t; cin &gt;&gt; t;
+			if (t == '!')
+			{
+				int a, b, d; cin &gt;&gt; a &gt;&gt; b &gt;&gt; d;
+
+				auto ta = trace(&amp;v[a]);
+				auto tb = trace(&amp;v[b]);
+
+				if (ta.first != tb.first)
+				{
+					tb.first-&gt;ref = ta.first;
+					tb.first-&gt;diff = ta.second - tb.second + d;
+				}
+			}
+			else
+			{
+				int a, b; cin &gt;&gt; a &gt;&gt; b;
+
+				auto ta = trace(&amp;v[a]);
+				auto tb = trace(&amp;v[b]);
+
+				if (ta.first != tb.first)
+				{
+					cout &lt;&lt; &quot;UNKNOWN&quot; &lt;&lt; endl;
+				}
+				else
+				{
+					cout &lt;&lt; tb.second - ta.second &lt;&lt; endl;
+				}
+			}
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class Test {
+
+	public static void main(String[] args) {
+		
+		Scanner in = new Scanner(System.in);
+		int testNum = in.nextInt();
+		int[][] testCases = new int[testNum][];
+		
+
+		for (int i = 0; i &lt; testNum; i++) {
+			int elementSize = in.nextInt();
+			int[] testCaseElement = new int[elementSize];
+			for (int j = 0; j &lt; elementSize; j++) {
+				testCaseElement[j] = in.nextInt();
+			}
+			testCases[i] = testCaseElement;
+		}
+		
+		
+		for (int[] arr : testCases) {
+			solve(arr);
+		}
+		return;
+	}
+	
+	public static void solve(int[] cases) {
+		System.out.print(&quot;Denominations: &quot;);
+		for (int i = 0; i &lt; cases.length; i++) {
+			System.out.print(cases[i] + &quot; &quot;);
+		}
+		System.out.println();
+//		if (cases.length == 1) {
+//			System.out.println(cases[0]);
+//			System.out.println(&quot;Good coin denominations!&quot;);
+//			return;
+//		}
+		int elem = cases[0];
+		int next;
+		for (int i = 0; i &lt; cases.length - 1; i++) {
+			next = cases[i+1];
+			if (next &lt; 2*cases[i]) {
+				System.out.println(&quot;Bad coin denominations!\n&quot;);
+				return;
+			}
+			elem = next;
+		}
+		System.out.println(&quot;Good coin denominations!\n&quot;);
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

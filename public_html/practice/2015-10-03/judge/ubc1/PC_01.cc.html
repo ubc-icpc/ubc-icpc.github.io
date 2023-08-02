@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int N = 2020;
+int low[N],vis[N],scomp[N],scompNum,I;
+vector&lt;int&gt; adj[N]; stack&lt;int&gt; verts;
+void scc(int u) { low[u] = vis[u] = ++I; verts.push(u);
+  for (int v : adj[u]) {
+    if (!vis[v]) scc(v);
+    if (scomp[v] == -1) low[u] = min(low[u], low[v]); }
+  if (vis[u] &lt;= low[u]) { int v;
+    do { v=verts.top(); verts.pop(); scomp[v]=scompNum; } while (v != u);
+    ++scompNum; }}
+void get_scc(int n) { memset(vis,0, n * sizeof(int)); memset(scomp,-1, n * sizeof(int));
+  scompNum=I=0; for (int i=0; i&lt;n; ++i) if (!vis[i]) scc(i); }
+  
+map&lt;string, vector&lt;string&gt;&gt; g;
+map&lt;string, int&gt; sval;
+int id[N], val[N];
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    
+    int t; cin &gt;&gt; t;
+    string line;
+    getline(cin, line);
+    set&lt;string&gt; st;
+    for (int i = 0; i &lt; t; i++) {
+        getline(cin, line);
+        stringstream ss(line);
+        string u, v; ss &gt;&gt; u;
+        ss &gt;&gt; u;
+        sval[u]++;
+        st.insert(u);
+        while (ss &gt;&gt; v) {
+            g[v].push_back(u);
+            st.insert(v);
+        }
+    }
+    
+    vector&lt;string&gt; lst(st.begin(), st.end());
+    map&lt;string, int&gt; tid;
+    int idx = 0;
+    for (int j = 0; j &lt; lst.size(); j++) {
+        tid[lst[j]] = idx++;
+    }
+    for (string u : lst) {
+        val[tid[u]] = sval[u];
+        for (string v : g[u]) {
+            adj[tid[u]].push_back(tid[v]);
+        }
+    }
+    
+    get_scc(lst.size());
+    map&lt;int, int&gt; tot;
+    for (int i = 0; i &lt; lst.size(); i++) {
+        tot[scomp[i]] += val[i];
+    }
+    int ans = 0;
+    for (auto p : tot) { 
+        ans = max(ans, p.second);
+    }
+    
+    cout &lt;&lt; t-ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

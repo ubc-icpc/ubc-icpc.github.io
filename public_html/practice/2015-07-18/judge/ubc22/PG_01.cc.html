@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+string M[105];
+double P[105][105], RES;
+int T, R, C;
+
+int main () {
+    cin &gt;&gt; T;
+    while (T--) {
+        cin &gt;&gt; R &gt;&gt; C;
+        M[0] = string(5, '.');
+        for (int i = 0; i &lt; R; ++i) cin &gt;&gt; M[i];
+        for (int i = R - 1, j = 0; j &lt; C; ++j)
+                P[i][j] = M[i][j] &gt;= '1' &amp;&amp; M[i][j] &lt;= '9'
+                        ? M[i][j] - '0' : 0;
+        for (int i = R - 2; i &gt;= 0; --i) {
+            for (int j = 0; j &lt; C; ++j)
+                P[i][j] = M[i][j] &gt;= '1' &amp;&amp; M[i][j] &lt;= '9'
+                        ? M[i][j] - '0' : P[i+1][j];
+            for (int j = 0; j &lt; C; ++j)
+                if (M[i][j] == '*')
+                    P[i][j] = (P[i][j-1] + P[i][j+1]) / 2;
+        }
+        RES = numeric_limits&lt;double&gt;::min();
+        for (int i = 0; i &lt; C; ++i)
+            RES = max(RES, P[0][i]);
+        cout &lt;&lt; fixed &lt;&lt; setprecision(9) &lt;&lt; RES &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

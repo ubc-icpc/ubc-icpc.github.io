@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll v[100], memo[55][55];
+ll dp(int l, int r) {
+	if (memo[l][r] != -1) return memo[l][r];
+	if (r == 0) return 0;
+	
+	int l_ = lower_bound(v, v+l, v[l]) - v;
+	memo[l][r] = dp(0, l_) + dp(l+1, r-1) + 1;
+	return memo[l][r];
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n; cin &gt;&gt; n;
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; v[i];
+		}
+		
+		ll i = 0, steps = 0;
+		// f(k) = steps to shuffle disk from top all the way to bottom
+		//        given rest is sorted
+		// f(l, r) = l books on top, r below, need to shuffle l+1th position book to bot
+		// f(l, r) = f(0,l*) + f(l+1,r-1), l* is usually l but depends on multiplicity as well
+		while (i &lt; n-1) {
+			if (v[i] &gt; v[i+1]) {
+				int del = lower_bound(v, v+i+1, v[i+1]) - v;
+				memset(memo, -1, sizeof memo);
+				steps += 1 + dp(0,del);
+				//cerr &lt;&lt; &quot;found inversion with &quot; &lt;&lt; v[i] &lt;&lt; &quot; &quot; &lt;&lt; v[i+1] &lt;&lt; &quot; correcting in &quot; &lt;&lt; 1+dp(0,del) &lt;&lt; &quot; steps.&quot; &lt;&lt; endl;
+			}
+			sort(v, v+i+2);
+			i++;
+		}
+		cout &lt;&lt; steps &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

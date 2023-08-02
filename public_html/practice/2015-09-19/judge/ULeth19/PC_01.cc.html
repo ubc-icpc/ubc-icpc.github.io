@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+
+using namespace std;
+
+void gen_forward(string s, set&lt;string&gt; &amp;lang)
+{
+  string t;
+  
+  // rule 1
+  int n = s.length();
+  if (n &gt; 1 &amp;&amp; s[n-1] == 'e') {
+    t = s;
+    swap(t[n-1], t[n-2]);
+    lang.insert(t);
+  }
+
+  // rule 2
+  for (int i = 0; i &lt; n; i++) {
+    if (s.substr(i, 3) == &quot;rge&quot;) {
+      t = s;
+      t.replace(i, 3, &quot;che&quot;);
+      lang.insert(t);
+    }
+  }
+
+  // rule 3
+  for (int i = 0; i &lt; n; i++) {
+    if (s.substr(i, 2) == &quot;re&quot;) {
+      t = s;
+      t.insert(i+2, &quot;c&quot;);
+      lang.insert(t);
+    }
+  }
+
+  // rule 4
+  for (int i = 0; i &lt; n; i++) {
+    if (s.substr(i, 2) == &quot;ce&quot;) {
+      t = s;
+      t.replace(i, 2, &quot;ec&quot;);
+      lang.insert(t);
+    }
+  }
+}
+
+void gen_backward(string s, set&lt;string&gt; &amp;lang)
+{
+  string t;
+
+  // rule 1
+  int n = s.length();
+  if (n &gt; 1 &amp;&amp; s[n-2] == 'e') {
+    t = s;
+    swap(t[n-1], t[n-2]);
+    if (3 &lt;= n &amp;&amp; n &lt;= 12) 
+      lang.insert(t);
+  }
+
+  // rule 2
+  for (int i = 0; i &lt; n; i++) {
+    if (s.substr(i, 3) == &quot;che&quot;) {
+      t = s;
+      t.replace(i, 3, &quot;rge&quot;);
+      if (3 &lt;= n &amp;&amp; n &lt;= 12) 
+	lang.insert(t);
+    }
+  }
+
+  // rule 3
+  for (int i = 0; i &lt; n; i++) {
+    if (s.substr(i, 3) == &quot;rec&quot;) {
+      t = s;
+      t.erase(i+2, 1);
+      if (3 &lt;= n-1 &amp;&amp; n-1 &lt;= 12)
+	lang.insert(t);
+    }
+  }
+
+  // rule 4
+  for (int i = 0; i &lt; n; i++) {
+    if (s.substr(i, 2) == &quot;ec&quot;) {
+      t = s;
+      t.replace(i, 2, &quot;ce&quot;);
+      if (3 &lt;= n &amp;&amp; n &lt;= 12)
+	lang.insert(t);
+    }
+  }
+
+}
+
+bool solve(int c)
+{
+  string s;
+  if (!(cin &gt;&gt; s)) return false;
+
+  if (c &gt; 1) cout &lt;&lt; endl;
+  cout &lt;&lt; &quot;Case &quot; &lt;&lt; c &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+
+  set&lt;string&gt; lang1, lang2;
+  lang1.insert(s);
+
+  bool changed;
+  do {
+    unsigned int oldsize1 = lang1.size();
+    unsigned int oldsize2 = lang2.size();
+    
+    for (const auto &amp;x : lang1) {
+      gen_forward(x, lang2);
+    }
+
+    if (oldsize2 != lang2.size()) {
+      for (const auto &amp;x : lang2) {
+	gen_backward(x, lang1);
+      }
+    }
+    changed = oldsize1 != lang1.size();
+  } while (changed);
+
+  for (const auto &amp;x : lang1) {
+    cout &lt;&lt; x &lt;&lt; endl;
+  }
+  
+  return true;
+}
+
+int main()
+{
+  int c = 1;
+
+  while (solve(c++))
+    ;
+  
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

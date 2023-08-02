@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html><head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="James Feher">
+  <title>Problem B: Fun House</title>
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style>
+</head><body>
+<h1>Problem B: Fun House</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <tt>fun.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+      </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>fun.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+<p> 
+American Carnival Makers Inc. (ACM) has a long history of designing
+rides and attractions.  One of their more popular attractions is a
+fun house that includes a room of mirrors.  Their trademark is to set
+up the room so that when looking forward from the entry door, the 
+exit door appears to be directly ahead.  However, the room has
+double-sided mirrors 
+placed throughout at 45 degree angles.  So, the exit door can be on any 
+of the walls of the room.  The set designer always places the entry and 
+mirrors, but can never seem to be bothered to place the exit door.  
+One of your jobs as part of the construction crew is to determine 
+the placement of the exit door for the room given an original design.
+<p>
+The final diagram for a sample room is given below.  The <nobr>asterisk (<kbd>*</kbd>)</nobr> marks the entry way, 
+lower case x's mark the walls, the mirrors are given by the forward
+and backward <nobr>slash characters (<kbd>/</bd> and
+<kbd>\</kbd>)</nobr>, open spaces with no visual obstructions are
+marked by <nobr>periods (<kbd>.</kbd>)</nobr>, and
+the desired placement of the exit is marked
+with an <nobr>ampersand (<kbd>&amp;</kbd>)</nobr>. In the input
+diagram, there is an 'x' in place of the '&', since the exit has not
+yet been located. You need to alter the input diagram by replacing the proper
+'x' with an '&' to identify the exit. Note that entrances
+and exits can appear on any of the walls (although never a corner),
+and that it is physically impossible for the exit to be the same as
+the entrance. (You don't need to understand why this is so, although
+it may be fun to think about.)
+<p>
+<div class="grid">
+<kbd>
+xxxxxxxxxxx<br />
+x../..\...x<br />
+x..../....x<br />
+*../......x<br />
+x.........x<br />
+xxxxxx&xxxx<br />
+</kbd>
+</div>
+<p> 
+
+<p><b>Input:</b>&nbsp; Each room will be preceded by two integers, W
+and L, where
+<nobr>5 &le; W &le; 20</nobr> is the width of the room including the
+border walls and <nobr>5 &le; L &le; 20</nobr> is the length of the
+room including the border walls. Following the specification of W and
+L are L additional lines containing the room diagram, with each line having
+W characters from the alphabet:
+<nobr>
+{ <kbd>*</kbd> ,
+<kbd>x</kbd> ,
+<kbd>.</kbd> ,
+<kbd>/</kbd> ,
+<kbd>\</kbd> }</nobr>.
+The perimeter will always be comprised of walls, except for one
+<nobr>asterisk (<kbd>*</kbd>)</nobr> which marks the entrance; the exit is not (yet) marked.
+A line with two zeros indicates the end of input data.
+
+<p><b>Output:</b>&nbsp; For each test case, the first line will
+contain the word, HOUSE, followed by a space and then an integer that
+identifies the given fun house sequentially. Following that should be a room
+diagram which includes the proper placement of the exit door, as
+marked by an <nobr>ampersand (<kbd>&amp;</kbd>).
+
+<p><b>Note:</b>&nbsp; In both Java and C++ the backslash
+<nobr>character (<kbd>\</kbd>)</nobr> has special meaning as an escape
+character within character and string literals. You must use the
+combination&nbsp;<kbd>\\</kbd> to express a single backslash within a
+character or string literal within source code.
+
+
+<table class="example page">
+
+  <thead> <tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+<kbd>
+11 6<br />
+xxxxxxxxxxx<br />
+x../..\...x<br />
+x..../....x<br />
+*../......x<br />
+x.........x<br />
+xxxxxxxxxxx<br />
+5 5<br />
+xxxxx<br />
+*...x<br />
+x...x<br />
+x...x<br />
+xxxxx<br />
+5 5<br />
+xxxxx<br />
+x./\x<br />
+*./.x<br />
+x..\x<br />
+xxxxx<br />
+6 6<br />
+xxx*xx<br />
+x/...x<br />
+x....x<br />
+x/./.x<br />
+x\./.x<br />
+xxxxxx<br />
+10 10<br />
+xxxxxxxxxx<br />
+x.../\...x<br />
+x........x<br />
+x........x<br />
+x.../\..\x<br />
+*...\/../x<br />
+x........x<br />
+x........x<br />
+x...\/...x<br />
+xxxxxxxxxx<br />
+0 0<br />
+</kbd>
+      </td>
+      <td>
+<kbd>
+HOUSE 1<br />
+xxxxxxxxxxx<br />
+x../..\...x<br />
+x..../....x<br />
+*../......x<br />
+x.........x<br />
+xxxxxx&xxxx<br />
+HOUSE 2<br />
+xxxxx<br />
+*...&<br />
+x...x<br />
+x...x<br />
+xxxxx<br />
+HOUSE 3<br />
+xxxxx<br />
+x./\x<br />
+*./.x<br />
+x..\&<br />
+xxxxx<br />
+HOUSE 4<br />
+xxx*xx<br />
+x/...x<br />
+x....x<br />
+x/./.&<br />
+x\./.x<br />
+xxxxxx<br />
+HOUSE 5<br />
+xxxxxxxxxx<br />
+x.../\...x<br />
+x........x<br />
+x........x<br />
+&.../\..\x<br />
+*...\/../x<br />
+x........x<br />
+x........x<br />
+x...\/...x<br />
+xxxxxxxxxx<br />
+</kbd>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+
+</body></html>

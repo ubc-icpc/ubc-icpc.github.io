@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+struct E {
+	int x, y, t;
+	E(){}
+	E(int lx, int ly, int lt) {
+		x = lx; y = ly; t = lt;
+	}
+};
+
+bool grid[1000][1000];
+bool visited[1000][1000];
+
+int main() {
+	int nx, ny, t, nleak, nwall;
+	cin &gt;&gt; nx;
+	while (nx &gt;= 0) {
+		cin &gt;&gt; ny &gt;&gt; t &gt;&gt; nleak &gt;&gt; nwall;
+		memset(grid, 0, sizeof grid);
+		memset(visited, 0, sizeof visited);
+		queue&lt;E&gt; q;
+		for (int i = 0; i &lt; nleak; i++) {
+			E e;
+			cin &gt;&gt; e.x &gt;&gt; e.y; e.x--; e.y--;
+			e.t = 1;
+			q.push(e);
+		}
+		if (nwall &gt; 0) {
+			for (int i = 0; i &lt; nwall; i++) {
+				int x1, y1, x2, y2;
+				cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2; x1--; y1--; x2--; y2--;
+				if (x1 == x2) {
+					int ymin = min(y1, y2);
+					int ymax = max(y1, y2);
+					for (int y = ymin; y &lt;= ymax; y++) {
+						grid[x1][y] = true;
+					}
+				} else if (y1 == y2) {
+					int xmin = min(x1, x2);
+					int xmax = max(x1, x2);
+					for (int x = xmin; x &lt;= xmax; x++) {
+						grid[x][y1] = true;
+					}
+				} else {
+					int d = abs(x2 - x1);
+					int dx = (x2 - x1) / d;
+					int dy = (y2 - y1) / d;
+					int x = x1, y = y1;
+					grid[x][y] = true;
+					while (x != x2) {
+						x += dx; y += dy;
+						grid[x][y] = true;
+					}
+				}
+			}
+		}
+		int dx[4] = {-1, 1, 0, 0};
+		int dy[4] = {0, 0, -1, 1};
+		while (!q.empty()) {
+			E curr = q.front();
+			q.pop();
+			if (visited[curr.x][curr.y]) continue;
+			visited[curr.x][curr.y] = true;
+			if (curr.t &lt; t) {
+				for (int i = 0; i &lt; 4; i++) {
+					int newx = curr.x + dx[i];
+					int newy = curr.y + dy[i];
+					if (newx &gt;= 0 &amp;&amp; newx &lt; nx &amp;&amp; newy &gt;= 0 &amp;&amp; newy &lt; ny) {
+						if (!grid[newx][newy]) {
+							q.push(E(newx, newy, curr.t + 1));
+						}
+					}
+				}
+			}
+		}
+		int cnt = 0;
+		for (int i = 0; i &lt; nx; i++) {
+			for (int j = 0; j &lt; ny; j++) {
+				if (visited[i][j]) cnt++;
+			}
+		}
+		cout &lt;&lt; cnt &lt;&lt; endl;
+		cin &gt;&gt; nx;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

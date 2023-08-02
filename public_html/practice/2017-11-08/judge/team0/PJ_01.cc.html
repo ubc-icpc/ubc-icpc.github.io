@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll h, d1, d2, c1, c2, c3;
+
+ll memo[1000001];
+
+ll dp(ll curH) {
+    if(memo[curH] != -1) {
+        return memo[curH];
+    }
+    
+    ll best = 0;
+    ll n1 = ((d1 * h + (d2 - d1) * (curH + c1)) / h) / c1;
+    ll n2 = ((d1 * h + (d2 - d1) * (curH + c2)) / h) / c2;
+    ll n3 = ((d1 * h + (d2 - d1) * (curH + c3)) / h) / c3;
+    //cout &lt;&lt; curH &lt;&lt; &quot; &quot; &lt;&lt; n1 &lt;&lt; &quot; &quot; &lt;&lt; n2 &lt;&lt; &quot; &quot; &lt;&lt; n3 &lt;&lt; endl;
+    if(curH + c1 &lt;= h) {
+        best = max(best, dp(curH + c1) + n1*n1*c1*c1*c1);
+    }
+    if(curH + c2 &lt;= h) {
+        best = max(best, dp(curH + c2) + n2*n2*c2*c2*c2);
+    }
+    if(curH + c3 &lt;= h) {
+        best = max(best, dp(curH + c3) + n3*n3*c3*c3*c3);
+    }
+
+    return memo[curH] = best;
+}
+
+int main(){
+  ios_base::sync_with_stdio(0); cin.tie(0);
+  
+  while(cin &gt;&gt; h) {
+    cin &gt;&gt; d1 &gt;&gt; d2 &gt;&gt; c1 &gt;&gt; c2 &gt;&gt; c3;
+    memset(memo, -1, sizeof memo);
+    cout &lt;&lt; dp(0) &lt;&lt; endl;
+  }
+  
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

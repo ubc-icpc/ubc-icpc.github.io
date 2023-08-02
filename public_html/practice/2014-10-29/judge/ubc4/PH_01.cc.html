@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;cstring&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;sstream&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+const int maxl = 100;
+int a[maxl];
+char c[maxl];
+int n, tn;
+int b[maxl];
+long long ans;
+
+void init() {
+	scanf(&quot;%s\n&quot;, c);
+	n = strlen(c);
+	for (int i = 0; i &lt; n; i++)
+		a[n - i - 1] = c[i] - '0';
+}
+
+void check() {		
+	for (int i = (n + 1) / 2; i &lt; n; i++)
+		b[i] = b[n - 1 - i];
+	if (n % 2 == 1 &amp;&amp; b[n / 2] % 2 == 1)
+		return;
+	int c = 0;
+	for (int i = 0; i &lt; n; i++) {
+		if ((c + b[i]) % 10 != a[i])
+			return;
+		c = (c + b[i]) / 10;
+	}
+	if (n == tn &amp;&amp; c &gt; 0 || n &lt; tn &amp;&amp; c != a[tn - 1]) return;
+	/*
+	for (int i = 0; i &lt; n; i++)
+		printf(&quot;%d &quot;, b[i]);
+	printf(&quot;\n&quot;);
+	*/
+	long long tv = 1;
+	for (int i = 0; i &lt; (n + 1) / 2; i++) {
+		if (n % 2 == 1 &amp;&amp; i == n / 2) 
+			continue;
+		if (b[i] &gt;= 10)
+			tv *= 10 - (b[i] - 9);
+		else tv *= b[i] + int(i &gt; 0);
+	}
+	ans += tv;
+}
+
+void dfs(int cur) {
+	if (cur == (n + 1) / 2) {
+		check();
+		return;
+	}
+	b[cur] = a[cur];
+	dfs(cur + 1);
+	if (a[cur] != 9) {
+		b[cur] = a[cur] + 10;
+		dfs(cur + 1);
+	}
+	b[cur] = (a[cur] + 9) % 10;
+	dfs(cur + 1);
+	b[cur] = (a[cur] + 9) % 10 + 10;
+	if (b[cur] != 19) dfs(cur + 1);	
+}
+
+void solve() {
+	ans = 0;
+	tn = n;
+	dfs(0);
+	if (n &gt; 1) {
+		tn = n;
+		n--;
+		dfs(0);
+	}
+	printf(&quot;%lld\n&quot;, ans);
+}
+
+int main() {
+	int T;
+	scanf(&quot;%d\n&quot;, &amp;T);
+	while (T--) {
+		init();
+		solve();
+	}
+}
+ </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

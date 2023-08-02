@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+bool bad[105];
+int dist[105];
+int main() {
+    int t; cin &gt;&gt; t;
+    for (int c = 1; c &lt;= t; c++) {
+        cout &lt;&lt; &quot;Day #&quot; &lt;&lt; c &lt;&lt; endl;
+        
+        memset(bad, 0, sizeof bad);
+        int nc, d; cin &gt;&gt; nc &gt;&gt; d;
+        string s; cin &gt;&gt; s;
+        for (int i = 0; i &lt; nc; i++) {
+            bad[i] = (s[i] == 'X');
+        }
+        
+        memset(dist, -1, sizeof dist);
+        queue&lt;int&gt; q({0});
+        dist[0] = 0;
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            for (int del = 1; del &lt;= d+1; del++) {
+                int nu = u + del;
+                if (dist[nu] != -1 || bad[nu]) continue;
+                dist[nu] = dist[u] + 1;
+                q.push(nu);
+            }
+        }
+        
+        cout &lt;&lt; nc &lt;&lt; &quot; &quot; &lt;&lt; d &lt;&lt; endl;
+        cout &lt;&lt; s &lt;&lt; endl;
+        cout &lt;&lt; max(0, dist[nc-1]) &lt;&lt; endl;
+        cout &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// TLE
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+const int blocks[] = {
+    0b111010010,
+    0b010111010,
+    0b011110010,
+    0b011010110,
+    0b110010011,
+    0b100100111,
+    0b110011010,
+    0b100110011
+};
+
+char visited[4194304][20];
+int ddepth[4194304][20];
+
+int lookup[128];
+
+char s[21];
+int len;
+
+int rotate(int in) {
+    int out = 0;
+    for (int i = 0; i &lt; 3; i++)
+        for (int j = 0; j &lt; 3; j++)
+            out = (out &lt;&lt; 1) | ((in &gt;&gt; ((2-j)*3+i)) &amp; 1);
+    return out;
+}
+
+int max(int a, int b) { return a &gt; b ? a : b; }
+
+void disp(int cur, int next) {
+    for (int i = 0; i &lt; 7; i++) {
+        for (int j = 0; j &lt; 3; j++)
+            printf(&quot;%d&quot;, (cur &gt;&gt; ((2-j)+3*(6-i))) &amp; 1);
+        printf(&quot; -&gt; &quot;);
+        for (int j = 0; j &lt; 3; j++)
+            printf(&quot;%d&quot;, (next &gt;&gt; ((2-j)+3*(6-i))) &amp; 1);
+        printf(&quot;\n&quot;);
+    }
+    printf(&quot;---\n&quot;);
+}
+
+bool loop;
+
+int dfs(int board, int idx, int depth = 0) {
+    //printf(&quot;dfs %d %d %d\n&quot;, board, idx, depth);
+    visited[board][idx] = 1;
+    int max_depth = depth;
+    for (int b = blocks[lookup[(int) s[idx]]], q = 0; q &lt; 4; q++, b = rotate(b)) {
+        int pos; for (pos = 7; pos &gt; 0 &amp;&amp; (board &amp; (b &lt;&lt; (pos-1)*3)) == 0; pos--);
+        int next = board | (b &lt;&lt; pos*3);
+        for (int i = 0; i &lt; 10; i++)
+            while (((next &gt;&gt; i*3) &amp; 0b111) == 0b111)
+                next = ((next &gt;&gt; 3) &amp; (-1 &lt;&lt; (i*3))) | (next &amp; ~(-1 &lt;&lt; i*3));
+        if (next &amp; (-1 &lt;&lt; 7*3))
+            continue;
+        if (!visited[next][(idx+1) % len])
+            //printf(&quot;%d %d -&gt; %d %d\n&quot;, board, idx, next, (idx+1)%len), disp(board, next),
+            max_depth = max(max_depth, dfs(next, (idx+1) % len, depth+1));
+        else if (visited[next][(idx+1) % len] == 1)
+            /*printf(&quot;LOOP %d %d -&gt; %d %d\n&quot;, board, idx, next, (idx+1)%len), disp(board, next), */loop = true;
+        else
+            max_depth = max(max_depth, depth + 1 + ddepth[next][(idx+1) % len]);
+    }
+    visited[board][idx] = 2;
+    ddepth[board][idx] = max_depth - depth;
+    return max_depth;
+}
+
+int main() {
+    lookup[(int) 'T'] = 0;
+    lookup[(int) 'X'] = 1;
+    lookup[(int) 'R'] = 2;
+    lookup[(int) 'S'] = 3;
+    lookup[(int) 'Z'] = 4;
+    lookup[(int) 'V'] = 5;
+    lookup[(int) '7'] = 6;
+    lookup[(int) 'W'] = 7;
+
+    while (scanf(&quot;%s&quot;, s) == 1) {
+        len = strlen(s);
+        memset(visited, 0, sizeof visited);
+        memset(ddepth, 0, sizeof ddepth);
+        loop = false;
+        int result = dfs(0, 0);
+        if (loop) printf(&quot;forever\n&quot;);
+        else printf(&quot;%d\n&quot;, result+1);
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

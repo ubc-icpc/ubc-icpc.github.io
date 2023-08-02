@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;stdlib.h&gt; 
+#define INF 1000000
+
+using namespace std;
+
+int abs(int x){
+	if(x&gt;0) return x;
+	else return -x;
+}
+
+int main() {
+	int n;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		int m, s, p; char baka;
+		cin&gt;&gt;m&gt;&gt;baka&gt;&gt;s&gt;&gt;p;
+		int t = 60*m+s;
+		int r = t*p/100;
+		int max = t+r;
+		int min = t-r;
+		cout&lt;&lt;&quot;Case #&quot;&lt;&lt;i&lt;&lt;&quot;: &quot;;
+		int count = 8, opt = min;
+		bool normal=true;
+		for(int j=min;j&lt;=max;j++){
+			int a = j/60;
+			int b = j%60;
+			int stroke[4] = {a/10,a%10,b/10,b%10};
+			int k=0;
+			while(stroke[k]==0) k++;
+			int x = 2*(4-k);
+			for(;k&lt;3;k++)
+				if(stroke[k]==stroke[k+1]) x--;
+			if(count&gt;x||(count==x&amp;&amp;abs(t-opt)&gt;abs(t-j))){
+				count=x;
+				opt=j;
+				normal=true;
+			}
+			
+			if(a&gt;0&amp;&amp;b&lt;40){
+				a--;
+				b+=60;
+				int stroke[4] = {a/10,a%10,b/10,b%10};
+				int k=0;
+				while(stroke[k]==0) k++;
+				int x = 2*(4-k);
+				for(;k&lt;3;k++)
+					if(stroke[k]==stroke[k+1]) x--;
+				if(count&gt;x||(count==x&amp;&amp;abs(t-opt)&gt;abs(t-j))){
+					count=x;
+					opt=j;
+					normal=false;
+				}
+			}
+		}
+		int a = opt/60;
+		int b = opt%60;
+		if(!normal){
+			a--;
+			b+=60;
+		}
+		int stroke[4] = {a/10,a%10,b/10,b%10};
+		int k=0;
+		while(stroke[k]==0) k++;
+		for(;k&lt;4;k++)
+			cout&lt;&lt;stroke[k];
+		cout&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

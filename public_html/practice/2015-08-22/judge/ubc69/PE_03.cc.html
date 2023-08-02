@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+#define INF 1000000
+
+using namespace std;
+
+int maxi(int a, int b){
+	if(a&gt;b) return a;
+	return b;
+}
+
+int toint(string s){
+	int n = 0;
+	for(int i=0;i&lt;s.size();i++)
+		n = 10*n+s[i]-'0';
+	return n;
+}
+
+int main() {
+	int n,r,c;
+	cin&gt;&gt;n;
+	for(int i=1;i&lt;=n;i++){
+		r = c = 333;
+		cin&gt;&gt;r&gt;&gt;c;
+		int board[r+1][c+1];
+		
+		for(int j=0;j&lt;=r;j++)
+			board[j][0]=0;
+		for(int j=0;j&lt;=c;j++)
+			board[0][j]=0;
+			
+		for(int j=1;j&lt;=r;j++)
+			for(int k=1;k&lt;=c;k++){
+				string z; int p;
+				cin&gt;&gt;z;
+				if((j==1&amp;&amp;k==1)||(j==r&amp;&amp;k==c)) p=0;
+				else p=toint(z);
+				board[j][k] = maxi(board[j-1][k],board[j][k-1])+p;
+			}
+			
+		cout&lt;&lt;&quot;Game Board #&quot;&lt;&lt;i&lt;&lt;&quot;: &quot;&lt;&lt;board[r][c]&lt;&lt;endl&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

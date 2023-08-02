@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+int gobx[150000];
+int goby[150000];
+bool gobspray[150000];
+
+int main() {
+    long g;
+    scanf(&quot;%ld&quot;, &amp;g);
+    for (int i = 0; i &lt; g; i++) scanf(&quot;%d %d&quot;, &amp;gobx[i], &amp;goby[i]);
+    for (int i = 0; i &lt; g; i++) gobspray[i] = false;
+
+    long m;
+    scanf(&quot;%ld&quot;, &amp;m);
+    for (int i = 0; i &lt; m; i++) {
+        int x,y,r;
+        scanf(&quot;%d %d %d&quot;, &amp;x, &amp;y, &amp;r);
+
+        for (int j = 0; j &lt; g; j++) {
+            if ((x - gobx[j])*(x - gobx[j]) + (y - goby[j])*(y - goby[j]) &lt;= r*r) gobspray[j] = true;
+        }
+    }
+
+    int count = 0;
+    for (int i = 0; i &lt; g; i++) {
+        if (gobspray[i] == false) count++;
+    }
+    printf(&quot;%d\n&quot;, count);
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

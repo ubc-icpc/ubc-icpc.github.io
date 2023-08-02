@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main(){
+	string n; cin &gt;&gt; n;
+	int ans = 0;
+	for(int i = 0; i &lt; n.size(); i++){
+		switch(i%3){
+			case 0:
+				if(n[i] != 'P') ans++;
+				break;
+			case 1:
+				if(n[i] != 'E') ans++;
+				break;
+			case 2:
+				if(n[i] != 'R') ans++;
+				break;
+		}
+	}
+	cout &lt;&lt; ans;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

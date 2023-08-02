@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+#define FOR(i, n) for(int i = 0; i &lt; (n); i++)
+#define SZ(A) ((int)(A).size())
+#define PB push_back
+
+#define show(x) cerr&lt;&lt;&quot;XXXX----&gt; &quot;&lt;&lt;#x&lt;&lt;&quot; = &quot;&lt;&lt;x&lt;&lt;endl;
+
+int movY[]={-1,0,1,0};
+int movX[]={0,-1,0,1};
+
+int n, m;
+char gr[100][100];
+
+void find(){
+	int nx, ny;
+	FOR(i, n)FOR(j, m)
+		if (gr[i][j] == '*'){
+			nx = i;
+			ny = j;
+		}
+
+	int dir;
+	if (nx == 0)
+		dir = 3;
+	if (nx == n-1)
+		dir = 1;
+	if (ny == 0)
+		dir = 2;
+	if (ny == m-1)
+		dir = 0;
+
+	while(true){
+		nx += movX[dir];
+		ny += movY[dir];
+		if (gr[nx][ny] == 'x')	break;
+		if (gr[nx][ny] == '.')	continue;
+		if (gr[nx][ny] == '/'){
+			if (dir == 0)
+				dir = 3;
+			else if (dir == 3)
+				dir = 0;
+			else if (dir == 1)
+				dir = 2;
+			else if (dir == 2)
+				dir = 1;
+		}
+		if (gr[nx][ny] == '\\'){
+			if (dir == 0)
+				dir = 1;
+			else if (dir == 1)
+				dir = 0;
+			else if (dir == 2)
+				dir = 3;
+			else if (dir == 3)
+				dir = 2;
+		}
+
+	}
+
+	gr[nx][ny] = '&amp;';
+}
+
+int main(){
+	int t = 0;
+	while(cin &gt;&gt; m &gt;&gt; n &amp;&amp; n){
+		FOR(i, n)FOR(j, m)
+			cin &gt;&gt; gr[i][j];
+
+		find();
+
+		cout &lt;&lt; &quot;HOUSE &quot; &lt;&lt; ++t &lt;&lt; endl;
+		FOR(i, n){
+			FOR(j, m)
+				cout &lt;&lt; gr[i][j];
+			cout &lt;&lt; endl;
+		}
+
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

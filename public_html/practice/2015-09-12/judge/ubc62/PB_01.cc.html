@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main(){
+	int s; cin &gt;&gt; s;
+	while(s--){
+		int ut,ug,us,ub,rt,rg,rs,rb;
+		bool count = false;
+		bool color = false;
+		cin &gt;&gt;ug&gt;&gt;us&gt;&gt;ub&gt;&gt;rg&gt;&gt;rs&gt;&gt;rb;
+		cout&lt;&lt;ug&lt;&lt;&quot; &quot;&lt;&lt;us&lt;&lt;&quot; &quot;&lt;&lt;ub&lt;&lt;&quot; &quot;&lt;&lt;rg&lt;&lt;&quot; &quot;&lt;&lt;rs&lt;&lt;&quot; &quot;&lt;&lt;rb&lt;&lt;&quot; &quot;&lt;&lt; endl;
+
+		ut = ug + us + ub;
+		rt = rg + rs + rb;
+
+		if (ut &gt; rt){count = true;}
+
+		if (ug &gt; rg){color = true;}
+		else if (ug == rg){
+			if (us &gt; rs){color = true;}
+			else if (us == rs){
+				if (ub &gt; rb){color = true;}
+			}
+		}
+		if (count &amp;&amp; color){
+			cout &lt;&lt; &quot;both&quot; &lt;&lt; endl &lt;&lt; endl;
+		}
+		else if (count){cout &lt;&lt; &quot;count&quot;&lt;&lt;endl&lt;&lt;endl;}
+		else if (color){cout &lt;&lt; &quot;color&quot;&lt;&lt;endl&lt;&lt;endl;}
+		else {cout &lt;&lt; &quot;none&quot; &lt;&lt;endl&lt;&lt;endl;}
+
+		ut = 0; rt = 0; count = 0; color = 0;
+
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

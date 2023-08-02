@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+// Constants and macros
+#define INF 		(int)1e9
+#define EPS 		1e-9
+#define bitcount 	__builtin_popcount
+#define gcd 		__gcd
+#define forall(i,a,b) 	for(int i=a;i&lt;b;i++)
+#define pb 		push_back
+#define mp		make_pair
+#define MAX(a,b)	( (a)&gt;(b) ? (a):(b))
+#define MIN(a,b)	( (a)&lt;(b) ? (a):(b))
+#define s(a)		scanf(&quot;%d&quot;, &amp;a)
+#define ss(a,b)		scanf(&quot;%d %d&quot;, &amp;a,&amp;b)
+#define sss(a,b,c)	scanf(&quot;%d %d %d&quot;, &amp;a,&amp;b,&amp;c)
+#define sl(a)		scanf(&quot;%I64d&quot;, &amp;a)
+
+int T, A, B;
+
+int main(){
+	s(T);
+	long long c;
+	forall(i,0,T){
+		ss(A,B);
+		c = A/B;
+		c = c*c;
+		cout &lt;&lt; c &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

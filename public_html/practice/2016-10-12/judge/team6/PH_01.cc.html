@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+using namespace std;
+
+bool scan() {
+	char c;
+	while(1){
+		cin &gt;&gt; c;
+		switch(c){
+			case '!':
+				return !scan();
+			case '(': {
+				bool l = scan();
+				cin &gt;&gt; c;
+				bool r = scan();
+				bool v;
+				if (c == '|') v = l || r;
+				if (c == '&amp;') v = l &amp;&amp; r;
+				cin &gt;&gt; c;
+				return v;
+					  }
+			case 't':
+				return true;
+			case 'f':
+				return false;
+		}
+	}
+}
+
+
+int main() {
+	int x; cin &gt;&gt; x;
+	int i = 1;
+	while (x--) {
+		bool v = scan();
+		string e, o; cin &gt;&gt; e &gt;&gt; o;
+		if (v == (o[0] == 't')) {
+			printf(&quot;%d: Good brain\n&quot;, i);
+		} else {
+			printf(&quot;%d: Bad brain\n&quot;, i);
+		}
+		i++;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

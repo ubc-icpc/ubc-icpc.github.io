@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define FOR(i,a,b) for(int i=a;i&lt;int(b);i++)
+#define FIL(a,b) memset((a),(b),sizeof(a))
+#define SZ(a) ((int)(a).size())
+#define ALL(a) begin(a),end(a)
+#define PB push_back
+#define FI first
+#define SE second
+typedef long long LL;
+typedef pair&lt;int,int&gt; PT;
+typedef complex&lt;double&gt; PX;
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+typedef vector&lt;PT&gt; VPT;
+template&lt;typename T&gt; ostream&amp; operator&lt;&lt;(ostream&amp; s, vector&lt;T&gt;&amp; v)
+{ s &lt;&lt; '{'; FOR(i,0,v.size()) s &lt;&lt; (i ? &quot;,&quot; : &quot;&quot;) &lt;&lt; v[i]; return s &lt;&lt; '}'; }
+template&lt;typename S, typename T&gt; ostream&amp; operator&lt;&lt;(ostream &amp;s, pair&lt;S,T&gt; const&amp; p)
+{ return s &lt;&lt; '(' &lt;&lt; p.first &lt;&lt; ',' &lt;&lt; p.second &lt;&lt; ')'; }
+
+int N, dist[20][20][4][20][20][4];
+char gd[20][21];
+const int DN[]={-1,0,1,0}, DM[]={0,1,0,-1};
+
+struct POS {
+	int n1, m1, d1, n2, m2, d2;
+};
+
+void cst(int n, int m, int d, int&amp; na, int&amp; ma, int&amp; da) {
+	na = n + DN[d];
+	ma = m + DM[d];
+	da = d;
+	if (na &lt; 0 || na &gt;= N || ma &lt; 0 || ma &gt;= N || gd[na][ma] == 'H' || (n == 0 &amp;&amp; m == N-1)) {
+		na = n;
+		ma = m;
+	}
+}
+
+int main() {
+	scanf(&quot;%d&quot;, &amp;N);
+	FOR(n,0,N) scanf(&quot;%s&quot;, gd[n]);
+
+	queue&lt;POS&gt; bfs;
+	bfs.push(POS{N-1, 0, 0, N-1, 0, 1});
+	FIL(dist, -1);
+	dist[N-1][0][0][N-1][0][1] = 0;
+	while (!bfs.empty()) {
+		POS pos = bfs.front();
+		bfs.pop();
+		//printf(&quot;At [%d][%d][%d][%d][%d][%d]&quot;, pos.n1, pos.m1, pos.d1, pos.n2, pos.m2, pos.d2);
+		{
+			POS npos;
+			cst(pos.n1, pos.m1, pos.d1, npos.n1, npos.m1, npos.d1);
+			cst(pos.n2, pos.m2, pos.d2, npos.n2, npos.m2, npos.d2);
+			int&amp; ad = dist[npos.n1][npos.m1][npos.d1][npos.n2][npos.m2][npos.d2];
+			//printf(&quot;Try [%d][%d][%d][%d][%d][%d]&quot;, npos.n1, npos.m1, npos.d1, npos.n2, npos.m2, npos.d2);
+			if (ad == -1) {
+				ad = dist[pos.n1][pos.m1][pos.d1][pos.n2][pos.m2][pos.d2] + 1;
+				bfs.push(POS{npos.n1, npos.m1, npos.d1, npos.n2, npos.m2, npos.d2});
+			}
+		}
+		{
+			POS npos{pos.n1, pos.m1, (pos.d1+1)%4, pos.n2, pos.m2, (pos.d2+1)%4};
+			int&amp; ad = dist[npos.n1][npos.m1][npos.d1][npos.n2][npos.m2][npos.d2];
+			if (ad == -1) {
+				ad = dist[pos.n1][pos.m1][pos.d1][pos.n2][pos.m2][pos.d2] + 1;
+				bfs.push(POS{npos.n1, npos.m1, npos.d1, npos.n2, npos.m2, npos.d2});
+			}
+		}
+		{
+			POS npos{pos.n1, pos.m1, (pos.d1-1+4)%4, pos.n2, pos.m2, (pos.d2-1+4)%4};
+			int&amp; ad = dist[npos.n1][npos.m1][npos.d1][npos.n2][npos.m2][npos.d2];
+			if (ad == -1) {
+				ad = dist[pos.n1][pos.m1][pos.d1][pos.n2][pos.m2][pos.d2] + 1;
+				bfs.push(POS{npos.n1, npos.m1, npos.d1, npos.n2, npos.m2, npos.d2});
+			}
+		}
+	}
+	int ans = INT_MAX;
+	FOR(d1,0,4) FOR(d2,0,4) {
+		int da = dist[0][N-1][d1][0][N-1][d2];
+		if (da != -1) ans = min(ans, da);
+	}
+	printf(&quot;%d\n&quot;, ans);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

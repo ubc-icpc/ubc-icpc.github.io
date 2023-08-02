@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;queue&gt;
+#include &lt;climits&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+
+using namespace std;
+
+int main() {
+	string s;
+	while (getline(cin, s)) {
+		set&lt;int&gt; digits;
+		for (int i = 0; i &lt;= 9; ++i)
+			digits.insert(i);
+		long long n = stoi(s);
+		long long k = 0;
+		while (!digits.empty()) {
+			++k;
+			long long kn = k * n;
+			while (kn &gt; 0) {
+				digits.erase(kn % 10);
+				kn /= 10;
+			}
+		}
+		cout &lt;&lt; k &lt;&lt; '\n';
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

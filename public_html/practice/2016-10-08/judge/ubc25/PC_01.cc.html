@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int cases, n, m, a, b, c, t;
+    int s[50], mat[50][50], res[50][50], temp[50][50];
+    while (true) {
+        cin &gt;&gt; n &gt;&gt; m &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; t;
+        if (n == 0)
+            return 0;
+        for (int i = 0; i &lt; n; ++i)
+            cin &gt;&gt; s[i];
+
+        // initialize the transition matrix
+        memset(mat, 0, 50 * 50 * sizeof(int));
+        memset(res, 0, 50 * 50 * sizeof(int));
+        if (n == 1)
+            mat[0][0] = b;
+        else {
+            mat[0][0] = b;
+            mat[0][1] = c;
+            for (int i = 1; i &lt; n - 1; ++i) {
+                mat[i][i - 1] = a;
+                mat[i][i] = b;
+                mat[i][i + 1] = c;
+            }
+            mat[n - 1][n - 2] = a;
+            mat[n - 1][n - 1] = b;
+        }
+
+        // exponentiate by squaring
+        for (int i = 0; i &lt; n; ++i)
+            res[i][i] = 1;
+        while (t) {
+            if (t &amp; 1) {
+                for (int i = 0; i &lt; n; ++i) {
+                    for (int j = 0; j &lt; n; ++j) {
+                        temp[i][j] = 0;
+                        for (int k = 0; k &lt; n; ++k) {
+                            temp[i][j] += res[i][k] * mat[k][j];
+                            temp[i][j] %= m;
+                        }
+                    }
+                }
+                memcpy(&amp;res, &amp;temp, 50 * 50 * sizeof(int));
+            }
+            for (int i = 0; i &lt; n; ++i) {
+                for (int j = 0; j &lt; n; ++j) {
+                    temp[i][j] = 0;
+                    for (int k = 0; k &lt; n; ++k) {
+                        temp[i][j] += mat[i][k] * mat[k][j];
+                        temp[i][j] %= m;
+                    }
+                }
+            }
+            memcpy(&amp;mat, &amp;temp, 50 * 50 * sizeof(int));
+            t &gt;&gt;= 1;
+        }
+
+        // multiply initial state by transition matrix
+        for (int i = 0; i &lt; n; ++i) {
+            int sum = 0;
+            for (int j = 0; j &lt; n; ++j) {
+                sum += res[i][j] * s[j];
+                sum %= m;
+            }
+            if (i != n - 1)
+                cout &lt;&lt; sum &lt;&lt; ' ';
+            else
+                cout &lt;&lt; sum &lt;&lt; '\n';
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

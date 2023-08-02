@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define io ios_base::sync_with_stdio(false);
+#define tic cin.tie(NULL);
+#define LL long int
+#define ULL unsigned long long int
+#define VLL vector&lt;LL&gt;
+#define VLIT VLL::iterator
+#define PB push_back
+#define MAXD 1004
+#define REP(i, n) for(int i = 1; i &lt;= n; i++)
+#define REPZ(i, n) for(int i = 0; i &lt; n; i++)
+#define REPI(i, a, b) for(int i = a; i &lt;= b; i++)
+#define LD long double
+#define PI pair&lt;int, int&gt;
+#define VPI vector&lt;PI&gt;
+#define ALL(x) x.begin(), x.last()
+#define F first
+#define S second
+#define PB push_back
+#define MP make_pair
+#define PIPI pair&lt;PI, int&gt;
+#define VPIPI vector&lt;PIPI&gt;
+#define SI set&lt;int&gt;
+#define VI vector&lt;int&gt;
+#define INS insert
+#define LD long double
+#define SLL set&lt;LL&gt;
+#define SLIT SL::iterator
+#define MLL map&lt;LL, LL&gt;
+#define MLIT MLL::iterator
+#define MAXP 400000000001
+#define MAXN 100005
+#define MAXK 1000005
+#define LEN 262143
+#define OFF 131071
+
+LL closest(LD x) {
+    LD f = floor(x), c = ceil(x);
+    LD a = x - f; 
+    LD b = c - x; 
+    if (abs(a) &lt; abs(b)) return f;
+    else return c;
+}
+
+LL getmod(LL x, LL mod) {
+    if (x &gt;= 0) return x % mod;
+    else return (mod - ((-x) % mod)) % mod;
+}
+
+int main() {
+    io tic
+    char c; cin &gt;&gt; c;
+    int s; cin &gt;&gt; s;
+    string code; cin &gt;&gt; code;
+    REPZ(i, code.size()) {
+        if (c == 'E') code[i] = (char)((((int)code[i] - (int)'a' + s) % 26) + (int)'a');
+        else  code[i] = (char)((((int)code[i] - (int)'a' - s + 26) % 26) + (int)'a');
+    }
+    cout &lt;&lt; code &lt;&lt; endl;
+}</code>
+</pre>
+</body>
+</html>

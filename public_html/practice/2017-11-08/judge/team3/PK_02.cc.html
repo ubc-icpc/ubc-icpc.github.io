@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+const int N = 35;
+int n = 0;
+string arr[N];
+
+typedef long long LL;
+
+struct Edge {
+  int from, to, cap, flow, index;
+  Edge(int from, int to, int cap, int flow, int index) :
+    from(from), to(to), cap(cap), flow(flow), index(index) {}
+};
+
+struct PushRelabel {
+  int N;
+  vector&lt;vector&lt;Edge&gt; &gt; G;
+  vector&lt;LL&gt; excess;
+  vector&lt;int&gt; dist, active, count;
+  queue&lt;int&gt; Q;
+
+  PushRelabel(int N) : N(N), G(N), excess(N), dist(N), active(N), count(2*N) {}
+
+  void AddEdge(int from, int to, int cap) {
+      G[from].push_back(Edge(from, to, cap, 0, G[to].size()));
+      if (from == to) G[from].back().index++;
+      G[to].push_back(Edge(to, from, 0, 0, G[from].size() - 1));
+    }
+
+  void Enqueue(int v) { 
+      if (!active[v] &amp;&amp; excess[v] &gt; 0) { active[v] = true; Q.push(v); } 
+    }
+
+  void Push(Edge &amp;e) {
+      int amt = int(min(excess[e.from], LL(e.cap - e.flow)));
+      if (dist[e.from] &lt;= dist[e.to] || amt == 0) return;
+      e.flow += amt;
+      G[e.to][e.index].flow -= amt;
+      excess[e.to] += amt;    
+      excess[e.from] -= amt;
+      Enqueue(e.to);
+    }
+  
+  void Gap(int k) {
+      for (int v = 0; v &lt; N; v++) {
+            if (dist[v] &lt; k) continue;
+            count[dist[v]]--;
+            dist[v] = max(dist[v], N+1);
+            count[dist[v]]++;
+            Enqueue(v);
+          }
+    }
+
+  void Relabel(int v) {
+      count[dist[v]]--;
+      dist[v] = 2*N;
+      for (int i = 0; i &lt; G[v].size(); i++) 
+        if (G[v][i].cap - G[v][i].flow &gt; 0)
+    dist[v] = min(dist[v], dist[G[v][i].to] + 1);
+      count[dist[v]]++;
+      Enqueue(v);
+    }
+
+  void Discharge(int v) {
+      for (int i = 0; excess[v] &gt; 0 &amp;&amp; i &lt; G[v].size(); i++) Push(G[v][i]);
+      if (excess[v] &gt; 0) {
+            if (count[dist[v]] == 1) 
+        Gap(dist[v]); 
+            else
+        Relabel(v);
+          }
+    }
+
+  LL GetMaxFlow(int s, int t) {
+      count[0] = N-1;
+      count[N] = 1;
+      dist[s] = N;
+      active[s] = active[t] = true;
+      for (int i = 0; i &lt; G[s].size(); i++) {
+            excess[s] += G[s][i].cap;
+            Push(G[s][i]);
+          }
+      
+      while (!Q.empty()) {
+            int v = Q.front();
+            Q.pop();
+            active[v] = false;
+            Discharge(v);
+          }
+      
+      LL totflow = 0;
+      for (int i = 0; i &lt; G[s].size(); i++) totflow += G[s][i].flow;
+      return totflow;
+    }
+};
+
+int dx[] = {1, 0, -1, 0};
+int dy[] = {0, 1, 0, -1};
+
+void solve() {
+  int N = n*(arr[0].size());
+  int m = arr[0].size();
+  int source = 2*N+1;
+  int sink = 2*N+2;
+  PushRelabel pr(2*N+5);
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; arr[0].size(); j++) {
+      pr.AddEdge(i*m+j, (i*m+j)+N, 1);
+      if (arr[i][j] == 'W') {
+        pr.AddEdge(source, i*m+j, 1);
+        for (int k = 0; k &lt; 4; k++) {
+          int nr = i+dx[k], nc = j+dy[k];
+          if (nr &lt; 0 || nc &lt; 0 || nr &gt;= n || nc &gt;= m) continue;
+          if (arr[nr][nc] == 'I') pr.AddEdge(N+(i*m+j), nr*m+nc, 1);
+        }
+      } else if (arr[i][j] == 'I') {
+        for (int k = 0; k &lt; 4; k++) {
+          int nr = i+dx[k], nc = j+dy[k];
+          if (nr &lt; 0 || nc &lt; 0 || nr &gt;= n || nc &gt;= m) continue;
+          if (arr[nr][nc] == 'N') pr.AddEdge(N+(i*m+j), nr*m+nc, 1);
+        }
+      } else if (arr[i][j] == 'N') {
+        pr.AddEdge(N+(i*m+j), sink, 1);
+      }
+    }
+  }
+  cout &lt;&lt; pr.GetMaxFlow(source, sink) &lt;&lt; endl;
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  string s;
+  while (getline(cin, s)) {
+    n = 0;
+    arr[n++] = s;
+    while (getline(cin, s) &amp;&amp; s != &quot;&quot;) {
+      arr[n++] = s;
+    }
+    // for (int i = 0; i &lt; n; i++) cout &lt;&lt; arr[i] &lt;&lt; endl;
+    solve();
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class laundry {
+
+	List&lt;String&gt; output;
+
+	public void printTime() {
+		output = new ArrayList&lt;String&gt;();
+		// get input
+		Scanner scan = new Scanner(System.in);
+		int load = 0;
+		List&lt;Integer&gt; times;
+		int input;
+		do {
+			times = new ArrayList&lt;Integer&gt;();
+			load = scan.nextInt();
+			if (load != 0) {
+				for (int i = 0; i &lt; load; i++) {
+					input = scan.nextInt();
+					times.add(input);
+				}
+				quickSort(times, 0, times.size() - 1);
+				for (int i = 0; i &lt; times.size(); i++) {
+				}
+				int totalTime = calculateTime(load, times);
+				convertAndPrint(totalTime);
+			}
+		} while (load != 0);
+		for (int k = 0; k &lt; output.size(); k++) {
+			System.out.println(output.get(k));
+		}
+	}
+
+	public int calculateTime(int load, List&lt;Integer&gt; inputs) {
+		int wash = 0;
+		int dryer = 0;
+		for (int i = 0; i &lt; inputs.size(); i++) {
+				int dry = inputs.get(i);
+				wash = wash + 30;
+				dryer = Math.max(dryer + dry, wash + dry);
+		}	    
+		return dryer;
+	}
+
+	public void convertAndPrint(int time) {
+		int hour = 0;
+		while ((time - 60) &gt;= 0) {
+			time -= 60;
+			hour++;
+		}
+
+		int minutes = time % 60;
+		String out;
+		
+		if (minutes == 0) {
+			out = hour + &quot;:00&quot;;
+		}
+		else if (minutes &lt;= 9) {
+			out = hour + &quot;:0&quot; + minutes;
+		}
+		else {
+			out = hour + &quot;:&quot; + minutes;
+		}
+		output.add(out);
+	}
+
+	public static void quickSort (List&lt;Integer&gt; numbers, int low, int high)
+    {
+ 
+        int i=low;
+        int j=high;
+        int temp;
+        int middle = numbers.get((low + high) / 2);
+ 
+        while (i&lt;j)
+        {
+            while (numbers.get(i) &gt; middle)
+            {
+                i++;
+            }
+            while (numbers.get(j) &lt; middle)
+            {
+                j--;
+            }
+            if (j &gt;= i)
+            {
+                temp=numbers.get(i);
+                numbers.set(i, numbers.get(j));
+                numbers.set(j, temp);
+                i++;
+                j--;
+            }
+        }
+        if (low &lt; j)
+        {
+        	quickSort(numbers, low, j);
+        }
+        if (i &lt; high)
+        {
+        	quickSort(numbers, i, high);
+        }
+    }
+	
+	public static void main(String[] args) {
+		 laundry l = new laundry();
+		 l.printTime();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

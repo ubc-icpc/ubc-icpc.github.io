@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+
+using namespace std;
+typedef long long ll;
+
+#define int ll
+
+int n, a, b;
+
+map&lt;int,multiset&lt;int&gt;&gt; adj;
+unordered_map&lt;int,int&gt; newadj;
+unordered_map&lt;int,int&gt; vis;
+unordered_map&lt;int,bool&gt; anc;
+unordered_map&lt;int,bool&gt; ers;
+
+int c;
+
+ll ans = 0;
+
+void dfs(int);
+
+int cycle_dfs(int node){
+    c++;
+    //cout &lt;&lt; c &lt;&lt; &quot; &quot; &lt;&lt; node &lt;&lt; endl;
+    vis[node] = c;
+    anc[node] = true;
+    int toret = 0, b=0, toerase = false;
+    for(auto to: adj[node]){
+        if (to==b) continue;
+        if(!vis.count(to) || !vis[to]) {
+            multiset&lt;int&gt;::iterator hit(adj[to].find(node));
+            if (hit!= adj[to].end()){ 
+                adj[to].erase(hit);
+     //           cout &lt;&lt; &quot;erased &quot; &lt;&lt; to &lt;&lt; &quot; &quot; &lt;&lt; node &lt;&lt; endl;
+            }
+            else continue;
+            if((b = cycle_dfs(to))) {
+                // if we are in a cycle
+                //cout &lt;&lt; &quot;b=&quot;&lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; &quot;visnode= &quot; &lt;&lt; vis[node]&lt;&lt; endl;
+                if (b&lt;=vis[node]) {
+                    //cout &lt;&lt;&quot;in cycle to &quot; &lt;&lt; b &lt;&lt; &quot; to &quot; &lt;&lt; vis[node] &lt;&lt; endl;
+                    toerase = true;
+                    toret = b;
+                    adj[node].erase(to);
+                    break;
+                }
+            }
+            //if (!ers.count(to) || !ers[to])
+                adj[to].insert(node);
+        }
+        else if (anc.count(to) &amp;&amp; anc[to]){
+            // if we find a cycle
+            toret = vis[to];
+            adj[node].erase(to);
+            adj[to].erase(node);
+            toerase = true;
+            break;
+        }
+        if (ers.count(to) &amp;&amp; ers[to]) {
+            //adj[to].insert(node);
+            break;
+        }
+    }
+    anc[node] = false;
+    if (toerase){
+        // cycle found!
+        //cout &lt;&lt; node &lt;&lt; &quot; has &quot; ;for (auto a:adj[node]) cout &lt;&lt; a &lt;&lt; &quot; &quot;; cout &lt;&lt;endl;
+        /*
+        dfs(node);
+        ans+=node;
+        cout &lt;&lt; node &lt;&lt; endl;
+        */
+        ers[node] = true;
+    }
+    //cout &lt;&lt; node &lt;&lt; &quot;: &quot;;for(auto to: adj[node]){ cout &lt;&lt; to &lt;&lt; &quot; &quot; ;}cout &lt;&lt; endl;
+    //cout &lt;&lt; node &lt;&lt; &quot; &quot; &lt;&lt; toerase &lt;&lt; &quot; Erased? &quot; &lt;&lt; toret &lt;&lt; endl;
+    return toret;
+}
+
+void dfs( int node){
+    //cout &lt;&lt;&quot;Hi I'm at &quot; &lt;&lt;  node &lt;&lt; endl;
+    //ans+= node;
+    for(auto a: adj[node]){
+        //ans+= node;
+        //cout &lt;&lt; &quot;in dfsing &quot; &lt;&lt; a&lt;&lt; endl;
+        //cout &lt;&lt; node &lt;&lt; endl;
+        adj[a].erase(node);
+        dfs(a);
+    }
+    adj[node].clear();
+}
+
+map&lt;int,ll&gt; dp[2];
+ll dps(int node, bool state= 0){
+    // 1 means root is used
+    //cout &lt;&lt; node &lt;&lt; &quot; &quot; &lt;&lt; state &lt;&lt; endl;
+    if (dp[state].count(node)) return dp[state][node];
+    ll mxchange= 0;-1e18; ll ans = 0;
+    //for(auto to: adj[node]){ cout &lt;&lt; to &lt;&lt; &quot; &quot; ;}cout &lt;&lt; endl;
+    for(auto to: adj[node]){
+        adj[to].erase(node);
+        ans += (ll)node+dps(to,1);
+        adj[to].insert(node);
+    }
+    if (state==1) return (dp[state][node] = ans);
+    //if (adj[node].empty()) return 0;
+    for(auto to: adj[node]){
+        adj[to].erase(node);
+        mxchange = max(mxchange,-(ll)node-dps(to,1)+dps(to,0)+(ll)to);
+    }
+    adj[node].clear();
+    //if (ans==0) return (0);
+    return (dp[state][node] = ans + mxchange);
+}
+
+#undef int
+int main(){
+#define int ll
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt; n;
+    int counter = n;
+    while(counter--){
+        cin &gt;&gt; a &gt;&gt; b;
+        if(!adj.count(a)) {
+            multiset&lt;int&gt; temp;
+            temp.insert(b);
+            adj[a] = temp;
+        }
+        else adj[a].insert(b);
+        if(!adj.count(b)){
+            multiset&lt;int&gt; temp;
+            temp.insert(a);
+            adj[b] = temp;
+        }
+        else adj[b].insert(a);
+    }
+    for(auto &amp;p: adj){
+        c = 0;
+        if(!vis.count(p.first) || !vis[p.first]) cycle_dfs(p.first);
+    }
+    //cout &lt;&lt; ans &lt;&lt;endl;
+    for(auto &amp;p: ers){
+        ans+=p.first;
+        dp[1].clear();
+        dp[0].clear();
+        ans += dps(p.first,1);
+        dfs(p.first);
+        //cout &lt;&lt; &quot;dp1 on &quot; &lt;&lt; p.first &lt;&lt; endl;
+        //cout &lt;&lt; dps(p.first,1) &lt;&lt; endl;
+        
+    }
+    for (auto &amp;p: adj){
+        if (p.second.empty())continue;
+       // cout &lt;&lt; p.first &lt;&lt; &quot; &quot;; for(auto j:p.second) cout &lt;&lt; j &lt;&lt; &quot; &quot;; cout &lt;&lt; endl;
+        dp[1].clear();
+        dp[0].clear();
+        ans += dps(p.first);
+        dfs(p.first);
+        //cout &lt;&lt; &quot;dp on &quot; &lt;&lt; p.first &lt;&lt; endl;
+        //cout &lt;&lt; dps(p.first) &lt;&lt; endl;
+    }
+    /*
+    vector&lt;pair&lt;int,int&gt;&gt; tocheck;
+    for(auto &amp;p: adj){
+        if (p.second.empty()) continue;
+        //cout &lt;&lt; p.first &lt;&lt; &quot; is nonempty&quot; &lt;&lt; endl;
+        int fr = p.first, to = *p.second.begin();
+        cout &lt;&lt; &quot; directed edge &quot; &lt;&lt; to &lt;&lt; &quot; &quot; &lt;&lt; fr &lt;&lt; endl;
+        newadj[fr] = to;
+        ans+= to;
+        if (newadj.count(to) &amp;&amp; newadj[to] == fr)
+            tocheck.push_back({fr,to});
+    }
+    vis.clear();
+   for(auto &amp;p: tocheck){
+       cout &lt;&lt; p.first &lt;&lt; &quot; &quot; &lt;&lt; p.second &lt;&lt; endl;
+       // cout &lt;&lt; &quot;what is there to check?&quot; &lt;&lt; endl;
+        ans += dfs(p);
+   }
+   */
+    cout &lt;&lt; ans;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

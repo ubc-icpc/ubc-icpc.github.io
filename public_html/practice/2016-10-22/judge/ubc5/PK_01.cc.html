@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef pair&lt;ld,bool&gt; plb;
+
+const int N = 100000;
+const ld EPS = 1e-8;
+
+pt sw[N], lw[N];
+int n, m;
+
+inline ld d(pt s1, pt s2, pt l1, pt l2, ld r) {
+  pt s3(s1.real()+r*(s2.real()-s1.real()),s1.imag()+r*(s2.imag()-s1.imag()));
+  pt l3(l1.real()+r*(l2.real()-l1.real()),l1.imag()+r*(l2.imag()-l1.imag()));
+  return abs(s3-l3);
+}
+
+int main() {
+  while (scanf(&quot;%d&quot;, &amp;n) == 1) {
+    vector&lt;plb&gt; es;
+    ld ct = 0;
+    for (int i = 0; i &lt; n; i++) {
+      ld x, y;
+      scanf(&quot;%Lf%Lf&quot;, &amp;x, &amp;y);
+      sw[i] = pt(x,y);
+      if (i) {
+        ct += abs(sw[i]-sw[i-1]);
+        es.push_back(make_pair(ct,0));
+      }
+    }
+    scanf(&quot;%d&quot;, &amp;m);
+    ct = 0;
+    for (int i = 0; i &lt; m; i++) {
+      ld x, y;
+      scanf(&quot;%Lf%Lf&quot;, &amp;x, &amp;y);
+      lw[i] = pt(x,y);
+      if (i) {
+        ct += abs(lw[i]-lw[i-1]);
+        es.push_back(make_pair(ct,1));
+      }
+    }
+    sort(es.begin(),es.end());
+    pt S = sw[0], L = lw[0];
+    int si = 0, li = 0;
+    ld md = abs(sw[0]-lw[0]);
+    for (int i = 0; i &lt; es.size(); i++) {
+      pt S2, L2;
+      if (!es[i].second) {
+        si++;
+        ld Lr = abs(sw[si]-S)/abs(lw[li+1]-L);
+        L2 = pt(L.real()+Lr*(lw[li+1].real()-L.real()),L.imag()+Lr*(lw[li+1].imag()-L.imag()));
+        S2 = sw[si];
+      }
+      else {
+        li++;
+        ld Sr = abs(lw[li]-L)/abs(sw[si+1]-S);
+        S2 = pt(S.real()+Sr*(sw[si+1].real()-S.real()),S.imag()+Sr*(sw[si+1].imag()-S.imag()));
+        L2 = lw[li];
+      }
+      ld lo = 0, hi = 1;
+      while (hi-lo &gt; EPS) {
+        ld m1 = lo+(hi-lo)/3, m2 = lo+(hi-lo)*2/3;
+        if (d(S,S2,L,L2,m1) &lt; d(S,S2,L,L2,m2))
+          hi = m2;
+        else
+          lo = m1;
+      }
+      md = min(md,d(S,S2,L,L2,lo));
+      if (si == n-1 || li == m-1)
+        break;
+      S = S2;
+      L = L2;
+    }
+    printf(&quot;%.7Lf\n&quot;, md);
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

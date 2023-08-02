@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+class item {
+public:
+	int value;
+	int needed;
+	int size;
+};
+
+bool cmp(item a, item b) {
+	return a.needed &lt; b.needed;
+}
+
+int main() {
+	ios::sync_with_stdio(0); cin.tie(0);
+	ios_base::sync_with_stdio(0);
+
+	int num;
+	string temps;
+	item tempi;
+	vector&lt;item&gt; open, close;
+	int sz, cancel, value, needed;
+
+	cin &gt;&gt; num;
+	for (int i = 0; i &lt; num; i++) {
+		cin &gt;&gt; temps;
+		cancel = 0;
+		value = 0;
+		needed = 0;
+		sz = temps.size();
+		for (int j = 0; j &lt; sz; j++) {
+			if (temps[j] == '(')
+				value++;
+			else
+				value--;
+		}
+		if (value &gt;= 0) {
+			for (int j = 0; j &lt; sz; j++) {
+				if (temps[j] == '(')
+					cancel++;
+				else {
+					if (cancel)
+						cancel--;
+					else
+						needed++;
+				}
+			}
+			tempi.size = sz;
+			tempi.value = value;
+			tempi.needed = needed;
+			open.push_back(tempi);
+		}
+		else  {
+			for (int j = sz-1; j &gt;= 0; j--) {
+				if (temps[j] == ')')
+					cancel++;
+				else {
+					if (cancel)
+						cancel--;
+					else
+						needed++;
+				}
+			}
+			tempi.size = sz;
+			tempi.value = -value;
+			tempi.needed = needed;
+			close.push_back(tempi);
+		}
+	}
+	//
+	sort(open.begin(), open.end(), cmp);
+	sort(close.begin(), close.end(), cmp);
+
+	int osz = open.size();
+	int csz = close.size();
+	int dpopen[2][45010]; // stores max size
+	memset(dpopen, -1, sizeof(dpopen));
+	dpopen[0][0] = 0;
+	for (int i = 0; i &lt; osz; i++) {
+		for (int j = 0; j &lt;= 45000; j++) {
+			dpopen[(i+1)%2][j] = dpopen[i%2][j];
+		}
+		for (int j = open[i].needed; j &lt;= 45000; j++) {
+			if (dpopen[(i)%2][j] != -1) {
+			 	// can add
+				dpopen[(i+1)%2][j+open[i].value] = max(dpopen[(i+1)%2][j+open[i].value], dpopen[(i)%2][j] + open[i].size);
+			}
+		}
+	}
+	int dpclose[2][45010]; // stores max size
+	memset(dpclose, -1, sizeof(dpclose));
+	dpclose[0][0] = 0;
+	for (int i = 0; i &lt; csz; i++) {
+		for (int j = 0; j &lt;= 45000; j++) {
+			dpclose[(i+1)%2][j] = dpclose[i%2][j];
+		}
+		for (int j = close[i].needed; j &lt;= 45000; j++) {
+			if (dpclose[(i)%2][j] != -1) {
+			 	// can add
+				dpclose[(i+1)%2][j+close[i].value] = max(dpclose[(i+1)%2][j+close[i].value], dpclose[(i)%2][j] + close[i].size);
+			}
+		}
+	}
+	int opt = 0;
+	for (int i = 0; i &lt;= 45000; i++) {
+		if (dpopen[osz%2][i] != -1 &amp;&amp; dpclose[csz%2][i] != -1)
+		opt = max(opt, dpopen[osz%2][i] + dpclose[csz%2][i]);
+	}
+	// ans = dp[num%2][0]
+	cout &lt;&lt; opt &lt;&lt; endl;
+
+	return 0;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

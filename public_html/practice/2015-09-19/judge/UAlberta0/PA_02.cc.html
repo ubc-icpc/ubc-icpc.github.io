@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+        vector&lt;int&gt; times;
+        int loads, t, w_t, d_t;
+        cin &gt;&gt; loads;
+
+        while(loads != 0) {
+                queue&lt;int&gt; dryer;
+                times.clear();
+
+                for(int i = 0; i &lt; loads; ++i) {
+                        cin &gt;&gt; t;
+                        times.push_back(t);
+                }
+                sort(times.begin(), times.end(), greater&lt;int&gt;());
+
+                for(int i = 0; i &lt; loads; ++i) {
+                        dryer.push(times[i]);
+                }
+
+                w_t = d_t = 30;
+                while(!dryer.empty()) {
+                        if (d_t &lt; w_t) {
+                                d_t = w_t;
+                        }
+
+                        d_t += dryer.front();
+                        dryer.pop();
+                        w_t += 30;
+                }
+
+                int mins = d_t % 60;
+                cout &lt;&lt; d_t / 60 &lt;&lt; &quot;:&quot;;
+                if (mins &lt; 10) {
+                        cout &lt;&lt; &quot;0&quot;;
+                }
+                cout &lt;&lt; mins &lt;&lt; endl;
+                
+                cin &gt;&gt; loads;
+        }
+        
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

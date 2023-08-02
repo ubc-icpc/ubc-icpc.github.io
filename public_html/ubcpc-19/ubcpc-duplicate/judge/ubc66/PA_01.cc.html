@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//#pragma GCC optimize (&quot;O3&quot;)
+
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int n;
+char DE[5];
+char str[110];
+
+int main(){
+	scanf(&quot;%s&quot;,DE);
+	scanf(&quot;%d&quot;,&amp;n);
+	scanf(&quot;%s&quot;,str);
+
+	int len=strlen(str);
+	for(int i=0;i&lt;len;i++){
+		for(int j=1;j&lt;=n;j++){
+			if(DE[0]=='E'){
+				str[i]=str[i]+1;
+				if(str[i]&gt;'z')
+					str[i]='a';
+			}else{
+				str[i]=str[i]-1;
+				if(str[i]&lt;'a')
+					str[i]='z';
+			}
+		}
+	}
+	printf(&quot;%s\n&quot;,str);
+
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

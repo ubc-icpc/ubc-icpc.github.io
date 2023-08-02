@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;regex&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+using namespace std;
+
+int n, m;
+vector&lt;string&gt; dict;
+int main() {
+  cin &gt;&gt; n;
+  for (int i=0; i&lt;n; i++) { string s; cin &gt;&gt; s; dict.push_back(s); }
+  cin &gt;&gt; m;
+  for (int w=1; w&lt;=m; w++) {
+    string word; cin &gt;&gt; word;
+    vector&lt;string&gt; v;
+    for (auto s : dict) {
+      if (word.size() != s.size()) continue;
+      bool match=true;
+      for (int pos=0; pos&lt;s.size(); pos++) {
+	if(word[pos]=='-') continue;
+	if (word[pos]!=s[pos]) {match=false; break;}
+      }
+      if (match) v.push_back(s);
+    }
+    cout &lt;&lt; &quot;Word #&quot; &lt;&lt; w &lt;&lt; &quot;: &quot; &lt;&lt; word &lt;&lt; endl;
+    for (auto e : v)
+      cout &lt;&lt; e &lt;&lt; endl;
+    cout &lt;&lt; &quot;Total number of candidate words = &quot; &lt;&lt; v.size() &lt;&lt; endl &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+	char line[10001];
+	char arr[100][100];
+	int side, len, testcases; 
+	scanf(&quot;%d&quot;, &amp;testcases);
+	while (testcases--) {
+		scanf(&quot;%s&quot;, line);
+		len = strlen(line);
+		side = sqrt(len);
+		int k = 0;
+		for (int i = 0; i &lt; side; i++)
+			for (int j = 0; j &lt; side; j++)
+				arr[i][j] = line[k++];
+		k = 0;
+		for (int j = side-1; j &gt;= 0; j--) 
+			for (int i = 0; i &lt; side; i++)
+				line[k++] = arr[i][j];
+		printf(&quot;%s \n&quot;, line);
+	}	
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

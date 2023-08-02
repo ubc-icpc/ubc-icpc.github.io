@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int main() {
+    int testCase, gcd, n, array[10000];
+    double amount;
+    cin &gt;&gt; testCase;
+    while (testCase--) {
+        cin &gt;&gt; amount &gt;&gt; n;
+        amount = amount*100;
+        gcd = amount;
+        gcd /= __gcd((int)gcd, 100);
+        for (int i =0; i &lt; n; i++) {
+            int temp;
+            cin &gt;&gt; temp;
+            while (temp % 2 == 0) temp /= 2;
+            array[i] = temp;
+            array[0] = __gcd(array[0],array[i]);
+
+        }
+        if (((int)amount % 25 == 0) &amp;&amp; gcd % array[0] == 0) cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+        else cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

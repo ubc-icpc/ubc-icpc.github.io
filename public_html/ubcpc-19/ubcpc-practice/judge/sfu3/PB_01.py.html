@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+# Problem B. Harmony
+from math import log
+
+p, q = map(int,raw_input().split())
+a, b = log(p, 2)*1200, log(q, 2)*1200
+d = round(b-a)
+note_d = int(d//100)  # multiple of 2^1/12
+cent_d = int(d%100)  # total cents needed
+if cent_d&gt;50:
+    # move together
+    note_d+=1
+    cent_d-=100
+    c2 = max(cent_d, -25)
+    c1 = max(-25-cent_d, 0)
+else:
+    # move apart
+    c2 = min(cent_d, 25)
+    c1 = min(25-cent_d, 0)
+note_d %=12
+
+# tcents =  (c2-c1) + 100*note_d
+# diff = tcents - (b-a)
+# print &quot;cents:&quot;, tcents, &quot;original:&quot;, (b-a), &quot;diff:&quot;, diff
+notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+n1, n2 = notes[0], notes[note_d]
+print n1, c1
+print n2, c2
+</code>
+</pre>
+</body>
+</html>

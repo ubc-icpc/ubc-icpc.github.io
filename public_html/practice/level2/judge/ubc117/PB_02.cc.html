@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+const ld PI = 3.1415926535897932384626433;
+const ld EPS = 1e-9;
+
+struct pt {
+    static ld xc, yc;
+    ld x, y;
+    pt() {}
+    pt(ld a, ld b) :x(a), y(b) {}
+    pt operator + (const pt&amp; o) const { return pt(x+o.x, y+o.y); }
+    pt operator - (const pt&amp; o) const { return pt(x-o.x, y-o.y); }
+    pt operator * (const ld&amp; o) const { return pt(x * o, y * o); }
+    ld dp(const pt&amp; o) const {
+        return x*o.x+y*o.y;
+    }
+    ld cp(const pt&amp; o) const {
+        return x*o.y-y*o.x;
+    }
+    static void set_center(const pt&amp; p) {
+        xc = p.x;
+        yc = p.y;
+    }
+    bool ang_less (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ld cpv = tdist.cp(odist);
+        return cpv &gt; EPS;
+    }
+    bool operator &lt; (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ld cpv = tdist.cp(odist);
+        if (abs(cpv) &gt; EPS) return cpv &gt; 0;
+        return tdist.d2() &lt; odist.d2();
+    }
+    bool operator == (const pt&amp; o) const {
+        return abs(x-o.x) &lt; EPS &amp;&amp; abs(y-o.y) &lt; EPS;
+    }
+    ld d2() const {
+        return x*x+y*y;
+    }
+};
+ld pt::xc;
+ld pt::yc;
+
+ld dist_from(pt a, pt b, pt c) {
+    pt ca = c-a;
+    pt ba = b-a;
+
+    pt bad = ba*(ca.dp(ba)*(1/ba.d2()));
+    return sqrt((ca-bad).d2());
+}
+
+void angular_sort(vector&lt;pt&gt;&amp; pts, pt start) {
+    for (int i=0; i&lt;pts.size(); ++i) {
+        if (pts[i] == start) {
+            swap(pts[i], pts[0]);
+            break;
+        }
+    }
+    pt::set_center(pts[0]);
+    sort(pts.begin()+1, pts.end());
+}
+
+vector&lt;pt&gt; get_hull(const vector&lt;pt&gt;&amp; pts) {
+    vector&lt;pt&gt; hull;
+
+    hull.push_back(pts[0]);
+    hull.push_back(pts[1]);
+
+    for (int i=2; i&lt;pts.size(); ++i) {
+        while (hull.size() &gt; 1 &amp;&amp; (hull[hull.size()-1]-hull[hull.size()-2]).cp(pts[i]-hull.back()) &lt; EPS) {
+            hull.pop_back();
+        }
+        hull.push_back(pts[i]);
+    }
+
+    return hull;
+}
+
+void solve() {
+    vector&lt;pt&gt; pts;
+
+    int n;
+    cin &gt;&gt; n;
+
+    pt start(1e9, 1e9);
+
+    for (int i=0; i&lt;n; ++i) {
+        int x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        pts.emplace_back(x, y);
+
+        if ((start.x == x &amp;&amp; y &lt; start.y) || x &lt; start.x) {
+            start = pt(x, y);
+        }
+    }
+
+    if (pts.size() == 1) {
+        cout &lt;&lt; &quot;0\n&quot;;
+        return;
+    }
+
+    angular_sort(pts, start);
+
+    if (!pts[1].ang_less(*pts.rbegin()) &amp;&amp; !pts.rbegin()-&gt;ang_less(pts[1])) {
+        // is a line
+        cout &lt;&lt; 0 &lt;&lt; &quot;\n&quot;;
+        return;
+    }
+
+    auto hull = get_hull(pts);
+
+    ld ans = 3e9;
+    int j = 1;
+    int m = hull.size();
+    for (int i=0; i &lt; hull.size(); ++i) {
+        ld last = dist_from(hull[i], hull[(i+1)%m], hull[j%m]);
+        while(true) {
+            ++j;
+            ld here = dist_from(hull[i], hull[(i+1)%m], hull[j%m]);
+            if (here &lt; last) {
+                --j;
+                break;
+            }
+            last = here;
+        }
+        ans = min(ans, last);
+    }
+    cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; ans &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    solve();
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

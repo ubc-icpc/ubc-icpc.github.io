@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+ 
+char board[1 &lt;&lt; 10 + 5][1 &lt;&lt; 10 + 5];
+
+void draw(int level, int x, int y)
+{
+	if (level == 1)
+	{
+		board[y][x] = board[y+1][x+1] = board[y+1][x] = board[y][x+1] = 'X';
+		return;
+	}
+
+	for (int j = 0; j &lt; 1 &lt;&lt; (level - 1); j++)
+	{
+		for (int i = 0; i &lt; 1 &lt;&lt; (level - 1); i++)
+		{
+			int tempx = x + (1 &lt;&lt; level - 2) + i;
+				int tempy = y + (1 &lt;&lt; (level - 1)) + j;
+			board[y + (1 &lt;&lt; (level - 1)) + j][x + (1 &lt;&lt; level - 2) + i] = board[y + j][x + i];
+			board[y + (1 &lt;&lt; (level - 1)) + j][x - (1 &lt;&lt; level - 2) + i] = board[y + j][x + i];
+		}
+	}
+
+}
+
+int main()
+{
+	int n;
+	cin &gt;&gt; n;
+	int count = 0;
+	while (n--)
+	{
+		count++;
+		memset(board, ' ', sizeof(board));
+		cout &lt;&lt; &quot;Triangle #&quot; &lt;&lt; count &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		int level;
+		cin &gt;&gt; level;
+		for (int i = 1; i &lt;= level; i++)
+		{
+			if (i == 1)
+			{
+				draw( i, (1&lt;&lt; (level - i)) - 1, 0);
+			}
+			else
+			{
+				draw(i, (1 &lt;&lt; (level - 1)) - (1 &lt;&lt; (i - 2)), 0);
+			}
+		}
+		for (int j = 0; j &lt; 1 &lt;&lt; level; j++)
+		{
+			for (int i = 0; i &lt; 1 &lt;&lt; level; i++)
+			{
+				cout &lt;&lt; board[j][i];
+			}
+			cout &lt;&lt; endl;
+		}
+ 	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

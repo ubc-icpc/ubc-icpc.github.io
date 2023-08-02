@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;cmath&gt;
+#include &lt;set&gt;
+#include &lt;unordered_set&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+#include &lt;unordered_map&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+
+struct pt {
+    static ll xc, yc;
+    ll x, y, f, i;
+    pt() {}
+    pt(ll a, ll b) :x(a), y(b), f(100) {}
+    pt(ll a, ll b, ll c, ll d) :x(a), y(b), f(c), i(d) {}
+    pt operator + (const pt&amp; o) const { return pt(x+o.x, y+o.y); }
+    pt operator - (const pt&amp; o) const { return pt(x-o.x, y-o.y); }
+    pt operator * (const ll&amp; o) const { return pt(x * o, y * o); }
+    ll dp(const pt&amp; o) const {
+        return x*o.x+y*o.y;
+    }
+    ll cp(const pt&amp; o) const {
+        return x*o.y-y*o.x;
+    }
+    pt rot() const {
+        return pt(2*xc-x, 2*yc-y);
+    }
+    static void set_center(const pt&amp; p) {
+        xc = p.x;
+        yc = p.y;
+    }
+    bool ang_less (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        return cpv &gt; 0;
+    }
+    bool operator &lt; (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        if (cpv != 0) return cpv &gt; 0;
+        return f &lt; o.f;
+    }
+    bool operator == (const pt&amp; o) const {
+        return x == o.x &amp;&amp; y == o.y;
+    }
+    ll d2() const {
+        return x*x+y*y;
+    }
+};
+ll pt::xc;
+ll pt::yc;
+
+const int N = 200100;
+
+pt b[N], e[N];
+int n;
+
+ll solve_from(int i, pt g[N], ll base) {
+    pt::set_center(pt(g[i].x, g[i].y));
+    vector&lt;pt&gt; pts;
+    for (int j=0; j&lt;n; ++j) {
+        if (g[i].y == b[j].y) continue;
+        if (g[i].y &gt; b[j].y) {
+            pt ee = e[j].rot();
+            pt bb = b[j].rot();
+            pts.emplace_back(bb.x, bb.y, b[j].x-e[j].x, j);
+            pts.emplace_back(ee.x, ee.y, e[j].x-b[j].x, j);
+        } else {
+            pts.emplace_back(e[j].x, e[j].y, b[j].x-e[j].x, j);
+            pts.emplace_back(b[j].x, b[j].y, e[j].x-b[j].x, j);
+        }
+    }
+    //cerr &lt;&lt; &quot; ! &quot; &lt;&lt; base &lt;&lt; endl;
+    ll ans = base;
+    ll cur = base;
+    sort(pts.begin(), pts.end());
+    for (int i=0; i&lt;pts.size(); ++i) {
+        cur -= pts[i].f;
+        ans = max(ans, cur);
+    }
+    return ans;
+}
+
+void solve() {
+    cin &gt;&gt; n;
+    for (int i=0; i&lt;n; ++i) {
+        int x0, x1, y;
+        cin &gt;&gt; x0 &gt;&gt; x1 &gt;&gt; y;
+        if (x1 &lt; x0) swap(x1, x0);
+        b[i].x = x0;
+        b[i].y = y;
+        b[i].i = i;
+        e[i].x = x1;
+        e[i].y = y;
+        e[i].i = i;
+    }
+
+    ll ans = 0;
+    for (int i=0; i&lt;n; ++i) {
+        //cerr &lt;&lt; &quot;!! &quot; &lt;&lt; i &lt;&lt; endl;
+        ans = max(ans, solve_from(i, b, e[i].x-b[i].x));
+        ans = max(ans, solve_from(i, e, e[i].x-b[i].x));
+    }
+    cout &lt;&lt; ans &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int TT;
+    cin &gt;&gt; TT;
+    while (TT--) {
+        solve();
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

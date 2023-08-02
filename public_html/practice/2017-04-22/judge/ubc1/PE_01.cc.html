@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main(){
+
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+
+  int n;
+  int v[105];
+  int ans[105];
+
+  cin &gt;&gt; n;
+  for(int i = 1;i &lt;= n;i++) cin &gt;&gt; v[i];
+
+  sort(v+1, v+n+1);
+  
+  int half = (n+1)/2;
+  reverse(v+1, v+half+1);
+
+  int li = 1, lj = half+1;
+  
+  for(int i = 1;i &lt;= n;i++){
+    if(i%2) ans[i] = v[li++];
+    else ans[i] = v[lj++];
+  }
+
+  for(int i = 1;i &lt;= n;i++) cout &lt;&lt; ans[i] &lt;&lt; (i==n?&quot;\n&quot;:&quot; &quot;);
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

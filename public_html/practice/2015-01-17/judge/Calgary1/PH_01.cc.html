@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef pair&lt;char,char&gt; PC;
+
+int main() {
+	int V, T, R1, R2, W;
+	cin &gt;&gt; V &gt;&gt; T;
+	vector&lt;char&gt; vars(V);
+	for (int v = 0; v &lt; V; v++) cin &gt;&gt; vars[v];
+	char discard;
+	for (int t = 0; t &lt; T; t++) cin &gt;&gt; discard;
+	cin &gt;&gt; R1;
+	vector&lt;char&gt; ru1[256];
+	for (int r = 0; r &lt; R1; r++) {
+		char v, t;
+		cin &gt;&gt; v &gt;&gt; t;
+		ru1[v].push_back(t);
+	}
+	cin &gt;&gt; R2;
+	vector&lt;PC&gt; ru2[256];
+	for (int r = 0; r &lt; R2; r++) {
+		char v, v1, v2;
+		cin &gt;&gt; v &gt;&gt; v1 &gt;&gt; v2;
+		ru2[v].emplace_back(v1, v2);
+	}
+	cin &gt;&gt; W;
+	while (W--) {
+		string s;
+		cin &gt;&gt; s;
+		int L = s.length();
+		bool dp[256][31][30] = {}; // [var][length][start idx]
+		for (int i = 0; i &lt; L; i++) {
+			for (char v : vars) {
+				for (char t : ru1[v]) {
+					if (s[i] == t) {
+						dp[v][1][i] = true;
+						break;
+					}
+				}
+			}
+		}
+		for (int l = 2; l &lt;= L; l++) {
+			for (int i = 0; i+l &lt;= L; i++) {
+				for (char v : vars) {
+					for (PC r : ru2[v]) {
+						for (int p = i+1; p &lt; i+l; p++) {
+							if (dp[r.first][p-i][i] &amp;&amp; dp[r.second][i+l-p][p]) {
+								dp[v][l][i] = true;
+								break;
+							}
+						}
+						if (dp[v][l][i]) break;
+					}
+				}
+			}
+		}
+		cout &lt;&lt; int(dp[vars[0]][L][0]) &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

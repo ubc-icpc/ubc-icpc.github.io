@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N;
+vector&lt;int&gt; V;
+vector&lt;int&gt; prev;
+map&lt;vector&lt;int&gt;, bool&gt; M;
+
+void pswap(int i) {
+    if (i &lt; V.size()-1) {
+        V[i] ^= V[i+1];
+        V[i+1] ^= V[i];
+        V[i] ^= V[i+1];
+        pswap(i+2);
+    }
+}
+
+void rec(int i) {
+    for (int j = i; j &lt; N; ++j) {
+        rec(i+1);
+        if (j &lt; N-1) {
+            //if (j-i+1 == (N-i) / 2) {
+                pswap(i+2);
+            //}
+            V[i] ^= V[i+1];
+            V[i+1] ^= V[i];
+            V[i] ^= V[i+1];
+            for (int k : V) {
+                cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+            }
+            cout &lt;&lt; endl;
+            /*if (M[V]) {
+                cout &lt;&lt; &quot;duplicate: &quot;;
+                for (int k : V) {
+                    cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+                }
+                cout &lt;&lt; endl;
+            }
+            M[V] = true;
+            if (check()) {
+                cout &lt;&lt; &quot;-&gt; &quot;;
+                for (int k : prev) {
+                    cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+                }
+                cout &lt;&lt; endl;
+                cout &lt;&lt; &quot;-&gt; &quot;;
+                for (int k : V) {
+                    cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+                }
+                cout &lt;&lt; endl;
+            }
+            prev = V;*/
+        }
+    }
+}
+
+int main () {
+    cin &gt;&gt; N;
+    for (int i = 1; i &lt;= N; ++i) {
+        V.push_back(i);
+    }
+    for (int k : V) {
+        cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+    /*if (M[V]) {
+        cout &lt;&lt; &quot;duplicate: &quot;;
+        for (int k : V) {
+            cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+    M[V] = true;
+    prev = V; */
+    rec(0);
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

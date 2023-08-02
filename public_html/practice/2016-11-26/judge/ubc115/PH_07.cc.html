@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pll;
+
+struct Interval {
+        ll a, b;
+        bool operator&lt;(const Interval &amp;other) const {
+                return  b &lt; other.b;
+        }
+};
+
+vector&lt;Interval&gt; v;
+ll dp[200002];
+
+int main() {
+        ios::sync_with_stdio(0);
+        ll n, k;
+        cin &gt;&gt; n &gt;&gt; k;
+        ll a, b;
+        for (int i = 0; i &lt; k; i++) {
+                cin &gt;&gt; a &gt;&gt; b;
+                v.push_back({a, b});
+        }
+        sort(v.begin(), v.end());
+        dp[0] = (v[0].b - v[0].a) + 1;
+        ll mm = dp[0];
+        for (int i = 1; i &lt; v.size(); i++) {
+                dp[i] = max(dp[i - 1], v[i].b - v[i].a + 1);
+                int hi = i - 1;
+                int lo = 0;
+                int mid;
+                while (lo + 1 &lt; hi) {
+                        mid = lo + (hi - lo) / 2;
+                        if (v[i].a &gt; v[mid].b) {
+                                lo = mid;
+                        } else {
+                                hi = mid;
+                        }
+                }
+
+                for (int j = hi; j &gt;= 0; j--) {
+                        if (v[i].a &gt; v[j].b) {
+                                dp[i] = max(dp[i], dp[j] + v[i].b - v[i].a + 1);
+                                break;
+                        } 
+                }
+                mm = max(mm, dp[i]);
+        }
+        cout &lt;&lt; n - mm; 
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

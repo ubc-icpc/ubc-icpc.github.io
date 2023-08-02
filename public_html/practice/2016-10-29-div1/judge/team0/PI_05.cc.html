@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef double ld;
+typedef complex&lt;ld&gt; pt;
+const ld EPS = 1e-5;
+const ld PI = acos(-1);
+const int N = 5001;
+
+int pp[N];
+int f(int u) { if (pp[u] == u) return u; return pp[u] = f(pp[u]); }
+void u(int x, int y) { if (f(x) != f(y)) pp[f(x)] = f(y); }
+
+struct E {
+    ld angle; int id; bool isOpen;
+    E(){}
+    E(ld la, int lid, bool lo) { angle = la; id = lid; isOpen = lo; }
+    bool operator&lt;(const E &amp;e) const {
+        if (abs(angle - e.angle) &lt; EPS) {
+            if (isOpen == e.isOpen) return id &lt; e.id;
+            return isOpen;
+        }
+        return angle &lt; e.angle;
+    }
+};
+
+pt pts[N];
+E events[N]; int ne;
+int cnt[N];
+int sz[N];
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        ld x, y; cin &gt;&gt; x &gt;&gt; y;
+        pts[i] = pt(x, y);
+        pp[i] = i;
+    }
+
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = i+1; j &lt; n; j++) {
+            if (abs(pts[i] - pts[j]) &lt; 2+EPS) {
+                u(i, j);
+            }
+        }
+    }
+
+    memset(sz, 0, sizeof sz);
+    for (int i = 0; i &lt; n; i++) {
+        sz[f(i)]++;
+    }
+
+    // angular sweep around each point with circle of radius 2
+    int ans = 0;
+    for (int i = 0; i &lt; n; i++) {
+        ne = 0;
+        memset(cnt, 0, sizeof cnt);
+        cnt[f(i)] = 1;
+        int sum = sz[f(i)];
+        for (int j = 0; j &lt; n; j++) {
+            if (j == i) continue;
+            pt dij = pts[j] - pts[i];
+            if (abs(dij) &gt; 4 + EPS) continue;
+
+            ld a0 = atan2(dij.imag(), dij.real());
+            ld aa = acos(min(4.0, abs(dij))/4);
+            ld a1 = a0-aa; while(a1 &gt; 2*PI) a1 -= 2*PI; while (a1 &lt; -EPS) a1 += 2*PI;
+            ld a2 = a0+aa; while(a2 &gt; 2*PI) a2 -= 2*PI; while (a2 &lt; -EPS) a2 += 2*PI;
+            int id = f(j);
+            if (a1 &gt; a2) {
+                if (cnt[id] == 0) sum += sz[id];
+                cnt[id]++;
+            }
+            events[ne++] = E(a1, id, true);
+            events[ne++] = E(a2, id, false);
+        }
+        ans = max(ans, sum);
+
+        sort(events, events+ne);
+        for (int j = 0; j &lt; ne;) {
+            bool done = false;
+            E e = events[j];
+            while (j &lt; ne &amp;&amp; e.isOpen) {
+                if (cnt[e.id] == 0) sum += sz[e.id];
+                cnt[e.id]++;
+                j++;
+                if (j &lt; ne) {
+                    e = events[j];
+                    if (abs(e.angle - events[j-1].angle) &gt; EPS) {
+                        done = true;
+                        break;
+                    }
+                }
+            }
+            ans = max(ans, sum);
+            while (!done &amp;&amp; j &lt; ne &amp;&amp; !e.isOpen) {
+                cnt[e.id]--;
+                if (cnt[e.id] == 0) sum -= sz[e.id];
+                j++;
+                if (j &lt; ne) {
+                    e = events[j];
+                    if (abs(e.angle - events[j-1].angle) &gt; EPS) {
+                        done = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    cout &lt;&lt; (ans+1) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

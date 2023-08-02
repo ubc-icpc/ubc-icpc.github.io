@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define MAX_N 128
+
+char mode;
+unsigned short shift;
+char str[MAX_N];
+
+void encode(unsigned short i) {
+	const unsigned char src = str[i] - 'a';
+	const unsigned char mid = src + shift;
+	const unsigned char dst = mid % 26;
+	str[i] = dst + 'a';
+}
+
+void decode(unsigned short i) {
+	const unsigned char src = str[i] - 'a';
+	const unsigned char mid = src + (26 - shift);
+	const unsigned char dst = mid % 26;
+	str[i] = dst + 'a';
+}
+
+int main() {
+	ios::sync_with_stdio(false);
+	memset(str, 0, sizeof(str));
+	cin &gt;&gt; mode;
+	cin &gt;&gt; shift;
+	cin &gt;&gt; str;
+	for(unsigned short i = 0; str[i] != '\000'; i++) {
+		switch(mode) {
+		case 'E':
+			encode(i);
+			break;
+		case 'D':
+			decode(i);
+			break;
+		default:
+			return 0;
+		}
+	}
+	cout &lt;&lt; str &lt;&lt; &quot;\n&quot;;
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

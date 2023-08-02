@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;vector&lt;int&gt;&gt; v({{1}});
+	for (int i = 2; i &lt;= n; i++) {
+		int dir = 1;
+		vector&lt;vector&lt;int&gt;&gt; w;
+		for (const auto&amp; p : v) {
+			if (dir == 0) {
+			    for (int k = 0; k &lt; p.size(); k++) {
+			        w.push_back(vector&lt;int&gt;());
+			        for (int j = 0; j &lt; p.size(); j++) {
+			            if (k == j) w.back().push_back(i);
+			            w.back().push_back(p[j]);
+			        }
+			    }
+			    w.push_back(p);
+			    w.back().push_back(i);
+			} else if (dir == 1) {
+			    w.push_back(p);
+			    w.back().push_back(i);
+			    for (int k = p.size()-1; k &gt;= 0; k--) {
+			        w.push_back(vector&lt;int&gt;());
+			        for (int j = 0; j &lt; p.size(); j++) {
+			            if (k == j) w.back().push_back(i);
+			            w.back().push_back(p[j]);
+			        }
+			    }
+			}
+			dir ^= 1; 
+		}
+		v = w;
+	}
+	
+	cerr &lt;&lt; v.size() &lt;&lt; endl;
+	for (const auto&amp; p : v) {
+	    for (int w : p) {
+	        cout &lt;&lt; w &lt;&lt; &quot; &quot;;
+	    }
+	    cout &lt;&lt; '\n';
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

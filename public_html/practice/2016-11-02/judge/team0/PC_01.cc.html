@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int C, P, X, L;
+vector&lt;vector&lt;int&gt; &gt; A;
+vector&lt;int&gt; cnt;
+vector&lt;bool&gt; out;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; C &gt;&gt; P &gt;&gt; X &gt;&gt; L;
+  --X; --L;
+  A.resize(C);
+  cnt.resize(C);
+  out.resize(C);
+
+  while (P--) {
+    int a, b; cin &gt;&gt; a &gt;&gt; b; --a; --b;
+    A[a].push_back(b);
+    A[b].push_back(a);
+  }
+
+  stack&lt;int&gt; q;
+  q.push(L);
+  while (!q.empty()) {
+    int top = q.top();
+    q.pop();
+    if (out[top]) continue;
+    out[top] = true;
+    for (int i : A[top]) {
+      if (++cnt[i] &gt;= (A[i].size()+1) / 2)
+        q.push(i);
+    }
+  }
+
+  cout &lt;&lt; (out[X] ? &quot;leave&quot; : &quot;stay&quot;) &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

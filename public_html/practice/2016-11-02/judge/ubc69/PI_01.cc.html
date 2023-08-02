@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int divisor(int n) {
+	for(int i = 2; i*i &lt;= n; i++) {
+		if(n%i == 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+bool pp(int q, int d) {
+	while(q &gt; 1) {
+		//cout &lt;&lt; q &lt;&lt; endl;
+		if(q % d != 0) {
+			return false;		
+		}
+		q /= d;
+	}
+	return true;
+}
+
+int main() {
+	int q; cin &gt;&gt; q;
+	if(q == 1) {
+		cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+		return 0;	
+	}
+	int d = divisor(q);
+	if(d == -1) {
+		cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;	
+	}
+	else {
+		if(pp(q, d))
+			cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+		else
+			cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

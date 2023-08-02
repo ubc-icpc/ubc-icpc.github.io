@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+int dp[555555], dp2[555555];
+
+int solve(vector&lt;pair&lt;pii, int&gt;&gt; pos, vector&lt;pair&lt;pii, int&gt;&gt; neg) {
+	memset(dp, -1, sizeof dp);
+	memset(dp2, -1, sizeof dp2);
+	dp[0] = 0;
+	dp2[0] = 0;
+	for(auto curr : pos) {
+		// cout &lt;&lt; curr.first.first &lt;&lt; &quot; &quot; &lt;&lt; curr.first.second &lt;&lt; &quot; &quot; &lt;&lt; curr.second &lt;&lt; endl;
+		for(int i = 100000; i &gt;= 0; i--) {
+			if(-curr.first.first &gt; i) break;
+			if(dp[i] != -1) {
+				dp[i + curr.first.second] = max(dp[i + curr.first.second],
+											dp[i] + curr.second);
+			}
+		}
+	}
+	// for(int i = 0; i &lt; 100; i++) {
+	// 	cout &lt;&lt; dp[i] &lt;&lt; &quot; &quot;;
+	// }
+	// cout &lt;&lt; endl;
+	for(auto curr : neg) {
+		// cout &lt;&lt; curr.first.first &lt;&lt; &quot; &quot; &lt;&lt; curr.first.second &lt;&lt; &quot; &quot; &lt;&lt; curr.second &lt;&lt; endl;
+		for(int i = 100000; i &gt;= 0; i--) {
+			if(-curr.first.first &gt; i) break;
+			if(dp2[i] != -1) {
+				dp2[i + curr.first.second] = max(dp2[i + curr.first.second],
+											dp2[i] + curr.second);
+			}
+		}
+	}
+	int ans = 0;
+	// for(int i = 0; i &lt; 10; i++) {
+	// 	cout &lt;&lt; dp[i] &lt;&lt; &quot; &quot; &lt;&lt; dp2[i] &lt;&lt; endl;
+	// }
+	for(int i = 0; i &lt;= 100000; i++) {
+		if(dp[i] == -1 || dp2[i] == -1) continue;
+		ans = max(ans, dp[i] + dp2[i]);
+	}
+	return ans;
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int n; cin &gt;&gt; n;
+
+	vector&lt;pair&lt;pii, int&gt;&gt; pos, neg, pos2, neg2;
+
+	for(int i = 0; i &lt; n; i++) {
+		string s; cin &gt;&gt; s;
+		int currTot = 0, minTot = 0;
+		for(char c : s) {
+			if(c == '(') {
+				currTot++;
+			} else {
+				currTot--;
+			}
+			minTot = min(minTot, currTot);
+		}
+
+		if(currTot &gt; 0) {
+			pos.push_back({{minTot, currTot}, s.size()});
+		} else {
+			currTot = 0, minTot = 0;
+			reverse(s.begin(), s.end());
+			for(char c : s) {
+				if(c == '(') {
+					currTot--;
+				} else {
+					currTot++;
+				}
+				minTot = min(minTot, currTot);
+			}
+			neg.push_back({{minTot, currTot}, s.size()});
+		}
+	}
+
+	sort(pos.begin(), pos.end());
+	sort(neg.begin(), neg.end());
+	// int ans = solve(pos, neg);
+	reverse(pos.begin(), pos.end());
+	// ans = max(ans, solve(pos, neg));
+	reverse(neg.begin(), neg.end());
+	// reverse(pos.begin(), pos.end());
+	// ans = max(ans, solve(pos, neg));
+
+	cout &lt;&lt; solve(pos, neg) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

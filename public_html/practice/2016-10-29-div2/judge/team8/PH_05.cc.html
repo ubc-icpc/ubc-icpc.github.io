@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;climits&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+struct wave {
+	ll minute;
+	ll fun_points;
+	ll wait_time;
+};
+
+struct {
+	bool operator()(wave left_wave, wave right_wave) {
+		// return left_wave.minute &lt; right_wave.minute;
+		return (left_wave.minute + left_wave.wait_time) &lt; (right_wave.minute + right_wave.wait_time);
+	}
+} customLess;
+
+ll solve(std::vector&lt;wave&gt; &amp;waves) {
+	std::sort(waves.begin(), waves.end(), customLess);
+	ll table[waves.size()];
+	table[0] = 0;
+	for (ll i = 0; i &lt; waves.size(); i++) {
+		ll wave_index = i;
+		ll max = -1;
+		/*for (ll j = 0; j &lt; wave_index + 1; j++) {
+			ll tmp;
+			if (waves[j].minute + waves[j].wait_time &lt;= waves[wave_index].minute) {
+				tmp = table[j+1] + waves[wave_index].fun_points;
+			} else {
+				tmp = table[j+1];
+			}
+			if (tmp &gt; max) max = tmp;
+		}
+		
+		ll current_pts = waves[wave_index].fun_points;
+		if (current_pts &gt; max) {
+			max = current_pts;
+		}*/
+
+		ll last = -1;
+		ll l = 0; ll r = wave_index - 1; ll m;
+		while (l &lt; r) {
+			m = (l + r) / 2;
+			ll end = waves[m].minute + waves[m].wait_time;
+			// cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; &quot; &quot; &lt;&lt; end &lt;&lt; endl;
+			if (end == waves[wave_index].minute) {
+				last = m;
+				break;
+			}
+			if (end &lt; waves[wave_index].minute) {
+				last = m;
+				l = m;
+			}
+			if (end &gt; waves[wave_index].minute) r = m;
+
+			if (m == (l + r) / 2) break;
+		}
+		while (last &lt; wave_index - 1) {
+			if (waves[last + 1].minute + waves[last + 1].wait_time &lt;= waves[wave_index].minute) {
+				last++;
+			}
+			break;
+		}
+
+		ll take = -1;
+		if (last &gt;= 0) take = table[last] + waves[wave_index].fun_points;
+
+		ll skip = -1;
+		if (wave_index &gt; 0) skip = table[wave_index - 1];
+
+		max = waves[wave_index].fun_points;
+		if (take &gt; max) max = take;
+		if (skip &gt; max) max = skip;
+		
+		table[i] = max;
+	}
+	return table[waves.size() - 1];
+}
+
+int main() {
+	ll N;
+	cin &gt;&gt; N;
+
+	wave std_wave = {
+		.minute = 0,
+		.fun_points = 0,
+		.wait_time = 0
+	};
+
+	std::vector&lt;wave&gt; waves(N, std_wave);
+	for (ll i = 0; i &lt; N; i++) {
+		cin &gt;&gt; waves[i].minute;
+		cin &gt;&gt; waves[i].fun_points;
+		cin &gt;&gt; waves[i].wait_time;
+	}
+
+	ll soln = solve(waves);
+	cout &lt;&lt; soln &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

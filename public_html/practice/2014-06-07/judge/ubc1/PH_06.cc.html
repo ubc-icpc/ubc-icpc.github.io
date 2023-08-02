@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+int S, K, W, cnt;
+pt p[10005], wall[10005][2];
+
+struct event {
+	int id; //wall/kid id
+	int type; // -1 = kid, 0 = entering wall, 1 = exit wall
+	pt p; //the point associated with the id
+} e[30005];
+
+struct arg_comp {
+	pt c;
+	arg_comp(pt x) : c(x) {}
+	const bool operator()(const event&amp; l, const event&amp; r) const {
+		if (arg(l.p-c) == arg(r.p-c)) return 2*l.id+l.type &lt; 2*r.id+r.type;
+		return arg(l.p-c) &lt; arg(r.p-c);
+	}
+};
+
+ld cp(const pt &amp;a, const pt &amp;b) { return imag(conj(a)*b); }
+inline pt line_inter(const pt &amp;a, const pt &amp;b, const pt &amp;c, const pt &amp;d) {
+  return a + cp(c - a, d - c) / cp(b - a, d - c) * (b - a); }
+  
+const ld eps = 1e-8;
+pt centre, ray;
+struct radial_comp {
+	const bool operator()(const event&amp; l, const event&amp; r) const {
+		pt P[2];
+		const event ev[] = {l, r};
+		
+		for (int i = 0; i &lt; 2; i++) {
+			if (abs(wall[ev[i].id][0]-wall[ev[i].id][1]) &lt; eps) P[i] = centre+ray;
+			else P[i] = line_inter(centre, centre+ray, wall[ev[i].id][0], wall[ev[i].id][1]);
+		}
+		return abs(P[0]-centre) &lt; abs(P[1]-centre);
+	}
+};
+
+int sweep(pt x) {
+	arg_comp c(x);
+	
+	cnt = 0;
+	for (int i = 0; i &lt; K; i++) {
+		if (abs(p[i]-x) &lt; eps) continue;
+		e[cnt].p = p[i];
+		e[cnt].id = -1;
+		e[cnt].type = -1;
+		cnt++;
+	}
+	
+	for (int i = 0; i &lt; W; i++) {
+		if (cp(wall[i][1]-wall[i][0], x-wall[i][0]) &lt; 0) {
+			swap(wall[i][0], wall[i][1]);
+		}
+		
+		for (int j = 0; j &lt; 2; j++) {
+			e[cnt].p = wall[i][j];
+			e[cnt].id = i;
+			e[cnt].type = j;
+			cnt++;
+		}
+	}
+	sort(e, e+cnt, c);
+	
+	centre = x;
+	set&lt;event, radial_comp&gt; q;
+	for (int i = 0; i &lt; cnt; i++) {
+		ray = e[i].p - centre;
+		//cout &lt;&lt; e[i].p &lt;&lt; &quot;:&quot; &lt;&lt; q.size() &lt;&lt; &quot; &quot;;
+		if (e[i].type == -1) continue;
+		if (e[i].type == 0) {
+			q.insert(e[i]);
+		} else {
+			q.erase(e[i]);
+		}
+	}
+	//cout &lt;&lt; endl;
+	int res = 0;
+	for (int i = 0; i &lt; cnt; i++) {
+		//cout &lt;&lt; e[i].p &lt;&lt; &quot;:&quot; &lt;&lt; e[i].type &lt;&lt; &quot;:&quot; &lt;&lt; q.size() &lt;&lt; &quot; &quot;;
+		ray = e[i].p - centre;
+		if (e[i].type == -1) {
+			if (q.empty()) {
+				res++;
+			} else {
+				int id = q.begin()-&gt;id;
+				pt a = wall[id][0], b = wall[id][1];
+				//cout &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; e[i].p &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+				if (cp(b-a, e[i].p-a) &gt; 0) {
+					//cout &lt;&lt; cp(b-a, e[i].p-a) &lt;&lt; endl;
+					res++;
+				}
+			}
+		}
+		
+		if (e[i].type == 0) {
+			q.insert(e[i]);
+		} else {
+			//cout &lt;&lt; &quot;erasing &quot; &lt;&lt; e[i].id &lt;&lt; &quot; &quot; &lt;&lt; q.size() &lt;&lt; endl;
+			q.erase(e[i]);
+			//cout &lt;&lt; &quot;size after erase: &quot; &lt;&lt; q.size() &lt;&lt; &quot; &quot; &lt;&lt; (q.size()? q.begin()-&gt;p : pt(-1,-1)) &lt;&lt; endl;
+		}
+	}
+	//cout &lt;&lt; endl;
+	
+	return res;
+}
+
+int main() {
+	cin &gt;&gt; S &gt;&gt; K &gt;&gt; W;
+	for (int i = 0; i &lt; K; i++) {
+		ld x, y; cin &gt;&gt; x &gt;&gt; y;
+		p[i] = pt(x,y);
+	}
+	
+	for (int i = 0; i &lt; W; i++) {
+		ld a, b, c, d;
+		cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d;
+		wall[i][0] = pt(a,b);
+		wall[i][1] = pt(c,d);
+	}
+	
+	for (int i = 0; i &lt; S; i++) {
+		cout &lt;&lt; sweep(p[i]) &lt;&lt; endl;
+		//cout &lt;&lt; &quot;========================&quot; &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

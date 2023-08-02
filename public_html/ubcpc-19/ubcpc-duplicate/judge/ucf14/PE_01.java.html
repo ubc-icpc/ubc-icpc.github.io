@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+import java.io.*;
+
+public class E {
+    public static void main(String args[]) {
+        Scanner in = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int sceneNum = in.nextInt();
+        int actNum = in.nextInt();
+
+        int list[] = new int[sceneNum];
+        for (int i = 0; i &lt; sceneNum; i++) {
+            list[i] = in.nextInt();
+        }
+
+        Arrays.sort(list);
+
+        int result = 0;
+        for (int i = 0; i &lt; actNum; i++) {
+            int index = sceneNum - i - 1;
+            if (index &gt;= 0 &amp; index &lt; sceneNum)
+                result += list[sceneNum - i - 1];
+        }
+
+        System.out.println(result);
+
+        in.close();
+    }
+}</code>
+</pre>
+</body>
+</html>

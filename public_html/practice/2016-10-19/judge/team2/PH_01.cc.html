@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+
+using namespace std;
+typedef long long ll;
+
+int n, T, a, b;
+
+map&lt;string, int&gt; ma;
+
+int par[100001];
+
+int parent(int a) { return (par[a]&lt;0 ? a:(par[a] = parent(par[a]))); }
+
+int merge(int a, int b){
+    int x = parent(a);
+    int y = parent(b);
+    if (x==y) return -par[x];
+    if (x&gt;y) swap(x,y);
+    par[x] +=par[y];
+    par[y] = x;
+    return -par[x];
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt; T;
+    while(T--){
+        cin &gt;&gt; n;
+        ma.clear();
+        memset(par,-1,sizeof par);
+        int c = 0;
+        for(int i=0;i&lt;n;i++){
+            string sa, sb;
+            cin &gt;&gt; sa &gt;&gt; sb;
+            if(!ma.count(sa)) ma[sa]=c++;
+            if(!ma.count(sb)) ma[sb]=c++;
+            cout &lt;&lt; merge(ma[sa],ma[sb]) &lt;&lt; '\n';
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

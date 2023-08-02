@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+
+public class J {
+	private static HashMap&lt;Integer, HashSet&lt;Integer&gt;&gt; g;
+	private static boolean[] seen;
+	private static int[] depth;
+	private static int trees;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt(), v , e, v1,v2;
+		LinkedList&lt;Integer&gt; s;
+		for (int i = 1; i&lt;= n ;i++) {
+			s = new LinkedList&lt;Integer&gt;();
+			v = sc.nextInt(); e = sc.nextInt();
+			trees = 1;
+			seen = new boolean[v+1];
+			depth = new int[v+1];
+			g = new HashMap&lt;Integer, HashSet&lt;Integer&gt;&gt;();
+			for (int j= 0; j&lt; e ; j++) {
+				v1 = sc.nextInt(); v2 = sc.nextInt();
+				if (!g.containsKey(v1)) {
+					g.put(v1, new HashSet&lt;Integer&gt;());
+				}
+				if (!g.containsKey(v2)) {
+					g.put(v2, new HashSet&lt;Integer&gt;());
+				}
+				g.get(v1).add(v2);
+				g.get(v2).add(v1);
+			}
+			
+			dfs(1);
+			System.out.println(&quot;Case #&quot;+ i +&quot;: &quot;+trees);
+			System.out.println();
+		}
+	}
+	private static void dfs(int node) {
+		seen[node] = true;
+		for (Integer nei: g.get(node)){
+			if (depth[node] - depth[nei] &lt;= 1 &amp;&amp; seen[nei]) continue;
+			if (seen[nei]) {
+				trees *= depth[node] - depth[nei] + 1;
+				trees %= 1007;
+			} else {
+				depth[nei] = depth[node] + 1;
+				dfs(nei);
+			}
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

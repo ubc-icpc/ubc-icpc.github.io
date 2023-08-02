@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;pii, pii&gt; piipii;
+typedef pair&lt;piipii, bool&gt; piipii_O;
+typedef vector&lt;ll&gt; vi;
+typedef vector&lt;vi &gt; vvi;
+typedef vector&lt;bool&gt; vb;
+typedef vector&lt;vb &gt; vvb;
+
+int graph_map(int i, int j, int COLS) {
+	return i*COLS + j;
+}
+
+int main() {
+	int ROWS, COLS;
+	cin &gt;&gt; ROWS &gt;&gt; COLS;
+
+	vvi graph(ROWS*COLS, vi()); //TODO: check this
+
+	vvi dists(ROWS, vi(COLS, 0));
+	string row;
+	for (int i=0; i&lt;ROWS; i++) {
+		cin &gt;&gt; row;
+		for (int k=0; k&lt;row.size(); k++)
+			dists[i][k] = (row[k]-'0');
+	}
+
+	//construct the general graph
+	for (int i=0; i&lt;ROWS; i++) {
+		for (int j=0; j&lt;COLS; j++) {
+			//edges from [i][j] -&gt; [i][j]+dists[i][j]; if dists[i][j]&gt;0
+			if (dists[i][j]&gt;0) {
+				vector&lt;pii &gt; dirs{pii(i,j+dists[i][j]), pii(i,j-dists[i][j]), pii(i+dists[i][j],j), pii(i-dists[i][j],j)};
+				for (pii dir : dirs) {
+					int di = dir.first;
+					int dj = dir.second;
+					if ( 0&lt;=di and 0&lt;=dj and di&lt;ROWS and dj&lt;COLS) {
+						graph[graph_map(i,j,COLS)].push_back(graph_map(di, dj, COLS));
+					}
+				}
+			}
+		}
+	}
+	
+	//now BFS over vvi graph
+	queue&lt;int&gt; q;
+	vb visited(ROWS*COLS, false);
+	vi dist(ROWS*COLS, 0);
+	//vi pred(ROWS*COLS, -1);
+
+	int start = graph_map(0, 0, COLS);
+	q.push(start);
+	dist[start] = 0;
+	//pred[start] = -1;
+	visited[start] = true;
+	
+	bool reachable = false;
+	while (!q.empty() ) {
+		int curr = q.front(); q.pop();
+		//visited[curr] = true; //dists is done
+		if (curr == graph_map(ROWS-1, COLS-1, COLS)) {
+			cout &lt;&lt; dist[curr] &lt;&lt; endl;
+			reachable = true;
+			break;
+		}
+
+		for (int next: graph[curr]) {
+			if (!visited[next]) {
+				visited[next] = true;
+				q.push(next);
+				//pred[next] = curr;
+				dist[next] = dist[curr]+1;
+			}
+		}
+	}
+
+	if (!reachable)
+		cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

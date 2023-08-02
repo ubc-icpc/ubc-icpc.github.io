@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+
+    vector&lt;int&gt; x;
+    int N,K,temp;
+    int ans=0;
+    cin &gt;&gt; N &gt;&gt; K;
+    for (int i = 0; i &lt; N; ++i) {
+        cin &gt;&gt; temp;
+        x.push_back(temp);
+    }
+    for (int k = 0; k &lt; K; ++k) {
+        int max=0;
+        for (int j = 0; j &lt; x.size(); ++j) {
+            if(x.at(j)&gt;=x.at(max))
+                max=j;
+        }
+        ans+=x.at(max);
+        x.erase( x.begin() + max );
+    }
+
+
+    cout &lt;&lt; ans&lt;&lt; flush;
+
+    return 0;
+}</code>
+</pre>
+</body>
+</html>

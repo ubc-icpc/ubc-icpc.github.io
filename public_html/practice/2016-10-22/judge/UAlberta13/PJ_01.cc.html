@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+int main()
+{
+    int is, want;
+    cin &gt;&gt; is &gt;&gt; want;
+    
+    int cw = (360 + want - is) % 360;
+    int ccw = (360 + is - want) % 360;
+    if (cw &lt;= ccw)
+        cout &lt;&lt; cw &lt;&lt; '\n';
+    else
+        cout &lt;&lt; -ccw &lt;&lt; '\n';
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

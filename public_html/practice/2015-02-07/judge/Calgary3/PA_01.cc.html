@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+string b[505];
+bool mark[505][505];
+int dist[505][505];
+
+int mov[4][2] = {1, 0, -1, 0, 0, 1, 0, -1};
+
+int main () {
+	int T;
+	cin &gt;&gt; T;
+	while(T--) {
+		memset(mark, 0, sizeof(mark));
+		memset(dist, 0, sizeof(dist));
+		int m, n;
+		cin &gt;&gt; m &gt;&gt; n;
+		for(int i = 0; i &lt; m; i++)
+			cin &gt;&gt; b[i];
+		queue&lt; pair&lt;int, int&gt; &gt; q;
+		for(int i = 0; i &lt; m; i++)
+			for(int j = 0; j &lt; n; j++)
+				if(b[i][j] == 'S') {
+					q.push(pair&lt;int, int&gt;(i, j));
+					mark[i][j] = true;
+					dist[i][j] = 0;
+					break;
+				}
+		int res = 0;
+		while(!q.empty()) {
+			pair&lt;int, int&gt; curr = q.front(); q.pop();
+			if(b[curr.first][curr.second] == 'B') {
+				res += dist[curr.first][curr.second]*2;
+				b[curr.first][curr.second] = '.';
+			}
+			for(int i = 0; i &lt; 4; i++) {
+				int r = curr.first + mov[i][0], c = curr.second + mov[i][1];
+				if(r &gt;= 0 &amp;&amp; r &lt; m &amp;&amp; c &gt;= 0 &amp;&amp; c &lt; n &amp;&amp; !mark[r][c]) {
+					q.push(pair&lt;int, int&gt;(r, c));
+					dist[r][c] = dist[curr.first][curr.second]+1;
+					mark[r][c] = true;
+				}
+			}
+		}
+		cout &lt;&lt; res &lt;&lt; &quot; seconds to blocks get!&quot; &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

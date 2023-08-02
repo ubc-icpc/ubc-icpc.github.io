@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// We can combine two matching adjacent numbers to form larger numbers. 
+// We can combine a 1 adjacent to a 2 into a single 3. 
+// We can combine two adjacent 3s into a single 6, we can combine two adjacent 6s into a single 12, and we can in general combine two identical adjacent numbers higher than 3 into a single number that will be their sum. The 1s and 2s are special in that a 1 can only be matched with a 2, and a 2 can only be matched with a 1.
+// The goal of the game is to form the largest integer possible. The game ends when we can no longer combine two adjacent numbers. Consider we e.g. start with the array {12, 24, 6, 1, 2, 3, 12, 3, 3, 6, 1, 2, 2, 1, 24} then the largest number we can form is 48.
+
+
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include&lt;sstream&gt;
+#include&lt;math.h&gt;
+
+double calculateDistcriminant(double a, double b, double c) {
+	double ans = (b*b) - (4 * a * c);
+	return ans;
+
+
+}
+void calculateRoots(double a, double b, double ans, double s, double t) {
+	double fr = (-b + sqrt(ans)) / (2 * a);
+	double sr = (-b - sqrt(ans)) / (2 * a);
+	if ((fr &gt;= s) &amp;&amp; (fr &lt;= t)) {
+		std::cout &lt;&lt; &quot;Yes&quot; &lt;&lt; std::endl;
+		return;
+	}
+	if ((sr &gt;= s) &amp;&amp; (sr &lt;= t)) {
+		std::cout &lt;&lt; &quot;Yes&quot; &lt;&lt; std::endl;
+		return;
+	}
+	std::cout &lt;&lt; &quot;No&quot; &lt;&lt; std::endl;
+	return;
+}
+
+
+int main(void) {
+	int tcs;
+	std::cin &gt;&gt; tcs;
+	std::cin.ignore(100, '\n');
+	for (int i = 0; i &lt; tcs; i++) {
+		double a, b, c, s, t;
+		std::cin &gt;&gt; a;
+		std::cin &gt;&gt; b;
+		std::cin &gt;&gt; c;
+		std::cin &gt;&gt; s;
+		std::cin &gt;&gt; t;
+		std::cin.ignore(100, '\n');
+		double ans = calculateDistcriminant(a,b,c);
+		if (ans &lt; 0) {
+			std::cout &lt;&lt; &quot;No&quot; &lt;&lt; std::endl;
+			continue;
+		}
+		calculateRoots(a, b, ans, s, t);
+
+	}
+
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

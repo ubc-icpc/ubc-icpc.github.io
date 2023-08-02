@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main()
+{
+	int t;
+	cin &gt;&gt; t;
+	while (t--)
+	{
+		int temp_min = 600;
+		string s;
+		cin &gt;&gt; s;
+		for (int i = 0; i &lt; s.size(); i++)
+		{
+			int index = 999;
+			if(s[i] == 'p')
+			{
+				for (int j = i + 1; j &lt; s.size(); j++)
+				{
+					if (s[j] == 'a')
+					{
+						index = j;
+						break;
+					}
+					index = 999;
+				}
+				if (index == 999)
+					break;
+				if (index == s.size() - 1)
+					break;
+				for (int j = index + 1; j &lt; s.size(); j++)
+				{
+					if (s[j] == 't')
+					{
+						index = j;
+						break;
+					}
+					index = 999;
+				}
+				if (index == 999)
+					break;
+				if (index == s.size() - 1)
+					break;
+				for (int j = index + 1; j &lt; s.size(); j++)
+				{
+					if (s[j] == 'h')
+					{
+						index = j;
+						break;
+					}
+					index = 999;
+				}
+				if (index == 999)
+					break;
+				if (temp_min &gt; index - i + 1)
+				{
+					temp_min = index - i + 1;
+				}
+			}
+		}
+		if (temp_min == 600)
+		{
+			cout &lt;&lt; -1 &lt;&lt; endl;
+		}
+		else
+		{
+			cout &lt;&lt; temp_min &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

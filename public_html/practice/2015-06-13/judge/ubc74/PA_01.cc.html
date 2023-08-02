@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int main() {
+	int data[8], m = 0, temp = 0;;
+	for (int i = 0; i&lt;8; i++)
+		cin &gt;&gt; data[i];
+	for (int i = 0; i&lt;8+4; i++) {
+		if (i &lt; 4)
+			temp += data[i];
+		else{
+			temp += data[i%8];
+			temp -= data[(i-4)%8];
+		}
+		m = max(m, temp);
+	}
+	cout &lt;&lt; m &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

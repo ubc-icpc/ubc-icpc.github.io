@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * Created by Razvan1995 on 10/22/2016.
+ */
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n1 = Integer.parseInt(br.readLine());
+        int n2 = Integer.parseInt(br.readLine());
+        int answer;
+
+       if(n1&gt;=n2){
+            if(Math.abs(360 - n1 + n2) &gt; Math.abs(n2 - n1)){
+                answer = n2 - n1;
+            }
+            else{
+                answer = 360 - n1 + n2;
+            }
+       }
+       else{
+           if(Math.abs(n2 - n1) &gt; Math.abs(360 - n2 + n1)){
+                answer = -(360 - n2 + n1);
+           }
+           else{
+               answer = n2 - n1;
+           }
+       }
+
+        System.out.println(answer);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

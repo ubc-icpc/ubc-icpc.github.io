@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+from math import *
+from decimal import *
+
+getcontext().prec = 20
+t = int(raw_input())
+
+for i in range(t):
+    r, s, x, y, w = [int(x) for x in raw_input().split()]
+    
+    # expected probability of winning &gt; 0.5 = take bet
+    # prob of winning 1 roll = (S-R+1)/S
+    # prob of winning at least x out of y rolls
+    # sum binomial yCx * p^i * (1-p)^(y-i) for i = x to y
+    p = Decimal(s-r+1)/s
+    pwin = 0
+    for i in range(x, y+1):
+        binom = (factorial(y)/factorial(i))/factorial(y-i)
+        pwin += binom * pow(p, i) * pow(1-p, y-i)
+    
+    if pwin*w &gt; 1:
+        print 'yes'
+    else:
+        print 'no'</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

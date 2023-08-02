@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+from collections import defaultdict
+import sys
+
+def sizeOfTree(root):
+	visited[root] = True
+	size = 1
+	for node in nodes[root]:
+		if node not in visited:
+			sizeoftree = sizeOfTree(node)
+			size += sizeoftree
+	subtree_size[root] = size
+	return size
+
+def choose(n,k):
+	top = 1
+	bot = 1
+	for t in xrange(1, min(k, n - k) + 1):
+		top *= n
+		bot *= t
+		n -= 1
+	return top / bot
+
+sys.setrecursionlimit(20000)
+num_cases = int(sys.stdin.readline())
+
+for i in range(num_cases):
+	num_nodes = int(sys.stdin.readline())
+	nodes = defaultdict(list)
+	edges = []
+	for j in range(num_nodes-1):
+		a,b,dist = sys.stdin.readline().split(' ')
+		nodes[a].append(b)
+		nodes[b].append(a)
+		edges.append((a,b,int(dist)))
+
+	# calculate subtree sizes
+	subtree_size = defaultdict(int)
+	visited = {}
+	sizeOfTree('0')
+	
+	# iterate through each edge, totalpathlen += edge length * nodes in subtree 1 * nodes in subtree 2
+	totalpathlen = 0
+	for (a,b,d) in edges: 
+		smallertree = min(subtree_size[a], subtree_size[b])
+		totalpathlen += d * smallertree * (num_nodes - smallertree)
+
+	#n choose 2
+	totalpathcount = choose(num_nodes,2)
+
+	print float(totalpathlen)/totalpathcount
+
+
+
+		
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int main()
+{
+    while (1)
+    {
+		int n; cin &gt;&gt; n;
+		if (n == 0) return 0;
+
+		vector&lt;int&gt; times(n);
+		for (int i = 0; i &lt; n; i++)
+		{
+			int x; cin &gt;&gt; x;
+			times[i] = x;
+		}
+
+		sort(times.begin(), times.end());
+		int time = 0;
+		int loads = 0;
+		int dryer = 0;
+		int washer = 30;
+		while (1)
+		{
+			if (--washer &lt;= 0)
+			{
+				washer = 30;
+				loads++;
+			}
+
+			if (--dryer &lt;= 0)
+			{
+				if (times.size() == 0)
+				{
+					break;
+				}
+
+				if (loads &gt; 0)
+				{
+					loads--;
+					dryer = times.back();
+					times.pop_back();
+				}
+			}
+
+			time++;
+		}
+		time += 1;
+
+		cout &lt;&lt; time / 60 &lt;&lt; &quot;:&quot; &lt;&lt; (time % 60 &lt; 10 ? &quot;0&quot; : &quot;&quot;) &lt;&lt; time % 60 &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

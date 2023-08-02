@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+const double PI = 3.14159265358979;
+
+int main() {
+  cout.setf(ios::fixed);
+  cout.precision(2);
+
+  int t;
+  cin &gt;&gt; t;
+  while (t--) {
+    double s, r;
+    cin &gt;&gt; s &gt;&gt; r;
+
+    double as = s*s, ar = PI*r*r;
+
+    if (r &lt;= s/2) cout &lt;&lt; ar &lt;&lt; endl;
+    else if (r*r &gt;= s*s/2) cout &lt;&lt; as &lt;&lt; endl;
+    else {
+      double nx = s/(2*r);
+      double ny = sqrt(1-nx*nx);
+      double theta = atan2(ny,nx);
+      double slice = r*r*theta/2;
+      double triang = s/2*ny*r/2;
+      
+      cout &lt;&lt; ar - 8*(slice-triang) &lt;&lt; endl;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

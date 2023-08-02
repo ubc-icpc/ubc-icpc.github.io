@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define INF 1&lt;&lt;30
+
+typedef vector&lt;int&gt; vi;
+
+vi pset;
+void initSet(int N) { pset.assign(N,0);
+    for(int i = 0; i &lt; N; i++) pset[i] = i;
+}
+int findSet(int i) { return (pset[i] == i) ? i : (pset[i] = findSet(pset[i]));
+}
+bool isSameSet(int i, int j) {return findSet(i) == findSet(j);}
+void unionSet(int i, int j) { pset[findSet(i)] = findSet(j); }
+
+
+int adj[110][110];
+
+pair&lt;int, int&gt; penEdges[1010][1010];
+
+bool foundEdge[1010][1010];
+
+// returns minimum spanning tree with nodes 0...N-1
+int minSpan(int N){
+    vector&lt;bool&gt; V;
+    V.assign(N, false);
+    int total = 0;
+    V[0] = true;
+    while(true){
+        int minE = INF;
+        int edge = -1;
+        for(int i = 0; i &lt; N; i++){
+            if(V[i]){
+                for(int j = 0; j &lt; N; j++){
+                
+                    if(!V[j] &amp;&amp; adj[i][j] != INF &amp;&amp; adj[i][j] &lt; minE) {
+                        edge = j;
+                        minE = adj[i][j];
+
+                    }
+                }
+            }
+        }
+        if(edge == -1) break;
+
+        V[edge] = true;
+        total += minE;
+        
+    }
+    // make sure we visited all the nodes!
+    for(int i = 0; i &lt; N; i++){
+        if(!V[i]) return INF;
+    }
+    return total;
+}
+
+int main() {
+    
+    int M;
+    cin &gt;&gt; M;
+    for(int i = 0; i &lt; 110; i++)for(int j = 0; j &lt; 110; j++) adj[i][j] = INF;
+    for(int i = 0; i &lt; 1010; i++)for(int j = 0; j &lt; 1010; j++) {penEdges[i][j] = make_pair(-1,-1); foundEdge[i][j] = false;}
+    for(int m = 0; m &lt; M; m++){
+        int e;
+        cin &gt;&gt; e;
+        vector&lt;int&gt; tmp;
+        int t;
+        for(int i = 0; i &lt; 2*e; i++){
+            cin &gt;&gt; t;
+            tmp.push_back(t); 
+        }   
+        int a, b, w;
+        for(int i = 0; i &lt; e; i++){
+            a = tmp[i];
+            b = tmp[(i+1)%e];
+            w = tmp[e+i];
+            if(penEdges[a][b].second == -1){
+                penEdges[a][b] = make_pair(w, m);
+                penEdges[b][a] = make_pair(w, m);
+            }
+            else {
+                foundEdge[a][b] = true;
+                foundEdge[b][a] = true;
+                adj[m][penEdges[a][b].second] = min(adj[m][penEdges[a][b].second], penEdges[a][b].first);
+                adj[penEdges[a][b].second][m] = min(adj[m][penEdges[a][b].second], penEdges[a][b].first);
+            }
+        }
+    }
+    
+    // initialize outside pen
+    for(int i = 0; i &lt; 1010; i++){
+        for(int j = 0; j &lt; 1010; j++){
+            if(penEdges[i][j].second != -1 &amp;&amp; !foundEdge[i][j]){
+                adj[penEdges[i][j].second][M] = min(adj[penEdges[i][j].second][M], penEdges[i][j].first);
+                adj[M][penEdges[i][j].second] = min(adj[M][penEdges[i][j].second], penEdges[i][j].first);
+            }
+        }
+    }
+    
+    cout &lt;&lt; min(minSpan(M), minSpan(M+1)) &lt;&lt; endl;
+
+    return 0;
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;complex&gt;
+#include &lt;stack&gt;
+#include &lt;iomanip&gt;
+#include &lt;map&gt;
+
+using namespace std;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b)
+{ return a.real() &lt; b.real() || (a.real() == b.real() &amp;&amp; a.imag() &lt; b.imag()); }
+
+const ld EPS = 1e-6;
+
+int main() {
+    ios::sync_with_stdio(0);
+    int N;
+    cin &gt;&gt; N;
+    while(N--) {
+        int n;
+        cin &gt;&gt; n;
+        vector&lt;pair&lt;pt, ld&gt; &gt; circles(n);
+        for(int i=0; i&lt;n; i++) {
+            pt qwer; ld r, x, y;
+            cin &gt;&gt; x &gt;&gt; y &gt;&gt; r;
+            circles[i].first = pt(x,y);
+            circles[i].second = r;
+        }
+        int best = 0;
+        for(int i=0; i&lt;n; i++) {
+            vector&lt;pair&lt;ld, int&gt; &gt; events;
+            ld R = circles[i].second;
+            pt A = circles[i].first;
+            int depth = 0;
+            for(int j=0; j&lt;n; j++) {
+                if(j==i) continue;
+                ld r = circles[j].second;
+                pt B = circles[j].first;
+                ld a = arg(B-A);
+                ld d = abs(B-A);
+
+                ld eve1, eve2;
+                eve2 = arg(polar(1.0L, a - asin((R - r- EPS)/d) ));
+                eve1 = arg(polar(1.0L, a - asin((R + r+ EPS)/d) ));
+                if(eve1 &gt; eve2) {
+                    depth++;
+                }
+                events.push_back(make_pair(eve1, 1));
+                events.push_back(make_pair(eve2, -1));
+                eve2 = arg(-polar(1.0L, a + asin((R + r+ EPS)/d) ));
+                eve1 = arg(-polar(1.0L, a + asin((R - r- EPS)/d) ));
+                // cerr &lt;&lt; eve1 &lt;&lt; &quot; &quot; &lt;&lt; eve2 &lt;&lt; endl;
+                if(eve1 &gt; eve2) {
+                    depth++;
+                }
+                events.push_back(make_pair(eve1, 1));
+                events.push_back(make_pair(eve2, -1));
+            }
+            sort(events.begin(), events.end());
+                best = max(depth, best); 
+            for(int j=0, jj=events.size(); j&lt;jj; j++) {
+                depth += events[j].second;
+                best = max(depth, best);
+            }
+        }
+        cout &lt;&lt; best+1 &lt;&lt; endl;
+    }
+    return 0;    
+}
+ </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

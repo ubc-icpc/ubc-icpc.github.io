@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+#define endl    &quot;\n&quot;
+using namespace std;
+typedef long long ll;
+
+int n, a, b, w, h, m;
+
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;pii,int&gt; piii;
+typedef vector&lt;piii&gt; vp;
+
+int ww[101], hh[101];
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt; n;
+    vp win;
+    int cc = 0;
+    while (n!=0){
+        cc++;
+        win.clear();
+        for(int i=0;i&lt;n;i++){
+            cin &gt;&gt;a &gt;&gt;b &gt;&gt;h &gt;&gt;w;
+            win.push_back({{a,b},i});
+            ww[i] = w;
+            hh[i] = h;
+        }
+        cin &gt;&gt; m;
+        sort(win.begin(),win.end());
+        cout &lt;&lt; &quot;Desktop &quot; &lt;&lt; cc &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+        for(int i=0;i&lt;m;i++){
+            cin &gt;&gt; a &gt;&gt; b;
+            int maxi = -1;
+            for(auto j: win){
+                int in = j.second, aj = j.first.first, bj = j.first.second;
+                if (j.first.first&gt; a) break;
+                else{
+                    if (a&lt;aj+ww[in] &amp;&amp; b&gt;=bj &amp;&amp; b&lt;bj+hh[in]){
+                       // cout &lt;&lt; in &lt;&lt; endl;
+                        if (in &gt; maxi) maxi = in;
+                    }
+                    //cout &lt;&lt; maxi&lt;&lt; &quot; &quot; &lt;&lt; in &lt;&lt; &quot; &quot; &lt;&lt;aj &lt;&lt; &quot; &quot; &lt;&lt; bj &lt;&lt; &quot; &quot; &lt;&lt; ww[in] &lt;&lt; &quot; &quot;&lt;&lt; hh[in] &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; endl;
+                }
+            }
+            if (maxi&lt;0)
+                cout &lt;&lt; &quot;background&quot;&lt;&lt;endl;
+            else
+                cout &lt;&lt; &quot;window &quot; &lt;&lt; maxi+1 &lt;&lt; endl;
+        }
+        cin &gt;&gt; n;
+    }
+}
+</code>
+</pre>
+</body>
+</html>

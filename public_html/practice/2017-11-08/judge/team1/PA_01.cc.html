@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+const int MOD = 1e9 + 7;
+
+const vector&lt;int&gt; good = {1, 2, 3, 3, 4, 10}, bad = {1, 2, 2, 2, 3, 5, 11};
+
+int main() {
+//	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	int T; cin &gt;&gt; T;
+	for (int t = 1; t &lt;= T; t++) {
+		vector&lt;int&gt; a(6), b(7);
+		for (int i = 0; i &lt; 6; i++)
+			cin &gt;&gt; a[i];
+		for (int i = 0; i &lt; 7; i++)
+			cin &gt;&gt; b[i];
+		int k = 0, l = 0;
+		for (int i = 0; i &lt; 6; i++)
+			k += good[i] * a[i];
+		for (int i = 0; i &lt; 7; i++)
+			l += bad[i] * b[i];
+		printf(&quot;Battle %d: &quot;, t);
+		if (k &gt; l) puts(&quot;Good triumphs over Evil&quot;);
+		else if (k &lt; l) puts(&quot;Evil eradicates all trace of Good&quot;);
+		else puts(&quot;No victor on this battle field&quot;);
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;iomanip&gt;
+using namespace std;
+
+bool endin5(const string &amp; s)
+{
+   return (s[s.size()-1]=='5');
+}
+
+bool zero(const string &amp; s)
+{
+   if((int)s.size()==0)
+      return true;
+   for(int i=0; i&lt;(int)s.size(); i++)
+      if(s[i]!='0')
+	 return false;
+   return true;
+}
+
+void strip(string &amp; s)
+{
+   int i;
+   for(i=(int)s.size()-1; i&gt;=0; i--)
+      if(s[i]!='0')
+	 break;
+   if(i==(int)s.size())
+      s=&quot;&quot;;
+   else
+      s=s.substr(0, i+1);
+}
+
+void times2(string &amp; s)
+{
+   string ans(s.size(), ' ');
+   bool carry=false;
+   for(int i=s.size()-1; i&gt;=0; i--)
+   {
+      int currDig=s[i]-'0';
+      int sum=2*currDig;
+      if(carry)
+      {
+	 sum+=1;
+      }
+      if(sum&gt;=10)
+	 carry=true;
+      else
+	 carry=false;
+      ans[i]=(sum%10)+'0';
+   }
+   s=ans;
+}
+
+void solve(string &amp; t)
+{
+   string s;
+   int ind;
+   for(ind=0; ind&lt;(int)t.size(); ind++)
+      if(t[ind]=='.')
+	 break;
+   if(ind==(int)t.size() or ind==(int)t.size()-1)
+   {
+      cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+      return;
+   }
+   s=t.substr(ind+1, (int)t.size()-ind-1);
+   strip(s);
+   while(1)
+   {
+      if(zero(s))
+      {
+	 cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+	 return;
+      }
+      if(!endin5(s))
+      {
+	 cout &lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+	 return;
+      }
+      times2(s);
+      strip(s);
+   }
+}
+
+int main()
+{
+   string s;
+   while(cin &gt;&gt; s)
+   {
+      solve(s);
+   }
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

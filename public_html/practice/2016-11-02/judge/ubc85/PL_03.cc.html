@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#include &lt;string&gt;
+#include &lt;cmath&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int main() {
+	int t; cin &gt;&gt; t;
+	bool possible = false;
+	vector&lt;long long&gt; A; long long in;
+	for (int i=0; i&lt;t; i++) {
+		cin &gt;&gt; in;
+		A.push_back(in);
+	}
+	sort(A.begin(), A.end());
+	for (int i=0; i&lt;t-2; i++) {
+		if (A[i] + A[i+1] &gt; A[i+2]) {
+			possible = true;
+			break;
+		}
+	}
+	if (possible) cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+	else cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

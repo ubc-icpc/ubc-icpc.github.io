@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+w=int(input())
+n=int(input())
+L=[]
+for i in range(0,n):
+    x=int(input())
+    L.append(x)
+answer=n
+if n&lt;=4:
+    total=0
+    for i in range(0,n):
+        x=L[i]
+        total=total+x
+        if total&gt;w:
+            answer=i
+            break
+if n&gt;4:
+    total=L[0]+L[1]+L[2]+L[3]
+    if total&gt;w:
+        total=0
+        for i in range(0,4):
+            x=L[i]
+            total=total+x
+            if total&gt;w:
+                answer=i
+                break
+    else:
+        for i in range(0,n-4):
+            total=total-L[i]+L[i+4]
+            if total&gt;w:
+                answer=i+4
+                break
+        
+print(answer)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

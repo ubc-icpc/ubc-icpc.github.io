@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+const ld PI = 3.1415926535897932384626433;
+
+struct pt {
+    static ll xc, yc;
+    ll x, y;
+    pt() {}
+    pt(ll a, ll b) :x(a), y(b) {}
+    pt operator + (const pt&amp; o) const { return pt(x+o.x, y+o.y); }
+    pt operator - (const pt&amp; o) const { return pt(x-o.x, y-o.y); }
+    pt operator * (const ll&amp; o) const { return pt(x * o, y * o); }
+    ll dp(const pt&amp; o) const {
+        return x*o.x+y*o.y;
+    }
+    ll cp(const pt&amp; o) const {
+        return x*o.y-y*o.x;
+    }
+    static void set_center(const pt&amp; p) {
+        xc = p.x;
+        yc = p.y;
+    }
+    bool ang_less (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        return cpv &gt; 0;
+    }
+    bool operator &lt; (const pt&amp; o) const {
+        pt tdist = (*this - pt(xc, yc));
+        pt odist = o - pt(xc, yc);
+        ll cpv = tdist.cp(odist);
+        if (cpv != 0) return cpv &gt; 0;
+        return tdist.d2() &lt; odist.d2();
+    }
+    bool operator == (const pt&amp; o) const {
+        return x == o.x &amp;&amp; y == o.y;
+    }
+    ll d2() const {
+        return x*x+y*y;
+    }
+};
+ll pt::xc;
+ll pt::yc;
+
+void angular_sort(vector&lt;pt&gt;&amp; pts, pt start) {
+    for (int i=0; i&lt;pts.size(); ++i) {
+        if (pts[i] == start) {
+            swap(pts[i], pts[0]);
+            break;
+        }
+    }
+    pt::set_center(pts[0]);
+    sort(pts.begin()+1, pts.end());
+}
+
+void solve() {
+    vector&lt;pt&gt; pts;
+    set&lt;pii&gt; seen;
+
+    int n;
+    cin &gt;&gt; n;
+
+    pt start(1e9, 1e9);
+
+    for (int i=0; i&lt;n; ++i) {
+        int x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        if (seen.count(pii(x, y))) continue;
+        pts.emplace_back(x, y);
+        seen.insert(pii(x, y));
+
+        if ((start.x == x &amp;&amp; y &lt; start.y) || x &lt; start.x) {
+            start = pt(x, y);
+        }
+    }
+
+    if (pts.size() == 1) {
+        cout &lt;&lt; &quot;6.28 3.14\n&quot;;
+        return;
+    }
+
+    angular_sort(pts, start);
+
+    for (auto&amp; p : pts) {
+        //cerr &lt;&lt; &quot; : &quot; &lt;&lt; p.x &lt;&lt; &quot;,&quot; &lt;&lt; p.y &lt;&lt; endl;
+    }
+
+    if (!pts[1].ang_less(*pts.rbegin()) &amp;&amp; !pts.rbegin()-&gt;ang_less(pts[1])) {
+        // is a line
+        ld len = sqrt((pts[0]-(*pts.rbegin())).d2());
+        cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; len*2+PI*2 &lt;&lt; &quot; &quot; &lt;&lt; len*2+PI &lt;&lt; &quot;\n&quot;;
+        return;
+    }
+
+    vector&lt;pt&gt; hull;
+
+    hull.push_back(pts[0]);
+    hull.push_back(pts[1]);
+
+    for (int i=2; i&lt;pts.size(); ++i) {
+        //cerr &lt;&lt; (hull[hull.size()-1]-hull[hull.size()-2]).cp(pts[i]-hull.back()) &lt;&lt; &quot; is cp &quot; &lt;&lt; endl;
+        while (hull.size() &gt; 1 &amp;&amp; (hull[hull.size()-1]-hull[hull.size()-2]).cp(pts[i]-hull.back()) &lt;= 0) {
+            //cerr &lt;&lt; &quot;! &quot; &lt;&lt; endl;
+            hull.pop_back();
+        }
+        hull.push_back(pts[i]);
+    }
+    for (auto&amp; p : hull) {
+        //cerr &lt;&lt; &quot; &quot; &lt;&lt; p.x &lt;&lt; &quot;,&quot; &lt;&lt; p.y &lt;&lt; endl;
+    }
+
+    ll area = 0;
+    ld perim = sqrt((hull[1]-hull[0]).d2()) + sqrt((hull[0]-hull.back()).d2());
+    for (int i=1; i&lt;hull.size()-1; ++i) {
+        area += abs((hull[i]-hull[0]).cp(hull[i+1]-hull[0]));
+        perim += sqrt((hull[i+1]-hull[i]).d2());
+    }
+
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; perim + 2*PI &lt;&lt; &quot; &quot; &lt;&lt; (ld)area/2 + perim + PI &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int TT;
+    cin &gt;&gt; TT;
+    while(TT--) {
+        solve();
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

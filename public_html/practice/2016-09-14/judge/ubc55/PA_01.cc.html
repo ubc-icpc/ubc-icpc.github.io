@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+int S1[10000];
+int S2[10000];
+int S3[10000];
+
+int main() {
+	ios::sync_with_stdio();
+	S1[0] = S2[0] = 1;
+	S3[0] = 2;
+	for (int i = 1; i &lt; 10000; i++) {
+		S1[i] = S1[i - 1] + i + 1;
+		S2[i] = S2[i - 1] + ((i + 1) * 2) - 1;
+		S3[i] = S3[i - 1] + ((i + 1) * 2);
+	}
+	int n;
+	cin &gt;&gt; n;
+	while (n--) {
+		int k, p;
+		cin &gt;&gt; k &gt;&gt; p;
+		p--;
+		cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; S1[p] &lt;&lt; &quot; &quot; &lt;&lt; S2[p] &lt;&lt; &quot; &quot; &lt;&lt; S3[p] &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

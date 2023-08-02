@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+struct Point
+{
+  int x, y;
+
+  void read()
+  {
+    cin &gt;&gt; x &gt;&gt; y;
+  }
+};
+
+int gcd(int a, int b)
+{
+  if (a &lt; 0 || b &lt; 0) return gcd(abs(a), abs(b));
+  if (!b) return a;
+  return gcd(b, a%b);
+}
+
+struct Slope
+{
+  int n, d;
+
+  void reduce()
+  {
+    int g = gcd(n, d);
+    n /= g;  d /= g;
+    if (d &lt; 0 || (d == 0 &amp;&amp; n &lt; 0)) {
+      n *= -1;
+      d *= -1;
+    }
+  }
+
+  Slope(Point a, Point b)
+  {
+    n = a.y - b.y;
+    d = a.x - b.x;
+    reduce();
+  }
+
+  bool operator==(const Slope &amp;s) const
+  {
+    return n*s.d == s.n*d;
+  }
+
+  bool operator&lt;(const Slope &amp;s) const
+  {
+    return n*s.d &lt; s.n*d;
+  }
+};
+
+int solve()
+{
+  int N;
+  cin &gt;&gt; N;
+
+  Point p[400];
+  for (int i = 0; i &lt; N; i++) {
+    p[i].read();
+  }
+
+  if (N == 0 || N == 1)
+    return N;
+  
+  int best = 0;
+  for (int i = 0; i &lt; N; i++) {
+    map&lt;Slope, int&gt; freq;
+    for (int j = 0; j &lt; N; j++) {
+      if (i == j) continue;
+      best = max(best, ++freq[Slope(p[i], p[j])]);
+    }
+  }
+
+  return best+1;
+  
+}
+
+int main()
+{
+  int T;
+  cin &gt;&gt; T;
+  for (int c = 1; c &lt;= T; c++) {
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; c &lt;&lt; &quot;: &quot; &lt;&lt; solve() &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

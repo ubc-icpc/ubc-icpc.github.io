@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+const int MOD = 1e9 + 7;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	vector&lt;int&gt; count(2001);
+	vector&lt;int&gt; ans(4001);
+	int N; cin &gt;&gt; N;
+	vector&lt;int&gt; in(N);
+	for (int i = 0; i &lt; N; i++) {
+		cin &gt;&gt; in[i];
+		count[in[i]]++;
+	}
+	for (int i = 0; i &lt; 2001; i++) {
+		for (int j = i+1; j &lt; 2001; j++) {
+			ans[i + j] += min(count[i], count[j]);
+		}
+	}
+	for (int i = 0; i &lt; 2001; i++) {
+		ans[2*i] += count[i] / 2;
+	}
+	int best = 0; set&lt;int&gt; bestSet;
+	for (int i = 0; i &lt; 4001; i++) {
+		if (ans[i] &gt; best) {
+			bestSet.clear();
+			best = ans[i];
+			bestSet.insert(i);
+		} else if (ans[i] == best)
+			bestSet.insert(i);
+	}
+	cout &lt;&lt; best &lt;&lt; &quot; &quot; &lt;&lt; bestSet.size() &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

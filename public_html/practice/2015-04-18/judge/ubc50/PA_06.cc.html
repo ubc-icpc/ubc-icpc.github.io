@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int n;
+int pos, num_matches;
+int g1[1000001];
+int g2[1000001];
+int res[1000001];
+
+void solve(int g1[], int g2[]) {
+  vector&lt;int&gt; s1, s2;
+  if (g1[0] == g2[0])
+    res[0] = 0;
+  else {
+    s1.push_back(g1[0]);
+    s2.push_back(g2[0]);
+  }
+
+  for (int i=1; i&lt;n; i++) {
+    // if found everything till now
+    if (res[i-1] != -1) {
+      s1.clear(); s2.clear();
+      pos = i;
+      num_matches = 0;
+    }
+    s1.push_back(g1[i]);
+    s2.push_back(g2[i]);
+    if (g1[i] == g2[i]) num_matches++;
+    else {
+      if (find(s1.begin(), s1.end(), g2[i]) != s1.end()) num_matches++;
+      if (find(s2.begin(), s2.end(), g1[i]) != s2.end()) num_matches++;
+    }
+    if (num_matches == s1.size())
+      res[i] = pos;
+  }
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    cin &gt;&gt; n;
+    memset(res, -1, sizeof res);
+    pos = 0, num_matches = 0;
+    for (int i=0; i&lt;n ; i++)
+      cin &gt;&gt; g1[i];
+    for (int i=0; i&lt;n ; i++)
+      cin &gt;&gt; g2[i];
+    solve(g1, g2);
+    for (int i=0; i&lt;n; i++) {
+      if (res[i] != -1)
+	cout &lt;&lt; res[i]+1 &lt;&lt; &quot;-&quot; &lt;&lt; i+1 &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; '\n';
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

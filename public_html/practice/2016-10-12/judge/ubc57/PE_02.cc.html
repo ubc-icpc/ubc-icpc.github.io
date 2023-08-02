@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+ll Fib[100];
+int main(){
+    ios::sync_with_stdio(0);
+    Fib[0]=0,Fib[1]=1;
+    int now=2;
+    while (true){
+        Fib[now]=Fib[now-1]+Fib[now-2];
+        if (Fib[now]&lt;0) break;
+        now++;
+    }
+    now--;
+    ll lo,hi; 
+    while (cin&gt;&gt;hex&gt;&gt;lo&gt;&gt;hi){
+        if (lo&gt;=hi) break; 
+        cout&lt;&lt;&quot;Range &quot;&lt;&lt;lo&lt;&lt;&quot; to &quot;&lt;&lt;hi&lt;&lt;&quot;:&quot;&lt;&lt;endl;
+        bool printed=false;
+        for (int i=0;i&lt;=92;i++) if ((lo&lt;=Fib[i])&amp;&amp;(Fib[i]&lt;=hi)){
+            printed=true;
+            cout&lt;&lt;&quot;Fib&quot;&lt;&lt;'('&lt;&lt;i&lt;&lt;&quot;) = &quot;&lt;&lt;Fib[i]&lt;&lt;&quot;, &quot;; 
+            if (Fib[i]==0) cout&lt;&lt;&quot;lg does not exist&quot;&lt;&lt;endl;
+            else cout&lt;&lt;&quot;lg is &quot;&lt;&lt;fixed&lt;&lt;setprecision(6)&lt;&lt;log2(Fib[i])&lt;&lt;endl;
+            vector&lt;ll&gt; v; 
+            ll now=Fib[i];
+            while (now&gt;1){
+                if (now%2==0){
+                    v.push_back(2);
+                    now/=2;
+                }
+                else{
+                    bool isPrime=true; 
+                    for (ll i=3;i*i&lt;=now;i+=2) if (now%i==0){
+                        isPrime=false;
+                        v.push_back(i);
+                        ll res=now/i; 
+                        now=res;
+                        break;
+                    }
+                    if (isPrime){
+                        v.push_back(now); break;
+                    }
+                }
+            }
+            if (v.size()==0) cout&lt;&lt;&quot;No prime factors\n&quot;;
+            else{
+                cout&lt;&lt;&quot;Prime factors:&quot;;
+                for (ll x:v) cout&lt;&lt;&quot; &quot;&lt;&lt;x;
+                cout&lt;&lt;endl;
+            }
+        }
+        if (!printed) cout&lt;&lt;&quot;No Fibonacci numbers in the range&quot;&lt;&lt;endl;
+        cout&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

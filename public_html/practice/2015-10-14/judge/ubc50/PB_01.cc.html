@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;set&gt;
+#include&lt;limits&gt;
+#include&lt;unordered_map&gt;
+#include&lt;vector&gt;
+#include&lt;algorithm&gt;
+#include&lt;utility&gt;
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int,int&gt; pii;
+
+const int INF=numeric_limits&lt;int&gt;::max();
+int dx[]={1,0,-1,0};
+int dy[]={0,1,0,-1};
+int t,k,w,h;
+char grid[1005][1005];
+ll dist[1005][1005];
+pii start;
+ll res=INF;
+
+struct cmp {
+  bool operator()(const pii &amp;u, const pii &amp;v) const {
+    if (dist[u.first][u.second]==dist[v.first][v.second]) return u&lt;v;
+    else return dist[u.first][u.second]&lt;dist[v.first][v.second];
+  }
+};
+
+int main() {
+  cin &gt;&gt; t;
+  while (t--) {
+    res=INF;
+    unordered_map&lt;char,int&gt; om;
+    cin &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+    for (int i=0; i&lt;k; i++) {
+      char ch; cin &gt;&gt; ch;
+      int dur; cin &gt;&gt; dur;
+      om[ch]=dur;
+    }
+    for (int i=0; i&lt;h; i++) {
+      for (int j=0; j&lt;w; j++) {
+	cin &gt;&gt; grid[i][j];
+	if (grid[i][j]=='E') {
+	  start.first=i; start.second=j;
+	}
+      }
+    }
+    for (int i=0; i&lt;1005; i++)
+      for (int j=0; j&lt;1005; j++)
+	dist[i][j]=INF;
+    dist[start.first][start.second]=0;
+    set&lt;pii, cmp&gt; q;
+    q.insert(start);
+    while (!q.empty()) {
+      auto pt=*q.begin();
+      q.erase(q.begin());
+
+      for (int i=0; i&lt;4; i++) {
+	if (pt.first+dy[i]&lt;0 || pt.first+dy[i]&gt;=h || pt.second+dx[i]&lt;0 || pt.second+dx[i]&gt;=w) continue;
+	ll d=dist[pt.first][pt.second] + om[grid[pt.first+dy[i]][pt.second+dx[i]]];
+	if (d&lt;dist[pt.first+dy[i]][pt.second+dx[i]]) {
+	  q.erase(make_pair(pt.first+dy[i],pt.second+dx[i]));
+	  dist[pt.first+dy[i]][pt.second+dx[i]]=d;
+	  q.insert(make_pair(pt.first+dy[i],pt.second+dx[i]));
+	}
+      }
+    }
+    for (int i=0; i&lt;w; i++) {
+      res=min(res,dist[0][i]);
+      res=min(res,dist[h-1][i]);
+    }
+    for (int i=0; i&lt;h; i++) {
+      res=min(res,dist[i][0]);
+      res=min(res,dist[i][w-1]);
+    }
+    cout &lt;&lt; res &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

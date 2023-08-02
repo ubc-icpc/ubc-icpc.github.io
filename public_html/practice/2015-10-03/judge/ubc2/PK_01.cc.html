@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;pii, int&gt; ppii;
+
+int parent[200];
+
+int rep(int set) {
+  if (parent[set] == set) return set;
+  else return parent[set] = rep(parent[set]);
+}
+
+void join(int rep1, int rep2) {
+  int r1p = rep(rep1);
+  int r2p = rep(rep2);
+  if (r1p != r2p) {
+    parent[r1p] = r2p;
+  }
+}
+
+int main() {
+  int N; cin &gt;&gt; N;
+  for (int i = 0; i &lt; N; ++i) {
+    parent[i] = i;
+  }
+  vector&lt;ppii&gt; sensors;
+  for (int n = 0; n &lt; N; ++n) {
+    //cout &lt;&lt; n &lt;&lt; &quot;: &quot; &lt;&lt; endl;
+    int x, y, r; cin &gt;&gt; x &gt;&gt; y &gt;&gt; r;
+    sensors.push_back({{x, y}, r});
+    for (int m = 0; m &lt; n; ++m) {
+      pii pt = sensors[m].first;
+      int r2 = sensors[m].second;
+      int dx = pt.first - x;
+      int dy = pt.second - y;
+      if (dx*dx + dy*dy &lt;= (r+r2)*(r+r2)) {
+        //cout &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; endl;
+        join(n, m);
+      }
+    }
+    map&lt;int, set&lt;int&gt; &gt; sets;
+    for (int i = 0; i &lt;= n; ++i) {
+      sets[rep(i)].insert(i);
+    }
+    for (auto it = sets.begin(); it != sets.end(); ++it) {
+      int minx = 300, maxx = -1;
+      //cout &lt;&lt; it-&gt;second.size() &lt;&lt; endl;
+      for (auto it2 = it-&gt;second.begin(); it2 != it-&gt;second.end(); ++it2) {
+        int x = sensors[*it2].first.first;
+        //cout &lt;&lt; &quot;x: &quot; &lt;&lt; x &lt;&lt; endl;
+        int r = sensors[*it2].second;
+        minx = min(minx, x-r);
+        maxx = max(maxx, x+r);
+        if (minx &lt;= 0 &amp;&amp; maxx &gt;= 200) {
+          cout &lt;&lt; n &lt;&lt; endl;
+          return 0;
+        }
+        //cout &lt;&lt; minx &lt;&lt; &quot; &quot; &lt;&lt; maxx &lt;&lt; endl;
+      }
+    }
+  }
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

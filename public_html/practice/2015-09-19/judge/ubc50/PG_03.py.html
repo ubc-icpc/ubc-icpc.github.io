@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import math
+import sys
+
+def gcd(a,b):
+    while b!=0:
+        t=b
+        b=a%b
+        a=t
+    return a
+
+for line in sys.stdin:
+    s=line.strip().split('.')[1]
+    x=int(s)
+    n=len(s)
+    d=10**n
+    p=0
+    while gcd(d,x)&gt;1:
+        tmp=gcd(d,x)
+        d/=tmp
+        x/=tmp
+        p=int(math.log(d,2))
+        # print('{a} {b} {c}'.format(a=x, b=d, c=p))
+    if 2**p==d:
+        print &quot;Exact.&quot;
+    else:
+        print &quot;Some precision lost.&quot;
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

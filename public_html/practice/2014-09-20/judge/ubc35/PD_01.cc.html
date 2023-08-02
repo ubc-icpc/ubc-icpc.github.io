@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+int dd[9] = {0, 1, 0, -1, 0, 1, 0, -1, 0};
+int R, C;
+void dfs(char grid[25][25], bool reach[25][25], pair&lt;int, int&gt; start) {
+    reach[start.first][start.second] = true;
+    queue&lt;pair&lt;int, int&gt; &gt; q; q.push(start);
+    while(q.size()) {
+        pair&lt;int, int&gt; p = q.front(); q.pop();
+        for (int i=0; i &lt; 4; i++) {
+            int r = p.first+dd[i], c = p.second+dd[i+1];
+            if (r &lt; 0 || r &gt;= R || c &lt; 0 || c &gt;= C || reach[r][c]) continue;
+            reach[r][c] = true;
+            if (grid[r][c] == '.') q.push(make_pair(r, c));
+        }
+    }
+}
+int main() {
+    char grid[25][25], newgrid[25][25];
+    bool reach[25][25], newreach[25][25];
+    int T; cin &gt;&gt; T;
+    while(T--) {
+        cin &gt;&gt; R &gt;&gt; C;
+        vector&lt;pair&lt;int, int&gt; &gt; V;
+        pair&lt;int, int&gt; start;
+        for (int i=0; i &lt; R; i++) {
+            for (int j=0; j &lt; C; j++) {
+                cin &gt;&gt; grid[i][j];
+                if (grid[i][j] == 'V') V.push_back(make_pair(i, j));
+                if (grid[i][j] == 'S') start = make_pair(i, j), grid[i][j] = '.';
+            }
+        }
+        memset(reach, 0, sizeof reach);
+        dfs(grid, reach, start);
+        int base = 0;
+        for (int k=0; k &lt; R; k++) for (int l=0; l &lt; C; l++)
+            if (grid[k][l] == 'V' &amp;&amp; reach[k][l])
+                base++;
+
+        int res = base;
+        for (int i=0; i &lt; V.size(); i++) {
+            for (int j=0; j &lt; 4; j++) {
+                int r = V[i].first+dd[j], c = V[i].second + dd[j+1];
+                if (r &lt; 0 || r &gt;= R || c &lt; 0 || c &gt;= C || !reach[r][c] || grid[r][c] != '.') continue;
+                int rr = V[i].first+dd[j+2], cc = V[i].second + dd[j+3];
+                if (rr &lt; 0 || rr &gt;= R || cc &lt; 0 || cc &gt;= C || grid[rr][cc] != '.') continue;
+                for (int k=0; k &lt; R; k++) {
+                    for (int l=0; l &lt; C; l++) {
+                        newgrid[k][l] = grid[k][l];
+                    }
+                }
+                newgrid[V[i].first][V[i].second] = '.';
+                newgrid[rr][cc] = '#';
+                memset(newreach, 0, sizeof newreach);
+                dfs(newgrid, newreach, make_pair(r, c));
+
+                int cnt = base;
+                for (int k=0; k &lt; R; k++) for (int l=0; l &lt; C; l++)
+                    if (newgrid[k][l] == 'V' &amp;&amp; newreach[k][l] &amp;&amp; !reach[k][l])
+                        cnt++;
+                res = max(res, cnt);
+            }
+        }
+        cout &lt;&lt; res &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

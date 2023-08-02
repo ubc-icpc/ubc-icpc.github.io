@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+char a[64][64];
+int v[64][64];
+
+int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+int m, n;
+
+int dfs(int y, int x) {
+        v[y][x] = 1;
+        for (int i = 0; i &lt; 4; i++) {
+                int yp = y + dir[i][0];
+                int xp = x + dir[i][1];
+                if (xp &gt;= 0 &amp;&amp; yp &gt;= 0 &amp;&amp; xp &lt; n &amp;&amp; yp &lt; m &amp;&amp; !v[yp][xp] &amp;&amp; (a[yp][xp] == 'L' || a[yp][xp] == 'C')) {
+                        dfs(yp, xp);
+                }
+        }
+}
+
+int main() {
+        ios::sync_with_stdio(0);
+        cin &gt;&gt; m &gt;&gt; n;
+
+        for (int j = 0; j &lt; m; j++) {
+                for (int i = 0; i &lt; n; i++) {
+                        cin &gt;&gt; a[j][i];
+                }
+        }
+
+        int count = 0;
+        for (int j = 0; j &lt; m; j++) {
+                for (int i = 0; i &lt; n; i++) {
+                        if (a[j][i] == 'L' &amp;&amp; !v[j][i]) {
+                                dfs(j, i);
+                                count++;
+                        }
+                }
+        }
+        cout &lt;&lt; count;
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

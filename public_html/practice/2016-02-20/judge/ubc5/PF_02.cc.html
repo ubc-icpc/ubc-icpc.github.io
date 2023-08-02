@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+const ld eps = 1e-8;
+bool win(ld x, ld a, ld b) {
+	return a-eps &lt;= x &amp;&amp; x &lt;= b+eps;
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		ld a, b, c, s, t;
+		cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; s &gt;&gt; t;
+		
+		ld d = b*b - 4 * a * c;
+		
+		if (d &lt; 0) {
+			cout &lt;&lt; &quot;No&quot; &lt;&lt; endl;
+		} else {
+			ld x0 = (-b + sqrt(d))/(2*a);
+			ld x1 = (-b - sqrt(d))/(2*a);
+			cerr &lt;&lt; x0 &lt;&lt; &quot; &quot; &lt;&lt; x1 &lt;&lt; endl;
+			cout &lt;&lt; (win(x0, s, t) || win(x1, s, t) ? &quot;Yes&quot; : &quot;No&quot;) &lt;&lt; endl;
+		}
+	}
+	
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

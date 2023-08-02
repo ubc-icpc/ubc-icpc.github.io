@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+
+long long P, n, b, s[105][105], ans[105];
+
+#define endl '\n'
+
+void precomp(){
+	s[0][0] = 1;
+	for(int i=1;i&lt;=51;i++){
+		for (int j=0;j&lt;=i;j++){
+			s[i][j+1] += s[i-1][j];
+			if(i&gt;=2) s[i][j]+=s[i-2][j];
+		}
+	}
+	for(int i=1;i&lt;=51;i++){
+		for (int j=0;j&lt;=i;j++){
+		//	if (i&lt;7)	cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; s[i][j]&lt;&lt;endl;
+			if (j&lt;=i/3) ans[i]+=s[i][j]*s[i][j];
+		}
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);cin.tie(0);
+	cin &gt;&gt; P;
+	precomp();
+	for(int i=0;i&lt;P;i++){
+		cin &gt;&gt; n &gt;&gt; b;
+		cout &lt;&lt; n &lt;&lt; &quot; &quot;;
+		if (b%2) cout &lt;&lt; 0 &lt;&lt; endl;
+		else cout &lt;&lt; ans[b/2] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

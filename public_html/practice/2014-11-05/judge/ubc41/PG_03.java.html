@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class rot {
+	public static void main (String[] args){
+		Scanner scan = new Scanner(System.in);
+		String delim = &quot;[ ]+&quot;;
+		String[] linearray;
+		String line, abc;
+		int n, linelength, newchar;
+		List&lt;String&gt; answer_list = new ArrayList&lt;String&gt;();
+		while (true){
+			String cba = new String();
+			String answer = new String();
+			line = scan.nextLine();
+			linearray = line.split(delim);
+			n = Integer.parseInt(linearray[0]);
+			
+			if (n == 0) {
+				break;
+			}
+			abc = linearray[1];
+			linelength = abc.length();
+			
+			for (int i=linelength-1; i &gt;= 0; i--) {
+				cba = cba + abc.charAt(i);
+			}
+			
+			for (int i=0; i&lt;linelength; i++) {
+				newchar = (int)cba.charAt(i);
+				if (newchar == 46) {
+					newchar = 27;
+				} else if (newchar == 95) { 
+					newchar = 26;
+				} else {
+					newchar = newchar - 65;
+				}
+				
+				newchar = (newchar + n) % 28;
+				
+				if(newchar == 27) {
+					newchar = 46;
+				} else if (newchar == 26) {
+					newchar = 95;
+				} else {
+					newchar = newchar + 65;
+				}
+				
+				answer = answer + (char)newchar;
+			}
+			
+			answer_list.add(answer);
+		}
+		
+		for (int i=0; i&lt; answer_list.size() -1; i++) {
+			System.out.print(answer_list.get(i) + &quot;\n&quot;);
+		}
+		System.out.print(answer_list.get(answer_list.size()-1));
+		scan.close();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

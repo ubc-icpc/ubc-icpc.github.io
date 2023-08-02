@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+typedef vector&lt;vector&lt;int&gt; &gt; graph;
+
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	while (n != 1) {
+		graph g(n, vector&lt;int&gt;());
+		int m;
+		cin &gt;&gt; m;
+		for (int i = 0; i &lt; m; i++) {
+			int s, t, k;
+			cin &gt;&gt; s &gt;&gt; t &gt;&gt; k;
+			s--;
+			t--;
+			for (int asd = 0; asd &lt; k; asd++) {
+				g[s].push_back(t);
+				g[t].push_back(s);
+			}
+		}
+
+		vector&lt;int&gt; cvs;
+
+		queue&lt;int&gt; q;
+		vector&lt;bool&gt; v(n, 0);
+		q.push(0);
+		v[0] = 1;
+		while (!q.empty()) {
+			int t = q.front();
+			cvs.push_back(t);
+			q.pop();
+			for (int i : g[t]) {
+				if (!v[i]) {
+					v[i] = 1;
+					q.push(i);
+				}
+			}
+		}
+
+		if (cvs.size() == n) {
+			int ans = 0;
+			for (int i = 0; i &lt; n; i++) {
+				if (g[i].size() % 2 == 1) {
+					ans++;
+				}
+			}
+			cout &lt;&lt; ans / 2 &lt;&lt; &quot;\n&quot;;
+		} else {
+		//	cout &lt;&lt; &quot;oh snap\n&quot;;
+			int ansans = 0;
+			int ans = 0;
+			for (int i : cvs) {
+				if (g[i].size() % 2 == 1) {
+					ans++;
+				}
+			}
+			if (ans &gt; 2) {
+				ansans += (ans - 2) / 2;
+			}
+			int cc=1;
+			int maxans = 0;
+			if (cvs.size() == 1){
+				cc--;
+			}
+			else{
+				maxans = ans / 2;
+			}
+			
+			while (find(v.begin(), v.end(), 0) != v.end()) {
+				ans=0;
+				cc++;
+				cvs.clear();
+				int node = distance(v.begin(),find(v.begin(), v.end(), 0));
+				q.push(node);
+				v[node] = 1;
+				while (!q.empty()) {
+					int t = q.front();
+					cvs.push_back(t);
+					q.pop();
+					for (int i : g[t]) {
+						if (!v[i]) {
+							v[i] = 1;
+							q.push(i);
+						}
+					}
+				}
+				
+				for (int i : cvs) {
+					if (g[i].size() % 2 == 1) {
+						ans++;
+					}
+				}
+				if (ans &gt; 2) {
+					ansans += (ans - 2) / 2;
+				}
+				if (cvs.size() == 1){
+					cc--;
+				}
+				else{
+					maxans = ans/2;
+				}
+			}
+			if (cc == 1){
+				cc = 0;
+				ansans = maxans;
+			}
+			cout &lt;&lt; ansans+cc &lt;&lt; &quot;\n&quot;;
+		}
+
+		cin &gt;&gt; n;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

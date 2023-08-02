@@ -1,0 +1,78 @@
+/* UCF SPARTA Style */
+
+table.score th { background: #ffffff; top: 40px; position: sticky; box-shadow: 0 1px #000000; }
+@media only screen and (max-width: 979px) {
+   table.score th { background: #ffffff; top: 0px; position: sticky; box-shadow: 0 1px #000000; }
+}
+table.score th.rankColumn { }
+table.score th.nameColumn { }
+table.score th.solvedColumn { }
+table.score th.penaltyColumn { }
+table.score th.creditColumn { }
+
+table.score th.problemColumn { }
+table.score th.problemColumn div.pre { -webkit-mask-image: url(http://localhost/public_html/practice/2019-06-01/Scoreboard_files/sparta-balloon.svg); mask-image: url(http://localhost/public_html/practice/2019-06-01/Scoreboard_files/sparta-balloon.svg); width: 50px; height: 50px; margin: 0px auto -20px auto; }
+table.score th.problemColumn div.post { visibility: hidden; }
+
+table.score tbody tr td { background: #fff; }
+table.score tbody tr.row1 td { background: #f0f0f0; }
+
+table.score tbody tr td.rank { text-align: center; }
+table.score tbody tr td.name { }
+table.score tbody tr td.totalSolved { text-align: center; }
+table.score tbody tr td.totalPenalty { text-align: center; }
+table.score tbody tr td.totalCredit { text-align: center; }
+
+table.score tbody tr td.untried { text-align: center; }
+table.score tbody tr td.untried span.submissions { display: block; margin: 3px 0px 3px 0px; }
+table.score tbody tr td.untried span.timeCorrect { }
+table.score tbody tr td.untried span.credit { display: block; margin: 3px 0px 3px 0px; }
+
+table.score tbody tr td.attempted { text-align: center; color:#fff !important; background:#F67B51 no-repeat center/32px url("http://localhost/public_html/practice/2019-06-01/Scoreboard_files/sparta-x.svg") !important; }
+table.score tbody tr td.attempted span.submissions { display: block; margin: 3px 0px 3px 0px; }
+table.score tbody tr td.attempted span.timeCorrect { }
+table.score tbody tr td.attempted span.credit { display: block; margin: 3px 0px 3px 0px; }
+
+table.score tbody tr td.solved { text-align: center; color #555 !important; background:#AAE2AB no-repeat center/32px url("http://localhost/public_html/practice/2019-06-01/Scoreboard_files/sparta-check.svg") !important; }
+table.score tbody tr td.solved span.submissions { display: block; margin: 3px 0px 3px 0px; }
+table.score tbody tr td.solved span.timeCorrect { }
+table.score tbody tr td.solved span.credit { display: block; margin: 3px 0px 3px 0px; }
+
+table.score tbody tr td.first { border: solid 0.2em black; text-align: center; color:#fff !important; background:#57B257 no-repeat center/32px url("http://localhost/public_html/practice/2019-06-01/Scoreboard_files/sparta-first.svg") !important; }
+table.score tbody tr td.first span.submissions { display: block; margin: 3px 0px 3px 0px; }
+table.score tbody tr td.first span.timeCorrect { }
+table.score tbody tr td.first span.credit { display: block; margin: 3px 0px 3px 0px; }
+
+table.score tbody tr td.pending { text-align: center; color:#555 !important; background:#DCDCDC no-repeat center/64px url("http://localhost/public_html/practice/2019-06-01/Scoreboard_files/sparta-qmark.svg") !important; animation: pulse 1s ease-out; animation-iteration-count: infinite; -webkit-animation: pulse 1s ease-out; -webkit-animation-iteration-count: infinite; z-index: -1; }
+table.score tbody tr td.pending span.submissions { display: block; margin: 3px 0px 3px 0px; }
+table.score tbody tr td.pending span.timeCorrect { }
+table.score tbody tr td.pending span.credit { display: block; margin: 3px 0px 3px 0px; }
+
+
+@keyframes pulse
+{
+   5%
+   {
+      transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+   }
+   50%
+   {
+      transform: scale(1);
+      -webkit-transform: scale(1);
+   }
+}
+
+@-webkit-keyframes pulse
+{
+   5%
+   {
+      transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+   }
+   50%
+   {
+      transform: scale(1);
+      -webkit-transform: scale(1);
+   }
+}

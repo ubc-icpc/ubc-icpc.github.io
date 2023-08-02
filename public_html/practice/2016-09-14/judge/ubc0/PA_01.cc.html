@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;sstream&gt;
+#include &lt;math.h&gt;
+using namespace std;
+
+
+
+void solve(int N, int number);
+int main()
+{
+	string line;
+	int numberOfTests;
+	getline(cin, line);
+	stringstream(line) &gt;&gt; numberOfTests;
+
+
+	for (int i = 0; i &lt; numberOfTests; i++)
+	{
+		int number, N;
+		cin &gt;&gt; number;
+		cin &gt;&gt; N;
+		solve(N, number);
+	}
+	
+	
+	cin.get();
+	return 0;
+}
+
+
+void solve(int N, int number)
+{
+	int S1, S2, S3;
+	int N2;
+	S1 = N*(N + 1) / 2;
+	N2 = N * (2 * N + 1);
+	S2 = (N2 - N) / 2;
+	S3 = S2 + N;
+
+	cout &lt;&lt; number &lt;&lt; &quot; &quot; &lt;&lt; S1 &lt;&lt; &quot; &quot; &lt;&lt; S2 &lt;&lt; &quot; &quot; &lt;&lt; S3 &lt;&lt; endl;
+	return;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

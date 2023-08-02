@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main(){
+	string n; cin &gt;&gt; n;
+	vector &lt; int &gt; el, result;
+	for (int i = 0; i &lt; n.size(); ++i){
+		el.push_back(n[i] - '0');
+	}
+	sort(el.begin(), el.end());
+	if (el[0] != 0){
+		cout &lt;&lt; -1 &lt;&lt; endl;
+		return 0;
+	}
+	int well = 0;
+	for (int i = 0; i &lt; el.size(); ++i){
+		well += el[i];
+	}
+	if (well % 3 != 0){
+		cout &lt;&lt; -1 &lt;&lt; endl;
+	}
+	else{
+		for (int i = 0; i &lt; el.size(); ++i){
+			cout &lt;&lt; el[el.size() - 1 - i];
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

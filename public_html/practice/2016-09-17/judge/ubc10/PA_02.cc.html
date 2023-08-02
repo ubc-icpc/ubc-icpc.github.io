@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int n;
+int dim[10][3];
+bool seen[10];
+int dfs(int cx, int cy, int cnt) {
+    if (cnt == n) return n;
+    int ans = cnt;
+    for (int i = 0; i &lt; n; i++) {
+        if (seen[i]) continue;
+        seen[i] = true;
+        for (int j = 0; j &lt; 3; j++) {
+            for (int k = 0; k &lt; 3; k++) {
+                if (j == k) continue;
+                if (dim[i][j] &lt;= cx &amp;&amp; dim[i][k] &lt;= cy) {
+                    ans = max(ans, dfs(dim[i][j], dim[i][k], cnt+1));
+                }
+            }
+        }
+        seen[i] = false;
+    }
+    return ans;
+}
+int main() {
+    int csnum = 1;
+    cin &gt;&gt; n;
+    while (n != 0) {
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; 3; j++) {
+                cin &gt;&gt; dim[i][j];
+            }
+        }
+        memset(seen, 0, sizeof seen);
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; csnum &lt;&lt; &quot;: &quot; &lt;&lt; dfs(1000, 1000, 0) &lt;&lt; endl;
+        cin &gt;&gt; n;
+        csnum++;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

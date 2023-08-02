@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int h[2][10005], table[10005], hshused[10005];
+int main() {
+    ios::sync_with_stdio(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int m, n; cin &gt;&gt; m &gt;&gt; n;
+        memset(table, -1, sizeof table);
+        for (int i = 0; i &lt; m; i++) {
+            cin &gt;&gt; h[0][i] &gt;&gt; h[1][i];
+        }
+        
+        bool loop = false;
+        for (int i = 0; i &lt; m; i++) {
+            int j = i;
+            int iters = 0;
+            while (true) {
+                iters++;
+                
+                int loc = h[hshused[j]][j];
+                hshused[j] ^= 1;
+                if (table[loc] == -1) {
+                    table[loc] = j;
+                    goto out;
+                } else if (table[loc] != -1) {
+                    int t = table[loc];
+                    table[loc] = j;
+                    j = t;
+                }
+                if (iters &gt; 5*n) {
+                    loop = true;
+                    break;
+                }
+            }
+            out:;
+            
+            if (loop) break;
+        }
+        
+        cout &lt;&lt; (!loop ? &quot;successful hashing&quot; : &quot;rehash necessary&quot;) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

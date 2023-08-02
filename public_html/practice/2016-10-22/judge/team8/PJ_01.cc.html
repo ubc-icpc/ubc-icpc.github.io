@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	int n1, n2; cin &gt;&gt; n1 &gt;&gt; n2;
+	int ans;
+	if (n1 &gt; n2) {
+		if (n1 - n2 &lt; n2 + 360 - n1) {
+			ans = n2 - n1;
+		} else {
+			ans = n2 + 360 - n1;
+		}
+	} else {
+		if (n2 - n1 &lt; n1 + 360 - n2) {
+			ans = n2 - n1;
+		} else {
+			ans = n2 - n1 - 360;
+		}
+	}
+	if (ans == -180) cout &lt;&lt; 180 &lt;&lt; endl;
+	else cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

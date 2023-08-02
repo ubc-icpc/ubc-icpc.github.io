@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;complex&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+const ld g = 9.81L;
+const ld EPS = 1e-9;
+
+ld fh(ld j, ld p, ld h, ld l, ld x) {
+	if (x &lt; 0) return h;
+	if (x &lt; l/2) return h*(1.L-2.L*(x/l)*(x/l));
+	if (x &lt; l) return 2.L*h*(x/l-1.L)*(x/l-1.L);
+	return 0.L;
+}
+
+ld dfh(ld j, ld p, ld h, ld l, ld x) {
+	if (x &lt; 0) return 0;
+	if (x &lt; l/2) return h*(-2.L/l/l*2*x);
+	if (x &lt; l) return 2.L*h*2.L*(x/l-1.L)/l;
+	return 0.L;
+}
+
+ld ff(ld j, ld p, ld h, ld l, ld v0, ld x) {
+	return -g/2.L*(x/v0)*(x/v0) + h + p;
+}
+
+ld dff(ld j, ld p, ld h, ld l, ld v0, ld x) {
+	return -g/2.L*2*(x/v0)/v0;
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+
+	int ncase; cin &gt;&gt; ncase;
+	for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+		int j, p, h, l; cin &gt;&gt; j &gt;&gt; p &gt;&gt; h &gt;&gt; l;
+		ld v0 = sqrt(2.L*g*j);
+		ld lb = 0, rb = 1e9;
+		while (rb-lb &gt; EPS) {
+			double mid = (lb+rb)/2;
+			double z = ff(j,p,h,l,v0,mid) - fh(j,p,h,l,mid);
+			if (z &gt; 0) lb = mid;
+			else rb = mid;
+		}
+		ld x = (lb+rb)/2;
+		ld hend = ff(j,p,h,l,v0,x);
+		ld vend = sqrt(2.L*g*(j+p+h-hend));
+		pt vec1(1.L, dfh(j,p,h,l,x));
+		pt vec2(1.L, dff(j,p,h,l,v0,x));
+		ld ang = acos((vec1.real()*vec2.real()+vec1.imag()*vec2.imag())/abs(vec1)/abs(vec2))*180.L/acos(-1);
+		cout &lt;&lt; setprecision(16) &lt;&lt; fixed &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; vend &lt;&lt; &quot; &quot; &lt;&lt; ang &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

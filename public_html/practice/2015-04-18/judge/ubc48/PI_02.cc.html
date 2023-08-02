@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main() {
+	int tc; cin &gt;&gt; tc;
+	while (tc--) {
+		string cyp; cin &gt;&gt; cyp;
+		list &lt; char &gt; decode;
+		list&lt;char&gt;::iterator index = decode.begin();
+		for (int i = 0; i &lt; cyp.size(); ++i) {
+			if (cyp[i] == '&lt;') {
+				if (index != decode.begin()) {
+					--index;
+				}
+			}
+			else if (cyp[i] == '&gt;') {
+				if (index != decode.end()) {
+					++index;
+				}
+			}
+			else if (cyp[i] == '-') {
+				if (index != decode.begin()) {
+					index = decode.erase(--index);
+				}
+			}
+			else {
+				decode.insert(index, cyp[i]);
+			}
+		}
+		
+		for (list&lt;char&gt;::iterator temp = decode.begin(); temp != decode.end(); ++temp) {
+			cout &lt;&lt; *temp;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

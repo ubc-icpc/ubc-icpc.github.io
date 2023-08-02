@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, M, S[2], P, C, L;
+bool p1;
+
+int main () {
+  cin &gt;&gt; T;
+  while (T--) {
+    S[0] = S[1] = P = 0;
+    C = 15; L = 27;
+    cin &gt;&gt; N;
+    int res = 0;
+    for (int i = 0; i &lt; N; ++i) {
+      cin &gt;&gt; M;
+      if (M == 0) P = !P;
+      else if (M == 1) ++S[P], --C;
+      else {
+	S[P] += M;
+	if (!p1) L -= M;
+      }
+      if (M == 1) p1 = true; else p1 = false;
+      if (!res &amp;&amp; abs(S[P] + (p1 &amp;&amp; S[!P] &gt; S[P]) * 7 - S[!P]) &gt; C * 8 + L) res = i + 1;
+    }
+    cout &lt;&lt; res &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

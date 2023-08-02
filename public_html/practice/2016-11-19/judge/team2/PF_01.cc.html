@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+using namespace std;
+
+#define debug(...)
+
+typedef long long ll;
+
+struct pt_t {
+    ll x, y, z;
+};
+
+#define BSIZE 1286819
+
+int n, k;
+long double kk;
+vector&lt;pt_t&gt; buckets[BSIZE];
+vector&lt;pt_t&gt; all;
+
+ll hsh(pt_t pt) {
+    ll bx = pt.x/k, by = pt.y/k, bz = pt.z/k;
+    ll ret = bx + by + bz;
+    return abs(ret) % BSIZE;
+}
+
+bool dist(pt_t u, pt_t v) {
+    return pow((long double) u.x - v.x, 2)
+        + pow((long double) u.y - v.y, 2)
+        + pow((long double) u.z - v.z, 2) &lt; kk;
+}
+
+int main() {
+    while (scanf(&quot;%d%d&quot;, &amp;n, &amp;k) == 2) {
+        if (n == 0 &amp;&amp; k == 0)
+            break;
+        kk = pow((long double) k, 2);
+        for (int i = 0; i &lt; BSIZE; i++)
+            buckets[i].clear();
+        all.clear();
+        for (int i = 0; i &lt; n; i++) {
+            pt_t pt; scanf(&quot;%lld%lld%lld&quot;, &amp;pt.x, &amp;pt.y, &amp;pt.z);
+            debug(&quot;%lld %lld %lld -&gt; %lld\n&quot;, pt.x, pt.y, pt.z, hsh(pt));
+            buckets[hsh(pt)].push_back(pt);
+            all.push_back(pt);
+        }
+        ll count = 0;
+        for (pt_t v : all) {
+            set&lt;ll&gt; idxs;
+            for (int dx = -k; dx &lt;= k; dx += k)
+            for (int dy = -k; dy &lt;= k; dy += k)
+            for (int dz = -k; dz &lt;= k; dz += k)
+                idxs.insert(hsh({v.x+dx, v.y+dy, v.z+dz}));
+
+            debug(&quot;TRY %lld %lld %lld -----------\n&quot;, v.x, v.y, v.z);
+
+            for (ll i : idxs) {
+                debug(&quot;CHECK %lld\n&quot;, i);
+                for (pt_t u : buckets[i]) {
+                    if (memcmp(&amp;u, &amp;v, sizeof(pt_t)) == 0) continue;
+                    if (dist(u, v)) {
+                        debug(&quot;%lld %lld %lld &lt;-&gt; %lld %lld %lld\n&quot;, v.x,v.y,v.z,u.x,u.y,u.z);
+                        count += 1;
+                    }
+                }
+            }
+        }
+        printf(&quot;%lld\n&quot;, count/2);
+    }
+    return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int D[2017], L[2017];
+
+int Dtotal;
+
+int dp[2017][2017];
+
+const int INF = 1e9+1;
+
+int main() {
+	int S; scanf(&quot;%d&quot;, &amp;S);
+	for (int i = 1; i &lt;= S; i++) {
+		int C, F, U; scanf(&quot;%d%d%d%d&quot;, &amp;D[i], &amp;C, &amp;F, &amp;U);
+		Dtotal += D[i];
+		L[i] = max((F+U-C+2)/2, 0);
+		if (L[i] &gt; U) L[i] = INF;
+	}
+	dp[0][0] = 0;
+	for (int d = 1; d &lt;= Dtotal; d++) {
+		dp[0][d] = INF;
+	}
+	for (int i = 1; i &lt;= S; i++) {
+		for (int d = 0; d &lt;= Dtotal; d++) {
+			dp[i][d] = min(
+				dp[i-1][d],
+				dp[i-1][max(d-D[i], 0)] + L[i]
+			);
+		}
+	}
+	/*for (int i = 1; i &lt;= S; i++) {
+		for (int d = 0; d &lt;= Dtotal; d++)
+			printf(&quot;%d &quot;, dp[i][d]);
+		printf(&quot;\n&quot;);
+	}*/
+	int m = INF;
+	for (int d = Dtotal/2+1; d &lt;= Dtotal; d++) {
+		if (dp[S][d] &lt; m)
+			m = dp[S][d];
+	}
+	if (m &gt;= INF)
+		printf(&quot;impossible\n&quot;);
+	else
+		printf(&quot;%d\n&quot;, m);
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

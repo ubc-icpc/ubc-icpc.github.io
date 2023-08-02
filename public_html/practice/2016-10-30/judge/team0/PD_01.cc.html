@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef unsigned long long ll;
+int Q, N, D;
+string F1, F2;
+ll memo[205][105];
+
+ll dp(int d, int i) {
+  if (d == 0 &amp;&amp; i == -1) return (ll)1;
+  if (d &lt; 0 || i &lt; 0) return (ll)0;
+  if (memo[d][i] != ~0ULL) return memo[d][i];
+  ll res = 0;
+  if (F1[i] == F2[i]) res += dp(d, i-1);
+  if (F1[i] != F2[i]) res += dp(d-1, i-1) * 2;
+  if (F1[i] != F2[i] &amp;&amp; Q &gt; 2) res += dp(d-2, i-1) * (Q - 2);
+  if (F1[i] == F2[i] &amp;&amp; Q &gt; 1) res += dp(d-2, i-1) * (Q - 1);
+  return memo[d][i] = res;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  memset(memo, -1, sizeof memo);
+
+  cin &gt;&gt; Q &gt;&gt; N &gt;&gt; D &gt;&gt; F1 &gt;&gt; F2;
+  cout &lt;&lt; dp(D, N-1) &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

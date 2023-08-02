@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+set&lt;int&gt; primes;
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int T; cin &gt;&gt; T;
+	for(int i = 2; i &lt; 20100; i++) {
+		primes.insert(i);
+	}
+
+	for(int i = 2; i &lt; 5000; i++) {
+		if(!primes.count(i)) continue;
+		for(auto it = primes.find(i); it != primes.end();) {
+			int num = *it;
+			//cout &lt;&lt; num &lt;&lt; &quot; &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; num % i &lt;&lt; endl;
+			if (num % i == 0 &amp;&amp; num != i) {
+				//cout &lt;&lt; &quot;a&quot;;
+				it = primes.erase(it);
+			} else {
+				it++;
+			}
+		}
+	}
+
+	// for(int num : primes) {
+	// 	cout &lt;&lt; num &lt;&lt; &quot; &quot;;
+	// }
+
+	while(T--) {
+		int m, n; cin &gt;&gt; m &gt;&gt; n;
+
+		if(m == 0) {
+			if(n &lt; 0) n = -n;
+			if(n % 4 == 3 &amp;&amp; primes.count(n)) {
+				cout &lt;&lt; &quot;P&quot; &lt;&lt; endl;
+			} else {
+				cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+			}
+			continue;
+		}
+		if(n == 0) {
+			if(m &lt; 0) m = -m;
+			if(m % 4 == 3 &amp;&amp; primes.count(m)) {
+				cout &lt;&lt; &quot;P&quot; &lt;&lt; endl;
+			} else {
+				cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+			}
+			continue;
+		}
+
+		int isPrime = primes.count(m*m + n*n);
+		if(isPrime) {
+			cout &lt;&lt; &quot;P&quot; &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+		}
+
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

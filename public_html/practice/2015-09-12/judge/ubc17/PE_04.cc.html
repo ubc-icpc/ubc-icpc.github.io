@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+#define PI 3.14159265358979
+#define ld long double
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    while (n--) {
+        int s, r;
+        cin &gt;&gt; s &gt;&gt; r;
+        if (r * 1.0 &gt;= s / sqrt(2.0)) {
+            // wholly covered
+            printf(&quot;%.02f\n&quot;, 1.0 * s * s);
+            continue;
+        } else if (r * 2 &lt;= s) {
+            // wholly inside
+            printf(&quot;%.02f\n&quot;, PI * r * r);
+            continue;
+        }
+
+        ld theta = acos(s / 2.0l / r);
+
+        ld x  = sqrt(r * r - s * s / 4.0l);
+
+        ld covered = 0.0l;
+
+        covered += 2.0l * x * s;
+
+        ld rem_angle = 2.0l * PI - 8.0l * theta;
+
+        covered += rem_angle * r * r / 2.0l;
+
+        printf(&quot;%.02f\n&quot;, (double)covered);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

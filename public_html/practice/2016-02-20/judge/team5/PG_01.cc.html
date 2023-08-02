@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+
+int n, m, p, board[205][205];
+string path;
+
+void rot(int &amp;a, int &amp;b, int &amp;c, int &amp;d) {
+    int tmp = d;
+    d = c; 
+    c = b; 
+    b = a; 
+    a = tmp;
+}
+
+struct die {
+    int no, so, up, down, ea, we;
+    int color[7];
+    int x, y;
+    die() {
+        up = 1; down = 6;
+        no = 3; so = 4;
+        ea = 2; we = 5;
+        for (int i=0; i&lt;7; i++)
+            color[i] = 0;
+        x = 1; y = 1;
+    }
+};
+
+die d;
+
+bool checkAndColor(die &amp;d) {
+    if (d.color[d.down] &amp;&amp; board[d.x][d.y] &amp;&amp; d.color[d.down] != board[d.x][d.y])
+        return false;
+    if (board[d.x][d.y])
+        d.color[d.down] = board[d.x][d.y];
+    return true;
+}
+
+bool ok(die &amp;d) {
+    for (int i=1; i&lt;7; i++) {
+        if (d.color[i] == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool goNorth(die &amp;d) {
+        if (d.y == n) return false;
+        d.y++;
+        rot(d.down,d.so,d.up,d.no);
+        return checkAndColor(d);
+    }
+
+bool goSouth(die &amp;d) {
+    if (d.y == 1) return false;
+    d.y--;
+    rot(d.down,d.no,d.up,d.so);
+    return checkAndColor(d);
+}
+
+bool goWest(die &amp;d) {
+    if (d.x == 1) return false;
+    d.x--;
+    rot(d.down,d.ea,d.up,d.we);
+    return checkAndColor(d);
+}
+
+bool goEast(die &amp;d) {
+    if (d.x == n) return false;
+    d.x++;
+    rot(d.down,d.we,d.up,d.ea);
+    return checkAndColor(d);
+}
+
+int main() {
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; p; 
+    memset(board,0,sizeof board);
+    for (int i=0; i&lt;m; i++) {
+        int x, y, t; cin &gt;&gt; x &gt;&gt; y &gt;&gt; t;
+        board[x][y] = t;
+    }
+    cin &gt;&gt; path;
+    bool flag = true;
+    int cnt=0;
+    for (int i=0; i&lt;p; i++) {
+        cnt++;
+        char dir = path[i];
+        if (dir == 'N') {
+            flag = goNorth(d);
+            if (flag == false)
+                break;
+        }
+        if (dir == 'S') {
+            flag = goSouth(d);
+            if (flag == false)
+                break;
+        }
+        if (dir == 'E') {
+            flag = goEast(d);
+            if (flag == false)
+                break;
+        }
+        if (dir == 'W') {
+            flag = goWest(d);
+            if (flag == false)
+                break;
+        }
+        if (ok(d))
+            break;
+    }
+    if (flag &amp;&amp; ok(d)) {
+        cout &lt;&lt; d.color[1];
+        for (int i=2; i&lt;7; i++)
+            cout &lt;&lt; &quot; &quot; &lt;&lt; d.color[i];
+        cout &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; &quot;0 0 0 0 0 0&quot; &lt;&lt; endl; 
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+struct so {
+	int r,c,s;
+};
+int bra[12][3];
+int dot[12];
+int nbra[12][3];
+int main() {
+	int m,n;
+	string s;
+	while(cin &gt;&gt;m) {
+		memset(bra, 0, sizeof bra);
+		memset(dot, 0, sizeof dot);
+		memset(nbra, 0, sizeof nbra);
+		cin &gt;&gt; n;
+		getline(cin, s);
+		if(m ==0 &amp;&amp; n ==0) break;
+		for(int i = 1; i &lt;= m; i++) {
+			getline(cin,s);
+			for(int z = 0; z &lt;3; z++) bra[i][z] = bra[i-1][z];
+			bool in = true;
+			for(int j = 0; j&lt; s.length(); j++) {
+				if(s[j] == '.' &amp;&amp; in) {
+					dot[i]++;
+					continue;
+				}
+				if( s[j] == '(') bra[i][0]++;
+				if(s[j] == ')') bra[i][0]--;
+				if( s[j] == '{') bra[i][1]++;
+				if( s[j] == '}') bra[i][1]--;
+				if(s[j] == '[') bra[i][2]++;
+				if(s[j] == ']') bra[i][2]--;
+				in = false;
+			}
+		}
+		vector&lt;so&gt; res;
+		for(int i =1; i&lt;=20; i++) {
+			for(int j = 1; j&lt;=20; j++) {
+				for(int z = 1; z&lt;=20; z++) {
+					bool pas = true;
+					for(int k = 0; k&lt;m;k++) {
+						if(i*bra[k][0] + j*bra[k][1] + z*bra[k][2] != dot[k+1]){
+							pas = false;	
+							break;
+						}	
+					}
+					if(pas) {
+						so soo; soo.r = i; soo.c = j; soo.s = z;
+						res.push_back(soo);
+					}
+				}
+			}	
+		}	
+		for(int i = 1; i &lt;= n; i++) {
+			getline(cin,s);
+			for(int z = 0; z &lt;3; z++) nbra[i][z] = nbra[i-1][z];
+			for(int j = 0; j &lt; s.length(); j++) {
+				if( s[j] == '(') nbra[i][0]++;
+				if(s[j] == ')') nbra[i][0]--;
+				if( s[j] == '{') nbra[i][1]++;
+				if( s[j] == '}') nbra[i][1]--;
+				if(s[j] == '[') nbra[i][2]++;
+				if(s[j] == ']') nbra[i][2]--;
+			}
+		}
+		//cout &lt;&lt; res[0].r &lt;&lt; &quot; &quot; &lt;&lt; res[0].c &lt;&lt; &quot; &quot; &lt;&lt; res[0].s &lt;&lt; &quot; debug&quot; &lt;&lt; endl;
+		//cout &lt;&lt; res.size() &lt;&lt; &quot; size&quot; &lt;&lt; endl;
+		for(int i = 1; i &lt;=n;i++) {
+			set&lt;int&gt; cc;	
+			for(auto cur: res) {
+			//	cout &lt;&lt; i  &lt;&lt; &quot; level&quot; &lt;&lt; nbra[i-1][0] &lt;&lt; &quot; &quot; &lt;&lt; nbra[i-1][1] &lt;&lt; &quot; &quot; &lt;&lt;nbra[i-1][2] &lt;&lt; endl;
+				cc.insert(cur.r * nbra[i-1][0] + cur.c*nbra[i-1][1] + cur.s*nbra[i-1][2]);
+			}
+			
+			if(cc.size() ==1) cout &lt;&lt; *cc.begin() &lt;&lt; &quot; &quot;;
+			else cout &lt;&lt; -1 &lt;&lt; &quot; &quot;;
+			
+		}
+		cout &lt;&lt;endl;
+		
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

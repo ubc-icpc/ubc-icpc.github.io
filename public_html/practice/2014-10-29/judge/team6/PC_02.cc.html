@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+
+using namespace std;
+typedef long long ll;
+
+ll enc(vector&lt;int&gt; &amp;combo) {
+	ll res = 0;
+	for (int i = 0; i &lt; combo.size(); i++) {
+		res = res * 10 + combo[i];
+	}
+	return res;
+}
+
+map&lt;ll, double&gt; dp1;
+map&lt;ll, double&gt; dp2;
+
+double dfs1(vector&lt;int&gt; &amp;combo) {
+	ll ind = enc(combo);
+	if (dp1.count(ind) &gt; 0) return dp1[ind];
+	int n = combo.size();
+	double f = 1.0 / (n*n);
+	double facc = 0, macc = 1;
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = 0; j &lt; n; j++) {
+			if (combo[min(i, j)] &gt; combo[max(i, j)]) {
+				swap(combo[i], combo[j]);
+				macc += dfs1(combo) * f;
+				swap(combo[i], combo[j]);
+			} else {
+				facc++;
+			}
+		}
+	}
+	//cerr &lt;&lt; &quot;f = &quot; &lt;&lt; f &lt;&lt; &quot; facc=&quot; &lt;&lt; facc &lt;&lt; &quot; macc=&quot; &lt;&lt; macc &lt;&lt; endl;
+	facc *= f;
+	dp1[ind] = macc / (1.0 - facc);
+	return dp1[ind];
+}
+
+double dfs2(vector&lt;int&gt; &amp;combo) {
+	ll ind = enc(combo);
+	if (dp2.count(ind) &gt; 0) return dp2[ind];
+	int n = combo.size();
+	double f = 1.0 / (n-1);
+	double facc = 0, macc = 1;
+	for (int i = 0; i+1 &lt; n; i++) {
+		if (combo[i] &gt; combo[i+1]) {
+			swap(combo[i], combo[i+1]);
+			macc += dfs2(combo) * f;
+			swap(combo[i], combo[i+1]);
+		} else {
+			facc++;
+		}
+	}
+	facc *= f;
+	dp2[ind] = macc / (1.0 - facc);
+	return dp2[ind];
+}
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		int n; cin &gt;&gt; n;
+		vector&lt;int&gt; v(n);
+		vector&lt;int&gt; v2(n);
+		for (int i = 0; i &lt; n; i++) {
+			int x; cin &gt;&gt; x; x++;
+			v[i] = x; v2[i] = x;
+		}
+		sort(v2.begin(), v2.end());
+		int ind = 1;
+		for (int i = 0; i &lt; n; i++) {
+			while (i+1 &lt; n &amp;&amp; v2[i] == v2[i+1]) i++;
+			int x = v2[i];
+			for (int j = 0; j &lt; n; j++) {
+				if (v[j] == x) v[j] = ind;
+				if (v2[j] == x) v2[j] = ind;
+			}
+			ind++;
+		}
+		dp1.clear();
+		dp2.clear();
+		//for (int i = 0; i &lt; n; i++) cerr &lt;&lt; v[i] &lt;&lt; &quot; &quot;; cerr &lt;&lt; endl;
+		//cerr &lt;&lt; enc(v) &lt;&lt; &quot; &quot; &lt;&lt; enc(v2) &lt;&lt; endl;
+		dp1[enc(v2)] = 0;
+		dp2[enc(v2)] = 0;
+		double a1 = dfs1(v);
+		double a2 = dfs2(v);
+		cout &lt;&lt; setprecision(6) &lt;&lt; fixed &lt;&lt; &quot;Monty &quot; &lt;&lt; a1 &lt;&lt; &quot; Carlos &quot; &lt;&lt; a2 &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

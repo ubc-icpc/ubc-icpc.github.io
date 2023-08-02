@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class B {
+    public static void main(String[] args) {
+        Scanner reader = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        
+        int n = Integer.parseInt(reader.nextLine());
+        List&lt;String&gt; names = new ArrayList&lt;&gt;();
+        List&lt;List&lt;Integer&gt;&gt; stats = new ArrayList&lt;&gt;();
+        
+        for (int i = 0; i &lt; n; i++) {
+            String line = reader.nextLine();
+            String[] details = line.split(&quot; &quot;);
+            names.add(details[0]);
+            stats.add(List.of(Integer.parseInt(details[1]), Integer.parseInt(details[2]), Integer.parseInt(details[3])));
+        }
+        
+        Map&lt;String, List&lt;String&gt;&gt; beats = new HashMap&lt;&gt;();
+        
+        for (int i = 0; i &lt; names.size(); i++) {
+            int hp1 = stats.get(i).get(0);
+            int at1 = stats.get(i).get(1);
+            int df1 = stats.get(i).get(2);
+            
+            for (int j = 0; j &lt; names.size(); j++) {
+                int hp2 = stats.get(j).get(0);
+                int at2 = stats.get(j).get(1);
+                int df2 = stats.get(j).get(2);
+                
+                int result;
+                
+                int dmg1 = at1 - df2;
+                int dmg2 = at2 - df1;
+                
+                if (dmg1 &lt;= 0 &amp;&amp; dmg2 &lt;= 0) {
+                    result = 0;
+                } else if (dmg1 &lt;= 0) {
+                    result = -1;
+                } else if (dmg2 &lt;= 0) {
+                    result = 1;
+                } else {
+                    int survives1 = (hp1 - 1) / dmg2;
+                    int survives2 = (hp2 - 1) / dmg1;
+                    result = survives1 - survives2;
+                }
+                
+                if (result &gt; 0) {
+                    beats.computeIfAbsent(names.get(i), k -&gt; new ArrayList&lt;&gt;());
+                    beats.get(names.get(i)).add(names.get(j));
+                }
+            }
+        }
+        
+        Set&lt;Set&lt;String&gt;&gt; results = new HashSet&lt;&gt;();
+        for (String first : beats.keySet()) {
+            List&lt;String&gt; beatsFirst = beats.getOrDefault(first, new ArrayList&lt;&gt;());
+            for (String second : beatsFirst) {
+                List&lt;String&gt; beatsSecond = beats.getOrDefault(second, new ArrayList&lt;&gt;());
+                for (String third : beatsSecond) {
+                    List&lt;String&gt; beatsThird = beats.getOrDefault(third, new ArrayList&lt;&gt;());
+                    if (beatsThird.contains(first)) {
+                        results.add(Set.of(first, second, third));
+                    }
+                }
+            }
+        }
+        
+        System.out.println(results.size());
+        for (var r : results) {
+            System.out.println(String.join(&quot; &quot;, r));
+        }
+    }
+    
+    // public static int fight(int hp1, int at1, int df1, int hp2, int at2, int df2) {
+    //     int dmg1 = at1 - df2;
+    //     int dmg2 = at2 - df1;
+    //    
+    //     if (dmg1 &lt;= 0 &amp;&amp; dmg2 &lt;= 0) {
+    //         return 0;
+    //     }
+    //    
+    //     int survives1 = (hp1 - 1) / dmg2;
+    //     int survives2 = (hp2 - 1) / dmg1;
+    //    
+    //     return survives1 - survives2;
+    // }
+}
+</code>
+</pre>
+</body>
+</html>

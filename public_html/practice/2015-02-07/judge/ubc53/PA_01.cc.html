@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cmath&gt;
+#include&lt;tuple&gt;
+#include&lt;vector&gt;
+using namespace std;
+
+vector&lt; tuple&lt;int, int&gt; &gt;* g_blocks;
+tuple&lt;int, int&gt; g_start;
+
+void Solve()
+{
+    vector&lt; tuple&lt;int, int&gt; &gt;::iterator it = g_blocks-&gt;begin();
+    vector&lt; tuple&lt;int, int&gt; &gt;::iterator itEnd = g_blocks-&gt;end();
+    int total = 0;
+    //cout &lt;&lt; &quot;start m: &quot; &lt;&lt; get&lt;0&gt;(g_start) &lt;&lt; &quot;, start n: &quot; &lt;&lt; get&lt;1&gt;(g_start) &lt;&lt; endl;
+    for (; it!=itEnd; ++it)
+    {
+        int diffM = 2*abs(get&lt;0&gt;(*it) - get&lt;0&gt;(g_start));
+        int diffN = 2*abs(get&lt;1&gt;(*it) - get&lt;1&gt;(g_start));
+        //cout &lt;&lt; &quot;m: &quot; &lt;&lt; get&lt;0&gt;(*it) &lt;&lt; &quot;, n: &quot; &lt;&lt; get&lt;1&gt;(*it) &lt;&lt; endl;
+        //cout &lt;&lt; &quot;diffM: &quot; &lt;&lt; diffM &lt;&lt; &quot;, diffN: &quot; &lt;&lt; diffN &lt;&lt; endl;
+        total += diffM + diffN;
+        //cout &lt;&lt; &quot;total: &quot; &lt;&lt; total &lt;&lt; endl;
+    }
+    cout &lt;&lt; total &lt;&lt; &quot; seconds to blocks get!\n&quot;;
+}
+
+int main(int argc, char* argv[])
+{
+    int t;
+    cin &gt;&gt; t;
+    while (t--)
+    {
+        int m, n;
+        char cell;
+        vector&lt; tuple&lt;int, int&gt; &gt; room;
+        g_blocks = &amp;room;
+        cin &gt;&gt; m &gt;&gt; n;             
+        for (int i = 0; i &lt; m; i++)
+        {
+            for (int j = 0; j &lt; n; j++)
+            {
+                cin &gt;&gt; cell;
+                if (cell == 'B')
+                {
+                    g_blocks-&gt;push_back(make_tuple(i, j));
+                }
+                else if (cell == '.')
+                {
+                    continue;
+                }
+                else if (cell == 'S')
+                {
+                    g_start = make_tuple(i, j);
+                }
+            }
+        }
+        Solve();
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

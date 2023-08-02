@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+#define MAXN 50000
+int main() {
+    int t; cin&gt;&gt;t;
+    for(int ti=0;ti&lt;t;++ti) {
+        int n,m,a,b; cin&gt;&gt;n&gt;&gt;m&gt;&gt;a&gt;&gt;b;
+        // a is penalty for min cut, b for filled
+        int p[MAXN] = {};
+        int sum[MAXN] = {};
+        for(int i=0;i&lt;n;++i) {
+            cin&gt;&gt;p[i];
+            sum[i] = p[i];
+            if(i &gt; 0) sum[i] += sum[i-1];
+        }
+
+        int d[MAXN] = {}; // d[i] = min penalty ending at d[i]
+        int j = 0;
+        for(int i=0;i&lt;n;++i) {
+            if(sum[i] &lt;= m) {
+                d[i] = (m-sum[i]) * b; // fill
+            } else {
+                // invar:   sum(l, i) = sum[i] - sum[l-1] &gt; m, j&lt;=l&lt;k
+                //          sum(j, i-1) &lt;= m
+                //          sum(l, i) = sum[i] - sum[l-1] &lt;= m, k&lt;=l&lt;=i
+                int k = j;
+                while(sum[i] - sum[k] &gt; m)
+                    k++;
+                
+                //cerr &lt;&lt; j &lt;&lt; &quot;-&quot; &lt;&lt; k &lt;&lt; ' ';
+                if(k &gt;= i) {
+                    d[i] = (p[i] - m)*a;
+                    if( i &gt; 0) d[i] += d[i-1];
+                }
+                else {
+                    d[i] = d[i-1] + (m-p[i])*b; // k&lt;i , sum[i]-sum[i-1]&lt;m
+                    for(int l=j; l&lt;i;++l) {
+                        int s = sum[i] - sum[l];
+                        int over = s+p[l]-m;
+
+                        if(s &lt;= m) {
+                            //cerr &lt;&lt; &quot; over &quot; &lt;&lt; over &lt;&lt; endl;
+                            d[i] = min(d[i], d[l] + (m-s)*b);  // fill (m-s)
+                        } 
+                        if (over &gt;=0 ) {
+                            if(l &gt; 0) {
+                                d[i] = min(d[i], d[l-1]+ over*a); // cut i. [j, i] &gt; m.
+                            } else{
+                                d[i] = min(d[i], over*a);
+                            }
+                        }
+                    }
+                }
+                if(sum[i]-sum[j] &gt; m) j = k;
+                for(int l = max(0, i-60*m);l&lt;j;++l) {
+                    if(l &gt; 0)
+                        d[i] = min(d[i], d[l-1] + (sum[i]-sum[l-1]-m)*a );
+                    else 
+                        d[i] = min(d[i], (sum[i]-m)*a );
+                }
+            }
+        }
+        //cerr &lt;&lt; endl;
+        //for(int i=0;i&lt;n;++i) cerr &lt;&lt; sum[i] &lt;&lt; ' '; cerr &lt;&lt; endl;
+        //for(int i=0;i&lt;n;++i) cerr &lt;&lt; d[i] &lt;&lt; ' '; cerr &lt;&lt; endl;
+
+        cout &lt;&lt; d[n-1] &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

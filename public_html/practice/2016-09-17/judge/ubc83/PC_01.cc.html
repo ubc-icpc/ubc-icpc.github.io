@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+vector&lt;vector&lt;int&gt;&gt; hexes (7, vector&lt;int&gt; (6, 0));
+
+int findNum(vector&lt;int&gt; vec, int num) {
+	for(int i = 0; i &lt; vec.size(); i++) {
+		if(vec[i] == num) return i;
+	}
+	return -1;
+}
+
+vector&lt;int&gt; dfs(set&lt;int&gt; hexesLeft, int leftEdge, int rightEdge, int middleHex) {
+	if(hexesLeft.size() == 0) {
+		return vector&lt;int&gt;();
+	} else if (hexesLeft.size() == 7) {
+		for(int i = 0; i &lt; 7; i++) {
+			set&lt;int&gt; newHexesLeft = hexesLeft;
+			newHexesLeft.erase(i);
+			vector&lt;int&gt; hexes2 = dfs(newHexesLeft, 0, 0, i);
+			hexes2.push_back(i);
+			if(hexes2.size() == 7) return hexes2;
+		}
+	} else if (hexesLeft.size() == 6) {
+		for(int hex : hexesLeft) {
+			set&lt;int&gt; newHexesLeft = hexesLeft;
+			newHexesLeft.erase(hex);
+			int idx = findNum(hexes[hex], 1);
+			vector&lt;int&gt; hexes2 = dfs(newHexesLeft, hexes[hex][(idx + 1) % 6], hexes[hex][(idx + 5) % 6], middleHex);
+			hexes2.push_back(hex); 
+			if(hexes2.size() == 6) return hexes2;
+		}
+	} else if(hexesLeft.size() == 1) {
+		int hex = *(hexesLeft.begin());
+		int idx = findNum(hexes[hex], hexes[middleHex][(findNum(hexes[middleHex], 1) + 5) % 6]);
+		if(hexes[hex][(idx + 1) % 6] == rightEdge
+			&amp;&amp; hexes[hex][(idx + 5) % 6] == leftEdge) {
+			return vector&lt;int&gt; (1, hex);
+		} else {
+			return vector&lt;int&gt; ();
+		}
+	} else {
+		for(int hex : hexesLeft) {
+			set&lt;int&gt; newHexesLeft = hexesLeft;
+			newHexesLeft.erase(hex);
+			int idx = findNum(hexes[hex], hexes[middleHex][(findNum(hexes[middleHex], 1) - hexesLeft.size() + 6) % 6]);
+			if(hexes[hex][(idx + 1) % 6] == rightEdge) {
+				vector&lt;int&gt; hexes2 = dfs(newHexesLeft, leftEdge, hexes[hex][(idx + 5) % 6], middleHex);
+				hexes2.push_back(hex); 
+				if(hexes2.size() == hexesLeft.size()) return hexes2;
+			}
+		}
+	}
+	return vector&lt;int&gt; ();
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int T; cin &gt;&gt; T;
+	int idx = 1;
+	while(T--) {
+		for(int i = 0; i &lt; 7; i++) {
+			for(int j = 0; j &lt; 6; j++) {
+				cin &gt;&gt; hexes[i][j];
+			}
+		}
+		set&lt;int&gt; hexesLeft = {0, 1, 2, 3, 4, 5, 6};
+		vector&lt;int&gt; ans = dfs(hexesLeft, 0, 0, 0);
+
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; idx &lt;&lt; &quot;: &quot;;
+		if(ans.size() == 0) {
+			cout &lt;&lt; &quot;No solution&quot; &lt;&lt; endl;
+		} else {
+			for(int i = 6; i &gt;= 0; i--) {
+				cout &lt;&lt; ans[i] &lt;&lt; &quot; &quot;;
+			}
+			cout &lt;&lt; endl;
+		}
+
+		idx++;
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

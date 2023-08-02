@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        long c = sc.nextLong();
+        long max = 8000000000000L;
+        for (long i = 2; (i * i) &lt;= max; i++) {
+            if ((c % (i * i)) == 0) {
+                c /= i;
+                c /= i;
+                i--;
+            }
+        }
+        for (long i = 1; i &lt;= 4000000; i++) {
+            if (c % i == 0) {
+                long test = c / i;
+                long sqrt = sqrt(test);
+                if (sqrt != -1) {
+                    c /= sqrt;
+                    c /= sqrt;
+                }
+            }
+
+        }
+
+        System.out.println(c);
+    }
+
+    static long sqrt(long l) {
+        long low = 1;
+        long high = (long) Math.sqrt(l) + 100;
+        while (low &lt;= high) {
+            long mid = (low + high) / 2;
+            long sqr = mid * mid;
+            if (sqr == l) {
+                return mid;
+            } else if (sqr &lt; l) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return -1;
+
+    }
+}</code>
+</pre>
+</body>
+</html>

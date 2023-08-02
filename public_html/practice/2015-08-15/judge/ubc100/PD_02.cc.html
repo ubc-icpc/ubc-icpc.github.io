@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+
+int main (void) {
+  
+  int t; cin &gt;&gt; t;
+
+  for(int k=1; k&lt;=t; k++) {
+    int c; cin &gt;&gt; c;
+    vector&lt;int&gt; cars, team;
+    for(int i=0; i&lt;c; i++) {
+      int tmp; cin &gt;&gt; tmp; cars.push_back(tmp);
+    }
+    for(int i=0; i&lt;4*c; i++) {
+      int tmp; cin &gt;&gt; tmp; team.push_back(tmp);
+    }
+    sort(cars.begin(), cars.end());
+    sort(team.begin(), team.end());
+    int ans = -1;
+    for(int i=0; i&lt;c; i++) {
+      ans = max(cars[i]+team[4*(c-i)-1],ans);
+    }
+    
+    //int ans = max(cars[0]+team[4*c-1], cars[c-1]+team[3]);
+    cout &lt;&lt; &quot;Trip #&quot; &lt;&lt; k &lt;&lt; &quot;: &quot; &lt;&lt; ans &lt;&lt; endl;
+  }
+
+  return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

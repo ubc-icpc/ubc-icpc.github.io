@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+struct letter {
+    int x;
+    int y;
+};
+
+struct bundle {
+    string s;
+    int distance;
+};
+
+struct letter giveCoordinate(char c) {
+    struct letter l;
+    switch(c) {
+        case 'q': l = {0,0}; break;
+        case 'w': l = {1,0}; break;
+        case 'e': l = {2,0}; break;
+        case 'r': l = {3,0}; break;
+        case 't': l = {4,0}; break;
+        case 'y': l = {5,0}; break;
+        case 'u': l = {6,0}; break;
+        case 'i': l = {7,0}; break;
+        case 'o': l = {8,0}; break;
+        case 'p': l = {9,0}; break;
+        case 'a': l = {0,1}; break;
+        case 's': l = {1,1}; break;
+        case 'd': l = {2,1}; break;
+        case 'f': l = {3,1}; break;
+        case 'g': l = {4,1}; break;
+        case 'h': l = {5,1}; break;
+        case 'j': l = {6,1}; break;
+        case 'k': l = {7,1}; break;
+        case 'l': l = {8,1}; break;
+        case 'z': l = {0,2}; break;
+        case 'x': l = {1,2}; break;
+        case 'c': l = {2,2}; break;
+        case 'v': l = {3,2}; break;
+        case 'b': l = {4,2}; break;
+        case 'n': l = {5,2}; break;
+        case 'm': l = {6,2}; break;
+        default:  l = {-1,-1};
+    }
+    return l;
+}
+
+bool myfunction(struct bundle a, struct bundle b) {
+    if(a.distance &lt; b.distance) return true;
+    if(a.distance &gt; b.distance) return false;
+    if(a.distance == b.distance) {
+        return a.s &lt; b.s;
+    }
+    return true;
+}
+
+int computeDis(struct letter a, struct letter b) {
+    int xx = a.x - b.x;
+    if(xx &lt; 0) xx = -xx;
+    int yy = a.y - b.y;
+    if(yy &lt; 0) yy = -yy;
+    //cout &lt;&lt; &quot;distance between (&quot; &lt;&lt; a.x &lt;&lt; &quot;, &quot; &lt;&lt; a.y &lt;&lt; &quot;) and (&quot; &lt;&lt; b.x &lt;&lt; &quot;, &quot; &lt;&lt; b.y &lt;&lt; &quot;) is&quot; &lt;&lt; xx+yy &lt;&lt; endl;
+    return xx + yy;
+}
+
+void finalOutput(vector&lt;struct bundle&gt; entries) {
+    for(int i = 0; i &lt; entries.size(); i++) {
+        cout &lt;&lt; entries[i].s &lt;&lt; &quot; &quot; &lt;&lt; entries[i].distance &lt;&lt; endl;
+    }
+}
+
+int main(int argc, char** argv) {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int n_tests;
+    cin &gt;&gt; n_tests;
+    for(int i = 0; i &lt; n_tests; i++) {
+        string origin;
+        int n_entries;
+        cin &gt;&gt; origin;
+        cin &gt;&gt; n_entries;
+        struct letter coor_origin[origin.size()];
+        for(int ii = 0; ii &lt; origin.size(); ii++) {
+            coor_origin[ii] = giveCoordinate(origin[ii]);
+        }
+        vector&lt;struct bundle&gt; entries(n_entries);
+        for(int ii = 0; ii &lt; n_entries; ii++) {
+            cin &gt;&gt; entries[ii].s;
+            entries[ii].distance = 0;
+            //cout &lt;&lt; &quot;computing Distance&quot; &lt;&lt; endl;
+            for(int j = 0; j &lt; origin.size(); j++) {
+                struct letter l = giveCoordinate(entries[ii].s[j]);
+                entries[ii].distance += computeDis(coor_origin[j],l);
+                //cout &lt;&lt; entries[ii].distance &lt;&lt; endl;
+            }
+        }
+        sort(entries.begin(), entries.end(), myfunction);
+        finalOutput(entries);
+    }
+return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

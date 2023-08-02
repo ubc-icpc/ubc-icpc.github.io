@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+string a[] = {&quot;1QAZ&quot;, &quot;2WSX&quot;, &quot;3EDC&quot;, &quot;4RFV5TGB&quot;, &quot;6YHN7UJM&quot;, &quot;8IK,&quot;, &quot;9OL.&quot;, &quot;0P;/'[-=]&quot;};
+int main() {
+    map&lt;char, int&gt; m;
+    for (int i = 0; i &lt; 8; i++) {
+        for (char c : a[i]) {
+            m[c] = i;
+        }
+    }
+    
+    map&lt;int, int&gt; ans;
+    string s; cin &gt;&gt; s;
+    for (char c : s) {
+        ans[m[c]]++;
+    }
+    
+    for (int i = 0; i &lt; 8; i++) {
+        cout &lt;&lt; ans[i] &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

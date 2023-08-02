@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+struct pt {
+    int x, y;
+    pt() {}
+    pt(int x, int y) : x(x), y(y) {}
+    bool operator&lt;(const pt&amp; o) const {
+        return (x &lt; o.x) || (x == o.x &amp;&amp; y &gt; o.y);
+    }
+} p[75005];
+
+bool comp_y(const pt&amp; a, const pt&amp; b) {
+    return (a.y &gt; b.y) || (a.y == b.y &amp;&amp; a.x &lt; b.x);
+}
+
+ll solve(int l, int r) {
+    if (r-l &lt; 2) return 0;
+    
+    int m = (l+r)/2;
+    ll res = solve(l, m) + solve(m, r);
+    
+    sort(p+m, p+r, comp_y);
+    for (int i = l; i &lt; m; i++) {
+        res += p+r-lower_bound(p+m, p+r, pt(-1e9, p[i].y), comp_y);
+    }
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; p[i].x &gt;&gt; p[i].y;
+        }
+        sort(p, p+n);
+        
+        cout &lt;&lt; solve(0, n) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+typedef long long ll;
+
+#define endl '\n'
+
+int main() {
+  ios::sync_with_stdio(0);
+  ll set_counter;
+  cin &gt;&gt; set_counter;
+
+  for (ll i = 0; i &lt; set_counter; i++) {
+    ll a,b;
+    cin &gt;&gt; a &gt;&gt; b;
+    ll b_largest = b;
+    ll b_current = b;
+
+    while (b_current != (1||2||4)) {
+      if (b_current%2 == 0) {
+        b_current = b_current / 2;
+      }
+      else {
+        b_current = b_current * 3 + 1;
+      }
+      if (b_current &gt; b_largest) {
+        b_largest = b_current;
+      }
+    }
+    cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b_largest &lt;&lt; endl;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

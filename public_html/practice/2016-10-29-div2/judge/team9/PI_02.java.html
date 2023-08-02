@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * Created by Razvan1995 on 10/29/2016.
+ */
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
+        String line = br.readLine();
+        String[] tokens = line.split(&quot; &quot;);
+        int a = Integer.parseInt(tokens[0]),b =Integer.parseInt(tokens[1]),c=Integer.parseInt(tokens[2]);
+        line=br.readLine();
+        tokens = line.split(&quot; &quot;);
+        int x = Integer.parseInt(tokens[0]),y =Integer.parseInt(tokens[1]),z=Integer.parseInt(tokens[2]);
+
+        int h1 = Math.max(Math.max(a,b),c),h2 = Math.max(Math.max(x,y),z), side11 = Math.min(Math.min(a,b),c),
+                side21 = Math.min(Math.min(x,y),z), side22 = x+y+z-side21-h2, side12 = a+b+c-side11-h1;
+
+        System.out.println(h1==h2&amp;&amp;h1*h1==side11*side11+side12*side12&amp;&amp;h1*h1==side21*side21+side22*side22&amp;&amp;(side11*side12/2 + side21*side22/2)==(side11==side21?side11*side22:side11*side21)? &quot;YES&quot;:&quot;NO&quot;);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

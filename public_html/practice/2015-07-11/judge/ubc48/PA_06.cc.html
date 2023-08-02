@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main(){
+	int n; cin &gt;&gt; n;
+	vector &lt; vector &lt; char &gt; &gt; m(n, vector&lt;char&gt;(n));
+	vector &lt; vector &lt; long long &gt; &gt; way(n, vector&lt;long long&gt;(n)), visited(n, vector&lt;long long&gt;(n)), v(n, vector&lt;long long&gt;(n));
+	way[0][0] = 1;
+	for (int i = 0; i &lt; n; ++i){
+		for (int j = 0; j &lt; n; ++j){
+			cin &gt;&gt; m[i][j];
+		}
+	}
+	v[0][0] = 1;
+	for (int i = 0; i &lt; n; ++i){
+		for (int j = 0; j &lt; n; ++j){
+			if (m[i][j] == '.'){
+				if (i == 0){
+					if (j != 0){
+						way[i][j] = way[i][j - 1];
+						v[i][j] = v[i][j - 1];
+					}
+				}
+				else if (j == 0){
+					if (i != 0){
+						way[i][j] = way[i - 1][j];
+						v[i][j] = v[i - 1][j];
+					}
+				}
+				else{
+					way[i][j] = (way[i - 1][j] + way[i][j - 1]) % 2147483647;
+					v[i][j] = (v[i - 1][j] &gt; v[i][j - 1]) ? v[i - 1][j] : v[i][j - 1];
+				}
+			}
+		}
+	}
+
+	if (v[n - 1][n - 1]){
+		cout &lt;&lt; way[n - 1][n - 1] &lt;&lt; endl;
+		return 0;
+	}
+
+	bool p = false;
+	queue &lt; pair &lt;int, int&gt; &gt; pass;
+	pass.push(make_pair(0, 0));
+	visited[0][0] = 1;
+	while (pass.size()){
+		if (pass.front().first == n - 1 &amp;&amp; pass.front().second == n - 1){
+			p = true;
+			break;
+		}
+
+
+		if (pass.front().first != 0)
+			if (m[pass.front().first - 1][pass.front().second] == '.' &amp;&amp; visited[pass.front().first - 1][pass.front().second] == 0){
+				pass.push(make_pair(pass.front().first - 1, pass.front().second));
+				visited[pass.front().first - 1][pass.front().second] = 1;
+			}
+		if (pass.front().first != n - 1)
+			if (m[pass.front().first + 1][pass.front().second] == '.' &amp;&amp; visited[pass.front().first + 1][pass.front().second] == 0){
+				pass.push(make_pair(pass.front().first + 1, pass.front().second));
+				visited[pass.front().first + 1][pass.front().second] = 1;
+			}
+		if (pass.front().second != 0)
+			if (m[pass.front().first][pass.front().second - 1] == '.' &amp;&amp; visited[pass.front().first][pass.front().second - 1] == 0){
+				pass.push(make_pair(pass.front().first, pass.front().second - 1));
+				visited[pass.front().first][pass.front().second - 1] = 1;
+			}
+		if (pass.front().second != n - 1)
+			if (m[pass.front().first][pass.front().second + 1] == '.' &amp;&amp; visited[pass.front().first][pass.front().second + 1] == 0){
+				pass.push(make_pair(pass.front().first, pass.front().second + 1));
+				visited[pass.front().first][pass.front().second + 1] = 1;
+			}
+
+		pass.pop();
+	}
+
+	if (p){
+		cout &lt;&lt; &quot;THE GAME IS A LIE&quot; &lt;&lt; endl;
+	}
+	else{
+		cout &lt;&lt; &quot;INCONCEIVABLE&quot; &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

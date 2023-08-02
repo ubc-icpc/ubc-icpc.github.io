@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define SIZE 1000002
+#define BUF_SIZE (1 &lt;&lt; 20)
+
+int it;
+int bufLength;
+char buffer[BUF_SIZE];
+
+int wit;
+char wbuffer[BUF_SIZE];
+
+char nextChar() {
+        if (bufLength == it) {
+                bufLength = fread(buffer, sizeof(char), BUF_SIZE, stdin);
+                if (bufLength == 0)
+                        return 0;
+                it = 0;
+        }
+        return buffer[it++];
+}
+
+char *nextString(char *c) {
+        int i = 0;
+        do {
+                c[i] = nextChar();
+        } while (c[i++] != '\n');
+        c[--i] = 0;
+}
+
+int nextInt() {
+        char c;
+        do {
+                c = nextChar();
+        } while (c &lt; '-');
+
+        int val = 0;
+        if (c == '-') {
+                for (c = nextChar(); c &gt;= '0'; c = nextChar())
+                        val = (val &lt;&lt; 1) + (val &lt;&lt; 3)  + c - '0';
+                return -val;
+        } else {
+                for (; c &gt;= '0'; c = nextChar())
+                        val = (val &lt;&lt; 1) + (val &lt;&lt; 3) + c - '0';
+                return val;
+        }
+}
+
+void writeFlush() {
+        fwrite(wbuffer, 1, wit, stdout);
+        wit = 0;
+}
+
+void writeChar(char c) {
+        wbuffer[wit++] = c;
+        if (wit == BUF_SIZE) {
+                writeFlush();
+        }
+}
+
+void writeString(char *s) {
+        while (*s != 0) {
+                writeChar(*s++);
+        }
+}
+
+void writeInt(int n) {
+        int r = n;
+        int count = 0;
+        if (n == 0) {
+                writeChar('0');
+                return;
+        }
+        while ((r % 10) == 0) {
+                r /= 10;
+                count++;
+        }
+        r = 0;
+        while (n) {
+                r = (r &lt;&lt; 3) + (r &lt;&lt; 1) + n % 10;
+                n /= 10;
+        }
+        while (r) {
+                writeChar(r % 10 + '0');
+                r /= 10;
+        }
+        while (count--) {
+                writeChar('0');
+        }
+
+}
+
+int puzzle[7][6];
+int main() {
+        int n;
+        n = nextInt();
+        for (int i = 0; i &lt; n; i++) {
+                for (int j = 0; j &lt; 7; j++) {
+                        int num;
+                        for (int k = 0; k &lt; 6; k++) {
+                                puzzle[j][k] = nextInt();
+                        }
+                }
+
+                int perm[] = {0, 1, 2, 3, 4, 5, 6};
+                bool has_solution = false;
+                do {
+                        for (int i0 = 0; i0 &lt; 6; i0++) {
+                                if (puzzle[perm[0]][(i0) % 6] != 1) {
+                                        continue;
+                                }
+                                for (int i1 = 0; i1 &lt; 6; i1++) {
+                                        if (puzzle[perm[0]][(i0) % 6] != puzzle[perm[1]][(i1 + 3) % 6]) {
+                                                continue;
+                                        }
+                                        for (int i2 = 0; i2 &lt; 6; i2++) {
+                                                if (puzzle[perm[0]][(i0 + 1) % 6] != puzzle[perm[2]][(i2 + 4) % 6]) {
+                                                        continue;
+                                                }
+                                                if (puzzle[perm[1]][(i1 + 2) % 6] != puzzle[perm[2]][(i2 + 5) % 6]) {
+                                                        continue;
+                                                }
+
+                                                for (int i3 = 0; i3 &lt; 6; i3++) {
+                                                        if (puzzle[perm[0]][(i0 + 2) % 6] != puzzle[perm[3]][(i3 + 5) % 6]) {
+                                                                continue;
+                                                        }
+
+                                                        if (puzzle[perm[2]][(i2 + 3) % 6] != puzzle[perm[3]][(i3) % 6]) {
+                                                                continue;
+                                                        }
+
+                                                        for (int i4 = 0; i4 &lt; 6; i4++) {
+                                                                if (puzzle[perm[0]][(i0 + 3) % 6] != puzzle[perm[4]][(i4) % 6]) {
+                                                                        continue;
+                                                                }
+                                                                if (puzzle[perm[3]][(i3 + 4) % 6] != puzzle[perm[4]][(i4 + 1) % 6]) {
+                                                                        continue;
+                                                                }
+
+                                                                for (int i5 = 0; i5 &lt; 6; i5++) {
+                                                                        if (puzzle[perm[0]][(i0 + 4) % 6] != puzzle[perm[5]][(i5 + 1) % 6]) {
+                                                                                continue;
+                                                                        }
+                                                                        if (puzzle[perm[4]][(i4 + 5) % 6] != puzzle[perm[5]][(i5 + 2) % 6]) {
+                                                                                continue;
+                                                                        }
+
+                                                                        for (int i6 = 0; i6 &lt; 6; i6++) {
+                                                                                if (puzzle[perm[0]][(i0 + 5) % 6] != puzzle[perm[6]][(i6 + 2) % 6]) {
+                                                                                        continue;
+                                                                                }
+
+                                                                                if (puzzle[perm[5]][(i5 + 0) % 6] != puzzle[perm[6]][(i6 + 3) % 6]) {
+                                                                                        continue;
+                                                                                }
+
+                                                                                if (puzzle[perm[6]][(i6 + 1) % 6] != puzzle[perm[1]][(i1 + 4) % 6]) {
+                                                                                        continue;
+                                                                                }
+
+                                                                                has_solution = true;
+                                                                                goto outtahere;
+
+                                                                        }
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                } while (next_permutation(perm, perm + 7));
+outtahere:
+
+                writeString((char *)&quot;Case &quot;);
+                writeInt(i + 1);
+                writeChar(':');
+                if (has_solution) {
+                        for (int j = 0; j &lt; 7; j++) {
+                                writeChar(' ');
+                                writeInt(perm[j]);
+                        }
+                        writeChar('\n');
+                } else {
+                        writeString((char *)&quot; No solution\n&quot;);
+                }
+                writeFlush();
+        }
+        return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

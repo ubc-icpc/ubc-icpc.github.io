@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+int main(){
+    int n; 
+    string s;
+    while(cin&gt;&gt;n){
+        string ha = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ_.&quot;;
+        cin &gt;&gt; s;
+        if(n == 0) break;
+        for(int i = s.size() - 1; i&gt;=0; i--){
+            if(s[i] == '_'){
+                cout &lt;&lt; ha[(n+26)%28];
+                continue; 
+            }
+            if(s[i] == '.'){
+                cout &lt;&lt; ha[(n+27)%28]; 
+                continue;
+            }
+            cout&lt;&lt;ha[((s[i]-'A') + n)% 28];
+        }
+        cout&lt;&lt;endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

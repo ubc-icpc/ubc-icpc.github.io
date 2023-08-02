@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef int ll;
+
+typedef struct ww {
+        ll m, f, w;
+} ww;
+
+ww v[300005];
+ll dp[300005];
+
+int cmp(const void *a, const void *b) {
+        return ((ww *)a)-&gt;m - ((ww *)b)-&gt;m;
+}
+int main() {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        ll n, m, f, w;
+        cin &gt;&gt; n;
+        for (ll i = 0; i &lt; n; i++) {
+                cin &gt;&gt; m &gt;&gt; f &gt;&gt; w;
+                v[i].m = m;
+                v[i].f = f;
+                v[i].w = w;
+        }
+
+        qsort(v, n, sizeof (ww), cmp);
+
+        for (ll i = n - 1; i &gt;= 0; i--) {
+                ll time = v[i].m;
+                ll fun = v[i].f;
+                ll delay = v[i].w;
+                ll j = i + 1;
+                ll jlo = i + 1;
+                ll jhi = n;
+                ll jmid;
+                while (jlo  + 1 &lt; jhi) {
+                        jmid = jlo + (jhi - jlo) / 2;
+                        if (v[jmid].m &lt; time + delay) {
+                                jlo = jmid;
+                        } else {
+                                jhi = jmid;
+                        }
+                }
+                j = max(i + 1, jlo);
+                while (j &lt; n &amp;&amp; v[j].m &lt; time + delay) {j++;} 
+                dp[i] = max(dp[i + 1], dp[j] + fun);
+        }
+        cout &lt;&lt; dp[0] &lt;&lt; endl;
+        
+        return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

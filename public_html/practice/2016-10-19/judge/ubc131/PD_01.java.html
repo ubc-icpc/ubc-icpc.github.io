@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2016-10-20.
+ */
+public class Treasure {
+
+    public static void traverse(char[][] field, int row, int column, int moveCount){
+        if(row &lt; 0 || column &lt; 0 || row &gt;= field.length || column &gt;= field[0].length){
+            System.out.println(&quot;Out&quot;);
+        }
+        else if(moveCount &gt; field.length*field[0].length){
+            System.out.println(&quot;Lost&quot;);
+        }
+        else if(field[row][column]=='T'){
+            System.out.println(moveCount);
+        }
+        else if(field[row][column]=='N'){
+            traverse(field,row - 1, column, moveCount + 1);
+        }
+        else if(field[row][column]=='S'){
+            traverse(field,row + 1, column, moveCount + 1);
+        }
+        else if(field[row][column] == 'W'){
+            traverse(field,row, column - 1, moveCount + 1);
+        }
+        else if(field[row][column] == 'E'){
+            traverse(field,row, column + 1, moveCount + 1);
+        }
+        else{
+            System.out.println(&quot;Row: &quot; + row);
+            System.out.println(&quot;Column: &quot; + column);
+            System.out.println(&quot;Contents: &quot; + field[row][column]);
+            for (char[] s : field){
+                for(char str : s){
+                    System.out.print(str);
+                }
+                System.out.println(&quot;&quot;);
+            }
+
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        String line = s.nextLine();
+        String[] data = line.split(&quot;\\s+&quot;);
+        int rows = Integer.parseInt(data[0]);
+        int columns = Integer.parseInt(data[1]);
+        char[][] field = new char[rows][columns];
+        for (int i = 0; i &lt; rows; i++) {
+            String rowStr = s.nextLine();
+            char[] row = rowStr.toCharArray();
+            field[i] = row;
+        }
+        traverse(field,0,0,0);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

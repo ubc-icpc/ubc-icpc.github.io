@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+#include &lt;functional&gt;
+
+using namespace std;
+
+int f, src, dst, up, dn;
+
+typedef int delta;
+typedef int flr;
+typedef pair&lt;delta, flr&gt; item;
+
+class compare_pair { public:
+  bool operator()(item const&amp; a, item const&amp; b) {
+    return a.first &gt; b.first;
+  }
+};
+
+delta* dists = nullptr;
+bool* visited = nullptr;
+
+#define I(x) ((x) &gt;= 1 &amp;&amp; (x) &lt;= f)
+void dijkstra() {
+  priority_queue&lt;item, vector&lt;item&gt;, compare_pair&gt; pq;
+
+  dists[src] = 0;
+  pq.push(make_pair(0, src));
+
+  //cout &lt;&lt; &quot;--------&quot; &lt;&lt; endl;
+  //cout &lt;&lt; setprecision(3);
+
+  while (!pq.empty()) {
+    item w = pq.top(); pq.pop();
+    flr cur = w.second;
+
+    // cout &lt;&lt; cur &lt;&lt; endl;
+    if (visited[cur]) {
+      // cout &lt;&lt; &quot;Visited. Skipping&quot; &lt;&lt; endl;
+      continue;
+    }
+    visited[cur] = true;
+
+    for (int aa = 0; aa &lt;= 1; aa++) {
+      flr adj;
+      delta d, d1;
+      switch (aa) {
+        case 0:
+          adj = cur - dn;
+          if (I(adj)) d = dn;
+          else continue;
+          break;
+        case 1:
+          adj = cur + up;
+          if (I(adj)) d = up;
+          else continue;
+          break;
+        case 2:
+          throw 1;
+      }
+
+      d1 = dists[cur] + 1;
+      if (dists[adj] &gt; d1) {
+        dists[adj] = d1;
+      }
+      pq.push(make_pair(d1, adj));
+    }
+  }
+
+  //cout &lt;&lt; &quot;--------&quot; &lt;&lt; endl;
+}
+
+int main() {
+  cin &gt;&gt; f &gt;&gt; src &gt;&gt; dst &gt;&gt; up &gt;&gt; dn;
+  dists = new delta[f+1];
+  visited = new bool[f+1];
+  memset(dists, (f+2), (f+1)*sizeof(delta));
+  memset(visited, 0, (f+1)*sizeof(bool));
+  if (false) for (int i = 1; i &lt;= f; i++) {
+    printf(&quot;%d %d %d\n&quot;, i, dists[i], visited[i]);
+  }
+  dijkstra();
+  if (false) for (int i = 1; i &lt;= f; i++) {
+    printf(&quot;%d %d %d\n&quot;, i, dists[i], visited[i]);
+  }
+  if (visited[dst])
+    cout &lt;&lt; dists[dst] &lt;&lt; endl;
+  else
+    cout &lt;&lt; &quot;use the stairs&quot; &lt;&lt; endl;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

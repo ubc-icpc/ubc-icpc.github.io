@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;fstream&gt;
+using namespace std;
+#define fori(v) for(int i=0; i&lt;v; i++)
+#define forj(v) for(int j=0; j&lt;v; j++)
+#define forl(v) for(int l=0; l&lt;v; l++)
+#define lli long long int
+string sumi (string a, string b)
+{
+    if(a.length()&lt;b.length())
+    {
+        string temp = a;
+        a = b;
+         b= temp;
+    }
+    int qaliq = 0;
+    fori(a.length())
+    {
+        int eded1 = 0;
+        int eded2 = a[a.length()-i-1]-'0';
+        if(i&lt;b.length())
+        {
+            eded1 = b[b.length()-i-1]-'0';
+        }
+        int cem = eded1+eded2+qaliq;
+        qaliq = cem/10;
+        cem=cem%10;
+        char var = cem+'0';
+        a[a.length()-i-1] = var;
+    }
+    if(qaliq)
+    a.insert(0,&quot;1&quot;);
+    return a;
+}
+int main()
+{
+    lli t;
+    cin&gt;&gt;t;
+    forl(t)
+    {
+        lli n;
+        cin&gt;&gt;n;
+        vector&lt;lli&gt; hamisi;
+        string cem = &quot;0&quot;;
+        fori(n)
+        {
+            lli eded;
+            cin&gt;&gt;eded;
+            if(!i || eded&gt;=hamisi[i-1])
+            {
+                hamisi.push_back(eded);
+            }
+            else
+            {
+                string equal_sum = &quot;1&quot;;
+                string bigger_sum = &quot;1&quot;;
+                string hamisi_sum = &quot;1&quot;;
+                lli j = 0;
+                while(hamisi[j]&lt;eded)
+                {
+                    if(j &amp;&amp; hamisi[j]==hamisi[j-1])
+                    {
+                        hamisi_sum=sumi(equal_sum,hamisi_sum);
+                        bigger_sum=sumi(equal_sum,bigger_sum);
+                    }
+                    else
+                    {
+                        equal_sum = bigger_sum;
+                        hamisi_sum=sumi(bigger_sum,hamisi_sum);
+                        bigger_sum=sumi(bigger_sum,bigger_sum);
+                    }
+            //      cout&lt;&lt;equal_sum&lt;&lt;&quot; &quot;&lt;&lt;bigger_sum&lt;&lt;&quot; &quot;&lt;&lt;hamisi_sum&lt;&lt;&quot; &quot;&lt;&lt;j&lt;&lt;endl;
+                    ++j;
+                }
+                cem=sumi(hamisi_sum,cem);
+                hamisi.insert(hamisi.begin()+j,eded);
+            }
+    /*      forj(i+1)
+            {
+                cout&lt;&lt;hamisi[j]&lt;&lt;&quot; &quot;;
+            } 
+            cout&lt;&lt;cem&lt;&lt;endl;*/
+            
+        }
+        cout&lt;&lt;cem&lt;&lt;endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

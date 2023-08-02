@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+int q, n, D; 
+string s, t; 
+ll memo[105][205];
+ll dp(int i, int j) {
+	if (j &lt; 0) return 0;
+	if (i == n) return (j == 0);
+	if (memo[i][j] != -1) return memo[i][j];
+	
+	if (s[i] == t[i]) memo[i][j] = (q-1) * dp(i+1, j-2) + dp(i+1, j);
+	else memo[i][j] = 2 * dp(i+1, j-1) + (q-2) * dp(i+1, j-2);
+	
+	return memo[i][j];
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin &gt;&gt; q &gt;&gt; n &gt;&gt; D;
+	cin &gt;&gt; s &gt;&gt; t;
+	memset(memo, -1, sizeof memo);
+	cout &lt;&lt; dp(0, D) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

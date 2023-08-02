@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class ProblemA {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		String encode = sc.next();
+		int shift = sc.nextInt();
+		String value = sc.next();
+		String result = &quot;&quot;;
+		
+		if(encode.equals(&quot;E&quot;)) {
+			for(int i=0; i&lt;value.length(); i++) {
+				int c = value.charAt(i)+shift;
+				if(c &gt; 'z')
+					c-=26;		
+				result+= (char)(c);
+			}
+		}
+		else if(encode.equals(&quot;D&quot;)) {
+			for(int i=0; i&lt;value.length(); i++) {
+				int c = value.charAt(i)-shift;
+				if(c &lt; 'a')
+					c+=26;		
+				result+= (char)(c);
+			}
+		}
+		
+		System.out.println(result);
+		sc.close();
+	}
+}
+</code>
+</pre>
+</body>
+</html>

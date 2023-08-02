@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+set&lt;string&gt; A[60];
+set&lt;string&gt; B[60];
+int main(){
+    ios::sync_with_stdio(0);
+    int t; cin&gt;&gt;t;
+    while (t--){
+        set&lt;pair&lt;string,string&gt;&gt; ans;
+        int n; cin&gt;&gt;n;
+        for (int i=0;i&lt;n;i++) A[i].clear(),B[i].clear();
+        for (int i=0;i&lt;n;i++){
+            string s; cin&gt;&gt;s;
+            int k; cin&gt;&gt;k;
+            while (k--){
+                cin&gt;&gt;s; A[i].insert(s);
+            }
+            cin&gt;&gt;k;
+            while (k--){
+                cin&gt;&gt;s; B[i].insert(s);
+            }
+        }
+        for (int i=0;i&lt;n;i++) for (string a:A[i]) for (string b:B[i]){
+            bool good=true;
+            for (int j=0;j&lt;n;j++) if (j!=i) if ((A[j].count(a))^(B[j].count(b))) good=false;
+            if (good) ans.insert({a,b});
+        }
+        for (pair&lt;string,string&gt; p:ans) cout&lt;&lt;'('&lt;&lt;p.first&lt;&lt;','&lt;&lt;p.second&lt;&lt;')'&lt;&lt;endl;
+        if (t) cout&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

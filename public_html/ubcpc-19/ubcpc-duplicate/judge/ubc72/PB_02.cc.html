@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int turns(int a, int b, vector&lt;int&gt; &amp;hp, vector&lt;int&gt; &amp;attack, vector&lt;int&gt; &amp;defense)
+{
+	if (attack[a] - defense[b] &lt;= 0)
+			return 1000000;
+	// might need to round down instead
+	// typo was hp[a] instead of hp[b]
+	return (hp[b] + (attack[a] - defense[b] - 1)) / (attack[a] - defense[b]);
+}
+
+bool beats(vector&lt;int&gt; &amp;hp, vector&lt;int&gt; &amp;attack, vector&lt;int&gt; &amp;defense, int a, int b)
+{
+	int turns_a = turns(a,b,hp,attack,defense);
+	int turns_b = turns(b,a,hp,attack,defense);
+	return turns_a &lt; turns_b;
+}
+
+int main()
+{
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);
+
+	int f; cin &gt;&gt; f;
+	vector&lt;string&gt; names(f);
+	vector&lt;int&gt; hp(f);
+	vector&lt;int&gt; attack(f);
+	vector&lt;int&gt; defense(f);
+	for (int i = 0; i &lt; f; ++i)
+	{
+		cin &gt;&gt; names[i];
+		cin &gt;&gt; hp[i];
+		cin &gt;&gt; attack[i];
+		cin &gt;&gt; defense[i];
+	}
+	vector&lt;vector&lt;int&gt;&gt; triples;
+	
+	for (int i1 = 0; i1 &lt; f; ++i1)
+		for (int i2 = i1+1; i2 &lt; f; ++i2)
+			for (int i3 = i2+1; i3 &lt; f; ++i3)
+			{
+				if ((beats(hp,attack,defense,i1,i2) &amp;&amp; beats(hp,attack,defense,i2,i3) &amp;&amp; beats(hp,attack,defense,i3,i1))
+					|| (beats(hp,attack,defense,i1,i3) &amp;&amp; beats(hp,attack,defense,i3,i2) &amp;&amp; beats(hp,attack,defense,i2,i1))
+					|| (beats(hp,attack,defense,i2,i3) &amp;&amp; beats(hp,attack,defense,i3,i1) &amp;&amp; beats(hp,attack,defense,i1,i2))
+					|| (beats(hp,attack,defense,i2,i1) &amp;&amp; beats(hp,attack,defense,i1,i3) &amp;&amp; beats(hp,attack,defense,i3,i2))
+					|| (beats(hp,attack,defense,i3,i1) &amp;&amp; beats(hp,attack,defense,i1,i2) &amp;&amp; beats(hp,attack,defense,i2,i3))
+					|| (beats(hp,attack,defense,i3,i2) &amp;&amp; beats(hp,attack,defense,i2,i1) &amp;&amp; beats(hp,attack,defense,i1,i3)))
+				{
+						vector&lt;int&gt; asdf = {i1,i2,i3};
+						triples.push_back(asdf);
+				}
+			}
+	//cout &lt;&lt; beats(hp,attack,defense,0,4) &lt;&lt; ' ' //0 beats 4
+	//&lt;&lt; beats(hp,attack,defense,4,0) &lt;&lt; ' '
+	//&lt;&lt; beats(hp,attack,defense,4,2) &lt;&lt; ' '
+	//&lt;&lt; beats(hp,attack,defense,2,4) &lt;&lt; ' ' //2 beats 4
+	//&lt;&lt; beats(hp,attack,defense,0,2) &lt;&lt; ' '
+	//cout &lt;&lt; beats(hp,attack,defense,2,0) &lt;&lt; endl; //2 beats 0 // i disagree with this
+	//int turns_a = turns(2,0,hp,attack,defense);
+	//int turns_b = turns(0,2,hp,attack,defense);
+	//cout &lt;&lt; turns_a &lt;&lt; ' ' &lt;&lt; turns_b &lt;&lt; '\n'; // 2, 3
+	cout &lt;&lt; triples.size() &lt;&lt; '\n';
+	for (auto trip : triples)
+	{
+		for (int i : trip)
+				cout &lt;&lt; names[i] &lt;&lt; ' ';
+		cout &lt;&lt; '\n';
+	}
+}
+</code>
+</pre>
+</body>
+</html>

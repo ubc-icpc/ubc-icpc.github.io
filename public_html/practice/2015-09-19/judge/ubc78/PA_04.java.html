@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Collections;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+
+public class A {
+	static Scanner in;
+	public static void main(String[] args) {
+		
+		in = new Scanner(System.in);
+		while(true){
+			int numOfLoads = in.nextInt();
+			if (numOfLoads == 0) 
+				break;
+			ArrayList&lt;Integer&gt; loadValues = new ArrayList&lt;&gt;();
+			for (int i = 0; i &lt; numOfLoads; i++) {
+				loadValues.add(in.nextInt());
+			}
+			solve(loadValues);
+		}
+		return;
+	}
+	
+	public static void solve(ArrayList&lt;Integer&gt; arr) {
+		int sum = 30;
+		int leftOver = 0;
+		Collections.sort(arr);
+		for (int i = 0; i &lt; arr.size(); i++){
+			int n = arr.get(arr.size() - i - 1);
+			if (n &gt;= 30) {
+				leftOver += n - 30;
+				sum += n;
+			} else if (n &lt;= leftOver) {
+				leftOver -= 30 - n;
+				sum += n;
+			} else if (i == arr.size() - 1) {
+				sum += n;
+			} else {
+				if (leftOver == 0){
+					sum += 30;
+				}
+				else {
+					sum += n - leftOver;
+					leftOver = 0;	
+				}
+			}
+		}
+		print(sum);
+	}
+	
+	public static void print(int n) {
+		System.out.print(n/60);
+		if (n%60 &lt; 10)
+			System.out.println(&quot;:0&quot;+n%60);
+		else
+			System.out.println(&quot;:&quot;+n%60);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

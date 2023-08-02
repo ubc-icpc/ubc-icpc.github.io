@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;math.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unordered_set&gt;
+using namespace std;
+
+const int maxn = 100000;
+int isnprime[maxn];
+vector&lt;int&gt; sieve(int n) {
+    memset(isnprime, 0, sizeof isnprime);
+    isnprime[0] = isnprime[1] = 1;
+    vector&lt;int&gt; ps;
+    for (int i = 2; i &lt; n; i++) {
+        if (!isnprime[i]) {
+            ps.push_back(i);
+        }
+        if (n / i &gt;= i) {
+            for (int j = i * i; j &lt;= n; j += i) isnprime[j] = 1;
+        }
+    }
+    return ps;
+}
+
+int hp[101];
+int atk[101];
+int def[101];
+
+bool win(int x, int y) {
+    int xDmg = max(0, atk[y] - def[x]);
+    int yDmg = max(0, atk[x] - def[y]);
+    //cout &lt;&lt; yDmg &lt;&lt; endl;
+    if (xDmg == 0 &amp;&amp; yDmg == 0) {
+        return false;
+    }
+
+    int xTurns, yTurns;
+    if (xDmg != 0) {
+        xTurns = ceil(hp[x]/double(xDmg));
+    } else {
+        xTurns = 1e9;
+    }
+
+    if (yDmg != 0) {
+        yTurns = ceil(hp[y]/double(yDmg));
+    } else {
+        yTurns = 1e9;
+    }
+    //cout &lt;&lt; xTurns &lt;&lt; ' ' &lt;&lt; yTurns &lt;&lt; endl;
+
+    if (xTurns &gt; yTurns) {
+        //cout &lt;&lt; x &lt;&lt; &quot; beats &quot; &lt;&lt; y &lt;&lt; endl;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    string names[n];
+
+    vector&lt;int&gt; primes = sieve(100000);
+    //cout &lt;&lt; primes.size() &lt;&lt; endl;
+
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; names[i] &gt;&gt; hp[i] &gt;&gt; atk[i] &gt;&gt; def[i];
+    }
+
+
+    unordered_set&lt;uint64_t&gt; used;
+
+    vector&lt;pair&lt;int, pair&lt;int, int&gt; &gt; &gt; out;
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            for (int k = 0; k &lt; n; k++) {
+                if (i == j || i == k || j == k) {
+                    continue;
+                }
+
+                if (win(i, j) &amp;&amp; win(j, k) &amp;&amp; win(k, i)) {
+                    bool good = true;
+                    uint64_t hsh = primes[i] * primes[j] * primes[k];
+                    if (used.find(hsh) == used.end()) {
+                        out.push_back(make_pair(i, make_pair(j, k)));
+                        used.insert(hsh);
+                    }
+                }
+            }
+        }
+    }
+    cout &lt;&lt; out.size() &lt;&lt; endl;
+    for (int i = 0; i &lt; out.size(); i++) {
+        cout &lt;&lt; names[out[i].first] &lt;&lt; ' ' &lt;&lt; names[out[i].second.first] &lt;&lt; ' ' &lt;&lt; names[out[i].second.second] &lt;&lt; endl;
+    }
+}</code>
+</pre>
+</body>
+</html>

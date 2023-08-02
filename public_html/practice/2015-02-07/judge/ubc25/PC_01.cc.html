@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;sstream&gt;
+
+using namespace std;
+
+int main() {
+    long long i; cin &gt;&gt; i;
+    while (i != 0) {
+        long long n = (long long)ceil((sqrt(i * 8 + 1) - 1) / 2);
+        long long result = ((n * (n + 1)) / 2) - i;
+        stringstream ss;
+        ss &lt;&lt; result;
+        cout &lt;&lt; (result == 0 ? &quot;Not bored enough!&quot; : ss.str()) &lt;&lt; endl;
+        cin &gt;&gt; i;
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

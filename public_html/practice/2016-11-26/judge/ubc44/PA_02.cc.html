@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;pii, pii&gt; piipii;
+typedef pair&lt;piipii, bool&gt; piipii_O;
+typedef vector&lt;ll&gt; vi;
+typedef vector&lt;vi &gt; vvi;
+typedef vector&lt;bool&gt; vb;
+typedef vector&lt;vb &gt; vvb;
+
+int main() {
+	string s;
+	cin &gt;&gt; s;
+	vi dp_lis(s.length());
+	for (int i=0; i&lt;s.length(); i++) {
+		dp_lis[i] = 1;
+		for (int j=0; j&lt;i; j++) {
+			if (s[j] &lt; s[i])
+				dp_lis[i] = max(dp_lis[i], dp_lis[j] + 1);
+		}
+	}
+
+	ll lis = dp_lis[0];
+	for (int i=1; i&lt;s.length(); i++) {
+		lis = max(lis, dp_lis[i]); 
+	}
+
+	cout &lt;&lt; 26-lis &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

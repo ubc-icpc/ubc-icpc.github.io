@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;list&gt;
+using namespace std;
+
+int mat[505][505];
+
+int main() {
+  int test; cin &gt;&gt; test;
+  while (test--) {
+    int v; cin &gt;&gt; v;
+    for (int i=1; i&lt;=v; i++) {
+      for (int j=1; j&lt;=v; j++) {
+	cin &gt;&gt; mat[i][j];
+      }
+    }
+    list&lt;int&gt; res;
+    // say we start from 1
+    res.insert(res.begin(),1);
+    for (int i=2; i&lt;=v; i++) {
+      auto it=res.begin();
+      while (true) {
+	// if we can go from i to current node
+	// add i before current node
+	// if we reach the end of the answer, add this node
+	// to the end, guaranteed that mat[*it-1][i]=1
+	if (it==res.end() || mat[i][*it]) {
+	  res.insert(it,i);
+	  break;
+	}
+	// otherwise move onto next node in our answer so far
+	// loop again to see can we go from i to this node
+	else {
+	  ++it;
+	}
+      }
+    }
+    for (auto x : res)
+      cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

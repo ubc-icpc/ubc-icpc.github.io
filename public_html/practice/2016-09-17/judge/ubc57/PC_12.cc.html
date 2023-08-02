@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef pair&lt;int,int&gt; pii;
+typedef long long ll;
+using std::string;
+ 
+static struct IO {
+	char tmp[1 &lt;&lt; 10];
+ 
+	// fast input routines
+	char cur;
+ 
+//#define nextChar() (cur = getc_unlocked(stdin))
+//#define peekChar() (cur)
+	inline char nextChar() { return cur = getc_unlocked(stdin); }
+	inline char peekChar() { return cur; }
+ 
+	inline operator bool() { return peekChar(); }
+	inline static bool isBlank(char c) { return (c &lt; '-' &amp;&amp; c); }
+	inline bool skipBlanks() { while (isBlank(nextChar())); return peekChar() != 0; }
+ 
+	inline IO&amp; operator &gt;&gt; (char &amp; c) { c = nextChar(); return *this; }
+ 
+	inline IO&amp; operator &gt;&gt; (char * buf) {
+		if (skipBlanks()) {
+			if (peekChar()) {
+				*(buf++) = peekChar();
+				while (!isBlank(nextChar())) *(buf++) = peekChar();
+			} *(buf++) = 0; } return *this; }
+ 
+	inline IO&amp; operator &gt;&gt; (string &amp; s) {
+		if (skipBlanks()) {	s.clear(); s += peekChar();
+			while (!isBlank(nextChar())) s += peekChar(); }
+		return *this; }
+ 
+	inline IO&amp; operator &gt;&gt; (double &amp; d) { if ((*this) &gt;&gt; tmp) sscanf(tmp, &quot;%lf&quot;, &amp;d); return *this;	}
+ 
+#define defineInFor(intType) \
+	inline IO&amp; operator &gt;&gt;(intType &amp; n) { \
+		if (skipBlanks()) { \
+			int sign = +1; \
+			if (peekChar() == '-') { \
+				sign = -1; \
+				n = nextChar() - '0'; \
+			} else \
+				n = peekChar() - '0'; \
+			while (!isBlank(nextChar())) { \
+				n += n + (n &lt;&lt; 3) + peekChar() - 48; \
+			} \
+			n *= sign; \
+		} \
+		return *this; \
+	}
+ 
+defineInFor(int)
+defineInFor(unsigned int)
+defineInFor(long long)
+ 
+	// fast output routines
+ 
+//#define putChar(c) putc_unlocked((c), stdout)
+	inline void putChar(char c) { putc_unlocked(c, stdout); }
+	inline IO&amp; operator &lt;&lt; (char c) { putChar(c); return *this; }
+	inline IO&amp; operator &lt;&lt; (const char * s) { while (*s) putChar(*s++); return *this; }
+ 
+	inline IO&amp; operator &lt;&lt; (const string &amp; s) { for (int i = 0; i &lt; (int)s.size(); ++i) putChar(s[i]); return *this; }
+ 
+	char * toString(double d) { sprintf(tmp, &quot;%lf%c&quot;, d, '\0'); return tmp; }
+	inline IO&amp; operator &lt;&lt; (double d) { return (*this) &lt;&lt; toString(d); }
+ 
+ 
+#define defineOutFor(intType) \
+	inline char * toString(intType n) { \
+		char * p = (tmp + 30); \
+		if (n) { \
+			bool isNeg = 0; \
+			if (n &lt; 0) isNeg = 1, n = -n; \
+			while (n) \
+				*--p = (n % 10) + '0', n /= 10; \
+			if (isNeg) *--p = '-'; \
+		} else *--p = '0'; \
+		return p; \
+	} \
+	inline IO&amp; operator &lt;&lt; (intType n) { return (*this) &lt;&lt; toString(n); }
+ 
+defineOutFor(int)
+defineOutFor(long long)
+ 
+#define endl ('\n')
+#define cout __io__
+#define cin __io__
+} __io__;
+ 
+
+int rotation[8];
+int turn[7][8];
+int pieces[7][6];
+int xx[8];
+int main(){
+    ios::sync_with_stdio(0);
+    int t; cin&gt;&gt;t;
+    for (int ca=1;ca&lt;=t;ca++){
+        cout&lt;&lt;&quot;Case &quot;&lt;&lt;ca&lt;&lt;&quot;:&quot;; 
+        for (int i=0;i&lt;7;i++) for (int j=0;j&lt;6;j++) cin&gt;&gt;pieces[i][j];
+        for (int i=0;i&lt;7;i++) for (int j=1;j&lt;=6;j++){
+            int x;
+            for (x=0;x&lt;6;x++) if (pieces[i][x]==j) break;
+            turn[i][j]=x;
+        }
+        vector&lt;int&gt; v={0,1,2,3,4,5,6};
+        bool solved=false;
+        do{
+            bool good=true; 
+            for (int i=1;i&lt;7;i++) rotation[i]=turn[v[i]][pieces[v[0]][(turn[v[0]][1]+i-1)%6]];
+            for (int i=1;i&lt;6;i++) {
+                if (pieces[v[i]][(rotation[i]+5)%6]!=pieces[v[i+1]][(rotation[i+1]+1)%6]) {
+                    good=false; break;
+                }
+            }
+            if (!good) continue;
+            if (pieces[v[6]][(rotation[6]+5)%6]!=pieces[v[1]][(rotation[1]+1)%6]) good=false;
+            if (good){
+                for(int x:v) cout&lt;&lt;&quot; &quot;&lt;&lt;x; cout&lt;&lt;endl;
+                solved=true; break;
+            }
+        } while ((next_permutation(v.begin(),v.end()))&amp;&amp;(!solved));
+        if (!solved) cout&lt;&lt;&quot; No solution&quot;&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

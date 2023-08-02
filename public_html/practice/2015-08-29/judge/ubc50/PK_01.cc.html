@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+int gcd(int a, int b) {
+  while (b!=0) {
+    int t=a;
+    a=b;
+    b=t%b;
+  }
+  return a;
+}
+
+int main() {
+  int test; cin &gt;&gt; test;
+  while (test--) {
+    int miles, gas, food; cin &gt;&gt; miles &gt;&gt; gas &gt;&gt; food;
+    int ans=0;
+    ans += (miles/gas);
+    ans += (miles/food);
+    if (miles%gas==0) ans--;
+    if (miles%food==0) ans--;
+    int a=max(gas, food);
+    int b=min(gas, food);
+    int g = gcd(a,b);
+    int l = (a*b)/g;
+    ans -= (miles/l);
+    if (miles%l==0) ans++;
+    cout &lt;&lt; miles &lt;&lt; &quot; &quot; &lt;&lt; gas &lt;&lt; &quot; &quot; &lt;&lt; food &lt;&lt; endl;
+    cout &lt;&lt; ans &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+// dp[m][k] := min noise removing k students from the first m buildings
+// dp[m][k] = min(dp[m-1][k], dp[m-1][k-1] + f(m))
+ll memo[105][505], N;
+const ll inf = 10000000000000LL;
+
+// g[k][n] := min noise removing k times
+//               out of students [i...n)
+int t[105];
+
+ll g(int n, int k) {
+    static map&lt;int, map&lt;int, ll&gt; &gt; m;
+    if (n == 0) return 0;
+    if (m[n].count(k)) return m[n][k];
+    
+    m[n][k] = n*(n+1)/2;
+    if (k &gt; 0) {
+        for (int del = 1; del &lt;= n; del++) {
+            m[n][k] = min(m[n][k], del*(del+1)/2 + g(n-del, k-1));
+        }
+    }
+    return m[n][k];
+}
+
+ll h(int n, int k) {
+    // a * l + b * (l+1) = n
+    // a + b = k+1
+    // where l = floor(n/(k+1))
+    // so b = n - (k+1) * l
+    //    a = k+1 - b
+    // and our function value is a*l*(l+1)/2 + b*(l+1)*(l+2)/2
+    ll l = n/(k+1);
+    ll b = n - (k+1)*l;
+    ll a = k+1 - b;
+    return a*l*(l+1)/2 + b*(l+1)*(l+2)/2;
+}
+
+int check_pattern() {
+    for (int i = 1; i &lt;= 100; i++) {
+        for (int j = 0; j &lt;= i; j++) {
+            //cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; g(i, j) &lt;&lt; &quot; &quot; &lt;&lt; h(i, j) &lt;&lt; endl;
+            assert(g(i,j) == h(i,j));
+        }
+    }
+}
+
+ll dp(int m, int k) {
+    if (memo[m][k] != -1) return memo[m][k];
+    if (m == 0) return 0;
+    
+    memo[m][k] = inf;
+    for (int j = 0; j &lt;= min(k, t[m-1]); j++) { 
+        if (dp(m-1, k-j) &gt; memo[m][k]) continue;
+        memo[m][k] = min(memo[m][k], dp(m-1, k-j) + h(t[m-1], j));
+    }
+    return memo[m][k];
+}
+
+int main() {
+    check_pattern();
+    memset(memo, -1, sizeof memo);
+    int m, k; cin &gt;&gt; N &gt;&gt; m &gt;&gt; k;
+    
+    for (int i = 0; i &lt; N; i++) {
+        int x; cin &gt;&gt; x;
+        t[x-1]++;
+    }
+    
+    cout &lt;&lt; dp(m, k) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

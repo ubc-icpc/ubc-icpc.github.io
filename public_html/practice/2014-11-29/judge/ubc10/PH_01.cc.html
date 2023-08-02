@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+typedef long long ll;
+
+struct E {
+	char c; int d;
+	E(){}
+	E(char lc, int ld) {
+		c = lc; d = ld;
+	}
+};
+
+int n;
+vector&lt;E&gt; adj[1000];
+bool visited[1000];
+ll mod = 1000000007;
+
+// dp[ vertex ] [ # werewolves ] [ is werewolf ] = # ways
+ll dp[1000][1000][2];
+
+void dfs(int v) {
+	int nv = adj[v].size();
+	visited[v] = true;
+
+	// base case: leaf node
+	if (nv == 0) {
+		dp[v][0][0] = 1;
+		dp[v][1][1] = 1;
+		return;
+	}
+
+	// recurse on all children first
+	for (int i = 0; i &lt; nv; i++) {
+		dfs(adj[v][i].d);
+	}
+
+	// do subset sum
+	// blah[ # neighbors considered ] [ # werewolves ] = # ways
+	ll dp1[nv+1][n+1]; // assume this robot not werewolf
+	ll dp2[nv+1][n+1]; // assume this robot werewolf
+	memset(dp1, 0, sizeof dp1);
+	memset(dp2, 0, sizeof dp2);
+	dp1[0][0] = 1;
+	dp2[0][1] = 1;
+
+	// consider every one that we accuse/defend
+	for (int i = 0; i &lt; nv; i++) {
+		int nextv = adj[v][i].d;
+		bool is_accuse = (adj[v][i].c == 'A');
+
+		// transition: j -&gt; j+k werewolves
+		for (int j = 0; j &lt;= n; j++) {
+			for (int k = 0; k+j &lt;= n; k++) {
+				// no werewolf: accuse/defend do not matter
+				dp1[i+1][j+k] += dp1[i][j] * (dp[nextv][k][0] + dp[nextv][k][1]);
+				// werewolf
+				if (is_accuse) {
+					// must accuse non-werewolf
+					dp2[i+1][j+k] += dp2[i][j] * dp[nextv][k][0];
+				} else {
+					// must defend werewolf
+					dp2[i+1][j+k] += dp2[i][j] * dp[nextv][k][1];
+				}
+				// mod it
+				dp1[i+1][j+k] %= mod;
+				dp2[i+1][j+k] %= mod;
+			}
+		}
+	}
+
+	// compute answer
+	for (int i = 0; i &lt;= n; i++) {
+		dp[v][i][0] = dp1[nv][i] % mod;
+		dp[v][i][1] = dp2[nv][i] % mod;
+	}
+}
+
+int main() {
+	int nw, m; cin &gt;&gt; n &gt;&gt; nw &gt;&gt; m;
+	for (int i = 0; i &lt; m; i++) {
+		char c; int a, b; cin &gt;&gt; c &gt;&gt; a &gt;&gt; b;
+		a--; b--;
+		adj[a].push_back(E(c, b));
+	}
+	memset(dp, 0, sizeof dp);
+	memset(visited, 0, sizeof visited);
+
+	vector&lt;int&gt; roots;
+	for (int i = 0; i &lt; n; i++) {
+		if (!visited[i]) {
+			roots.push_back(i);
+			dfs(i);
+		}
+	}
+
+	// do another subset sum
+	int nv = roots.size();
+	ll dp2[nv+1][n+1];
+	memset(dp2, 0, sizeof dp2);
+	dp2[0][0] = 1;
+	for (int i = 0; i &lt; nv; i++) {
+		for (int j = 0; j &lt;= n; j++) {
+			for (int k = 0; k+j &lt;= n; k++) {
+				dp2[i+1][j+k] += dp2[i][j] * (dp[roots[i]][k][0] + dp[roots[i]][k][1]);
+				dp2[i+1][j+k] %= mod;
+			}
+		}
+	}
+
+	cout &lt;&lt; dp2[nv][nw] &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

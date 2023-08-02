@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
+
+
+public class FindTheTwins {
+	
+	public static void checkForTwins() {
+		
+		HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; numbers = new HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt;();
+		
+		
+		Scanner sc = new Scanner(System.in);
+		int numberOfDataSets = sc.nextInt();
+		//System.out.println(numberOfDataSets);
+
+		for (int i = 0; i &lt; numberOfDataSets; i++) {
+			ArrayList&lt;Integer&gt; row = new ArrayList&lt;Integer&gt;();
+			String rowOfNumbers = &quot;&quot;;
+			for (int j = 0; j &lt; 10; j++) {
+				int number = sc.nextInt();
+				row.add(number);	//add the numbers to the ArrayList
+				rowOfNumbers += number + &quot; &quot;;
+			}
+			//System.out.println(rowOfNumbers);
+			numbers.put(i, row);	//put the ArrayList into the HashMap
+		}
+		
+		for(int i = 0; i &lt; numbers.size(); i++) {
+			String row = &quot;&quot;;
+			for (int j = 0; j &lt; 10; j++) {
+				row += numbers.get(i).get(j) + &quot; &quot;;
+			}
+			System.out.println(row);
+			if (numbers.get(i).contains(18) &amp;&amp; numbers.get(i).contains(17)) {
+				System.out.println(&quot;both\n&quot;);
+				continue;
+			} else if (!(numbers.get(i).contains(18)) &amp;&amp; !(numbers.get(i).contains(17))) {
+				System.out.println(&quot;none\n&quot;);
+				continue;
+			} else if (numbers.get(i).contains(18)) {
+				System.out.println(&quot;mack\n&quot;);
+				continue;
+			} else {
+				System.out.println(&quot;zack\n&quot;);
+				continue;
+			}
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		//call checkForTwins
+		checkForTwins();
+		
+		
+
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef unsigned long ul;
+
+bool prime_check(ul N) {
+	if (N &lt; 2) return false;
+	if (N == 2) return true;
+	if (N % 2 == 0) return false;
+	ul rootN = floor(sqrt(N));
+	for (int i = 3; i &lt;= rootN; i += 2) {
+		if (N % i == 0) return false;
+	}
+
+	return true;
+}
+
+int main() {
+	ul N;
+	cin &gt;&gt; N;
+	if (prime_check(N)) {
+		cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+		return 0;
+	}
+	for (int i = 2; i &lt; floor(sqrt(N)) + 1; i++) {
+		if (prime_check(i)) {
+			for (int p = 2; ; p++) {
+				if (pow(i, p) &gt; N) break;
+				if (pow(i, p) == N) {
+					cout &lt;&lt; &quot;yes&quot; &lt;&lt; endl;
+					return 0;
+				}
+			}
+		}
+	}
+	cout &lt;&lt; &quot;no&quot; &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

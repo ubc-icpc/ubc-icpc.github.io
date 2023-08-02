@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+int N;
+int W;
+char G[30][30];
+bool v[30][30];
+int degree[30][30];
+
+int dir[][2] = { {1, 1}, {-1, 1}, {1, -1}, {-1, -1} };
+
+int cur_r, cur_c;
+
+void dfs(int r, int c) {
+	//printf(&quot;dfs %d %d\n&quot;, r, c);
+	v[r][c] = true;
+	for (int d = 0; d &lt; 4; d++) {
+		if (G[r + dir[d][0]][c + dir[d][1]] == 'W' &amp;&amp;
+				(G[r+2*dir[d][0]][c+2*dir[d][1]] == '_' ||
+				 (r+2*dir[d][0] == cur_r &amp;&amp; c+2*dir[d][1] == cur_c))) {
+			degree[r][c] += 1;
+			if (!v[r+2*dir[d][0]][c+2*dir[d][1]])
+				dfs(r+2*dir[d][0], c+2*dir[d][1]);
+		}
+	}
+}
+
+bool work(int r, int c) {
+	cur_r = r; cur_c = c;
+	memset(v, 0, sizeof v);
+	memset(degree, 0, sizeof degree);
+	dfs(r, c);
+
+	int total_degrees = 0;
+	int count_odd = 0;
+
+	for (int i = 2; i &lt; 2+N; i++) {
+		for (int j = 2; j &lt; 2+N; j++) {
+			//printf(&quot;%d&quot;, degree[i][j]);
+			total_degrees += degree[i][j];
+			if (degree[i][j] % 2 == 1)
+				count_odd += 1;
+		}
+		//printf(&quot;\n&quot;);
+	}
+	bool me_is_odd = degree[r][c] % 2 == 1;
+	//printf(&quot;%d %d\n&quot;, total_degrees/2, count_odd);
+	//printf(&quot;---\n&quot;);
+	return (total_degrees / 2 == W &amp;&amp; ((count_odd == 2 &amp;&amp; me_is_odd) || count_odd == 0));
+}
+
+int main() {
+	scanf(&quot;%d&quot;, &amp;N);
+	W = 0;
+	memset(G, '.', sizeof G);
+	for (int i = 2; i &lt; 2+N; i++) {
+		for (int j = 2; j &lt; 2+N; j++) {
+			scanf(&quot; %c&quot;, &amp;G[i][j]);
+			if (G[i][j] == 'W') W += 1;
+		}
+	}
+
+	int ans_i = -1, ans_j = -1;
+
+	for (int i = 2; i &lt; 2+N; i++) {
+		for (int j = 2; j &lt; 2+N; j++) {
+			if (G[i][j] == 'B') {
+				if (work(i, j)) {
+					if (ans_i != -1) {
+						printf(&quot;Multiple\n&quot;);
+						return 0;
+					}
+					ans_i = i, ans_j = j;
+				}
+			}
+		}
+	}
+
+	if (ans_i != -1)
+		printf(&quot;%c%d\n&quot;, 'a' + (ans_j - 2), N - (ans_i - 2));
+	else
+		printf(&quot;None\n&quot;);
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

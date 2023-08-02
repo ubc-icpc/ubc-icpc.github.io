@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+
+using namespace std;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	for (int i = 1; i &lt;= n; ++i) {
+		int us[4] = {}, ra[4] = {}, message = 0;
+		for (int j = 0; j &lt; 3; ++j) {
+			cin &gt;&gt; us[j];
+			cout &lt;&lt; us[j] &lt;&lt; &quot; &quot;;
+			us[3] += us[j];
+		}
+		for (int j = 0; j &lt; 3; ++j) {
+			cin &gt;&gt; ra[j];
+			cout &lt;&lt; ra[j] &lt;&lt; &quot; &quot;;
+			ra[3] += ra[j];
+		}
+		cout &lt;&lt; endl;
+		if (us[3] &gt; ra[3])
+			message++;
+		us[3] = 0; ra[3] = 0;
+		for (int j = 0; j &lt; 3; ++j) {
+			us[3] += us[j];
+			ra[3] += ra[j];
+			if (us[3] &gt; ra[3]) {
+				message += 2;
+				break;
+			}
+			else if (us[3] &lt; ra[3])
+				break;
+		}
+		if (message == 0)
+			cout &lt;&lt; &quot;none&quot;;
+		else if (message == 1)
+			cout &lt;&lt; &quot;count&quot;;
+		else if (message == 2)
+			cout &lt;&lt; &quot;color&quot;;
+		else if (message == 3)
+			cout &lt;&lt; &quot;both&quot;;
+		cout &lt;&lt; endl &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

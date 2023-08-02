@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class A {
+	private static int[][][] dp = new int[10][3][1100];
+	private static int[][] box;
+	private static int n;
+
+	public static void main(String[] args) {
+		Scanner c = new Scanner(System.in);
+		int t = 1;
+		while (1 == 1) {
+			n = c.nextInt();
+			if (n == 0)
+				return;
+			int ans = 1;
+			c.nextLine();
+			box = new int[n][3];
+			for (int i = 0; i &lt; n; i++) {
+				box[i][0] = c.nextInt();
+				box[i][1] = c.nextInt();
+				box[i][2] = c.nextInt();
+				c.nextLine();
+			}
+			for (int i = 0; i &lt; n; i++) {
+				for (int j = 0; j &lt; 3; j++)
+					Arrays.fill(dp[i][j], -1);
+			}
+
+			for (int i = 0; i &lt; n; i++) {
+				for (int j = 0; j &lt; 3; j++) {
+					ans = Math.max(ans, solve(i, j, 1 &lt;&lt; i));
+				}
+			}
+			System.out.println(&quot;Case &quot; + t + &quot;: &quot; + ans);
+			t++;
+		}
+
+	}
+
+	private static int solve(int i, int j, int m) {
+		if (dp[i][j][m] != -1)
+			return dp[i][j][m];
+		int x = 0, y = 0;
+		switch (j) {
+		case 0:
+			x = box[i][1];
+			y = box[i][2];
+			break;
+		case 1:
+			x = box[i][0];
+			y = box[i][2];
+			break;
+		case 2:
+			x = box[i][0];
+			y = box[i][1];
+			break;
+		}
+		int ans = 1;
+		for (int k = 0; k &lt; n; k++)
+			if ((m &amp; (1 &lt;&lt; k)) == 0) {
+				for (int j1 = 0; j1 &lt; 3; j1++) {
+					int c = 0, d = 0;
+					switch (j1) {
+					case 0:
+						c = box[k][1];
+						d = box[k][2];
+						break;
+					case 1:
+						c = box[k][0];
+						d = box[k][2];
+						break;
+					case 2:
+						c = box[k][0];
+						d = box[k][1];
+						break;
+					}
+					if ((x &gt;= c) &amp;&amp; (y &gt;= d) || (x &gt;= d) &amp;&amp; (y &gt;= c))
+						ans = Math.max(ans, solve(k, j1, m + (1 &lt;&lt; k)) + 1);
+				}
+			}
+		dp[i][j][m] = ans;
+		return ans;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

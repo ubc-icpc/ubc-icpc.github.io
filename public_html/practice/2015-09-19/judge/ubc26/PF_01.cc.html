@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cmath&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cmath&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+//#define printf(...);
+#define I(x) x; cin &gt;&gt; x;
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define L0(qq,ss,m) for (int qq=ss;qq&lt;(m);qq++)
+#define SL(ss, mmm) \
+  vector&lt;string&gt; ss; \
+  int I(mmm); ss.reserve(mmm); \
+  L(iiii, mmm) {string I(tt);ss.push_back(tt);}
+
+int main() {
+  int I(mmm);
+  L(iii, mmm) {
+    int I(l);
+    vector&lt;int&gt; xs(l);
+    L(j, l) cin &gt;&gt; xs[j];
+    sort(xs.begin(), xs.end());
+    //for (auto&amp; x : xs) printf(&quot;%3d &quot;, x);
+    //printf(&quot;\n&quot;);
+
+    int x = 0;
+    while (x &lt; l) {
+      int x1 = x;
+      int a = xs[x];
+
+      while (x1 &lt; l &amp;&amp; xs[++x1] == a);
+      //printf(&quot;x = %d, x1 = %d\n&quot;, x, x1);
+      if (x1 &gt;= l) break;
+      int delta = xs[x1] - xs[x];
+      cout &lt;&lt; delta &lt;&lt; &quot; &quot; &lt;&lt; x1 &lt;&lt; endl;
+
+      x = x1;
+    }
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

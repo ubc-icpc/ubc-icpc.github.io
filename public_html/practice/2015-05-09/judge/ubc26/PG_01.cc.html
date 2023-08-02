@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+double L[32] = {};
+int ms[32] = {};
+int n;
+
+double f(int m) {
+  if (m &gt;= n + 1) {
+    throw 1;
+  } else if (ms[m] &gt; 0) {
+    ms[m]--;
+    return 0;
+  } else {
+    double a = f(m+1);
+    double b = f(m+1);
+    return L[m+1] + a + b;
+  }
+}
+
+int main() {
+  for (int i = 0; i &lt; 32; i++)
+    L[i] = pow(2.0, (1.0 - 2.0*(double)i) / 4.0);
+
+  ms[0] = ms[1] = 0;
+
+  cin &gt;&gt; n;
+  for (int i = 0; i &lt; n-1; i++) cin &gt;&gt; ms[2 + i];
+  try {
+    printf(&quot;%.14f\n&quot;, f(1));
+  } catch (int e) {
+    cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

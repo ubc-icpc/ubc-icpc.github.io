@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;iomanip&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+
+using namespace std;
+
+double dp[151][151];
+
+int N, ns, s[151];
+double p[151];
+
+double dpc(int n, int m){
+	if(dp[n][m]!=dp[n][m]){	
+//		cout &lt;&lt;&quot;here&quot;&lt;&lt;endl;
+		if(m&lt;=0)	return 1.0;
+		if(n&gt;ns)	return 0;
+		else{
+			dp[n][m] = max(dpc(n+1, m), dpc(n+1, m-s[n-1])*p[n-1]);
+		}	
+	}
+
+//		cout &lt;&lt;&quot;there&quot;&lt;&lt;endl;
+	return dp[n][m];
+}
+
+int main(){
+	cin &gt;&gt;N;
+	while(N--){
+		cin &gt;&gt;ns;
+		for(int i=0; i&lt;ns; i++){
+			cin &gt;&gt;s[i]&gt;&gt;p[i]; p[i]/=100.0;
+//	  cout &lt;&lt;s[i]&lt;&lt;&quot;  &quot;&lt;&lt;p[i]&lt;&lt;endl;
+		}
+
+		memset(dp, -1, sizeof dp);
+//		cout &lt;&lt;dp[1][1]&lt;&lt;endl;
+
+		double curB = 0;
+
+		for(int i=76; i&lt;151; i++){
+			curB = max(curB, dpc(1, i));
+		}
+		//cout &lt;&lt;curB&lt;&lt;endl;
+    cout &lt;&lt; fixed &lt;&lt; setprecision(6) &lt;&lt; curB * 100 &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

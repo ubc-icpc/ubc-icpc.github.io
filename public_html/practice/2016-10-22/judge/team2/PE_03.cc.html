@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+ll n, a, b, m;
+
+ll egcd(ll a, ll b, ll&amp; x, ll &amp;y) {
+      if (!b) {x = 1; y = 0; return a;}//to ensure d&gt;=0: x=sgn(a);y=0;return abs(a);
+        ll d = egcd(b, a%b, y, x); y -= x * (a/b); return d; }
+        ////////////////////////////////////////////////////////////////////////////////
+        //// Extended GCD in canonical form
+        //////////////////////////////////////////////////////////////////////////////////
+        //// Assuming a != 0, find smallest y &gt;= 0 such that ax + by = c (if possible)
+bool canon_egcd(ll a, ll b, ll c, ll&amp; x, ll&amp; y) {
+        ll d = egcd(a, b, x, y), z = abs(a/d); if (c%d) return false;
+        y = (y*(c/d)%z + z)%z, x = (c - b*y)/a; return true; }
+
+bool chin_rem(ll a1, ll m1, ll a2, ll m2, ll&amp; A, ll&amp; M) {
+      ll X1, X2, d = egcd(m1, m2, X1, X2); if (a1 % d != a2 % d) return false;
+        M = m1/d*m2, A = ((X1*m1%M*(a2/d) + X2*m2%M*(a1/d) + a1%d)%M + M)%M;
+          return true; }
+
+ll phi(ll m){
+    if (m&lt;3) return 1;
+    ll ans = m;
+    for(ll i=2;i&lt;sqrt(m)+1;i++){
+        //cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; &quot; &quot; &lt;&lt; sqrt(m)+1 &lt;&lt; endl;
+        if (m%i==0) {
+            ans-=ans/i;
+            while (m%i==0) m/=i;
+        }
+    }
+    if (m!=1) ans-=ans/m;
+    return ans;
+}
+/*
+ll inv(ll a, ll m){
+    ll x,y;
+    canon_egcd(m, a, 1, x, y);
+    return y;
+}
+*/
+ll recpow(ll b, ll p, ll m){
+    if (p==0) return 1;
+    b%=m;
+    ll ans = recpow(b,p/2,m);
+    ans = (ans*ans)%m;
+    if (p%2) ans=(ans*b)%m;
+    return ans;
+}
+ll expor(ll n, ll m){
+    if (n==1) return 1%m;
+    if (m==1) return 0;
+    ll g = __gcd(n,m);
+    //cout &lt;&lt; &quot;gcd is &quot; &lt;&lt; g &lt;&lt; endl;
+    if (g==1) {
+        ll pp = expor(n-1,phi(m));
+        //cout &lt;&lt; pp &lt;&lt; endl;
+        ll ans = recpow(n,pp, m);
+        //cout &lt;&lt; n &lt;&lt;&quot; &quot;&lt;&lt; ans &lt;&lt; endl;
+        return ans;
+    }
+    else {
+        ll mm=m, gg = g;
+        for(ll i=2;i&lt;sqrt(g)+1;i++){
+            if (gg%i==0) {
+                while (mm%i==0) mm/=i;
+                while (gg%i==0) gg/=i;
+            }
+        }
+        while(gg!=1 &amp;&amp; mm%gg==0) mm/=gg; // mm has no factors of g left
+        ll ncp = m/mm; // all factors of gcd in here.
+        ll a2 = recpow(n, expor(n-1,phi(mm)), mm);
+        ll a1;
+        if ((n-1)==3) a1 = recpow(n,9,ncp);
+        else if (n-1&lt;3) a1 = recpow(n,n-1,ncp);
+        else a1 = 0;// we have so many powers we don't care.
+        ll A, M;
+        chin_rem(a1, ncp, a2, mm, A, M);
+        //cout &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; a1 &lt;&lt; &quot; &quot; &lt;&lt; ncp &lt;&lt; &quot; &quot; &lt;&lt; a2 &lt;&lt; &quot; &quot; &lt;&lt; mm &lt;&lt; &quot; &quot;&lt;&lt; A &lt;&lt; &quot; &quot; &lt;&lt; M &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; endl;
+        return A;
+    }
+}
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    cin &gt;&gt; n &gt;&gt; m;
+    //ll nn, mm, A=-1, M=10;
+    //cin &gt;&gt; nn &gt;&gt; mm;
+    //cout &lt;&lt; chin_rem(n,m,nn,mm,A,M);
+    //cout &lt;&lt;&quot; &quot;  &lt;&lt;&quot; &quot; &lt;&lt; A &lt;&lt; &quot; &quot; &lt;&lt; M &lt;&lt; endl;;
+    cout &lt;&lt; expor(n,m);
+    //for(int i=1;i&lt;n;i++)     cout &lt;&lt;i &lt;&lt; &quot; &quot; &lt;&lt; phi(i)&lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

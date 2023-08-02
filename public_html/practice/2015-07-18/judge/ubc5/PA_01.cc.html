@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+#define mp3(a,b,c) make_pair(make_pair(a,b),c)
+#define ma first.first
+#define mb first.second
+#define md second
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;pii,int&gt; p3i;
+
+vector&lt;int&gt; adj[10000];
+vector&lt;p3i&gt; e;
+int v[10000];
+
+void dfs(int x) {
+  v[x] = 0;
+  for (int i = 0; i &lt; adj[x].size(); i++) {
+    if (v[adj[x][i]] == -1) {
+      dfs(adj[x][i]);
+      v[x] += v[adj[x][i]]+1;
+    }
+  }
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+      adj[i].clear();
+      v[i] = -1;
+    }
+    e.clear();
+    for (int i = 0; i &lt; n-1; i++) {
+      int a, b, d;
+      cin &gt;&gt; a &gt;&gt; b &gt;&gt; d;
+      adj[a].push_back(b);
+      adj[b].push_back(a);
+      e.push_back(mp3(a,b,d));
+    }
+    dfs(0);
+    ll x = 0;
+    for (int i = 0; i &lt; n-1; i++) {
+      int da = min(v[e[i].ma],v[e[i].mb]);
+      int db = n-2-da;
+      x += e[i].md*(da+1)*(db+1);
+    }
+    cout &lt;&lt; (ld)x/(n*(n-1)/2) &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

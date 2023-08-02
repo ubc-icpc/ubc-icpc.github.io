@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+public class b {
+	static double ratio, l;
+	static String[] notes = {&quot;A&quot;, &quot;A#&quot;, &quot;B&quot;, &quot;C&quot;, &quot;C#&quot;, &quot;D&quot;, &quot;D#&quot;, &quot;E&quot;, &quot;F&quot;, &quot;F#&quot;, &quot;G&quot;, &quot;G#&quot;};
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int p = sc.nextInt(), q = sc.nextInt();
+		boolean inverse = false;
+		if(q &gt; p) {
+			int temp = p;
+			p = q;
+			q = temp;
+			inverse = true;
+		}
+		ratio = 1.0 * p / q;
+		while(ratio &gt;= 2) ratio /= 2;
+		
+		for(int i = 0; i &lt; 12; ++i) {
+			for(int oi = -25; oi &lt;= 25; ++oi) {
+				for(int j = 0; j &lt; 12; ++j) {
+					for(int oj = -25; oj &lt;= 25; ++oj) {
+						int numi = 100 * i + oi;
+						int numj = 100 * j + oj;
+						int num = (numj - numi);
+						
+						double curr = Math.pow(2, num / 1200.0);
+						
+						if(check(curr)) {
+//							System.out.println(curr);
+							if(!inverse) System.out.println(notes[j] + &quot; &quot; + oj + &quot;\n&quot; + notes[i] + &quot; &quot; + oi);
+							else System.out.println(notes[i] + &quot; &quot; + oi + &quot;\n&quot; + notes[j] + &quot; &quot; + oj);
+//							System.out.println(&quot;bueno&quot;);
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+	static boolean check(double in) {
+		double a = in, b = ratio;
+		if(b &gt; a) {
+			double temp = a;
+			a = b;
+			b = temp;
+		}
+		
+		return a / b &lt;= Math.pow(2, 1.0/2000);
+	}
+}</code>
+</pre>
+</body>
+</html>

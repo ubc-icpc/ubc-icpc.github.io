@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+bool B[1000000] = {};
+vector&lt;int&gt; P;
+
+stringstream ss;
+unsigned long long toint (const string&amp; str) {
+  ss &lt;&lt; str;
+  unsigned long long res; ss &gt;&gt; res; ss.clear();
+  return res;
+}
+
+int main() {
+  for (int i = 2; i &lt; 1000000; ++i) {
+    if (!B[i]) {
+      P.push_back(i);
+      for (int j = i + i; j &lt; 1000000; j += i)
+	B[j] = true;
+    }
+  }
+  string K; int L; cin &gt;&gt; K &gt;&gt; L;
+  while (K != &quot;0&quot; || L != 0) {
+    int M, Q;
+    M = K.size() % 8; Q = K.size() / 8;
+    int match = 0;
+    for (int i = 0; match == 0 &amp;&amp; i &lt; P.size() &amp;&amp; P[i] &lt; L; ++i) {
+      unsigned long long T = (M == 0)? 0 : toint(K.substr(0, M));
+      T %= P[i];
+      for (int ii = 0; ii &lt; Q; ++ii) {
+	T *= 100000000;
+	T += toint(K.substr(M + ii * 8, 8));
+	T %= P[i];
+      }
+      if (T == 0) match = P[i];
+    }
+    if (match == 0) cout &lt;&lt; &quot;GOOD&quot; &lt;&lt; endl;
+    else cout &lt;&lt; &quot;BAD &quot; &lt;&lt; match &lt;&lt; endl;
+    cin &gt;&gt; K &gt;&gt; L;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

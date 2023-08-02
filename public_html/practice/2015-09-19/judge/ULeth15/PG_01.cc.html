@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+void erase(string &amp;n)
+{
+
+   if(n.length() == 0)
+      return;
+
+   if(n[n.length()-1] == '0')
+   {
+      
+      for(int i=n.length()-1; n[i] == '0'; i--)
+      {
+	 n.erase(i, 1);
+      }
+   }
+   for(int i=0; i &lt; n.length(); i++)
+   {
+      if(n[i] =='.'){
+	 
+	 n = n.substr(i+1);
+	 return;
+      }
+   }
+}
+
+void multiply(string &amp;n)
+{
+   if(n.length() == 0)
+      return;
+   int carry=0, num;
+   
+   for(int i=n.length()-1; i &gt;= 0; i--)
+   {
+      num = n[i] - '0';
+      num = num*2 + carry;
+      n[i] = num%10 + '0';
+      carry = num/10;
+   }
+
+}
+   
+   
+
+int main()
+{
+   string n;
+   while(cin &gt;&gt; n)
+   {
+      
+      erase(n);
+
+      if(n.length() ==0 || n.back()=='5' || n.back()=='0')
+      {
+	 while(n.length() &gt; 1 &amp;&amp; (n.back()=='5' || n.back()=='0'))
+	 {
+	    multiply(n);
+	    n.pop_back();
+	 }
+	 if(n.back()=='5' || n.back()=='0' || n.length() == 0)
+	    cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+	 else
+	    cout &lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+	 
+      }
+      else
+	 cout &lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+     
+   }
+   return 0;
+}
+
+   
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

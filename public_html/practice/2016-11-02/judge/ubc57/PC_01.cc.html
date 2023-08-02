@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+const int N=200005;
+bool visited[N]; 
+int gone[N];
+vector&lt;int&gt; G[N];
+int main(){
+    ios::sync_with_stdio(0);
+    int n,m,home,s; cin&gt;&gt;n&gt;&gt;m&gt;&gt;home&gt;&gt;s; 
+    while (m--){
+        int a,b;
+        cin&gt;&gt;a&gt;&gt;b; G[a].push_back(b); G[b].push_back(a);
+    }
+    queue&lt;int&gt; q; q.push(s); visited[s]=true;
+    while (!q.empty()){
+        int now=q.front(); q.pop();
+        //cout&lt;&lt;now&lt;&lt;endl;
+        for (int nex:G[now]) if (!visited[nex]) {
+            gone[nex]++;
+            if ((gone[nex]*2)&gt;=G[nex].size()){
+                q.push(nex); visited[nex]=true;
+            }
+        }
+    }
+    if (visited[home]) cout&lt;&lt;&quot;leave&quot;&lt;&lt;endl;
+    else cout&lt;&lt;&quot;stay&quot;&lt;&lt;endl;
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;code.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

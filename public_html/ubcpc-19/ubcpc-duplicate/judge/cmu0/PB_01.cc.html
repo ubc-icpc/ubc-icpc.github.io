@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int INF = 1000000000;
+
+int N;
+string name[105];
+int H[105], A[105], D[105];
+	vector&lt;string&gt; output;
+
+bool wins(int i, int j)
+{
+	int turns_i = INF; // rounds for i to defeat j
+	if (A[i] &gt; D[j])
+		turns_i = (H[j] + A[i] - D[j] - 1) / (A[i] - D[j]);
+	int turns_j = INF;
+	if (A[j] &gt; D[i])
+		turns_j = (H[i] + A[j] - D[i] - 1) / (A[j] - D[i]);
+	return (turns_i &lt; turns_j);
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin &gt;&gt; N;
+	for (int i = 0; i &lt; N; i++)
+		cin &gt;&gt; name[i] &gt;&gt; H[i] &gt;&gt; A[i] &gt;&gt; D[i];
+	for (int i = 0; i &lt; N; i++)
+		for (int j = i + 1; j &lt; N; j++)
+			for (int k = i + 1; k &lt; N; k++)
+				if (wins(i, j) &amp;&amp; wins(j, k) &amp;&amp; wins(k, i))
+					output.push_back(name[i] + ' ' + name[j] + ' ' + name[k]);
+	cout &lt;&lt; output.size() &lt;&lt; endl;
+	for (int i = 0; i &lt; output.size(); i++) cout &lt;&lt; output[i] &lt;&lt; '\n';
+}
+</code>
+</pre>
+</body>
+</html>

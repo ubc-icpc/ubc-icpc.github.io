@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+const int N = 2048;
+const ll INF = 1000000000000000LL;
+
+int del[N];
+ll goodV[N], badV[N], undecided[N], total[N];
+
+ll dp[N][N];
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  int ns; cin &gt;&gt; ns;
+  int delsum = 0;
+  for (int i = 0; i &lt; ns; i++) {
+    cin &gt;&gt; del[i] &gt;&gt; goodV[i] &gt;&gt; badV[i] &gt;&gt; undecided[i];
+    total[i] = goodV[i] + badV[i] + undecided[i];
+    delsum += del[i];
+  }
+
+  for (int i = 0; i &lt; ns; i++) {
+    for (int j = 0; j &lt;= delsum; j++) {
+      dp[i][j] = INF;
+    }
+  }
+  dp[0][0] = 0;
+  if (badV[0] + undecided[0] &lt; goodV[0]) {
+    for (int j = 1; j &lt;= del[0]; j++) {
+      dp[0][j] = 0;
+    }
+  } else if (badV[0] &lt; goodV[0] + undecided[0]) {
+    for (int j = 1; j &lt;= del[0]; j++) {
+      dp[0][j] = total[0]/2 - goodV[0] + 1;
+    }
+  }
+  for (int i = 1; i &lt; ns; i++) {
+    dp[i][0] = 0;
+    for (int j = 1; j &lt;= delsum; j++) {
+      dp[i][j] = dp[i-1][j];
+      if (badV[i] + undecided[i] &lt; goodV[i]) {
+        dp[i][j] = min(dp[i][j], dp[i-1][max(0, j-del[i])]);
+      } else if (badV[i] &lt; goodV[i] + undecided[i]) {
+        dp[i][j] = min(dp[i][j], dp[i-1][max(0, j-del[i])] + total[i]/2 - goodV[i] + 1);
+      }
+    }
+  }
+  ll ans = dp[ns-1][delsum/2+1];
+  if (ans &lt; INF) {
+    cout &lt;&lt; ans &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

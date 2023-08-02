@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+ll n;
+ll mem[105][105][2];
+
+ll dp(int cs, ll digs, bool fol){
+  if (digs&lt;0) return (cs%3==0);
+  if (mem[cs][digs][fol]!=-1) {
+    return mem[cs][digs][fol];
+  }
+  if (fol) {
+    if (n&amp;(1LL&lt;&lt;digs))
+      return mem[cs][digs][fol] = dp(cs+1, digs-1,true) + dp(cs,digs-1,false);
+    return mem[cs][digs][fol] = dp(cs,digs-1,true);
+  }
+  return mem[cs][digs][fol] = dp(cs+1, digs-1,false) + dp(cs,digs-1,false);
+}
+
+ll solve(ll n) {
+  ll k = n, digs=0;
+  while(k){
+    k/=2;
+    digs++;
+  }
+  return dp(0,digs,1)-1;
+}
+
+int main(){
+  ios_base::sync_with_stdio(0); cin.tie(0);
+
+  while (cin &gt;&gt; n) {
+    memset(mem,-1,sizeof mem);
+    cout &lt;&lt; &quot;Day &quot; &lt;&lt; n &lt;&lt; &quot;: Level = &quot; &lt;&lt; solve(n) &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

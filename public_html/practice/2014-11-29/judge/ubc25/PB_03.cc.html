@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+int main() {
+    int N;
+    cin &gt;&gt; N;
+    if (N % 2 == 1) {
+        cout &lt;&lt; &quot;bad&quot; &lt;&lt; endl;
+        return 0;
+    }
+    
+    vector&lt;string&gt; names;
+    
+    for (int i = 0; i &lt; N; i++) {
+        string name;
+        cin &gt;&gt; name;
+        names.push_back(name);
+    }
+    
+    vector&lt;string&gt; partners;
+    
+    for (int i = 0; i &lt; N; i++) {
+        string partner;
+        cin &gt;&gt; partner;
+        partners.push_back(partner);
+    }
+    
+    map&lt;string, string&gt; pairings;
+    
+    for (int i = 0; i &lt; N; i++) {
+        if (names[i].compare(partners[i]) == 0) {
+            cout &lt;&lt; &quot;bad&quot; &lt;&lt; endl;
+            return 0;
+        }
+        pairings[names[i]] = partners[i];
+    }
+    
+    for (int i = 0; i &lt; N; i++) {
+        if (names[i].compare(pairings[partners[i]])) {
+            cout &lt;&lt; &quot;bad&quot; &lt;&lt; endl;
+            return 0;
+        }
+    }
+            
+    cout &lt;&lt; &quot;good&quot; &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+
+int main() {
+  ld num, po; cin &gt;&gt; num &gt;&gt; po;
+  ld ans = 0;
+  ld tmp = po/(num+1);
+  ans = max(ans, tmp);
+  for (int x = 2; x &lt;= 1000000; x++) {
+    tmp = tmp * ((x*(num+x-po)) / ((num+x)*(x-1)));
+    // cout &lt;&lt; &quot;tmp: &quot; &lt;&lt; tmp &lt;&lt; endl;
+    ans = max(ans, tmp);
+  }
+  cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

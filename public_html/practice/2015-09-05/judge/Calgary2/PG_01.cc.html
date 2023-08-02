@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long int ll;
+
+ll u = 200000;
+bitset&lt;200001&gt; bs;
+vector&lt;ll&gt; primes;
+
+void sieve() {
+	u++;
+	bs.set();
+	bs[0] = bs[1] = 0;
+	for (ll i = 2; i &lt; u; i++) {
+		if (bs[i]) {
+			for (ll j = i * i; j &lt; u; j += i) {
+				bs[j] = 0;
+			}
+			primes.push_back(i);
+		}
+	}
+}
+
+int main(){
+	sieve();
+	int n;cin&gt;&gt;n;
+	while(n--){
+		int x;cin&gt;&gt;x;
+		auto it=lower_bound(primes.begin(),primes.end(),x);
+		cout&lt;&lt;&quot;Input value: &quot;&lt;&lt;x&lt;&lt;&quot;\n&quot;;
+		if(*it==x){
+			cout&lt;&lt;&quot;Would you believe it; it is a prime!\n\n&quot;;
+		}else{
+			int m=*it-x;
+			it--;
+			if(x-*it&lt;m){
+				m=x-*it;
+			}
+			cout&lt;&lt;&quot;Missed it by that much (&quot;&lt;&lt;m&lt;&lt;&quot;)!\n\n&quot;;
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

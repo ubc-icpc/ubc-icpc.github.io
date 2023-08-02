@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int maxn = 1&lt;&lt;18;
+int x[maxn], h[maxn], n;
+
+// sparse table stuff (for fun, range tree could be used here)
+// sparse table dp: t[i][k] = min {a[i], a[i+1], ... a[i+2^k-1]}
+// simply do a binary search like thing to get min i, j
+int t[maxn][17];
+void build() {
+    for (int j = 1; j &lt; 17; j++) {
+        for (int i = 0; i + (1&lt;&lt;(j-1)) &lt; maxn; i++) {
+            t[i][j] = min(t[i][j-1], t[i+(1&lt;&lt;(j-1))][j-1]);
+        }
+    }
+}
+
+// gets min {a[i], ..., a[j-1]}
+int query(int i, int j) {
+    int res = 0x3f3f3f3f;
+    for (int s = 16; s &gt;= 0; s--) {
+        if (j-i &gt;= (1&lt;&lt;s)) {
+            res = min(res, t[i][s]);
+            i += (1&lt;&lt;s);
+        }
+    }
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    memset(t, 0x3f, sizeof t);
+    
+    cin &gt;&gt; n;
+    vector&lt;pair&lt;int, int&gt; &gt; v(n);
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; v[i].second &gt;&gt; v[i].first;
+    }
+    sort(v.begin(), v.end());
+    
+    for (int i = 0; i &lt; n; i++) {
+        x[i] = v[i].first;
+        h[i] = v[i].second;
+        t[i][0] = x[i] - h[i];
+    }
+    build();
+    
+    for (int i = 0; i &lt; n; i++) {
+        assert(query(i, i+1) == x[i]-h[i]);
+    }
+    
+    int i = 0, tmp = 0;
+    vector&lt;pair&lt;int, int&gt; &gt; seg;
+    while (i &lt; n) {
+        // binary search to find largest k such that
+        // xk-xi &lt;= hi
+        int k = upper_bound(x, x+n, x[i]+h[i])-x;
+        
+        // within [i+1, k], find largest j such that 
+        // xj-xi &lt;= hj, i.e. xj-hj &lt;= xi
+        // we can binary search for this with an rmq.
+        // if there is such a j in the range [s, t], then
+        // query(s, t) &lt;= xi, so we can binary search
+        // for j in [i+1, k]
+        int l = i+1, r = k;
+        if (query(l, r) &lt;= x[i]) {
+            int s = 1;
+            while (s &lt;= r-l) s *= 2;
+            for (int step = s/2; step &gt;= 1; step /= 2) {
+                if (query(l+step, r) &lt;= x[i]) l += step;
+            }
+            seg.push_back(make_pair(i, l));
+            tmp += x[l]-x[i];
+        }
+        i++;
+    }
+    
+    int ans = 0, l = 0, r = 0;
+    for (auto s : seg) {
+        if (s.first &lt;= r) {
+            r = max(r, s.second);
+        } else {
+            ans += x[r]-x[l];
+            l = s.first, r = s.second;
+        }
+    }
+    ans += x[r]-x[l];
+    cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

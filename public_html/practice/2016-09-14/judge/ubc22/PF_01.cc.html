@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, K, N;
+vector&lt;int&gt; R, G;
+vector&lt;vector&lt;int&gt; &gt; A;
+vector&lt;bool&gt; V;
+
+int getIndex(int a, int b) {
+  if (b &lt; a) swap(a, b);
+  if (a == b) return 0;
+  return a * N + b;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; K &gt;&gt; N;
+    R.resize(N);
+    G.resize(N);
+    for (int i = 0; i &lt; N; ++i) {
+      cin &gt;&gt; R[i];
+    }
+    for (int i = 0; i &lt; N; ++i) {
+      cin &gt;&gt; G[i];
+    }
+    A = vector&lt;vector&lt;int&gt; &gt;(N * N);
+    for (int i = 0; i &lt; N; ++i) {
+      for (int j = i+1; j &lt; N; ++j) {
+        A[getIndex(R[i], R[j])].push_back(getIndex(i, j));
+        A[getIndex(G[i], G[j])].push_back(getIndex(i, j));
+      }
+    }
+    V = vector&lt;bool&gt;(N * N);
+    queue&lt;int&gt; q;
+    q.push(0);
+    while (!q.empty()) {
+      int top = q.front();
+      q.pop();
+      if (V[top]) continue;
+      V[top] = true;
+      for (int i : A[top]) {
+        q.push(i);
+      }
+    }
+    bool yes = true;
+    for (int i = 0; i &lt; N; ++i) {
+      for (int j = i+1; j &lt; N; ++j) {
+        yes &amp;= V[getIndex(i, j)];
+      }
+    }
+    cout &lt;&lt; K &lt;&lt; &quot; &quot; &lt;&lt; (yes? &quot;YES&quot; : &quot;NO&quot;) &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

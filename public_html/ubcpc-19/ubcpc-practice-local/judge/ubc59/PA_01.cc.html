@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cctype&gt;
+using namespace std;
+
+/*
+
+g++ -std=c++11 a-a-plus-b.cpp -o k
+1 to 2*10^5 strings
+*/
+
+void debug() {
+    cout &lt;&lt; &quot;DEBUG&quot; &lt;&lt; endl;
+}
+
+
+char change_case (char c, int i) {
+    if (i != 0) 
+        return std::tolower(c); 
+    else
+        return std::toupper(c); 
+}
+
+int main() {
+    // concatenate b before a and change case
+    string a, b, c;
+    cin &gt;&gt; a; cin &gt;&gt; b;
+    c = b + a;
+    for(int i = 0; i &lt; c.size(); i++) {
+        c[i] = change_case(c[i], i);
+    }
+    cout &lt;&lt; c &lt;&lt; endl;
+
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

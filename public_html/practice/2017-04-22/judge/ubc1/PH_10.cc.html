@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+const int N = 150005;
+const int Z = 400;
+
+ll inicnt[N]; // inicnt[i] = initial passengers at station i
+
+vector&lt;int&gt; lstn[N]; // lstn[i] = stations of line i
+vector&lt;ll&gt; csum[N];  // csum[i] = cumsum of trains in initial configuration of line i
+int lOffset[N];      // lOffset[i] = first train of line i
+
+ll stncnt[N]; // stncnt[i] = count of passenger at station i for small lines
+ll blkcnt[N]; // blkcnt[i] = count of passenger at block i for small lines
+
+int nLarge = 0; // number of large lines
+int largeL[N];  // ids of large lines
+vector&lt;int&gt; lookup[N];
+int largeID[N]; // largeID[i] = id in largeL array of line i, if i is large
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+
+  int n, m, q; cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;
+  for (int i = 0; i &lt; n; i++) {
+    int l; cin &gt;&gt; l; l--;
+    lstn[l].push_back(i);
+  }
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; inicnt[i];
+  }
+
+  memset(lOffset, 0, sizeof lOffset);
+  memset(stncnt, 0, sizeof stncnt);
+  memset(blkcnt, 0, sizeof blkcnt);
+  for (int i = 0; i &lt; m; i++) {
+    if (lstn[i].size() &gt; Z) {
+      largeL[nLarge] = i;
+      largeID[i]     = nLarge;
+      csum[i].push_back(0);
+      for (int j = 0; j &lt; 2*(int)lstn[i].size(); j++) {
+        csum[i].push_back(csum[i][j] + inicnt[lstn[i][j%lstn[i].size()]]);
+      }
+      for (int j = 0, jj = 0; j &lt; (int)lstn[i].size(); j++) {
+        while (jj &lt;= lstn[i][j]) {
+          lookup[i].push_back(j);
+          jj++;
+        }
+        if (j+1 == (int)lstn[i].size()) {
+          while (jj &lt;= n) {
+            lookup[i].push_back(lstn[i].size());
+            jj++;
+          }
+        }
+      }
+      nLarge++;
+    } else {
+      for (int u : lstn[i]) {
+        stncnt[u]   += inicnt[u];
+        blkcnt[u/Z] += inicnt[u];
+      }
+      largeID[i] = -1;
+    }
+  }
+
+  for (int qq = 0; qq &lt; q; qq++) {
+    int mode; cin &gt;&gt; mode;
+    if (mode == 1) {
+      int l, r; cin &gt;&gt; l &gt;&gt; r; l--; r--;
+
+      ll sum = 0;
+      int b1 = l/Z;
+      int b2 = r/Z;
+      if (l%Z != 0) {
+        b1++;
+        if (b1 &lt; b2) {
+          for (int i = l; i%Z != 0; i++) {
+            sum += stncnt[i];
+          }
+        }
+      }
+      for (int b = b1; b &lt; b2; b++) {
+        sum += blkcnt[b];
+      }
+      for (int i = max(l, b2*Z); i &lt;= r; i++) {
+        sum += stncnt[i];
+      }
+
+      for (int i = 0; i &lt; nLarge; i++) {
+        int ii = largeL[i];
+        //int lb = lower_bound(lstn[ii].begin(), lstn[ii].end(), l) - lstn[ii].begin();
+        //int rb = upper_bound(lstn[ii].begin(), lstn[ii].end(), r) - lstn[ii].begin();
+        int lb = lookup[ii][l];
+        int rb = lookup[ii][r+1];
+        sum += csum[ii][lOffset[ii]+rb] - csum[ii][lOffset[ii]+lb];
+      }
+
+      cout &lt;&lt; sum &lt;&lt; '\n';
+
+    } else {
+      int i; cin &gt;&gt; i; i--;
+      if (largeID[i] &gt;= 0) {
+        lOffset[i]--; lOffset[i] += lstn[i].size(); lOffset[i] %= lstn[i].size();
+      } else {
+        for (int j = 0; j &lt; (int)lstn[i].size(); j++) {
+          int j2 = (j+lOffset[i])%lstn[i].size();
+          stncnt[lstn[i][j]]   -= inicnt[lstn[i][j2]];
+          blkcnt[lstn[i][j]/Z] -= inicnt[lstn[i][j2]];
+        }
+        lOffset[i]--; lOffset[i] += lstn[i].size(); lOffset[i] %= lstn[i].size();
+        for (int j = 0; j &lt; (int)lstn[i].size(); j++) {
+          int j2 = (j+lOffset[i])%lstn[i].size();
+          stncnt[lstn[i][j]]   += inicnt[lstn[i][j2]];
+          blkcnt[lstn[i][j]/Z] += inicnt[lstn[i][j2]];
+        }
+      }
+    }
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

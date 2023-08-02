@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+/***************************************
+*                                      *
+*            Lord Klotski              *
+*                                      *
+****************************************/
+
+import java.util.* ;
+import java.math.* ;
+import java.io.* ;
+
+public class TennisProb 
+{
+    static double p ;
+    static double solve(int W, int L)
+    {
+        if (W == 4) return 1.0 ;
+        if (L == 4) return 0.0 ;
+        if (W == 3 &amp;&amp; L == 3) return p*p/(1-2*(1-p)*p) ;
+        return p * solve(W+1,L) + (1-p) * solve(W,L+1) ;
+    }
+    public static void main(String[] args) throws Exception
+    {
+        Scanner input = new Scanner(System.in) ;
+        int T = input.nextInt() ;
+        while (T --&gt; 0)
+        {
+            p = input.nextDouble() ;
+            System.out.printf(&quot;%.5f\n&quot;,solve(0,0));
+        }
+        
+    }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

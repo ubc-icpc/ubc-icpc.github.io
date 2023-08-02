@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int maxn = 1005;
+int n, p[maxn], a[maxn], q[maxn], invp[maxn];
+void print(int arr[maxn]) {
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+}
+
+struct rand_queue {
+    vector&lt;int&gt; q;
+    void push(int val) {
+        q.push_back(val);
+    }
+    
+    int top() {
+        return q[rand()%q.size()];
+    }
+    
+    void erase(int val) {
+        for (int i = 0; i &lt; q.size(); i++) {
+            if (q[i] == val) {
+                swap(q[i], q[q.size()-1]);
+                q.pop_back();
+                break;
+            }
+        }
+    }
+    
+    bool empty() {
+        return q.empty();
+    }
+    
+    int size() {
+        return q.size();
+    }
+};
+
+map&lt;int, set&lt;int&gt; &gt; m;
+rand_queue missing;
+rand_queue extra;
+
+void update(int i) {
+    m[q[i]].erase(i);
+    
+    // check if fixing this extra makes it unique
+    if (m[q[i]].size() == 1) {
+        extra.erase(*m[q[i]].begin());
+    } else if (q[i] &amp;&amp; m[q[i]].empty()) {
+        missing.push(q[i]);
+    }
+    extra.erase(i);
+    
+    q[i] = (a[i]-p[i]+n)%n;
+    if (!q[i]) q[i] = n;
+    
+    // check if a new extra is created
+    if (q[i] &amp;&amp; m[q[i]].size() == 1) {
+        extra.push(*m[q[i]].begin());
+        extra.push(i);
+    } else if (q[i] &amp;&amp; m[q[i]].size() &gt; 1) {
+        extra.push(i);
+    } else if (q[i]) {
+        missing.erase(q[i]);
+    }
+    m[q[i]].insert(i);
+}
+
+bool good() {
+    // initialize values
+    if (m.empty()) {
+        for (int i = 0; i &lt; n; i++) {
+            update(i);
+        }
+    }
+    
+    if (!missing.empty()) {
+        int val = missing.top();
+        int id_extra = extra.top();
+        
+        // swap something into id location of extra, so that we get one
+        // more missing number from the putation
+        int req = (a[id_extra] - val + n)%n;
+        if (!req) req = n;
+        
+        int id_target = invp[req];
+        swap(p[id_extra], p[id_target]);
+        int x = p[id_extra], y = p[id_target];
+        swap(invp[x], invp[y]);
+        
+        update(id_extra);
+        update(id_target);
+        return false;
+    }
+    return true;
+}
+
+int main() {
+    srand(time(0));
+    
+    int sum = 0; 
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        p[i] = i+1;
+        invp[p[i]] = i;
+        missing.push(p[i]);
+        cin &gt;&gt; a[i];
+        sum += a[i];
+    }
+    
+    if (sum%n != 0) {
+        cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+    } else {
+        while (!good());
+        
+        print(p);
+        print(q);
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

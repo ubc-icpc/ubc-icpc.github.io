@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+string stripOs(string s) {
+	while(s.length()!=0 &amp;&amp; s.at(s.length()-1)=='0')
+		s = s.substr(0, s.length()-1);	
+	return s;
+}
+
+string multiply(string s) {
+	
+	int carry=0;
+
+	for(int i=s.length()-1; i&gt;=0; i--) {
+		int c = (s.at(i)-'0')*2+carry;
+		carry = c/10;
+		s.at(i) = '0'+c%10;
+	}
+
+	return s;
+}
+
+bool calc(string s) {
+
+
+	if(s.find('.')!=string::npos)
+		s = s.substr(s.find('.')+1, s.length());
+
+	if(s.length()==0) return true;
+
+	s = stripOs(s);
+
+	if(s.at(s.length()-1)!='5')
+			return false;
+
+        return calc(stripOs(multiply(s)));
+		
+}
+
+int main() {
+	string s;
+
+	while(cin&gt;&gt;s) {
+	   s = stripOs(s);
+	   //  cout &lt;&lt; s &lt;&lt; endl;
+		if(calc(s))
+			cout &lt;&lt; &quot;Exact.&quot; &lt;&lt; endl;
+		else
+			cout &lt;&lt; &quot;Some precision lost.&quot; &lt;&lt; endl;
+		
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

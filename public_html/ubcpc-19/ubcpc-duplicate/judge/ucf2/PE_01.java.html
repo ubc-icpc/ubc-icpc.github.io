@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+
+public class exciting {
+	public static void main(String[] args) {
+		Scanner kb = new Scanner(System.in);
+		int numScenes = kb.nextInt();
+		int numActs = kb.nextInt();
+		ArrayList&lt;Integer&gt; scenes = new ArrayList&lt;Integer&gt;();
+		for(int i = 0; i &lt; numScenes; i++) {
+			scenes.add(kb.nextInt());
+		}
+		int sum = 0;
+		for(int i = 0; i &lt; numActs; i++) {
+			int max = scenes.get(0);
+			int pos = 0;
+			for(int j = 0; j &lt; scenes.size(); j++) {
+				if(scenes.get(j) &gt; max) {
+					max = scenes.get(j);
+					pos = j;
+				}
+			}
+			sum += max;
+			scenes.remove(pos);
+		}
+		System.out.println(sum);
+	}
+}
+</code>
+</pre>
+</body>
+</html>

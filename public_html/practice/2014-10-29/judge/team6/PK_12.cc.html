@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+struct node {
+	vector&lt;int&gt; c;
+	char val;
+};
+
+const char delim = 'Z'+1;
+
+ll sz[2][10005], mod = 100000009, p[2][10005], ans;
+map&lt;ll, map&lt;ll, ll&gt; &gt; cnt;
+node t[2][10005];
+pair&lt;ll,ll&gt; dfs(int v, bool check) {
+	ll hsh[] = {t[check][v].val, t[check][v].val};
+	sz[check][v] = 1;
+	for (int i = 0; i &lt; 2; i++) {
+		hsh[i] *= p[i][1];
+		hsh[i] += delim;
+		hsh[i] %= mod;
+	}
+	for (int i = 0; i &lt; t[check][v].c.size(); i++) {
+		int c = t[check][v].c[i];
+		pair&lt;ll, ll&gt; pll = dfs(c, check);
+		ll d[2] = {pll.first, pll.second};
+		for (int j = 0; j &lt; 2; j++) {
+			ll base = p[j][sz[check][c]+1];
+			hsh[j] = (hsh[j]*base + d[j])%mod;
+		}
+		if (i != t[check][v].c.size()-1) {
+		for (int j = 0; j &lt; 2; j++) {
+			hsh[j] *= p[j][1];
+			hsh[j] += delim;
+			hsh[j] %= mod;
+		}
+		}
+
+		sz[check][v] += sz[check][c];
+	}
+
+	if (check) ans = max(ans, cnt[hsh[0]][hsh[1]]);
+	else cnt[hsh[0]][hsh[1]] = max(cnt[hsh[0]][hsh[1]], sz[check][v]);
+	return make_pair(hsh[0], hsh[1]);
+}
+
+int main() {
+	//set up prime powers
+	p[0][0] = 1; p[1][0] = 1;
+	for (int i = 1; i &lt;= 10003; i++) {
+		p[0][i] = (37*p[0][i-1])%mod;
+		p[1][i] = (107*p[1][i-1])%mod;
+	}
+
+	int T; cin &gt;&gt; T;
+	while (T--) {
+		int m, n; cin &gt;&gt; m &gt;&gt; n;
+		int l[] = {m, n};
+
+		for (int k = 0; k &lt; 2; k++) {
+			for (int i = 0; i &lt; l[k]; i++) {
+				//clear old values
+				t[k][i].c.clear();
+				sz[k][i] = 0;
+				//read in new values
+				char c; int p;
+				cin &gt;&gt; c &gt;&gt; p;
+				t[k][i].val = c-'A'+1;
+				if (p &gt;= 0) {
+					t[k][p].c.push_back(i);
+				}
+			}
+		}
+
+		cnt.clear();
+		ans = 0;
+		dfs(0, false);
+		dfs(0, true);
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

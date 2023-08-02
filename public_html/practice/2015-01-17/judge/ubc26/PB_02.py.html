@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+import itertools as it
+
+table = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
+
+line = sys.stdin.next()
+n = 0
+for i in range(0, len(line)-1, 2):
+    a, r = int(line[i]),table[line[i+1]]
+    s = -1 if i+3 &lt; len(line) and r &lt; table[line[i+3]] else 1
+    n += s * a*r
+    r0 = r
+
+print n
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

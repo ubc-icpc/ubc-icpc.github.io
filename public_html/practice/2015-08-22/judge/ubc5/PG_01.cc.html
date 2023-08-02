@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;complex&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+pt sp[50];
+ld sr[50];
+bool v[50];
+
+struct p {
+  pt c;
+  ld d;
+  int i;
+  p(pt cc, ld dd, int ii) : c(cc), d(dd), i(ii) {}
+  bool operator&lt;(const p&amp; b) const {
+    return d &gt; b.d;
+  }
+};
+
+int main() {
+  cout &lt;&lt; fixed &lt;&lt; setprecision(1);
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    cout &lt;&lt; &quot;Campus #&quot; &lt;&lt; T &lt;&lt; &quot;:\n&quot;;
+    int s; cin &gt;&gt; s;
+    for (int i = 0; i &lt; s; i++) {
+      ld x, y;
+      cin &gt;&gt; x &gt;&gt; y;
+      sp[i] = pt(x,y);
+      cin &gt;&gt; sr[i];
+    }
+    ld x1, y1, x2, y2;
+    int q; cin &gt;&gt; q;
+    for (int Q = 1; Q &lt;= q; Q++) {
+      cout &lt;&lt; &quot;  Path #&quot; &lt;&lt; Q &lt;&lt; &quot;: &quot;;
+      cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+      priority_queue&lt;p&gt; pq;
+      pt ip(x1,y1), ep(x2,y2);
+      if (x1 == x2 &amp;&amp; y1 == y2) {
+        cout &lt;&lt; &quot;Shortest sun distance is 0.0.\n&quot;;
+        continue;
+      }
+      int ii = -1;
+      for (int i = 0; i &lt; s; i++) {
+        if (abs(ip-sp[i]) &lt;= sr[i]) {
+          ii = i;
+          break;
+        }
+      }
+      for (int i = 0; i &lt; s; i++)
+        v[i] = false;
+      pq.push(p(ip,0,ii));
+      while (pq.size()) {
+        p tp = pq.top();
+        pq.pop();
+        if (tp.i == -2) {
+          cout &lt;&lt; &quot;Shortest sun distance is &quot; &lt;&lt; tp.d &lt;&lt; &quot;.\n&quot;;
+          break;
+        }
+        else if (tp.i == -1)
+          pq.push(p(ep,abs(ip-ep),-2));
+        else {
+          ld dv = abs(sp[tp.i]-ep);
+          if (dv &lt; sr[tp.i])
+            dv = 0;
+          else
+            dv -= sr[tp.i];
+          pq.push(p(ep,tp.d+dv,-2));
+        }
+        for (int i = 0; i &lt; s; i++) {
+          if (i == tp.i || v[i])
+            continue;
+          ld dv1 = 0;
+          if (tp.i != -1)
+            dv1 = sr[tp.i];
+          pt pt1 = ip;
+          if (tp.i != -1)
+            pt1 = sp[tp.i];
+          ld dv = abs(pt1-sp[i]);
+          if (dv &lt; dv1+sr[i])
+            dv = 0;
+          else
+            dv -= dv1+sr[i];
+          pq.push(p(sp[i],tp.d+dv,i));
+        }
+        if (tp.i &gt;= 0)
+          v[tp.i] = true;
+      }
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

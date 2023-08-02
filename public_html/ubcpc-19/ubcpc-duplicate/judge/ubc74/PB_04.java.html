@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class B {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        int fighters = scanner.nextInt();
+        boolean[][] graph = new boolean[fighters][fighters];
+
+        String[] names = new String[fighters];
+        double[][] powers = new double[fighters][3];
+        for(int i = 0; i &lt; fighters; i++){
+            names[i] = scanner.next();
+            powers[i][0] = scanner.nextInt();
+            powers[i][1] = scanner.nextInt();
+            powers[i][2] = scanner.nextInt();
+        }
+
+        for(int i = 0; i &lt; fighters; i++){
+            for(int j = i + 1; j &lt; fighters; j++){
+                double attackerA = powers[i][1] - powers[j][2];
+                double attackerB = powers[j][1] - powers[i][2];
+                if(attackerA &lt;= 0 &amp;&amp; attackerB &lt;= 0){
+                    //DONT
+                } else if(attackerA &lt;= 0){
+                    graph[j][i] = true;
+                } else if(attackerB &lt;= 0) {
+                    graph[i][j] = true;
+                } else {
+                    double survA = Math.ceil(powers[i][0]/attackerB);
+                    double survB = Math.ceil(powers[j][0]/attackerA);
+                    if(survA &gt; survB){
+                        graph[i][j] = true;
+                    } else if(survA &lt; survB){
+                        graph[j][i] = true;
+                    }
+                }
+            }
+        }
+        ArrayList&lt;String&gt; ret = new ArrayList&lt;&gt;();
+        for(int first = 0; first &lt; fighters; first++){
+            for(int second = first + 1; second &lt; fighters; second++){
+                for(int third = second + 1; third &lt; fighters; third++){
+                    if((graph[first][second] &amp;&amp; graph[second][third] &amp;&amp; graph[third][first])
+                    || (graph[first][third] &amp;&amp; graph[third][second] &amp;&amp; graph[second][first])){
+                        ret.add(names[first] + &quot; &quot; + names[second] + &quot; &quot; + names[third]);
+                    }
+                }
+            }
+        }
+
+        System.out.println(ret.size());
+        for(int i = 0; i &lt; ret.size(); i++){
+            System.out.println(ret.get(i));
+        }
+    }
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include&lt;cstdio&gt; 
+#include&lt;cstring&gt;
+using namespace std;
+const int maxn=3e5+10;
+int l,i;
+char s1[maxn],s2[maxn];
+int main()
+{
+	scanf(&quot;%s&quot;,s1);
+	scanf(&quot;%s&quot;,s2);
+	printf(&quot;%s&quot;,s2);
+	l=strlen(s1);
+	printf(&quot;%c&quot;,s1[0]-'A'+'a');
+	for (i=1;i&lt;l;i++) printf(&quot;%c&quot;,s1[i]);
+}
+</code>
+</pre>
+</body>
+</html>

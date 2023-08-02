@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		int n; cin &gt;&gt; n;
+		map&lt;string, set&lt;string&gt;&gt; data;
+		map&lt;string, bool&gt; seen;
+		map&lt;string, set&lt;string&gt;&gt; backData;
+		map&lt;string, bool&gt; backSeen;
+		for(int i = 0; i &lt; n; i++) {
+			string a; cin &gt;&gt; a;
+			int m; cin &gt;&gt; m;
+			set&lt;string&gt; strings;
+			for(int i = 0; i &lt; m; i++) {
+				string curr; cin &gt;&gt; curr; strings.insert(curr);
+			}
+			cin &gt;&gt; m;
+			set&lt;string&gt; local;
+			for(int i = 0; i &lt; m; i++) {
+				string curr; cin &gt;&gt; curr; local.insert(curr);
+			}
+
+			for(string s : strings) {
+				if(!seen[s] &amp;&amp; data[s].size() == 0) {
+					data[s] = local;
+				} else {
+					seen[s] = true;
+					set&lt;string&gt; isect;
+					set_intersection(data[s].begin(),data[s].end(),local.begin(),local.end(),inserter(isect, isect.begin()));
+					data[s] = isect;
+				}
+			}
+			for(string s : local) {
+				if(!backSeen[s] &amp;&amp; backData[s].size() == 0) {
+					backData[s] = strings;
+				} else {
+					backSeen[s] = true;
+					set&lt;string&gt; isect;
+					set_intersection(backData[s].begin(),backData[s].end(),strings.begin(),strings.end(),inserter(isect, isect.begin()));
+					backData[s] = isect;
+				}
+			}
+		}
+		set&lt;pair&lt;string, string&gt;&gt; out;
+		for(pair&lt;string, set&lt;string&gt;&gt; curr : data) {
+			for(string s : curr.second) {
+				if(backData[s].count(curr.first)) {
+					out.insert({curr.first, s});
+				}
+			}
+		}
+		for(pair&lt;string, string&gt; curr : out) {
+			cout &lt;&lt; &quot;(&quot; &lt;&lt; curr.first &lt;&lt; &quot;, &quot; &lt;&lt; curr.second &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+		}
+		cout &lt;&lt; endl;
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

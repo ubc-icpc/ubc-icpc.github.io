@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define vll vector&lt;long long&gt;
+
+int main() {
+    int n; cin &gt;&gt; n;
+    vll vals;
+
+    for (int i = 0; i &lt; n; ++i) {
+        long long x;
+        cin &gt;&gt; x;
+        vals.push_back(x);
+    }
+
+    /*for (int i = 0; i &lt; vals.size(); ++i) {
+        cout &lt;&lt; vals[i] &lt;&lt; endl;
+    }*/
+
+    sort(vals.begin(), vals.end());
+
+    long long result = 0;
+
+    while (n &gt; 0) {
+        if (n == 2) {
+            result += vals[1];
+            break;
+        } else if (n == 3) {
+            result += vals[0] + vals[1] + vals[2];
+            break;
+        } else {
+            long long a = 2 * vals[1];
+            long long b = vals[0] + vals[n-2];
+            if (a &lt; b) {
+                result += vals[0] + 2 * vals[1] + vals[n-1];
+                n -= 2;
+            } else {
+                result += vals[0] + vals[n-1];
+                n -= 1;
+            }
+        }
+    }
+
+    cout &lt;&lt; result &lt;&lt; endl;
+
+
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int numTest = Integer.parseInt(sc.nextLine());
+
+        for (int i = 0; i &lt; numTest; i++) {
+            String[] healthE = sc.nextLine().split(&quot; &quot;);
+            String[] dmgE = sc.nextLine().split(&quot; &quot;);
+            String[] dmgD = sc.nextLine().split(&quot; &quot;);
+            System.out.println((new DecimalFormat(&quot;#.00000&quot;)).format(minDmg(
+                    healthE, dmgE, dmgD)));
+        }
+    }
+
+    public static double minDmg(String[] healthE, String[] damageE,
+            String[] damageD) {
+
+        ArrayList&lt;Enemy&gt; es = new ArrayList&lt;Enemy&gt;();
+        int dmgD = 0;
+        int dmgE = 0;
+
+        for (int i = 0; i &lt; 5; i++) {
+            int dE = Integer.parseInt(damageE[i]);
+            int hpE = Integer.parseInt(healthE[i]);
+            es.add(new Enemy(hpE, dE));
+            dmgE += dE;
+            dmgD += Integer.parseInt(damageD[i]);
+        }
+
+        Collections.sort(es);
+
+        double dmg = 0;
+        for (int i = 4; i &gt;= 0; i--) {
+            double time = (double) es.get(i).hp / dmgD;
+            dmg += time * dmgE;
+
+            dmgE -= es.get(i).dmg;
+            es.remove(i);
+        }
+
+        return dmg;
+    }
+
+    static class Enemy implements Comparable&lt;Enemy&gt; {
+        int hp;
+        int dmg;
+        Double ratio;
+
+        Enemy(int hp, int dmg) {
+            this.hp = hp;
+            this.dmg = dmg;
+            this.ratio = (double) dmg / hp;
+        }
+
+        @Override
+        public int compareTo(Enemy o) {
+            return ratio.compareTo(o.ratio);
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

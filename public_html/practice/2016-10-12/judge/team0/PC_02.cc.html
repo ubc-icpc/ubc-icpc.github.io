@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;int,int&gt; pii;
+int n,a,b,c;
+
+unordered_map&lt;ll, pii &gt; m;
+
+void precompute(){
+    for(int i=1;i&lt;=4000;i++){
+        for(int j=i;j&lt;=4000-i;j++){
+           ll aa = i, bb = j;
+           ll tot = aa*aa*aa+bb*bb*bb;
+           if (!m.count(tot)){
+              // cout &lt;&lt; tot &lt;&lt; endl;
+               m[tot] = {i,j};
+           }
+           else {
+               pii k = m[tot];
+               if (k.first+k.second&gt;i+j) m[tot] = {i,j};
+           }
+        }
+    }
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    precompute();
+    cin &gt;&gt; n;
+    while (n!=0){
+        ll bn, bbb;
+        int msf=4444, mina=-1, minc = -1, minb=-1;
+        for(int i=1;i&lt;=4000;i++){
+            bbb =i;
+            bbb *=(ll)i;
+            bbb *=(ll)i;
+            bn = bbb*n;
+            if (m.count(bn)){
+                pii k = m[bn];
+                int newtot = i+k.first+k.second;
+                if(msf&gt;newtot){
+                    msf = newtot;
+                    mina = k.second;
+                    minc = k.first;
+                    minb = i;
+                }
+            }
+        }
+        a = mina, b = minb, c = minc;
+        if (msf&lt;=4000)
+            cout &lt;&lt; &quot;(&quot; &lt;&lt; a &lt;&lt;&quot;/&quot; &lt;&lt; b &lt;&lt; &quot;)^3 + (&quot; &lt;&lt; c &lt;&lt; &quot;/&quot; &lt;&lt; b &lt;&lt; &quot;)^3 = &quot; &lt;&lt; n &lt;&lt; &quot;\n&quot;;
+        else 
+            cout &lt;&lt; &quot;No value.&quot; &lt;&lt; &quot;\n&quot;;
+        cin &gt;&gt; n;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

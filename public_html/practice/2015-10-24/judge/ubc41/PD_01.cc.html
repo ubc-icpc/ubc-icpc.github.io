@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int func(vector&lt;int&gt; val) {
+  // basically find longest sequence within 1000 ms
+  int first = 0;
+  int second = 0;
+  int max_dist = 0;
+  while(first &lt; val.size()) {
+    while(second+1 &lt; val.size() &amp;&amp; val[second+1] - val[first] &lt; 1000) {
+      second++;
+    }
+    if(second-first &gt; max_dist)
+      max_dist = second - first;
+
+    first++;
+  }
+  return max_dist;
+}
+
+int main() {
+  int n;
+  int k;
+  cin &gt;&gt; n &gt;&gt; k;
+  int tmp;
+  vector&lt;int&gt; val;
+  while(n--) {
+    cin &gt;&gt; tmp;
+    val.push_back(tmp);
+  }
+  int most = func(val);
+  int srvr = most / k + 1;
+  cout &lt;&lt; srvr &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

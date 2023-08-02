@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;deque&gt;
+#include &lt;utility&gt;
+using namespace std;
+
+int main()
+{
+  int nReq, pSec;
+  cin &gt;&gt; nReq &gt;&gt; pSec;
+  int time=0;
+  deque&lt;int&gt; waitlist;
+  int a;
+  cin &gt;&gt; a;
+  int max=1;
+  waitlist.push_back(a);
+  for (int i=1;i&lt;nReq;i++)
+    {
+      cin &gt;&gt; a;
+      while (waitlist.front()+1000&lt;=a&amp;&amp;waitlist.size()!=0)
+	waitlist.pop_front();
+      waitlist.push_back(a);
+      if (waitlist.size()&gt;max)
+	max=waitlist.size();
+    }
+  int num=0;
+  if (max%pSec!=0)
+    num++;
+  num+=max/pSec;
+  cout &lt;&lt; num &lt;&lt; endl;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

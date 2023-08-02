@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef unsigned long long ull;
+
+ull MaxShares = 100000;
+
+int main()
+{
+    int D;
+    cin &gt;&gt; D;
+    
+    ull bestMoney = 100;
+    ull bestMoneyWShares = 0, bestShares = 0;
+    
+    for (int i = 1; i &lt;= D; ++i)
+    {
+        // Nothing can get worse
+        ull nextBestMoney = bestMoney;
+        ull nextBestMoneyWShares = bestMoneyWShares, nextBestShares = bestShares;
+        
+        ull sharePrice;
+        cin &gt;&gt; sharePrice;
+        
+        // Sell all shares
+        nextBestMoney = max(nextBestMoney, bestMoneyWShares + bestShares * sharePrice);
+        
+        // Buy with money in shares
+        ull numShares = bestMoney / sharePrice;
+        numShares = min(numShares, MaxShares);
+        ull extraMoney = bestMoney - numShares * sharePrice;
+        
+        if (numShares &gt; nextBestShares)
+        {
+            nextBestShares = numShares;
+            nextBestMoneyWShares = extraMoney;
+        }
+        else if (numShares == nextBestShares)
+        {
+            nextBestMoneyWShares = max(nextBestMoneyWShares, extraMoney);
+            
+        }
+        
+        bestMoney = nextBestMoney;
+        bestMoneyWShares = nextBestMoneyWShares;
+        bestShares = nextBestShares;
+    }
+    
+    cout &lt;&lt; bestMoney &lt;&lt; '\n';
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import math
+
+n = int(input())
+
+ws = []
+
+for _ in range(n):
+    name, hp, at, df = input().split()
+    hp, at, df = map(int, [hp, at, df])
+
+    ws.append((name, hp, at, df))
+
+beats = []
+tus = []
+for i in range(n):
+    beats.append([0] * n)
+
+for i, a in enumerate(ws):
+    for j, b in enumerate(ws[i+1:]):
+        j += i + 1
+        aname, ahp, aat, adf = a
+        bname, bhp, bat, bdf = b
+
+        admgb = max(0, aat - bdf)
+        bdmga = max(0, bat - adf)
+
+        if bdmga == 0 and admgb == 0:
+            continue
+        elif bdmga == 0:
+            beats[i][j] = 1
+            tus.append((i, j))
+            continue
+        elif admgb == 0:
+            beats[j][i] = 1
+            tus.append((j, i))
+            continue
+
+        arnds = math.ceil(ahp / bdmga)
+        brnds = math.ceil(bhp / admgb)
+
+        if arnds &gt; brnds:
+            beats[i][j] = 1
+            tus.append((i, j))
+            #beats[j][i] = -1
+        elif arnds &lt; brnds:
+            #beats[i][j] = -1
+            beats[j][i] = 1
+            tus.append((j, i))
+
+
+#print('\n'.join([' '.join([str(x) for x in y]) for y in beats]))
+
+trs = set()
+
+for t in tus:
+    ta, tb = t
+
+    for tc in range(n):
+        if beats[tb][tc] and beats[tc][ta]:
+            trs.add(tuple(sorted([ta, tb, tc])))
+
+print(len(trs))
+for tr in trs:
+    print(' '.join(map(lambda x: ws[x][0], tr)))</code>
+</pre>
+</body>
+</html>

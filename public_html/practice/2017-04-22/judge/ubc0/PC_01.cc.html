@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+const ld EPS = 1e-8;
+ld cp(const pt &amp;a, const pt &amp;b) { return imag(conj(a)*b); }
+inline int sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : (x &gt; 0 ? 1 : -1); }
+inline bool cmp_lex_i(const pt &amp;a, const pt &amp;b)
+{ return a.imag() &lt; b.imag() || (a.imag() == b.imag() &amp;&amp; a.real() &lt; b.real()); }
+
+// Works with duplicate points but no guarantees on which point will be used
+pol chull(pol p) { // change &lt;= 0 to &lt; 0 to find collinear convex hull points
+  sort(p.begin(), p.end(), cmp_lex_i); int top=0, bot=1; pol ch(2*p.size());
+  for (int i=0, d=1; i &lt; p.size() &amp;&amp; i &gt;= 0; i += d) {
+    while (top &gt; bot &amp;&amp; cp(ch[top-1]-ch[top-2], p[i]-ch[top-2]) &lt;= 0) top--;
+    ch[top++] = p[i]; if (i == p.size()-1) d = -1, bot = top;
+  } ch.resize(max(1, top-1)); return ch; } // pts returned in ccw order.
+
+struct line {
+    ld A, B, C;
+    int id;
+    line() {}
+    line(ld A, ld B, ld C, int id) : A(A), B(B), C(C), id(id) {}
+    inline int side(const pt&amp; p) const {
+        if (abs(A*p.real() + B*p.imag() - C) &lt; EPS) return 3;
+        return (A*p.real() + B*p.imag() - C &gt; 0 ? 1 : 2);
+    }
+    inline bool operator&lt;(const line&amp; o) const {
+        //compare -A/B to -o.A/o.B
+        if (A == 0) return (o.A == 0 ? B &lt; o.B : true);
+        if (-A/B == -o.A/o.B) return C &lt; o.C;
+        return -A/B &lt; -o.A/o.B;
+    }
+};
+    
+pol extra, hull;
+vector&lt;line&gt; ql;
+queue&lt;int&gt; id;
+int query[100005];
+
+const int blk = 3100;
+inline bool btwn(const pt&amp; a, const pt&amp; b, const pt&amp; c, const line&amp; l) {
+    pt x, y;
+    if (l.B == 0) {
+        x = pt(l.C/l.A, 0), y = pt(l.C/l.A, 1);
+    }
+    x = pt(0, l.C/l.B), y = pt(1, (l.C-l.A)/l.B);
+    
+    if (sgn(cp(b-a, y-x)) != sgn(cp(c-b, y-x))) return true;
+    if (sgn(cp(b-a, x-y)) != sgn(cp(c-b, x-y))) return true;
+    return false;
+}
+
+void fill_queries() {
+    for (const auto&amp; l : ql) {
+        query[l.id] = true;
+    }
+    
+    for (const auto&amp; l : ql) {
+        int res = 0, lim = id.front();
+        id.pop();
+        for (int j = 0; j &lt; lim; j++) {
+            res |= l.side(extra[j]);
+        }
+        query[l.id] = res;
+    }
+    
+    if (hull.size() &lt; blk) {
+        for (const auto&amp; l : ql) {
+            int res = 0;
+            for (pt q : hull) {
+                res |= l.side(q);
+            }
+            query[l.id] |= res;
+        }
+    } else {
+        pol&amp; p = hull;
+        sort(ql.begin(), ql.end());
+        int i = 0, j = 0, n = p.size();
+        
+        for (const auto&amp; l : ql) {
+            while (!btwn(p[(i-1+n)%n], p[i], p[(i+1)%n], l)) i = (i+1)%n;
+            while (abs(j-i) &lt;= 1 || !btwn(p[(j-1+n)%n], p[j], p[(j+1)%n], l)) j = (j+1)%n;
+            query[l.id] |= (l.side(p[i]) | l.side(p[j]));
+        }
+    }
+    
+    for (const auto&amp; p : extra) {
+        hull.push_back(p);
+    }
+    hull = chull(hull);
+    extra.clear();
+    ql.clear();
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    
+    hull.reserve(100005);
+    extra.reserve(100005);
+    int n, q; cin &gt;&gt; n &gt;&gt; q;
+    for (int i = 0; i &lt; n; i++) {
+        ld x, y; cin &gt;&gt; x &gt;&gt; y;
+        hull.push_back(pt(x,y));
+    }
+    hull = chull(hull);
+    
+    int cnt = 0;
+    while (q--) {
+        int t; cin &gt;&gt; t;
+        if (t == 1) {
+            ld x, y; cin &gt;&gt; x &gt;&gt; y;
+            extra.push_back(pt(x,y));
+        } else {
+            id.push(extra.size());
+            ld A, B, C; cin &gt;&gt; A &gt;&gt; B &gt;&gt; C;
+            ql.push_back(line(A,B,C,cnt++));
+        }
+        
+        if (ql.size() &gt;= blk) {
+            fill_queries();
+        }
+    }
+    if (!ql.empty()) fill_queries();
+    
+    for (int i = 0; i &lt; cnt; i++) {
+        cout &lt;&lt; (query[i] != 3 ? &quot;YES&quot; : &quot;NO&quot;) &lt;&lt; '\n';
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

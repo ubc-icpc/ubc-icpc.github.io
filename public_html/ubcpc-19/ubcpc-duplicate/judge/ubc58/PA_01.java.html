@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class ubcA {
+
+    public static void main(String[] args) {
+        String alphabet = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+        Scanner s = new Scanner(System.in);
+        String mode = s.next();
+        int k = s.nextInt();
+        String str = s.next();
+        char[] charArray = str.toCharArray();
+        int i = -1;
+        if (mode.compareToIgnoreCase(&quot;e&quot;) == 0) {
+            for (char ch : charArray) {
+                i++;
+                int newIndex = (alphabet.indexOf(ch) + k)%26;
+                charArray[i] = alphabet.charAt(newIndex);
+            }
+        } else {
+            for (char ch : charArray) {
+                i++;
+                int newIndex = alphabet.indexOf(ch)-k;
+                if (newIndex &lt; 0) newIndex = 26 + newIndex;
+                charArray[i] = alphabet.charAt(newIndex);
+            }
+        }
+        for (char ch : charArray) System.out.print(ch);
+    }
+}</code>
+</pre>
+</body>
+</html>

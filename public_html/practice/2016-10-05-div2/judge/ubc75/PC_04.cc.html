@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+
+using namespace std;
+
+#define rep(i,n) for(int i=0; i&lt;(n); i++)
+#define repr(i,n) for(int i=n; i&gt;(0); i--)
+#define mem(x,val) memset((x),(val),sizeof(x));
+#define write(x) freopen(x,&quot;w&quot;,stdout);
+#define read(x) freopen(x,&quot;r&quot;,stdin);
+#define all(x) x.begin(),x.end()
+#define sz(x) ((int)x.size())
+#define sqr(x) ((x)*(x))
+#define pushh push_back
+#define clr clear()
+#define inf (1&lt;&lt;30)
+#define ins insert
+#define xx first
+#define yy second
+#define eps 1e-9
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef string st;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;ll&gt; vll;
+typedef vector&lt;st&gt; vs;
+typedef map&lt;int,int&gt; mii;
+typedef map&lt;st,int&gt; msi;
+typedef set&lt;int&gt; si;
+typedef set&lt;st&gt; ss;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;pii&gt; vpii;
+
+
+double diss(int a1, int a2, int a3, int a4, int a5, int a6){
+	return pow(pow(a1-a4,2) + pow(a2-a5,2) + pow(a3-a6,2) ,0.5);
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+
+	int t; cin &gt;&gt; t;
+	int p, x,y,z,w;
+	string line;
+	string name1,name2;
+	
+	rep(i,t){
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; i+1 &lt;&lt;&quot;:&quot;&lt;&lt; endl;
+		cin &gt;&gt; p;
+			//string line;
+		getline(cin, line);
+		map&lt;string, int&gt; planets;
+		vector&lt;pair&lt;int, pii&gt;&gt; coords(p+2);
+		//vector&lt;vector&lt;pii&gt;&gt; dist(62);
+		double distk[62][62];
+
+		rep(j,p){
+			getline(cin, line);
+			stringstream ss(line);
+			ss &gt;&gt; name1 &gt;&gt; x &gt;&gt; y &gt;&gt; z;
+			//cout &lt;&lt; name1 &lt;&lt;&quot; &quot; &lt;&lt; x &lt;&lt; y &lt;&lt; z;
+			//cout &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt;diss(x,y,z,2*x,2*y,2*z) &lt;&lt; endl;
+			planets[name1] = j+1;
+			coords[j+1] = make_pair(x, make_pair(y,z));
+
+		}
+		double distt;
+		rep(j,p){
+			rep(k,p){
+				int x1 = coords[j+1].first;
+				int y1 = coords[j+1].second.first;
+				int z1 = coords[j+1].second.second;
+				
+				int x2 = coords[k+1].first;
+				int y2 = coords[k+1].second.first;
+				int z2 = coords[k+1].second.second;
+				//cout &lt;&lt; x1  &lt;&lt; y1 &lt;&lt; z1 &lt;&lt; endl;
+				//cout &lt;&lt; x2  &lt;&lt; y2 &lt;&lt; z2 &lt;&lt; endl;
+				distt = diss(x1,y1,z1,x2,y2,z2);
+				//cout &lt;&lt; distt &lt;&lt; &quot;lel&quot; &lt;&lt; endl;
+				//cout &lt;&lt; distt &lt;&lt; endl;
+				distk[j+1][k+1] = distt;
+				distk[k+1][j+1]  = distt;
+
+				//dist[j+1].push_back(make_pair(diss(x1,y1,z1,x2,y2,z2),k+1));
+				//dist[k+1].push_back(make_pair(diss(x1,y1,z1,x2,y2,z2),j+1));
+			}			
+
+		}
+		//cout &lt;&lt; coords[2].first&lt;&lt;endl;
+		//cout &lt;&lt; &quot;yo&quot;;
+		cin &gt;&gt; w;
+		getline(cin, line);
+		rep(j,w){
+			getline(cin, line);
+			stringstream ss(line);
+			ss &gt;&gt; name1 &gt;&gt; name2;
+			//cout &lt;&lt; name1 &lt;&lt; name2;
+			distk[planets[name1]][planets[name2]]= 0;
+			//dist[planets[name2]][planets[name1]].second = 0;
+		}
+		
+		int q;
+		cin &gt;&gt; q;
+		getline(cin, line);
+		//cout &lt;&lt; distk[1][2] &lt;&lt; endl;
+		
+		//memset(sdist,99999999,sizeof(sdist));
+		for(int u = 0; u&lt;q; u++){
+			//cout &lt;&lt; &quot;query: &quot; &lt;&lt; u &lt;&lt; endl;		
+			double sdist[p+2];
+			rep(zzz,p+2){sdist[zzz]=9999999999.99;}
+			int seen[p+2];
+			memset(seen,0,sizeof(seen));
+			getline(cin, line);
+			stringstream ss(line);
+			ss &gt;&gt; name1 &gt;&gt; name2 ;
+			//cout &lt;&lt; name1  &lt;&lt; &quot; &quot; &lt;&lt; name2&lt;&lt; endl;	
+			//cout &lt;&lt; name1 &lt;&lt; &quot; &quot; &lt;&lt; name2;
+			int start = planets[name1];
+			int end = planets[name2];
+			priority_queue&lt;  pair&lt;double,int&gt; , vector&lt;pair&lt;double,int&gt;&gt;, greater&lt;pair&lt;double,int&gt;&gt; &gt; pq; pq.push({0, start});
+			sdist[start] = 0;
+			int curr = start;
+			//cout &lt;&lt; start &lt;&lt; end &lt;&lt; &quot;MA&quot; &lt;&lt; endl;
+			pair&lt;double, int&gt; temp;
+
+			while(curr!=end){
+				//cout &lt;&lt; &quot;djik query &quot; &lt;&lt; u &lt;&lt;endl;	
+				temp = pq.top(); pq.pop();
+				curr = temp.second;
+				if(seen[curr]==0){
+					sdist[curr] = temp.first;
+					seen[curr] = 1;
+				}
+				for(int zz = 0; zz&lt;p; zz++){
+					//cout &lt;&lt; zz &lt;&lt; endl;
+					if(seen[zz+1]==0 &amp;&amp; zz+1!=curr &amp;&amp; sdist[zz+1]&gt;sdist[curr] + distk[curr][zz+1]){
+						sdist[zz+1] = sdist[curr] + distk[curr][zz+1];
+			//			cout &lt;&lt; &quot;yoyoyoyo&quot; &lt;&lt; endl;
+
+						pq.push(make_pair(sdist[zz+1], zz+1));
+
+					}
+
+				}
+			}
+			
+
+			cout &lt;&lt; fixed &lt;&lt; setprecision(0);
+			cout &lt;&lt; &quot;The distance from &quot;&lt;&lt;name1&lt;&lt;&quot; to &quot;&lt;&lt;name2&lt;&lt;&quot; is &quot; &lt;&lt; sdist[end] &lt;&lt; &quot; parsecs.&quot;&lt;&lt; endl;
+		}
+
+
+
+
+
+
+
+	}
+
+
+
+
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

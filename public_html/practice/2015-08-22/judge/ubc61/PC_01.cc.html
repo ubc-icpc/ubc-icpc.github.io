@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+void iter(int penta[]) {
+	int min = 1000;
+	int index = -1;
+	for (int i=0; i&lt;5; i++) {
+		if (penta[i] &lt; min) {
+			min = penta[i];
+			index = i;
+		}
+	}
+	int pos = penta[index] *= -1;
+	penta[(index+4)%5] -= pos;
+	penta[(index+6)%5] -= pos;
+	return;
+}
+
+bool findneg(int penta[]) {
+	for (int i=0; i&lt;5; i++) {
+		if (penta[i] &lt; 0) return true;
+	}
+	return false;
+}
+
+int main() {
+	int n; cin &gt;&gt; n;
+	for (int N=1; N&lt;=n; N++) {
+		int penta[5];
+		for (int i=0; i&lt;5; i++) {
+			cin &gt;&gt; penta[i];
+		}
+		while (findneg(penta)) {
+			iter(penta);
+		}
+		cout &lt;&lt; &quot;Pentagon #&quot; &lt;&lt; N &lt;&lt; &quot;: &quot; &lt;&lt; endl;
+		for (int i=0; i&lt;5; i++) {
+			cout &lt;&lt; penta[i] &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

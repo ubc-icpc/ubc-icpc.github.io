@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+
+using namespace std;
+typedef long long ll;
+
+int n, a, b, m;
+
+const int MAXN = 100005;
+
+pair&lt;int,int&gt; par[MAXN];
+
+int val[MAXN];
+
+int parent(int a){ 
+    if (par[a].first &lt;0) return a;
+    else {
+        int dif = par[a].second, p = par[a].first;
+        int pp = parent(p);
+        // current parent is root
+        if (pp ==p) val[a] = val[pp]+dif;
+        else val[a] = val[p]+dif;
+        par[a] = {pp, val[a]-val[pp]};
+        return par[a].first;
+    }
+}
+
+void merge(int x, int y, int dif){
+    // val[x] = val[y] + dif;
+    // so par[x] = {y,dif};
+    int a = parent(x), b = parent(y);
+    // so vala = valx+difx, valb = valy+dify, and valx=valy+dif
+    // so vala = valy+dif+difx
+    // so vala = valb-dify+dif+difx
+    if (a == b) return;
+    int difb = -par[y].second+dif+par[x].second;
+    par[a]={par[a].first+par[b].first,0};
+    par[b]={a, difb};
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    do{
+    cin &gt;&gt; n&gt;&gt;m;
+    memset(val,0,sizeof val);
+    for(int i=1;i&lt;=n;i++){
+        par[i] = {-1,0};
+    }
+    for(int i=0;i&lt;m;i++){
+    string s;
+    cin &gt;&gt; s;
+    if (s[0]=='!'){
+        int dif;
+        cin &gt;&gt;a &gt;&gt;b &gt;&gt;dif;
+        merge(a, b, dif);
+    }
+    else{
+        cin &gt;&gt;a &gt;&gt;b;
+        if(parent(a)==parent(b)){
+          //  cout &lt;&lt; val[b] &lt;&lt; &quot; &quot; &lt;&lt; val[a] &lt;&lt; endl;
+            cout &lt;&lt; val[b] - val[a] &lt;&lt; endl;
+        }
+        else{
+            cout &lt;&lt; &quot;UNKNOWN&quot; &lt;&lt; endl;
+        }
+    }
+    }
+    } while (n!=0 &amp;&amp; m !=0);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

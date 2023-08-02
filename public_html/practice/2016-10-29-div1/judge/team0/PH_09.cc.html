@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long double ld;
+const int N = 200005;
+
+int xarr[N], yarr[N];
+string names[N];
+int idx[N];
+int n, s;
+
+inline int quad(ld x, ld y, ld b) {
+    ld mid = b/2;
+    return ((x&gt;mid)&lt;&lt;1) | ((y&gt;mid)^(x&gt;mid));
+}
+bool comp(ld x1, ld y1, ld x2, ld y2) {
+    ld nx1, ny1, nx2, ny2;
+    ld b = s;
+    ld mid = b/2;
+    int q, q2;
+    while ((q = quad(x1, y1, b)) == (q2 = quad(x2, y2, b))) {
+        //cerr&lt;&lt;x1&lt;&lt;&quot; &quot;&lt;&lt;y1&lt;&lt;&quot; &quot;&lt;&lt;x2&lt;&lt;&quot; &quot;&lt;&lt;y2&lt;&lt;&quot; &quot;&lt;&lt;b&lt;&lt;&quot; &quot;&lt;&lt;q&lt;&lt;endl; if (b&lt;1) break;
+
+        if (q == 0) {
+            nx1 = y1; ny1 = x1;
+            nx2 = y2; ny2 = x2;
+        } else if (q == 1) {
+            nx1 = x1; ny1 = y1-mid;
+            nx2 = x2; ny2 = y2-mid;
+        } else if (q == 2) {
+            nx1 = x1-mid; ny1 = y1-mid;
+            nx2 = x2-mid; ny2 = y2-mid;
+        } else {
+            nx1 = mid-y1; ny1 = b-x1;
+            nx2 = mid-y2; ny2 = b-x2;
+        }
+        x1 = nx1; y1 = ny1;
+        x2 = nx2; y2 = ny2;
+        b /= 2; mid /= 2;
+    }
+
+    //cerr&lt;&lt;x1&lt;&lt;&quot; &quot;&lt;&lt;y1&lt;&lt;&quot; &quot;&lt;&lt;x2&lt;&lt;&quot; &quot;&lt;&lt;y2&lt;&lt;&quot; &quot;&lt;&lt;b&lt;&lt;&quot; &quot;&lt;&lt;q&lt;&lt;&quot; &quot;&lt;&lt;q2&lt;&lt;endl&lt;&lt;endl;
+
+    return quad(x1, y1, b) &lt; quad(x2, y2, b);
+}
+
+struct Comparator {
+    bool operator()(const int &amp;i1, const int &amp;i2) const {
+        return comp(xarr[i1], yarr[i1], xarr[i2], yarr[i2]);
+    }
+};
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cin &gt;&gt; n &gt;&gt; s;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; xarr[i] &gt;&gt; yarr[i] &gt;&gt; names[i];
+        idx[i] = i;
+    }
+    sort(idx, idx+n, Comparator());
+    for (int i = 0; i &lt; n; i++){
+        cout &lt;&lt; names[idx[i]] &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

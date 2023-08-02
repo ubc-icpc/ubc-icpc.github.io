@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+using namespace std;
+
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;math.h&gt;
+
+double chance(int, int, bool);
+
+int SO, W, L;
+double WChance, LChance, WWChance, WLChance, LWChance, LLChance;
+
+int main(){
+	int n;
+	cin &gt;&gt; n;
+	for(int i = 0; i &lt; n; i++){
+		string name;
+		getline(cin, name);
+		getline(cin, name);
+		
+		cin &gt;&gt; SO &gt;&gt; W &gt;&gt; L;
+
+		WChance = 20.0 / (20.0 + SO);
+		LChance = 1 - WChance;
+		WWChance = (20.0 + W) / (20.0 + SO + W);
+		LWChance = 1 - WWChance;
+		WLChance = (20.0 - L) / (20.0 + SO - L);
+		LLChance = 1 - WLChance;
+		double ans = chance(4, 0, true) + chance(4, 1, true) + chance(4, 2, true) + chance(4, 3, true);
+		cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+
+double chance(int w, int l, bool wonLast){
+	if(w == 0 &amp;&amp; l == 0){
+		return 1;
+	} else if(w == 0 &amp;&amp; l == 1){
+		return wonLast ? 0 : LChance * chance(w, l - 1, false);
+	} else if(w == 1 &amp;&amp; l == 0){
+		return wonLast ? WChance * chance(w - 1, l, true) : 0;
+	} else if(w == 0){
+		return wonLast ? 0 : LLChance * chance(w, l - 1, false);
+	} else if(l == 0){
+		return wonLast ? WWChance * chance(w - 1, l, true) : 0;
+	} else if(wonLast){
+		return WWChance * chance(w - 1, l, true) + WLChance * chance(w - 1, l, false);
+	} else {
+		return LWChance * chance(w, l - 1, true) + LLChance * chance(w, l - 1, false);
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

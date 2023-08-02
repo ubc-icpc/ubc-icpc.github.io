@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.LinkedList;
+import java.util.Scanner;
+
+
+public class Feb07_2015_A {
+	public static void main(String args[]){
+		int t, m, n, sum;
+		Scanner sc = new Scanner(System.in);
+		LinkedList&lt;Pair&gt; bs;
+		Pair s = new Pair(-1, -1);
+		char c;
+		String cs;
+		t = sc.nextInt();
+		for(int i = 0; i&lt; t; i++){
+			m = sc.nextInt();	n = sc.nextInt();
+			bs = new LinkedList&lt;Pair&gt;();
+			for(int j = 0;j&lt; m ;j++){
+				cs = sc.next();
+				for(int k = 0; k&lt; n ; k++){
+					c = cs.charAt(k);
+					if(c == 'B'){
+						bs.add(new Pair(j, k));
+					}
+					else if(c == 'S'){
+						s.fst = j; s.snd = k;
+					}
+				}
+			}
+			sum = 0;
+			for (Pair p : bs){
+				sum += Math.abs(p.fst - s.fst);
+				sum += Math.abs(p.snd - s.snd);
+			}
+			System.out.println(sum*2+&quot; seconds to blocks get!&quot;);
+		}
+	}
+	private static class Pair {
+		int fst;
+		int snd;
+		public Pair(int fst, int snd){
+			this.fst = fst;
+			this.snd = snd;
+		}
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+from math import floor, ceil
+import sys
+L = sys.stdin.next
+for _ in range(int(L())):
+    x = int(L())
+    y = x
+    k = 1
+    while y % 10 == 0:
+        y /= 10
+        k *= 10
+    hi, lo = (int(floor(1.05*x)), int(ceil(x*0.95)))
+
+    def diff_and_within(s):
+        return s != x and lo &lt;= s &lt;= hi
+
+    r = x % (10*k)
+    d5 = r - (5*k)
+
+    # How to lower absurdity:
+    c5 = x - d5           # make last digit 5
+    c0 = x - r            # make last digit 0 by decreasing
+    c10 = x + (10*k - r)  # make last digit 0 by increasing
+    # Make sure the 3 candidates are within range
+
+    if diff_and_within(c5) or diff_and_within(c0) or diff_and_within(c10):
+        print &quot;absurd&quot;
+    else:
+        print &quot;not absurd&quot;
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

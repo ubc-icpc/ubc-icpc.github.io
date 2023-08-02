@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;algorithm&gt;
+#include &lt;complex&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+#include &lt;set&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+typedef std::pair&lt;int, int&gt; II;
+typedef std::vector&lt;int&gt; VI;
+typedef std::vector&lt;II&gt; VII;
+typedef std::vector&lt;VI&gt; VVI;
+
+typedef long double ld;
+
+typedef std::complex&lt;ld&gt; Pt;
+
+int main() {
+    int N;
+    while(std::cin &gt;&gt; N &amp;&amp; N) {
+        std::map&lt;std::string, int&gt; counts;
+        for(int i = 0; i &lt; N; i ++) { std::string s; std::cin &gt;&gt; s; counts[s] ++; }
+
+        VI C;
+        for(auto e : counts) C.push_back(e.second);
+        std::sort(C.begin(), C.end());
+        int best = 0;
+        for(int i = 0; i &lt; C.size(); i ++) {
+            //std::cout &lt;&lt; C[i] &lt;&lt; std::endl;
+            best = std::max(best, (int)(C[i]*(C.size()-i)));
+        }
+        std::cout &lt;&lt; best &lt;&lt; std::endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

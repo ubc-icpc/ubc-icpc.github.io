@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class AromaticNumbers {
+
+  public static int solve(String s, Map&lt;String, Integer&gt; map) {
+    int sum = 0;
+    int prevR = 0;
+    int prevTotal = 0;
+
+    for(int i = 0; i &lt; s.length(); i += 2) {
+      int a = Integer.parseInt(Character.toString(s.charAt(i)));
+      int r = map.get(Character.toString(s.charAt(i+1)));
+
+      if(r &gt; prevR) {
+        sum -= prevTotal;
+      } else {
+        sum += prevTotal;
+      }
+
+      prevR = r;
+      prevTotal = a * r;
+    }
+
+    return sum + prevTotal;
+  }
+
+  public static void main(String[] args) {
+    Scanner s = new Scanner(System.in);
+
+    Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;();
+
+    map.put(&quot;I&quot;, 1);
+    map.put(&quot;V&quot;, 5);
+    map.put(&quot;X&quot;, 10);
+    map.put(&quot;L&quot;, 50);
+    map.put(&quot;C&quot;, 100);
+    map.put(&quot;D&quot;, 500);
+    map.put(&quot;M&quot;, 1000);
+
+    String in = s.nextLine();
+    System.out.println(Integer.toString(solve(in, map)));
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

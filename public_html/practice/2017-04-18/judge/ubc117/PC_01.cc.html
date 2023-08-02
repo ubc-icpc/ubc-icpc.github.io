@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define gcd __gcd
+
+typedef long long ll;
+const ll MOD = 1000000007;
+
+// nolim
+ll dp1[300][300];
+// wlim
+ll dp2[300][300];
+
+ll nolim(vector&lt;int&gt; adj[], int a, int b);
+ll wlim(vector&lt;int&gt; adj[], int a, int b);
+
+int num;
+
+int main() {
+	ios::sync_with_stdio(0); cin.tie(0);
+	ios_base::sync_with_stdio(0);
+
+	cin &gt;&gt; num;
+	int nodes[num];
+	vector&lt;int&gt; adj[num];
+	for (int i = 0; i &lt; num; i++) {
+		cin &gt;&gt; nodes[i];
+		for (int j = 0; j &lt; i; j++) {
+			if (gcd(nodes[i], nodes[j]) &gt; 1) {
+				adj[i].push_back(j);
+				adj[j].push_back(i);
+			}
+		}
+	}
+	memset(dp1, -1, sizeof(dp1));
+	memset(dp2, -1, sizeof(dp2));
+	
+	ll ans = 0;
+	for (auto &amp;d : adj[0]) {
+		ans = (ans + (nolim(adj, 0, d) * wlim(adj, d, 0)) % MOD) % MOD;
+	}
+
+	cout &lt;&lt; ans &lt;&lt; endl;
+
+	return 0;
+
+}
+
+// not inclusive
+bool inrange(int d, int a, int b) {
+	if (a &lt; b) 
+		return (a &lt; d &amp;&amp; d &lt; b);
+	else 
+		return (a &lt; d || d &lt; b);
+}
+
+// dp1
+// a not included, b included
+ll nolim(vector&lt;int&gt; adj[], int a, int b) {
+	if (dp1[a][b] != -1)
+		return dp1[a][b];
+	if (b-a == 1 || b-a == 1-num)
+		return 1;
+	ll ans = 0;
+	for (auto &amp;d : adj[b]) {
+		if (inrange(d,a,b))
+			ans = (ans + (nolim(adj, a, d) * wlim(adj, d, b)) % MOD) % MOD;
+	}
+	return dp1[a][b] = ans;
+}
+
+// dp2
+// both included
+ll wlim(vector&lt;int&gt; adj[], int a, int b) {
+	if (dp2[a][b] != -1)
+		return dp2[a][b];
+	if (b-a == 1 || b-a == 1-num)
+		return 1;
+	ll ans = nolim(adj, a, b);
+	for (auto &amp;d : adj[a]) {
+		if (inrange(d,a,b)) 
+			ans = (ans + (wlim(adj, a, d) * wlim(adj, d, b)) % MOD) % MOD;
+	}
+	return dp2[a][b] = ans;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

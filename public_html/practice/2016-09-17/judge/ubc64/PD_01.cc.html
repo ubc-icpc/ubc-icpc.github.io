@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+map&lt;vector&lt;int&gt;,int&gt; q1;
+map&lt;int, vector&lt;int&gt;&gt;q2;
+short arr[6];
+int cur = 0;
+void gen(int nn) {
+	if (nn ==6) {
+		int	to = 0;
+		for(int i = 0; i &lt; 6; i++) to +=arr[i];
+		if(to == 15) {
+			vector&lt;int&gt; k;
+			for(int i = 0; i &lt; 6; i++) k.push_back(arr[i]);
+			q1[k] = cur;
+			q2[cur] = k;
+			cur++;
+		}
+	} else {
+		for(int i = 0; i &lt;= 15; i++) {
+			arr[nn] = i;
+			gen(nn+1);
+		}
+	
+	}
+
+}
+int main() {
+	char c;
+	gen(0);
+	int ts = 0;
+	while(cin &gt;&gt;c ) {
+		ts++;
+	if (c == 'e') return 0;
+		if (c == 'm') {
+			int cc;
+			vector&lt;int&gt; cur;
+			for(int i = 0; i &lt; 6; i++) {
+					cin &gt;&gt; cc;
+					cur.push_back(cc);
+					}
+					cout &lt;&lt; &quot;Case &quot; &lt;&lt; ts &lt;&lt; &quot;: &quot; &lt;&lt; q1[cur] &lt;&lt; endl;	
+		} else {
+			int cc; cin &gt;&gt;cc;
+			cout &lt;&lt; &quot;Case &quot; &lt;&lt; ts &lt;&lt; &quot;: &quot;;
+			for(auto vv: q2[cc]) cout &lt;&lt; vv &lt;&lt; &quot; &quot;;
+			cout &lt;&lt;endl;
+		}
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

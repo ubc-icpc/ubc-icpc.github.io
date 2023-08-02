@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html><head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="James Feher">
+  <title>Problem G: Reverse Rot</title>
+
+  
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style>
+</head><body>
+<h1>Problem G: Reverse Rot</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <tt>rot.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+      </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>rot.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+<p> 
+A very simplistic scheme, which was used at one time to encode 
+information, is to rotate the characters within an alphabet and
+rewrite them.  ROT13 is the variant in which the characters A-Z are
+rotated 13 places, and it was a commonly used insecure scheme that
+attempted to  "hide" data in many applications from the late 1990's and into 
+the early 2000's.  
+
+<p> 
+It has been decided by Insecure Inc. to develop a product 
+that "improves" upon this scheme by first reversing the entire 
+string and then rotating it. As an example, if we apply this scheme
+to string <kbd>ABCD</kbd> with a reversal and rotation of 1,
+after the reversal we would have <kbd>DCBA</kbd> and then after
+rotating that by 1 position we have the result
+<kbd>EDCB</kbd>.<p>
+
+<p>
+Your task is to implement this encoding scheme for strings that
+contain only capital letters, underscores, and periods. Rotations are
+to be performed using the alphabet order:
+<pre>
+    <kbd>ABCDEFGHIJKLMNOPQRSTUVWXYZ_.</kbd>
+</pre>
+Note that underscore follows Z, and the period follows the
+underscore. Thus a forward rotation of 1 means 'A' is shifted to 'B',
+that is,
+<nobr>'A'&#8594;'B'</nobr>,
+<nobr>'B'&#8594;'C'</nobr>,
+<nobr>...</nobr>,
+<nobr>'Z'&#8594;'_'</nobr>,
+<nobr>'_'&#8594;'.'</nobr>,
+and <nobr>'.'&#8594;'A'</nobr>.
+Likewise a rotation of 3 means
+<nobr>'A'&#8594;'D'</nobr>,
+<nobr>'B'&#8594;'E'</nobr>,
+<nobr>...</nobr>,
+<nobr>'.'&#8594;'C'</nobr>.
+</p>
+
+<p> 
+<p><b>Input:</b>&nbsp; Each input line will consist of an integer N, followed by 
+a string.  N is the amount of forward rotation, such that
+<nobr>1 &le; N &le; 27</nobr>.
+The string is the message to be encrypted, and will consist of 1 to 40
+characters, using only capital letters, underscores, and periods.
+The end of the input will be denoted by a final line with only the
+number 0.
+
+<p><b>Output:</b> For each test case, display the "encrypted" message
+that results after being reversed and then shifted.
+
+
+<table class="example">
+
+  <thead> <tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+<kbd>
+1&nbsp;ABCD<br />
+3&nbsp;YO_THERE.<br />
+1&nbsp;.DOT<br />
+14&nbsp;ROAD<br />
+9&nbsp;SHIFTING_AND_ROTATING_IS_NOT_ENCRYPTING<br />
+2&nbsp;STRING_TO_BE_CONVERTED<br />
+1&nbsp;SNQZDRQDUDQ<br />
+0<br />
+</kbd>
+      </td>
+      <td>
+<kbd>
+EDCB<br />
+CHUHKWBR.<br />
+UPEA<br />
+ROAD<br />
+PWRAYF_LWNHAXWH.RHPWRAJAX_HMWJHPWRAORQ.<br />
+FGVTGXPQEAGDAQVAIPKTVU<br />
+REVERSE_ROT<br />
+</kbd>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+
+</body></html>

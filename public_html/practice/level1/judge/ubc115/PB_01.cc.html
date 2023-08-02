@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+long long getLargest(long long n, long long&amp; largest) {
+  if (n == 1) {
+    return 1;
+  }
+  largest = max(n, largest);
+  if (n &amp; 1) {
+    return getLargest(n * 3 + 1, largest);
+  } else {
+    return getLargest(n / 2, largest);
+  }
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  long long p;
+  long long num, n;
+  cin &gt;&gt; p;
+  while (p--) {
+    long long largest = 1;
+    cin &gt;&gt; num &gt;&gt; n;
+    getLargest(n, largest);
+    cout &lt;&lt; num &lt;&lt; ' ' &lt;&lt; largest &lt;&lt; '\n';
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

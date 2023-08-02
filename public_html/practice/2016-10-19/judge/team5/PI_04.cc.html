@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+bool head[100005];
+bool vis[100005];
+vector&lt;int&gt; adjs[100005];
+vector&lt;int&gt; adj2[100005];
+
+void dfs2(int cur) {
+    vis[cur] = true;
+    for(auto n: adj2[cur]) {
+        if(vis[n]) continue;
+        dfs2(n);
+    }
+}
+void dfs(int cur) {
+    vis[cur] = true;
+    for(auto n: adjs[cur]) {
+        if(vis[n]) continue;
+        dfs(n);
+    }
+}
+int main() {
+    int t; cin &gt;&gt; t;
+    for(int ts = 0; ts &lt; t; ts++) {
+        int n, m; cin &gt;&gt; n &gt;&gt; m;
+        int l,r;
+        for (int i = 0; i &lt; 100005; i++) {
+            adjs[i].clear();
+            adj2[i].clear();
+        }
+        memset(head, 0 ,sizeof head);
+        memset(vis, 0 , sizeof vis);
+        int res = 0;
+        for(int i = 0; i &lt; m; i++) {
+            cin &gt;&gt; l &gt;&gt; r;
+            adjs[l].push_back(r);
+            adj2[l].push_back(r);
+            adj2[r].push_back(l);
+            if(!head[r]) {
+                head[r] = true;
+            }        
+        }
+        for(int i  =1;  i &lt;= n; i++) {
+            if(vis[i]) continue;
+            if(head[i]) continue;
+            dfs(i);
+            res++;
+        }
+        for(int i = 1; i &lt;=n; i++) {
+            if(!vis[i]) {
+                res++; dfs2(i);
+            }
+        }
+        cout &lt;&lt; res &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

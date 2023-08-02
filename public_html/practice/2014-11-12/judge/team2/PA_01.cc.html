@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+int main() {
+    map&lt;string, map&lt;string, int&gt; &gt; m;
+    map&lt;string, int&gt; a, b, c;
+    a[&quot;R&quot;] = 0;
+    a[&quot;P&quot;] = 1;
+    a[&quot;S&quot;] = -1;
+    b[&quot;R&quot;] = -1;
+    b[&quot;P&quot;] = 0;
+    b[&quot;S&quot;] = 1;
+    c[&quot;R&quot;] = 1;
+    c[&quot;P&quot;] = -1;
+    c[&quot;S&quot;] = 0;
+    m[&quot;R&quot;] = a;
+    m[&quot;P&quot;] = b;
+    m[&quot;S&quot;] = c;
+
+    int n; cin &gt;&gt; n;
+    while (n--) {
+        int k, sum = 0;
+        cin &gt;&gt; k;
+        while (k--) {
+            string x, y; cin &gt;&gt; x &gt;&gt; y;
+            sum += m[x][y];
+        }
+        cout &lt;&lt; ((sum &gt; 0) ? &quot;Player 2&quot; : (sum == 0) ? &quot;TIE&quot; : &quot;Player 1&quot;) &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

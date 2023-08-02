@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+struct P{
+	int x, y;
+	P(int lx, int ly) {
+		x = lx; y = ly;
+	}
+};
+
+using namespace std;
+bool visited[100][100];
+bool visited2[100][100];
+bool visited3[100][100];
+char grid[100][100];
+int c, r;
+int dx[4] = {-1, 1, 0, 0};
+int dy[4] = {0, 0, -1, 1};
+
+bool inbound(int nx, int ny) {
+	return nx &gt;= 0 &amp;&amp; nx &lt; c &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; r;
+}
+
+int numv() {
+	int count = 0;
+	for (int x = 0; x &lt; c; x++) {
+		for (int y = 0; y &lt; r; y++) {
+			if (visited2[x][y]) {
+				for (int i = 0; i &lt; 4; i++) {
+					int nx = x + dx[i];
+					int ny = y + dy[i];
+					if (inbound(nx, ny) &amp;&amp; !visited3[nx][ny]
+							&amp;&amp; grid[nx][ny] == 'V') {
+						visited3[nx][ny] = true;
+						count++;
+					}
+				}
+			}
+		}
+	}
+	return count;
+}
+
+void bfs(int sx, int sy, bool (&amp;v)[100][100]) {
+	queue&lt;P&gt; q;
+	q.push(P(sx, sy));
+	int count = 0;
+	while (!q.empty()) {
+		P curr = q.front();
+		q.pop();
+		if (v[curr.x][curr.y]) {
+			continue;
+		}
+		v[curr.x][curr.y] = true;
+		for (int i = 0; i &lt; 4; i++) {
+			int nx = curr.x + dx[i];
+			int ny = curr.y + dy[i];
+			if (inbound(nx, ny) &amp;&amp; grid[nx][ny] != '#'
+					&amp;&amp; grid[nx][ny] != 'V') {
+				q.push(P(nx, ny));
+			}
+		}
+	}
+}
+
+int main() {
+	int ncase; cin &gt;&gt; ncase;
+	for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+		cin &gt;&gt; r &gt;&gt; c;
+		int sx, sy;
+		for (int y = 0; y &lt; r; y++) {
+			for (int x = 0; x &lt; c; x++) {
+				cin &gt;&gt; grid[x][y];
+				if (grid[x][y] == 'S') {
+					grid[x][y] = '.';
+					sx = x; sy = y;
+				}
+			}
+		}
+		memset(visited, 0, sizeof(visited));
+		memset(visited2, 0, sizeof(visited2));
+		memset(visited3, 0, sizeof visited3);
+		bfs(sx, sy, visited);
+		bfs(sx, sy, visited2);
+		int best = numv();
+		for (int x = 0; x &lt; c; x++) {
+			for (int y = 0; y &lt; r; y++) {
+				if (grid[x][y] == 'V') {
+					for (int i = 0; i &lt; 4; i++) {
+						int nx = x + dx[i];
+						int ny = y + dy[i];
+						if (inbound(nx, ny) &amp;&amp; visited[nx][ny]) {
+							// push in other direction
+							int vx = x - dx[i];
+							int vy = y - dy[i];
+							if (inbound(vx, vy) &amp;&amp; grid[vx][vy] != '#'
+									&amp;&amp; grid[vx][vy] != 'V') {
+								memset(visited2, 0, sizeof(visited2));
+								memset(visited3, 0, sizeof visited3);
+								bfs(sx, sy, visited2);
+								int count = numv();
+
+								grid[x][y] = '.';
+								grid[vx][vy] = 'V';
+								memset(visited2, 0, sizeof(visited2));
+								bfs(x, y, visited2);
+								visited3[vx][vy] = true;
+								count += numv();
+
+								grid[vx][vy] = '.';
+								grid[x][y] = 'V';
+
+								best = max(best, count);
+							}
+						}
+					}
+				}
+			}
+		}
+		cout &lt;&lt; best &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

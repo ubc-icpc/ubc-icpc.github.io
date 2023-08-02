@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+#define ss(a)   scanf(&quot;%d&quot;, &amp;a)
+#define pb(a)   push_back(a)
+
+using namespace std;
+typedef long long ll;
+
+int nr,n,m,x,y,xx,yy, q;
+
+int gr[1021][1021];
+
+int par[1200111];
+
+int parent(int a){ return (par[a]&lt;0 ? a : (par[a]=parent(par[a])));}
+
+void merge(int a, int b, int c, int d){
+   // cout &lt;&lt; b*n+a &lt;&lt; &quot; &quot; &lt;&lt; d*n+c &lt;&lt; endl;
+    int x = parent(b*n+a);
+    int y = parent(d*n+c);
+   // cout &lt;&lt;&quot;xy= &quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; endl;
+   // cout &lt;&lt;&quot;parxy= &quot; &lt;&lt; par[x] &lt;&lt; &quot; &quot; &lt;&lt; par[y] &lt;&lt; endl;
+    if (x==y) return;
+    par[x] += par[y];
+    par[y] = x;
+    nr--;
+}
+
+void merge_nearby(int i, int j){
+            if (gr[i][j] == 0) {
+            //cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt;endl;
+                nr++;
+                if (i!=0)
+                    if (!gr[i-1][j]) merge(i,j,i-1,j);
+                if (j!=0)
+                    if (!gr[i][j-1]) merge(i,j,i,j-1);
+                if (i!=n-1)
+                    if (!gr[i+1][j]) merge(i,j,i+1,j);
+                if (j!=m-1)
+                    if (!gr[i][j+1]) merge(i,j,i,j+1);
+            }
+}
+
+int  x1q[10121], x2q[12311], y1q[10023], y2q[12011];
+
+int main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);
+    memset(par,-1,sizeof par);
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; q;
+    for(int i=0;i&lt;q;i++){
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; xx &gt;&gt; yy;
+        if (x==xx){
+            for(int j = min(y,yy); j&lt;=max(y,yy);j++){
+                gr[x-1][j-1] +=1;
+            }
+        }
+        if (y==yy){
+            for(int j = min(x,xx); j&lt;=max(x,xx);j++){
+                gr[j-1][y-1] +=1;
+            }
+        }
+        //x1q.pb(x), x2q.pb(xx), y1q.pb(y), y2q.pb(yy);
+        x1q[i] = x;
+        x2q[i] = xx;
+        y1q[i] = y;
+        y2q[i] = yy;
+    }
+    /*
+    for(int j=0;j&lt;m;j++){
+        for(int i=0;i&lt;n;i++)
+            cout &lt;&lt; gr[i][j] &lt;&lt; &quot; &quot; ;
+        cout &lt;&lt; endl;
+    }
+    */
+    for(int j=0;j&lt;m;j++){
+        for(int i=0;i&lt;n;i++){
+           // cout &lt;&lt; i &lt;&lt;  &quot; &quot; &lt;&lt; j &lt;&lt; endl;
+            //cout &lt;&lt; gr[i][j] &lt;&lt; &quot; &quot; ;
+            merge_nearby(i,j);
+        }
+        //cout &lt;&lt; endl;
+    }
+    vector&lt;int&gt; tp;
+    tp.pb(nr);
+    //cout &lt;&lt; &quot;ok&quot; &lt;&lt; endl;
+    for(int k=q-1;k&gt;=1;k--){
+        //cout &lt;&lt; k &lt;&lt; endl;
+        x = x1q[k], y = y1q[k], xx = x2q[k], yy = y2q[k];
+        //cout &lt;&lt; x &lt;&lt;  &quot; &quot; &lt;&lt; y &lt;&lt;  &quot; &quot; &lt;&lt; xx &lt;&lt; &quot; &quot; &lt;&lt; yy &lt;&lt; endl;
+        if (x==xx){
+            int i = xx-1;
+            for(int j = min(y,yy)-1; j&lt;=max(y,yy)-1;j++){
+                gr[i][j] -=1;
+                merge_nearby(i,j);
+            }
+        }
+        if (y==yy){
+            int j = yy-1;
+            for(int i = min(x,xx)-1; i&lt;=max(x,xx)-1;i++){
+                gr[i][j] -=1;
+                merge_nearby(i,j);
+            }
+        }
+        tp.pb(nr);
+    }
+    for(int i = tp.size()-1;i&gt;=0;i--) cout &lt;&lt; tp[i]&lt;&lt;endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

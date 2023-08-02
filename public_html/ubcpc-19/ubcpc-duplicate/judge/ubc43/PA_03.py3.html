@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp"># fb = open(&quot;A.txt&quot;,&quot;r&quot;)
+inst = input()
+num = int(input())
+word = input()
+if(inst.strip() == &quot;E&quot;):
+	num = num
+else:
+	num = 26-num
+rslt = []
+for ele in word:
+	changed_word = (ord(ele)+num-97)%26
+	rslt.append(chr(changed_word+97))
+print(''.join(rslt))
+# fb.close()</code>
+</pre>
+</body>
+</html>

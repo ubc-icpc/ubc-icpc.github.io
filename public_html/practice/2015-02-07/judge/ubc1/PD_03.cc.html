@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+vector&lt;int&gt; g[105];
+int main() {
+    int n;
+    while (cin &gt;&gt; n) {
+        if (n == 1) break;
+        for (int i = 1; i &lt;= n; i++) {
+            g[i].clear();
+        }
+        
+        int m; cin &gt;&gt; m;
+        for (int i = 0; i &lt; m; i++) {
+            int x, y, k; cin &gt;&gt; x &gt;&gt; y &gt;&gt; k;
+            for (int j = 0; j &lt; k; j++) {
+                g[x].push_back(y);
+                g[y].push_back(x);
+            }
+        }
+        
+        //need to add at least (odd deg)/2 edges.
+        //then need to connect all the components together in a cycle.
+        //need #(even comp) more edges
+        int seen[105];
+        memset(seen, 0, sizeof seen);
+        int num_odd = 0, num_even = 0;
+        for (int i = 1; i &lt;= n; i++) {
+            if (seen[i]) continue;
+            if (g[i].empty()) continue;
+            
+            vector&lt;int&gt; comp;
+            queue&lt;int&gt; q;
+            q.push(i);
+            seen[i] = true;
+            while (!q.empty()) {
+                int u = q.front(); q.pop();
+                comp.push_back(u);
+                for (int v : g[u]) {
+                    if (seen[v]) continue;
+                    q.push(v);
+                    seen[v] = true;
+                }
+            }
+            
+            int o = 0, e = 0;
+            for (int v : comp) {
+                if (g[v].size()%2) {
+                    o++;
+                } else {
+                    e++;
+                }
+            }
+            
+            if (e == comp.size()) {
+                num_even++;
+            } else {
+                num_odd += o;
+            }
+        }
+        
+        cout &lt;&lt; (num_odd+1)/2 + (num_even+bool(num_odd) &gt; 1 ? num_even : 0) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

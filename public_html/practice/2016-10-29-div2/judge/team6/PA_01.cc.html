@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+using namespace std;
+
+int main() {
+  long n,w; cin &gt;&gt; n &gt;&gt; w;
+  long safe = 0;
+  double p = 1;
+  double max = 0;
+  double c = 0;
+  while(n--){
+    string s; double cp; long m;
+    cin &gt;&gt; s &gt;&gt; cp &gt;&gt; m;
+    double lose = c + (1 - cp) * p * log(1. + (double)safe/(double)w);
+    // cout &lt;&lt; &quot;lose: &quot; &lt;&lt; lose &lt;&lt; endl;
+    // if (lose &gt; max) max = lose;
+    double stop = lose + cp * p * log(1. + (double)m/(double)w);
+    // cout &lt;&lt; &quot;stop: &quot; &lt;&lt; stop &lt;&lt; endl;
+    if (stop &gt; max) max = stop;
+
+    c = lose;
+    p *= cp;
+    if (s[0] == 's') safe = m;
+  }
+  double q = (exp(max) - 1) * w;
+  printf(&quot;$%.2f\n&quot;,q);
+} 
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+vector&lt;string&gt; parse_line(string line) {
+  size_t pos = 0;
+  vector&lt;string&gt; inputs;
+  while((pos = line.find(&quot; &quot;)) != string::npos) {
+    string part = line.substr(0, pos);
+    line.erase(0, pos + 1); // +1 for space
+    inputs.push_back(part);
+  }
+  inputs.push_back(line);
+  return inputs;
+}
+
+int calc_hcp(vector&lt;string&gt; cards) {
+  int hcp = 0;
+  for( int i = 0; i &lt; cards.size(); i++ ) {
+    if(cards[i][0] == 'A')
+      hcp += 4;
+    else if( cards[i][0] == 'K')
+      hcp += 3;
+    else if( cards[i][0] == 'Q')
+      hcp += 2;
+    else if(cards[i][0] == 'J')
+      hcp += 1;
+  }
+  return hcp;
+}
+
+bool match_two(vector&lt;string&gt; cards) {
+  int hearts = 0;
+  int spades = 0;
+  int clovers = 0;
+  int diamonds = 0;
+  for( int i = 0; i &lt; cards.size(); i++) {
+    if(cards[i][1] == 'H')
+      hearts++;
+    else if(cards[i][1] == 'S')
+      spades++;
+    else if(cards[i][1] == 'D')
+      diamonds++;
+    else if(cards[i][1] == 'C')
+      clovers++;
+  }
+  if(hearts &lt; 2 || spades &lt; 2 || clovers &lt; 2 || diamonds &lt; 2)
+    return false;
+  int two_count = 0;
+  if( hearts == 2) two_count++;
+  if( spades == 2) two_count++;
+  if( clovers == 2) two_count++;
+  if( diamonds == 2) two_count++;
+
+  return two_count &lt;= 1;
+}
+
+bool bid(string line) {
+  vector&lt;string&gt; cards = parse_line(line);
+  int hcp = calc_hcp(cards);
+  return hcp &gt;= 15 &amp;&amp; hcp &lt;= 17 &amp;&amp; match_two(cards);
+}
+
+int main(int argc, char *argv[]) {
+    int N;
+    cin &gt;&gt; N;
+    string line;
+    getline(cin, line);
+    while (getline(cin, line)) {
+      if(bid(line))
+        cout &lt;&lt; &quot;1NT&quot; &lt;&lt; endl;
+      else
+        cout &lt;&lt; &quot;Pass&quot; &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

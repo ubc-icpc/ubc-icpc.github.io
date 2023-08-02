@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int g[105][105];
+int deg[105];
+bool mark[105];
+int n;
+
+pair&lt;int, int&gt; dfs(int root) {
+	pair&lt;int, int&gt; res = pair&lt;int, int&gt;(0, 1);
+	mark[root] = true;
+	if(deg[root]%2 == 1)
+		res.first = 1;
+	for(int i = 0; i &lt; n; i++)
+		if(g[root][i] &gt; 0 &amp;&amp; !mark[i]) {
+			pair&lt;int, int&gt; tmp = dfs(i);
+			res.first += tmp.first;
+			res.second += tmp.second;
+		}
+	return res;
+}
+
+int main () {
+	while(cin &gt;&gt; n &amp;&amp; n &gt; 1) {
+		memset(g, 0, sizeof(g));
+		memset(deg, 0, sizeof(deg));
+		memset(mark, 0, sizeof(mark));
+		int m;
+		cin &gt;&gt; m;
+		for(int i = 0; i &lt; m; i++) {
+			int s, t, k;
+			cin &gt;&gt; s &gt;&gt; t &gt;&gt; k;
+			s--;
+			t--;
+			g[s][t] = k;
+			g[t][s] = k;
+			deg[s] += k;
+			deg[t] += k;
+		}
+		int comp = 0;
+		int res = 0;
+		for(int i = 0; i &lt; n; i++)
+			if(!mark[i]) {
+				pair&lt;int, int&gt; tmp = dfs(i);
+				if(tmp.first &gt;= 2)
+					res += (tmp.first-2)/2;
+				if(tmp.second &gt; 1)
+					comp++;
+			}
+		if(comp &gt; 1)
+			res += comp;
+		else {
+			int tmp = 0;
+			for(int i = 0; i &lt; n; i++)
+				if(deg[i]%2 == 1) {
+					res++;
+					break;
+				}
+		}
+		cout &lt;&lt; res &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

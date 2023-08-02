@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+ll xx[400];
+int main(){
+    ios::sync_with_stdio(0);
+    ll money=100,shares=0;
+    int d; cin&gt;&gt;d;
+    ll least=505,most=0;
+    for (int i=0;i&lt;d;i++) {
+        cin&gt;&gt;xx[i];
+        least=min(least,xx[i]);
+        most=max(most,xx[i]);
+    }
+    for (int i=0;i&lt;d;i++){
+        ll x=xx[i];
+        bool least=true,most=true;
+        if ((i==d-1)||(xx[i]&gt;xx[i+1])){
+            money+=x*shares; shares=0;
+        }
+        if (xx[i]&lt;xx[i+1]){
+            ll buy=money/x; 
+            if (shares+buy&gt;100000) buy=100000-shares;
+            money-=buy*x; shares+=buy;
+        }
+        //cout&lt;&lt;money&lt;&lt;' '&lt;&lt;shares&lt;&lt;' '&lt;&lt;least&lt;&lt;endl;
+    }
+    cout&lt;&lt;money&lt;&lt;endl;
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

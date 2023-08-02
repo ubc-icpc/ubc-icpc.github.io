@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//#pragma GCC optimize (&quot;O3&quot;)
+
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int n;
+char name[110][30];
+int hp[110],at[110],df[110];
+set&lt;pair&lt;pair&lt;int,int&gt;,int&gt; &gt;s;
+
+inline bool Check(int a,int b){
+	if(at[b]&lt;=df[a] &amp;&amp; at[a]&gt;df[b])
+		return true;
+	if(at[b]&gt;df[a] &amp;&amp; at[a]&lt;=df[b])
+		return false;
+	if(at[b]&lt;=df[a] &amp;&amp; at[a]&lt;=df[b])
+		return false;
+	
+	int round = (hp[a]-1)/(at[b]-df[a]);
+	if((at[a]-df[b])*round &gt;= hp[b])
+		return true;
+	else
+		return false;
+}
+inline bool check(int a,int b,int c){
+	if(Check(a,b) &amp;&amp; Check(b,c) &amp;&amp; Check(c,a))
+		return true;
+	return false;
+}
+
+int main(){
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++){
+		scanf(&quot;%s&quot;,name[i]);
+		scanf(&quot;%d%d%d&quot;,hp+i,at+i,df+i);
+	}
+	for(int i=1;i&lt;=n;i++){
+		for(int j=1;j&lt;=n;j++){
+			if(i!=j){
+				for(int k=1;k&lt;=n;k++){
+					if(k!=i&amp;&amp;k!=j){
+						if(check(i,j,k)){
+							vector&lt;int&gt; v={i,j,k};
+							sort(v.begin(),v.end());
+
+							s.insert(make_pair(make_pair(v[0],v[1]),v[2]));
+						}
+					}
+				}
+			}
+		}
+	}
+	printf(&quot;%d\n&quot;,s.size());
+	for(auto it:s){
+		printf(&quot;%s %s %s\n&quot;,name[it.first.first],name[it.first.second],name[it.second]);
+	}
+	return 0;
+}
+/*
+5
+TheStrong 90 60 10
+TheInvincible 10000 10000 10000
+TheTough 70 50 25
+TheBrick 3 1 4159
+TheResilient 160 40 10
+*/</code>
+</pre>
+</body>
+</html>

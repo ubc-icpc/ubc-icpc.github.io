@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+/**
+ * Created by D on 1/22/2017.
+ */
+public class cowdance {
+  static int n;
+  static int tmax;
+  private static Queue&lt;Integer&gt; inital;
+
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+    n = sc.nextInt();
+    tmax = sc.nextInt();
+    sc.nextLine();
+    inital = new LinkedList&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) {
+      inital.add(sc.nextInt());
+      sc.nextLine();
+    }
+    System.out.print(binarySearch());
+  }
+
+
+  public static int binarySearch() {
+    int k = n;
+    int low = 1;
+    int high = n;
+
+    while (high &gt;= low) {
+      int middle = (low + high) / 2;
+      int v = check(middle);
+      if (v &lt;= tmax) {
+        high = middle - 1;
+        k = middle;
+      }
+      if (v &gt; tmax) {
+        low = middle + 1;
+      }
+    }
+    return k;
+  }
+
+  private static int check(int i) {
+    int[] stage = new int[i];
+    Queue&lt;Integer&gt; q = new LinkedList&lt;&gt;();
+    q.addAll(inital);
+
+    int t = 0;
+    boolean done = false;
+    while (!done) {
+      done = true;
+      int smallest = Integer.MAX_VALUE;
+      for (int j = 0; j &lt; i; j++) {
+        if (stage[j] &lt; smallest &amp;&amp; stage[j] != -1) {
+          smallest = stage[j];
+        }
+      }
+      t += smallest;
+      for (int j = 0; j &lt; i; j++) {
+        if (stage[j] != -1) {
+          if (stage[j] == smallest) {
+            if (!q.isEmpty()) {
+              stage[j] = q.remove();
+              done = false;
+            } else {
+              stage[j] = -1;
+            }
+          } else {
+            stage[j] -= smallest;
+            done = false;
+          }
+        }
+      }
+    }
+    return t - 1;
+  }
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

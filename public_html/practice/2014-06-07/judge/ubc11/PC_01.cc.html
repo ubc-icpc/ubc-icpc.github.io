@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;climits&gt;
+using namespace std;
+
+typedef long long ll;
+
+ll ones_power(ll num){
+	ll res = 0;
+	ll c = 0;
+	
+	for (int i = 62; i &gt;= 0; i--){
+		c = 1LL &lt;&lt; i;
+		if (c &amp; num){
+			res = (c &amp; num) + 2*ones_power(num/2);
+			break;
+		}
+	}
+	return res;
+}
+
+ll arbitrary_ones(ll num){
+	ll res = 0;
+	ll c = 0;
+	for (int i = 62; i &gt;= 0; i--){
+		c = 1LL &lt;&lt; i;
+		if (c &amp; num){
+			res += (ones_power(c-1) + (num-c+1) + arbitrary_ones(num-c));
+			break;
+		}
+	}
+	return res;
+}
+
+int main(){
+	/*ll d, a;
+	for (int i = 0; i &lt; 6; i++){
+		d = 1LL &lt;&lt; i;
+		a = ones_power(d-1);
+		cout &lt;&lt; d-1 &lt;&lt; &quot;: &quot; &lt;&lt; a &lt;&lt; endl;
+	}*/
+	ll a, b; cin &gt;&gt; a &gt;&gt; b;
+	cout &lt;&lt;	arbitrary_ones(b) - arbitrary_ones(a-1) &lt;&lt; endl;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

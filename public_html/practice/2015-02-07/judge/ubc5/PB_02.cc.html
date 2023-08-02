@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int a[400001], b1[400001], b2[400001];
+
+int main() {
+  int n;
+  while (scanf(&quot;%d&quot;, &amp;n) &amp;&amp; n != 1) {
+    for (int i = 1; i &lt;= n; i++)
+      scanf(&quot;%d&quot;, &amp;a[i]);
+    int mn = 2000001, mx = -1;
+    for (int i = 1; i &lt; n; i++) {
+      mn = min(mn, a[i]);
+      mx = max(mx, a[i]);
+      b1[i] = mx-mn;
+    }
+    mn = 2000001, mx = -1;
+    for (int i = n; i &gt; 1; i--) {
+      mn = min(mn, a[i]);
+      mx = max(mx, a[i]);
+      b2[i-1] = mx-mn;
+    }
+    mn = 2000001;
+    int mi = -1;
+    for (int i = 1; i &lt; n; i++) {
+      if (max(b1[i],b2[i]) &lt; mn) {
+        mn = max(b1[i],b2[i]);
+        mi = i;
+      }
+    }
+    printf(&quot;%d\n&quot;, mi);
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

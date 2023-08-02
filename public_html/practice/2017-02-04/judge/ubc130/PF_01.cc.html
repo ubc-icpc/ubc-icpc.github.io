@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+typedef long long ll;
+typedef long double ld;
+using namespace std;
+
+const vector&lt;pair&lt;int, int&gt;&gt; neighs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	int T; cin &gt;&gt; T;
+	while (T--) {
+		int w, h; cin &gt;&gt; w &gt;&gt; h;
+		vector&lt;string&gt; graph;
+		for (int i = 0; i &lt; h; i++) {
+			string s; cin &gt;&gt; s;
+			graph.push_back(s);
+		}
+		vector&lt;vector&lt;bool&gt;&gt; visited(h, vector&lt;bool&gt;(w, 0));
+		queue&lt;vector&lt;int&gt;&gt; seen;
+		vector&lt;pair&lt;int, int&gt;&gt; fire;
+		for (int y = 0; y &lt; h; y++) {
+			for (int x = 0; x &lt; w; x++) {
+				if (graph[y][x] == '@')
+					seen.push({x, y, 0});
+				else if (graph[y][x] == '*')
+					fire.push_back({x, y});
+			}
+		}
+		bool good = 0;
+		int curStep = -1;
+		while (!seen.empty()) {
+			vector&lt;int&gt; cur = seen.front(); seen.pop();
+			if (cur[0] == 0 || cur[0] == w-1 || cur[1] == 0 || cur[1] == h-1) {
+				cout &lt;&lt; cur[2] + 1 &lt;&lt; endl;
+				good = 1;
+				break;
+			}
+			if (cur[2] != curStep) {
+				vector&lt;pair&lt;int, int&gt;&gt; fireNew;
+				for (pair&lt;int, int&gt; p : fire) {
+					for (pair&lt;int, int&gt; n : neighs) {
+						int x = p.first + n.first, y = p.second + n.second;
+						if (x &lt; 0 || x &gt;= w || y &lt; 0 || y &gt;= h)
+							continue;
+						char cell = graph[y][x];
+						if (cell == '.') {
+							fireNew.push_back({x, y});
+							graph[y][x] = '*';
+						}
+					}
+				}
+				fire = fireNew;
+				curStep = cur[2];
+			}
+			for (pair&lt;int, int&gt; p : neighs) {
+				int x = cur[0] + p.first, y = cur[1] + p.second;
+				char cell = graph[y][x];
+				if (cell != '#' &amp;&amp; cell != '*' &amp;&amp; !visited[y][x]) {
+					visited[y][x] = 1;
+					seen.push({x, y, cur[2] + 1});
+				}
+			}
+		}
+		if (!good) {
+			cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

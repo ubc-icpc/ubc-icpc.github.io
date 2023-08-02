@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+
+// from ubc code archive
+struct ARQBIT { vector&lt;ll&gt; t, d; int n, h;
+  ARQBIT(int _n) { n = _n; h = 8*sizeof(int) - __builtin_clz(n);
+    t = vector&lt;ll&gt;(2*n, 0); d = vector&lt;ll&gt;(n, 0); }
+  void modify_node(int i, ll v, int len) {
+    t[i] += len * v;      // update to node when entire subrange change by v
+    if (i &lt; n) d[i] += v; // accum. to lazy when entire subrange change by v
+  }
+  void pull(int l, int r) {
+    for (l += n, r += n; l &gt; 1; ) { l &gt;&gt;= 1, r &gt;&gt;= 1;
+      for (int i = l; i &lt;= r; ++i)
+        if (d[i] == 0) t[i] = t[i&lt;&lt;1] + t[i&lt;&lt;1|1]; // the associative operation
+    }
+  }
+  void push(int l, int r) {
+    int curh = h, len = 1 &lt;&lt; (h-1);
+    for (l += n, r += n; curh &gt; 0; --curh, len&gt;&gt;=1)
+      for (int i = l&gt;&gt;curh; i &lt;= r&gt;&gt;curh; ++i) if (d[i] != 0) {
+        modify_node(i&lt;&lt;1, d[i], len);
+        modify_node(i&lt;&lt;1|1, d[i], len);
+        d[i] = 0;
+      }
+  }
+  void modify(int l, int r, ll v) {
+    if (v == 0) return;
+    push(l,l); push(r,r);
+    for (int L=l+n, R=r+n, len=1; L &lt;= R; L&gt;&gt;=1, R&gt;&gt;=1, len&lt;&lt;=1) {
+      if  (L&amp;1) modify_node(L++, v, len);
+      if (~R&amp;1) modify_node(R--, v, len);
+    }
+    pull(l,l); pull(r,r);
+  }
+  ll query(int l, int r) {
+    push(l,l); push(r,r);
+    ll resl = 0, resr = 0; // identity of the associative operation
+    for (l += n, r += n; l &lt;= r; l&gt;&gt;=1, r&gt;&gt;=1) {
+      if  (l&amp;1) resl = resl + t[l++]; // the associative operation
+      if (~r&amp;1) resr = t[r--] + resr; // the associative operation
+    }
+    return resl + resr; // the associative operation
+  } };
+
+int main() {
+    ll n, q, a;
+    cin &gt;&gt; n &gt;&gt; q;
+    ARQBIT segtree(n);
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; a;
+        segtree.modify(i, i, a);
+    }
+    ll left, right;
+    for (int i = 0; i &lt; q; i++) {
+        cin &gt;&gt; left &gt;&gt; right;
+        left--; right--;
+        cout &lt;&lt; segtree.query(left, right) &lt;&lt; '\n';
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

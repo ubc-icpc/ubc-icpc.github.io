@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int ky, kp;
+int main() {
+    int n, k; cin &gt;&gt; k &gt;&gt; n;
+    vector&lt;pair&lt;int, int&gt;&gt; m;
+    cin &gt;&gt; ky &gt;&gt; kp;
+    
+    m.push_back({ky, kp});
+    for (int i = 0; i &lt; n+k-2; i++) {
+        int x, y; cin &gt;&gt; x &gt;&gt; y;
+        m.push_back({x,y});
+    }
+    sort(m.begin(), m.end());
+    
+    set&lt;int, greater&lt;int&gt;&gt; s;
+    for (int i = 0; i &lt; k-1; i++) {
+        s.insert(m[i].second);
+    }
+    
+    for (int i = k-1; i &lt; n+k-1; i++) {
+        s.insert(m[i].second);
+        if (*s.begin() == kp) {
+            cout &lt;&lt; m[i].first &lt;&lt; endl;
+            return 0;
+        }
+        s.erase(s.begin());
+    }
+    cout &lt;&lt; &quot;unknown&quot; &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

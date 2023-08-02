@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+
+int main(void) {
+  
+  int t; cin &gt;&gt; t;
+
+  for(int i=1; i&lt;=t; i++) {
+    cout &lt;&lt; &quot;Game Board #&quot; &lt;&lt; i &lt;&lt; &quot;: &quot; ;
+    int rows, cols; cin &gt;&gt; rows &gt;&gt; cols;
+    int m[rows][cols];
+    for(int j=0; j&lt;rows; j++) {
+      for(int k=0; k&lt;cols; k++) {
+	if( (j==0 &amp;&amp; k==0) || (j==rows-1 &amp;&amp; k==cols-1) ) {
+	  char c; cin &gt;&gt; c;
+	  m[j][k] = 0;
+	} else {
+	  int x; cin &gt;&gt; x;
+	  m[j][k] = x;
+	}
+      }
+    }
+
+    for(int r=0; r&lt;rows; r++) {
+      for(int c=0; c&lt;cols; c++) {
+	if(r==0 &amp;&amp; c==0) continue;
+	else if(r==0) {
+	  m[r][c] += m[r][c-1];
+	} else if(c==0) {
+	  m[r][c] += m[r-1][c];
+	} else {
+	  m[r][c] += max(m[r-1][c], m[r][c-1]);
+	}
+      }
+    }
+    cout &lt;&lt; m[rows-1][cols-1] &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

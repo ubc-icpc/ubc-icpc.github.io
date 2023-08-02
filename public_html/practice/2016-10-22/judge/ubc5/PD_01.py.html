@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+d = int(raw_input())
+p = []
+s, m = 0, 100
+for i in xrange(d):
+  p.append(int(raw_input()))
+ind = 0
+low = False
+while ind &lt; d:
+  if ind == d-1:
+    m += s*p[ind]
+    break
+  if not low:
+    if p[ind+1] &gt; p[ind]:
+      sb = min(100000,m/p[ind])
+      s = sb
+      m -= sb*p[ind]
+      low = True
+  else:
+    if p[ind+1] &lt; p[ind]:
+      m += p[ind]*s
+      s = 0
+      low = False
+  ind += 1
+print m
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

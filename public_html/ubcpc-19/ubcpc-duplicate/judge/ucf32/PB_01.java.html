@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">
+/**
+ * Write a description of class abnormal here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+import java.util.*;
+public class fighters
+{
+    
+    public static Hashtable&lt;String, Integer[]&gt; table;
+    
+    public static void main(String args[]){
+        Scanner m = new Scanner(System.in);
+        //System.out.println(&quot;hi&quot;);
+        int num = Integer.parseInt(m.nextLine());
+        Player[] players = new Player[num];
+        for (int i = 0; i &lt; num; i++){
+            String[] temp = m.nextLine().split(&quot; &quot;);
+            players[i] = new Player( new Integer[]{Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), Integer.parseInt(temp[3])},temp[0]);
+            //table.put(temp[0], new Integer[]{Integer.parseInt(temp[1]), Integer.parseInt(temp[2]), Integer.parseInt(temp[3])});
+        }
+        
+        if (num &lt; 3){
+            System.out.println(0);
+            return;
+        }
+        
+        int count = 0;
+        
+        ArrayList&lt;String&gt; trips = new ArrayList&lt;&gt;();
+        
+        for (int i = 0; i &lt; num-2; i++){
+            for (int j = i+1; j &lt; num-1; j++){
+                for (int k = j+1; k &lt; num; k++){
+                    if (isTriple(players[i].stats, players[j].stats, players[k].stats)){
+                        count++;
+                        trips.add(players[i].name + &quot; &quot; + players[j].name + &quot; &quot; + players[k].name);
+                    }
+                }
+            }
+        }
+        System.out.println(count);
+        for (String s : trips){
+            System.out.println(s);
+        }
+    }
+    
+    public static class Player{
+        public Integer[] stats;
+        public String name;
+        public Player(Integer[] s, String n){
+            stats = s;
+            name = n;
+        }
+    }
+    
+    public static boolean isTriple(Integer[] p1, Integer[] p2, Integer[] p3){
+        int w1 = round(p1, p2, 1, 2);
+        int w2 = round(p2, p3, 2, 3);
+        int w3 = round(p3, p1, 3, 1);
+        //System.out.println(w1 + &quot; &quot; + w2 + &quot; &quot; + w3);
+        if (w1 == 0 || w2 == 0 || w3 == 0){
+            return false;
+        }
+        
+        if (w1 == w2 || w2 == w3 || w1 == w3){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public static int round(Integer[] p1, Integer[] p2, int a, int b){
+        double first = Math.max(0, p2[1]-p1[2]);
+        double second = Math.max(0, p1[1]-p2[2]);
+        
+        if (first == 0 &amp;&amp; second != 0){
+            return a;
+        }
+        if (second == 0 &amp;&amp; first != 0){
+            return b;
+        }
+        
+        if (Math.ceil(p1[0]/first) &gt; Math.ceil(p2[0]/second)){
+            return a;
+        }
+        if (Math.ceil(p1[0]/first) &lt; Math.ceil(p2[0]/second)){
+            return b;
+        }
+        
+        return 0;
+    }
+}
+</code>
+</pre>
+</body>
+</html>

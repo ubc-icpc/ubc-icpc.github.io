@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import fileinput
+
+f = fileinput.input()
+
+for case in xrange(0, int(f.readline())):
+    # Sort enemies by ratio of HP / DPS
+    enemies = sorted(
+        zip([float(x) for x in f.readline().split()],  # enemy HP
+            [float(x) for x in f.readline().split()]), # enemy DPS
+        key=lambda x: x[0] / x[1])
+
+    teamDPS = sum(float(x) for x in f.readline().split())
+
+    print &quot;%.5f&quot; % sum(
+        sum(dps * (enemy[0] / teamDPS) for _, dps in enemies[i:])
+        for i, enemy in enumerate(enemies))
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

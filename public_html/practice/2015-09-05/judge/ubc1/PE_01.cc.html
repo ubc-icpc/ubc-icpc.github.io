@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+typedef vector&lt;pt&gt; pol;
+
+const ld EPS = 1e-8;
+
+ld cp(const pt &amp;a, const pt &amp;b) { return imag(conj(a)*b); }
+ld dp(const pt &amp;a, const pt &amp;b) { return real(conj(a)*b); }
+inline ld sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : x/abs(x); }
+
+// Area of a polygon (convex or concave). Always non-negative.
+ld perim(const pol &amp;v) { ld s = 0; int n = v.size();
+  for (int i = 0; i &lt; n; i++) s += abs(v[i]-v[(i+1)%n]);
+  return s; }
+  
+inline pt line_inter(const pt &amp;a, const pt &amp;b, const pt &amp;c, const pt &amp;d) {
+  return a + cp(c - a, d - c) / cp(b - a, d - c) * (b - a); }
+  
+// Left of the vector (a -&gt; b) will be cut off. Convex polygons tested UVa 10117
+// Simple polygon tested KTH Challenge 2013 G
+pol cut_polygon(const pol &amp;v, const pt &amp;a, const pt &amp;b) { pol out;
+  for(int i = v.size() - 1, j = 0; j &lt; v.size(); i = j++) {
+    if(cp(b-a, v[i]-a) &lt; EPS) out.push_back(v[i]);
+    if(sgn(cp(b-a, v[i]-a)) * sgn(cp(b-a, v[j]-a)) &lt; 0) {
+      pt p = line_inter(a, b, v[i], v[j]);
+      if(!out.size() || abs(out.back() - p) &gt; EPS) out.push_back(p); } }
+  while(out.size() &amp;&amp; abs(out[0] - out.back()) &lt; EPS) out.pop_back();
+  return out; }
+  
+int main() {
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot;;
+        
+        int n, cuty; cin &gt;&gt; n &gt;&gt; cuty;
+        pol p;
+        for (int i = 0; i &lt; n; i++) {
+            int x, y; cin &gt;&gt; x &gt;&gt; y;
+            p.push_back(pt(x,y));
+        }
+        
+        pol a = cut_polygon(p, pt(0, cuty), pt(1, cuty));
+        pol b = cut_polygon(p, pt(1, cuty), pt(0, cuty));
+        
+        ld res0 = min(perim(a), perim(b));
+        ld res1 = max(perim(a), perim(b));
+        cout &lt;&lt; setprecision(3) &lt;&lt; fixed &lt;&lt; res0 &lt;&lt; &quot; &quot; &lt;&lt; res1 &lt;&lt; endl &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+/*************************************************************************
+	&gt; File Name: f.cpp
+	&gt; Author: 
+	&gt; Mail: 
+	&gt; Created Time: Wed 29 Oct 22:29:51 2014
+ ************************************************************************/
+
+#include&lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+int n;
+vector&lt;int&gt; stack;
+bool comp(int a, int b) {
+    return a &lt; b;
+}
+void solve(int n) {
+    stack.clear();
+    stack.push_back(1);
+    for(int i = 2; i &lt;= sqrt(n); i++) {
+        if(n % i == 0){
+            int temp = n / i;
+            stack.push_back(i);
+            if(temp &gt; 1 &amp;&amp; temp != i) {
+                stack.push_back(temp);
+            }
+        }
+        
+    }
+    sort(stack.begin(), stack.end(), comp);
+    int sum = 0;
+    for(int i = 0; i &lt; stack.size(); i++) {
+        sum += stack[i];
+    }
+    if(sum != n) {
+        cout&lt;&lt;n&lt;&lt;&quot; is NOT perfect.&quot;&lt;&lt;endl;
+        return ;
+    }
+    cout&lt;&lt;n&lt;&lt;&quot; = 1&quot;;
+    for(int i = 1; i &lt; stack.size(); i++) {
+        cout&lt;&lt;&quot; + &quot;&lt;&lt;stack[i];
+    }
+    cout&lt;&lt;endl;
+}
+int main() {
+    int n;
+    while(true) {
+        cin&gt;&gt;n;
+        if(n &lt; 0) {
+            break;
+        }
+        solve(n);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

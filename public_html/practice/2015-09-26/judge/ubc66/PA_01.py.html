@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+for t in range(int(raw_input())):
+    hand = raw_input().split()
+
+    HCs = {'A':4, 'K':3, 'Q':2, 'J':1}
+
+    HCP = 0
+    S = 0
+    D = 0
+    H = 0
+    C = 0
+
+    for card in hand:
+        suit = card[1]
+        val = card[0]
+        if val in HCs:
+            HCP += HCs[val]
+
+        if suit == 'S':
+            S += 1
+        elif suit == 'D':
+            D += 1
+        elif suit == 'H':
+            H += 1
+        elif suit == 'C':
+            C += 1
+
+    dist = sorted([S,D,H,C])
+
+    # print(HCP, dist)
+
+    if dist in ([3,3,3,4], [2,3,4,4], [2,3,3,5]) and HCP &gt;= 15 and HCP &lt;= 17:
+        print('1NT')
+    else:
+        print('Pass')
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

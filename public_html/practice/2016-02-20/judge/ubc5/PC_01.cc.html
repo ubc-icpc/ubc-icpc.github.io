@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int par[200100], lastd[200100];
+char to_hex(int x) {
+	if (x &lt; 10) return '0' + x;
+	else return 'a' + (x-10);
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n, d; cin &gt;&gt; dec &gt;&gt; n &gt;&gt; d;
+		vector&lt;int&gt; allowed;
+		memset(par, -1, (n+1) * sizeof(int));
+		
+		queue&lt;int&gt; q;
+		for (int i = 0; i &lt; d; i++) {
+			int x; 
+			cin &gt;&gt; hex &gt;&gt; x;
+
+			allowed.push_back(x);
+			if (par[x%n] != -1) continue;
+			
+			if (x != 0) {
+				par[x%n] = x%n;
+				lastd[x%n] = x;
+				q.push(x%n);
+			}
+		}
+		
+		int iters = 0;
+		while (!q.empty()) {
+			int u = q.front(); q.pop();
+			if (u == 0) break;
+			
+			for (int x : allowed) {
+				int nx = (16 * u + x)%n;
+				if (par[nx] == -1) {
+					q.push(nx);
+					par[nx] = u;
+					lastd[nx] = x;
+				}
+			}
+		}
+		
+		string res;
+		int u = 0;
+		if (par[u] == -1) cout &lt;&lt; &quot;no solution&quot; &lt;&lt; endl;
+		else {
+			while (true) {
+				res.push_back(to_hex(lastd[u]));
+				if (u == par[u]) break;
+				u = par[u];
+			}
+			reverse(res.begin(), res.end());
+			cout &lt;&lt; res &lt;&lt; endl;
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

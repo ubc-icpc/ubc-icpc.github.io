@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+
+#define MOD 1007
+#define MAXN 50100
+
+using namespace std;
+
+vector&lt;int&gt; g[MAXN];
+int depth[MAXN], sol;
+
+void dfs(int v, int d) {
+  if (depth[v] != -1) {
+    int x = d - depth[v];
+    if (x &gt; 2) sol = (sol*x)%MOD;
+    return;
+  }
+
+  depth[v] = d;
+  
+  for (int i = 0; i &lt; g[v].size(); ++i)
+    dfs(g[v][i], d+1);
+}
+
+int main() {
+  int t;
+  cin &gt;&gt; t;
+  
+  for (int cno = 1; cno &lt;= t; ++cno) {
+    int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+
+    for (int i = 0; i &lt; n; ++i) {
+      g[i].clear();
+      depth[i] = -1;
+    }
+
+    for (int i = 0; i &lt; m; ++i) {
+      int u, v;
+      cin &gt;&gt; u &gt;&gt; v;
+
+      --u; --v;
+      g[u].push_back(v);
+      g[v].push_back(u);
+    }
+
+    sol = 1;
+    dfs(0, 1);
+    
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; cno &lt;&lt; &quot;: &quot; &lt;&lt; sol &lt;&lt; endl &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

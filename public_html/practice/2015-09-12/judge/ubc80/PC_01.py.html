@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+n_practices = int(raw_input())
+for i in range(0, n_practices):
+    sb_temp = raw_input().split()
+    n_students = int(sb_temp[0])
+    n_brownies = int(sb_temp[1])
+    n_groups = int(raw_input())
+    print &quot;Practice #&quot; + str(i+1) + &quot;: &quot; + str(n_students) + &quot; &quot; + str(n_brownies)
+    for x in range(0, n_groups):
+        n = int(raw_input())
+        while n_brownies &lt;= n:
+            n_brownies *= 2
+        n_brownies -= n
+        print n, n_brownies
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+def w(n,p,y):
+  t = 1.0
+  for i in xrange(p-1):
+    t *= float(n-i)/float(n+y-i)
+  return t*y*p/float(n+y-p+1)
+
+n, p = [int(i) for i in raw_input().split()]
+cp = 1.0
+for i in xrange(p-1):
+  cp *= float(n-i)/(n-i+1)
+cp *= float(p)/(n-p+2)
+P = cp
+y = 1
+while True:
+  cp *= float(n+y-p+2)*(n+y-p+1)*(y+1)/(n+y+1)/(n+y-p+2)/y
+  if cp &gt; P:
+    P = cp
+  else:
+    break
+  y += 1
+print P
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

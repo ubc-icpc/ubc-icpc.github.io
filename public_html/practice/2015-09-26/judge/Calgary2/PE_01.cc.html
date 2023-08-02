@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define infty 104289
+
+vector&lt;string&gt; m;
+
+struct node {
+public:
+	int x, y, r;
+	node(int a, int b, int c) {
+		x = a;
+		y = b;
+		r = c;
+	}
+	void operator+=(node n) {
+		x += n.x;
+		y += n.y;
+		r += n.r;
+		r = (r + 4) % 4;
+	}
+};
+
+node moves[6] = { node(0, 1, 0), node(0, -1, 0), node(1, 0, 0), node(-1, 0, 0),
+		node(0, 0, -1), node(0, 0, 1) };
+
+bool valid(node n) {
+	if (n.x &lt; 0 || n.y &lt; 0 || n.x &gt;= m[0].size()-1 || n.y &gt;= m.size()-1){//cout&lt;&lt;&quot;huh\n&quot;;
+		return false;}
+	switch (n.r) {
+	case 0:
+		return m[n.y][n.x + 1] != 'X' &amp;&amp; m[n.y + 1][n.x + 1] != 'X'
+				&amp;&amp; m[n.y + 1][n.x] != 'X';
+		break;
+	case 1:
+		return m[n.y + 1][n.x + 1] != 'X' &amp;&amp; m[n.y + 1][n.x] != 'X'
+				&amp;&amp; m[n.y][n.x] != 'X';
+		break;
+	case 2:
+		return m[n.y][n.x + 1] != 'X' &amp;&amp; m[n.y + 1][n.x] != 'X'
+				&amp;&amp; m[n.y][n.x] != 'X';
+		break;
+	case 3:
+		return m[n.y][n.x + 1] != 'X' &amp;&amp; m[n.y + 1][n.x + 1] != 'X'
+				&amp;&amp; m[n.y][n.x] != 'X';
+		break;
+	}
+}
+
+int main() {
+	int ro, c;
+	while (1) {
+		cin &gt;&gt; ro &gt;&gt; c;
+		if (ro == 0 &amp;&amp; c == 0) {
+			break;
+		}
+		m.clear();	
+		m.resize(ro);
+		for (int i = 0; i &lt; ro; i++) {
+			cin &gt;&gt; m[i];
+		}
+		int x=50, y=50, r=1;
+		for (int i = 0; i &lt; ro; i++) {
+			if (m[i].find(&quot;SS&quot;) != -1) {
+				if (i != 0 &amp;&amp; m[i - 1].find(&quot;S&quot;) != -1) {
+					y = i - 1;
+					int ss = m[i].find(&quot;SS&quot;);
+					int s = m[i - 1].find(&quot;S&quot;);
+					if (s &gt; ss) {
+						x = ss;
+						r = 1;
+					} else {
+						x = s;
+						r = 0;
+					}
+				} else {
+					y = i;
+					int ss = m[i].find(&quot;SS&quot;);
+					int s = m[i + 1].find(&quot;S&quot;);
+					if (s &gt; ss) {
+						x = ss;
+						r = 3;
+					} else {
+						r = 2;
+						x = s;
+					}
+				}
+			}
+		}
+
+		int dx=60, dy=60, dr=3;
+		for (int i = 0; i &lt; ro; i++) {
+			if (m[i].find(&quot;EE&quot;) != -1) {
+				if (i != 0 &amp;&amp; m[i - 1].find(&quot;E&quot;) != -1) {
+					dy = i - 1;
+					int ss = m[i].find(&quot;EE&quot;);
+					int s = m[i - 1].find(&quot;E&quot;);
+					if (s &gt; ss) {
+						dx = ss;
+						dr = 0;
+					} else {
+						dx = s;
+						dr = 1;
+					}
+				} else {
+					dy = i;
+					int ss = m[i].find(&quot;EE&quot;);
+					int s = m[i + 1].find(&quot;E&quot;);
+					if (s &gt; ss) {
+						dx = ss;
+						dr = 3;
+					} else {
+						dr = 2;
+						dx = s;
+					}
+				}
+			}
+		}
+
+//cout&lt;&lt;valid(node(2,5,2));return 0;
+		int dist[ro][c][4];
+		for(int i=0;i&lt;ro;i++){
+			for(int j=0;j&lt;c;j++){
+			dist[i]	[j][0]=infty;
+			dist[i]	[j][1]=infty;
+			dist[i]	[j][2]=infty;
+			dist[i]	[j][3]=infty;
+			}
+		}
+		queue&lt;node&gt; q;
+		q.push(node(x, y, r));
+		dist[y][x][r] = 0;
+		while (!q.empty()) {
+			node t = q.front();
+			q.pop();
+	//		cout&lt;&lt;t.x&lt;&lt;' '&lt;&lt;t.y&lt;&lt;' '&lt;&lt;t.r&lt;&lt;&quot;\n&quot;;
+			for (node nei : moves) {
+				nei += t;
+				
+				if (dist[nei.y][nei.x][nei.r] == infty &amp;&amp; valid(nei)) {
+					q.push(nei);
+					dist[nei.y][nei.x][nei.r] = dist[t.y][t.x][t.r] + 1;
+					if (nei.y == dy &amp;&amp; nei.x == dx &amp;&amp; nei.r == dr)
+						goto finally;
+				}
+			}
+		}
+		cout &lt;&lt; &quot;IMPOSSIBLE\n&quot;;
+		continue;
+		finally: cout &lt;&lt; dist[dy][dx][dr] &lt;&lt; &quot;\n&quot;;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

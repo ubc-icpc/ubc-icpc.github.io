@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+struct fighter {
+	string name;
+	int hp, at, df;
+};
+
+struct triple {
+	int a, b, c;
+	bool operator&lt;(const triple&amp; other) const {
+		if (a &lt; other.a)
+			return true;
+		if (a &gt; other.a)
+			return false;
+		if (b &lt; other.b)
+			return true;
+		if (b &gt; other.b)
+			return false;
+		if (c &lt; other.c)
+			return true;
+		return false;
+	}
+};
+
+fighter fs[101];
+
+int wins_against(int i, int j) {
+	fighter a = fs[i];
+	fighter b = fs[j];
+	int batk = max(0, b.at - a.df);
+	int aatk = max(0, a.at - b.df);
+	if (aatk &lt;= 0)
+		return false;
+	if (batk &lt;= 0)
+		return true;
+	int aturns = ceil((long double) a.hp / batk);
+	int bturns = ceil((long double) b.hp / aatk);
+	if (aturns &gt; bturns)
+		return true;
+	return false;
+}
+
+int main() {
+		ios::sync_with_stdio(0);
+		cin.tie(0);
+
+		int n;
+		cin &gt;&gt; n;
+		for (int i = 0; i &lt; n; ++i) 
+			cin &gt;&gt; fs[i].name &gt;&gt; fs[i].hp &gt;&gt; fs[i].at &gt;&gt; fs[i].df;
+
+		set&lt;triple&gt; res;
+		for (int i = 0; i &lt; n; ++i)
+			for (int j = 0; j &lt; n; ++j)
+				for (int k = 0; k &lt; n; ++k) 
+					if ((wins_against(i, j) &amp;&amp; wins_against(j, k) &amp;&amp; wins_against(k, i))) {
+						int small = min(min(i, j), k);
+						int big = max(max(i, j), k);
+						int middle = i;
+						if (middle == small || middle == big)
+							middle = j;
+						if (middle == small || middle == big)
+							middle = k;
+						res.insert({small, middle, big});
+					}
+
+		cout &lt;&lt; res.size() &lt;&lt; '\n';
+		for (triple t : res) 
+			cout &lt;&lt; fs[t.a].name &lt;&lt; ' ' &lt;&lt; fs[t.b].name &lt;&lt; ' ' &lt;&lt; fs[t.c].name &lt;&lt; '\n';
+		return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#take=open('moocrypt.in','r')
+#give=open('moocrypt.out','w')
+x=raw_input().split()
+a=int(x[0])
+b=int(x[1])
+L=[]
+def hsh(L):
+    return 26*26*(ord(L[0])-64)+26*(ord(L[1])-64)+(ord(L[2])-64)#Looked up the  ord() function from https://docs.python.org/2/library/functions.html#ord and the ASCII table from http://www.asciitable.com/
+for i in range(0,a):
+    to_add=[]
+    random=raw_input()
+    for i in range(0,b):
+        to_add.append(random[i])
+    L.append(to_add)
+Words=[]
+        
+for i in range(0,a):
+    for j in range(0,b):
+        if j&lt;b-1:
+            if L[i][j]==L[i][j+1] and L[i][j]!='O':
+                if j&lt;b-2:
+                    if L[i][j]!=L[i][j+2] and L[i][j+2]!='M':
+                        Words.append(hsh([L[i][j],L[i][j+1],L[i][j+2]]))
+                if j&gt;0:
+                    if L[i][j]!=L[i][j-1] and L[i][j-1]!='M':
+                        Words.append(hsh([L[i][j],L[i][j+1],L[i][j-1]]))
+        if i&lt;a-1:
+            if L[i][j]==L[i+1][j] and L[i][j]!='O':
+                if i&lt;a-2:
+                    if L[i][j]!=L[i+2][j] and L[i+2][j]!='M':
+                        Words.append(hsh([L[i][j],L[i+1][j],L[i+2][j]]))
+                if i&gt;0:
+                    if L[i][j]!=L[i-1][j] and L[i-1][j]!='M':
+                        Words.append(hsh([L[i][j],L[i+1][j],L[i-1][j]]))
+        if j&lt;b-1 and i&lt;a-1:
+            if L[i][j]==L[i+1][j+1] and L[i][j]!='O':
+                if j&lt;b-2 and i&lt;a-2:
+                    if L[i][j]!=L[i+2][j+2] and L[i+2][j+2]!='M':
+                        Words.append(hsh([L[i][j],L[i+1][j+1],L[i+2][j+2]]))
+                if j&gt;0 and i&gt;0:
+                    if L[i][j]!=L[i-1][j-1] and L[i-1][j-1]!='M':
+                        Words.append(hsh([L[i][j],L[i+1][j+1],L[i-1][j-1]]))
+        if i&gt;0 and j&lt;b-1:
+            if L[i][j]==L[i-1][j+1] and L[i][j]!='O':
+                if i&gt;1 and j&lt;b-2:
+                    if L[i][j]!=L[i-2][j+2] and L[i-2][j+2]!='M':
+                        Words.append(hsh([L[i][j],L[i-1][j+1],L[i-2][j+2]]))
+                if j&gt;0 and i&lt;a-1:
+                    if L[i][j]!=L[i+1][j-1] and L[i+1][j-1]!='M':
+                        Words.append(hsh([L[i-1][j+1],L[i][j],L[i+1][j-1]]))
+
+Words.sort()
+biggest=0
+count=1
+
+for i in range(1,len(Words)):
+    if Words[i]!=Words[i-1]:
+        if count&gt;biggest:
+            biggest=count
+        count=1
+    else:
+        count=count+1
+if biggest==0:
+    biggest=count
+if len(Words)==0:
+    biggest=0
+print(biggest)
+
+            
+        
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

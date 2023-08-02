@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//#pragma GCC optimize (&quot;O3&quot;)
+
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int n;
+int xx[210],yy[210];
+int lef[210][210],righ[210][210],on[210][210];
+long double fac[210];
+
+inline long long cross(int i,int j,int k){
+	int x1=xx[j]-xx[i];
+	int y1=yy[j]-yy[i];
+
+	int x2=xx[k]-xx[i];
+	int y2=yy[k]-yy[i];
+
+	return (long long)x1*y2-(long long)x2*y1;
+}
+
+int main(){
+	scanf(&quot;%d&quot;,&amp;n);
+	fac[0]=(long double)1.0;
+	for(int i=1;i&lt;=n;i++){
+		scanf(&quot;%d%d&quot;,xx+i,yy+i);
+		fac[i]=(long double)fac[i-1]*(long double)i;
+	}
+	for(int i=1;i&lt;n;i++){
+		for(int j=i+1;j&lt;=n;j++){
+			for(int k=1;k&lt;=n;k++){
+				long long cr = cross(i,j,k);
+				if(cr&gt;0)
+					lef[i][j]++;
+				else if(cr==0){
+					if((xx[i]&lt;=xx[k]&amp;&amp;xx[k]&lt;=xx[j]&amp;&amp;yy[i]&lt;=yy[k]&amp;&amp;yy[k]&lt;=yy[j] || 
+						xx[i]&gt;=xx[k]&amp;&amp;xx[k]&gt;=xx[j]&amp;&amp;yy[i]&gt;=yy[k]&amp;&amp;yy[k]&gt;=yy[j] ||
+						xx[i]&lt;=xx[k]&amp;&amp;xx[k]&lt;=xx[j]&amp;&amp;yy[i]&gt;=yy[k]&amp;&amp;yy[k]&gt;=yy[j] ||
+						xx[i]&gt;=xx[k]&amp;&amp;xx[k]&gt;=xx[j]&amp;&amp;yy[i]&lt;=yy[k]&amp;&amp;yy[k]&lt;=yy[j]) &amp;&amp; k!=i &amp;&amp; k!=j)
+						on[i][j]++;
+				}else
+					righ[i][j]++;
+			}
+		}
+	}
+	for(int i=1;i&lt;=n;i++){
+		long double ans=0.0;
+		for(int j=1;j&lt;n;j++){
+			if(j!=i){
+				for(int k=j+1;k&lt;=n;k++){
+					if(k!=j&amp;&amp;k!=i){
+						long long cr=cross(j,k,i);
+						//cout&lt;&lt;j&lt;&lt;' '&lt;&lt;k&lt;&lt;' '&lt;&lt;i&lt;&lt;' '&lt;&lt;cr&lt;&lt;endl;
+						if(cr==0)continue;
+						long double temp=0.0;
+						if(cr&gt;0){
+							int kk=lef[j][k]+on[j][k];
+							//printf(&quot;%d\n&quot;,on[j][k]);
+							temp=(long double)cr/(long double)kk/(long double)(kk+1)/(long double)(kk+2);
+						}else{
+							int kk=righ[j][k]+on[j][k];
+							temp=(long double)(-cr)/(long double)kk/(long double)(kk+1)/(long double)(kk+2);
+						}
+//						cout&lt;&lt;temp&lt;&lt;endl;
+						ans+=temp;
+					}
+				}
+			}
+		}
+		printf(&quot;%.10lf\n&quot;,(double)ans);
+	}
+	return 0;
+}
+/*
+4
+2 2
+0 2
+2 0
+1 1
+*/</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;int,string&gt; pis;
+
+string k[3] = {&quot;qwertyuiop&quot;, &quot;asdfghjkl&quot;, &quot;zxcvbnm&quot;};
+map&lt;char,pii&gt; m;
+
+int main() {
+  ios::sync_with_stdio(0);
+  for (char c = 'a'; c &lt;= 'z'; c++) {
+    for (int i = 0; i &lt; 3; i++) {
+      for (int j = 0; j &lt; k[i].size(); j++) {
+        if (k[i][j] == c) {
+          m[c] = make_pair(i,j);
+          goto VELOCIRAPTOR;
+        }
+      }
+    }
+VELOCIRAPTOR:
+    ;
+  }
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    string s; int l;
+    cin &gt;&gt; s &gt;&gt; l;
+    vector&lt;pis&gt; v;
+    while (l--) {
+      string w; cin &gt;&gt; w;
+      int d = 0;
+      for (int i = 0; i &lt; s.size(); i++)
+        d += abs(m[s[i]].first-m[w[i]].first)+abs(m[s[i]].second-m[w[i]].second);
+      v.push_back(make_pair(d,w));
+    }
+    sort(v.begin(),v.end());
+    for (pis p : v)
+      cout &lt;&lt; p.second &lt;&lt; &quot; &quot; &lt;&lt; p.first &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;set&gt;
+#include&lt;unordered_map&gt;
+#include&lt;vector&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+#include&lt;algorithm&gt;
+
+int garden[10005][10005];
+
+struct point {
+  int x,y,r;
+  bool operator&lt;(const point&amp; p) const {
+    if(x==p.x) return y&lt;p.y;
+    return x&lt;p.x;
+  }
+};
+bool within(int a, int b, int r) {
+  //  return (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y) &lt;= a.r*a.r;
+  return (a*a+b*b &lt;= r*r);
+}
+using namespace std;
+
+
+int G,M;
+set&lt;point&gt; gob;
+//unordered_map&lt;point, int&gt; cnt;
+vector&lt;point&gt; spr;
+vector&lt;point&gt; gobl;
+int main(void) {
+  ios_base::sync_with_stdio(0);
+  cin&gt;&gt;G;
+  for(int i=0;i&lt;G;i++) {
+    int x,y;cin&gt;&gt;x&gt;&gt;y;
+    //gob.insert({x,y,0});
+    gobl.push_back({x,y,0});
+    //cnt[{x,y,0}]++;
+    garden[x][y]++;
+  }
+  cin&gt;&gt;M;
+  for(int i=0;i&lt;M;i++) {
+    int x,y,r;cin&gt;&gt;x&gt;&gt;y&gt;&gt;r;
+    spr.push_back({x,y,r});
+  }
+  int ans = G;
+  // for(point s:spr) {
+  //   for(point g:gobl) {
+  //     if(within(s,g)) {
+  // 	if (cnt.count({g.x,g.y,0})==0) continue;
+  // 	ans+=(cnt[{g.x,g.y,0}]);
+  // 	//	gob.erase(g);
+  // 	cnt[{g.x,g.y,0}]=0;
+  //     }
+  //   }
+  // }
+  for (point s:spr) {
+    for (int i=max(0,s.x-s.r); i&lt;=min(10000,s.x+s.r); i++) {
+      for (int j=max(0,s.y-s.r); j&lt;=min(10000,s.y+s.r); j++) {
+	//if (cnt.count({i,j,0})==0) continue;
+	if (within(i-s.x,j-s.y,s.r)) {
+	  //G-=cnt[{i,j,0}];
+	  //cnt[{i,j,0}]=0;
+	  G-=garden[i][j];
+	  garden[i][j]=0;
+	}
+      }
+    }
+  }
+  cout &lt;&lt; G &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

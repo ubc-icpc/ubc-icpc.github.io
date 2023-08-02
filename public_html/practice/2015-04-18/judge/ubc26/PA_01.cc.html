@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+using namespace std;
+
+int a[100002];
+int b[100002];
+
+set&lt;int&gt; ones;
+set&lt;int&gt; twos;
+
+void add(int k) {
+  auto x1 = ones.find(k);
+  if (x1 == ones.end()) {
+    ones.insert(k);
+  } else {
+    ones.erase(k);
+    twos.insert(k);
+  }
+}
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    ones.clear();
+    twos.clear();
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+    for (int i = 0; i &lt; n; i++) cin &gt;&gt; b[i];
+
+    int last = 0;
+    for (int i = 0; i &lt; n; i++) {
+      add(a[i]);
+      add(b[i]);
+      if (ones.empty()) {
+        if (last != 0) cout &lt;&lt; &quot; &quot;;
+        cout &lt;&lt; (last+1) &lt;&lt; &quot;-&quot; &lt;&lt; (i+1);
+        last = i+1;
+      }
+    }
+    cout &lt;&lt; endl;
+  }
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

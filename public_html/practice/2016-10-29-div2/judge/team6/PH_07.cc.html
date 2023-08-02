@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef struct { long long time, fun, wait; } surf;
+
+bool cmp(surf a, surf b) {
+  return a.time &lt; b.time;
+}
+
+vector&lt;surf&gt; surfs;
+vector&lt;long long&gt; dp(300000, -1);
+vector&lt;long long&gt; first;
+
+long long solve(long long i) {
+  long long last = surfs.size() - 1;
+  dp[last] = surfs[last].fun;
+
+  for(long long i = last - 1; i &gt;= 0; i--) {
+    long long next_time = surfs[i].time + surfs[i].wait;
+    long long next_i = max(i+1, first[next_time]);
+
+    if(next_i &gt;= surfs.size()) {
+      dp[i] = max(surfs[i].fun, dp[i+1]);
+    } else {
+      dp[i] = max(dp[i+1], dp[next_i] + surfs[i].fun);
+    }
+  }
+
+
+  return dp[0];
+}
+
+int main() {
+  long long n;
+  cin &gt;&gt; n;
+  for(long long i = 0; i &lt; n; i++) {
+    surf s;
+    cin &gt;&gt; s.time &gt;&gt; s.fun &gt;&gt; s.wait;
+    surfs.push_back(s);
+  }
+
+  sort(surfs.begin(), surfs.end(), cmp);
+  
+  long long i = 0;
+  for (long long t = 0; t &lt; 2*10e6; ++t) {
+    while(i &lt; surfs.size() &amp;&amp; surfs[i].time &lt; t) i++;
+
+    first.push_back(i);
+  }
+
+  cout &lt;&lt; solve(0) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

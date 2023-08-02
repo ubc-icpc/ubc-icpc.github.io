@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct c {
+  int dest;
+  int cost;
+};
+
+struct node {
+  int at;
+  int fuel;
+  int cost;
+  bool operator&lt;(const node&amp; b) const {
+    if (cost != b.cost) return cost &gt; b.cost;
+    if (fuel != b.fuel) return fuel &lt; b.fuel;
+    return at &lt; b.at;
+  }
+};
+
+int N, M, P[1005], C, S, E;
+vector&lt;vector&lt;c&gt; &gt; MAP;
+priority_queue&lt;node&gt; q;
+bool visited[1005][105];
+
+int main() {
+  cin &gt;&gt; N &gt;&gt; M;
+  MAP.resize(N);
+  for (int i = 0; i &lt; N; ++i) cin &gt;&gt; P[i];
+  while (M--) {
+    cin &gt;&gt; S &gt;&gt; E &gt;&gt; C;
+    c temp; temp.cost = C;
+    temp.dest = S;
+    MAP[E].push_back(temp);
+    temp.dest = E;
+    MAP[S].push_back(temp);
+  }
+  cin &gt;&gt; M;
+  while (M--) {
+    cin &gt;&gt; C &gt;&gt; S &gt;&gt; E;
+    memset(visited, 0, sizeof visited);
+    q = priority_queue&lt;node&gt;();
+    node temp;
+    temp.at = S;
+    temp.fuel = 0;
+    temp.cost = 0;
+    q.push(temp);
+    int res = -1;
+    while (!q.empty()) {
+      node top = q.top();
+      q.pop();
+      if (visited[top.at][top.fuel]) continue;
+      if (top.at == E &amp;&amp; top.fuel == 0) {
+	res = top.cost;
+	break;
+      }
+      visited[top.at][top.fuel] = true;
+      if (top.fuel &lt; C) {
+	temp.at = top.at;
+	temp.fuel = top.fuel + 1;
+	temp.cost = top.cost + P[top.at];
+	q.push(temp);
+      }
+      for (int i = 0; i &lt; MAP[top.at].size(); ++i)
+	if (top.fuel &gt;= MAP[top.at][i].cost) {
+	  temp.at = MAP[top.at][i].dest;
+	  temp.fuel = top.fuel - MAP[top.at][i].cost;
+	  temp.cost = top.cost;
+	  q.push(temp);
+	}
+    }
+    if (res == -1) cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+    else cout &lt;&lt; res &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

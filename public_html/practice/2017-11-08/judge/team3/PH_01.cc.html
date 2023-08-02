@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long int ll;
+
+
+ll inversions = 0;
+vector&lt;int&gt; helper, arr;
+map&lt;string, int&gt; indices;
+vector&lt;string&gt; strings, ordera, orderb;
+
+void MERGE(int, int, int);
+
+void mergesort(int begin, int end) {
+	if(end - begin &lt; 1 ) return;
+	int mid = (begin + end)/2;
+	mergesort(begin, mid);
+	mergesort(mid+1, end);
+	MERGE(begin, mid, end);
+}
+
+void MERGE(int begin, int mid, int end) {
+	//cerr &lt;&lt; &quot;  MERGE &quot; &lt;&lt; begin &lt;&lt; &quot; to &quot; &lt;&lt; mid &lt;&lt; &quot; AND &quot; &lt;&lt; mid+1 &lt;&lt; &quot; to &quot; &lt;&lt; end &lt;&lt; endl;
+	int it = begin;
+	int jt = mid+1;
+	for(int i=begin;i&lt;=end;++i) {
+		helper[i] = arr[i];
+	}
+	int arrc = begin;
+	while(it &lt;= mid &amp;&amp; jt &lt;= end) {
+		//cerr &lt;&lt; it &lt;&lt; &quot;-&gt;&quot; &lt;&lt; helper[it] &lt;&lt; &quot;, &quot; &lt;&lt; jt &lt;&lt; &quot;-&gt;&quot; &lt;&lt; helper[jt] &lt;&lt; endl;
+		if(helper[it] &lt; helper[jt]) {
+			arr[arrc++] = helper[it++];
+		}
+		else {
+			//cerr &lt;&lt; &quot;Inversion&quot; &lt;&lt; endl;
+			arr[arrc++] = helper[jt++];
+			inversions += mid+1-it;
+		}
+	}
+	for(;it&lt;=mid;++it) arr[arrc++] = helper[it];
+	for(;jt&lt;=end;++jt) arr[arrc++] = helper[jt];
+}
+
+int main() {
+	int N;
+	while(true) {
+		inversions = 0;
+		cin &gt;&gt; N;
+		if(N == 0) break;
+		ordera.resize(N);
+		for(int i=0;i&lt;N;++i) cin &gt;&gt; ordera[i];
+		orderb.resize(N);
+		for(int i=0;i&lt;N;++i) cin &gt;&gt; orderb[i];
+		indices = map&lt;string, int&gt;();
+	
+		for(int i=0;i&lt;N;++i) {
+			indices[ordera[i]] = i;
+		}
+		arr.resize(N);
+		for(int i=0;i&lt;N;++i) {
+			arr[i] = indices[orderb[i]];
+		}
+
+		helper.resize(N);
+		mergesort(0, N-1);
+
+		cout &lt;&lt; inversions &lt;&lt; endl;
+	}
+	
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

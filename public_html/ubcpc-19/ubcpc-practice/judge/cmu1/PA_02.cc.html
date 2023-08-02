@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &quot;bits/stdc++.h&quot;
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+
+int main() {
+    string a,b;
+    cin &gt;&gt; a &gt;&gt; b;
+    if(b.length() == 0) {
+        cout &lt;&lt; a &lt;&lt; endl;
+        return 0;
+    }
+    else if(a.length() != 0) {
+        a[0] = tolower(a[0]);
+    }
+    cout &lt;&lt; b+a &lt;&lt; endl;
+}
+</code>
+</pre>
+</body>
+</html>

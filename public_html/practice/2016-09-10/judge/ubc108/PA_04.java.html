@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// @EXPECTED_RESULTS@: CORRECT
+
+import java.util.Scanner;
+
+public class Battleship {
+	public static void main(String args[]){
+		int ntc;
+		Scanner s = new Scanner(System.in);
+		ntc = s.nextInt();
+		for(int tccounter = 1; tccounter &lt;= ntc; tccounter++) {
+			int w = s.nextInt();
+			int h = s.nextInt();
+			int ns = s.nextInt();
+			s.nextLine();
+			System.err.println(w + &quot; &quot; + h + &quot; &quot; + ns);
+			char[][] p1 = new char[h][];
+			char[][] p2 = new char[h][];
+			int p1s = 0;
+			int p2s = 0;
+			for(int i = h-1; i &gt;= 0; i--){
+				p1[i] = s.nextLine().toCharArray();
+				for(int j = 0; j &lt; w; j++){
+					if(p1[i][j] == '#') p1s++;
+				}
+			}
+			for(int i = h-1; i &gt;= 0; i--){
+				p2[i] = s.nextLine().toCharArray();
+				for(int j = 0; j &lt; w; j++){
+					if(p2[i][j] == '#') p2s++;
+				}
+			}
+			boolean p1turn = true;
+			boolean end = false;
+			int sh;
+			for(sh = 0; sh &lt; ns; sh++){
+				int x = s.nextInt();
+				int y = s.nextInt();
+				if(end) continue;
+				char[][] target;
+				if(p1turn) {
+					target = p2;
+				} else {
+					target = p1;
+				}
+				if(target[y][x] == '#') {
+					// hit!
+					target[y][x] = '_';
+					if(p1turn) {
+						p2s--; 
+						if(p2s == 0) {
+							p1turn = !p1turn;
+							System.err.println(&quot;testcase &quot; + tccounter + &quot; shot &quot; + (sh+1));
+						}
+					} else {
+						p1s--;
+						if(p1s == 0) {
+							end = true;
+						}
+					}
+				} else {
+					p1turn = !p1turn;
+				}
+			}
+			if(p1s == 0 &amp;&amp; p2s == 0) {
+				System.out.println(&quot;draw&quot;);
+			} else if(p1s == 0) {
+				System.out.println(&quot;player two wins&quot;);
+			} else if(p2s == 0) {
+				System.out.println(&quot;player one wins&quot;);
+			} else {
+				System.out.println(&quot;draw&quot;);
+			}
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

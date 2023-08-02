@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+//#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	double n, p; cin &gt;&gt; n &gt;&gt; p;
+	double prob = 0;
+	double t=floor(n/(p-1)); double times = 0;
+
+	prob = p*t/(n+t);
+	times = p-1;
+	for (int i=n; i&gt;n-times; i--) {
+		prob *= i;
+		prob /= i+t-1;
+	}
+
+	cout &lt;&lt; prob &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

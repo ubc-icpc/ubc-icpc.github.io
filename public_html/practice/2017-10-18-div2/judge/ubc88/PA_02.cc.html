@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define double long double
+inline double fph(double a, double b, double c, double d, double v) {
+    return a * v * v * v * v + b * v * v * v + c * v * v + d * v;
+}
+
+int main() {
+    double a, b, c, d, m, t;
+    while (cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; m &gt;&gt; t) {
+        double lo_v = 0.0001;
+        double hi_v = 0.0001;
+        double mid_v;
+        while (hi_v * t &gt; m * fph(a, b, c, d, hi_v)) {
+            hi_v *= 10;
+        }
+        while (lo_v + 1e-6 &lt; hi_v) {
+            mid_v = (lo_v + hi_v) / 2.0;
+            if (mid_v * t &gt; m * fph(a, b, c, d, mid_v)) {
+                lo_v = mid_v;
+            } else {
+                hi_v = mid_v;
+            }
+        }
+        cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; ((int) (mid_v * 100)) / 100.0 &lt;&lt; '\n';
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

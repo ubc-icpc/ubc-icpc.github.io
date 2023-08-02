@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+void split(const string &amp;s, char delim, vector&lt;string&gt; &amp;elems) {
+    stringstream ss;
+    ss.str(s);
+    string item;
+    while (getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+}
+
+
+vector&lt;string&gt; split(const string &amp;s, char delim) {
+    vector&lt;string&gt; elems;
+    split(s, delim, elems);
+    return elems;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	map&lt;string,int&gt; mm;
+	map&lt;int,string&gt; mu;
+	int index = 0;
+	for (int a=0; a&lt;16; a++) {
+		string curr = &quot;-&quot; + to_string(a);
+		for (int b=0; b&lt;(16-a); b++) {
+			string curr1 = curr + &quot;-&quot; + to_string(b);
+			for (int c=0; c&lt;(16-b-a); c++) {
+				string curr2 = curr1 + &quot;-&quot; + to_string(c);
+				for (int d=0; d&lt;(16-c-b-a); d++) {
+					string curr3 = curr2 + &quot;-&quot; + to_string(d);
+					for (int e=0; e&lt;(16-d-c-b-a); e++) {
+						string curr4 = curr3 + &quot;-&quot; + to_string(e) + &quot;-&quot; + to_string(15-e-d-c-b-a);
+						// cout &lt;&lt; index;
+						// cout &lt;&lt; curr4 &lt;&lt; endl;
+						mm[curr4] = index;
+						mu[index] = curr4;
+						index++;
+					}
+				}
+			}
+		}
+	}
+
+	char c;
+	int T = 1;
+	while(cin &gt;&gt; c &amp;&amp; c != 'e') {
+		if (c == 'm') {
+			string key = &quot;&quot;;
+			for (int i=0; i&lt;6; i++) {
+				int l; cin &gt;&gt; l;
+				key = key + &quot;-&quot; + to_string(l);
+			}
+			// cout &lt;&lt; key &lt;&lt; endl;
+			cout &lt;&lt; &quot;Case &quot; &lt;&lt; T &lt;&lt; &quot;: &quot; &lt;&lt; mm[key] &lt;&lt; endl;
+		} else {
+			int key2; cin &gt;&gt; key2;
+			string ans = mu[key2];
+			// cout &lt;&lt; key2 &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; endl;
+			vector&lt;string&gt; ans2 = split(ans, '-');
+			cout &lt;&lt; &quot;Case &quot; &lt;&lt; T &lt;&lt; &quot;:&quot;;
+			for (int i=0; i&lt;ans2.size(); i++) {
+				cout &lt;&lt; ans2[i] &lt;&lt; &quot; &quot;;
+			}
+			cout &lt;&lt; endl;
+		}
+		T++;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

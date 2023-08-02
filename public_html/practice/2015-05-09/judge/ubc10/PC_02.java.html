@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+import java.io.*;
+public class C {
+
+	static class Edge {
+		int src, dst, id;
+
+		public Edge(int src, int dst, int id) {
+			super();
+			this.src = src;
+			this.dst = dst;
+			this.id = id;
+		}
+	}
+	
+
+	static ArrayList&lt;Edge&gt;[] adj = new ArrayList[100000];
+	static boolean[] vertexused = new boolean[100000];
+	static boolean[] edgeused = new boolean[100000];
+	static int[] degree = new int[100000];
+	
+	static boolean[] visited = new boolean[100000];
+	static int[] visited2 = new int[100000];
+	static boolean[] visited3 = new boolean[100000];
+	
+	static ArrayList&lt;Integer&gt; cycle = new ArrayList&lt;Integer&gt;();
+	static int n;
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+		n = Integer.parseInt(reader.readLine());
+		
+		for (int i = 0; i &lt; n; i++) {
+			adj[i] = new ArrayList&lt;Edge&gt;();
+		}
+		for (int i = 0; i &lt; n; i++) {
+			String[] tmp = reader.readLine().split(&quot;\\s+&quot;);
+			int a = Integer.parseInt(tmp[0]); a--;
+			int b = Integer.parseInt(tmp[1]); b--;
+			Edge e1 = new Edge(a, b, i);
+			Edge e2 = new Edge(b, a, i);
+			adj[a].add(e1);
+			adj[b].add(e2);
+		}
+		for (int i = 0; i &lt; n; i++) degree[i] = adj[i].size();
+		
+		for (int i = 0; i &lt; n; i++) {
+			if (!visited[i]) {
+				cycle.clear();
+				cycle(i, -1);
+				for (int j = 0; j &lt; cycle.size(); j++) {
+					int a = cycle.get(j);
+					int b = cycle.get((j+1)%cycle.size());
+					writer.write((a+1) + &quot; &quot; + (b+1) + &quot;\n&quot;);
+					vertexused[a] = true;
+					vertexused[b] = true;
+					degree[a]--;
+					degree[b]--;
+					for (Edge e : adj[a]) {
+						if (e.dst == b) {
+							edgeused[e.id] = true;
+							break;
+						}
+					}
+				}
+				dfs(i);
+			}
+		}
+		LinkedList&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+		for (int i = 0; i &lt; n; i++) {
+			if (!vertexused[i] &amp;&amp; degree[i] == 1) q.add(i);
+		}
+		while (!q.isEmpty()) {
+			int curr = q.poll();
+			if (visited3[curr]) continue;
+			visited3[curr] = true;
+			if (vertexused[curr]) continue;
+			
+			for (Edge e : adj[curr]) {
+				if (!edgeused[e.id]) {
+					edgeused[e.id] = true;
+					int next = e.dst;
+					vertexused[curr] = true;
+					degree[curr]--;
+					degree[next]--;
+					writer.write((curr+1) + &quot; &quot; + (next+1) + &quot;\n&quot;);
+					if (!vertexused[next] &amp;&amp; degree[next] == 1) q.add(next);
+					break;
+				}
+			}
+		}
+		writer.flush();
+		writer.close();
+		reader.close();
+	}
+	
+	public static boolean cycle(int node, int prevedge) {
+		if (visited2[node] == 1) {
+			int start = 0;
+			while (cycle.get(start) != node) start++;
+			cycle = new ArrayList&lt;Integer&gt;(cycle.subList(start, cycle.size()));
+			return true;
+		}
+		visited2[node] = 1;
+		cycle.add(node);
+		for (Edge e : adj[node]) {
+			if (e.id == prevedge) continue;
+			if (cycle(e.dst, e.id)) {
+				return true;
+			}
+		}
+		cycle.remove(cycle.size() - 1);
+		visited2[node] = 2;
+		return false;
+	}
+	public static void dfs(int node) {
+		if (visited[node]) return;
+		visited[node] = true;
+		for (Edge e : adj[node]) {
+			dfs(e.dst);
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+const int MAXN = 900;
+multiset&lt;int&gt; adj[MAXN];
+// Watch out for stack overflow. Answer is returned in reverse order.
+list&lt;int&gt; ans; // Usage: ans.clear(), euler(st, ans.insert(ans.begin(), st));
+void euler(int u, list&lt;int&gt;::iterator it) {
+  for (auto it2 = adj[u].begin(); it2 != adj[u].end(); ) {
+    int v=*it2; adj[u].erase(it2); adj[v].erase(adj[v].find(u));
+    euler(v, ans.insert(it, v)); it2 = adj[u].begin(); } }
+	
+char b[30][30];
+int main() {
+	int n; cin &gt;&gt; n;
+	
+	int nw = 0;
+	vector&lt;int&gt; pb;
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = 0; j &lt; n; j++) {
+			cin &gt;&gt; b[i][j];
+			nw += b[i][j] == 'W';
+			if (b[i][j] == 'B') pb.push_back(i*n + j);
+		}
+	}
+	cerr &lt;&lt; nw &lt;&lt; &quot; white pieces&quot; &lt;&lt; endl;
+	
+	int M[] = {0, 1, 2, 3};
+	// for each white piece construct graph of (x+y)%4 = 0
+	vector&lt;string&gt; sol;
+	for (int mod : M) {
+		for (int p : pb) {
+			int xb = p/n, yb = p%n;
+			b[xb][yb] = '.';
+			if ((xb + yb)%4 != mod) {
+				b[xb][yb] = 'B';
+				continue;
+			}
+			
+			for (int i = 0; i &lt; MAXN; i++) adj[i].clear();
+			
+			int dx[] = {-1, -1, 1, 1};
+			int dy[] = {-1, 1, 1, -1};
+			for (int i = 0; i &lt; n; i++) {
+				for (int j = 0; j &lt; n; j++) {
+					if (b[i][j] != 'W') continue;
+					for (int d = 0; d &lt; 2; d++) {
+						int ax = i + dx[d], ay = j + dy[d];
+						int bx = i + dx[(d+2)%4], by = j + dy[(d+2)%4];
+						if (ax &lt; 0 || bx &lt; 0 || ay &lt; 0 || by &lt; 0 ||
+							ax &gt;= n || ay &gt;= n || bx &gt;= n || by &gt;= n) {
+							continue;
+						}
+						if (b[ax][ay] == 'B' || b[bx][by] == 'B') continue;
+						if (b[ax][ay] == 'W' || b[bx][by] == 'W') continue;
+						
+						if ((ax + ay)%4 != mod) continue;
+						int u = ax * n + ay, v = bx * n + by;
+						adj[u].insert(v);
+						adj[v].insert(u);
+					}
+				}
+			}
+			
+			int nodd = 0;
+			for (int i = 0; i &lt; MAXN; i++) {
+				nodd += adj[i].size()%2;
+			}
+			if (nodd &gt; 2) continue;
+			if (nodd == 2 &amp;&amp; adj[p].size()%2 == 0) continue;
+			
+			
+			ans.clear();
+			euler(p, ans.begin());
+			
+			b[xb][yb] = 'B';
+			
+			if (ans.size() == nw) {
+				string r, c;
+				stringstream ss;
+				ss &lt;&lt; n-xb &lt;&lt; &quot; &quot; &lt;&lt; char('a' + yb);
+				ss &gt;&gt; r &gt;&gt; c;
+				
+				sol.push_back(c+r);
+			}
+		}
+	}
+	if (sol.size() == 0) cout &lt;&lt; &quot;None&quot; &lt;&lt; endl;
+	else if (sol.size() == 1) cout &lt;&lt; sol[0] &lt;&lt; endl;
+	else cout &lt;&lt; &quot;Multiple&quot; &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

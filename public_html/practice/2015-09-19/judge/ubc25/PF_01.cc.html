@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+    int t;
+    cin &gt;&gt; t;
+    while (t--) {
+        int n;
+        cin &gt;&gt; n;
+        int barLengths[n];
+        vector&lt;pair&lt;int, int&gt; &gt; results;
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; barLengths[i];
+        }
+        sort(barLengths, barLengths+n);
+        for (int i = 1; i &lt; n; i++) {
+            if (barLengths[i] != barLengths[i-1]) {
+                int length = i;
+                int count = barLengths[i] - barLengths[i-1];
+                results.push_back(make_pair(length, count));
+            }
+        }
+        sort(results.begin(), results.end());
+        for (auto result : results) {
+            cout &lt;&lt; result.second &lt;&lt; &quot; &quot; &lt;&lt; result.first &lt;&lt; endl;
+        }
+        if (t &gt; 0) {
+            cout &lt;&lt; endl;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

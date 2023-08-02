@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+
+int test(int a, int b, int c)
+{
+    return (a + b + c);
+}
+
+void solve(int a, int b, int c)
+{
+    asm volatile(&quot;movl\t%edi, %eax\r\n&quot;
+               &quot;\tmovl\t%esi, %ecx\r\n&quot;
+               &quot;\taddl\t%ecx, %ecx\r\n&quot;
+               &quot;\tmovl\t%eax, %ebx\n&quot;
+               &quot;\taddl\t%eax, %eax\r\n&quot;
+               &quot;\taddl\t%ebx, %eax\r\n&quot;
+               &quot;\tcmpl\t%eax, %ecx\r\n&quot;
+               &quot;\tjg Lcompcd\r\n&quot;
+               &quot;\tcmpl\t%eax, %edx\r\n&quot;
+               &quot;\tjle Lend\r\n&quot;
+               &quot;Lcompcd:\r\n&quot;
+               &quot;\tcmpl\t%ecx, %edx\r\n&quot;
+               &quot;\tjg Lretd\r\n&quot;
+               &quot;\tmovl\t%ecx, %eax\r\n&quot;
+               &quot;\tjmp Lend\r\n&quot;
+               &quot;Lretd:\r\n&quot;
+               &quot;\tmovl\t%edx, %eax\r\n&quot;
+               &quot;Lend:&quot;);
+}
+
+int main()
+{
+    int n;
+    int lolz[3];
+    while (1)
+    {
+        scanf(&quot;%d&quot;, &amp;n);
+        if (!n) return 0;
+
+        lolz[0] = 0;
+        lolz[1] = 0;
+        lolz[2] = 0;
+
+        char str[10];
+        int i = n;
+        while (i--)
+        {
+            scanf(&quot;%s&quot;, str);
+            if (str[0] == 'C')
+                lolz[0]++;
+            if (str[0] == 'G')
+                lolz[1]++;
+            if (str[0] == 'H')
+                lolz[2]++;
+        }
+        if (lolz[0] &gt; lolz[1])
+        {
+            lolz[1] ^= lolz[0];
+            lolz[0] ^= lolz[1];
+            lolz[1] ^= lolz[0];
+        }
+        if (lolz[1] &gt; lolz[2])
+        {
+            lolz[2] ^= lolz[1];
+            lolz[1] ^= lolz[2];
+            lolz[2] ^= lolz[1];
+        }
+        if (lolz[0] &gt; lolz[1])
+        {
+            lolz[1] ^= lolz[0];
+            lolz[0] ^= lolz[1];
+            lolz[1] ^= lolz[0];
+        }
+        solve(lolz[0], lolz[1], lolz[2]);
+        register int qwerty asm(&quot;eax&quot;);
+        printf(&quot;%d\n&quot;, qwerty);
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

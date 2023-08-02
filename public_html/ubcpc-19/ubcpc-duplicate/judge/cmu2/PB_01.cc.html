@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+struct fighter {
+	string name;
+	int hp;
+	int at;
+	int df;
+};
+
+int who_wins(fighter&amp; i, fighter&amp; j) {
+	int i_hit = max(0, i.at - j.df);
+	int j_hit = max(0, j.at - i.df);
+	if (i_hit == 0) {
+		if (j_hit == 0) {
+			return -1;
+		}
+		else {
+			return 0;
+		}
+	}
+	else if (j_hit == 0) {
+		return 1;
+	}
+	int i_hits = (j.hp + i_hit - 1) / i_hit;
+	int j_hits = (i.hp + j_hit - 1) / j_hit;
+	if (i_hits == j_hits) {
+		return -1;
+	}
+	return i_hits &lt; j_hits;
+}
+
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	vector&lt;fighter&gt; fighters;
+	vector&lt;string&gt; output;
+	for (int i = 0; i &lt; n; i++) {
+		fighter f;
+		cin &gt;&gt; f.name &gt;&gt; f.hp &gt;&gt; f.at &gt;&gt; f.df;
+		fighters.push_back(f);
+	}
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = i + 1; j &lt; n; j++) {
+			for (int k = j + 1; k &lt; n; k++) {
+				int x = who_wins(fighters[i], fighters[j]);
+				int y = who_wins(fighters[j], fighters[k]);
+				int z = who_wins(fighters[k], fighters[i]);
+				if (x == -1 || y == -1 || z == -1) {
+					continue;
+				}
+				if ((x == 1 &amp;&amp; y == 1 &amp;&amp; z == 1) || 
+					(x == 0 &amp;&amp; y == 0 &amp;&amp; z == 0)) {
+					output.push_back(fighters[i].name + &quot; &quot; + fighters[j].name + &quot; &quot;
+						+ fighters[k].name);
+				}
+			}
+		}
+	}
+	cout &lt;&lt; output.size() &lt;&lt; &quot;\n&quot;;
+	for (string s: output) {
+		cout &lt;&lt; s &lt;&lt; &quot;\n&quot;;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

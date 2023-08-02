@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+ll A[100005],B[100005];
+int main(){
+    int n; cin&gt;&gt;n;
+    for (int i=1;i&lt;=n;i++) cin&gt;&gt;A[i];
+    for (int i=1;i&lt;=n;i++) cin&gt;&gt;B[i];
+    ll aa=0,bb=0;
+	int ans=0;
+    for (int i=1;i&lt;=n;i++){
+        aa+=A[i],bb+=B[i];
+        if (aa==bb){
+            ans=i;
+        }
+    }
+    cout&lt;&lt;ans&lt;&lt;endl; return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

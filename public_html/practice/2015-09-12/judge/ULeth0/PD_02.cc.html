@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;climits&gt;
+using namespace std;
+
+int main(){
+   int n; cin &gt;&gt; n;
+   while(n--){
+      int d,x,s; cin &gt;&gt; d &gt;&gt; x &gt;&gt; s;
+      int curl=0, curs=0;
+      int curpl= INT_MAX, curps = INT_MAX;
+      long long cost = 0;
+      for(int i = 0; i &lt; d; i++){
+	 int c, pl, ps; cin &gt;&gt; c &gt;&gt; pl &gt;&gt; ps;
+	 if(pl &lt; curpl){
+	    curpl = pl;
+	 }
+	 if(ps &lt; curps){
+	    curps = ps;
+	 }
+	 if(curl &lt; c*x){
+	    cost += (c*x - curl)*curpl;
+	    curl = c*x;
+	 }
+	 if(curs &lt; c*s){
+	    cost += ((c*s - curs + 79)/80)*curps;
+	    curs += ((c*s - curs + 79)/80)*80;
+	 }
+	 curl -= c*x;
+	 curs -= c*s;
+      }
+      cout &lt;&lt; cost &lt;&lt; endl;
+   }
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

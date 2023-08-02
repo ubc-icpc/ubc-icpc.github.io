@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class j {
+	public static void main (String[] args) {
+		Scanner scan  = new Scanner(System.in);
+		int test = scan.nextInt();
+		while(test --&gt; 0) {
+			int a = scan.nextInt();
+			int b = scan.nextInt();
+			String o = scan.next();
+			boolean f1 =  (a&gt;b) &amp;&amp; o.equals(&quot;&gt;&quot;);
+			boolean f2 = (a&lt;b)&amp;&amp; o.equals(&quot;&lt;&quot;);
+			if (f1|| f2) {
+				System.out.println(&quot;Ready&quot;);
+			} else {
+				System.out.println(&quot;Reboot&quot;);
+			}
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

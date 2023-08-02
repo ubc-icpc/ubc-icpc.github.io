@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define N 100005
+
+typedef long long ll;
+typedef long double ld;
+
+typedef struct {
+  ll p;
+  ld w;
+} node;
+
+ll u[N];
+ld wr[N];
+
+node find(ll p) {
+  if (p == u[p]) {
+    return {p, 0};
+  }
+  node v = find(u[p]);
+  u[p] = v.p;
+  wr[p] += v.w;
+  return {u[p], wr[p]};
+}
+
+void connect(ll a, ll b, ll w) {
+  node p = find(a);
+  node q = find(b);
+  if (p.p == q.p) return;
+  u[q.p] = p.p;
+  wr[q.p] += (ld) w - (q.w - p.w);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  ll n, m;
+  while (cin &gt;&gt; n &gt;&gt; m &amp;&amp; n &gt; 0 &amp;&amp; m &gt; 0) {
+    char q;
+    ll a, b, w;
+    memset(wr, 0, sizeof (wr));
+    for (ll i = 0; i &lt; n; i++) {
+      u[i] = i;
+    }
+    while (m--) {
+      cin &gt;&gt; q;
+      if (q == '!') {
+        cin &gt;&gt; a &gt;&gt; b &gt;&gt; w;
+        a--;
+        b--;
+        connect(a, b, w);
+      } else {
+        cin &gt;&gt; a &gt;&gt; b;
+        a--;
+        b--;
+
+        node p = find(a);
+        node q = find(b);
+
+        if (p.p == q.p) {
+          cout &lt;&lt; q.w - p.w &lt;&lt; '\n';
+        } else {
+          cout &lt;&lt; &quot;UNKNOWN\n&quot;;
+        }
+      }
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

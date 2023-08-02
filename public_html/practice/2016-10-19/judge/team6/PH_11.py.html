@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+
+parent = {}
+counts = {}
+
+def find(k):
+  if k == parent[k]:
+    return k
+
+  parent[k] = find(parent[k])
+  return parent[k]
+
+def union(a,b):
+  find(a)
+  find(b)
+
+  if parent[a] != parent[b]:
+    counts[parent[b]] += counts[parent[a]]
+
+  parent[parent[a]] = parent[b]
+
+  find(a)
+  find(b)
+
+T = int(sys.stdin.readline())
+for i in range(T):
+  d = {}
+  F = int(sys.stdin.readline())
+  counts = {}
+  parent = {}
+  for j in range(F):
+    a,b = sys.stdin.readline().split()
+
+    if a not in d:
+      da = len(d.values())
+      d[a] = da
+      parent[da] = da
+      counts[da] = 1
+
+    if b not in d:
+      db = len(d.values())
+      d[b] = db
+      parent[db] = db
+      counts[db] = 1
+
+    union(d[a],d[b])
+    print counts[parent[d[b]]]
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

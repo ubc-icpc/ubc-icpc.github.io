@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;utility&gt;
+
+using namespace std;
+
+typedef long long int ll;
+typedef pair&lt;ll, ll&gt; planet_t;
+
+ll N, P;
+vector&lt;planet_t&gt; planets;
+ll fuel, visited;
+
+bool compare (planet_t a, planet_t b) {
+    return (a.first &lt; b.first) || (a.first == b.first &amp;&amp; a.second &lt; b.second);
+}
+
+int main() {
+    cin &gt;&gt; N &gt;&gt; P;
+
+    for (int i = 1; i &lt; N+1; i++) {
+        ll cells, cost;
+        cin &gt;&gt; cells &gt;&gt; cost;
+        if (i == P) {
+            fuel += cells;
+            visited++;
+        } else {
+            planets.push_back(planet_t(cost, cells-cost));
+        }
+    }
+    
+    // sort planets
+    sort(planets.begin(), planets.end(), compare);
+    
+    // visit all the planets
+    for (auto planet : planets) {
+        if (fuel &gt;= planet.first &amp;&amp; planet.second &gt;= 0) {
+            fuel += planet.second;
+            visited++;
+        }
+    }
+    
+    cout &lt;&lt; fuel &lt;&lt; endl;
+    cout &lt;&lt; visited &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

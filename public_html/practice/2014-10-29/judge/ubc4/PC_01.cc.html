@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;deque&gt;
+#include &lt;stack&gt;
+#include &lt;bitset&gt;
+#include &lt;algorithm&gt;
+#include &lt;functional&gt;
+#include &lt;numeric&gt;
+#include &lt;utility&gt;
+#include &lt;sstream&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstdio&gt;
+#include &lt;cmath&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+#include &lt;limits&gt;
+#include &lt;string&gt;
+#include &lt;cassert&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef long long LL;
+typedef pair&lt;int,int&gt; pii;
+
+#define forup(i,a,b) for(int i=a; i&lt;b; ++i)
+#define fordn(i,a,b) for(int i=a; i&gt;b; --i)
+#define rep(i,a) for(int i=0; i&lt;a; ++i)
+
+#define dforup(i,a,b) for(i=a; i&lt;b; ++i)
+#define dfordn(i,a,b) for(i=a; i&gt;b; --i)
+#define drep(i,a) for(i=0; i&lt;a; ++i)
+
+#define slenn(s,n) for(n=0; s[n]!=13 and s[n]!=0; ++n);s[n]=0
+
+#define gi(x) scanf(&quot;%d&quot;,&amp;x)
+#define gl(x) cin&gt;&gt;x
+#define gd(x) scanf(&quot;%lf&quot;,&amp;x)
+#define gs(x) scanf(&quot;%s&quot;,x)
+
+#define pis(x) printf(&quot;%d &quot;,x)
+#define pin(x) printf(&quot;%d\n&quot;,x)
+#define pls(x) cout&lt;&lt;x&lt;&lt;&quot; &quot;
+#define pln(x) cout&lt;&lt;x&lt;&lt;&quot;\n&quot;
+#define pds(x) printf(&quot;%.12f &quot;,x)
+#define pdn(x) printf(&quot;%.12f\n&quot;,x)
+#define pnl() printf(&quot;\n&quot;)
+
+#define fs first
+#define sc second
+
+#define pb push_back
+
+const int inv=1000000000;
+const int minv=-inv;
+
+const int max_n=8+5;
+const int max_npn=16777216+5;
+
+int T;
+
+int n;
+int op[max_n];
+map&lt;int,int&gt; M;
+int p[max_n];
+
+int getmask(int t[])
+{
+	int mask=0;
+	int pown=1;
+	rep(i,n)
+	{
+		mask=mask+pown*t[i];
+		pown*=n;
+	}
+	return mask;
+}
+
+void getperm(int mask, int t[])
+{
+	rep(i,n)
+	{
+		t[i]=mask%n;
+		mask/=n;
+	}
+}
+
+double dp1[max_npn],dp2[max_npn];
+bool vs1[max_npn],vs2[max_npn];
+
+double solve1(int mask)
+{
+	if(vs1[mask]) return dp1[mask];
+	vs1[mask]=true;
+
+	int perm[max_n];
+	getperm(mask,perm);
+	int a=0,b=0;
+	rep(i,n)
+		rep(j,n)
+			if(perm[min(i,j)]&gt;perm[max(i,j)])
+				++b;
+			else
+				++a;
+
+	if(b==0) return	dp1[mask]=0.0;
+
+	dp1[mask]=(double(a+b))/(double(b));
+	rep(i,n)
+		rep(j,n)
+			if(perm[min(i,j)]&gt;perm[max(i,j)])
+			{
+				swap(perm[min(i,j)],perm[max(i,j)]);
+
+				dp1[mask]+=solve1(getmask(perm))/(double(b));
+
+				swap(perm[min(i,j)],perm[max(i,j)]);
+			}
+	return dp1[mask];
+}
+
+double solve2(int mask)
+{
+	if(vs2[mask]) return dp2[mask];
+	vs2[mask]=true;
+
+	int perm[max_n];
+	getperm(mask,perm);
+	int a=0,b=0;
+	rep(i,n-1)
+	{
+		int j=i+1;
+		if(perm[min(i,j)]&gt;perm[max(i,j)])
+			++b;
+		else
+			++a;
+	}
+
+	if(b==0) return	dp2[mask]=0.0;
+
+	dp2[mask]=(double(a+b))/(double(b));
+	rep(i,n-1)
+	{
+		int j=i+1;	
+		if(perm[min(i,j)]&gt;perm[max(i,j)])
+		{
+			swap(perm[min(i,j)],perm[max(i,j)]);
+
+			dp2[mask]+=solve2(getmask(perm))/(double(b));
+
+			swap(perm[min(i,j)],perm[max(i,j)]);
+		}
+	}
+	return dp2[mask];
+}
+
+int main()
+{
+	gi(T);
+
+	rep(z,T)
+	{
+		gi(n);
+
+		rep(i,n)
+		{
+			gi(op[i]);
+			p[i]=op[i];
+		}
+		sort(op,op+n);
+		int Mct=0;
+		M.clear();
+		rep(i,n)
+			if(i==0 or op[i]!=op[i-1])
+				M[op[i]]=(Mct++);
+		rep(i,n)
+			p[i]=M[p[i]];
+
+		memset(vs1,0,sizeof(vs1));
+		memset(vs2,0,sizeof(vs2));
+
+		printf(&quot;Monty %.6f Carlos %.6f\n&quot;,solve1(getmask(p)),solve2(getmask(p)));
+	}
+	
+	return 0;
+} </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

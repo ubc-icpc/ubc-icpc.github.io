@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, W[20005], H[20005];
+
+bool comp (int a, int b) {
+  if (W[a] != W[b]) return W[a] &gt; W[b];
+  return H[a] &lt; H[b];
+}
+
+void quick_sort(int S, int E) {
+  if (S &gt;= E) return;
+  int A = S, B = E;
+  bool pivot = false;
+  while (A != B) {
+    if (comp(A, B)) {
+      int temp = W[A]; W[A] = W[B]; W[B] = temp;
+      temp = H[A]; H[A] = H[B]; H[B] = temp;
+      pivot = !pivot;
+    }
+    if (pivot) ++A;
+    else --B;
+  }
+  quick_sort(S, A - 1);
+  quick_sort(A + 1, E);
+}
+
+int hack() {
+  multiset&lt;int, greater&lt;int&gt; &gt; s;
+  for (int i = 0; i &lt; N; ++i) {
+    auto it = s.insert(H[i]);
+    ++it;
+    if (it != s.end()) s.erase(it);
+  }
+  return s.size();
+}
+
+int main() {
+  cin &gt;&gt; T;
+  while (T--) {
+    cin &gt;&gt; N;
+    for (int i = 0; i &lt; N; ++i) cin &gt;&gt; W[i] &gt;&gt; H[i];
+    quick_sort(0, N - 1);
+    cout &lt;&lt; hack() &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

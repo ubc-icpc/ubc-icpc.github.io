@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+const int N = 101;
+
+vector&lt;int&gt; adj1[N];
+vector&lt;set&lt;int&gt;&gt; restr[N];
+
+vector&lt;pii&gt; adj[N*N];
+int cost[N];
+bool visited[N*N];
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        int m, t; cin &gt;&gt; m &gt;&gt; t;
+        cost[i] = t;
+        for (int j = 0; j &lt; m; j++) {
+            int s, x; cin &gt;&gt; s &gt;&gt; x; x--;
+            adj1[i].push_back(x);
+            restr[i].push_back(set&lt;int&gt;());
+            for (int k = 0; k &lt; s; k++) {
+                int a; cin &gt;&gt; a; a--;
+                restr[i].back().insert(a);
+            }
+        }
+    }
+
+    // build graph on V x V
+    for (int u = 0; u &lt; n; u++) {
+        for (int v : adj1[u]) {
+            int x1 = u*n+v;
+            for (int i = 0; i &lt; adj1[v].size(); i++) {
+                int w = adj1[v][i];
+                int x2 = v*n+w;
+
+                // (u, v) -&gt; (v, w)
+                if (restr[v][i].count(u) == 0) {
+                    adj[x1].push_back(pii(x2, cost[w]));
+                }
+            }
+            if (u == 0) {
+                // (0, 0) -&gt; (0, v)
+                adj[0].push_back(pii(x1, cost[v]));
+            }
+        }
+    }
+
+
+    memset(visited, 0, sizeof visited);
+    priority_queue&lt;pii&gt; q;
+    q.push(pii(-cost[0], 0));
+    while (!q.empty()) {
+        pii curr = q.top();
+        q.pop();
+
+        int u = curr.second;
+        int c = -curr.first;
+        if (visited[u]) continue;
+        visited[u] = true;
+
+        if (u%n == n-1) {
+            cout &lt;&lt; c &lt;&lt; endl;
+            return 0;
+        }
+
+        for (pii e : adj[u]) {
+            q.push(pii(-c-e.second, e.first));
+        }
+    }
+    cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

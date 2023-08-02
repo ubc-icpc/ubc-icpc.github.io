@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdint&gt;
+
+#define B 1000000000
+
+using namespace std;
+
+struct matrix {
+	uint64_t c11;
+	uint64_t c12;
+	uint64_t c21;
+	uint64_t c22;
+};
+
+struct matrix unit = { 1, 1, 1, 0 };
+
+struct matrix multiply(struct matrix a, struct matrix b) {
+	struct matrix res;
+	res.c11 = (a.c11 * b.c11 + a.c12 * b.c21) % B;
+	res.c12 = (a.c11 * b.c12 + a.c12 * b.c22) % B;
+	res.c21 = (a.c21 * b.c11 + a.c22 * b.c21) % B;
+	res.c22 = (a.c21 * b.c12 + a.c22 * b.c22) % B;
+	return res;
+}
+
+struct matrix exp(struct matrix a, uint64_t n) {
+	if (n == 1) return a;
+	if (n == 2) return multiply(a, a);
+
+	if (n % 2 == 1) {
+		return multiply(unit, exp(a, n - 1));
+	} else {
+		struct matrix half = exp(a, n / 2);
+		return multiply(half, half);
+	}
+}
+
+uint64_t fib(uint64_t y) {
+	if (y &lt;= 2) return 1;
+	struct matrix m = exp(unit, y - 1);
+	return m.c11;
+}
+
+int main() {
+	int p;
+	cin &gt;&gt; p;
+
+	for (int i = 0; i &lt; p; i++) {
+		int k;
+		uint64_t y;
+
+		cin &gt;&gt; k &gt;&gt; y;
+
+		cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt; fib(y) &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

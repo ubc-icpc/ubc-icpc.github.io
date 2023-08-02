@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.awt.Point;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+
+public class H {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int t = sc.nextInt();
+		int[] dx = {1, 1, -1, -1, 2, 2, -2 ,-2 }, 
+			dy = {2, -2, 2, -2, 1, -1, 1 ,-1 };
+		for (int i = 1; i&lt;= t; i++){
+			System.out.print(&quot;Case #&quot;+i+&quot;: &quot;);
+			int n = sc.nextInt(), r1 = sc.nextInt()-1, c1 = sc.nextInt()-1, r2 = sc.nextInt()-1, c2 = sc.nextInt()-1;
+			final int[][] td = new int[n][n];
+			for(int k = 0; k &lt; n; k++)
+				for(int j = 0; j &lt; n; j++)
+					td[j][k] = 100000;
+			PriorityQueue&lt;Point&gt; q = new PriorityQueue(100000, (new Comparator&lt;Point&gt;() {
+
+				@Override
+				public int compare(Point o1, Point o2) {
+					return td[o1.x][o1.y] - td[o2.x][o2.y];
+				}
+				
+			}));
+			q.add(new Point(r1, c1));
+			td[r1][c1] = 0;
+			while (!q.isEmpty()) {
+				Point p = q.poll();
+				if(p.x == r2 &amp;&amp; p.y == c2) {
+					System.out.println(td[p.x][p.y]);
+					System.out.println();
+					break;
+				}
+				for (int m = 0; m &lt; 8; m++){
+					if(p.x+dx[m] &gt;= n || p.y+dy[m] &gt;= n || p.x+dx[m] &lt; 0 || p.y+dy[m] &lt; 0) continue;
+					if(td[p.x+dx[m]][p.y+dy[m]] &lt;= td[p.x][p.y] + 1) {
+						continue;
+					}
+					td[p.x+dx[m]][p.y+dy[m]] = td[p.x][p.y] + 1;
+					q.add(new Point(p.x+dx[m], p.y+dy[m]));
+				}
+			}
+		}
+	}
+	private static void dij(Scanner sc){
+		
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

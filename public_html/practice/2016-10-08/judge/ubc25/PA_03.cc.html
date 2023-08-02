@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int cases, m, n;
+    cin &gt;&gt; cases;
+    for (int test = 0; test &lt; cases; ++test) {
+        cin &gt;&gt; m &gt;&gt; n;
+        if (m * m + n * n &lt;= 1) {
+            cout &lt;&lt; &quot;C\n&quot;;
+            goto end;
+        }
+        for (int i = -200; i &lt; 200; ++i)
+            for (int j = -200; j &lt; 200; ++j) {
+                if ((i == 0 &amp;&amp; j == 0) ||
+                    (i == 1 &amp;&amp; j == 0) || (i == 0 &amp;&amp; j == 1) ||
+                    (i == -1 &amp;&amp; j == 0) || (i == 0 &amp;&amp; j == -1) ||
+                    (i == m &amp;&amp; j == n) || (i == -n &amp;&amp; j == m) ||
+                    (i == -m &amp;&amp; j == -n) || (i == n &amp;&amp; j == -m))
+                    continue;
+                int div = i * i + j * j;
+                if ((i * m + j * n) % div == 0 &amp;&amp;
+                    (i * n - j * m) % div == 0) {
+                    cout &lt;&lt; &quot;C\n&quot;;
+                    goto end;
+                }
+            }
+        cout &lt;&lt; &quot;P\n&quot;;
+        end:;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

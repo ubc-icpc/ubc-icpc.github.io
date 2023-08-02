@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int arr[50];
+
+int compare (const void * a, const void * b)
+{
+  return ( *(int*)b - *(int*)a );
+}
+
+int  main()
+{
+	while (true)
+	{
+		int washtime;
+		int drytime = 0;
+		int addtime = 0;
+		int min = 30;
+		int hour = 0;
+		int n;
+		int index = 999;
+		cin &gt;&gt; n;
+		if (!n)
+		{
+			break;
+		}
+		for (int i = 0; i &lt; n; i++)
+		{
+			cin &gt;&gt; arr[i];
+		}
+		qsort(arr, n, sizeof(int), compare);
+		for (int i = 0; i &lt; n; i++)
+		{
+			if (drytime &lt; 30 * i)
+				drytime = 30 * i + arr[i];
+			else
+				drytime += arr[i];
+		}
+		//int total = 0;
+		//for (int i = 0; i &lt; n; i++)
+		//{
+		//	if (i == 5)
+		//		break;
+		//	if (addtime &lt; arr[n - i - 1] - total)
+		//	{
+		//		addtime = arr[n - i - 1] - total;
+		//		index = n - i;
+		//	}
+		//	total += arr[n - 1 - i];
+
+		//}
+		//for (int i = 0; i &lt; index; i++)
+		//{
+		//	min += arr[i];
+		//}
+		min = drytime;
+		min += 30;
+		//hour = min / 60;
+		//hour = hour % 12;
+		//min = min % 60;
+		cout &lt;&lt;  min / 60 &lt;&lt; ':' &lt;&lt; setw(2) &lt;&lt; setfill('0') &lt;&lt; min % 60 &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main()
+{
+   int N;
+   cin &gt;&gt; N;
+   string test;
+
+
+getline(cin, test);
+
+   for (int i = 1; i &lt;= N; i++) {
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        int d = 0;
+        int e = 0;
+        int f = 0;
+        int g = 0;
+
+        int goodScore = 0;
+        int badScore = 0;
+
+        cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; e &gt;&gt; f;
+
+        goodScore += a;
+        goodScore += (2 * b);
+        goodScore += (3 * c);
+        goodScore += (3 * d);
+        goodScore += (4 * e);
+        goodScore += (10 * f);
+
+        cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; e &gt;&gt; f &gt;&gt; g;
+
+        badScore += a;
+        badScore += (2 * b);
+        badScore += (2 * c);
+        badScore += (2 * d);
+        badScore += (3 * e);
+        badScore += (5 * f);
+        badScore += (11 * g);
+
+
+
+       cout &lt;&lt; &quot;Battle &quot; &lt;&lt; i &lt;&lt; &quot;: &quot;;
+       if (goodScore &lt; badScore) {
+           cout &lt;&lt; &quot;Evil eradicates all trace of Good&quot; &lt;&lt; endl;
+       } else if (goodScore &gt; badScore) {
+           cout &lt;&lt; &quot;Good triumphs over Evil&quot; &lt;&lt; endl;
+       } else {
+           cout &lt;&lt; &quot;No victor on this battle field&quot; &lt;&lt; endl;
+       }
+   }
+
+
+   return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+const ld INF = 1e18;
+const vector&lt;string&gt; note = {&quot;A&quot;, &quot;A#&quot;, &quot;B&quot;, &quot;C&quot;, &quot;C#&quot;, &quot;D&quot;, &quot;D#&quot;, &quot;E&quot;, &quot;F&quot;, &quot;F#&quot;, &quot;G&quot;, &quot;G#&quot;};
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int p, q; cin &gt;&gt; p &gt;&gt; q;
+  ld target = log2(p) - log2(q);
+  ld best = INF; string besti;
+  for (int i = 0; i &lt; 12; i++) {
+    for (int j = -25; j &lt;= 25; j++) {
+      for (int k = 0; k &lt; 12; k++) {
+        for (int l = -25; l &lt;= 25; l++) {
+          for (int o = -8; o &lt;= 8; o++) {
+            ld cur = (i/12.L + j/1200.L) - (k/12.L + l/1200.L) + o;
+            if (abs(cur-target) &lt; best) {
+              best = abs(cur-target);
+              besti = note[i] + &quot; &quot; + to_string(j) + &quot;\n&quot; + note[k] + &quot; &quot; + to_string(l);
+            }
+          }
+        }
+      }
+    }
+  }
+  //cerr &lt;&lt; best &lt;&lt; nl;
+  cout &lt;&lt; besti &lt;&lt; nl;
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

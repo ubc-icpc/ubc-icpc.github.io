@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+
+char board[30][30];
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+int si, sj, n, m;
+
+bool found[30][30], reach[30][30];
+int bfs() {
+	memset(found, false, sizeof found);
+	queue&lt;pii&gt; q;
+	found[si][sj] = true;
+	q.push(pii(si, sj));
+	while (!q.empty()) {
+		pii t = q.front(); q.pop();
+		if (board[t.first][t.second] == 'V') continue;
+		for (int d = 0; d &lt; 4; d++) {
+			int ni = t.first + dx[d], nj = t.second + dy[d];
+			if (ni &lt; 0 || ni &gt;= n || nj &lt; 0 || nj &gt;= m) continue;
+			if (board[ni][nj] == '#' || found[ni][nj]) continue;
+			q.push(pii(ni, nj));
+			found[ni][nj] = true;
+		}
+	}
+	
+	int ans = 0;
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = 0; j &lt; m; j++) {
+			if (board[i][j] == 'V' &amp;&amp; found[i][j] &amp;&amp; !reach[i][j]) {
+				ans++;
+			}
+		}
+	}
+	return ans;
+}
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		vector&lt;pii&gt; mach;
+		cin &gt;&gt; n &gt;&gt; m;
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; m; j++) {
+				cin &gt;&gt; board[i][j];
+				if (board[i][j] == 'V') {
+					mach.push_back(pii(i,j));
+				} else if (board[i][j] == 'S') {
+					si = i, sj = j;
+					board[i][j] = '.';
+				}
+			}
+		}
+		
+		memset(reach, false, sizeof reach);
+		int base = bfs();
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; m; j++) {
+				reach[i][j] = found[i][j];
+			}
+		}
+		
+		int ans = 0;
+		for (auto p : mach) {
+			int i = p.first, j = p.second;
+			for (int d = 0; d &lt; 4; d++) {
+				//topple machine in d direction
+				int ni = i + dx[d], nj = j + dy[d];
+				int pi = i - dx[d], pj = j - dy[d];
+				if (pi &lt; 0 || pj &lt; 0 || pi &gt;= n || pj &gt;= m) continue;
+				if (ni &lt; 0 || nj &lt; 0 || ni &gt;= n || nj &gt;= m) continue;
+				if (board[ni][nj] == '.' &amp;&amp; reach[pi][pj] &amp;&amp; board[pi][pj] == '.') {
+					board[i][j] = '.';
+					board[ni][nj] = '#';
+					ans = max(ans, bfs());
+					board[i][j] = 'V';
+					board[ni][nj] = '.';
+				}
+			}
+		}
+		
+		cout &lt;&lt; base+ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class A {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+        String decode = scanner.next();
+        int s = scanner.nextInt();
+        String word = scanner.next();
+        StringBuilder sb = new StringBuilder();
+        if(decode.equals(&quot;E&quot;)){
+            for(int i = 0; i &lt; word.length(); i++){
+                int val = (int)word.charAt(i) - 97;
+                val = (val + s)%26;
+                val = val + 97;
+                sb.append((char)val);
+            }
+        } else {
+            for(int i = 0; i &lt; word.length(); i++){
+                int val = (int)word.charAt(i) - 97;
+                if(val - s &lt; 0) {
+                    val = val - s + 26;
+                } else {
+                    val = val - s;
+                }
+                val = val + 97;
+                sb.append((char)val);
+            }
+        }
+        System.out.println(sb.toString());
+    }
+}</code>
+</pre>
+</body>
+</html>

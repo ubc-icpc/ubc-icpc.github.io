@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const double eps = 1e-8;
+int time_taken(int i) {
+    int m = i/100, s = i%100;
+    return m * 60 + s;
+}
+
+int presses(int i) {
+    if (i == 0) return 1;
+    vector&lt;int&gt; d;
+    while (i &gt; 0) {
+        d.push_back(i%10);
+        i /= 10;
+    }
+    reverse(d.begin(), d.end());
+    
+    int last = d[0], res = 0;
+    for (int x : d) {
+        res++;
+        if (x != last) res++;
+        last = x;
+    }
+    return res;
+}
+
+int main() {
+    int t; cin &gt;&gt; t;
+    for (int c = 1; c &lt;= t; c++) {
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; c &lt;&lt; &quot;: &quot;;
+        
+        int m, s; char ch;
+        cin &gt;&gt; m &gt;&gt; ch &gt;&gt; s;
+        int tot = m*60 + s;
+        
+        int p; cin &gt;&gt; p;
+       
+        int lt = ((100-p) * tot + 99)/100;
+        int rt = ((100+p) * tot)/100;
+        
+        int pt = 1e6, ans = -1;
+        for (int i = 0; i &lt; 10000; i++) {
+            int T = time_taken(i);
+            if (T &gt;= lt &amp;&amp; T &lt;= rt) {
+                if (pt &gt; presses(i)) {
+                    pt = presses(i);
+                    ans = i;
+                } else if (pt == presses(i)) {
+                    if (abs(tot-time_taken(ans)) &gt; abs(tot-T)) ans = i;
+                }
+            }
+        }
+        assert(presses(430) == 5);
+        
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

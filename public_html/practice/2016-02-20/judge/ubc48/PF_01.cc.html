@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+bool me(pair&lt;string, string&gt;a, pair&lt;string, string&gt;b){
+	if (a.second == b.second) return a.first &lt; b.first;
+	else return a.second &lt; b.second;
+}
+
+int main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
+	int n; cin &gt;&gt; n;
+	while (n--){
+		long double a, b, c, s, t; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; s &gt;&gt; t;
+		if (b * b - 4 * a * c &lt; 0){
+			cout &lt;&lt; &quot;No&quot; &lt;&lt; endl;
+			continue;
+		}
+		long double sq = sqrt(b * b - 4 * a * c);
+		long double rootp = (-1 * b + sq) / (2 * a), rootn = (-1 * b - sq) / (2 * a);
+		if ((rootp &gt;= s &amp;&amp; rootp &lt;= t) || (rootn &gt;= s &amp;&amp; rootn &lt;= t)) cout &lt;&lt; &quot;Yes&quot; &lt;&lt; endl;
+		else cout &lt;&lt; &quot;No&quot; &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

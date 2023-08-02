@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;utility&gt;
+#include &lt;unordered_map&gt;
+#include &lt;sstream&gt;
+
+using namespace std;
+typedef long long ll;
+
+int main() {
+	unordered_map&lt;string, int&gt; map;
+	unordered_map&lt;int, string&gt; ugh;
+	stringstream ss;
+	int index = 0;
+
+	for(int a = 0; a &lt;= 15; a++) {
+		for(int b = 0; b &lt;= 15 - a; b++) {
+			for(int c = 0; c &lt;= 15 - a - b; c++) {
+				for(int d = 0; d &lt;= 15 - a - b - c; d++) {
+					for(int e = 0; e &lt;= 15 - a - b - c - d; e++) {
+						int f = 15 - a - b - c - d - e;
+						ss &lt;&lt; ' ' &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b &lt;&lt; ' ' &lt;&lt; c &lt;&lt; ' ' &lt;&lt; d &lt;&lt; ' ' &lt;&lt; e &lt;&lt; ' ' &lt;&lt; f;
+						map.insert(make_pair(ss.str(), index));
+						ugh.insert(make_pair(index, ss.str()));
+						ss.str(string());
+						index++;
+					}
+				}
+			}
+		}
+	}
+
+	char c; cin &gt;&gt; c;
+	int tc = 1;
+
+	do {
+		if(c == 'm') {
+			for(int i = 0; i &lt; 6; i++) {
+				int n; cin &gt;&gt; n;
+				ss &lt;&lt; ' ' &lt;&lt; n;
+			}
+			cout &lt;&lt; &quot;Case &quot; &lt;&lt; tc &lt;&lt; &quot;: &quot; &lt;&lt; map.at(ss.str()) &lt;&lt; endl;
+			ss.str(string());
+		}
+		if(c == 'u') {
+			int n;
+			cin &gt;&gt; n;
+			cout &lt;&lt; &quot;Case &quot; &lt;&lt; tc &lt;&lt; &quot;:&quot; &lt;&lt; ugh.at(n) &lt;&lt; endl;
+		}
+		cin &gt;&gt; c;
+		tc++;
+	} while(c != 'e');
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

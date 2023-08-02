@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;iterator&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+using vi = vector&lt;int&gt;;
+using vvi = vector&lt;vi&gt;;
+
+int main() {
+  int T; cin &gt;&gt; T;
+  vi dx {1, -1, -1, 1};
+  vi dy {1, 1, -1, -1};
+  for (int cases = 1; cases &lt;= T; ++cases) {
+    int R, C; cin &gt;&gt; R &gt;&gt; C;
+    vvi matrix(R, vi(C));
+    for (int i = 0; i &lt; R; ++i)
+      copy_n(istream_iterator&lt;int&gt;(cin), C, matrix[i].begin());
+    for (int i = 0; i &lt; R; ++i) {
+      int j = i % 2 == 0? C - 1 : 0;
+      int end = i % 2 == 0? 0 : C - 1;
+      int dx = i % 2 == 0? -1 : 1;
+      for (; j != end; j += dx) {
+        if (matrix[i][j] == 0)
+          continue;
+        matrix[i][j + dx] -= matrix[i][j];
+      }
+      if (i &lt; R - 1) {
+        matrix[i + 1][end] -= matrix[i][end];
+      } else {
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; cases &lt;&lt; &quot;: &quot;;
+        if (matrix[i][end] == 0)
+          cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+        else
+          cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;
+      }
+    }
+    if (cases &lt; T)
+      cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#define PI 3.14159265358979323
+using namespace std;
+
+int main() {
+	int t;cin&gt;&gt;t;
+	while(t--){
+		int n;cin&gt;&gt;n;
+		double x = 0, y = 0;
+		int deg = 0;
+		while(n--){
+			string cmd;int v;cin&gt;&gt;cmd&gt;&gt;v;
+			switch(cmd[0]) {
+				case 'f':
+					x += cos(deg * PI / 180.0) * v;
+					y += sin(deg * PI / 180.0) * v;
+					break;
+				case 'b':
+					x -= cos(deg * PI / 180.0) * v;
+					y -= sin(deg * PI / 180.0) * v;
+					break;
+				case 'l':
+					deg += (v + 360) % 360;
+					deg = (deg + 360) % 360;
+					break;
+				case 'r':
+					deg -= (v + 360) % 360;
+					deg = (deg + 360) % 360;
+					break;
+			}
+		}
+
+		cout &lt;&lt; (int)(sqrt(x*x+y*y) + 0.5) &lt;&lt; endl;
+	}
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

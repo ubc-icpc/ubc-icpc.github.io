@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+char getNewC(char c, map&lt;char, int&gt; &amp;mp, string &amp;list, int addv) {
+    int ind = mp[c];
+    int newInd = ind - addv;
+    if (newInd &lt; 0) newInd = list.size() + newInd;
+    return list[newInd];
+}
+
+int main() {
+    map&lt;char, int&gt; vo;
+    map&lt;char, int&gt; c_vo;
+    map&lt;char, int&gt; con;
+    map&lt;char, int&gt; c_con;
+    
+    string voList = &quot;aiyeou&quot;;
+    // a i y e o u
+    string c_voList = &quot;AIYEOU&quot;;
+    
+    string conList = &quot;bkxznhdcwgpvjqtsrlmf&quot;;
+    // b k x z n h d c w g p v j q t s r l m f
+    string c_conList = &quot;BKXZNHDCWGPVJQTSRLMF&quot;;
+    
+    for (int i=0; i&lt;voList.size(); i++) {
+        vo[ voList[i] ] = i;
+        c_vo[ c_voList[i] ] = i;   
+    }
+    for (int i=0; i&lt;conList.size(); i++) {
+        con[ conList[i] ] = i;
+        c_con[ c_conList[i] ] = i;
+    }
+    
+    string line;
+    while (getline(cin, line)) {
+        for (int i=0; i&lt;line.size(); i++) {
+            char c = line[i];
+            char newC;
+            if (vo.find(c) != vo.end()) {
+                newC = getNewC(c, vo, voList, 3);
+            }
+            else if (con.find(c) != con.end()) {
+                newC = getNewC(c, con, conList, 10);
+            }
+            else if (c_vo.find(c) != c_vo.end()) {
+                newC = getNewC(c, c_vo, c_voList, 3);
+            }
+            else if (c_con.find(c) != c_con.end()) {
+                newC = getNewC(c, c_con, c_conList, 10);
+            }
+            else {
+                newC = c;
+            }
+            cout &lt;&lt; newC;
+        }
+        cout &lt;&lt; endl;
+    }
+    
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

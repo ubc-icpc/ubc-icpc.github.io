@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int n, k;
+vector&lt;int&gt; house;
+bool possible(int h) {
+	bool assigned[n];
+	h *= 2;
+	for (int start = 0; start &lt; n; start++) {
+		memset(assigned, 0, sizeof assigned);
+		int ind = start;
+		for (int j = 0; j &lt; k; j++) {
+			int s1 = house[ind];
+			int s2 = (s1+h)%1000000;
+			if (h == 0) {
+				assigned[ind] = true;
+				ind = (ind+1)%n;
+				continue;
+			} else if (s1 &lt; s2) {
+				for (int i = 0; i &lt; n; i++) {
+					int loc = house[ind];
+					if (s1 &lt;= loc &amp;&amp; loc &lt;= s2) {
+						assigned[ind] = true;
+						ind = (ind+1)%n;
+					} else {
+						break;
+					}
+				}
+			} else {
+				for (int i = 0; i &lt; n; i++) {
+					int loc = house[ind];
+					if (s1 &lt;= loc || loc &lt;= s2) {
+						assigned[ind] = true;
+						ind = (ind+1)%n;
+					} else {
+						break;
+					}
+				}
+			}
+		}
+		bool good = true;
+		for (int i = 0; i &lt; n; i++) {
+			if (!assigned[i]) {
+				good = false;
+				break;
+			}
+		}
+		if (good) return true;
+	}
+	return false;
+}
+int main() {
+	cin &gt;&gt; n;
+	house.resize(n);
+	for (int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; house[i];
+	}
+	sort(house.begin(), house.end());
+	cin &gt;&gt; k;
+	int f1 = 0;
+	int f2 = 500000;
+	while (f2 - f1 &gt; 5) {
+		int f3 = (f1+f2)/2;
+		if (possible(f3)) {
+			f2 = f3;
+		} else {
+			f1 = f3;
+		}
+	}
+	while (f1 &lt; f2 &amp;&amp; !possible(f1)) {
+		f1++;
+	}
+	cout &lt;&lt; f1 &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

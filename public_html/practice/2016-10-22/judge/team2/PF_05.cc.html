@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+ld dp[1000010][2];
+
+int p, n;
+
+ld choose_other(int u, int v, int a) {
+	ld remaining_u = n - u;
+	ld remaining_v = a - v;
+
+	return (remaining_u)/(remaining_u+remaining_v);
+}
+
+// ld f(ld a){ return -(a-(ld)n/2.0)*(a-(ld)n/2.0)+40;}
+/*
+ld f(int a){
+	dp[0][0] = 1;
+	for (int v = 0; v &lt;= 1; v++) {
+		for (int u = 0; u &lt;= p-1; u++) {
+			if (u == 0 &amp;&amp; v == 0) continue;
+			dp[u][v] = 0;
+			if (u &gt;= 1) {
+				dp[u][v] += dp[u-1][v] * choose_other(u-1, v, a);
+			}
+			if (v &gt;= 1) {
+				dp[u][v] += dp[u][v-1] * (1-choose_other(u, v-1, a));
+			}
+		}
+	}
+	return dp[p-1][1];
+}
+*/
+
+ld f(ld m){
+	ld pp = p;
+	ld ans = m*pp/((ld)n+m-(pp-1));
+	for(int i=0;i&lt;p-1;i++){
+		ans*=((ld)(n-i))/((ld)(n+m-i));
+	}
+	return ans;
+}
+
+int main(){
+	cin &gt;&gt; n &gt;&gt; p;
+	/*
+	for (int i = 1; i &lt;= n; i++) {
+		cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; f(i) &lt;&lt; endl;
+	}
+	*/
+	cout &lt;&lt; setprecision(10)&lt;&lt;fixed;
+	if (p==1) { cout &lt;&lt; ld(1.0) &lt;&lt; endl; return 0; }
+	ld mld = 0, m;
+	for(int i=1;i&lt;2*n+3;i++){
+		if (i == 1) m = f(1);
+		else m*= ((ld)i)/((ld)i-1.0) * ((ld)(n+(i-1)-(p-1)))/((ld)(n+i));
+	//	cout &lt;&lt; m &lt;&lt; endl;
+		mld = max(m,mld);
+	}
+	cout &lt;&lt; mld &lt;&lt; endl;
+	/*
+	int l =0, r = 10*n+1,lmid = (l+r)/2, rmid = lmid+1;
+	while (l&lt;r){
+		//cout &lt;&lt; l &lt;&lt; &quot; &quot; &lt;&lt; r &lt;&lt; endl;
+		ld fl = f(lmid), fr = f(rmid);
+		if (fl&gt;fr) r = rmid-1;
+		else l = lmid+1;
+		lmid = (l+r)/2, rmid = lmid+1;
+	}
+	ld fl = f(l), fr = f(lmid);
+	if (fl&gt;fr) cout &lt;&lt; fl &lt;&lt; endl;
+	else cout &lt;&lt; fr &lt;&lt; endl;
+	//cout &lt;&lt; fl &lt;&lt; &quot; &quot; &lt;&lt; fr &lt;&lt; endl;
+	//cout &lt;&lt; l &lt;&lt; endl;
+	*/
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

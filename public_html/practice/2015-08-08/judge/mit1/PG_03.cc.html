@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+const int MAX = 555;
+
+int d[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+int T, r, c, vals[MAX][MAX];
+bool vis[MAX][MAX], has_big, has_small;
+
+void flood(int i, int j) {
+    if (vis[i][j]) return;
+    vis[i][j] = true;
+
+    for (int k = 0; k &lt; 4; ++k) {
+        int di = d[k][0], dj = d[k][1];
+        if (i + di &lt; 0 || i + di &gt;= r) continue;
+        if (j + dj &lt; 0 || j + dj &gt;= c) continue;
+        if (vals[i][j] &gt; vals[i + di][j + dj]) has_small = true;
+        else if (vals[i][j] &lt; vals[i + di][j + dj]) has_big = true;
+        else flood(i + di, j + dj);
+    }
+}
+
+int main() {
+    scanf(&quot;%d&quot;, &amp;T);
+
+    for (int t = 0; t &lt; T; ++t) {
+        scanf(&quot;%d %d&quot;, &amp;r, &amp;c);
+        for (int i = 0; i &lt; r; ++i) {
+            for (int j = 0; j &lt; c; ++j) {
+                scanf(&quot;%d&quot;, &amp;vals[i][j]);
+                vis[i][j] = false;
+            }
+        }
+
+        int peaks = 0, lows = 0;
+        int ncomponents = 0;
+        for (int i = 0; i &lt; r; ++i) {
+            for (int j = 0; j &lt; c; ++j) {
+                if (!vis[i][j]) {
+                    has_big = false;
+                    has_small = false;
+                    flood(i, j);
+                    ncomponents++;
+                    if (!has_big) peaks++;
+                    if (!has_small) lows++;
+                }
+            }
+        }
+
+        if (ncomponents == 1) printf(&quot;0\n&quot;);
+        else printf(&quot;%d\n&quot;, max(peaks, lows));
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+import java.sql.*;
+
+public class b {
+	
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		
+		// Read input
+		int numFighters = scan.nextInt();
+		scan.nextLine();
+		
+		Fighter[] fighters = new Fighter[numFighters];
+		for (int i = 0; i &lt; numFighters; i++) {
+			fighters[i] = new Fighter(scan.next(), scan.nextInt(), scan.nextInt(), scan.nextInt());
+		}
+		
+		// For each combination of 3, simulate the fights
+		ArrayList&lt;Fighter[]&gt; triples = new ArrayList&lt;Fighter[]&gt;();
+		
+		List&lt;int[]&gt; combinations = combine(numFighters, 3);
+		for (int i = 0; i &lt; combinations.size(); i++) {
+			
+			Fighter[] currentRound = new Fighter[3];
+			for (int j = 0; j &lt; combinations.get(i).length; j++) {
+				currentRound[j] = fighters[combinations.get(i)[j]];
+			}
+			
+			if (fighterAWillDefeatB(currentRound[0].copy(), currentRound[1].copy()) &amp;&amp; fighterAWillDefeatB(currentRound[1].copy(), currentRound[2].copy()) &amp;&amp; fighterAWillDefeatB(currentRound[2].copy(), currentRound[0].copy())) {
+				triples.add(currentRound);
+			} else if (fighterAWillDefeatB(currentRound[0].copy(), currentRound[2].copy()) &amp;&amp; fighterAWillDefeatB(currentRound[2].copy(), currentRound[1].copy()) &amp;&amp; fighterAWillDefeatB(currentRound[1].copy(), currentRound[0].copy())) {
+				triples.add(currentRound);
+			}
+			
+			
+			// a b c
+			// a -&gt; b -&gt; c
+			// a -&gt; c -&gt; b
+			
+		}
+		
+		System.out.println(triples.size());
+		for (Fighter[] triple : triples) {
+			System.out.println(triple[0].name + &quot; &quot; + triple[1].name + &quot; &quot; + triple[2].name);
+		}
+		
+		scan.close();
+	}
+	
+	public static boolean fighterAWillDefeatBHelper(Fighter a, Fighter b) {
+		
+		while (true) {
+			if (a.hp &gt; 0 &amp;&amp; b.hp &lt;= 0) {
+				return true;
+			} else if (a.hp &lt;= 0 &amp;&amp; b.hp &gt; 0) {
+				return false;
+			} else if (a.hp &lt;= 0 &amp;&amp; b.hp &lt;= 0) {
+				return false;
+			}
+			
+			int amountToSubtractFromA = Math.max(0, b.at - a.df);
+			int amountToSubtractFromB = Math.max(0, a.at - b.df);
+			
+			if (amountToSubtractFromA &lt;= 0 &amp;&amp; amountToSubtractFromB &lt;= 0) {
+				return false;
+			}
+			
+			// otherwise subtract and return result of next round
+			a.hp -= amountToSubtractFromA;
+			b.hp -= amountToSubtractFromB;
+			
+		}
+		//return false;
+	}
+	
+	public static boolean fighterAWillDefeatB(Fighter a, Fighter b) {
+		
+		int amountToSubtractFromA = Math.max(0, b.at - a.df);
+		int amountToSubtractFromB = Math.max(0, a.at - b.df);
+		
+		if (amountToSubtractFromA &lt;= 0 &amp;&amp; amountToSubtractFromB &lt;= 0) {
+			return false;
+		}
+		
+		int constant = Math.min(Math.abs(a.hp / (amountToSubtractFromA == 0 ? 1 : amountToSubtractFromA)), Math.abs(b.hp / (amountToSubtractFromB == 0 ? 1 : amountToSubtractFromB)));
+		
+		a.hp -= constant * amountToSubtractFromA;
+		b.hp -= constant * amountToSubtractFromB;
+		
+		if (a.hp &gt; 0 &amp;&amp; b.hp &lt;= 0) {
+			return true;
+		} else if (a.hp &lt;= 0 &amp;&amp; b.hp &gt; 0) {
+			return false;
+		} else if (a.hp &lt;= 0 &amp;&amp; b.hp &lt;= 0) {
+			return false;
+		} else {
+			return fighterAWillDefeatBHelper(a, b);
+		}
+		
+	}
+	
+	public static List&lt;int[]&gt; combine(int length, int combinationSize) {
+		List&lt;int[]&gt; combinations = new ArrayList&lt;&gt;();
+		int[] combination = new int[combinationSize];
+		
+		for (int i = 0; i &lt; combinationSize; i++) {
+			combination[i] = i;
+		}
+		
+		while (combination[combinationSize - 1] &lt; length) {
+			combinations.add(combination.clone());
+		
+			int t = combinationSize - 1;
+			while (t != 0 &amp;&amp; combination[t] == length - combinationSize + t) {
+				t--;
+			}
+			combination[t]++;
+			for (int i = t + 1; i &lt; combinationSize; i++) {
+				combination[i] = combination[i - 1] + 1;
+			}
+		}
+		
+		return combinations;
+	}
+	
+	
+	
+}
+
+class Fighter {
+	String name;
+	int hp;
+	int at;
+	int df;
+	
+	public Fighter(String name, int hp, int at, int df) {
+		this.name = name;
+		this.hp = hp;
+		this.at = at;
+		this.df = df;
+	}
+	
+	public Fighter copy() {
+		return new Fighter(this.name, this.hp, this.at, this.df);
+	}
+	
+}</code>
+</pre>
+</body>
+</html>

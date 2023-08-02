@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class A {
+
+	private void work() {
+
+		Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(
+				System.in)));
+
+		// these correspond to 4 directions
+		// String dir = &quot;NESW&quot;;
+		int[] dr = { -1, 0, 1, 0 };
+		int[] dc = { 0, 1, 0, -1 };
+
+		// simple int queue
+		int[] q = new int[1 &lt;&lt; 20];
+		int qs, qe;
+
+		// 'infinity' - make it big, but careful with overflow if you add two of
+		// them
+		int oo = Integer.MAX_VALUE / 4;
+
+		int nc = scanner.nextInt();
+		while (nc-- &gt; 0) {
+			int m = scanner.nextInt();
+			int n = scanner.nextInt();
+			char[][] grid = new char[m][n];
+			// starting position
+			int sr = -1;
+			int sc = -1;
+			// distances
+			int[][] d = new int[m][n];
+			for (int i = 0; i &lt; m; i++) {
+				Arrays.fill(d[i], oo);
+				grid[i] = scanner.next().toCharArray();
+				for (int j = 0; j &lt; n; j++) {
+					if (grid[i][j] == 'S') {
+						sr = i;
+						sc = j;
+					}
+				}
+			}
+
+			// initialize queue
+			qs = qe = 0;
+			q[qe++] = sr;
+			q[qe++] = sc;
+			d[sr][sc] = 0;
+
+			while (qs &lt; qe) {
+				int r = q[qs++];
+				int c = q[qs++];
+				for (int i = 0; i &lt; 4; i++) {
+					int rr = r + dr[i];
+					if (rr &lt; 0 || rr == m)
+						continue;
+					int cc = c + dc[i];
+					if (cc &lt; 0 || cc == n)
+						continue;
+					if (d[rr][cc] &gt; d[r][c] + 1) {
+						d[rr][cc] = d[r][c] + 1;
+						q[qe++] = rr;
+						q[qe++] = cc;
+					}
+				}
+			}
+
+			int ans = 0;
+			for (int i = 0; i &lt; m; i++) {
+				for (int j = 0; j &lt; n; j++) {
+					if (grid[i][j] == 'B')
+						ans += d[i][j];
+				}
+			}
+
+			System.out.printf(&quot;%d seconds to blocks get!\n&quot;, 2 * ans);
+		}
+		System.out.close();
+		scanner.close();
+	}
+
+	public static void main(String[] args) {
+		A aaa = new A();
+		aaa.work();
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

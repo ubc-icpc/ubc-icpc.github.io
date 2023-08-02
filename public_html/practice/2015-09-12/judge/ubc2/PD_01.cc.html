@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+int main() {
+  int N; cin &gt;&gt; N;
+  while (N--) {
+    ll d, l, s; cin &gt;&gt; d &gt;&gt; l &gt;&gt; s;
+    ll clsf, minpl, minps; cin &gt;&gt; clsf &gt;&gt; minpl &gt;&gt; minps;
+    ll cssf = clsf;
+    ll cost = 0, xs = 0;
+    for (int i = 1; i &lt; d; ++i) {
+      ll c, pl, ps; cin &gt;&gt; c &gt;&gt; pl &gt;&gt; ps;
+      if (pl &lt; minpl) {
+        cost += clsf * l * minpl;
+        clsf = 0;
+        minpl = pl;
+      }
+      if (ps &lt; minps) {
+        ll ounces_needed = cssf * s - xs;
+        ll sugar_needed = (ounces_needed + 5*16 - 1) / (5*16);
+        xs = sugar_needed*5*16 - ounces_needed;
+        cost += sugar_needed * minps;
+        cssf = 0;
+        minps = ps;
+      }
+      clsf += c; cssf += c;
+    }
+    cost += clsf * l * minpl;
+    ll ounces_needed = cssf * s - xs;
+    ll sugar_needed = (ounces_needed + 5*16 - 1) / (5*16);
+    cost += sugar_needed * minps;
+    cout &lt;&lt; cost &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

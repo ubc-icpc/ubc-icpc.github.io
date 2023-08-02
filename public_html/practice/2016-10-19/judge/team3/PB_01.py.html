@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+sys.setrecursionlimit(2500)
+mm = [[0 for i in xrange(2001)] for i in xrange(1001)]
+
+def dp(u, n):
+	if u &lt; 0:
+		return 0
+	if u &gt; n:
+		return 0
+	if u == n:
+		return 1
+
+	if mm[u][n] != 0:
+		return mm[u][n]
+	
+	x = 0
+	if u &gt; 0:
+		x += dp(u - 1, n - 1)
+	x += dp(u + 1, n - 1)
+
+	mm[u][n] = x
+	return x
+
+dp(0, 2000)
+[n, m] = map(int, raw_input().split())
+
+s = ''
+u = 0
+while len(s) &lt; n:
+	amount = dp(u + 1, n - len(s) - 1)
+
+	if amount == 0:
+		s += ')'
+		u -= 1
+	elif amount &lt; m:
+		m -= amount
+		s += ')'
+		u -= 1;
+	else:
+		s += '('
+		u += 1
+
+print(s)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

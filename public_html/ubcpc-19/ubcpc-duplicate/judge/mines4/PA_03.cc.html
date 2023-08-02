@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+
+#define ALPHA_LEN 26
+
+using namespace std;
+
+string shift(string toShift, int count) {
+
+    string toReturn;
+    for(int i = 0; i &lt; toShift.length(); i++){
+        int ccount = count;
+        int charInd = toShift.at(i) - 0x61;
+        // cout &lt;&lt; charInd &lt;&lt; endl;
+        if(charInd + ccount &gt; 25)
+            ccount -= 26;
+        toReturn += (unsigned char) (0x61 + charInd + ccount);
+    }
+
+    return toReturn;
+}
+
+string unshift(string toShift, int count) {
+
+    string toReturn;
+    for(int i = 0; i &lt; toShift.length(); i++){
+        int ccount = count; 
+        int charInd = toShift.at(i) - 0x61;
+        // cout &lt;&lt; charInd &lt;&lt; endl;
+        if(charInd - ccount &lt; 0)
+            ccount -= 26;
+        toReturn += (unsigned char) (0x61 + charInd - ccount);
+    }
+
+    return toReturn;
+}
+
+int main() {
+
+    char choice;
+    int count;
+    string text, output;
+
+    cin &gt;&gt; choice &gt;&gt; count &gt;&gt; text;
+
+    if(choice == 'E') {
+        output = shift(text, count);
+    } else if(choice == 'D') {
+        output = unshift(text, count);
+    }
+
+    cout &lt;&lt; output &lt;&lt; endl;
+
+}</code>
+</pre>
+</body>
+</html>

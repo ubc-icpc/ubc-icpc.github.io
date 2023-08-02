@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;set&gt;
+#include&lt;string&gt;
+#include&lt;map&gt;
+#include&lt;utility&gt;
+#include&lt;vector&gt;
+#include&lt;cstring&gt;
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+
+// &lt;=10000 flights, so max number of nodes=20005
+const int maxn=20005;
+vector&lt;pii&gt; adj[maxn];
+int inDeg[maxn];
+
+int main() {
+  int test; cin &gt;&gt; test;
+  while (test--) {
+    int f; cin &gt;&gt; f;
+    for (int i=0; i&lt;maxn; i++) adj[i].clear();
+    memset(inDeg,0,sizeof inDeg);
+    int vid=0;
+    map&lt;string, int&gt; id;
+    for (int i=0; i&lt;f; i++) {
+      string a,b; int num;
+      cin &gt;&gt; a &gt;&gt; b &gt;&gt; num;
+      if (id.count(a)==0) id[a]=vid++;
+      if (id.count(b)==0) id[b]=vid++;
+      adj[id[a]].push_back(make_pair(num,id[b]));
+      inDeg[id[b]]++;
+    }
+    set&lt;pii&gt; s;
+    vector&lt;int&gt; res;
+    for (int i=0; i&lt;vid; i++) {
+      if (inDeg[i]==0) {
+	for (auto e : adj[i]) s.insert(e);
+      }
+    }
+    while (!s.empty()) {
+      auto x=*s.begin();
+      s.erase(x);
+      res.push_back(x.first);
+      inDeg[x.second]--;
+      if (inDeg[x.second]==0) {
+	for (auto e : adj[x.second]) s.insert(e);
+      }
+    }
+    for (auto x : res)
+      cout &lt;&lt; x &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

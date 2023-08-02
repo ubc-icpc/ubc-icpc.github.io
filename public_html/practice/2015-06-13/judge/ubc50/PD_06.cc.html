@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+  string s; cin &gt;&gt; s;
+  string ans1 = &quot;&quot;;
+  string ans2 = &quot;&quot;;
+  int len = s.size();
+  int pos = 0;
+  // pos and pos+1 are the first pair with same parity
+  for (int i=0; i&lt;len-1; i++) {
+    if (abs(s[i]-s[i+1])%2 == 0) {
+      pos = i;
+      break;
+    }
+  }
+  // copy s into ans1 and ans2 upto pos-1 (that'll remain the same)
+  for (int i=0; i&lt;pos; i++) {
+    ans1 += s[i];
+    ans2 += s[i];
+  }
+  // handle the pair s[pos] and s[pos+1]
+  // ans1 gets the lower one, ans2 gets the higher one
+  if (s[pos+1] != '9' &amp;&amp; s[pos+1] != '0') {
+    ans1 += s[pos];
+    ans2 += s[pos];
+    ans1 += (s[pos+1]-1);
+    ans2 += (s[pos+1]+1);
+  }
+  else if (s[pos+1] == '9') {
+    ans1 += s[pos];
+    ans1 += (s[pos+1]-1);
+    ans2 = &quot;&quot;;
+  }
+  else if (s[pos+1] == '0') {
+    ans2 += s[pos];
+    ans2 += (s[pos+1]+1);
+    ans1 = &quot;&quot;;
+  }
+  // now pad the endings with 0/1 (ans1)  or 8/9 (ans2) as appropriate
+  if (ans1 != &quot;&quot;) {
+    int flag = 0;
+    char arr[] = {'8','9'};
+    if ((ans1[pos+1]-'0')%2==0)
+      flag = 1;
+    else
+      flag = 0;
+    for (int i=pos+2; i&lt;len; i++) {
+      ans1 += arr[flag];
+      flag = !flag;
+    }
+  }
+    if (ans2 != &quot;&quot;) {
+    int flag = 0;
+    char arr[] = {'0','1'};
+    if ((ans2[pos+1]-'0')%2==0)
+      flag = 1;
+    else
+      flag = 0;
+    for (int i=pos+2; i&lt;len; i++) {
+      ans2 += arr[flag];
+      flag = !flag;
+    }
+  }
+    for (int i=pos+1; i&lt;len-1; i++) {
+      if ((ans2[i]-'0')%2==0 &amp;&amp; ans2!=&quot;&quot; &amp;&amp; ans1 != &quot;&quot;) {
+	if (s[i+1]-'0' &lt;5) {
+	  ans2 = &quot;&quot;;
+	  break;
+	}
+	else if (s[i+1]-'0'&gt;5) {
+	  ans1 =&quot;&quot;;
+	  break;
+	}
+      }
+      else if ((ans1[i]-'0')%2==1 &amp;&amp; ans2!=&quot;&quot; &amp;&amp; ans1!=&quot;&quot;) {
+	if (s[i+1]-'0' &lt;4) {
+	  ans2 = &quot;&quot;;
+	  break;
+	}
+	else if (s[i+1]-'0'&gt;4) {
+	  ans1 =&quot;&quot;;
+	  break;
+	}	
+      }	   
+    }
+    if (ans1 != &quot;&quot; &amp;&amp; ans2 != &quot;&quot;) {      
+    cout &lt;&lt; ans1 &lt;&lt; &quot; &quot; &lt;&lt; ans2 &lt;&lt; '\n';
+    }
+    else if (ans1 != &quot;&quot;)
+      cout &lt;&lt; ans1 &lt;&lt; '\n';
+    else
+      cout &lt;&lt; ans2 &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	int n; cin &gt;&gt; n; 
+	set&lt;vector&lt;int&gt;&gt; classes;
+
+	map&lt;vector&lt;int&gt;, set&lt;string&gt;&gt; names;
+
+	for(int i = 0; i &lt; n; i++){
+		string name; cin &gt;&gt; name;
+		name = name.substr(0, name.size() - 1);
+		string s; cin &gt;&gt; s;
+		vector&lt;int&gt; currClass;
+		while(s != &quot;class&quot;) {
+			if(s == &quot;upper&quot;) currClass.push_back(0);
+			if(s == &quot;middle&quot;) currClass.push_back(1);
+			if(s == &quot;lower&quot;) currClass.push_back(2);
+			cin &gt;&gt; s;
+		}
+
+		reverse(currClass.begin(), currClass.end());
+		while(currClass.size() &lt; 100){
+			currClass.push_back(1);
+		}
+		names[currClass].insert(name);
+		
+		classes.insert(currClass);
+	}
+
+	for(vector&lt;int&gt; currClass : classes) {
+		for(string s : names[currClass]){ 
+			cout &lt;&lt; s &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

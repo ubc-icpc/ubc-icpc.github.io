@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+int orig[7][6];
+int curr[7][6];
+int mmm[7];
+bool seen[7];
+int e1[7] = {0, 3, 4, 5, 0, 1, 2}; // to center
+int e2[7] = {0, 2, 3, 4, 5, 0, 1}; // to cw neighbor
+int e3[7] = {0, 4, 5, 0, 1, 2, 3}; // to ccw neighbor
+bool dfs(int n) {
+    if (n == 7) {
+        for (int i = 0; i &lt; 7; i++) {
+            cout &lt;&lt; &quot; &quot; &lt;&lt; mmm[i];
+        }
+        cout &lt;&lt; endl;
+        /*
+        for (int i = 0; i &lt; 7; i++) {
+            for (int j = 0; j &lt; 6; j++) {
+                cerr &lt;&lt; curr[i][j] &lt;&lt; &quot; &quot;;
+            }
+            cerr &lt;&lt; endl;
+        }
+        */
+        return true;
+    }
+    for (int i = 0; i &lt; 7; i++) {
+        if (seen[i]) continue;
+        mmm[n] = i;
+        seen[i] = true;
+        if (n == 0) {
+            int j = 0;
+            while (orig[i][j] != 1) j++;
+            for (int k = 0; k &lt; 6; k++) {
+                curr[n][k] = orig[i][(j+k)%6];
+            }
+            if (dfs(n+1)) return true;
+        } else {
+            for (int j = 0; j &lt; 6; j++) {
+                for (int k = 0; k &lt; 6; k++) {
+                    curr[n][k] = orig[i][(j+k)%6];
+                }
+                // check center
+                if (curr[n][e1[n]] != curr[0][n-1]) continue;
+                // check prev
+                if (n &gt; 1 &amp;&amp; curr[n][e3[n]] != curr[n-1][e2[n-1]]) continue;
+                if (n == 6 &amp;&amp; curr[n][e2[n]] != curr[1][e3[1]]) continue;
+                if (dfs(n+1)) return true;
+            }
+        }
+        seen[i] = false;
+    }
+    return false;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int ncase; cin &gt;&gt; ncase;
+    for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+        for (int i = 0; i &lt; 7; i++) {
+            for (int j = 0; j &lt; 6; j++) {
+                cin &gt;&gt; orig[i][j];
+            }
+        }
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; csnum &lt;&lt; &quot;:&quot;;
+        memset(seen, 0, sizeof seen);
+        if (!dfs(0)) {
+            cout &lt;&lt; &quot; No solution&quot; &lt;&lt; endl;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

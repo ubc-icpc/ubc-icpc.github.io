@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class A {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		while (sc.hasNext()) {
+			int blocks = sc.nextInt();
+			HashMap&lt;String, Integer&gt; map = new HashMap&lt;String,Integer&gt;(blocks);
+			if (blocks == 0) {
+				return;
+			}
+			for (int i = 0; i &lt; blocks; i++) {
+				String block = sc.next();
+				if (map.containsKey(block)) {
+					map.put(block, map.get(block) + 1);
+				} else {
+					map.put(block, 1);
+				}
+			}
+			int max = -1;
+			for (int i = 1; i &lt;= Collections.max(map.values()); i++) {
+				int curr = 0;
+				for (int num : map.values()) {
+					if (num &gt;= i)
+						curr += i;
+				}
+				if (curr &gt; max)
+					max = curr;
+			}
+			System.out.println(max);
+		}
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

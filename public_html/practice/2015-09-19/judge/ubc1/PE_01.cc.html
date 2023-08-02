@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+ld f(int s, int w, int l, int nwon, int nlost, int last) {
+    if (nlost == 4) return 0;
+    if (nwon == 4) return 1;
+    int str = 20;
+    if (last == 1) {
+        str = 20 + w;
+    } else if (last == -1) {
+        str = 20 - l;
+    }
+    ld pr = str/ld(s+str);
+    return pr * f(s, w, l, nwon+1, nlost, 1) + (1-pr) * f(s, w, l, nwon, nlost+1, -1);
+}
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        string str; 
+        getline(cin, str);
+        getline(cin, str);
+        
+        int s, w, l; cin &gt;&gt; s &gt;&gt; w &gt;&gt; l;
+        cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; f(s, w, l, 0, 0, 0) &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

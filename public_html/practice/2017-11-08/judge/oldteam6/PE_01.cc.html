@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+
+
+typedef std::vector&lt;int&gt; VI;
+typedef std::vector&lt;VI&gt; VVI;
+
+int main() {
+	int G;
+	std::cin &gt;&gt; G;
+	while(G--) {
+		int rings, runes;
+		std::cin &gt;&gt; rings &gt;&gt; runes;
+
+		bool bad = false;
+		VVI R(runes, VI(4,0));
+		for(int i = 0; i &lt; runes; i ++) {
+			for(int j = 0; j &lt; 4; j ++) {
+				std::cin &gt;&gt; R[i][j];
+			}
+		}
+
+		for(int i = 0; i &lt; runes &amp;&amp; !bad; i ++) {
+			for(int j = 0; j &lt; 3 &amp;&amp; !bad; j ++) 
+				if(R[i][j] == 0) std::cout &lt;&lt; &quot;INVALID: NULL RING&quot; &lt;&lt; std::endl, bad = true;
+		}
+		if(bad) continue;
+		for(int i = 0; i &lt; runes &amp;&amp; !bad; i ++) {
+			for(int j = 0; j &lt; 3 &amp;&amp; !bad; j ++) 
+				if(R[i][j] &gt; rings || R[i][j] &lt; -rings) std::cout &lt;&lt; &quot;INVALID: RING MISSING&quot; &lt;&lt; std::endl, bad = true;
+		}
+		if(bad) continue;
+		for(int i = 0; i &lt; runes &amp;&amp; !bad; i ++) {
+			//for(int j = 0; j &lt; 3 &amp;&amp; !bad; j ++) 
+			if(std::abs(R[i][0]) == std::abs(R[i][1]) || std::abs(R[i][0]) == std::abs(R[i][2]) || std::abs(R[i][1]) == std::abs(R[i][2]))
+				std::cout &lt;&lt; &quot;INVALID: RUNE CONTAINS A REPEATED RING&quot; &lt;&lt; std::endl, bad = true;
+		}
+		if(bad) continue;
+
+		bool found = false;
+		for(int i = 0; i &lt; (1&lt;&lt;rings); i ++) {
+			//std::cout &lt;&lt; &quot;Testing config &quot; &lt;&lt; std::hex &lt;&lt; i &lt;&lt; std::dec &lt;&lt; std::endl;
+			bool all = true;
+			for(int j = 0; j &lt; runes; j ++) {
+				//std::cout &lt;&lt; &quot;Rune (&quot; &lt;&lt; R[j][0] &lt;&lt; &quot;,&quot; &lt;&lt; R[j][1] &lt;&lt; &quot;,&quot; &lt;&lt; R[j][2] &lt;&lt; &quot;):&quot; &lt;&lt; std::endl;
+				bool sat = false;
+				int matched = 0;
+				for(int k = 0; k &lt; 3; k ++) {
+					//std::cout &lt;&lt; &quot;\treq: &quot; &lt;&lt; R[j][k] &lt;&lt; std::endl;
+					if(R[j][k] &gt; 0 &amp;&amp; ((1&lt;&lt;(R[j][k]-1))&amp;i)) { matched ++; /*std::cout &lt;&lt; &quot;\t\tsat1&quot; &lt;&lt; std::endl;*/ }
+					if(R[j][k] &lt; 0 &amp;&amp; ((1&lt;&lt;(-R[j][k]-1))&amp;i)==0) { matched ++; /*std::cout &lt;&lt; &quot;\t\tsat2 (&quot; &lt;&lt; (1&lt;&lt;(R[j][k]-1)) &lt;&lt; &quot;,&quot; &lt;&lt; i &lt;&lt; &quot;)&quot; &lt;&lt; std::endl; */}
+
+					//std::cout &lt;&lt; &quot;\t#&quot; &lt;&lt; k &lt;&lt; &quot; SAT&quot; &lt;&lt; std::endl;
+
+					if(matched &gt; 0) sat = true;
+				}
+				if(!sat) all = false;
+			}
+			if(all) { found = true; break; }
+		}
+
+		if(found) std::cout &lt;&lt; &quot;RUNES SATISFIED!&quot; &lt;&lt; std::endl;
+		else std::cout &lt;&lt; &quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!&quot; &lt;&lt; std::endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define ull unsigned long long
+
+int main() {
+    while (1) {
+        ull s;
+        scanf(&quot;%llu&quot;, &amp;s);
+        if (!s) break;
+
+        // Find approximate value of n
+        ull n = (ull)sqrt(2.0 * s);
+        ull act;
+
+again:
+        act = (n * (n + 1)) &gt;&gt; 1;
+
+        //printf(&quot;n %llu act %llu\n&quot;, n, act);
+
+        if (act &gt; s) {
+            printf(&quot;%llu\n&quot;, act - s);
+        } else if (act &lt; s) {
+            ++n;
+            goto again;
+        } else {
+            printf(&quot;Not bored enough!\n&quot;);
+        }
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

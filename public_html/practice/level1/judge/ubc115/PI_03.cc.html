@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define is_valid(y, x) !visited[y][x] &amp;&amp; x &gt;= 0 &amp;&amp; y &gt;= 0 &amp;&amp; x &lt; n &amp;&amp; y &lt; n
+
+int terrain[128][128];
+int d[128][128];
+int visited[128][128];
+int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+int n;
+int pn;
+
+void dk() {
+  priority_queue&lt;pair&lt;int, pair&lt;int, int&gt;&gt;&gt; q;
+  d[0][0] = terrain[0][0];
+  q.push({-terrain[0][0], {0, 0}});
+
+  while (!q.empty()) {
+    auto c = q.top();
+    q.pop();
+    int dist = -c.first;
+    auto loc = c.second;
+    if (visited[loc.first][loc.second])
+      continue;
+
+    visited[loc.first][loc.second] = 1;
+    for (int i = 0; i &lt; 4; i++) {
+      int newy = loc.first + dir[i][0];
+      int newx = loc.second + dir[i][1];
+      if (is_valid(newy, newx)) {
+        int mindist = min(d[newy][newx],
+            dist + terrain[newy][newx]);
+        d[newy][newx] = mindist;
+        q.push({-mindist, {newy, newx}});
+      }
+    }
+  }
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  while (cin &gt;&gt; n &amp;&amp; n) {
+    memset(d, 0x7f, sizeof (d));
+    memset(visited, 0, sizeof (visited));
+    for (int j = 0; j &lt; n; j++) {
+      for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; terrain[j][i];
+      }
+    }
+    dk();
+    cout &lt;&lt; &quot;Problem &quot; &lt;&lt; ++pn &lt;&lt; &quot;: &quot;;
+    cout &lt;&lt; d[n-1][n-1] &lt;&lt; '\n';
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

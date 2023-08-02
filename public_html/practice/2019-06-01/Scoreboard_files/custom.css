@@ -1,0 +1,223 @@
+
+/***** DESKTOP *****/
+
+/* Fix border around page */
+body 
+{
+   border: 20px solid #555243;
+}
+
+.navbar-inverse .navbar-inner
+{
+   background-image: linear-gradient(to bottom, #555243, #555243);
+}
+
+
+/* Fix selected toolbar item */
+.navbar-inverse .nav > .active > a, 
+.navbar-inverse .nav > .active > a:hover, 
+.navbar-inverse .nav > .active > a:focus 
+{
+   background-color: #b39c70;
+}
+
+.navbar-inverse .nav > li.dropdown.open > .dropdown-toggle, 
+.navbar-inverse .nav > li.dropdown.active > .dropdown-toggle, 
+.navbar-inverse .nav > li.dropdown.open.active > .dropdown-toggle 
+{
+   background-color: #b39c70;
+}
+
+.navbar.navbar-inverse .navbar-inner .nav-collapse .dropdown-menu a:hover, 
+.navbar.navbar-inverse .navbar-inner .nav-collapse .dropdown-menu a:focus 
+{
+   background-color: #b39c70;
+}
+
+
+/* Fix selected toolbar sub item */
+.navbar.navbar-inverse .navbar-inner .nav > li > .dropdown-menu li.active, 
+.navbar.navbar-inverse .navbar-inner.nav > li > .dropdown-menu li.active 
+{
+   background-color: #b39c70;
+}
+
+
+/* Fix mouseover toolbar items */
+#nav-toolbar a:hover
+{
+   background-color: #b39c70;
+}
+
+
+#nav-toolbar .dropdown-menu
+{
+   background-color: #555243;
+}
+
+.navbar.navbar-inverse .navbar-inner .nav > li > .dropdown-menu li a, 
+.navbar.navbar-inverse .navbar-inner.nav > li > .dropdown-menu li a 
+{
+   border-bottom: 1px solid #b39c70;
+}
+
+
+/* Fix mouseover toolbar sub items */
+#nav-toolbar li:focus
+{
+   background-color: #b39c70;
+}
+#nav-toolbar li:hover
+{
+   background-color: #b39c70;
+}
+
+.navbar.navbar-inverse .navbar-inner .nav > li > .dropdown-menu li:hover a, 
+.navbar.navbar-inverse .navbar-inner.nav > li > .dropdown-menu li:hover a, 
+.navbar.navbar-inverse .navbar-inner .nav > li > .dropdown-menu li:focus a, 
+.navbar.navbar-inverse .navbar-inner.nav > li > .dropdown-menu li:focus a 
+{
+   background-color: #b39c70;
+}
+
+.dropdown-menu > li:hover, 
+.dropdown-menu > li:focus 
+{
+   border-top: 1px solid #b39c70;
+}
+
+.dropdown-menu > .active 
+{
+   border-top: 1px solid #b39c70;
+}
+
+
+/* Fix selected menu item */
+/* ae7c37 */
+/* 663300 */
+/* e49135 */
+/* b39c70 */
+.navbar .nav > .active > a, 
+.navbar .nav > .active > a:hover, 
+.navbar .nav > .active > a:focus 
+{
+    color: #685642;
+}
+
+
+/* Fix bar underneath selected menu item */
+.navbar .navbar-inner .nav li.active::after, 
+.navbar .navbar-inner.nav li.active::after 
+{
+    background-color: #685642;
+}
+
+
+/* Fix mouseover menu items */
+#nav-menu a:hover
+{
+    color: #685642;
+}
+
+#nav-menu li:hover:after
+{
+    background-color: #685642;
+}
+
+
+/* Fix for BT Login Module in toolbar (it was making menu not work) */
+.navbar .navbar-inner .nav, 
+.navbar .navbar-inner.nav 
+{
+   z-index: 1;
+}
+
+
+
+/***** RESPONSIVE *****/
+
+/* Fix selected toolbar item */
+.navbar.navbar-inverse .navbar-inner .nav > li.active > a 
+{
+   background-color: transparent;
+   color: #b39c70;
+}
+
+
+/* Fix selected toolbar sub item */
+.navbar.navbar-inverse .navbar-inner .nav > li.deeper .dropdown-menu > li.active > a 
+{
+   background-color: transparent;
+   color: #b39c70;
+   background-color: #555243;
+}
+
+.navbar.navbar-inverse .navbar-inner .nav > li > .dropdown-menu li.active, 
+.navbar.navbar-inverse .navbar-inner.nav > li > .dropdown-menu li.active 
+{
+   background-color: #555243;
+}
+
+#nav-toolbar a:hover 
+{
+   color: #fafaf5;
+}
+
+
+/* Fix mouseover toolbar items */
+.navbar.navbar-inverse .navbar-inner .nav > li:hover > a, 
+.navbar.navbar-inverse .navbar-inner .nav > li:focus > a 
+{
+   color: #555243;
+}
+
+
+/* Fix mouseover toolbar sub items */
+.navbar.navbar-inverse .navbar-inner .nav > li.deeper:hover > a, 
+.navbar.navbar-inverse .navbar-inner .nav > li.deeper:focus > a 
+{
+   color: #fafaf5;
+}
+
+.nav li.dropdown > .dropdown-toggle .caret
+{
+   border-top-color: #0000ff;
+}
+
+.navbar.navbar-inverse .navbar-inner .nav > li.deeper .dropdown-menu > li > a:hover, 
+.navbar.navbar-inverse .navbar-inner .nav > li.deeper .dropdown-menu > li > a:focus 
+{
+   color: #fafaf5;
+}
+
+.navbar-inverse .nav-collapse .nav > li > a:hover, 
+.navbar-inverse .nav-collapse .nav > li > a:focus, 
+.navbar-inverse .nav-collapse .dropdown-menu a:hover, 
+.navbar-inverse .nav-collapse .dropdown-menu a:focus 
+{
+   background-color: #b39c70;
+}
+
+
+/* Fix menu items */
+#menu .navbar .btn-navbar.collapsed 
+{
+   color: #555243;
+}
+
+#menu .navbar .btn-navbar 
+{
+   color: #555243;
+}
+
+
+/* Fix selected menu item */
+.navbar .navbar-inner .nav li.active > a 
+{
+   background-color: transparent;
+   color: #685642;
+}
+
+
+
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+// 0 = 1/2 gt^2 + v sin(th) * t + h
+// t^2 + 2v/g sin (th) * t + 2h/g
+// t = (-b + sqrt(b*b - 4*a*c))/(2a)
+
+// optimize
+// f(th) = v cos(th) * t - lambda * (1/2 gt^2 + v sin(th) * t + h)
+// f(
+
+ld v, g=10, h, l, s;
+ld t(ld th) {
+    ld S = sin(th);
+    return (0.5*(2.*v*S + sqrt(8*g*h + 4*v*v*S*S)))/g;
+}
+
+ld dist(ld th) {
+    return v*cos(th)*t(th);
+}
+
+ld theta(ld t) {
+    return asin((-1.*h + 0.5*g*t*t)/(t*v));
+}
+
+ld good(ld th) {
+    if (l+s*t(th) &lt; v*cos(th)*t(th)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+ld pi = acos(-1.0L), eps = 1e-6;
+ld mdist(ld&amp; ang) {
+    ld L = 0, R = pi/2;
+    while (abs(R-L) &gt; eps) {
+        ld m0 = (2*L + R)/3, m1 = (L + 2*R)/3;
+        if (dist(m0) &lt; dist(m1)) {
+            L = m0;
+        } else {
+            R = m1;
+        }
+    }
+    ang = (L+R)/2;
+    return dist((L+R)/2);
+}
+
+int main() {
+    while (cin &gt;&gt; h &gt;&gt; v &gt;&gt; l &gt;&gt; s) {
+        ld ang;
+        if (mdist(ang) &lt; l-eps) cout &lt;&lt; &quot;BAD THROW&quot; &lt;&lt; endl;
+        else {
+            ld R = ang;
+            ld L = pi/2;
+            while (abs(R-L)&gt;eps) {
+                ld m = (L+R)/2;
+                if (good(m)) {
+                    R = m;
+                } else {
+                    L = m;
+                }
+            }
+            ld dist0 = dist((L+R)/2);
+            cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; min(dist0, l+s*t((L+R)/2)) &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

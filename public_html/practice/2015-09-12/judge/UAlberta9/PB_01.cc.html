@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int a[6];
+
+bool clr() {
+  for (int i = 0; i &lt; 3; ++i)
+    if (a[i] &gt; a[i+3]) return true;
+    else if (a[i] &lt; a[i+3]) return false;
+  return false;
+}
+
+int main() {
+  int t;
+  cin &gt;&gt; t;
+  while (t--) {
+    for (int i = 0; i &lt; 6; ++i) {
+      cin &gt;&gt; a[i];
+      cout &lt;&lt; a[i] &lt;&lt; (i==5?'\n':' ');
+    }
+
+    bool count = (a[0] + a[1] + a[2] &gt; a[3] + a[4] + a[5]);
+    bool colour = clr();
+
+    if (count) {
+      if (colour) cout &lt;&lt; &quot;both&quot;;
+      else cout &lt;&lt; &quot;count&quot;;
+    }
+    else {
+      if (colour) cout &lt;&lt; &quot;color&quot;;
+      else cout &lt;&lt; &quot;none&quot;;
+    }
+    cout &lt;&lt; &quot;\n\n&quot;;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

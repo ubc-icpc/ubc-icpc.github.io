@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+#include&lt;sstream&gt;
+
+using namespace std;
+
+map&lt;string, vector&lt;string&gt; &gt; m;
+set&lt;string&gt; vis;
+vector&lt;string&gt; path;
+bool dfs(string start, string end) {
+  //return false;
+  if(start.compare(end)==0) return true;
+  vis.insert(start);
+  for(unsigned i=0;i&lt;m[start].size();i++) {
+	if(vis.find(m[start][i])==vis.end() ) {
+	  if(dfs(m[start][i],end)) {
+		path.push_back(m[start][i]);
+		return true;
+	  }
+	}
+  }
+  return false;
+}
+
+int main(void) {
+  int t;cin&gt;&gt;t;
+  while(t--) {
+	string s,line,str; cin&gt;&gt;s;
+	getline(cin,line);
+	//cout &lt;&lt; s &lt;&lt; endl;
+	/*
+	cout &lt;&lt; &quot;---------------&quot; &lt;&lt;endl;
+	cout &lt;&lt; &quot;start: &quot; &lt;&lt; s &lt;&lt; endl;
+	*/
+	stringstream ss; ss&lt;&lt;line;
+		while(ss&gt;&gt;str) {
+		  //cout &lt;&lt; &quot;processing: &quot; &lt;&lt; str&lt;&lt; endl;
+		 
+		  m[s].push_back(str);
+		  m[str].push_back(s);
+		  /*
+		   cout &lt;&lt; &quot;elements in&quot; &lt;&lt; s &lt;&lt; &quot;: &quot;;
+		  for(string l:m[s]) {
+		  	cout &lt;&lt; l &lt;&lt; &quot; &quot;;
+		  } cout &lt;&lt; endl;
+		  cout &lt;&lt; &quot;elements in&quot; &lt;&lt; str&lt;&lt; &quot;: &quot;;
+		  for(string l:m[str]) {
+		  	cout &lt;&lt; l &lt;&lt; &quot; &quot;;
+		  } cout &lt;&lt; endl;
+		  cout &lt;&lt; endl &lt;&lt; endl;
+		  */
+		}
+  }
+  
+  
+  string start,end; cin&gt;&gt;start&gt;&gt;end;
+  if(dfs(start,end)) {
+  	cout &lt;&lt; start &lt;&lt; &quot; &quot;;
+		for(int i=path.size()-1;i&gt;=0;i--) {
+		  cout &lt;&lt; path[i] &lt;&lt; &quot; &quot;;
+		}
+  } else {
+		cout &lt;&lt; &quot;no route found&quot;;
+  } cout &lt;&lt; endl;
+ // vis.insert(&quot;asdf&quot;);
+  //if(vis.find(&quot;asdf&quot;)==vis.end()) cout &lt;&lt; &quot;not found&quot; &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

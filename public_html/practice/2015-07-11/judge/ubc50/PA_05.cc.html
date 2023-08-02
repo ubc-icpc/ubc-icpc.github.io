@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int n;
+char grid[1001][1001];
+long long num1;
+long long ans[1001][1001];
+bool flag[1001][1001];
+long long mod = (1LL&lt;&lt;31)-1;
+
+void solve() {
+  ans[0][0] = 1;
+  for (int i=1; i&lt;n; i++) {
+    if (grid[0][i] != '#') {
+      ans[0][i] = ans[0][i-1];
+    }
+    else {
+      ans[0][i] = 0;
+    }
+    if (grid[i][0] != '#') {
+      ans[i][0] = ans[i-1][0];
+    }
+    else {
+      ans[i][0] = 0;
+    }
+  }
+  for (int i=1; i&lt;n; i++) {
+    for (int j=1; j&lt;n; j++) {
+      if (grid[i][j] == '#')
+  	ans[i][j] = 0;
+      else {
+	ans[i][j] = (ans[i-1][j] + ans[i][j-1])%mod;
+      }
+    }
+  }
+  num1 = ans[n-1][n-1];
+}
+
+void solve2(int x, int y) {
+  flag[x][y] = true;
+  int a1[] = {-1, 0, 1, 0};
+  int a2[] = {0, 1, 0, -1};
+  for (int i=0; i&lt;4; i++) {
+    int tx = x+a1[i];
+    int ty = y+a2[i];
+    if (tx &lt; 0 || ty &lt; 0 || tx &gt;=n || ty &gt;=n || flag[tx][ty] || grid[tx][ty]=='#') continue;
+    solve2(tx,ty);
+  }
+}
+
+int main() {
+  cin &gt;&gt; n;
+  for (int i=0; i&lt;n; i++) {
+    for (int j=0; j&lt;n; j++) {
+      cin &gt;&gt; grid[i][j];
+    }
+  }
+
+  num1 = 0;
+  solve();
+  if (num1 &gt; 0)
+    cout &lt;&lt; num1 &lt;&lt; '\n';
+  else {
+    solve2(0, 0);
+    if (flag[n-1][n-1])
+      cout &lt;&lt; &quot;THE GAME IS A LIE&quot; &lt;&lt; '\n';
+    else
+      cout &lt;&lt; &quot;INCONCEIVABLE&quot; &lt;&lt; '\n';
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

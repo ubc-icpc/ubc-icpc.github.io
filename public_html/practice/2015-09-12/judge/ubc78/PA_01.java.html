@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+
+public class A12 {
+	static Scanner in;
+	public static void main(String[] args) {
+		
+		in = new Scanner(System.in);
+		int testNum = in.nextInt();
+		
+
+		for (int i = 0; i &lt; testNum; i++) {
+			int[] testCase = new int[10];
+			for (int j = 0; j &lt; 10; j++) {
+				testCase[j] = in.nextInt();
+			}
+			solve(testCase);
+		}
+		return;
+	}
+	
+	public static void solve(int[] arr) {
+		boolean zack = false;
+		boolean mack = false;
+		for (int i = 0; i &lt; 10; i++) {
+			System.out.print(arr[i] + &quot; &quot;);
+			
+			if (arr[i] == 18) {
+				mack = true;
+			} else if (arr[i] == 17) {
+				zack = true;
+			}
+		}
+		System.out.println();
+		if (zack &amp;&amp; mack)
+			System.out.println(&quot;both&quot;);
+		else if(zack)
+			System.out.println(&quot;zack&quot;);
+		else if(mack)
+			System.out.println(&quot;mack&quot;);
+		else 
+			System.out.println(&quot;none&quot;);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class one {
+	
+	public static void main(String[] args) {
+		
+		Scanner kb = new Scanner(System.in);
+		String opt = kb.next();
+		int s = kb.nextInt();
+		String str = kb.next();
+		String end = &quot;&quot;;
+		if(opt.equals(&quot;E&quot;)) {
+		for(int x=0;x&lt;str.length();x++) {
+			String out = Character.toString((char) (str.charAt(x)+s));
+			if(str.charAt(x)+s&gt;122) {
+				//System.out.println((str.charAt(x)+s)-122);
+				out =  Character.toString((char) (96+((str.charAt(x)+s)-122)));
+			}
+			end = end + out;
+		}
+		System.out.println(end);
+		}
+		else {
+			for(int y=0;y&lt;str.length();y++) {
+				String out = Character.toString((char) (str.charAt(y)-s));
+				if(str.charAt(y)-s&lt;97) {
+					out =  Character.toString((char) (123-(97-(str.charAt(y)-s))));
+					//System.out.println(out.charAt(0)+0);
+				}
+				
+				end = end+out;
+			}
+			System.out.println(end);
+		}
+	}
+
+}
+</code>
+</pre>
+</body>
+</html>

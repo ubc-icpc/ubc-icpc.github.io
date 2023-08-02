@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-05-17.
+ */
+public class Prosjek {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int noOfNumbers = Integer.parseInt(s.nextLine());
+        String[] strs = s.nextLine()/*&quot;3 2 3 5&quot;*/.split(&quot;\\s+&quot;);
+        int soFar = 0;
+
+        for(int i = 0; i &lt; noOfNumbers; i++){
+            int j = Integer.parseInt(strs[i]);
+            int k = j*(i+1)-soFar;
+            String space = &quot; &quot;;
+            if(i == noOfNumbers - 1)
+                space = &quot;&quot;;
+            System.out.print(k + space);
+            soFar += k;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

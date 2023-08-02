@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;unordered_map&gt;
+#include&lt;string&gt;
+#include&lt;algorithm&gt;
+#include&lt;limits&gt;
+using namespace std;
+
+const int INF=numeric_limits&lt;int&gt;::max();
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+unordered_map&lt;char, vector&lt;int&gt;&gt; om;
+    string s; cin &gt;&gt; s;
+    for (int i=0; i&lt;s.size(); i++) {
+      om[s[i]].push_back(i);
+    }
+    int res=INF;
+    int init=om['p'][0];
+    int cnt=1;
+    for (int i=0; i&lt;om['p'].size(); i++) {
+      auto ita =upper_bound(om['a'].begin(), om['a'].end(), init);
+      if(ita==om['a'].end()) break;
+      auto itt =upper_bound(om['t'].begin(), om['t'].end(), *ita);
+      if(itt==om['t'].end()) break;
+      auto ith =upper_bound(om['h'].begin(), om['h'].end(), *itt);
+      if(ith==om['h'].end()) break;
+      res=min(res,*ith-init+1);
+      init=om['p'][cnt++];
+    }
+    if (res==INF) cout &lt;&lt; -1 &lt;&lt; endl;
+    else cout &lt;&lt; res &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

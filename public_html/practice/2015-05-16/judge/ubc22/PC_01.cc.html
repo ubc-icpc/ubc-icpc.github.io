@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+ll N, M, A, B;
+int L[1000005][30];
+char C;
+string S;
+ll G (char c, int x, int y) { return L[y][c - 'A'] - L[x][c - 'A']; }
+int main () {
+  ios::sync_with_stdio(0); cin.tie(0);
+  cin &gt;&gt; N &gt;&gt; S;
+  cin &gt;&gt; N;
+  for (int i = 1; i &lt;= S.size(); ++i) {
+    for (int j = 0; j &lt; 26; ++j) L[i][j] = L[i - 1][j];
+    ++L[i][S[i - 1] - 'A'];
+  }
+  while (N--) {
+    cin &gt;&gt; M &gt;&gt; C;
+    A = M - 1; B = M;
+    if (A % 2) B /= 2;
+    else A /= 2;
+    A = ((A % S.size()) * (B % S.size())) % S.size(); 
+    B = G(C, A, min((ll)S.size(), A + M));
+    if (A + M &gt; S.size()) {
+      B += G(C, 0, (A + M) % S.size());
+      B += G(C, 0, S.size()) * ((M + A - S.size()) / S.size());
+    }
+    cout &lt;&lt; B &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

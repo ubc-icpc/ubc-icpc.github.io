@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+ld c[10005], d[10005], r[10005];
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		ld N; int M; cin &gt;&gt; N &gt;&gt; M;
+		ld C = 7*N/16;
+		for (int i = 0; i &lt; M; i++) {
+			cin &gt;&gt; c[i] &gt;&gt; d[i] &gt;&gt; r[i];
+		}
+		
+		ld cost = 0;
+		while (true) {
+			ld A = 0, B = 0;
+			for (int i = 0; i &lt; M; i++) {
+				A += 1.0/(2*d[i]);
+				B += (c[i]+r[i])/(2*d[i]);
+			}
+			ld L = (C+B)/A;
+		
+			cost = 0;
+			vector&lt;ld&gt; nc, nd, nr;
+			set&lt;int&gt; nbad;
+			for (int i = 0; i &lt; M; i++) {
+				ld w = (L-c[i]-r[i])/(2*d[i]);
+				cost += (c[i]+r[i])*w + d[i] * w * w;
+				if (w &lt; 0) nbad.insert(i);
+			}
+			
+			for (int i = 0; i &lt; M; i++) {
+				if (nbad.count(i)) continue;
+				nc.push_back(c[i]);
+				nd.push_back(d[i]);
+				nr.push_back(r[i]);
+			}
+			
+			if (nbad.size() == 0) break;
+			M = nc.size();
+			for (int i = 0; i &lt; M; i++) {
+				c[i] = nc[i];
+				d[i] = nd[i];
+				r[i] = nr[i];
+			}
+		}
+		cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; 2.5 * 7 * N - cost &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

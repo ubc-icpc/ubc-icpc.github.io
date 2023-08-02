@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;map&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+int arr[100005];
+
+int main()
+{
+   int t;
+   cin &gt;&gt; t;
+   while(t--)
+   {
+      int n;
+      cin &gt;&gt; n;
+      for(int i=0; i&lt;n; i++)
+	 cin &gt;&gt; arr[i];
+      sort(arr, arr+n);
+      bool finished=false;
+      for(int i=0; i&lt;n; i++)
+      {
+	 int next=i+1;
+	 if(next&gt;=n)
+	    break;
+	 while(arr[next]==arr[i])
+	 {
+	    next++;
+	    //cerr &lt;&lt; &quot;Next is: &quot; &lt;&lt; next &lt;&lt; endl;
+	    if(next&gt;=n)
+	    {
+	       finished=true;
+	       break;
+	    }
+	 }
+	 if(finished)
+	    break;
+	 //cerr &lt;&lt; &quot;next: &quot; &lt;&lt; next &lt;&lt; &quot; &quot; &lt;&lt; &quot;curr: &quot; &lt;&lt; i &lt;&lt; endl;
+	 //if(arr[next]&gt;arr[i])
+	 //{
+	    cout &lt;&lt; arr[next]-arr[i] &lt;&lt; &quot; &quot;;
+	    cout &lt;&lt; next &lt;&lt; endl;
+	    //}
+	    //else
+	    //{
+	    //   cerr &lt;&lt; &quot;next: &quot; &lt;&lt; next &lt;&lt; &quot; &quot; &lt;&lt; &quot;curr: &quot; &lt;&lt; i &lt;&lt; endl;
+	    //   cout &lt;&lt; arr[i]-arr[next] &lt;&lt; &quot; &quot;;
+	    //   cout &lt;&lt; n-next &lt;&lt; endl;
+	    //}
+	 i=next-1;
+      }
+      cout &lt;&lt; endl;
+   }
+
+   return 0;
+}
+
+/*
+int main()
+{
+   int t;
+   cin &gt;&gt; t;
+   while(t--)
+   {
+      int n;
+      cin &gt;&gt; n;
+      map&lt;int,int&gt; m;
+      for(int i=0; i&lt;n; i++)
+	 cin &gt;&gt; arr[i];
+      for(int i=0; i&lt;n; i++)
+      {
+	 m[arr[i]]++;
+      }
+      if(arr[0]&gt;arr[n-1])
+      {
+	 map&lt;int,int&gt;::iterator it=m.end();
+	 it--;
+	 for(; it!=m.begin(); )
+	 {
+	    int currH=it-&gt;first, currFreq=it-&gt;second;
+	    it--;
+	    //cerr &lt;&lt; &quot;Curr: &quot; &lt;&lt; currH &lt;&lt; &quot; &quot; &lt;&lt; currFreq &lt;&lt; endl;
+	    //cerr &lt;&lt; &quot;Next: &quot; &lt;&lt; it-&gt;first &lt;&lt; &quot; &quot; &lt;&lt; it-&gt;second &lt;&lt; endl;
+	    cout &lt;&lt; (it-&gt;first)-currH &lt;&lt; &quot; &quot; &lt;&lt; n-currFreq &lt;&lt; endl;
+	 }
+      }
+      else
+      {
+	 map&lt;int,int&gt;::iterator it=m.begin();
+	 for(; it!=m.end(); )
+	 {
+	    int currH=it-&gt;first, currFreq=it-&gt;second;
+	    it++;
+	    //cerr &lt;&lt; &quot;Curr: &quot; &lt;&lt; currH &lt;&lt; &quot; &quot; &lt;&lt; currFreq &lt;&lt; endl;
+	    //cerr &lt;&lt; &quot;Next: &quot; &lt;&lt; it-&gt;first &lt;&lt; &quot; &quot; &lt;&lt; it-&gt;second &lt;&lt; endl;
+	    cout &lt;&lt; (it-&gt;first)-currH &lt;&lt; &quot; &quot; &lt;&lt; n-currFreq &lt;&lt; endl;
+	 }
+      }
+      cout &lt;&lt; endl;
+   }
+
+   return 0;
+}
+*/
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;set&gt;
+#include&lt;string&gt;
+#include&lt;queue&gt;
+
+using namespace std;
+
+bool g[31][31];
+set&lt;string&gt; s;
+bool v[31];
+
+bool bfs(int n) {
+  queue&lt;int&gt; q;
+  q.push(0);
+  v[0]=true;
+  while(!q.empty()) {
+	int t=q.front();
+	q.pop();
+	if(t==n-1) return true;
+	for(int i=0; i&lt;n; i++) {
+	  if(g[t][i]==true &amp;&amp; v[i]==false) {
+		q.push(i);
+		v[i]=true;
+	  }
+	}
+  }
+  return false;
+}
+
+int main(void) {
+  int t; cin&gt;&gt;t;
+  while(t--) {
+	int trials; cin&gt;&gt;trials;
+	s.clear();
+	for(int i=0; i&lt;trials; i++) {
+	  string str; cin&gt;&gt;str;
+	  s.insert(str);
+	}
+	int n,e; cin&gt;&gt;n&gt;&gt;e;
+	for(int i=0;i&lt;n;i++) {
+	  v[i]=false;
+	  for(int j=0;j&lt;n;j++) {
+		g[i][j]=0;
+	  }
+	}
+
+	for(int i=0;i&lt;e;i++) {
+	  int n1,n2; cin&gt;&gt;n1&gt;&gt;n2;
+	  string str; cin&gt;&gt;str;
+	  if(s.find(str)==s.end()){
+		g[n1][n2]=true;
+		g[n2][n1]=true;
+	  }
+	}
+
+	cout &lt;&lt; bfs(n) &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

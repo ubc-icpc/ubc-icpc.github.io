@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;queue&gt;
+#include &lt;map&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+struct N {
+    N* child[26];
+    int rank;
+    N* par;
+    N* nxt;
+
+    bool visited;
+    int dist;
+
+    N() {
+        memset(child, 0, sizeof child);
+        rank = -1;
+        par = 0;
+        nxt = 0;
+        visited = false;
+        dist = 1000000000;
+    }
+
+    void dfs(N* curr) {
+        int bestRank = 1000000000;
+        N* bestNxt = 0;
+
+        if (rank &gt;= 0) {
+            bestRank = rank;
+            bestNxt = curr;
+        }
+
+        for (int i = 0; i &lt; 26; i++) {
+            if (child[i]) {
+                child[i]-&gt;dfs(child[i]);
+                int nxtRank = child[i]-&gt;nxt-&gt;rank;
+                if (nxtRank &gt;= 0 &amp;&amp; nxtRank &lt; bestRank) {
+                    bestRank = nxtRank;
+                    bestNxt = child[i]-&gt;nxt;
+                }
+            }
+        }
+
+        nxt = bestNxt;
+    }
+};
+
+N data[1000000];
+N* root = &amp;data[0];
+int nn = 1;
+
+void insert(string &amp;s, int rank) {
+    N* curr = root;
+    for (int i = 0; i &lt; s.length(); i++) {
+        int c = (int)(s[i] - 'a');
+        if (curr-&gt;child[c] == 0) {
+            curr-&gt;child[c] = &amp;data[nn++];
+            curr-&gt;child[c]-&gt;par = curr;
+        }
+        curr = curr-&gt;child[c];
+    }
+    curr-&gt;rank = rank;
+}
+
+string dict[100000];
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, m; cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) {
+        string s; cin &gt;&gt; s;
+        insert(s, i);
+        dict[i] = s;
+    }
+
+    root-&gt;dfs(root);
+    root-&gt;dist = 0;
+    root-&gt;nxt = 0;
+
+    queue&lt;N*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        N* curr = q.front(); q.pop();
+        if (curr-&gt;visited) continue;
+        curr-&gt;visited = true;
+        for (int c = 0; c &lt; 26; c++) {
+            if (curr-&gt;child[c] == 0) continue;
+            if (curr-&gt;child[c]-&gt;dist &gt; curr-&gt;dist+1) {
+                curr-&gt;child[c]-&gt;dist = curr-&gt;dist+1;
+                q.push(curr-&gt;child[c]);
+            }
+        }
+        if (curr-&gt;nxt &amp;&amp; curr-&gt;nxt-&gt;dist &gt; curr-&gt;dist+1) {
+            curr-&gt;nxt-&gt;dist = curr-&gt;dist+1;
+            q.push(curr-&gt;nxt);
+        }
+        if (curr-&gt;par &amp;&amp; curr-&gt;par-&gt;dist &gt; curr-&gt;dist+1) {
+            curr-&gt;par-&gt;dist = curr-&gt;dist+1;
+            q.push(curr-&gt;par);
+        }
+    }
+
+    for (int i = 0; i &lt; m; i++) {
+        string s; cin &gt;&gt; s;
+        N* curr = root;
+        int dist = s.length();
+        for (int j = 0; j &lt; s.length(); j++) {
+            int c = (int)(s[j] - 'a');
+            if (curr-&gt;child[c] == 0) {
+                break;
+            }
+            curr = curr-&gt;child[c];
+            dist = min(dist, curr-&gt;dist + (int)s.length()-j-1);
+        }
+        cout &lt;&lt; dist &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

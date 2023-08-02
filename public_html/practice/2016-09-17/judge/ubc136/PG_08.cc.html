@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+map&lt;string, int&gt; ids1;
+map&lt;int, string&gt; ids2;
+vector&lt;vector&lt;long double&gt; &gt; currs (8, vector&lt;long double&gt;(8, 0));
+int val;
+string name;
+long double minOver = 1000000000;
+int minId;
+int minNum;
+set&lt;int&gt; visited;
+
+void dfs(int id, long double currRatio) {
+	for (int i = 0; i &lt; 8; i++) {
+		if (currs[id][i] != 0) {
+			int num = ceil(val * currs[id][i] * currRatio - 1e-10);
+			if (!visited.count(i)) {
+				if (num &lt;= 100000) {
+					long double over = num * currs[i][id] / currRatio - val;
+//					cout &lt;&lt; num &lt;&lt; &quot; &quot;;
+//					cout &lt;&lt; fixed &lt;&lt; setprecision(15) &lt;&lt; over &lt;&lt; endl;
+					if (over &lt; minOver) {
+						minOver = over;
+						minId = i;
+						minNum = num;
+					}
+				}
+				visited.insert(i);
+				dfs(i, currRatio * currs[id][i]);
+			}
+		}
+	}
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+	int caseNo = 1;
+	while (true) {		
+		int n; cin &gt;&gt; n;
+		if (n == 0) break;
+		int currId = 0;
+		
+		for (int i = 0; i &lt; n; i++) {
+			pair&lt;string, int&gt; id1;
+			pair&lt;int, string&gt; id2;
+			int val1; cin &gt;&gt; val1;
+			string name1; cin &gt;&gt; name1;
+			if (!ids1.count(name1)) {
+				ids1[name1] = currId;
+				ids2[currId] = name1;
+				currId++;
+			}
+			string dummy; cin &gt;&gt; dummy;
+			int val2; cin &gt;&gt; val2;
+			string name2; cin &gt;&gt; name2;
+			if (!ids1.count(name2)) {
+				ids1[name2] = currId;
+				ids2[currId] = name2;
+				currId++;
+			}
+			
+			currs[ids1[name1]][ids1[name2]] = (long double) val2 / val1;
+			currs[ids1[name2]][ids1[name1]] = (long double) val1 / val2;
+		}
+		
+		cin &gt;&gt; val;
+		cin &gt;&gt; name;
+		visited.insert(ids1[name]);
+		dfs(ids1[name], 1.0);
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; caseNo &lt;&lt; &quot;: &quot; &lt;&lt; minNum &lt;&lt; &quot; &quot; &lt;&lt; ids2[minId] &lt;&lt; endl;
+		caseNo++;
+		visited = set&lt;int&gt;();
+		currs = vector&lt;vector&lt;long double&gt; &gt; (8, vector&lt;long double&gt;(8, 0));
+		ids1 = map&lt;string, int&gt;();
+		ids2 = map&lt;int, string&gt;();
+		minOver = 1000000000;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;stack&gt;
+#include &lt;queue&gt;
+#include &lt;math.h&gt;
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;cassert&gt;
+#include &lt;string.h&gt;
+
+#include &lt;time.h&gt;
+#include &lt;random&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+#define ll long long
+#define N 10005
+#define MOD 1000000000
+
+ll f[N];
+
+void solve() {
+    ll p;
+    cin &gt;&gt; p;
+    for (ll z = 0; z &lt; p; z++) {
+        ll K, n, m, k;
+        cin &gt;&gt; K &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+        
+        memset(f, 0, sizeof(ll)*N);
+        f[0] = 1;
+        
+        for (ll i = 1; i &lt;= n; i++) {
+            for (ll j = 0; j &lt; i; j++) {
+                if ((i-j-m)%k == 0)
+                    continue;
+                f[i] += f[j];
+            }
+        }
+        cout &lt;&lt; K &lt;&lt; &quot; &quot; &lt;&lt; f[n] &lt;&lt; endl;
+    }
+}
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    cin.tie(0);
+    solve();
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct t_person{
+
+    string name;
+
+    vector&lt;int&gt; classes;
+};
+
+int n;
+t_person person[1010];
+
+bool t_comp(t_person a, t_person b){
+
+    for(int i = 0;i &lt; (int)a.classes.size();i++)
+        if(a.classes[i] != b.classes[i])
+            return a.classes[i] &gt; b.classes[i];
+
+    return a.name &lt; b.name;
+}
+
+int main(){
+
+    cin &gt;&gt; n;
+
+    int m = 0;
+    for(int i = 1;i &lt;= n;i++){
+
+        cin &gt;&gt; person[i].name;
+
+        person[i].name.pop_back();
+
+        string c;
+        while(true){
+
+            cin &gt;&gt; c;
+            if(c == &quot;class&quot;) break;
+
+            if(c == &quot;upper&quot;) person[i].classes.push_back(1);
+            if(c == &quot;middle&quot;) person[i].classes.push_back(0);
+            if(c == &quot;lower&quot;) person[i].classes.push_back(-1);
+        }
+
+        m = max(m, (int)person[i].classes.size());
+        reverse(person[i].classes.begin(), person[i].classes.end());
+    }
+
+    for(int i = 1;i &lt;= n;i++)
+        while((int)person[i].classes.size() &lt; m)
+            person[i].classes.push_back(0);
+
+    sort(person+1, person+n+1, t_comp);
+
+    for(int i = 1;i &lt;= n;i++) cout &lt;&lt; person[i].name &lt;&lt; endl;
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

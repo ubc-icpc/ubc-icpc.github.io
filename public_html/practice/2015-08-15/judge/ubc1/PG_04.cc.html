@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+//every turn one surface gets eaten and one surface is stained
+//with the exception of the first turn if there are no dirty two sided dishes
+//and an even number of 1sided dirty dishes
+
+int main() {
+    int t; cin &gt;&gt; t;
+    for (int c = 1; c &lt;= t; c++) {
+        cout &lt;&lt; &quot;Scenario #&quot; &lt;&lt; c &lt;&lt; &quot;: &quot;;
+        int C, S, D; cin &gt;&gt; C &gt;&gt; S &gt;&gt; D;
+        if (S &gt;= 2) D = 0;
+        
+        int ans = 0;
+        C += S/2;
+        S %= 2;
+        if (S == 0) {
+            if (D == 0) ans = (C &gt; 0 ? C+1 : 0);
+            else ans = C;
+        } else if (S == 1) {
+            ans = C + 1;
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

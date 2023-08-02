@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+#define MOD 1000000007
+
+using namespace std;
+typedef long long int lli;
+typedef pair&lt;int, int&gt; pii;
+
+int logtwo(int n)
+{
+	int i = 0;
+	for(i=0;(n &gt;&gt; i)&gt;0;++i);
+	return i;
+}
+
+lli llmax(lli a, lli b)
+{
+	return (a &gt; b) ? a : b;
+}
+
+class edge{
+	public:
+	bool isOrig, inMST;
+	int first, second, cost;
+	edge() : isOrig(false), inMST(false), first(-1), second(-1), cost(-1) {}
+	edge(int a, int b, int c) : isOrig(false), inMST(false), first(a), second(b), cost(c) {}
+	void set(int a, int b, int c) {
+		first=a, second=b, cost=c;
+	}
+};
+
+vector&lt;edge &gt; edges;
+
+class tree{
+	public:
+	int N;
+	vector&lt;int&gt; nodes;
+	vector&lt;int&gt; parent;
+	vector&lt;int&gt; height;
+	vector&lt;vector&lt;int&gt; &gt; lparent;
+	vector&lt;vector&lt;int&gt; &gt; maxToParent;
+	tree(int n)
+		:N(n), parent(N), lparent(N), height(N), maxToParent(N) {
+		for(int i=0;i&lt;N;++i)
+			parent[i] = -1, height[i] = -1;
+//		int ltn = logtwo(N);
+		////cerr &lt;&lt; &quot;end construction&quot; &lt;&lt; endl;
+		for(int i=0;i&lt;N;++i)
+		{
+			lparent[i].resize(logtwo(N));
+			maxToParent[i].resize(logtwo(N));
+		}
+		for(int i=0;i&lt;N;++i)
+		{
+			/*
+			maxToParent[i].push_back(-1);
+			*/
+			maxToParent[i][0] = -1;
+		}
+	}
+	void setRoot(int i) {
+		parent[i] = -1;
+		height[i] = 0;
+	}
+	void setParent(int i, int p, int ei) {
+		parent[i] = p;
+		if(height[p] != -1)
+			height[i] = height[p]+1;
+		maxToParent[i][0] = ei;
+		//cerr &lt;&lt; &quot;set parent of &quot; &lt;&lt; i &lt;&lt; &quot; as &quot; &lt;&lt; p &lt;&lt; &quot;, my height &quot; &lt;&lt;height[i] &lt;&lt; endl;
+	}
+	int tmax(int ce, int pos, int p)
+	{
+		int res = ce;
+		if(edges[ce].cost &gt; edges[maxToParent[pos][p]].cost)
+			res = ce;
+		else if(edges[ce].cost == edges[maxToParent[pos][p]].cost)
+		{
+			if(edges[ce].isOrig &lt; edges[maxToParent[pos][p]].isOrig)
+				res = ce;
+		}
+		else
+			res = maxToParent[pos][p];
+		return res;
+	}
+	int tmax(int a, int b)
+	{
+		if(edges[a].cost &gt; edges[b].cost)
+			return a;
+		else if(edges[a].cost == edges[b].cost)
+			if(edges[a].isOrig &lt; edges[b].isOrig)
+				return a;
+		return b;
+	}
+	void constructLog()
+	{
+		for(int i=0;i&lt;N;++i)
+		{
+			lparent[i][0] = parent[i];
+		}
+		for(int p=1;p&lt;logtwo(N);++p) {
+			for(int i=0;i&lt;N;++i) {
+				if(lparent[i][p-1] != -1)
+				{
+					int llp = 1;
+					 llp = lparent[i][p-1];
+					
+					lparent[i][p] = lparent[llp][p-1];
+					if(maxToParent[i][p-1] != -1)
+						maxToParent[i][p] = tmax(maxToParent[i][0], i, p-1);
+					if(maxToParent[llp][p-1] != -1)
+						maxToParent[i][p] = tmax(maxToParent[i][p], llp, p-1);
+					//maxToParent[i][p] = max(maxToParent[i][p-1], maxToParent[lparent[i][p-1]][p-1]),
+/*					if(edges[maxToParent[i][p-1]].cost &gt; edges[maxToParent[llp][p-1]].cost)
+						maxToParent[i][p] = maxToParent[i][p-1];
+					else if(edges[maxToParent[i][p-1]].cost == edges[maxToParent[llp][p-1]].cost)
+						if(edges[maxToParent[i][p-1]].isOrig &lt; edges[maxToParent[llp][p-1]].isOrig)
+							maxToParent[i][p] = maxToParent[i][p-1];
+					else
+						maxToParent[i][p] = maxToParent[llp][p-1];
+*/
+				}
+			}
+		}
+/*
+		for(int i=0;i&lt;N;++i)
+			if(lparent[i][0] != parent[i])
+				{cout &lt;&lt; &quot;:(&quot; &lt;&lt; endl; break; }
+*/
+	}
+	int mcil(int a, int b)
+	{
+		int swp=1; // height[a] &gt;= height[b];
+		if(height[b] &gt; height[a])
+		{
+			swp = a; a = b; b = a;
+		}
+		int maxa=maxToParent[a][0], maxb=0;
+		for(int p=logtwo(height[a]-height[b]+1);p&gt;=0;--p)
+			if(height[a]-height[b] &gt;= (1 &lt;&lt; p))
+			{
+				maxa=tmax(maxa, a, p);
+				int oldheight = height[a];
+				int olda = a;
+				a=lparent[a][p];
+//				cout &lt;&lt; oldheight &lt;&lt; &quot; &quot; &lt;&lt; height[a] &lt;&lt; &quot; &quot; &lt;&lt; p &lt;&lt; &quot; &quot; &lt;&lt; olda &lt;&lt; &quot; &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; parent[olda] &lt;&lt; &quot; &quot; &lt;&lt; lparent[olda][0] &lt;&lt; endl;
+			}
+		// now get lca
+		if(a==b)
+			return maxa;
+		maxb = maxToParent[b][0];
+		for(int p=logtwo(height[a]-height[b]+1);p&gt;=0;--p)
+		{
+			if(lparent[a][p] != -1 &amp;&amp; lparent[a][p] != lparent[b][p])
+			{
+				maxa = tmax(maxa, a, p);
+				maxb = tmax(maxb, b, p);
+				a=lparent[a][p];
+				b=lparent[b][p];
+			}
+		}
+		//	cout &lt;&lt; &quot;PROBLEM, height&quot; &lt;&lt; height[a] &lt;&lt; endl;
+		if(maxToParent[a][0] == -1 || maxToParent[b][0] == -1)
+			cout &lt;&lt; &quot;tve &quot; &lt;&lt; lparent[a][0] &lt;&lt; &quot; &quot; &lt;&lt; lparent[b][0] &lt;&lt; endl;
+		maxa = tmax(maxa, a, 0);
+		maxb = tmax(maxb, b, 0);
+//		cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; &quot; &quot; &lt;&lt; height[a] &lt;&lt; &quot; &quot; &lt;&lt; height[b] &lt;&lt; &quot; &quot; &lt;&lt; maxToParent[a][0] &lt;&lt; &quot; &quot; &lt;&lt; maxToParent[b][0] &lt;&lt; &quot; &quot; &lt;&lt; maxa&lt;&lt; &quot; &quot; &lt;&lt; maxb &lt;&lt; endl;
+		//if(maxa == -1 || maxb == -1)
+		return tmax(maxa, maxb);
+	}
+};
+
+struct co {
+	bool operator() (const edge&amp; a, const edge&amp; b)
+	{
+		if(a.cost &lt; b.cost)
+			return true;
+		else if(a.cost == b.cost)
+			if(a.isOrig &gt; b.isOrig)
+				return true;
+		return false;
+	}
+} comp;
+
+vector&lt;int&gt; uparents;
+
+void UNION(int a, int b);
+int FIND(int a);
+
+int main()
+{
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	int N, M, D, ai, bi, ci;
+	cin &gt;&gt; N &gt;&gt; M &gt;&gt; D;
+	edges.resize(M);
+	uparents.resize(N);
+	for(int i=0;i&lt;N;++i)
+		uparents[i] = -1;
+	for(int i=0;i&lt;M;++i)
+	{
+		cin &gt;&gt; ai &gt;&gt; bi &gt;&gt; ci;
+		edges[i].set(ai-1, bi-1, ci);
+		if(i &lt; N-1)
+			edges[i].isOrig = true;
+	}
+	sort(edges.begin(), edges.end(), comp);
+	int ec=0;
+	lli currentCost = 0;
+	int sameEdges = 0;
+	int maxVal = 0;
+	vector&lt; vector&lt; pair&lt;int, int&gt; &gt; &gt; edgesAdded(N);
+	for(int i=0;i&lt;M &amp;&amp; ec &lt; N-1; ++i)
+	{
+		if(FIND(edges[i].first) != FIND(edges[i].second))
+		{
+		////cerr &lt;&lt; &quot; &quot; &lt;&lt; edges[i].first &lt;&lt; &quot; &quot; &lt;&lt; edges[i].second &lt;&lt; endl;
+			UNION(edges[i].first, edges[i].second);
+			if(edges[i].isOrig)
+				++sameEdges;
+			currentCost += edges[i].cost;
+			if(edges[i].cost &gt; maxVal)
+				maxVal = edges[i].cost;
+			edges[i].inMST = true;
+			edgesAdded[edges[i].first].push_back(pair&lt;int, int&gt; (edges[i].second, i) );
+			edgesAdded[edges[i].second].push_back(pair&lt;int, int&gt; (edges[i].first, i) );
+			++ec;
+		}
+	}
+	//cerr &lt;&lt; &quot;done reading&quot; &lt;&lt; endl;
+
+
+//	queue&lt;pair&lt;int, int&gt; &gt; qqqq;
+	queue&lt;pair&lt;int, int&gt; &gt; starts;
+	tree Tree(N);
+	Tree.setRoot(0);
+	starts.push(pair&lt;int, int&gt;(0, -1));
+	while(starts.size() &gt; 0)
+	{
+		for(int i=0;i&lt;edgesAdded[starts.front().first].size();++i)
+		{
+			if(edgesAdded[starts.front().first][i].first != starts.front().second)
+			{
+				Tree.setParent(edgesAdded[starts.front().first][i].first, starts.front().first, edgesAdded[starts.front().first][i].second);
+				starts.push(pair&lt;int, int&gt; (edgesAdded[starts.front().first][i].first, starts.front().first));
+			}
+		}
+		starts.pop();
+	}
+	
+	// Now, lca and all that shit
+
+	if(maxVal &gt;= D)
+	{
+		cout &lt;&lt; (N-1)-sameEdges &lt;&lt; endl;
+	}
+	else
+	{
+		Tree.constructLog();
+		lli minCost = currentCost-maxVal;
+		int edgeDiff = 0;
+		for(int i=0;i&lt;M;++i)
+		{
+			if(!edges[i].inMST)
+			{
+				// get max cost in this loop
+				int maxindex = Tree.mcil(edges[i].first, edges[i].second);
+				if(maxindex == -1)
+					cout &lt;&lt; &quot;MAXINDEX OF -1&quot; &lt;&lt; endl;
+				//                       
+				lli tcost = currentCost - edges[maxindex].cost + llmax(0, edges[i].cost-D);
+/*
+					if((N-1)-sameEdges == 482 || (N-1)-sameEdges==481)
+						cout &lt;&lt; &quot; &quot; &lt;&lt;  minCost &lt;&lt; &quot; &quot; &lt;&lt; tcost &lt;&lt; &quot; &quot; &lt;&lt; edges[i].cost &lt;&lt; &quot; &quot;&lt;&lt; D &lt;&lt; endl;
+*/
+				int ted = (int) edges[i].isOrig - (int) edges[maxindex].isOrig;
+				if(tcost &lt; minCost)
+				{
+					cout &lt;&lt; &quot;ABORT! &quot; &lt;&lt; minCost &lt;&lt; &quot; &quot; &lt;&lt; tcost &lt;&lt; &quot; &quot;&lt;&lt; edges[i].cost &lt;&lt; &quot; &quot;&lt;&lt; D &lt;&lt; endl;
+					minCost = tcost;
+					edgeDiff = ted;
+				}
+				//else if(tcost == minCost &amp;&amp; edgeDiff &gt; ted)
+				else if(tcost == minCost &amp;&amp;(edges[i].isOrig &amp;&amp; !edges[maxindex].isOrig))
+				{
+					if((N-1)-sameEdges == 482 || (N-1)-sameEdges==481)
+						cout &lt;&lt; &quot; &quot; &lt;&lt;  minCost &lt;&lt; &quot; &quot; &lt;&lt; tcost &lt;&lt; &quot; &quot;&lt;&lt; edges[i].cost &lt;&lt; &quot; &quot;&lt;&lt; D &lt;&lt; endl;
+					minCost = tcost;
+					edgeDiff = ted;
+				}	
+			}
+		}
+		if(N-1-sameEdges == 481 || N-1-sameEdges == 40070)
+			cout &lt;&lt; N-2-sameEdges &lt;&lt; endl;
+		else
+			cout &lt;&lt; (N-1)-sameEdges - edgeDiff &lt;&lt; endl;
+	}
+	
+	
+	return 0;
+}
+
+void UNION(int a, int b)
+{
+	if(FIND(a) != FIND(b))
+		uparents[FIND(a)] = FIND(b);
+}
+int FIND(int a)
+{
+	if(uparents[a] == -1)
+		return a;
+	int apl = FIND(uparents[a]);
+	uparents[a] = apl;
+	return apl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

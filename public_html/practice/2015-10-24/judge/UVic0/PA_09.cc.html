@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;functional&gt;
+#include &lt;queue&gt;
+#include &lt;algorithm&gt;
+#include &lt;deque&gt;
+
+typedef std::vector&lt;std::vector&lt;int&gt;&gt; AdjList;
+
+int treeDiameter(const AdjList&amp; adj, int start)
+{
+	std::function&lt;std::pair&lt;int, int&gt;(int, int)&gt; longestTreePath = [&amp;](int u, int par) -&gt; std::pair&lt;int, int&gt;
+	{
+		std::pair&lt;int, int&gt; furthest = std::make_pair(u, 0);
+		for (int v : adj[u])
+		{
+			if (v != par)
+			{
+				auto pair = longestTreePath(v, u);
+				++pair.second;
+				if (furthest.second &lt; pair.second)
+				{
+					furthest = pair;
+				}
+			}
+		}
+		return furthest;
+	};
+	const std::pair&lt;int, int&gt; v = longestTreePath(start, start);
+	return longestTreePath(v.first, v.first).second;
+	
+}
+
+void getComponents(const AdjList&amp; adj, std::vector&lt;std::vector&lt;int&gt;&gt;&amp; components)
+{
+	std::vector&lt;int&gt; visited(adj.size(), -1);
+	std::function&lt;void(int)&gt; dfs = [&amp;](int u)
+	{
+		visited[u] = components.size() - 1;
+		components.back().push_back(u);
+		for (int v : adj[u])
+		{
+			if (visited[v] == -1)
+			{
+				dfs(v);
+			}
+		}
+	};
+	for (int i = 0; i &lt; adj.size(); ++i)
+	{
+		if (visited[i] == -1)
+		{
+			components.push_back(std::vector&lt;int&gt;());
+			dfs(i);
+		}
+	}
+}
+
+int main()
+{
+	int c, l;
+	std::cin &gt;&gt; c &gt;&gt; l;
+	AdjList adj(c);
+	int u, v;
+	for (int i = 0; i &lt; l; ++i)
+	{
+		std::cin &gt;&gt; u &gt;&gt; v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+	std::vector&lt;std::vector&lt;int&gt;&gt; components;
+	getComponents(adj, components);
+	std::vector&lt;int&gt; radii;
+	int maxdiam = 0;
+	for (auto&amp; comp : components)
+	{
+		const int diam = treeDiameter(adj, comp.front());
+		const int radius = std::ceil(diam / 2.f);
+		maxdiam = std::max(maxdiam, diam);
+		radii.push_back(radius);
+	}
+	std::sort(radii.begin(), radii.end());
+	int stuff;
+	if (radii.size() == 1)
+	{
+		stuff = radii.front();
+	}
+	else if (radii.size() == 2)
+	{
+		stuff = (radii.back() + radii[radii.size() - 2] + 1);
+	}
+	else
+	{
+		const int top12 = radii.back() + radii[radii.size() - 2] + 1;
+		const int top23 = radii[radii.size() - 2] + radii[radii.size() - 3] + 2;
+		stuff = std::max(top12, top23);
+	}
+	std::cout &lt;&lt; std::max(stuff, maxdiam);
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

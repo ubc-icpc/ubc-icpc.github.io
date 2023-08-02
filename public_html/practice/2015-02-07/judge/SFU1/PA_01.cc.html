@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//
+//  BlocksGet.cpp
+//  ACM
+//
+//  Created by David Woods on 2015-02-07.
+//  Copyright (c) 2015 David Woods. All rights reserved.
+//
+
+#include &lt;stdio.h&gt;
+#include &lt;cstdio&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+int dist(int y1, int x1, int y2, int x2) {
+    return (abs(y1-y2) + abs(x1-x2));
+}
+
+int main()
+{
+    int T, M, N;
+    int startX, startY;
+    char map[505][505];
+    string line;
+    cin &gt;&gt; T;
+    while (T-- &gt; 0) {
+        cin &gt;&gt; M &gt;&gt; N;
+        for (int y = 0; y &lt; M; y++) {
+            cin &gt;&gt; line;
+            for (int i = 0; i &lt; line.length(); i++) {
+                map[y][i] = line.at(i);
+                if (map[y][i] == 'S') {
+                    startX = i;
+                    startY = y;
+                }
+            }
+        }
+        
+        int ans = 0;
+        for (int y = 0; y &lt; M; y++) {
+            for (int x = 0; x &lt; N; x++) {
+                if (map[y][x] == 'B') {
+                    ans = ans + (2 * dist(y,x,startY, startX));
+                }
+            }
+        }
+        
+        printf(&quot;%d seconds to blocks get!\n&quot;, ans);
+    }
+    
+    return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;utility&gt;
+using namespace std;
+typedef pair&lt;string, int&gt; si;
+
+int main() {
+    int n;
+    while(cin&gt;&gt;n &amp;&amp; n) {
+        string s;
+        map&lt;string, int&gt; mp;
+        int mx = 0;
+        for(int i=0; i&lt; n;++i) {
+            cin &gt;&gt; s;
+            if(mp.find(s) == mp.end()) {
+                mp.insert(si(s, 1));
+            } else {
+                mp[s]++;
+            }
+            mx = max(mp[s], mx);
+        }
+        int ans = 0;
+        for(int i= 1; i&lt;= mx; ++i) {
+            int sc = 0;
+            for(map&lt;string, int&gt;::iterator it = mp.begin();
+                    it != mp.end(); it++ ) {
+                if(it-&gt;second &gt;= i)sc++;
+            }
+            ans = max(ans, sc* i);
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

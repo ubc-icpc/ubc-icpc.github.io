@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+using namespace std;
+
+map&lt;string,int&gt; b2d;
+map&lt;int,string&gt; d2b;
+
+inline int pn2(int p)
+{
+    int n = 1;
+    while (p--)
+        n *= -2;
+    return n;
+}
+
+string bin(int n)
+{
+    if (!n)
+        return &quot;000000000000000&quot;;
+    string s = &quot;&quot;;
+    while (n)
+    {
+        s = (n % 2 ? &quot;1&quot; : &quot;0&quot;) + s;
+        n /= 2;
+    }
+    while (s.size() &lt; 15)
+        s = &quot;0&quot; + s;
+    return s;
+}
+
+int main()
+{
+    for (int i = 0; i &lt; (1&lt;&lt;15); i++)
+    {
+        string s = bin(i);
+        int v = 0;
+        for (int j = 0; j &lt; 15; j++)
+        {
+            if (s[14-j] == '1')
+                v += pn2(j);
+        }
+        b2d[s] = v;
+        d2b[v] = s;
+    }
+    int t; cin &gt;&gt; t;
+    while (t--)
+    {
+        char c; string s; int n;
+        cin &gt;&gt; c;
+        if (c == 'b')
+        {
+            cin &gt;&gt; s;
+            cout &lt;&lt; &quot;From binary: &quot; &lt;&lt; s &lt;&lt; &quot; is &quot;;
+            while (s.size() &lt; 15)
+                s = &quot;0&quot; + s;
+            cout &lt;&lt; b2d[s] &lt;&lt; &quot;\n&quot;;
+        }
+        else
+        {
+            cin &gt;&gt; n;
+            cout &lt;&lt; &quot;From decimal: &quot; &lt;&lt; n &lt;&lt; &quot; is &quot;;
+            s = d2b[n];
+            int ind = 0;
+            while (ind &lt; 15 &amp;&amp; s[ind] != '1')
+                ind++;
+            if (ind == 15)
+                ind--;
+            cout &lt;&lt; s.substr(ind) &lt;&lt; &quot;\n&quot;;
+        }
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

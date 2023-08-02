@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+vector&lt;int&gt; g[1000005];
+int deg[1000005], seen[1000005];
+int main() {
+    ios::sync_with_stdio(0);
+    int n, m; cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        int x, y; cin &gt;&gt; x &gt;&gt; y;
+        g[x].push_back(y);
+        deg[y]++;
+    }
+    
+    int res = -1;
+    int loc[2]; cin &gt;&gt; loc[0] &gt;&gt; loc[1];
+    for (int j = 0; j &lt; 2; j++) {
+        memset(seen, 0, sizeof seen);
+        queue&lt;int&gt; q({loc[j]});
+        seen[loc[j]] = 1;
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            for (int v : g[u]) {
+                if (!seen[v]) {
+                    q.push(v);
+                    seen[v] = 1;
+                }
+            }
+        }
+        if (seen[loc[j^1]]) res = j;
+    }
+    
+    if (res == -1) {
+        cout &lt;&lt; &quot;unknown&quot; &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; (res ? &quot;no&quot; : &quot;yes&quot;) &lt;&lt; endl;
+    }
+    
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

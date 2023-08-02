@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;int,string&gt; pis;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+string s[] = {&quot;qwertyuiop&quot;,&quot;asdfghjkl&quot;,&quot;zxcvbnm&quot;};
+string alph = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+
+map &lt;char, pii&gt; m;
+
+int dist(char a, char b) {
+    int count = 0;
+    pii p1 = m[a];
+    pii p2 = m[b];
+    return abs(p1.first - p2.first) + abs(p1.second - p2.second);
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	for (int i=0; i&lt;alph.length(); i++) {
+		for(int j=0; j&lt;=2; j++) {
+			if (s[j].find(alph[i]) != string::npos) m[alph[i]] = pii(s[j].find(alph[i]),j);
+		} 
+	}
+
+	int t;
+    cin &gt;&gt; t;
+    while (t--) {
+        set&lt;pis&gt; ss;
+        string s;
+        cin &gt;&gt; s;
+        int n;
+        cin &gt;&gt; n;
+        for (int i = 0; i &lt; n; i++){
+            string temp;
+            cin &gt;&gt; temp;
+            int count = 0;
+            for (int i = 0; i &lt; temp.length(); i++) {
+                count += dist(temp[i], s[i]);
+            }
+            ss.insert(pis(count, temp));
+        }
+        for (pis is : ss) {
+            cout &lt;&lt; is.second &lt;&lt; &quot; &quot; &lt;&lt; is.first &lt;&lt; endl;
+        }
+    }
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

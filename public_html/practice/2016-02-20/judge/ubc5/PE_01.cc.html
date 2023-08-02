@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+
+set&lt;pii&gt; seg[30];
+int a[10005];
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		for (int i = 0; i &lt; 30; i++) {
+			seg[i].clear();
+		}
+		
+		int n; cin &gt;&gt; n;
+		int mx = 0;
+		for (int i = 0; i &lt; n; i++) {
+			int x; cin &gt;&gt; x;
+			a[i] = x;
+			if (x == 1) {
+				seg[0].insert(pii(i, i));
+			} else if (x &gt; 2) {
+				x /= 3;
+				int idx = 1;
+				while (x &gt; 1) {
+					idx++;
+					x /= 2;
+				}
+				seg[idx].insert(pii(i, i));
+			}
+			
+			mx = max(x, mx);
+		}
+		
+		for (int i = 0; i &lt; 30; i++) {
+			vector&lt;pii&gt; v(seg[i].begin(), seg[i].end());
+			if (i == 0) {
+				// 1 case
+				for (int j = 0; j &lt; int(v.size()); j++) {
+					int x = v[j].first;
+					if (x &gt; 0 &amp;&amp; a[x-1] == 2) {
+						seg[1].insert(pii(x-1, x));
+					}
+					
+					if (x &lt; n-1 &amp;&amp; a[x+1] == 2) {
+						seg[1].insert(pii(x, x+1));
+					}
+				}
+			} else {
+				// the rest
+				for (int j = 0; j &lt; int(v.size()); j++) {
+					int x = v[j].first, y = v[j].second;
+					
+					auto it = lower_bound(v.begin(), v.end(), pii(y+1,y+1));
+					if (it != v.end() &amp;&amp; it-&gt;first == y+1) {
+						int z = it-&gt;second;
+						seg[i+1].insert(pii(x, z));
+					}
+				}
+			}
+		}
+		
+		int bp = 0;
+		for (int i = 29; i &gt; 0; i--) {
+			if (seg[i].size()) {
+				bp = i;
+				break;
+			}
+		}
+		
+		if (!bp) cout &lt;&lt; mx &lt;&lt; endl;
+		else cout &lt;&lt; 3 * (1&lt;&lt;(bp-1)) &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

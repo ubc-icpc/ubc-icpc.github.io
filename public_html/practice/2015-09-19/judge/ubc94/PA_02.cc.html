@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+
+using namespace std;
+
+bool sort_max_to_min(int a, int b);
+
+int main()
+{
+
+    int num_of_loads = 10;
+    while (cin &gt;&gt; num_of_loads)
+    {
+        if (num_of_loads == 0) break;
+
+        vector&lt;int&gt; input_drying_times(num_of_loads);
+        for (int i = 0; i &lt; num_of_loads; i++)
+        {
+            cin &gt;&gt; input_drying_times[i];
+        }
+        sort(input_drying_times.begin(), input_drying_times.end(), sort_max_to_min);
+
+        // Magically (Well...) Obtained variables
+        // Assume input_drying_times is sorted
+        //input_drying_times = sort_max_to_min(input_drying_times);
+        int washing_time_in_min = 30;
+        int time_in_min = washing_time_in_min;
+        for (int load_num = 0; load_num &lt; num_of_loads; load_num++)
+        {
+            if (time_in_min &gt;= (load_num+1)*washing_time_in_min)
+            {
+                time_in_min += input_drying_times[load_num];
+            }
+            else
+            {
+                time_in_min = (load_num + 1)*washing_time_in_min + input_drying_times[load_num];
+            }
+        }
+        cout &lt;&lt;(time_in_min - time_in_min%60)/60 &lt;&lt; &quot;:&quot; &lt;&lt; setfill('0') &lt;&lt; setw(2) &lt;&lt; time_in_min%60 &lt;&lt; endl;
+    }
+
+    return 0;
+}
+
+bool sort_max_to_min(int a, int b)
+{
+    // stub
+    return a &gt; b;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main(){
+	ios::sync_with_stdio(0);
+	string keyboard[] = {&quot;qwertyuiop&quot;, &quot;asdfghjkl&quot;, &quot;zxcvbnm&quot;};
+	map&lt;char, map&lt;char, int&gt;&gt; dist;
+	for(int i = 0; i &lt; 3; i++) {
+		for(int j = 0; j &lt; 3; j++) {
+			string str1 = keyboard[i];
+			string str2 = keyboard[j];
+			for(int k = 0; k &lt; str1.length(); k++) {
+				if(!dist.count(str1[k])) {
+					dist.insert({str1[k], map&lt;char, int&gt;()});
+				}
+				for(int l = 0; l &lt; str2.length(); l++) {
+					dist[str1[k]].insert({str2[l], abs(i-j) + abs(k-l)});
+				}
+			}
+		}
+	}
+
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		string s; cin &gt;&gt; s;
+		int l; cin &gt;&gt; l;
+		set&lt;pair&lt;int, string&gt;&gt; out;
+		while(l--) {
+			string curr; cin &gt;&gt; curr;
+			int total = 0;
+			for(int i = 0; i &lt; s.length(); i++) {
+				total += dist[s[i]][curr[i]];
+			}
+			out.insert({total, curr});
+		}
+
+		for(pair&lt;int, string&gt; curr : out) {
+			cout &lt;&lt; curr.second &lt;&lt; &quot; &quot; &lt;&lt; curr.first &lt;&lt; endl;
+		}
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

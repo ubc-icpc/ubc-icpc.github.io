@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long double ld;
+typedef complex&lt;ld&gt; p;
+const ld EPS = 1e-5;
+#define M 10000
+
+p a, b, c, d;
+p clo, chi, dlo, dhi;
+
+ld dd(const p&amp; c, const p&amp; d) {
+  return abs(a - b) + abs(c - d) + min(abs(b - d) + abs(c - a), abs(a - d) + abs(c - b));
+}
+
+ld dc(const p &amp;c) {
+  dlo = p(0, 0);
+  dhi = p(M, 0);
+  p dm1;
+  p dm2;
+  while (abs(dhi - dlo) &gt; EPS) {
+    dm1 = dlo + (dhi - dlo) / (ld) 3;
+    dm2 = dlo + (dhi - dlo) / (ld) 3 * (ld) 2;
+    if (dd(c, dm1) &lt; dd(c, dm2)) {
+      dhi = dm2;
+    } else {
+      dlo = dm1;
+    }
+  }
+  return dd(c, dlo);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int n;
+  cin &gt;&gt; n;
+  while (n--) {
+    ld ax, ay, bx, by;
+    cin &gt;&gt; ax &gt;&gt; ay &gt;&gt; bx &gt;&gt; by;
+    a = p(ax, ay);
+    b = p(bx, by);
+    c = p(0, M);
+    d = p(M, 0);
+
+    clo = p(0, 0);
+    chi = p(0, M);
+    p cm1;
+    p cm2; 
+    while (abs(chi - clo) &gt; EPS) {
+      cm1 = clo + (chi - clo) / (ld) 3;
+      cm2 = clo + (chi - clo) / (ld) 3 * (ld) 2; 
+      if (dc(cm1) &lt; dc(cm2)) {
+        chi = cm2;
+      } else {
+        clo = cm1;
+      }
+    }
+    cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; dc(clo) &lt;&lt; endl;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

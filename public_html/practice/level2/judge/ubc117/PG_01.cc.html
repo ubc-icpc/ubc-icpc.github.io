@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+ld f(ld a, ld b, ld d, ld vl, ld vs, ld q) {
+    ld ans = sqrt(q*q+d*d)/vl + sqrt((b-q)*(b-q)+(a-d)*(a-d))/vs;
+    return ans;
+}
+
+ld ts(ld a, ld b, ld d, ld vl, ld vs) {
+    ld lo = 0, hi = b;
+    for (int i=0; i&lt;100; ++i) {
+        ld m1 = (lo*2+hi)/3;
+        ld m2 = (lo+hi*2)/3;
+        ld v1 = f(a, b, d, vl, vs, m1);
+        ld v2 = f(a, b, d, vl, vs, m2);
+        if (v1 &lt; v2) {
+            hi = m2;
+        } else {
+            lo = m1;
+        }
+    }
+    return f(a, b, d, vl, vs, lo);
+}
+
+void solve() {
+    ld a, b, d, vl, vs;
+    cin &gt;&gt; a &gt;&gt; b &gt;&gt; d &gt;&gt; vl &gt;&gt; vs;
+    cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; ts(a, b, d, vl, vs) &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int TT;
+    cin &gt;&gt; TT;
+    while (TT--) {
+        solve();
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

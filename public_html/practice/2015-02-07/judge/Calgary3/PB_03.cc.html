@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int a[400005];
+int Left[400005];
+int Right[400005];
+
+int main () {
+	int n;
+	while(cin &gt;&gt; n &amp;&amp; n &gt; 1) {
+		for(int i = 0; i &lt; n; i++)
+			cin &gt;&gt; a[i];
+		int maxi = 0;
+		int mini = 1000000000;
+		for(int i = 0; i &lt; n; i++) {
+			maxi = max(maxi, a[i]);
+			mini = min(mini, a[i]);
+			Left[i] = maxi-mini;
+		}
+		
+		maxi = 0;
+		mini = 1000000000;
+		for(int i = n-1; i &gt;= 0; i--) {
+			maxi = max(maxi, a[i]);
+			mini = min(mini, a[i]);
+			Right[i] = maxi-mini;
+		}
+		
+		int res = 0;
+		mini = 1000000000;
+		for(int i = 0; i &lt; n-1; i++)
+			if(max(Left[i], Right[i+1]) &lt; mini){
+				mini = max(Left[i], Right[i+1]);
+				res = i;
+			}
+		cout &lt;&lt; (res+1) &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+
+public class A {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner s = new Scanner(System.in);
+		int K = s.nextInt();
+		int m = s.nextInt();
+		int[] rounds = new int[m];
+		for (int i = 0; i &lt; m; i++) {
+			rounds[i] = s.nextInt();
+		}
+		s.close();
+		
+		ArrayList&lt;Integer&gt; answers = new ArrayList&lt;Integer&gt;();
+		for (int i = 1; i &lt;= K; i++) {
+			answers.add(i);
+		}
+		for (int i = 0; i &lt; rounds.length; i++) {
+			ArrayList&lt;Integer&gt; toRemove = new ArrayList&lt;Integer&gt;();
+			for (int j = rounds[i]-1; j &lt; answers.size(); j += rounds[i]) {
+				toRemove.add(j);
+			}
+			for (int j = toRemove.size()-1; j &gt;= 0; j--) {
+				answers.remove((int)toRemove.get(j));
+			}
+		}
+		for (int i = 0; i &lt; answers.size(); i++) {
+			System.out.println(answers.get(i));
+		}
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

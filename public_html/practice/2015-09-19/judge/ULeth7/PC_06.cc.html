@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+using namespace std;
+
+set&lt;string&gt; rep(string str, string a, string b) {
+	set&lt;string&gt; ans;
+	set&lt;int&gt; seen;
+
+		string test = str;
+	
+		int pos = str.find(a);
+
+		string empty;
+
+		for(char ch : b)
+			empty = empty+'9';
+
+		while(pos!=string::npos&amp;&amp;!seen.count(pos)) {
+	    string save = str;
+
+		save.replace(save.begin()+pos, save.begin()+pos+a.length(), b);
+		ans.insert(save);
+		seen.insert(pos);
+
+		test.replace(test.begin()+pos, test.begin()+pos+a.length(), empty);
+
+		pos = test.find(a);
+		}
+
+	return ans;
+}
+
+string r1(string s) {
+	if(s.at(s.length()-1)=='e'&amp;&amp;s.length()&gt;=2) {
+		s.at(s.length()-1) = s.at(s.length()-2);
+		s.at(s.length()-2) = 'e';
+	}
+
+	return s;
+}
+
+string r1Rev(string s) {
+	if(s.at(s.length()-2)=='e'&amp;&amp;s.length()&gt;=2) {
+		s.at(s.length()-2) = s.at(s.length()-1);
+		s.at(s.length()-1) = 'e';
+	}
+
+	return s;
+}
+
+set&lt;string&gt; r2(string s) {
+	return rep(s, &quot;rge&quot;, &quot;che&quot;);
+}
+
+set&lt;string&gt; r2Rev(string s) {	
+	return rep(s,&quot;che&quot;, &quot;rge&quot;);
+}
+
+set&lt;string&gt; r3(string s) {
+	return rep(s, &quot;re&quot;, &quot;rec&quot;);
+}
+
+set&lt;string&gt; r3Rev(string s) {
+	return rep(s, &quot;rec&quot;, &quot;re&quot;);
+}
+
+set&lt;string&gt; r4(string s) {
+	return rep(s, &quot;ce&quot;, &quot;ec&quot;);
+}
+
+set&lt;string&gt; r4Rev(string s) {
+	return rep(s, &quot;ec&quot;, &quot;ce&quot;);
+}
+
+
+using namespace std;
+
+int main() {
+	int cases=1;
+	string s;
+	bool start=false;
+	while(cin&gt;&gt;s) {
+		set&lt;string&gt; a;
+		set&lt;string&gt; b;
+
+		a.insert(s);
+		
+		if(start)
+			cout &lt;&lt; endl;
+		start=true;
+
+		int aSize=0;
+		while(1) {
+			aSize = a.size();
+			for(string str : a) {
+				set&lt;string&gt; testStr;
+
+
+				testStr.insert(r1(str));
+				for(string t : testStr)
+					if(t!=str||(t.length()&gt;=2&amp;&amp;t[t.length()-1]=='e'&amp;&amp;t[t.length()-2]=='e'))
+						b.insert(t);
+
+
+				testStr = r2(str);
+				for(string t : testStr)
+					if(t!=str)
+						b.insert(t);
+
+
+				testStr = r3(str);
+				for(string t : testStr)
+					if(t!=str)
+						b.insert(t);
+
+
+				testStr = r4(str);
+				for(string t : testStr)
+					if(t!=str)
+						b.insert(t);
+
+			}
+
+			for(string str : b) {
+				set&lt;string&gt; testStr;
+
+				testStr.insert(r1Rev(str));
+				for(string t : testStr)
+				if(t.length()&gt;=3&amp;&amp;t.length()&lt;=12&amp;&amp;(t!=str||(t.length()&gt;=2&amp;&amp;t[t.length()-1]=='e'&amp;&amp;t[t.length()-2]=='e'))) {
+					a.insert(t);
+
+				}
+				
+				testStr = r2Rev(str);
+				for(string t : testStr)
+				if(t.length()&gt;=3&amp;&amp;t.length()&lt;=12&amp;&amp;t!=str) {
+					a.insert(t);
+
+				}
+				
+				testStr = r3Rev(str);
+				for(string t : testStr)
+				if(t.length()&gt;=3&amp;&amp;t.length()&lt;=12&amp;&amp;t!=str) {
+					a.insert(t);
+
+				}
+				
+				testStr = r4Rev(str);
+				for(string t : testStr)
+				if(t.length()&gt;=3&amp;&amp;t.length()&lt;=12&amp;&amp;t!=str) {
+					a.insert(t);
+
+				}
+			}
+
+			if(a.size()==aSize)
+				break;
+		}
+
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; cases++ &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		for(string str : a)
+			cout &lt;&lt; str &lt;&lt;endl;
+
+
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

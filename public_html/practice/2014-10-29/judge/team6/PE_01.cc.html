@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+char grid[1005][1005];
+ll dist[1000005];
+
+struct comp {
+	const bool operator()(const int&amp; l, const int&amp; r) const {
+		if (dist[l] == dist[r]) return l &lt; r;
+		return dist[l] &lt; dist[r];
+	}
+};
+
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+int main() {
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		ll k, w, h; cin &gt;&gt; k &gt;&gt; w &gt;&gt; h;
+		map&lt;char, ll&gt; cost;
+		for (int i = 0; i &lt; k; i++) {
+			char c; ll wt;
+			cin &gt;&gt; c &gt;&gt; wt;
+			cost[c] = wt;
+		}
+
+		const ll INF = 10000000000000LL;
+		int sx, sy;
+		for (int i = 0; i &lt; h; i++) {
+			for (int j = 0; j &lt; w; j++) {
+				cin &gt;&gt; grid[i][j];
+				if (grid[i][j] == 'E') {
+					sx = i, sy = j;
+				}
+				dist[i*w + j] = INF;
+			}
+		}
+		dist[w*h] = INF;
+
+		int s = sx*w + sy;
+		set&lt;int, comp&gt; q;
+		dist[s] = 0;
+		q.insert(s);
+		while (!q.empty()) {
+			int u = *q.begin(); q.erase(q.begin());
+			if (u == h*w) break;
+			int i = u/w, j = u%w;
+			for (int d = 0; d &lt; 4; d++) {
+				int ni = i+dx[d], nj = j+dy[d];
+				if (ni &lt; 0 || ni &gt;= h || nj &lt; 0 || nj &gt;= w) {
+					if (dist[u] &lt; dist[h*w]) {
+						q.erase(h*w);
+						dist[h*w] = dist[u];
+						q.insert(h*w);
+					}
+				} else {
+					int nu = ni*w + nj;
+					if (dist[nu] &gt; dist[u] + cost[grid[ni][nj]]) {
+						q.erase(nu);
+						dist[nu] = dist[u] + cost[grid[ni][nj]];
+						q.insert(nu);
+					}
+				}
+			}
+		}
+		cout &lt;&lt; dist[h*w] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

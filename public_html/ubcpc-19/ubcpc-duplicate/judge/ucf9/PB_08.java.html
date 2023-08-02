@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+public class B {
+	
+static String[] names;
+static int[][] stats;
+
+public static boolean win(int a , int b) {
+
+	int turnsA = (int)Math.ceil((double)stats[a][0] / (Integer.max(stats[b][1] - stats[a][2] , 0)));
+	
+	int turnsB = (int)Math.ceil((double)stats[b][0] / (Integer.max(stats[a][1] - stats[b][2] , 0)));
+	
+	return turnsA &gt; turnsB;
+}
+
+public static boolean t(int a , int b , int c) {
+	return win(a,b) &amp;&amp; win(b,c) &amp;&amp; win(c,a);
+}
+
+public static void main(String[] args) {
+Scanner scan = new Scanner(System.in);
+
+int N = scan.nextInt();
+
+names = new String[N];
+stats = new int[N][3];
+
+for (int i = 0; i &lt; N; i++)
+	{
+	names[i] = scan.next();
+	
+	for (int j = 0; j &lt; 3; j++)
+		stats[i][j] = scan.nextInt();
+	}
+
+int count = 0;
+ArrayList&lt;String&gt; trips = new ArrayList&lt;String&gt;();
+
+for (int i = 0; i &lt; N; i++)
+	for (int j = i+1; j &lt; N; j++)
+		for (int k = j+1; k &lt; N; k++)
+			if(t(i,j,k) || t(i,k,j) || t(j,i,k) || t(j,k,i) || t(k,i,j) || t(k,j,i))
+				{
+				count++;
+				trips.add(names[i] + &quot; &quot; + names[j] + &quot; &quot; + names[k]);
+				}
+
+System.out.println(count);
+
+for (String trip : trips)
+	System.out.println(trip);
+
+scan.close();
+	}
+}</code>
+</pre>
+</body>
+</html>

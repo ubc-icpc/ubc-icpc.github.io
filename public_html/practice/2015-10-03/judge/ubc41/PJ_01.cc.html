@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using uc = unsigned char;
+using ui = unsigned int;
+using ull = unsigned long long;
+using ll = long long;
+using vs = vector&lt;string&gt;;
+using vi = vector&lt;int&gt;;
+using vui = vector&lt;ui&gt;;
+using vuc = vector&lt;uc&gt;;
+using vull = vector&lt;ull&gt;;
+using vll = vector&lt;ll&gt;;
+using ss = set&lt;string&gt;;
+using suc = set&lt;uc&gt;;
+using si = set&lt;int&gt;;
+using sui = set&lt;ui&gt;;
+using sll = set&lt;ll&gt;;
+using sull = set&lt;ull&gt;;
+using uss = unordered_set&lt;string&gt;;
+using usui = unordered_set&lt;ui&gt;;
+using usuc = unordered_set&lt;uc&gt;;
+using usi = unordered_set&lt;int&gt;;
+using usll = unordered_set&lt;ll&gt;;
+using usull = unordered_set&lt;ull&gt;;
+
+struct Node
+{
+	vector&lt;int&gt; edges;
+	unordered_set&lt;int&gt; edges_uniq;
+	bool visited;
+
+	int find(vector&lt;Node&gt;&amp; nodes, int dest, int me, vector&lt;int&gt;&amp; out)
+	{
+		out.push_back(me);
+
+		visited = true;
+		if (dest == me)
+		{
+			return me;
+		}
+
+		for (int i : edges_uniq)
+		{
+			if (!nodes[i].visited)
+			{
+				int r = nodes[i].find(nodes, dest, i, out);
+				if (r != -1)
+				{
+					return r;
+				}
+			}
+		}
+
+		out.pop_back();
+		return -1;
+	}
+
+	Node() : visited(false) { }
+};
+
+int main()
+{
+	int nc; cin &gt;&gt; nc;
+	unordered_map&lt;string, int&gt; st;
+	vector&lt;Node&gt; nodes;
+	nodes.reserve(nc);
+
+	string s;
+	getline(cin, s);
+
+	for (int i = 0; i &lt; nc; i++)
+	{
+		getline(cin, s);
+		stringstream ss(s);
+
+		string name;
+		ss &gt;&gt; name;
+
+		int id;
+		if (st.find(name) == st.end())
+		{
+			st[name] = nodes.size();
+			id = nodes.size();
+			nodes.push_back(Node());
+		}
+		else
+		{
+			id = st[name];
+		}
+
+		while (ss &gt;&gt; name)
+		{
+			int idx;
+			if (st.find(name) == st.end())
+			{
+				st[name] = nodes.size();
+				idx = nodes.size();
+				nodes.push_back(Node());
+			}
+			else
+			{
+				idx = st[name];
+			}
+
+			nodes[id].edges.push_back(idx);
+			nodes[idx].edges.push_back(id);
+		}
+	}
+
+	for (auto&amp; i : nodes)
+	{
+		i.edges_uniq = unordered_set&lt;int&gt;(i.edges.begin(), i.edges.end());
+	}
+
+	getline(cin, s);
+	stringstream ss(s);
+	string from, to;
+	ss &gt;&gt; from &gt;&gt; to;
+
+	if (st.find(from) == st.end() || st.find(to) == st.end())
+	{
+		cout &lt;&lt; &quot;no route found&quot; &lt;&lt; endl;
+	}
+	else
+	{
+		vector&lt;int&gt; out;
+		int r = nodes[st[from]].find(nodes, st[to], st[from], out);
+		if (r == -1)
+		{
+			cout &lt;&lt; &quot;no route found&quot; &lt;&lt; endl;
+		}
+		else
+		{
+			for (int nn = 0; nn &lt; out.size(); nn++)
+			{
+				cout &lt;&lt; find_if(st.begin(), st.end(), [&amp;](pair&lt;string, int&gt; val) { return val.second == out[nn]; })-&gt;first;
+				if (nn != out.size() - 1)
+				{
+					cout &lt;&lt; &quot; &quot;;
+				}
+			}
+			cout &lt;&lt; endl;
+		}
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

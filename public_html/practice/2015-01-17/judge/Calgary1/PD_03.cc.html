@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; PT;
+
+int gbs(int bs, int i) {return (bs &gt;&gt; 3*i) &amp; 0b111;}
+void sbs(int&amp; bs, int i, int x) {
+	bs &amp;= ~(0b111 &lt;&lt; 3*i);
+	bs |= x &lt;&lt; 3*i;
+}
+
+int main() {
+	int N, x, start, finish;
+	while (cin &gt;&gt; N &amp;&amp; N) { 
+		start = finish = 0;
+		for (int n = 0; n &lt; N; n++) {
+			cin &gt;&gt; x;
+			sbs(start, x-1, n);
+			sbs(finish, n, n);
+		}
+		if (start == finish) {
+			cout &lt;&lt; &quot;0\n&quot;;
+			continue;
+		}
+		vector&lt;bool&gt; visited(1&lt;&lt;24);
+		queue&lt;PT&gt; bfs;
+		bfs.emplace(start, 0);
+		visited[start] = true;
+		while (!bfs.empty()) {
+			PT nd = bfs.front();
+			bfs.pop();
+			int bs = nd.first, nv = nd.second;
+			int mv[8] = {10,10,10,10,10,10,10,10};
+			for (int n = 0; n &lt; N; n++) {
+				int p = gbs(bs, n);
+				mv[p] = min(mv[p], n);
+			}
+			for (int p = 0; p &lt; N; p++) if (mv[p] != 10) {
+				if (p &amp;&amp; mv[p] &lt; mv[p-1]) {
+					int nbs = bs;
+					sbs(nbs, mv[p], p-1);
+					if (nbs == finish) {
+						cout &lt;&lt; nv+1 &lt;&lt; endl;
+						goto done;
+					}
+					if (!visited[nbs]) {
+						visited[nbs] = true;
+						bfs.emplace(nbs, nv+1);
+					}
+				}
+				if (p != N-1 &amp;&amp; mv[p] &lt; mv[p+1]) {
+					int nbs = bs;
+					sbs(nbs, mv[p], p+1);
+					if (nbs == finish) {
+						cout &lt;&lt; nv+1 &lt;&lt; endl;
+						goto done;
+					}
+					if (!visited[nbs]) {
+						visited[nbs] = true;
+						bfs.emplace(nbs, nv+1);
+					}
+				}
+			}
+		}
+		cout &lt;&lt; &quot;IMPOSSIBLE\n&quot;;
+		done:;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

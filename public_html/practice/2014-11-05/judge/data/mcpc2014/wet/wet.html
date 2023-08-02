@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html><head>
+
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="R. Marshall"><title>Problem I: Wet Tiles</title>
+  
+
+  
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style></head><body>
+<h1>Problem I: Wet Tiles</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <tt>wet.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+      </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>wet.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+Alice owns a construction company in the town of Norainia, famous for
+its unusually dry weather.  In fact, it only rains a few days per year
+there.  Because of this phenomenon, many residents of Norainia neglect
+to do roof repairs until leaks occur and ruin their floors.  Every
+year, Alice receives a deluge of calls from residents who need the
+leaks fixed and floor tiles replaced.  While exquisite in appearance,
+Norainia floor tiles are not very water resistant; once a tile becomes
+wet, it is ruined and must be replaced.
+
+This year, Alice plans to handle the rainy days more efficiently
+than in past years.  She will hire extra contractors to dispatch as
+soon as the calls come in, so hopefully all leaks can be repaired 
+as soon as possible.  For each house call, Alice needs a program to help her
+determine how many replacement tiles a contractor team will need to
+bring to complete the job.
+</p>
+
+<p>
+For a given house, square floor tiles are arranged in a
+rectangular grid. Leaks originate from one or more known source
+locations above specific floor tiles. After the first minute, the
+tiles immediately below the leaks are ruined. After the second minute,
+water will have spread to any tile that shares an edge with a
+previously wet tile.  This pattern of spreading water continues for
+each additional minute. However, the walls of a house restrict the
+water; if a damaged area hits a wall, the water does not penetrate the
+wall. We assume there are always four outer walls surrounding the entire house.
+A house may also have a number of additional "inner" walls; each inner
+wall is comprised of a connected linear sequence of locations (which may 
+or may not be connected to the outer walls or to each other).&nbsp;
+<!-- The footprint of the walls do not get wet. -->
+</p>
+
+<p>
+As an example, Figure&nbsp;1 shows water damage (in
+gray) that would result from three initial leaks (each marked with a
+white letter&nbsp;'L') after each of the first five minutes of time.
+Tiles labeled&nbsp;'2' become wet during the second minute, tiles
+labeled&nbsp;'3' 
+become wet during the third minute, and so forth. The black areas
+designate inner walls that restrict the flow of water. Note that after
+5 minutes, a total of 75 tiles have been damaged and 
+will need to be replaced. Figures 2 through 4 show other houses that
+correspond to the example inputs for this problem.
+</p>
+
+<center>
+<table style="text-align: center; width: 406px; height: 204px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+  <tr>
+    <td><img src="fig1.png" alt="example 1" width="200">
+	<br>
+	75 wet tiles
+    </td>
+  </tr>
+  <tr>
+    <td>Figure 1</td>
+  </tr>
+  </tbody>
+</table>
+</center>
+
+<center>
+<table style="text-align: center; width: 406px; height: 204px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+  <tr>
+    <td>
+	<img src="fig2.png" alt="example 2" height="155">
+	<br>
+	17 wet tiles
+    </td>
+    <td>
+	<img src="fig3.png" alt="example 3" height="155">
+	<br>
+	4 wet tiles
+    </td>
+    <td>
+	<img src="fig4.png" alt="example 4" height="155">
+	<br>
+	94 wet tiles
+    </td>
+  </tr>
+  <tr>
+    <td>Figure 2</td>
+    <td>Figure 3</td>
+    <td>Figure 4</td>
+  </tr>
+  </tbody>
+</table>
+</center>
+
+
+<br>
+<p><b>Input:</b> Each house is described beginning with a line having five
+integral parameters: <nobr><em>X Y T L W</em></nobr>. Parameters
+<em>X</em> and <em>Y</em> designate the dimensions of the rectangular
+grid, with
+<nobr>1 &le; <em>X</em> &le; 1000</nobr> and
+<nobr>1 &le; <em>Y</em> &le; 1000</nobr>. The coordinate system is
+one-indexed, as shown in the earlier figures. Parameter <em>T</em>
+designates the number of minutes that pass before a team of
+contractors arrives at a house and stops the leaks, with
+<nobr>1 &le; <em>T</em> &le; 200000</nobr>. The parameter <em>L</em>
+designates the number of leaks, with <nobr>1 &le; <em>L</em> &le;
+100</nobr>.&nbsp; Parameter <em>W</em> designates the number of inner
+walls in the house, <nobr>0 &le; W &le; 100</nobr>.</p>
+<p>The following <em>2L</em> integers in the data set, on one or more
+lines,  are distinct <nobr>(x y)</nobr> pairs that designate the locations of the
+<em>L</em> distinct leaks, such that
+<nobr>1 &le; x &le; X</nobr> and
+<nobr>1 &le; y &le; Y</nobr>.</p>
+<p>  </p>
+<p>If <nobr><em>W &gt; 0</em></nobr>, there will be 
+<em>4W</em> additional integers, on one or more lines, that describe the locations of the
+walls. For each such wall the four parameters <nobr>$(x_1, y_1)$, $(x_2,
+y_2)$</nobr> describe the locations of two ends of the wall.&nbsp;
+Each wall replaces a linear sequence of adjoining tiles and is either
+axis-aligned or intersects both axes at a 45 degree angle.&nbsp;
+Diagonal walls are modeled as a sequence of cells that would just be touching corner to
+corner.&nbsp;  If the two endpoints of a wall are the same, the wall
+just occupies the single cell at that location. Walls may intersect with each other, but no leak is over a wall.<p>
+
+<p>
+There will be one or more houses in the data file and a line with a single integer <kbd>-1</kbd>
+designates the end of the data set.
+</p>
+
+
+<p><b>Output:</b> For each house, display the total number of
+tiles that are wet after <em>T</em> minutes.
+</p>
+
+<table class="example">
+
+  <thead> <tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+<kbd>
+12 12 5 3 5<br>
+2 11 3 3 9 5<br>
+1 9 6 9 1 7 4 4 7 1 7 4<br>
+10 9 10 12 11 4 12 4<br>
+9 7 8 1 3<br>
+4 3<br>
+2 2 6 6 6 2 2 6 8 2 8 2<br>
+6 7 50 1 3<br>
+3 4<br>
+2 2 2 6 3 6 5 4 5 4 3 2<br>
+12 12 5 3 0<br>
+2 11 3 3 9 5<br>
+-1
+</kbd>
+      </td>
+      <td>
+<kbd>
+75<br>
+17<br>
+4<br>
+94
+</kbd>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Hide the following for print version...
+<br>
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+ -->
+</body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+
+const int N = 100, M = 100*100, INF = 0x3f3f3f3f;
+// data structures and helper functions common to all flow routines
+int par[N], first[N], nxt[2*M], ep[2*M], m;
+ll flo[2*M], cap[2*M], cost[2*M];
+void init() { m = 0; memset(first,-1,sizeof first); memset(flo,0,sizeof flo); }
+void add_edge(int a, int b, ll c=1, ll p=0) { //a,b - nodes, c, p - cap, price
+  nxt[m] = first[ep[m]=a], first[ep[m]] = m, cap[m] = c, cost[m] =  p, ++m;
+  nxt[m] = first[ep[m]=b], first[ep[m]] = m, cap[m] = 0, cost[m] = -p, ++m; }
+
+ll mf_update(int s, int t, ll del=1) {
+  ll df[N]; memset(df, 0, sizeof df); memset(par, -1, sizeof par);
+  queue&lt;int&gt; q; q.push(s); par[s] = -2; df[s] = INF;
+  while (!q.empty()) { ll cf; int u = q.front(); q.pop();
+    for (int v, e = first[u]; e != -1; e = nxt[e])
+      if (par[v=ep[e^1]] == -1 &amp;&amp; (cf = cap[e]-flo[e]) &gt;= del)
+        q.push(v), par[v] = e, df[v] = min(df[u], cf); }
+  if (par[t] == -1) return 0;
+  for (int e, i = t; i != s; i = ep[e])
+    e = par[i], flo[e] += df[t], flo[e^1] -= df[t];
+  return df[t]; }
+  
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        int s = n, t = n+1;
+        init();
+        
+        int tot = 0;
+        for (int i = 0; i &lt; n; i++) {
+            ld x; cin &gt;&gt; x;
+            add_edge(s, i, int(100*x + 0.5));
+            tot += int(100*x + 0.5);
+        }
+        
+        for (int i = 0; i &lt; n; i++) {
+            ld x; cin &gt;&gt; x;
+            add_edge(i, t, int(100*x + 0.5));
+            tot += int(100*x + 0.5);
+        }
+        
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                ld x; cin &gt;&gt; x;
+                add_edge(i, j, int(100*x + 0.5));
+                if (i != j) add_edge(j, i, int(100*x + 0.5));
+                tot += int(100*x + 0.5);
+            }
+        }
+        
+        ll flow=0;
+        for (ll del=INF; del; del/=2) while (ll df=mf_update(s, t, del)) flow+=df;
+        
+        cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; double(tot-flow)/100 &lt;&lt; endl;
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

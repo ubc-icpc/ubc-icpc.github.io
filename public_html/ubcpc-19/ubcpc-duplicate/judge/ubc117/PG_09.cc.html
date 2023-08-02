@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+vector&lt;int&gt; ev(string str, int &amp;pos) {
+    vector&lt;int&gt; cur;
+    while(pos &lt; str.size()) {
+        if(str[pos] == '[') {
+            ++pos;
+            vector&lt;int&gt; res = ev(str, pos);
+            if(cur.size() &lt;= res.size()) {
+                if(res.size() &gt; 0) {
+                    cur = vector&lt;int&gt;(res.size()+1, 0);
+                    cur[res.size()] ++;
+                }
+                /*
+                if(res.size() &gt; 0) {
+                    cur = vector&lt;int&gt;(res.size()+1, 0);
+                    for(int i=0; i&lt;res.size(); ++i) {
+                        cur[i+1] = res[i];
+                    }
+                } */
+            } else if (res.size() &gt; 0) {
+                cur[res.size()] ++;
+                for(int i=res.size()-1; i&gt;=0; --i) {
+                    cur[i] = 0;
+                }
+                /*
+                for(int i=0; i&lt;res.size(); ++i) {
+                    cur[i+1] += res[i];
+                } */
+            }
+        } else if (str[pos] == ']') {
+            ++pos;
+            break;
+        } else {
+            assert(str[pos] == '+');
+            if(cur.size() == 0) cur.push_back(0);
+            cur[0]++;
+            ++pos;
+        }
+    }
+    return cur;
+}
+
+struct thing {
+    vector&lt;int&gt; rep;
+    string str;
+    thing() {}
+    void eval() {
+        int pp = 0;
+        rep = ev(str, pp);
+    }
+    bool operator &lt; (const thing&amp; o) const {
+        if (rep.size() == o.rep.size()) {
+            for(int i=rep.size()-1; i&gt;=0; --i) {
+                if(rep[i] != o.rep[i]) {
+                    return rep[i] &lt; o.rep[i];
+                }
+            }
+            return false;
+        }
+        return rep.size() &lt; o.rep.size();
+    }
+};
+
+int n;
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    cin &gt;&gt; n;
+    vector&lt;thing&gt; things(n);
+    for(auto&amp; x : things) {
+        cin &gt;&gt; x.str;
+        x.eval();
+        for(auto&amp; y : x.rep) {
+            cerr &lt;&lt; y &lt;&lt; &quot; &quot;;
+        }
+        cerr &lt;&lt; endl;
+    }
+    sort(things.begin(), things.end());
+    for(auto&amp; x : things) {
+        cout &lt;&lt; x.str &lt;&lt; &quot;\n&quot;;
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class ProbB
+{ 
+	static final String[] keys = {&quot;A&quot;, &quot;A#&quot;, &quot;B&quot;, &quot;C&quot;, &quot;C#&quot;, &quot;D&quot;, &quot;D#&quot;, &quot;E&quot;, &quot;F&quot;, &quot;F#&quot;, &quot;G&quot;, &quot;G#&quot;};
+	public static void main(String[] args)
+	{
+	
+		Scanner sc = new Scanner(System.in);
+
+		int a  = sc.nextInt();
+		int b = sc.nextInt();
+
+		double aBase = Math.log(a) / Math.log(2);
+		double bBase = Math.log(b) / Math.log(2);
+
+		double diff = bBase - aBase;
+
+		int shift = (int)(Math.round(diff * 1200.0));
+
+		int baseDiff = shift / 100;
+		int cents = shift % 100;
+
+		
+		if (cents &gt; 50)
+		{
+			baseDiff++;
+			cents -= 100;
+		}
+		else if (cents &lt; -50)
+		{
+			baseDiff--;
+			cents += 100;
+		}
+
+		int aN = 0;
+		int bN = (baseDiff) % 12;
+
+		while (bN &lt; 0)
+			bN += 12;
+
+		int centsA = cents;
+		int centsB = 0;
+
+		// System.out.printf(&quot;cents now %d\n&quot;, cents);
+
+		if (cents &gt; 25)
+		{
+			centsA = cents - 25;
+			centsB = -25;
+		}
+		else if (cents &lt; -25)
+		{
+			centsA = cents + 25;
+			centsB = 25;
+		}
+
+		System.out.println(keys[aN] + &quot; &quot; + centsB);
+		System.out.println(keys[bN] + &quot; &quot; + centsA);
+		// System.out.printf(&quot;%s %d\n&quot;, keys[aN], centsB);
+		// System.out.printf(&quot;%s %d\n&quot;, keys[bN], centsA);
+	}
+}
+</code>
+</pre>
+</body>
+</html>

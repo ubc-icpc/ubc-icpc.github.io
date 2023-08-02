@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct node {
+	int order;
+	vector&lt;int&gt; dest, src;
+} M[1005]; int N, V[1005], E[1005]; stack&lt;int&gt; S;
+vector&lt;pair&lt;int, int&gt; &gt; TRAPPED, UNREACHABLE;
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin &gt;&gt; N;
+	for (int i = 0; i &lt; N; ++i) {
+		int id, n; cin &gt;&gt; id &gt;&gt; n;
+		E[id] = true;
+		M[id].order = i;
+		M[id].dest.resize(n);
+		for (int j = 0; j &lt; n; ++j) {
+			cin &gt;&gt; M[id].dest[j];
+			M[M[id].dest[j]].src.push_back(id); }}
+	S.push(0);
+	while (!S.empty()) {
+		int t = S.top(); S.pop();
+		if (V[t]) continue;
+		V[t] = true;
+		for (int i : M[t].src) S.push(i); }
+	for (int i = 0; i &lt; 1005; ++i)
+		if (!V[i] &amp;&amp; E[i]) TRAPPED.push_back(make_pair(M[i].order, i));
+	memset(V, 0, sizeof V);
+	S.push(0);
+	while (!S.empty()) {
+		int t = S.top(); S.pop();
+		if (V[t]) continue;
+		V[t] = true;
+		for (int i : M[t].dest) S.push(i); }
+	for (int i = 0; i &lt; 1005; ++i)
+		if (!V[i] &amp;&amp; E[i]) UNREACHABLE.push_back(make_pair(M[i].order, i));
+	sort(TRAPPED.begin(), TRAPPED.end());
+	sort(UNREACHABLE.begin(), UNREACHABLE.end());
+	if (!TRAPPED.size() &amp;&amp; !UNREACHABLE.size()) cout &lt;&lt; &quot;NO PROBLEMS&quot; &lt;&lt; endl;
+	for (pair&lt;int, int&gt; p : TRAPPED) cout &lt;&lt; &quot;TRAPPED &quot; &lt;&lt; p.second &lt;&lt; endl;
+	for (pair&lt;int, int&gt; p : UNREACHABLE) cout &lt;&lt; &quot;UNREACHABLE &quot; &lt;&lt; p.second &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

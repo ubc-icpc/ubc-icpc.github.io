@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+typedef unsigned long long ll;
+const int N = 100000;
+const int M = 200000;
+const int L = 20;
+
+struct E {
+    int id, s, t; ll c;
+    bool operator&lt;(const E &amp;e2) const {
+        return c &gt; e2.c;
+    }
+};
+
+vector&lt;E&gt; edges;
+vector&lt;E&gt; adj[N];
+bool visited[N];
+
+vector&lt;E&gt; tree[N];
+int depth[N];
+int parE[N];
+int par[N][L];
+ll pardist[N][L];
+bool inTree[M];
+
+void dfs(int u) {
+    for (int k = 1; k &lt; L; k++) {
+        if (par[u][k-1] != -1) {
+            par[u][k] = par[par[u][k-1]][k-1];
+            pardist[u][k] = max(pardist[u][k-1], pardist[par[u][k-1]][k-1]);
+        }
+    }
+    for (E e : tree[u]) {
+        depth[e.t] = depth[u] + 1;
+        parE[e.t] = e.id;
+        par[e.t][0] = u;
+        pardist[e.t][0] = e.c;
+        dfs(e.t);
+    }
+}
+
+int findMax(int s, int t) {
+    if (depth[s] &lt; depth[t]) swap(s, t);
+
+    int s2 = s, t2 = t;
+    ll d1 = 0, d2 = 0;
+    if (depth[s2] &gt; depth[t2]) {
+        for (int k = L-1; k &gt;= 0; k--) {
+            if (depth[s2] - (1&lt;&lt;k) &gt;= depth[t2]) {
+                d1 = max(d1, pardist[s2][k]);
+                s2 = par[s2][k];
+            }
+        }
+    }
+    if (s2 != t2) {
+        for (int k = L-1; k &gt;= 0; k--) {
+            if (par[s2][k] != par[t2][k]) {
+                d1 = max(d1, pardist[s2][k]);
+                d2 = max(d2, pardist[t2][k]);
+                s2 = par[s2][k];
+                t2 = par[t2][k];
+            }
+        }
+        if (s2 != t2) {
+            d1 = max(d1, pardist[s2][0]);
+            d2 = max(d2, pardist[t2][0]);
+            s2 = par[s2][0];
+            t2 = par[t2][0];
+        }
+    }
+    if (d1 &lt; d2 || s == s2) {
+        swap(s, t);
+        swap(s2, t2);
+        swap(d1, d2);
+    }
+
+    for (int k = L-1; k &gt;= 0; k--) {
+        if (par[s][k] != -1 &amp;&amp; pardist[s][k] &lt; d1) {
+            s = par[s][k];
+        }
+    }
+    return s;
+}
+
+int mst(int n) {
+    int cnt = 0;
+    for (int i = 0; i &lt; n; i++) tree[i].clear();
+    memset(inTree, 0, sizeof inTree);
+    memset(visited, 0, sizeof visited);
+    priority_queue&lt;E&gt; q;
+    q.push({-1, -1, 0, 0});
+    while (!q.empty()) {
+        E cur = q.top(); q.pop();
+        if (visited[cur.t]) continue;
+        visited[cur.t] = true;
+        if (cur.id &gt;= 0) {
+            tree[cur.s].push_back(cur);
+            inTree[cur.id] = true;
+            if (cur.id &gt;= n-1) cnt++;
+        }
+        for (E e : adj[cur.t]) q.push(e);
+    }
+    memset(parE, -1, sizeof parE);
+    memset(par, -1, sizeof par);
+    memset(pardist, 0, sizeof pardist);
+    depth[0] = 0;
+    dfs(0);
+    return cnt;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, m; ll d; cin &gt;&gt; n &gt;&gt; m &gt;&gt; d;
+    for (int i = 0; i &lt; m; i++) {
+        int a, b; ll c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c; a--; b--;
+        c *= N; c += 2*N; if (i &lt; n-1) c--;
+        edges.push_back({i, a, b, c});
+        adj[a].push_back({i, a, b, c});
+        adj[b].push_back({i, b, a, c});
+    }
+
+    mst(n);
+
+    ll bestDec = 0;
+    int bestE = -1;
+    for (int i = 0; i &lt; m; i++) {
+        E e = edges[i];
+        ll oldC = e.c;
+        ll newC = (oldC-2*N+1)/N &gt; d ? (oldC-2*N+1)/N - d : 0;
+        newC *= N; newC += 2*N; if (i &lt; n-1) newC--;
+
+        ll dec = 0;
+        if (inTree[i]) {
+            dec = oldC - newC;
+        } else {
+            int u = findMax(e.s, e.t);
+            int i2 = parE[u];
+            E e2 = edges[i2];
+            if (e2.c &gt; newC) {
+                dec = e2.c - newC;
+            }
+        }
+        if (dec &gt; bestDec) {
+            bestDec = dec;
+            bestE = i;
+        }
+    }
+
+    if (bestE &gt;= 0) {
+        ll oldC = edges[bestE].c;
+        ll newC = (oldC-2*N+1)/N &gt; d ? (oldC-2*N+1)/N - d : 0;
+        newC *= N; newC += 2*N; if (bestE &lt; n-1) newC--;
+        edges[bestE].c = newC;
+
+        int s1 = edges[bestE].s;
+        int t1 = edges[bestE].t;
+        for (int j = 0; j &lt; adj[s1].size(); j++) {
+            if (adj[s1][j].id == edges[bestE].id) {
+                adj[s1][j].c = newC;
+                break;
+            }
+        }
+        for (int j = 0; j &lt; adj[t1].size(); j++) {
+            if (adj[t1][j].id == edges[bestE].id) {
+                adj[t1][j].c = newC;
+                break;
+            }
+        }
+    }
+
+    int ans = mst(n);
+    cout &lt;&lt; ans &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+bool sieve[11001];
+
+int main() {
+  memset(sieve, true, sizeof(sieve));
+  for (int i = 2; i*i &lt;= 11000; ++i) {
+    if (sieve[i]) {
+      for (int j = i*i; j &lt;= 11000; j += i) {
+        sieve[j] = false;
+      }
+    }
+  }
+  vector&lt;int&gt; primes;
+  for (int i = 2; i &lt;= 11000; ++i) {
+    if (sieve[i]) {
+      primes.push_back(i);
+    }
+  }
+  int N; cin &gt;&gt; N;
+  while (N--) {
+    int v; cin &gt;&gt; v;
+    cout &lt;&lt; &quot;Input value: &quot; &lt;&lt; v &lt;&lt; endl;
+    int prev = 0;
+    for (int i = 0; i &lt; primes.size(); ++i) {
+      if (primes[i] == v) {
+        cout &lt;&lt; &quot;Would you believe it; it is a prime!&quot; &lt;&lt; endl;
+        break;
+      }
+      if (prev &lt; v &amp;&amp; v &lt; primes[i]) {
+        int mindiff = min(v - prev, primes[i] - v);
+        cout &lt;&lt; &quot;Missed it by that much (&quot; &lt;&lt; mindiff &lt;&lt; &quot;)!&quot; &lt;&lt; endl;
+        break;
+      }
+      prev = primes[i];
+    }
+    cout &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

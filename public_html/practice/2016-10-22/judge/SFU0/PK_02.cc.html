@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;climits&gt;
+#include &lt;math.h&gt;
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+int s[100001][2];
+int l[100001][2];
+int sn, ln;
+int si, li;
+double sd, ld;
+
+double interpolate(double x1, double x2, double t) {
+    return x1 + (x2 - x1) * t;
+}
+
+int main() {
+    cin &gt;&gt; sn;
+    for (int i = 0; i &lt; sn; i++) {
+         cin &gt;&gt; s[i][0] &gt;&gt; s[i][1];
+    }
+    cin &gt;&gt; ln;
+    for (int i = 0; i &lt; ln; i++) {
+        cin &gt;&gt; l[i][0] &gt;&gt; l[i][1];
+    }
+    
+    si = 0;
+    li = 0;
+    sd = 0.;
+    ld = 0.;
+    
+    double result = INT_MAX;
+    
+    while(si &lt; sn-1 &amp;&amp; li &lt; ln-1) {
+        double x1 = (s[si+1][0] - s[si][0]);
+        double y1 = (s[si+1][1] - s[si][1]);
+        double d1 = sqrt(x1 * x1 + y1 * y1);
+        double x2 = (l[li+1][0] - l[li][0]);
+        double y2 = (l[li+1][1] - l[li][1]);
+        double d2 = sqrt(x2 * x2 + y2 * y2);
+        
+        double x1a, x1b, y1a, y1b, x2a, x2b, y2a, y2b;
+        double a, b, c, d, t, dist, tx, ty;
+        double rd;
+        
+        if (d1-sd &lt; d2-ld) {
+            rd = d1-sd;
+            x1a = interpolate(s[si][0], s[si+1][0], sd / d1);
+            x1b = s[si+1][0];
+            y1a = interpolate(s[si][1], s[si+1][1], sd / d1);
+            y1b = s[si+1][1];
+            x2a = interpolate(l[li][0], l[li+1][0], ld / d2);
+            x2b = interpolate(l[li][0], l[li+1][0], (rd + ld)/d2);
+            y2a = interpolate(l[li][1], l[li+1][1], ld / d2);
+            y2b = interpolate(l[li][1], l[li+1][1], (rd + ld)/d2);
+            a = x1a-x2a;
+            b = x1b-x1a-x2b+x2a;
+            c = y1a-y2a;
+            d = y1b-y1a-y2b+y2a;
+            t = -(a*b+c*d)/(b*b+d*d);
+            if (t &lt;= 0. || (b*b+d*d) == 0. ) {
+                dist = a * a + c * c;
+                if (dist &lt; result)
+                    result = dist;
+           
+            } else if ( t &gt;= 1.) {
+                tx = x2b-x1b;
+                ty = y2b-y1b;
+                dist = tx * tx + ty * ty;
+                if (dist &lt; result)
+                    result = dist;
+            } else {
+                tx = a + b * t;
+                ty = c + d * t;
+                dist = tx * tx + ty * ty;
+                if (dist &lt; result)
+                    result = dist;
+            }
+            ld = rd + ld;
+            sd = 0.;
+            si++;
+        } else {
+            rd = d2-ld;
+            x1a = interpolate(s[si][0], s[si+1][0], sd/d1);
+            x1b = interpolate(s[si][0], s[si+1][0], (rd + sd)/d1);
+            y1a = interpolate(s[si][1], s[si+1][1], sd/d1);
+            y1b = interpolate(s[si][1], s[si+1][1], (rd + sd)/d1);
+            x2a = interpolate(l[li][0], l[li+1][0], ld / d2);
+            x2b = l[li+1][0];
+            y2a = interpolate(l[li][1], l[li+1][1], ld / d2);
+            y2b = l[li+1][1];
+            a = x1a-x2a;
+            b = x1b-x1a-x2b+x2a;
+            c = y1a-y2a;
+            d = y1b-y1a-y2b+y2a;
+            t = -(a*b+c*d)/(b*b+d*d);
+            if (t &lt;= 0. || (b*b+d*d) == 0. ) {
+                dist = a * a + c * c;
+                if (dist &lt; result)
+                    result = dist;
+           
+            } else if ( t &gt;= 1.) {
+                tx = x2b-x1b;
+                ty = y2b-y1b;
+                dist = tx * tx + ty * ty;
+                if (dist &lt; result)
+                    result = dist;
+            } else {
+                tx = a + b * t;
+                ty = c + d * t;
+                dist = tx * tx + ty * ty;
+                if (dist &lt; result)
+                    result = dist;
+            }
+            sd = rd + sd;
+            ld = 0.;
+            li++;
+        }
+    }
+    result = sqrt(result);
+    printf(&quot;%.12f\n&quot;, result);
+    
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

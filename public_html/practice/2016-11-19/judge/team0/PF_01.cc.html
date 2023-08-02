@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;cstdio&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;ll, int&gt; pli;
+struct P {
+    ll x, y, z;
+    bool operator&lt;(const P &amp; p) const {
+        return (x &lt; p.x ||
+                (x == p.x &amp;&amp; (y &lt; p.y ||
+                              (y == p.y &amp;&amp; z &lt; p.z))));
+    }
+};
+
+vector&lt;P&gt; vec;
+vector&lt;pli&gt; xid;
+vector&lt;vector&lt;pli&gt;&gt; yid;
+
+int main() {
+    int tmp;
+    int n; ll kkk;
+    scanf(&quot;%d %d&quot;, &amp;n, &amp;tmp); kkk = tmp;
+
+    while (n != 0 || kkk != 0) {
+        vec.clear();
+        xid.clear();
+        yid.clear();
+        for (int i = 0; i &lt; n; i++) {
+            int x, y, z;
+            scanf(&quot;%d %d %d&quot;, &amp;x, &amp;y, &amp;z);
+            vec.push_back({x, y, z});
+        }
+        sort(vec.begin(), vec.end());
+
+        ll cx = vec[0].x; int ix = 0;
+        ll cy = vec[0].y; int iy = 0;
+        vector&lt;pli&gt; vy;
+
+        for (int i = 1; i &lt; n; i++) {
+            if (vec[i].x != cx) {
+                vy.push_back({cy, iy});
+                xid.push_back({cx, ix});
+                yid.push_back(vy);
+
+                cx = vec[i].x; ix = i;
+                cy = vec[i].y; iy = i;
+                vy.clear();
+
+            } else if (vec[i].y != cy) {
+                vy.push_back({cy, iy});
+                cy = vec[i].y; iy = i;
+            }
+        }
+        vy.push_back({cy, iy});
+        xid.push_back({cx, ix});
+        yid.push_back(vy);
+
+        /*
+        for (int i = 0; i &lt; n; i++) printf(&quot;%i: %lld %lld %lld\n&quot;, i, vec[i].x, vec[i].y, vec[i].z);
+        for (int i = 0; i &lt; xid.size(); i++) {
+            printf(&quot;%lld %d\n&quot;, xid[i].first, xid[i].second);
+            for (int j = 0; j &lt; yid[i].size(); j++) {
+                printf(&quot;   %lld %d\n&quot;, yid[i][j].first, yid[i][j].second);
+            }
+        }
+        */
+
+        int ans = 0;
+        for (int z = 0; z &lt; n; z++) {
+            P c = vec[z];
+            int i1 = lower_bound(xid.begin(), xid.end(), pli(c.x, 0)) - xid.begin();
+            int i2 = upper_bound(xid.begin(), xid.end(), pli(c.x+kkk, n)) - xid.begin();
+            for (int i = i1; i &lt; i2; i++) {
+                ll x = xid[i].first;
+
+                int j1 = lower_bound(yid[i].begin(), yid[i].end(), pli((x == c.x ? c.y : c.y-kkk), 0)) - yid[i].begin();
+                int j2 = upper_bound(yid[i].begin(), yid[i].end(), pli(c.y+kkk, n)) - yid[i].begin();
+                for (int j = j1; j &lt; j2; j++) {
+                    ll y = yid[i][j].first;
+                    int yi1 = yid[i][j].second;
+                    int yi2 = (j+1 &gt;= j2 ? (i+1 &gt;= xid.size() ? n : xid[i+1].second) : yid[i][j+1].second);
+
+                    P p1 = {x, y, ((x == c.x &amp;&amp; y == c.y) ? c.z+1 : c.z-kkk)};
+                    P p2 = {x, y, c.z+kkk+1};
+                    int k1 = lower_bound(vec.begin()+yi1, vec.begin()+yi2, p1) - vec.begin();
+                    int k2 = upper_bound(vec.begin()+yi1, vec.begin()+yi2, p2) - vec.begin();
+
+                    for (int k = k1; k &lt; k2; k++) {
+                        ll dx = vec[k].x - c.x;
+                        ll dy = vec[k].y - c.y;
+                        ll dz = vec[k].z - c.z;
+                        ll d = dx*dx + dy*dy + dz*dz;
+                        if (0 &lt; d &amp;&amp; d &lt; kkk*kkk) {
+                            //printf(&quot;found: %d %d %lld\n&quot;, z, k, d);
+
+                            ans++;
+                        }
+                    }
+                }
+            }
+        }
+        printf(&quot;%d\n&quot;, ans);
+
+        scanf(&quot;%d %d&quot;, &amp;n, &amp;tmp); kkk = tmp;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

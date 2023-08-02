@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+double calc(int i, int j, double p) {
+   if(i==4&amp;&amp;j&lt;3)
+      return 1.0;
+
+   if(i&lt;3&amp;&amp;j==4)
+      return 0.0;
+
+   if(i==3&amp;&amp;j==3)
+      return p*p/(1-2*p*(1-p));
+
+   return p*calc(i+1, j, p) + (1-p)*calc(i, j+1, p);
+
+}
+
+int main() {
+   int cases;
+   cin&gt;&gt;cases;
+
+   while(cases--) {
+      double p;
+
+      cin &gt;&gt; p;
+
+      cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; calc(0, 0, p) &lt;&lt; endl;
+
+
+   }
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

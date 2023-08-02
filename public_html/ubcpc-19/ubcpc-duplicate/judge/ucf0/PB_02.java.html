@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+// this is a graph
+// need to find cycles quickly
+// but only cycles of size 3
+
+public class balanced {
+
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		
+		int numfighters = in.nextInt();
+		if (numfighters &lt; 3) {
+			System.out.println(0);
+			in.close();
+			return;
+		}
+		fighter[] fighters = new fighter[numfighters];
+		for (int i = 0; i &lt; numfighters; i++) {
+			fighters[i] = new fighter(in.next(), in.nextInt(), in.nextInt(), in.nextInt());
+		}
+		boolean[][] canbeat = new boolean[numfighters][numfighters];
+		for(int i = 0; i &lt; numfighters; i++) {
+			for (int j = i + 1; j &lt; numfighters; j++) {
+				int ialive = fighters[i].roundsalive(fighters[j].at);
+				int jalive = fighters[j].roundsalive(fighters[i].at);
+				//System.out.println(i + &quot; &quot; + ialive + &quot; &quot; + j + &quot; &quot; + jalive);
+				if (ialive &gt; jalive) canbeat[i][j] = true;
+				else if (jalive &gt; ialive) canbeat[j][i] = true;
+			}
+		}
+		//System.out.println(Arrays.deepToString(canbeat));
+		ArrayList&lt;Integer[]&gt; triples = new ArrayList&lt;Integer[]&gt;();
+		for (int i = 0; i &lt; numfighters; i++) {
+			for (int j = i + 1; j &lt; numfighters; j++) {
+				if (!canbeat[i][j] &amp;&amp; !canbeat[j][i]) continue;
+				for (int k = j + 1; k &lt; numfighters; k++) {
+					if (canbeat[i][j] &amp;&amp; canbeat[j][k] &amp;&amp; canbeat[k][i]) triples.add(new Integer[]{i, j, k});
+					else if (canbeat[i][k] &amp;&amp; canbeat[k][j] &amp;&amp; canbeat[j][i]) triples.add(new Integer[]{i, j, k});
+				}
+			}
+		}
+		System.out.println(triples.size());
+		for (int i = 0; i &lt; triples.size(); i++) {
+			System.out.println(fighters[triples.get(i)[0]].name + 
+					&quot; &quot; + fighters[triples.get(i)[1]].name + &quot; &quot; + fighters[triples.get(i)[2]].name);
+		}
+		in.close();
+	}
+
+}
+class fighter {
+	
+	int hp, at, df;
+	String name;
+	ArrayList&lt;Integer&gt; beatme;	//parents
+	
+	public fighter(String s, int h, int a, int d) {
+		name = s;
+		hp = h;
+		at = a;
+		df = d;
+		beatme = new ArrayList&lt;&gt;();
+	}
+	
+	int roundsalive(int atother) {
+		int netatme = atother - this.df;
+		if (netatme &lt;= 0) return Integer.MAX_VALUE;
+		if (this.hp % netatme == 0) return this.hp / netatme - 1;
+		return this.hp / netatme;
+	}
+	
+}</code>
+</pre>
+</body>
+</html>

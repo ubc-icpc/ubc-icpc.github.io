@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class C
+{
+	public static void main(String[] args)
+	{
+		//test();
+		Scanner in = new Scanner(System.in);
+		while(in.hasNextLine())
+		{
+			long a = in.nextLong();
+			if (a==0){System.exit(0);}
+			else{answer(a); in.nextLine();}
+		}
+	}
+	
+	public static void test()
+	{
+		//Find our range
+		System.out.println(sum_of(9L));
+		System.out.println((1L)&lt;&lt;56);
+		System.out.println(sum_of(400000000L));
+		
+		answer(44);
+		answer(45);
+		answer(46);
+	}
+	
+	public static long sum_of(long n){return (n*(n+1))&gt;&gt;1;}//Macros...
+	
+	public static void answer(long val)
+	{
+		long min_n = 0L;
+		long max_n = 400000000L;
+		while(max_n - min_n &gt; 1)
+		{
+			long central_n = (max_n + min_n)&gt;&gt;1;
+			if (sum_of(central_n) &gt; val)
+			{
+				max_n = central_n;
+			}
+			else
+			{
+				min_n = central_n;
+			}
+		}
+		//System.out.println(min_n);
+		long missed_value = sum_of(max_n) - val;
+		if (missed_value == max_n)
+		{System.out.println(&quot;Not bored enough!&quot;);}
+		else{System.out.println(missed_value);}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

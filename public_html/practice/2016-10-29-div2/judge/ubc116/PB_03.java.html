@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+/**
+ * Created by alihonarmand on 2016-10-29.
+ */
+public class B {
+    public B() throws IOException {
+        Scanner sc = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+
+        int n = sc.nextInt();
+        int counter = 0;
+        String []operations = new String[n];
+        int []operands = new int[n];
+        for (int i = 0; i &lt; n; i++) {
+            operations[i] = sc.next();
+            operands[i] = sc.nextInt();
+        }
+
+        for (int j = 1; j &lt;= 100; j++) {
+            double val = j;
+            for (int i = 0; i &lt; n; i++) {
+                val = doOperation(val,operands[i] , operations[i]);
+                if(val&lt;0 || ( (int)val != val  ) ){
+                    counter++;
+                    break;
+                }
+
+            }
+
+        }
+
+        System.out.println(counter);
+
+    }
+
+    public double doOperation(double num, int operand, String operation){
+        double num1 = (double) num;
+        double operand1 = (double) operand;
+
+        if(operation.equals(&quot;MULTIPLY&quot;)){
+            return num1*operand1;
+        }
+        else if(operation.equals(&quot;ADD&quot;)){
+            return num1 + operand1;
+        }
+        else if(operation.equals(&quot;SUBTRACT&quot;)){
+            return num1 - operand1;
+        }
+        else{
+            return num1 / operand1;
+        }
+
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        new B();
+//        double x = 3.0;
+//        System.out.println(x==(int)x);
+    }
+
+
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

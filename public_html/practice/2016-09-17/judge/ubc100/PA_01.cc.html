@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;cstring&gt;
+
+using namespace std;
+
+int n, ans, box[10][3];
+bool seen[10];
+
+void recur(int k, int rot, int num) {
+	for(int i=0; i&lt;n; i++) {
+		if(seen[i]) continue;
+		seen[i] = true;
+		for(int j=0; j&lt;3; j++) {
+			int x,y;
+			if(j==0) x=box[i][1], y=box[i][2];
+			if(j==1) x=box[i][0], y=box[i][2];
+			if(j==2) x=box[i][0], y=box[i][1];
+			int x2,y2;
+			if(rot==0) x2=box[k][1], y2=box[k][2];
+			if(rot==1) x2=box[k][0], y2=box[k][2];
+			if(rot==2) x2=box[k][0], y2=box[k][1];
+			if((x&gt;=x2 &amp;&amp; y&gt;=y2) || (x&gt;=y2 &amp;&amp; y&gt;=x2)) {
+				ans = max(ans, num+1);
+				recur(i,j,num+1);
+			}
+
+		}
+		seen[i] = false;
+	}
+}
+
+int main(void) {
+	int ca=0;
+	while(cin&gt;&gt;n) {
+		if(n==0) break;
+		for(int i=0; i&lt;n; i++) {
+			for(int j=0; j&lt;3; j++) {
+				cin &gt;&gt; box[i][j];
+			}
+		}
+		ans = 1;
+		memset(seen, 0, sizeof seen);
+		for(int i=0; i&lt;n; i++) {
+			seen[i] = true;
+			for(int j=0; j&lt;3; j++) {
+				recur(i,j,1);
+			}
+			seen[i] = false;
+		}
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot;;
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

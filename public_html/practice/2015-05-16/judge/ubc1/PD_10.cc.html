@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+const int maxn = 500005;
+int deg[maxn], g[maxn], col[maxn];;
+int main() {
+    ios::sync_with_stdio(0);
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        int x; cin &gt;&gt; x;
+        g[i] = x-1;
+        deg[x-1]++;
+    }
+    memset(col, -1, sizeof col);
+    
+    int ans = 0;
+    set&lt;int&gt; prev, nxt;
+    for (int i = 0; i &lt; n; i++) {
+        if (deg[i] == 0) {
+            prev.insert(i);
+            col[i] = 1;
+        }
+    }
+    
+    while (!prev.empty()) {
+        nxt.clear();
+        for (int u : prev) {
+            deg[g[u]]--;
+            if (col[u] == -1) col[u] = 1;
+            if (col[u]) {
+                ans++;
+                if (col[g[u]] == -1) {
+                    nxt.insert(g[u]);
+                }
+                col[g[u]] = 0;
+            } else {
+                if (deg[g[u]] == 0 &amp;&amp; col[g[u]] == -1) {
+                    nxt.insert(g[u]);
+                }
+            }
+        }
+        prev = nxt;
+    }
+    
+    // handle the pure cycles
+    for (int i = 0; i &lt; n; i++) {
+        if (deg[i] == 1 &amp;&amp; col[i] == -1) {
+            int c = i;
+            col[i] = 0;
+            while (g[c] != i) {
+                int nc = g[c];
+                col[nc] = col[c]^1;
+                c = nc;
+                ans += col[nc] == 1;
+            }
+        }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+    
+	return 0;
+} </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

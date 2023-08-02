@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int dist[1000005];
+int main() {
+    int f, s, g, u, d;
+    cin &gt;&gt; f &gt;&gt; s &gt;&gt; g &gt;&gt; u &gt;&gt; d;
+    
+    memset(dist, -1, sizeof dist);
+    queue&lt;int&gt; q({s});
+    dist[s] = 0;
+    while (!q.empty()) {
+        int c = q.front(); q.pop();
+        if (c+u &lt;= f &amp;&amp; dist[c+u] == -1) {
+            dist[c+u] = dist[c] + 1;
+            q.push(c+u);
+        }
+        if (c-d &gt;= 1 &amp;&amp; dist[c-d] == -1) {
+            dist[c-d] = dist[c] + 1;
+            q.push(c-d);
+        }
+    }
+    
+    if (dist[g] != -1) cout &lt;&lt; dist[g] &lt;&lt; endl;
+    else cout &lt;&lt; &quot;use the stairs&quot; &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

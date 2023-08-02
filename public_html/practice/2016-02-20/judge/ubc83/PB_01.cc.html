@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	int N; cin &gt;&gt; N;
+
+	vector&lt;pair&lt;string, string&gt; &gt; names;
+
+	for(int i = 0; i &lt; N; i++){
+		string first, last; cin &gt;&gt; first &gt;&gt; last;
+		names.push_back(make_pair(last, first));
+	}
+
+	sort(names.begin(), names.end());
+
+	map&lt;pair&lt;string, string&gt;, int&gt; rev;
+
+	for(int i = 0; i &lt; N; i++){
+		rev.insert(make_pair(names[i], i));
+	}
+
+	int Q; cin &gt;&gt; Q;
+
+	for(int i = 0; i &lt; Q; i++){
+		string first, last; cin &gt;&gt; first &gt;&gt; last;
+
+		int loc = rev.at(make_pair(last, first));
+		pair&lt;string, string&gt; name1, name2;
+		if(loc % 3 == 0){
+			name1 = names[loc+1];
+			name2 = names[loc+2];
+		} else if(loc % 3 == 1){
+			name1 = names[loc-1];
+			name2 = names[loc+1];
+		} else {
+			name1 = names[loc-2];
+			name2 = names[loc-1];
+		}
+
+		cout &lt;&lt; name1.second &lt;&lt; &quot; &quot; &lt;&lt; name1.first &lt;&lt; endl &lt;&lt; name2.second &lt;&lt; &quot; &quot; &lt;&lt; name2.first &lt;&lt; endl;
+	}
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

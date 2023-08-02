@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+char everything[1024][1024];
+
+int main() {
+  memset(everything, ' ', sizeof(everything[0][0])*1024*1024);
+  everything[1022][0] = 'X';
+  everything[1022][1] = 'X';
+  everything[1023][0] = 'X';
+  everything[1023][1] = 'X';
+  for (int i = 0; i &lt; 9; ++i) {
+    int shift = 1 &lt;&lt; i;
+    int width = 2*shift;
+    for (int j = 1024 - width; j &lt; 1024; ++j) {
+      for (int k = 0; k &lt; width; ++k) {
+        everything[j][k + width] = everything[j][k]; // Right
+        everything[j - width][k + shift] = everything[j][k]; // Top
+      }
+    }
+  }
+  int T; cin &gt;&gt; T;
+  for (int t = 1; t &lt;= T; ++t) {
+    cout &lt;&lt; &quot;Triangle #&quot; &lt;&lt; t &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    int k; cin &gt;&gt; k;
+    int width = 1 &lt;&lt; k;
+    for (int j = 1024 - width; j &lt; 1024; ++j) {
+      for (int k = 0; k &lt; width; ++k) {
+        cout &lt;&lt; everything[j][k];
+      }
+      cout &lt;&lt; endl;
+    }
+    cout &lt;&lt; endl;
+  }
+  return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

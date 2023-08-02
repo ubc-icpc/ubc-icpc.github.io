@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+bool p[10001][101];
+
+int main() {
+  int f;
+  while (cin &gt;&gt; f) {
+    bool pos = true;
+    while (f--) {
+      int t, n; cin &gt;&gt; t &gt;&gt; n;
+      memset(p, 0, sizeof p);
+      for (int i = 0; i &lt;= t; i++)
+        p[i][0] = true;
+      bool fpos = true;
+      for (int i = 1; i &lt;= n; i++) {
+        bool rpos = false;
+        int ti, tj; cin &gt;&gt; ti &gt;&gt; tj;
+        int tv = tj-ti;
+        for (int j = 0; j &lt;= t; j++) {
+          if (!p[j][i-1])
+            continue;
+          if (0 &lt;= j-tv) {
+            p[j-tv][i] = true;
+            rpos = true;
+          }
+          if (j+tv &lt;= t) {
+            p[j+tv][i] = true;
+            rpos = true;
+          }
+        }
+        if (!rpos)
+          fpos = false;
+      }
+      if (!fpos)
+        pos = false;
+    }
+    if (!pos)
+      cout &lt;&lt; &quot;im&quot;;
+    cout &lt;&lt; &quot;possible\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

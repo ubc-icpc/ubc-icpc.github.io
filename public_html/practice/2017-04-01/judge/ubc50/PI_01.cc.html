@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+#define ALPHABET_SIZE 26
+
+int getIndex(char c) {
+  return c-'a';
+}
+
+struct trieNode {
+  bool is_leaf;
+  trieNode* children[ALPHABET_SIZE];
+
+  trieNode() {
+    is_leaf = false;
+    for (int i = 0; i &lt; ALPHABET_SIZE; i++)
+      children[i] = NULL;
+  }
+};
+
+void insert(trieNode *root, string key) {
+  int len = key.length();
+  trieNode *node = root;
+  int idx;
+  for (int level = 0; level &lt; len; level++) {
+    idx = getIndex(key[level]);
+    if (!node-&gt;children[idx])
+      node-&gt;children[idx] = new trieNode();
+    node = node-&gt;children[idx];
+  }
+  node-&gt;is_leaf = true;
+}
+
+bool search(trieNode *root, string key, bool flag) {
+  int len = key.length();
+  trieNode *node = root;
+  int idx;
+  for (int level = 0; level &lt; len; level++) {
+    idx = getIndex(key[level]);
+    if (!node-&gt;children[idx])
+      return false;
+    if (flag &amp;&amp; node-&gt;children[idx]-&gt;is_leaf) {
+      string tmp = key.substr(level+1, string::npos);
+      if (search(root, tmp, false))
+        return true;
+    }
+    node = node-&gt;children[idx];
+  }
+  return (node &amp;&amp; node-&gt;is_leaf);
+}
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+  int n, q;
+  cin &gt;&gt; n &gt;&gt; q;
+  trieNode *root = new trieNode();
+  for (int i = 0; i &lt; n; i++) {
+    string s; cin &gt;&gt; s;
+    insert(root, s);
+  }
+  for (int i = 0; i &lt; q; i++) {
+    string s; cin &gt;&gt; s;
+    if (search(root, s, false)) {
+      cout &lt;&lt; &quot;simple name&quot; &lt;&lt; endl;
+    } else if (search(root, s, true)) {
+      cout &lt;&lt; &quot;compound name&quot; &lt;&lt; endl;
+    } else {
+      cout &lt;&lt; &quot;unknown name&quot; &lt;&lt; endl;
+    }
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

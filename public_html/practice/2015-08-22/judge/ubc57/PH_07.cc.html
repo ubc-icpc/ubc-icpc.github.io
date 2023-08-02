@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// August 22 H.cpp : Defines the entry point for the console application.
+//
+
+//#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int A[16][16]; //0 is no edge, 1 is same, -1 is diff
+int sol[16]; //0 is one col, 1 is the other, -1 is not visited
+
+int power(int a, int b){
+	int asd = 1;
+	for (int i = 1; i &lt;= b; i++){
+		asd = asd*a;
+	}
+	return asd;
+}
+bool dfs(int p){
+	bool ret = true;
+	for (int i = 1; i &lt;= 15; i++){
+		bool d = false;
+		if ((i != p) &amp;&amp; (A[i][p] != 0)){
+			if (A[i][p] == 1) {
+				if (sol[i] == 1 - sol[p]) return false;
+				if (sol[i] == -1) d = true;
+				sol[i] = sol[p];
+				if(d) ret=ret&amp;&amp;dfs(i);
+			}
+			if (A[i][p] == -1){
+				if (sol[i] == sol[p]) return false;
+				if (sol[i] == -1) d = true;
+				sol[i] = 1-sol[p];
+				if (d) ret=ret&amp;&amp;dfs(i);
+			}
+		}
+	}
+	return ret;
+}
+bool solve(vector&lt;int&gt; g){
+	memset(sol, -1, sizeof sol);
+	sol[g[0]] = 0;
+	return dfs(g[0]);
+}
+
+bool vis[16];
+void ddfs(int p, vector&lt;int&gt; &amp;v){
+	vis[p] = true;
+	v.push_back(p);
+	for (int i = 1; i &lt;= 15; i++){
+		if ((i != p) &amp;&amp; (A[i][p] != 0) &amp;&amp; (!vis[i])){
+			ddfs(i,v);
+		}
+	}
+}
+
+int main()
+{
+	int test;
+	int p, q;
+	int cas;
+	cin &gt;&gt; test;
+	for (cas = 1; cas &lt;= test; cas++){
+		cin &gt;&gt; p &gt;&gt; q;
+		memset(vis, false, sizeof vis);
+		memset(A, 0, sizeof A);
+		memset(sol, -1, sizeof sol);
+		vector&lt;vector&lt;int&gt;&gt; sets;
+		sets.clear();
+		int ans=-1;
+		int x, y;
+		char c;
+		for (int i = 0; i &lt; 16; i++) A[i][i] = 1;
+		for (int i = 1; i &lt;= q; i++){
+			cin &gt;&gt; x &gt;&gt; y &gt;&gt; c;
+			int a;
+			if (c == 'T') a = 1;
+			if (c == 'C') a = -1;
+			if (A[x][y] == -a) ans = 0;
+			A[x][y] = a;
+			A[y][x] = a;
+		}
+		for (int i = 1; i &lt;= p; i++){
+			vector&lt;int&gt; g;
+			if (!vis[i]) {
+				ddfs(i,g);
+				sets.push_back(g);
+			}
+		}
+		for (int i = 0;i&lt;sets.size(); i++){
+			if (!solve(sets[i])) ans = 0;
+		}
+		if (ans!=0) ans=power(2, sets.size());
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; cas &lt;&lt; &quot;: &quot; &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

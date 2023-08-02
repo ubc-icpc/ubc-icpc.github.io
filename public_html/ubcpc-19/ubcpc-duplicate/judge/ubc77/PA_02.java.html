@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class Scratch {
+    public static void main(String[] args) {
+        Scanner reader = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+    
+        String first = reader.nextLine();
+        String second = reader.nextLine();
+        String third = reader.nextLine();
+        
+        Map&lt;Integer, Character&gt; mapping = new HashMap&lt;&gt;();
+        Map&lt;Character, Integer&gt; mapping2 = new HashMap&lt;&gt;();
+        
+        char start = 'a';
+        for (int i = 0; i &lt; 26; i++) {
+            char letter = (char) (start + i);
+            mapping.put(i, letter);
+            mapping2.put(letter, i);
+        }
+        
+        int shift = Integer.parseInt(second);
+        
+        if (first.equals(&quot;E&quot;)) {
+            String[] split = third.split(&quot;&quot;);
+            String encoded = &quot;&quot;;
+            for (String c : split) {
+                char individual = c.toCharArray()[0];
+                encoded += mapping.get((mapping2.get(individual) + shift) % 26);
+            }
+            System.out.println(encoded);
+        } else {
+            String[] split = third.split(&quot;&quot;);
+            String encoded = &quot;&quot;;
+            for (String c : split) {
+                char individual = c.toCharArray()[0];
+                encoded += mapping.get((26 + mapping2.get(individual) - shift) % 26);
+            }
+            System.out.println(encoded);
+        }
+    }
+}
+</code>
+</pre>
+</body>
+</html>

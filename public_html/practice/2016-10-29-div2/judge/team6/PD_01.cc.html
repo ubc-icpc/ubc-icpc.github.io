@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int bfs(vector&lt;vector&lt;int&gt;&gt; &amp;g, int source, int sink) {
+  vector&lt;int&gt; todo;
+  todo.push_back(source);
+  vector&lt;bool&gt; seen(g.size(), false);
+  int it = 0;
+  while(todo.size() != 0) {
+    vector&lt;int&gt; new_todo;
+    for(int e : todo) {
+      for(int adj : g[e]) {
+        if(!seen[adj]) {
+          new_todo.push_back(adj);
+          seen[adj] = true;
+        }
+
+        if(adj == sink) {
+          return it + 1;
+        }
+
+      }
+    }
+
+    todo = new_todo;
+    it++;
+  }
+
+  if(!seen[sink]) {
+    return -1;
+  }
+
+  return it;
+}
+
+int main() {
+  int m, n;
+  cin &gt;&gt; n &gt;&gt; m;
+  
+  vector&lt;string&gt; lines;
+  string tmp;
+  for(int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; tmp;
+    lines.push_back(tmp);
+  }
+
+  vector&lt;vector&lt;int&gt;&gt; g;
+
+  for(int i = 0; i &lt; n; i++) {
+    for(int j = 0; j &lt; m; j++) {
+      // pos = i*m + j
+      int v = int(lines[i][j] - '0');
+      vector&lt;int&gt; positions;
+      if(v != 0 &amp;&amp; v + i &lt; n) {
+        positions.push_back((v + i)*m + j);
+      }
+
+      if(v != 0 &amp;&amp; i - v &gt;= 0) {
+        positions.push_back((i - v)*m + j);
+      }
+
+      if(v != 0 &amp;&amp; j - v &gt;= 0) {
+        positions.push_back(i*m + j - v);
+      }
+
+      if(v != 0 &amp;&amp; j + v &lt; m) {
+        positions.push_back(i*m + j + v);
+      }
+
+      g.push_back(positions);
+    }
+  }
+
+
+  int dist = bfs(g, 0, m*n - 1);
+
+  if(dist &lt; 0) {
+    cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+  }
+  else {
+    cout &lt;&lt; dist &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

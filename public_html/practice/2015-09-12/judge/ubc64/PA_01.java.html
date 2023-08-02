@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.util.*;
+
+// try debuggin by using print line
+// error: iteration on the wrong letter
+// binary reserach starts from n-1 !!!!!!! for size
+
+public class acm {
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int round = scan.nextInt();
+        while (round &gt; 0) {
+            LinkedHashSet&lt;Integer&gt; set = new LinkedHashSet&lt;Integer&gt;();
+            for (int i = 0; i &lt; 10; i ++) {
+                set.add(scan.nextInt());
+            }
+            for (int i : set) {
+                System.out.print(i + &quot; &quot;);
+            }
+            System.out.print(&quot;\n&quot;);
+            boolean mack = set.contains(18);
+            boolean zack = set.contains(17);
+            if (mack &amp;&amp; zack) {
+                System.out.println(&quot;both&quot;);
+            } else if (mack) {
+                System.out.println(&quot;mack&quot;);
+            } else if (zack) {
+                System.out.println (&quot;zack&quot;);
+            } else {
+                System.out.println (&quot;none&quot;);
+            }
+            round --;
+        }
+    }
+
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

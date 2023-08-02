@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+// b[i] = (i*b[i-1] + a[i])/(i+1)
+// (i+1)b[i] - i*b[i-1] = a[i]
+int main() {
+    int n; cin &gt;&gt; n;
+    
+    long long prev = 0, cur;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; cur;
+        cout &lt;&lt; (i+1)*cur - i*prev &lt;&lt; &quot; &quot;;
+        prev = cur;
+    }
+    cout &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

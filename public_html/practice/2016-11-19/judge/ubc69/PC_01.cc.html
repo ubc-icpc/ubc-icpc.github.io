@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+	string s; cin &gt;&gt; s;
+	while(!(s == &quot;0&quot;)) {
+		vector&lt;int&gt; pings;
+		for(int i = 1; i &lt; s.size(); i++) {
+			int count = 0;
+			for(int j = 0; j &lt; pings.size(); j++) {
+				if(i%pings[j] == 0) count++;
+			}
+			if(s[i] - '0' != count%2) {
+				pings.push_back(i);
+			}
+		}
+		for(int i = 0; i &lt; pings.size() - 1; i++) {
+			cout &lt;&lt; pings[i] &lt;&lt; ' ';
+		}
+		cout &lt;&lt; pings[pings.size() - 1] &lt;&lt; endl;
+		cin &gt;&gt; s;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

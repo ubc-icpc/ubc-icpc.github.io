@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+
+int n;
+
+/*
+vector&lt;vector&lt;int&gt;&gt; memo[13][13];
+bool seen[13][13];
+vector&lt;vector&lt;int&gt;&gt; dp(int i, int l) {
+    if (l &lt;= 0) {
+        vector&lt;vector&lt;int&gt;&gt; res(1);
+        return res;
+    }
+    if (i+1 &gt; l) return vector&lt;vector&lt;int&gt;&gt;();
+    if (seen[i][l]) return memo[i][l];
+    
+    seen[i][l] = true;
+    memo[i][l] = dp(i, l-i-2);
+    
+    for (auto&amp; v : memo[i][l]) {
+        v.push_back(i+1);
+        sort(v.begin(), v.end());
+    }
+    for (auto&amp; v : dp(i+1, l)) {
+        memo[i][l].push_back(v);
+    }
+    return memo[i][l];
+}
+//*/
+
+typedef tuple&lt;int, int, int&gt; tup;
+struct state {
+    int i, L; //(cur row, #blks, cur grp)
+    vector&lt;int&gt; v;
+    state() {}
+    state(int i, int l, vector&lt;int&gt;&amp; v) : i(i), L(l), v(v) {}
+    bool operator&lt;(const state&amp; o) const {
+        if (i == o.i) {
+            if (L == o.L) {
+                return v &lt; o.v;
+            }
+            return L &lt; o.L;
+        }
+        return i &lt; o.i;
+    }
+};
+
+int solve(state s) {
+    static map&lt;state, int&gt; memo;
+    int sum = accumulate(s.v.begin(), s.v.end(), 0);
+    if (sum == 0) return 1;
+    else if (s.i == 12) {
+        return 100;
+    } else if (memo.count(s)) {
+        return memo[s];
+    }
+    
+    int&amp; rval = memo[s];
+    rval = 1 + solve(state(s.i+1, s.i+2, s.v));
+    for (int i = s.L-1; i &gt;= 0; i--) {
+        if (s.v[i] &gt; 0) {
+            s.v[i]--;
+            rval = min(rval, solve(state(s.i, s.L-min(s.L, i+2), s.v)));
+            s.v[i]++;
+            if (i == s.L-1) return rval;
+        }
+    }
+    return rval;
+}
+
+int main() {
+	cin &gt;&gt; n;
+    vector&lt;int&gt; req(12);
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; req[i];
+    }
+    
+    /*
+    for (int i = 0; i &lt; 12; i++) {
+        cout &lt;&lt; dp(0, i+1).size() &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+    
+    for (auto v : dp(0, 12)) {
+        for (int w : v) {
+            cout &lt;&lt; w &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+    //*/
+    
+    state st(0, 1, req);
+    if (solve(st) &gt; 12) cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+    else cout &lt;&lt; solve(st) &lt;&lt; endl;
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

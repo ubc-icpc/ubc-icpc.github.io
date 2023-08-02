@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class A {
+    public static Scanner scanner = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
+
+    public static void main(String[] args) {
+        String alphabet = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+
+        String option = scanner.nextLine();
+        int key = scanner.nextInt();
+        scanner.nextLine();
+        String message = scanner.nextLine();
+
+        String output = &quot;&quot;;
+        for (int i = 0; i &lt; message.length(); i++) {
+            int ind = alphabet.indexOf(String.valueOf(message.charAt(i))) + (option.equals(&quot;E&quot;) ? key : -key);
+            if (ind &lt; 0) ind += 26;
+            if (ind &gt; 25) ind -= 26;
+            output += alphabet.charAt(ind);
+        }
+
+        System.out.println(output);
+    }
+}
+</code>
+</pre>
+</body>
+</html>

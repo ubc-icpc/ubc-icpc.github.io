@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+import fileinput
+from collections import Counter
+from itertools import combinations
+
+for line in fileinput.input():
+    if line.strip() == &quot;0&quot;:
+        sys.exit(0)
+
+    n, cheeses = line.split()[0], line.split()[1:]
+    cnt = Counter()
+
+    for cheese in cheeses:
+        cnt[cheese] += 1
+
+    cheddar, gouda, havarti = cnt['Cheddar'], cnt['Gouda'], cnt['Havarti']
+
+    print max(cheddar, gouda, havarti,
+              (min(cheddar, gouda) * 2),
+              (min(gouda, havarti) * 2),
+              (min(cheddar, havarti) * 2),
+              (min(cheddar, gouda, havarti) * 3),
+              )
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

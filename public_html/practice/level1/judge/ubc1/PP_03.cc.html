@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+// E[x] = x + 2 * (1-x) * 2x + ...
+// want to find p(crit)
+// p(crit) = p(crit | 0 attacks missed already) * p(0 attacks missed) + ...
+// = x * 1 + 2 x * (1-x) + 3 * x * (1-x) * (1-2x) + 
+
+// P[x] = E[x] where x == 1 if i make shot, x == 0 if i dont.
+// E[x] = E[ E[x | given last k shots not made] ]
+//		= sum P[x | given last k shots not made] * P[last k shots not made]
+// E(n) = x * (1 + E(n-1)) + (1-x) * 2x * (1 + E(n-2)) + ...
+
+int round3(ld p) {
+	return int(1000*p+0.5);
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	map&lt;int, pair&lt;ld, ld&gt;&gt; rev;
+	vector&lt;pair&lt;ld, ld&gt;&gt; f({{0,0}});
+	for (ld p = 1e-4; p &lt; 1; p += 1e-4) {
+		ld x = p, pmiss = 1, tot = 0;
+		vector&lt;ld&gt; E({0});
+		for (int i = 1; i &lt;= 5000; i++) {
+			E.push_back(0);
+			ld pmiss = 1;
+			for (int j = 1; j &lt;= i; j++) {
+				E[i] += j * p * pmiss * (1 + E[i-j]);
+				pmiss *= (1 - j * p);
+				if (j+1 &lt;= i &amp;&amp; (j+1) * p &gt; 1) {
+					E[i] += pmiss * (1 + E[i-j-1]);
+					break;
+				}
+			}
+		}
+		f.push_back({E[5000]/5000, p});
+	}
+	
+	map&lt;int, int&gt; ans;
+	for (int i = 1; i &lt; 1000; i++) {
+		auto it = lower_bound(f.begin(), f.end(), pair&lt;ld, ld&gt;{i/1000.0 - 1e-4, 0});
+		ld p = it-&gt;second;
+		p += (++it)-&gt;second;
+		//cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; p/2 &lt;&lt; endl;
+		ans[i] = round3(p/2);
+	}
+	
+	ld p;
+	while (cin &gt;&gt; p) {
+		cout &lt;&lt; &quot;0.&quot; &lt;&lt; setfill('0') &lt;&lt; setw(3) &lt;&lt; ans[round3(p)] &lt;&lt; endl;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

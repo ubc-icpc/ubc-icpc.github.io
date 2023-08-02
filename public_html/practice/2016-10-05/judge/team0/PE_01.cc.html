@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef pair&lt;int, int&gt; pii;
+const int N = 100000;
+
+vector&lt;pii&gt; adj[N];
+bool visited[N];
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, m, l; cin &gt;&gt; n &gt;&gt; m &gt;&gt; l;
+    ll maxlen = 0;
+    for (int i = 0; i &lt; m; i++) {
+        int a, b, c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c; a--; b--;
+        if (i &lt; l) maxlen += c;
+        adj[a].push_back(pii(b, c));
+        adj[b].push_back(pii(a, c));
+    }
+
+    memset(visited, 0, sizeof visited);
+    ll mst = 0;
+    priority_queue&lt;pii&gt; q;
+    q.push(pii(0, 0));
+    while (!q.empty()) {
+        pii curr = q.top(); q.pop();
+        int c = -curr.first;
+        int u = curr.second;
+
+        if (visited[u]) continue;
+        visited[u] = true;
+        mst += c;
+
+        for (pii e : adj[u]) {
+            q.push(pii(-e.second, e.first));
+        }
+    }
+
+    bool allseen = true;
+    for (int i = 0; i &lt; n; i++) {
+        if (!visited[i]) {
+            allseen = false;
+            break;
+        }
+    }
+
+    //cerr &lt;&lt; allseen &lt;&lt; &quot; &quot; &lt;&lt; mst &lt;&lt; &quot; &quot; &lt;&lt; maxlen &lt;&lt; endl;
+    cout &lt;&lt; ((allseen &amp;&amp; mst &lt;= maxlen) ? &quot;possible&quot; : &quot;impossible&quot;) &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

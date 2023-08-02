@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+#include&lt;vector&gt;
+#include&lt;cmath&gt;
+#include&lt;iomanip&gt;
+
+using namespace std;
+struct point {
+  double x,y;
+  point *next, *prev;
+  bool operator&lt;(const point&amp; p) const {
+	if(x==p.x) {
+	  return y&lt;p.y;
+	}
+	return x&lt;p.x;
+  }
+};
+
+double cross(const point &amp;O, const point &amp;A, const point &amp;B)
+{
+	return (long)(A.x - O.x) * (B.y - O.y) - (long)(A.y - O.y) * (B.x - O.x);
+}
+
+vector&lt;point&gt; convex_hull(vector&lt;point&gt; P)
+{
+	int n = P.size(), k = 0;
+	vector&lt;point&gt; H(2*n);
+
+	sort(P.begin(), P.end());
+
+	for (int i = 0; i &lt; n; ++i) {
+		while (k &gt;= 2 &amp;&amp; cross(H[k-2], H[k-1], P[i]) &lt;= 0) k--;
+		H[k++] = P[i];
+	}
+
+	for (int i = n-2, t = k+1; i &gt;= 0; i--) {
+		while (k &gt;= t &amp;&amp; cross(H[k-2], H[k-1], P[i]) &lt;= 0) k--;
+		H[k++] = P[i];
+	}
+
+	H.resize(k);
+	return H;
+}
+double dist(point *p1, point *p2) {
+  double ret = 0;
+  ret = sqrt( abs(p1-&gt;x-p2-&gt;x)*abs(p1-&gt;x-p2-&gt;x)
+			  +abs(p1-&gt;y-p2-&gt;y)*abs(p1-&gt;y-p2-&gt;y) );
+  return ret;
+}
+bool isBetween(point *p1, point *p2, int y) {
+  return max(p1-&gt;y,p2-&gt;y) &gt; y &amp;&amp; min(p1-&gt;y,p2-&gt;y)&lt;y;
+}
+double getX(point *p1, point *p2, int y) {
+  double m=(double)(p1-&gt;y - p2-&gt;y)/(p1-&gt;x - p2-&gt;x);
+  
+  return (y-p1-&gt;y)/m + p1-&gt;x;
+}
+int main (void) {
+  int T; cin&gt;&gt;T;
+  for(int m=0; m&lt;T; m++) {
+	int V, Y; cin&gt;&gt;V&gt;&gt;Y;
+	vector&lt;point&gt; pol;
+	for(int i=0; i&lt;V; i++) {
+	  int x,y; cin&gt;&gt;x&gt;&gt;y;
+	  struct point p; p.x=x; p.y=y;
+	  pol.push_back(p);
+	}
+
+
+	pol = convex_hull(pol);
+	for(int i=0; i&lt;V; i++) pol[i].next=&amp;pol[(i+1)%V];
+	int sx=pol[0].x,sy=pol[0].y;
+	
+
+
+	
+	
+	double total1=0,total2=0,x1,x2;
+	bool flag1=true,flag2=true;
+	point *start = &amp;pol[0];
+	do{
+	  if(flag1) {
+		if(start-&gt;y==Y) {
+		  x1=start-&gt;x;
+		  total2 += dist(start,start-&gt;next);
+		  flag1=false;
+		} else if(isBetween(start,start-&gt;next,Y)) {
+		  x1=getX(start,start-&gt;next,Y);
+		  point temp; temp.x=x1; temp.y=Y;
+		  total1 += dist(start,&amp;temp);
+		  total2 += dist(&amp;temp,start-&gt;next);
+		  flag1=false;
+		} else {
+		  total1 += dist(start,start-&gt;next);
+		}
+	  } else if(flag2) {
+		if(start-&gt;y==Y) {
+		  x2=start-&gt;x;
+		  total1 += dist(start,start-&gt;next);
+		  flag2=false;
+		} else if(isBetween(start,start-&gt;next,Y)) {
+		  x2=getX(start,start-&gt;next,Y);
+		  point temp; temp.x=x2; temp.y=Y;
+		  total2 += dist(start,&amp;temp);
+		  total1 += dist(&amp;temp, start-&gt;next);
+
+		  flag2=false;
+		} else {
+		  total2 += dist(start,start-&gt;next);
+		}
+	  } else {
+		total1+=dist(start,start-&gt;next);
+	  }
+
+
+	  start = start-&gt;next;
+	} while (start != 0 &amp;&amp; !(sx==start-&gt;x &amp;&amp; sy==start-&gt;y));
+
+	point f,s;
+	f.x=x1; f.y=Y; s.x=x2; s.y=Y;
+	total1 += dist(&amp;f,&amp;s);
+	total2 += dist(&amp;f,&amp;s);
+	cout &lt;&lt; &quot;Case #&quot; &lt;&lt; m+1 &lt;&lt; &quot;: &quot;;
+	cout &lt;&lt; fixed &lt;&lt; setprecision(3);
+	cout &lt;&lt; min(total1, total2) &lt;&lt; &quot; &quot; &lt;&lt; max(total1, total2) &lt;&lt; endl &lt;&lt; endl;
+	
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

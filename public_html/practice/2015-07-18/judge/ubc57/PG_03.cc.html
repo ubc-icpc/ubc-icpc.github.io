@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// July 18 G.cpp : Defines the entry point for the console application.
+//
+
+//#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+int r, c;
+int Grid[105][105];
+long double DP[105][105];
+//long double dp(int a, int b){
+//	long double answer;
+//	if (Grid[a][b] &gt; 0) return Grid[a][b];
+//	if (a == r - 1) return 0;
+//	if (DP[a][b] != -1) return DP[a][b];
+//	if (Grid[a][b] == 0) {
+//		answer = dp(a + 1, b); 
+//		DP[a][b] = answer;
+//		cout &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b &lt;&lt; ' ' &lt;&lt; answer &lt;&lt; endl;
+//		return answer;
+//	}
+//	if (Grid[a][b] == -1) {
+//		answer = (dp(a + 1, b - 1) + dp(a + 1, b + 1)) / 2;
+//		DP[a][b] = answer;
+//		cout &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b &lt;&lt; ' ' &lt;&lt; answer &lt;&lt; endl;
+//		return answer;
+//	}
+//}
+int main()
+{
+	int t;
+	char ch;
+	cin &gt;&gt; t;
+	for (int i = 1; i &lt;= t; i++){
+		memset(Grid,0,sizeof Grid);
+		cin &gt;&gt; r &gt;&gt; c;
+		for (int i = 0; i &lt; r; i++){ //Grid starts at (0,0) to (r-1,c-1)
+			for (int j = 0; j &lt; c; j++){
+				cin &gt;&gt; ch;
+				if (ch == '*') Grid[i][j] = -1;
+				else{ if (ch != '.')Grid[i][j] = ch - '0'; }
+			}
+		}
+		for (int j = 0; j &lt; c; j++) {
+			if (Grid[r - 1][j] &gt; 0) DP[r - 1][j] = Grid[r - 1][j];
+			else{ DP[r - 1][j] = 0; }
+		}
+		for (int i = r-2; i &gt;=0; i--){
+			for (int j = 0; j &lt; c; j++){
+				if (Grid[i][j] &gt; 0) DP[i][j]= Grid[i][j];
+				if (Grid[i][j] == 0) DP[i][j] = DP[i + 1][j];
+				if (Grid[i][j] == -1) DP[i][j] = (DP[i + 1][j-1] + DP[i + 1][j+1]) / 2;
+				//cout &lt;&lt; i &lt;&lt; ' ' &lt;&lt; j &lt;&lt; ' ' &lt;&lt; DP[i][j] &lt;&lt; endl;
+			}
+		}
+		long double m = 0;
+		for (int i = 0; i &lt; c; i++) m = max(m, DP[0][i]);
+		cout &lt;&lt; fixed &lt;&lt; setprecision(8)&lt;&lt;m &lt;&lt; endl;
+	
+	}
+	return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

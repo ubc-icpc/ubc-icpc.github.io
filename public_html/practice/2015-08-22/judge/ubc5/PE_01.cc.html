@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int b[100][100], s[100][100];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  for (int T = 1; T &lt;= t; T++) {
+    cout &lt;&lt; &quot;Game Board #&quot; &lt;&lt; T &lt;&lt; &quot;: &quot;;
+    int r, c;
+    cin &gt;&gt; r &gt;&gt; c;
+    for (int i = 0; i &lt; r; i++) {
+      for (int j = 0; j &lt; c; j++) {
+        s[i][j] = 0;
+        if (i+j == 0 || i+j == r+c-2) {
+          char C; cin &gt;&gt; C;
+          b[i][j] = 0;
+        }
+        else
+          cin &gt;&gt; b[i][j];
+      }
+    }
+    for (int i = 0; i &lt; r; i++) {
+      for (int j = 0; j &lt; c; j++) {
+        int mx = 0;
+        if (j &gt; 0)
+          mx = max(mx,s[i][j-1]);
+        if (i &gt; 0)
+          mx = max(mx,s[i-1][j]);
+        s[i][j] = mx+b[i][j];
+      }
+    }
+    cout &lt;&lt; s[r-1][c-1] &lt;&lt; &quot;\n\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

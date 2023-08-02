@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html><head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="James Feher">
+  <title>Problem A: (More) Multiplication</title>
+
+  
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+      div.grid 
+      {
+          font-family: monospace;
+          vertical-align: top;
+          padding: 10px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style>
+</head><body>
+<h1>Problem A: (More) Multiplication</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <tt>multiply.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+      </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>multiply.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+<p> 
+Educators are always coming up with new ways to teach math to 
+students.  In 2011, an educational software company, All Computer Math&nbsp;(ACM),
+developed an application to display products in a traditional grade school math
+format.  ACM is now working on an updated version of the software that will 
+display results in a lattice format that some students find to be easier when 
+multiplying larger numbers.
+<p>
+An example would be when multiplying 345 * 56 = 19320 as given below,
+using a lattice grid with 2&nbsp;rows and 3&nbsp;columns,
+which appears inside a surrounding frame:
+
+
+<pre>
++---------------+
+|   3   4   5   |
+| +---+---+---+ |
+| |1 /|2 /|2 /| |
+| | / | / | / |5|
+|1|/ 5|/ 0|/ 5| |
+| +---+---+---+ |
+|/|1 /|2 /|3 /| |
+| | / | / | / |6|
+|9|/ 8|/ 4|/ 0| |
+| +---+---+---+ |
+|/ 3 / 2 / 0    |
++---------------+
+</pre>
+<p>
+The first operand, 345, is displayed above the top of the grid
+with each digit centered horizontally above its column of the grid, 
+and the second operand, 56, is displayed along the righthand side
+with each digit centered vertically at the center of its row in the
+grid. A single cell of the grid, such as
+<kbd>
+<pre>
+          +---+
+          |3 /|
+          | / |
+          |/ 0|
+          +---+
+</pre>
+</kbd>
+represents the product of the digit of the first operand that is above
+its column and the digit of the second operand that is to the right of
+its row. In our example, this cell represents the product
+<nobr>5 times 6 = 30</nobr> that results when multiplying the 5 in 345
+and the 6 in 56. Note that the 10's digit of that product is
+placed in the upper left portion of this cell and the 1's digit 
+in the lower right.
+
+<br>
+<br>
+The overall product is then computed by summing along the
+diagonals in the lattice that represent the same place
+values in the result. For example, in our first problem the product
+19320 was computed as:
+<table>
+  <tr>
+    <td>1's digit</td>
+    <td>= <b>0</b></td>
+  </tr>
+  <tr>
+    <td>10's digit</td>
+    <td>= 5 + 3 + 4 = 12, thus <b>2</b> with a carry of 1</td>
+  </tr>
+  <tr>
+    <td>100's digit</td>
+    <td>= (1 carry) + 2 + 0 + 2 + 8 = 13, thus <b>3</b> with a carry of 1</td>
+  </tr>
+  <tr>
+    <td>1000's digit</td>
+    <td>= (1 carry) + 2 + 5 + 1 = <b>9</b></td>
+  </tr>
+  <tr>
+    <td>10000's digit</td>
+    <td>= <b>1</b></td>
+  </tr>
+</table>
+
+<br>
+The resulting product is placed with the one's digit below the grid at
+the far right and, depending on its length, with the most significant
+digits wrapped around the left side of the grid.
+Each digit of the final product appears perfectly aligned with the
+corresponding diagonal summands. 
+
+<p>
+To provide an aesthetic
+view, we use a series of <nobr>minus (<kbd>-</kbd>) characters</nobr> for horizontal lines,
+<nobr>pipe (<kbd>|</kbd>) characters</nobr> for vertical lines, and
+<nobr>slash (<kbd>/</kbd>) characters</nobr> for diagonal
+lines. Furthermore, we use a <nobr>plus (<kbd>+</kbd>)
+character</nobr> wherever a horizontal and vertical line meet.
+Each multiplication lattice is subsequently "boxed" by an outer border.
+There is a row containing the first operand which is 
+between the topmost  border and the top line of the grid,
+and a row between the bottom of the
+grid and the bottom border, which contains some portion of the
+resulting product. There is one column between the leading&nbsp;| and
+the left edge of the inner grid, which may contain a portion of the
+resulting product, and one column after the right edge of the inner
+grid but before the rightmost&nbsp;| border, which contains the second
+operand. If the product is not long enough to wrap around the
+bottom-left corner, the column between the left border and the left
+edge of the grid will containing only spaces. (See the later example of
+<nobr>3 x 3</nobr>.)
+</p>
+
+
+
+<p>
+Leading zeros should be displayed within lattice grid cells, but
+leading zeros should never be displayed in the product, nor should
+there ever be a <nobr>slash (<kbd>/</kbd>) character</nobr> prior to
+the leading digit of the product. For example, consider the
+product of 12 * 27 = 324 below:<br />
+<kbd>
+<pre>
++-----------+
+|   1   2   |
+| +---+---+ |
+| |0 /|0 /| |
+| | / | / |2|
+| |/ 2|/ 4| |
+| +---+---+ |
+| |0 /|1 /| |
+| | / | / |7|
+|3|/ 7|/ 4| |
+| +---+---+ |
+|/ 2 / 4    |
++-----------+
+</pre>
+</kbd>
+Note that in the top-right grid of the lattice, the product 2 * 2 = 04
+is displayed with the zero for the tens digit. However, there is no
+thousands digit displayed in the product 324, nor is there any slash
+displayed above the digit&nbsp;3 in that product.
+
+
+<p><b>Input:</b>&nbsp; The input contains one or more tests.  Each
+test contains two positive integers, A and B, such that
+<nobr>1 &le; A &le; 9999</nobr> and
+<nobr>1 &le; B &le; 9999</nobr>.
+The last data set will be followed by a line containing
+<nobr>0 0</nobr>.
+<p><b>Output:</b>&nbsp; For each data set, produce the grid that
+illustrates how to multiply the two numbers using the lattice
+multiplication technique.
+<p>
+<p><b>Note:</b>&nbsp; The tables must be formatted precisely as
+outlined by the rules and examples provided. Mistakes that involve
+solely errant whitespace will be categorized as
+<nobr><tt><b>Presentation&nbsp;Error</b></tt></nobr>; all other errors
+will be reported as <nobr><tt><b>Wrong Answer</b></tt></nobr>.
+
+<table class="example page">
+
+  <thead> <tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+<kbd>
+345&nbsp;56<br />
+12&nbsp;27<br />
+1&nbsp;68<br />
+9999&nbsp;7<br />
+3&nbsp;3<br />
+0&nbsp;0<br />
+</kbd>
+      </td>
+      <td><kbd>
++---------------+<br/>
+|&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;|<br/>
+|&nbsp;+---+---+---+&nbsp;|<br/>
+|&nbsp;|1&nbsp;/|2&nbsp;/|2&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|5|<br/>
+|1|/&nbsp;5|/&nbsp;0|/&nbsp;5|&nbsp;|<br/>
+|&nbsp;+---+---+---+&nbsp;|<br/>
+|/|1&nbsp;/|2&nbsp;/|3&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|6|<br/>
+|9|/&nbsp;8|/&nbsp;4|/&nbsp;0|&nbsp;|<br/>
+|&nbsp;+---+---+---+&nbsp;|<br/>
+|/&nbsp;3&nbsp;/&nbsp;2&nbsp;/&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
++---------------+<br/>
++-----------+<br/>
+|&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;|<br/>
+|&nbsp;+---+---+&nbsp;|<br/>
+|&nbsp;|0&nbsp;/|0&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|2|<br/>
+|&nbsp;|/&nbsp;2|/&nbsp;4|&nbsp;|<br/>
+|&nbsp;+---+---+&nbsp;|<br/>
+|&nbsp;|0&nbsp;/|1&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|7|<br/>
+|3|/&nbsp;7|/&nbsp;4|&nbsp;|<br/>
+|&nbsp;+---+---+&nbsp;|<br/>
+|/&nbsp;2&nbsp;/&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
++-----------+<br/>
++-------+<br/>
+|&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;|<br/>
+|&nbsp;+---+&nbsp;|<br/>
+|&nbsp;|0&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|6|<br/>
+|&nbsp;|/&nbsp;6|&nbsp;|<br/>
+|&nbsp;+---+&nbsp;|<br/>
+|&nbsp;|0&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|8|<br/>
+|6|/&nbsp;8|&nbsp;|<br/>
+|&nbsp;+---+&nbsp;|<br/>
+|/&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
++-------+<br/>
++-------------------+<br/>
+|&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;|<br/>
+|&nbsp;+---+---+---+---+&nbsp;|<br/>
+|&nbsp;|6&nbsp;/|6&nbsp;/|6&nbsp;/|6&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|&nbsp;/&nbsp;|7|<br/>
+|6|/&nbsp;3|/&nbsp;3|/&nbsp;3|/&nbsp;3|&nbsp;|<br/>
+|&nbsp;+---+---+---+---+&nbsp;|<br/>
+|/&nbsp;9&nbsp;/&nbsp;9&nbsp;/&nbsp;9&nbsp;/&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
++-------------------+<br/>
++-------+<br/>
+|&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;|<br/>
+|&nbsp;+---+&nbsp;|<br/>
+|&nbsp;|0&nbsp;/|&nbsp;|<br/>
+|&nbsp;|&nbsp;/&nbsp;|3|<br/>
+|&nbsp;|/&nbsp;9|&nbsp;|<br/>
+|&nbsp;+---+&nbsp;|<br/>
+|&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;|<br/>
++-------+</kbd></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- need to hide following for print version to fit on 3 pages
+<br>
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+ -->
+
+</body></html>

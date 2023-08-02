@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N; long long R;
+struct node {
+  vector&lt;int&gt; adj;
+  bool vis;
+};
+unordered_map&lt;int, node&gt; M;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; N;
+  while (N--) {
+    int a, b; cin &gt;&gt; a &gt;&gt; b;
+    M[a].adj.push_back(b);
+    M[b].adj.push_back(a);
+  }
+
+  for (pair&lt;int, node&gt; p : M) {
+    if (p.second.vis) continue;
+    long long total = 0;
+    int MAX = 0;
+    int cnte = 0;
+    vector&lt;int&gt; nodes = vector&lt;int&gt;();
+    queue&lt;int&gt; q;
+    q.push(p.first);
+    while (!q.empty()) {
+      int top = q.front();
+      q.pop();
+      if (M[top].vis) continue;
+      M[top].vis = true;
+      cnte += M[top].adj.size();
+      ++total;
+      nodes.push_back(top);
+      MAX = max(MAX, top);
+      for (int i : M[top].adj) {
+        q.push(i);
+      }
+    }
+    cnte /= 2;
+    for (int i : nodes) {
+      R += i * (M[i].adj.size() - 1);
+    }
+    if (cnte != total) {
+      R += MAX;
+    }
+  }
+
+  cout &lt;&lt; R &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

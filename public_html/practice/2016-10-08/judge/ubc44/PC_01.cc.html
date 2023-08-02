@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+typedef __int128 int128;    // if using 64-bit g++, __int128 is a 128-bit int.
+typedef __float128 float128;    // in g++, __float128 is a 128-bit float.
+
+using namespace std;
+typedef long long ll;
+typedef vector&lt;ll&gt; vl;
+typedef vector&lt;vl&gt; vvl; //vector of vector rows
+
+vvl mmultiply( vvl&amp; left, vvl&amp; right, ll mod ) { //DO NOT pass in empty matrices!
+	int m = left.size();
+	int n = right.size(); assert(n == left[0].size() );
+	int p = right[0].size();	
+	vvl result( m, vl(p, 0) );
+
+	for (int i=0; i&lt;m; i++) {
+		for (int j=0; j&lt;p; j++) {
+			ll dotprod = 0;
+			for (int k=0; k&lt;n; k++) {
+				dotprod += (left[i][k]*right[k][j]) % mod;
+				dotprod %= mod;
+			}
+			result[i][j] = dotprod;
+		}
+	}
+	return result;
+}
+
+vvl power(vvl&amp; matx, int exp, ll mod) {
+	if (exp == 1)
+		return matx;
+	vvl work_matrix = power(matx, exp/2, mod);
+	vvl toreturn = mmultiply(work_matrix, work_matrix, mod);
+	if (exp%2 == 0) {
+		return toreturn;
+	} else {
+		return mmultiply(matx, toreturn, mod);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false); cin.tie(NULL);
+
+	int N, M, A, B, C, T; 
+	cin &gt;&gt; N &gt;&gt; M &gt;&gt; A &gt;&gt; B &gt;&gt; C &gt;&gt; T;
+	while ( N||M||A||B||C||T ) {
+		vvl init_state( N, vl(1, 0));
+		for (int i=0; i&lt;N; i++)
+			cin &gt;&gt; init_state[i][0];
+		vvl config( N, vl(N, 0));
+		for (int i=1; i&lt;config.size()-1; i++) {
+			config[i][i-1] = A;
+			config[i][i] = B;
+			config[i][i+1] = C;
+		}
+		config[0][0] = B;
+		config[0][1] = C;
+		config[N-1][N-2] = A;
+		config[N-1][N-1] = B; 
+
+		if ( T==0 ) {
+			for (int i=0; i&lt;N; i++)
+				cout &lt;&lt; init_state[i][0] &lt;&lt; &quot; &quot;;
+			cout &lt;&lt; endl;
+		} else {
+			vvl pow = power(config, T, M);
+			vvl result = mmultiply( pow, init_state, M);
+			for (int i=0; i&lt;N; i++)
+				cout &lt;&lt; result[i][0] &lt;&lt; &quot; &quot;;
+			cout &lt;&lt; endl;
+		}
+
+		cin &gt;&gt; N &gt;&gt; M &gt;&gt; A &gt;&gt; B &gt;&gt; C &gt;&gt; T;
+	}
+
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

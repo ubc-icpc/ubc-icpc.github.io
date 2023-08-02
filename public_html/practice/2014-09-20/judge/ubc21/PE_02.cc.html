@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main()
+{
+    double p;
+    while (scanf(&quot;%lf&quot;, &amp;p) != EOF)
+    {
+        double x;
+        double min = 0.0f;
+        double max = 1.0f;
+        while (max - min &gt; 0.000001f)
+        {
+            x = (max + min) / 2.0f;
+            double expected = 0.0f;
+            double previous = 1.0f;
+            for (int i = 1;; i++)
+            {
+                double thisprob = i * x;
+                if (thisprob &gt; 1.0f)
+                    thisprob = 1.0f;
+                expected += previous * thisprob * i;
+                if (thisprob == 1.0f)
+                    break;
+                previous *= (1.0f - thisprob);
+            }
+            double probability = 1.0f / expected;
+            if (fabs(probability - p) &lt; 0.00001f)
+                break;
+            if (probability &lt; p)
+                min = x;
+            else
+                max = x;
+        }
+        printf(&quot;%.3f\n&quot;, x);
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

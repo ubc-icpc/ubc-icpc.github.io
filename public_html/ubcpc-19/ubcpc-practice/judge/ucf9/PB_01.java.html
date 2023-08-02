@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+public class harmony {
+	
+public static double log2(double num) {
+	return Math.log(num) / Math.log(2);
+}
+
+static String[] notes = {&quot;A&quot;, &quot;A#&quot;, &quot;B&quot;, &quot;C&quot;, &quot;C#&quot;, &quot;D&quot;, &quot;D#&quot;, &quot;E&quot;, &quot;F&quot;, &quot;F#&quot;, &quot;G&quot;, &quot;G#&quot;};
+
+public static void main(String[] args) {
+Scanner scan = new Scanner(System.in);
+
+int a = scan.nextInt();
+int b = scan.nextInt();
+
+double x = log2(a) - log2(b);
+
+int centdiff = (int)Math.round((1.0/12)*(Math.round(12*x) - (12*x)) * 1200);
+
+//System.out.println(&quot;Cent diff: &quot; + centdiff);
+
+System.out.println(notes[((int)Math.round(12*x) + 120000) % 12] + &quot; &quot; + (-centdiff / 2));
+
+
+System.out.println(&quot;A &quot; + (centdiff - (centdiff / 2)));
+
+scan.close();
+	}
+}</code>
+</pre>
+</body>
+</html>

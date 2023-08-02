@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;string.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;math.h&gt;
+int main()
+{
+    int i,j;
+    double x,y,r;
+    double dx,dy;
+    scanf(&quot;%lf %lf %lf&quot;, &amp;r, &amp;x, &amp;y);
+    double min = 1000000;
+    double res;
+    dx = -r;
+    for(;dx&lt;=r;dx=dx+0.0001)
+    {
+        dy = sqrt(r*r - dx*dx);
+        res = sqrt((dy-y)*(dy-y) + (dx-x)*(dx-x));
+
+        if(res &lt; min)
+            min = res;
+    }
+    if(y&lt;min)
+        min = y;
+    printf(&quot;%lf&quot;, min);
+    return 0;
+}</code>
+</pre>
+</body>
+</html>

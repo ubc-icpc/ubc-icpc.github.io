@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long double ld;
+
+int N, P;
+
+ld calc(int k) {
+  ld res = (ld)k / (N + k);
+  for (int i = N; i &gt;= N - P + 2; --i) {
+    res *= (ld)i / (k - 1 + i);
+  }
+  res *= P;
+  return res;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; N &gt;&gt; P;
+  //for (int i = 0; i &lt; N + 10; ++i) {
+  //  cout &lt;&lt; &quot;K = &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt;  calc(i) &lt;&lt; endl;
+  //}
+  cout &lt;&lt; fixed &lt;&lt; setprecision(10) &lt;&lt; calc(N / (P - 1)) &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

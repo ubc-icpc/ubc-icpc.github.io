@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+struct c {
+    bool operator() (int a, int b) {
+        return a &gt; b;
+    }
+} comp;
+
+using namespace std;
+
+int Q[131072];
+bool R[131072];
+
+int main() {
+    int t;
+    scanf(&quot;%d&quot;, &amp;t);
+    while (t--) {
+        int n, u;
+        scanf(&quot;%d %d&quot;, &amp;n, &amp;u);
+        for (int i = 0; i &lt; n; ++i) {
+            scanf(&quot;%d&quot;, Q+i);
+        }
+        int minFree = 10000;
+        for (int i = 0; i &lt; n; ++i) {
+            int taken;
+            scanf(&quot;%d&quot;, &amp;taken);
+            R[i] = !!taken;
+            if (Q[i] &lt; minFree) {
+                minFree = Q[i];
+            }
+        }
+        int total = 0;
+        int count = 0;
+        vector&lt;int&gt; pay;
+        for (int i = 0; i &lt; n; ++i) {
+            if (R[i]) {
+                total += Q[i];
+                ++count;
+            } else {
+                pay.push_back(Q[i]);
+            }
+        }
+
+        sort(pay.begin(), pay.end(), comp);
+        int curr = 0;
+        while(curr &lt; pay.size()) {
+            if (count &gt;= u &amp;&amp; (count * pay[curr]) &lt; total) break;
+            //printf(&quot;curr %d\n&quot;, pay[curr]);
+            total += pay[curr++];
+            ++count;
+        };
+
+        printf(&quot;%.5f\n&quot;, (1.0 * total / count));
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

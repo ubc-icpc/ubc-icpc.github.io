@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+const ll mod = 1000000007;
+ll fact[105], factinv[105];
+ll modpow(ll a, ll p) {
+	if (p == 0) return 1;
+	ll x = modpow(a, p/2);
+	ll y = (x*x)%mod;
+	if (p%2 == 0) return y;
+	else return (y*a)%mod;
+}
+
+void init() {
+	ll b = 1;
+	for (ll i = 0; i &lt; 105; i++) {
+		fact[i] = b;
+		factinv[i] = modpow(fact[i], mod-2);
+		b = (b*(i+1))%mod;
+	}
+}
+
+ll freq[10], N, S;
+ll memo[12][55][55][12];
+
+ll dp(int d, int k1, int k2, int s) {
+	if (d == -1) return (s+k1+k2 == 0 ? 1 : 0);
+	if (memo[d][k1][k2][s] != -1) return memo[d][k1][k2][s];
+	if (freq[d] == 0) return dp(d-1, k1, k2, s);
+	
+	ll res = 0;
+	for (int i = 0; i &lt;= freq[d]; i++) {
+		if (k1-i &lt; 0 || k2-freq[d]+i &lt; 0) continue;
+		int ns = ((s-i*d)%11+11)%11;
+		ll denom = (factinv[i]*factinv[freq[d]-i])%mod;
+		ll contrib = (dp(d-1, k1-i, k2-freq[d]+i, ns)*denom)%mod;
+		res = (res + contrib)%mod;
+	}
+	memo[d][k1][k2][s] = res;
+	return res;
+}
+
+ll solve() {
+	ll ans = 0;
+	for (int d = 1; d &lt; 10; d++) {
+		if (freq[d] == 0) continue;
+		memset(memo, -1, sizeof memo);
+		
+		freq[d]--;
+		for (int s = 0; s &lt; 11; s++) {
+			if ((2*(s+d)-S)%11 != 0) continue;
+			ll res = dp(9, N/2, N-N/2, s);
+			ll numer = (fact[N/2]*fact[N-N/2])%mod;
+			ans += (res*numer)%mod;
+			ans %= mod;
+		}
+		freq[d]++;
+	}
+	return ans;
+}
+
+int main() {
+	init();
+	
+	string s; cin &gt;&gt; s;
+	N = s.size();
+	
+	for (int i = 0; i &lt; N; i++) {
+		freq[s[i]-'0']++;
+		S += s[i]-'0';
+	}
+	
+	N--;
+	cout &lt;&lt; solve() &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

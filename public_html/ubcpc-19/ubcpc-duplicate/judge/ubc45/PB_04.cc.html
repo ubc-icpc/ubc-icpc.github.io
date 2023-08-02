@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    int N; cin &gt;&gt; N;
+    vector&lt;string&gt; names(N);
+    vector&lt;vector&lt;int&gt;&gt; stats(N, vector&lt;int&gt;(3));
+    for (int i = 0; i &lt; N; i++) {
+        cin &gt;&gt; names[i] &gt;&gt; stats[i][0] &gt;&gt; stats[i][1] &gt;&gt; stats[i][2];
+        // for (int n : stats[i]) cout &lt;&lt; n &lt;&lt; &quot; &quot;;
+        // cout &lt;&lt; '\n';
+    }
+
+    vector&lt;unordered_set&lt;int&gt;&gt; loses(N);
+    for (int i = 0; i &lt; N; i++) {
+        for (int j = 0; j &lt; N; j++) {
+            if (i == j) continue;
+            int dec1 = max(0, stats[j][1] - stats[i][2]);
+            int dec2 = max(0, stats[i][1] - stats[j][2]);
+            //cout &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; dec1 &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot;: &quot; &lt;&lt; dec2 &lt;&lt; '\n';
+            if (!dec1) continue;
+            if (!dec2) {
+                loses[i].insert(j);
+                continue;
+            }
+            int r1 = ceil(((double) stats[i][0]) / dec1);
+            int r2 = ceil(((double) stats[j][0]) / dec2);
+            // cout &lt;&lt; r1 &lt;&lt; ' ' &lt;&lt; r2 &lt;&lt; '\n';
+            if (r1 &lt; r2) {
+                loses[i].insert(j);
+                //cout &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; r1 &lt;&lt; j &lt;&lt; &quot;: &quot; &lt;&lt; r2 &lt;&lt;  '\n';
+            }
+        }
+    }
+    vector&lt;string&gt; res;
+    for (int i = 2; i &lt; N; i++) {
+        for (int j = 1; j &lt; i; j++) {
+            for (int k = 0; k &lt; j; k++) {
+                if ((loses[i].count(j) &amp;&amp; loses[j].count(k) &amp;&amp; loses[k].count(i))
+                || (loses[j].count(i) &amp;&amp; loses[i].count(k) &amp;&amp; loses[k].count(j))) {
+                    res.push_back(names[i] + ' ' + names[j] + ' ' + names[k]);
+                }
+            }
+        }
+    }
+    cout &lt;&lt; res.size() &lt;&lt; '\n';
+    for (string&amp; s: res) cout &lt;&lt; s &lt;&lt; '\n';
+}</code>
+</pre>
+</body>
+</html>

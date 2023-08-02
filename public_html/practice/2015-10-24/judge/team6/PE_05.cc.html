@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;utility&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;functional&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+
+int main()
+{
+	vector&lt;pii&gt; v;
+	int n, k;
+	int shows = 0;
+	cin &gt;&gt; n &gt;&gt; k;
+	for (int i = 0; i &lt; n; i++)
+	{
+		pii temp;
+		cin &gt;&gt; temp.first &gt;&gt; temp.second;
+		v.push_back(temp);
+	}
+	multiset&lt;int&gt; q;
+	for (int i = 0; i &lt; k; i++)
+	{
+		q.insert(0);
+	}
+	sort(v.begin(), v.end());
+	for (pii show : v)
+	{
+		int temp = *q.begin();
+		int temp2 = *q.rbegin();
+		if (temp &lt;= show.first)
+		{
+			int num = *q.begin();
+			q.erase(q.find(num));
+			q.insert(show.second);
+			shows++;
+		}
+		//within show.second &gt; temp
+		else if (show.second &lt; temp2)
+		{
+			q.erase(q.find(*(q.rbegin())));
+			q.insert(show.second);
+		}
+	}
+	cout &lt;&lt; shows &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

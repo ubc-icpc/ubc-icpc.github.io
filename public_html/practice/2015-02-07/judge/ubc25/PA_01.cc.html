@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+
+using namespace std;
+
+char grid[501][501];
+
+int startx, starty;
+
+int main() {
+    int T; cin &gt;&gt; T;
+    while (T--) {
+        memset(grid, 0, sizeof(grid));
+        int M, N; cin &gt;&gt; M &gt;&gt; N;
+        for (int i = 0; i &lt; M; i++) {
+            for (int j = 0; j &lt; N; j++) {
+                cin &gt;&gt; grid[i][j];
+                if (grid[i][j] == 'S') {
+                    startx = i; starty = j;
+                }
+            }
+        }
+        int total = 0;
+        for (int i = 0; i &lt; M; i++) {
+            for (int j = 0; j &lt; N; j++) {
+                if (grid[i][j] == 'B') {
+                    total += (i - startx &gt;= 0 ? i - startx : startx - i);
+                    total += (j - starty &gt;= 0 ? j - starty : starty - j);
+                }
+            }
+        }
+        cout &lt;&lt; 2 * total &lt;&lt; &quot; seconds to blocks get!&quot; &lt;&lt; endl;
+    }
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

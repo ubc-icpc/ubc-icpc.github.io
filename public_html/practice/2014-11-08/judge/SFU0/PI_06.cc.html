@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+const int maxn = 1005;
+
+double d[maxn];
+double ee[maxn], pp[maxn];
+int par[maxn];
+bool v[maxn];
+int N;
+double E, P;
+
+double f(int pos) {
+	if (v[pos])  return d[pos];
+	if (par[pos] == 0)  return d[pos];
+
+	v[pos] = true;
+	
+	int prep = pos, cp = par[pos];
+	double tp = pp[pos], te = ee[pos];
+	while (cp != 0) {
+		te -= 0.5 * ee[prep];
+		te += ee[cp];
+		tp += pp[cp];
+		if (d[pos] &lt; (tp / te))  d[pos] = tp / te;
+		prep = cp;
+		cp = par[cp];
+	}
+
+	// double tt = (pp[par[pos]] + pp[pos] ) / (ee[par[pos]] + 0.5 * ee[pos] );
+	// if (tt &gt; d[pos]) {
+	// 	d[pos] = tt;
+	// 	pp[pos] = pp[par[pos]] + pp[pos];
+	// 	ee[pos] = ee[par[pos]] + 0.5 * ee[pos];
+	// }
+	return d[pos];
+}
+
+int main () {
+	while (cin &gt;&gt; N &gt;&gt; E &gt;&gt; P) {
+		if (N == 0 &amp;&amp; E == 0 &amp;&amp; P == 0)  break;
+		memset(v, 0, sizeof(v));
+		for (int i = 1; i &lt;= N; ++i) {
+			cin &gt;&gt; ee[i] &gt;&gt; pp[i] &gt;&gt; par[i];
+			d[i] = pp[i] / ee[i];
+		}
+
+		double maxd = 0.0;
+		for (int i = 1; i &lt;= N; ++i) {
+			if (maxd &lt; f(i))  maxd = f(i);
+			// cout &lt;&lt; &quot;#&quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; pp[i] &lt;&lt; &quot; &quot; &lt;&lt; ee[i] &lt;&lt; endl;
+		}
+		// cout &lt;&lt; maxd &lt;&lt; endl;
+		if (E * maxd &gt;= P)  cout &lt;&lt; 0 &lt;&lt; endl;
+		else cout &lt;&lt; (long long) ceil( log(P / (E * maxd) )  / maxd ) &lt;&lt; endl;
+
+		
+
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

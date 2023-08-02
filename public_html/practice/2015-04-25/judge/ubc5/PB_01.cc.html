@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int t[4];
+
+int main() {
+  int w, n;
+  cin &gt;&gt; w &gt;&gt; n;
+  int tw = 0, tn = 0;
+  for (int i = 0; i &lt; n; i++) {
+    int c; cin &gt;&gt; c;
+    tw -= t[0];
+    t[0] = t[1];
+    t[1] = t[2];
+    t[2] = t[3];
+    t[3] = c;
+    tw += c;
+    if (tw &lt;= w)
+      tn++;
+    else
+      break;
+  }
+  cout &lt;&lt; tn &lt;&lt; &quot;\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include&lt;algorithm&gt;
+#include&lt;vector&gt;
+
+using namespace std;
+
+struct slope
+{
+   int n; //rize
+   int d; //run
+
+   slope(int nn = 0, int dd = 1)
+      : n{nn}, d{dd}
+   {
+      if (d &lt; 0 || (d == 0 &amp;&amp; n &lt; 0)) {
+	 d *= -1;
+	 n *= -1;
+      }
+   }
+      
+   bool operator&lt;(const slope &amp;s) const {
+      return n*s.d &lt; s.n*d;
+   }
+
+   bool operator==(const slope &amp;s) const {
+      return n*s.d == s.n*d;
+   }
+
+   
+   
+   
+};
+
+void Getpoints(int &amp;points, int x[], int y[]);
+void calcslopes(int numpoints,slope slopes[], int x[], int y[], int i);
+void CompareSlopes(int numpoints, slope slopes[],vector&lt;int&gt; &amp;mostcommon);
+
+int main()
+{
+   int Tcases = 0;
+  
+   cin &gt;&gt; Tcases;
+   for(int k = 0; k &lt; Tcases; k++)
+   {
+      int x[10000], y[10000];
+      slope slopes[400];
+      int Npoints = 0;
+      int answer = 0;
+      vector&lt;int&gt; mostcommon;
+      Getpoints(Npoints, x, y);
+      for(int i = 0; i &lt; Npoints; i++) {
+	 calcslopes(Npoints , slopes, x, y, i);
+	 CompareSlopes(Npoints-1, slopes, mostcommon);
+	 if (mostcommon.size() &gt; 0) {
+	    int maximum = *max_element(mostcommon.begin(), mostcommon.end());
+	    answer = max(answer, maximum);
+	 }
+      }
+      if (Npoints == 0) {
+	 cout &lt;&lt; &quot;Case #&quot; &lt;&lt; (k+1) &lt;&lt; &quot;: &quot; &lt;&lt; 0 &lt;&lt; endl;
+      } else {
+	 cout &lt;&lt; &quot;Case #&quot; &lt;&lt; (k+1) &lt;&lt; &quot;: &quot; &lt;&lt; (answer+1) &lt;&lt; endl;
+      }
+   }
+}
+
+void Getpoints(int &amp;points, int x[], int y[])
+{
+   cin &gt;&gt; points;
+
+   for(int i = 0; i &lt; points; i++)
+   {
+      cin &gt;&gt; x[i];
+      cin &gt;&gt; y[i];
+   }
+}
+
+void calcslopes(int numpoints, slope slopes[], int x[], int y[], int i)
+{
+   int size = 0;
+   for(int k = 0; k &lt; numpoints; k++)
+   {
+      if (i != k) {
+	 slopes[size++] = slope(y[k]-y[i], x[k]-x[i]);
+      }
+   }
+   sort(slopes, slopes+numpoints-1);
+}
+
+
+void CompareSlopes(int numpoints, slope slopes[],vector&lt;int&gt; &amp;mostcommon)
+{
+   
+   int j = 0;
+   for(int i = 0; i &lt; numpoints; i = j)
+   {
+      for(j = (i+1); j &lt; numpoints &amp;&amp; slopes[i] == slopes[j]; j++);
+      mostcommon.push_back(j - i);
+   }
+}			      
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

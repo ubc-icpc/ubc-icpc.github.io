@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">def encode_char(ch, s) -&gt; chr:
+    new_char = (ord(ch) - 97) + s
+    return chr(97 + ((new_char) % 26))
+
+def decode_char(ch, s) -&gt; chr:
+    e = encode_char(ch, -s)
+    return e
+
+def encode(string, s) -&gt; str:
+    return ''.join([encode_char(x, s) for x  in string])
+
+def decode(string, s) -&gt; str:
+    return ''.join([decode_char(x, s) for x  in string])
+
+
+if __name__ == &quot;__main__&quot;:
+    mode = input()
+    shift = int(input())
+    if mode == 'E':
+        print(encode(input(), shift))
+
+    else:
+        print(decode(input(), shift))
+</code>
+</pre>
+</body>
+</html>

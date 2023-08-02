@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+string encode(string s, int shift){
+    string ans;
+    for(int i = 0; i &lt; s.size(); i++){
+        if(s[i] + shift &lt;= 'z')
+            ans.push_back(s[i] + shift);
+        else{
+            int pos =  ((s[i] -'a' + shift)%26);
+            char next = 'a' + pos;
+            ans.push_back(next);
+        }
+    }
+    return ans;
+}
+
+string decode(string s, int shift){
+    string ans;
+    for(int i = 0; i &lt; s.size(); i++){
+        if(s[i] - shift &gt;= 'a')
+            ans.push_back(s[i] - shift);
+        else{
+            int back_shift =  ((s[i] -'a' - shift)%26);
+            char next = 'z' + back_shift + 1;
+            ans.push_back(next);
+        }
+    }
+    return ans;
+}
+
+main(){
+    char type;
+    int shift;
+    string s;
+    cin &gt;&gt; type &gt;&gt; shift &gt;&gt; s;
+
+    if(type == 'E')
+        cout &lt;&lt; encode(s, shift) &lt;&lt; endl;
+    else if(type == 'D')
+        cout &lt;&lt; decode(s, shift) &lt;&lt; endl;
+
+}</code>
+</pre>
+</body>
+</html>

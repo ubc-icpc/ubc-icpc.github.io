@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+const int MAX = 555;
+
+int T, ncells, jump;
+char cells[MAX];
+
+int main() {
+    scanf(&quot;%d&quot;, &amp;T);
+    for (int t = 1; t &lt;= T; ++t) {
+        scanf(&quot;%d %d&quot;, &amp;ncells, &amp;jump);
+        scanf(&quot;%s&quot;, cells);
+        int cur = 0;
+        int answer = 0;
+        while (cur != ncells - 1) {
+            answer++;
+            int nextcur = cur;
+            bool jumped = false;
+            for (int j = 1; j &lt;= jump + 1 &amp;&amp; cur + j &lt; ncells; ++j) {
+                if (cells[cur + j] == '.') {
+                    nextcur = cur + j;
+                    jumped = true;
+                }
+            }
+            if (!jumped) {
+                answer = 0;
+                break;
+            }
+            cur = nextcur;
+        }
+
+        printf(&quot;Day #%d\n&quot;, t);
+        printf(&quot;%d %d\n%s\n&quot;, ncells, jump, cells);
+        printf(&quot;%d\n\n&quot;, answer);
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

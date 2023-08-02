@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+using namespace std;
+
+char getchar(char a) {
+	switch (a) {
+	case 'a': return 'e';
+	case 'A': return 'E';
+	case 'i': return 'o';
+	case 'I': return 'O';
+	case 'y': return 'u';
+	case 'Y': return 'U';
+	case 'e': return 'a';
+	case 'E': return 'A';
+	case 'o': return 'i';
+	case 'O': return 'I';
+	case 'u': return 'y';
+	case 'U': return 'Y';
+	
+	case 'b': return 'p';
+	case 'B': return 'P';
+	case 'k': return 'v';
+	case 'K': return 'V';
+	case 'x': return 'j';
+	case 'X': return 'J';
+	case 'z': return 'q';
+	case 'Z': return 'Q';
+	case 'n': return 't';
+	case 'N': return 'T';
+	case 'h': return 's';
+	case 'H': return 'S';
+	case 'd': return 'r';
+	case 'D': return 'R';
+	case 'c': return 'l';
+	case 'C': return 'L';
+	case 'w': return 'm';
+	case 'W': return 'M';
+	case 'g': return 'f';
+	case 'G': return 'F';
+	case 'p': return 'b';
+	case 'P': return 'B';
+	case 'v': return 'k';
+	case 'V': return 'K';
+	case 'j': return 'x';
+	case 'J': return 'X';
+	case 'q': return 'z';
+	case 'Q': return 'Z';
+	case 't': return 'n';
+	case 'T': return 'N';
+	case 's': return 'h';
+	case 'S': return 'H';
+	case 'r': return 'd';
+	case 'R': return 'D';
+	case 'l': return 'c';
+	case 'L': return 'C';
+	case 'm': return 'w';
+	case 'M': return 'W';
+	case 'f': return 'g';
+	case 'F': return 'G';
+	}
+	return a;
+}
+
+int main() {
+	
+	string line;
+	while (getline(cin, line)) {
+		for (string::iterator it = line.begin(); it != line.end(); ++it) {
+			*it = getchar(*it);
+		}
+		cout &lt;&lt; line &lt;&lt; endl;
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

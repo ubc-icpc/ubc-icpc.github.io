@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+    int n, e;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a;
+    vector&lt;int&gt; b;
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; e;
+        a.push_back(e);
+    }
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; e;
+        b.push_back(e);
+    }
+
+    int r = 0;
+    int suma = 0;
+    int sumb = 0;
+    for (int i = 0; i &lt; n; i++) {
+        suma += a[i];
+        sumb += b[i];
+        if (suma == sumb) {
+            r = max(r, i + 1);
+        }
+    }
+    cout &lt;&lt; r;
+    
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

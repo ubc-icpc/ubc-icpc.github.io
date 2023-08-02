@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import math
+N = int(raw_input())
+l = map(int, raw_input().split())
+
+l.sort()
+
+res = False
+for i in range(0,N-3):
+    if(l[i]+l[i+1] &gt; l[i+2]):
+        res = True
+        break
+
+if res:
+    print 'possible'
+else:
+    print 'impossible'
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+// for each node check if:
+//  - it can reach node 0
+//  - node 0 can reach it
+vector&lt;int&gt; g[1005], grev[1005];
+bool seen[1005], seenrev[1005];
+
+void bfs(bool s[1005], vector&lt;int&gt; gr[1005]) {
+    s[0] = true;
+    queue&lt;int&gt; q({0});
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        for (int v : gr[u]) {
+            if (s[v]) continue;
+            s[v] = true;
+            q.push(v);
+        }
+    }
+}
+
+int main() {
+    int n; cin &gt;&gt; n;
+    vector&lt;int&gt; ids;
+    for (int i = 0; i &lt; n; i++) {
+        int v, m; cin &gt;&gt; v &gt;&gt; m;
+        ids.push_back(v);
+        for (int j = 0; j &lt; m; j++) {
+            int x; cin &gt;&gt; x;
+            g[v].push_back(x);
+            grev[x].push_back(v);
+        }
+    }
+    
+    bfs(seen, g);
+    bfs(seenrev, grev);
+    
+    int cnt = 0;
+    for (int id : ids) {
+        if (!seenrev[id]) {
+            cout &lt;&lt; &quot;TRAPPED &quot; &lt;&lt; id &lt;&lt; '\n';
+            cnt++;
+        }
+    }
+    for (int id : ids) {
+        if (!seen[id]) {
+            cout &lt;&lt; &quot;UNREACHABLE &quot; &lt;&lt; id &lt;&lt; '\n';
+            cnt++;
+        }
+    }
+    
+    if (!cnt) cout &lt;&lt; &quot;NO PROBLEMS&quot; &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

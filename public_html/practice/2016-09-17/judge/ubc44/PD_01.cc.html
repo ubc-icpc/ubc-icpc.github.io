@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+
+int main () {
+	int configs[15504][6]; //={0} 
+	//last config:
+	configs[15503][0] = 15;
+	configs[15503][1] = 0;
+	configs[15503][2] = 0;
+	configs[15503][3] = 0;
+	configs[15503][4] = 0;
+	configs[15503][5] = 0;
+
+	//compute/find lexicographically largest config &lt; last config
+	for (int i=15502; i&gt;=0; i--) {
+		//copy last config
+		for (int k=0; k&lt;6; k++)
+			configs[i][k] = configs[i+1][k];
+
+		//Normal transition [..k..,x,0,y] =&gt; [..k..,x-1,1,y]
+		//Special Transition: [..0.. x, ...] =&gt; [..0.., x-1, 15-(x-1), ..0..]
+
+		int k;
+		for (k=4; k&gt;=0; k--) {
+			if (configs[i][k] != 0)
+				break; //from last config, find loc'n of rightmost nonzero pos out of configs[x][0...4]
+		}
+
+		//then shift right, incrementally:: CORRECT, more clear.
+		configs[i][k]--;
+		configs[i][k+1]++;
+		if (k &lt; 4) { //shift items up to get lexicographical largest!
+			configs[i][k+1] += configs[i][5];
+			configs[i][5] = 0;
+		}
+
+		//ALSO CORRECT
+		/*if (k &lt; 4) {
+			configs[i][k]--;
+			configs[i][k+1] += (1+configs[i][5]);
+			for (int rest = k+2; rest&lt;6; rest++)
+				configs[i][rest] = 0;
+		} else {
+			configs[i][k]--;
+			configs[i][k+1]++;
+		}*/
+
+
+		/* WRONG! =&gt; REAL, CORRECT rule:
+			Add # from last column to the destination of shift!
+		*/
+		//BUG: 1,0,0,10,0,4 =&gt; 1,0,0,9,5,0 (expected), 1,0,0,9,1,4 (actual)
+		/*if (k == leftmost &amp;&amp; configs[i][k]!=15) { //Ex: 0,1,0,0,0,14 =&gt; 0,0,15,0,0,0 =&gt; 0,0,14,1,0,0 (ugly transition)
+			configs[i][k]--;
+			configs[i][k+1] = 15-configs[i][k];
+			for (int rest = k+2; rest&lt;6; rest++)
+				configs[i][rest] = 0;
+			if (configs[i][k] == 0) leftmost++; //shift leftmost marker
+		} else {
+			configs[i][k]--;
+			configs[i][k+1]++;
+		}*/
+		
+		//WRONG!!
+ 		//(BUG: Too specific, the transition is MORE general!) EDGE CASE: [..1.., 14] =&gt; [...15., 0]; NOT [...1., 14] 
+		/*if (configs[i][5] == 14 &amp;&amp; k&lt;4) {
+			//assert(configs[i+1][k] == 1);
+			configs[i][k] = 0;
+			configs[i][k+1] = 15;
+			configs[i][5]=0; //This is edge case if k==4
+		} else if (configs[i][5] == 14 &amp;&amp; k==4) {
+			//assert(configs[i+1][k] == 1);
+			configs[i][k] = 0;
+			configs[i][k+1] = 15;
+		} else {
+			configs[i][k]--;
+			configs[i][k+1]++;
+		}*/
+	}
+
+	for (int i=1;  ;i++) {
+		char type;
+		cin &gt;&gt; type;
+		if (type == 'e') {
+			break;
+		} else if (type == 'm') {
+			int pattern[6];
+			for (int k=0; k&lt;6; k++)
+				cin &gt;&gt; pattern[k];
+			//linear search pattern in table
+			for (int x=0; x&lt;15504; x++) {
+				bool matches = true;
+				for (int k=0; k&lt;6; k++) {
+					matches = matches &amp;&amp; (configs[x][k] == pattern[k]);
+				}
+				if (matches) {
+					cout &lt;&lt; &quot;Case &quot; &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; x &lt;&lt; endl;
+					break;
+				}
+			}			
+
+		} else if (type == 'u') {
+			int ind;
+			cin &gt;&gt; ind;
+
+			cout &lt;&lt; &quot;Case &quot; &lt;&lt; i &lt;&lt; &quot;:&quot;;
+			for (int k=0; k&lt;6; k++)
+				cout &lt;&lt; &quot; &quot; &lt;&lt; configs[ind][k];
+			cout &lt;&lt; endl;
+		} else {
+			
+		}
+	}
+
+}
+
+
+
+
+
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

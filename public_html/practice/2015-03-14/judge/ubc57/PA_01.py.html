@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+cases=int(raw_input())
+Clock=['N','E','S','W']
+for i in range(0,cases):
+    Pos=[]
+    Robs=[]
+    I=[]
+    stop=False
+    answer='OK'
+    x=raw_input().split()
+    length=int(x[0])
+    width=int(x[1])
+    x=raw_input().split()
+    robots=int(x[0])
+    instructions=int(x[1])
+    for i in range(0,width):
+        L=[]
+        for i in range(0,length):
+            L.append(False)
+        Pos.append(L)
+    for i in range(0,robots):
+        x=raw_input().split()
+        Robs.append([int(x[0]),int(x[1]),x[2]])
+    for i in range(0,instructions):
+        x=raw_input().split()
+        I.append([int(x[0]),x[1],int(x[2])])
+    for i in range(0,robots):
+        Pos[Robs[i][1]-1][Robs[i][0]-1]=i+1
+    for i in range(0,instructions):
+        steps=I[i][2]
+        bot=I[i][0]
+        if I[i][1]=='F':
+            Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=False
+            if Robs[bot-1][2]=='E':
+                for j in range(0,steps):
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=False
+                    Robs[bot-1][0]=Robs[bot-1][0]+1
+                    if Robs[bot-1][0]&gt;length:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into the wall&quot;)
+                        stop=True
+                        break
+                    if Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]!=False:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into robot &quot;+str(Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]))
+                        stop=True
+                        break
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=bot
+            elif Robs[bot-1][2]=='W':
+                for j in range(0,steps):
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=False
+                    Robs[bot-1][0]=Robs[bot-1][0]-1
+                    if Robs[bot-1][0]&lt;=0:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into the wall&quot;)
+                        stop=True
+                        break
+                    if Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]!=False:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into robot &quot;+str(Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]))
+                        stop=True
+                        break
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=bot              
+            elif Robs[bot-1][2]=='N':
+                for j in range(0,steps):
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=False
+                    Robs[bot-1][1]=Robs[bot-1][1]+1
+                    if Robs[bot-1][1]&gt;width:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into the wall&quot;)
+                        stop=True
+                        break
+                    if Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]!=False:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into robot &quot;+str(Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]))
+                        stop=True
+                        break
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=bot
+                    
+            elif Robs[bot-1][2]=='S':
+                for j in range(0,steps):
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=False
+                    Robs[bot-1][1]=Robs[bot-1][1]-1
+                    if Robs[bot-1][1]&lt;=0:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into the wall&quot;)
+                        stop=True
+                        break
+                    if Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]!=False:
+                        print(&quot;Robot &quot;+str(bot)+&quot; crashes into robot &quot;+str(Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]))
+                        stop=True
+                        break
+                    Pos[Robs[bot-1][1]-1][Robs[bot-1][0]-1]=bot
+                    
+            if stop:
+                break
+        else:
+            if I[i][1]=='R':
+                steps=steps%4
+            else:
+                steps=4-steps%4
+            ori=Robs[bot-1][2]
+            x=Clock.index(ori)
+            Robs[bot-1][2]=Clock[(x+steps)%4]
+    if stop==False:
+        print(&quot;OK&quot;)
+            
+            
+                        
+                        
+                        
+    
+        
+    
+    
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

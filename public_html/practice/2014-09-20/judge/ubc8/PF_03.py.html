@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import fileinput
+
+for line in fileinput.input():
+    lineArray = line.split()
+    n, boats = int(lineArray[0]), sorted(min(420, int(x)) for x in lineArray[1:])
+
+    running_tab = 0
+
+    while boats:
+        if len(boats) &lt;= 2:
+            running_tab += boats[len(boats) - 1]
+            boats = []
+        elif len(boats) == 3:
+            running_tab += boats[0] + boats[1] + boats[2]
+            boats = []
+        else:
+            option_a = (boats[0] * 2) + boats[-1] + boats[-2]
+            option_b = (boats[1] * 2) + boats[-1] + boats[0]
+
+            running_tab += min(option_a, option_b)
+            boats = boats[:-2]
+
+    print running_tab
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;bitset&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef long long ll;
+
+int main() {
+	int n, m;
+	cin &gt;&gt; n &gt;&gt; m;
+
+	ll lol[n][32];
+	memset(lol, 0, sizeof lol);
+
+	int k; cin &gt;&gt; k;
+	for (int i = 0; i &lt; k; i++) {
+		int a, b; cin &gt;&gt; a &gt;&gt; b; a--; b--;
+		lol[a][b &gt;&gt; 6] |= (1LL &lt;&lt; (b &amp; 63));
+	}
+
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = i+1; j &lt; n; j++) {
+			int cnt = 0;
+			for (int s = 0; s &lt; 32; s++) {
+				ll ccc = (lol[i][s] &amp; lol[j][s]);
+				if (ccc != 0) {
+					cnt++;
+					if (ccc != (ccc &amp; (-ccc))) {
+						cnt++;
+					}
+					if (cnt &gt;= 2) {
+						cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

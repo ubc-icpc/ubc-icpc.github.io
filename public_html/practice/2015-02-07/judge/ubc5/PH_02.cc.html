@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+using namespace std;
+
+typedef long long ll;
+
+const ll MAXN = (1&lt;&lt;21);
+const ll INF = 0x3f3f3f3f;
+
+////////////////////////////////////////////////////////////////////////////////
+// Range Query Tree (HOUOUIN KYOUMA EDITION!!!)
+////////////////////////////////////////////////////////////////////////////////
+// stores binary tree in [1..2*MAXN-1], the leaves are [MAXN..2*MAXN-1]
+// assumes MAXN is a power of 2. functions act on [x..y]
+struct RQTree2 { ll a[2*MAXN], b[2*MAXN], c[2*MAXN];
+  RQTree2() { memset(a,0,sizeof a);memset(b,0,sizeof b);memset(c,0,sizeof c); }
+  void push(ll i, ll l, ll r) { if (b[i]) {
+      a[2*i] += b[i]; a[2*i+1] += b[i];
+      b[2*i] += b[i]; b[2*i+1] += b[i]; b[i] = 0; }}
+  void pull(ll i, ll l, ll r) {
+    a[i] = min(a[2*i], a[2*i+1]); c[i] = r-l+1;
+    if (a[i] == a[2*i]) c[i] -= a[2*i];
+    if (a[i] == a[2*i+1]) c[i] -= a[2*i+1]; }
+  void insert(ll x, ll y, ll v, ll i=1, ll l=0, ll r=MAXN-1) {
+    if (y&lt;l || r&lt;x) return; if (x&lt;=l &amp;&amp; r&lt;=y) { a[i] += v; b[i] += v; return; }
+    push(i,l,r); ll m = (l+r)/2;
+    insert(x,y,v,2*i,l,m); insert(x,y,v,2*i+1,m+1,r);
+    pull(i,l,r); }
+  ll getMin(ll x, ll y, ll i=1, ll l=0, ll r=MAXN-1) {
+    if (y&lt;l || r&lt;x) return INF; if (x&lt;=l &amp;&amp; r&lt;=y) return a[i]; push(i,l,r);
+    ll m = (l+r)/2; return min(getMin(x,y,2*i,l,m), getMin(x,y,2*i+1,m+1,r)); }
+  // assuming all entries are non-negative, returns count of positive entries
+  ll positives(ll x, ll y, ll i=1, ll l=0, ll r=MAXN-1) {
+    if (y&lt;l || r&lt;x) return 0; if (a[i]) return min(y,r)-max(x,l)+1;
+    if (x&lt;=l &amp;&amp; r&lt;=y) return c[i]; push(i,l,r); ll m = (l+r)/2;
+    return positives(x,y,2*i,l,m) + positives(x,y,2*i+1,m+1,r); }};
+
+RQTree2 rq;
+ll v[MAXN];
+map&lt;ll,ll&gt; l;
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  ll n, m; cin &gt;&gt; n &gt;&gt; m;
+  ll s;
+  for (int i = 0; i &lt; (1&lt;&lt;n); i++) {
+    cin &gt;&gt; s;
+    rq.insert((1&lt;&lt;n)+i,(1&lt;&lt;n)+i,-s);
+    v[i] = s;
+    l[s] = i;
+  }
+  char c;
+  ll p;
+  for (int i = 0; i &lt; m; i++) {
+    cin &gt;&gt; c;
+    if (c == 'R') {
+      cin &gt;&gt; p &gt;&gt; s;
+      rq.insert((1&lt;&lt;n)+p-1,(1&lt;&lt;n)+p-1,v[p-1]-s);
+      v[p-1] = s;
+      l.erase(s);
+      l[s] = p-1;
+    }
+    else if (c == 'W')
+      cout &lt;&lt; l[-rq.getMin((1&lt;&lt;n),(1&lt;&lt;(n+1))-1)]+1 &lt;&lt; &quot;\n&quot;;
+    else {
+      cin &gt;&gt; p;
+      ll a = (1&lt;&lt;n)+p-1, b = (1&lt;&lt;n)+p-1, r = 0;
+      while (r &lt; n) {
+        a ^= (a&amp;(1&lt;&lt;r));
+        b |= (1&lt;&lt;r);
+        if (rq.getMin(a,b) != -v[p-1])
+          break;
+        r++;
+      }
+      cout &lt;&lt; r &lt;&lt; &quot;\n&quot;;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

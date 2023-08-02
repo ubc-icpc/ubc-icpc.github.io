@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+const int INF = 100000000;
+
+string pp = &quot;TXRSZV7W&quot;;
+int mat[8][9] = {
+    {0, 1, 0,
+     0, 1, 0,
+     1, 1, 1},
+
+    {0, 1, 0,
+     1, 1, 1,
+     0, 1, 0},
+
+    {0, 1, 0,
+     1, 1, 0,
+     0, 1, 1},
+
+    {1, 1, 0,
+     0, 1, 0,
+     0, 1, 1},
+
+    {0, 1, 1,
+     0, 1, 0,
+     1, 1, 0},
+
+    {1, 1, 1,
+     1, 0, 0,
+     1, 0, 0},
+
+    {0, 1, 0,
+     0, 1, 1,
+     1, 1, 0},
+
+    {0, 1, 1,
+     1, 1, 0,
+     1, 0, 0}
+};
+int bits[8][4];
+
+int rot(int p) {
+    int x = p/3;
+    int y = p%3;
+    x -= 1; y -= 1;
+    int nx = -y, ny = x;
+    nx++; ny++;
+    return nx*3+ny;
+}
+
+int print(int z, int rows) {
+    cerr &lt;&lt; &quot;---&quot; &lt;&lt; endl;
+    for (int r = rows-1; r &gt;= 0; r--) {
+        for (int c = 0; c &lt; 3; c++) {
+            int p = r*3+c;
+            cerr &lt;&lt; ((z &amp; (1&lt;&lt;p)) ? '*' : ' ');
+        }
+        cerr &lt;&lt; endl;
+    }
+    cerr &lt;&lt; &quot;---&quot; &lt;&lt; endl;
+    cerr &lt;&lt; endl;
+}
+
+string s;
+int n;
+int dp[1&lt;&lt;21][20];
+bool seen[1&lt;&lt;21][20];
+int dfs(int z, int i) {
+    //string dummy; cin &gt;&gt; dummy;
+    //cerr &lt;&lt; &quot;i = &quot; &lt;&lt; i &lt;&lt; endl;
+    //print(z, 10);
+
+    if (seen[z][i]) return INF;
+    if (dp[z][i] != -1) return dp[z][i];
+
+    int ii = 0;
+    while (s[i] != pp[ii]) ii++;
+
+    int ans = 0;
+    for (int k = 0; k &lt; 4; k++) {
+        int r = 21; while (r &gt;= 3 &amp;&amp; ((bits[ii][k] &lt;&lt; (r-3)) &amp; z) == 0) r -= 3;
+        int zz = (z | (bits[ii][k] &lt;&lt; r));
+
+        int jj = 0;  // bit idx of start of next empty row
+        int zzz = 0; // combo of next state
+        for (int j = 0; j &lt; 30; j += 3) {
+            int row = ((zz &gt;&gt; j) &amp; 7);
+            if (row == 0) {
+                break;
+            } else if (row != 7) {
+                zzz |= (row &lt;&lt; jj); jj += 3;
+            }
+        }
+        if (jj &gt; 21) {
+            ans = max(ans, 1);
+        } else {
+            seen[z][i] = true;
+            ans = min(INF, max(ans, 1+dfs(zzz, (i+1)%n)));
+            seen[z][i] = false;
+            if (ans &gt;= INF) return dp[z][i] = INF;
+        }
+    }
+
+    return dp[z][i] = ans;
+}
+
+int main() {
+    for (int i = 0; i &lt; 8; i++) {
+        for (int k = 0; k &lt; 4; k++) {
+            int z = 0;
+            for (int j = 0; j &lt; 9; j++) {
+                int jj = j; for (int l = 0; l &lt; k; l++) jj = rot(jj);
+                if (mat[i][jj]) z |= (1&lt;&lt;j);
+            }
+            bits[i][k] = z;
+            //print(z, 3);
+        }
+    }
+
+    cin &gt;&gt; s;
+    n = s.length();
+
+    memset(dp, -1, sizeof dp);
+    memset(seen, 0, sizeof seen);
+    int ans = dfs(0, 0);
+    if (ans &gt;= INF) {
+        cout &lt;&lt; &quot;forever&quot; &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

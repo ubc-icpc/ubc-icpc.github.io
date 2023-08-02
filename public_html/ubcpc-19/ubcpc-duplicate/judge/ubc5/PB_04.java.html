@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+
+public class Main {
+    static int[][] dp;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Fighter[] fighters = new Fighter[n];
+        for (int i = 0; i &lt; n; i++) {
+            fighters[i] = new Fighter(sc.next(), sc.nextInt(), sc.nextInt(), sc.nextInt(), i);
+        }
+        int total = 0;
+        dp = new int[n][n];
+        for (int[] arr : dp) {
+            Arrays.fill(arr, -1);
+        }
+        ArrayList&lt;List&lt;Fighter&gt;&gt; list = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = i + 1; j &lt; n; j++) {
+                for (int k = j + 1; k &lt; n; k++) {
+                    Fighter a = fighters[i];
+                    Fighter b = fighters[j];
+                    Fighter c = fighters[k];
+                    if (triple(a, b, c)) {
+                        total++;
+                        ArrayList&lt;Fighter&gt; t = new ArrayList&lt;&gt;(3);
+                        t.add(a);
+                        t.add(b);
+                        t.add(c);
+                        list.add(t);
+                    }
+                }
+            }
+        }
+        System.out.println(total);
+        for (List&lt;Fighter&gt; t : list) {
+            System.out.println(t.get(0).name + &quot; &quot; + t.get(1).name + &quot; &quot; + t.get(2).name);
+        }
+
+    }
+
+    static boolean triple(Fighter a, Fighter b, Fighter c) {
+        return (fight(a, b) &amp;&amp; fight(b, c) &amp;&amp; fight(c, a)) || (fight(a, c) &amp;&amp; fight(c, b) &amp;&amp; fight(b, a));
+    }
+
+    static boolean fight(Fighter a, Fighter b) {
+        if (dp[a.index][b.index] != -1) {
+            return dp[a.index][b.index] == 1;
+        }
+        int aDmg = a.AT - b.DF;
+        if (aDmg &lt;= 0) {
+            return false;
+        }
+        int bDmg = b.AT - a.DF;
+        if (bDmg &lt;= 0) {
+            return true;
+        }
+        int aTurns = b.HP / aDmg;
+        if (b.HP % aDmg != 0) {
+            aTurns++;
+        }
+        int bTurns = a.HP / bDmg;
+        if (a.HP % bDmg != 0) {
+            bTurns++;
+        }
+        dp[a.index][b.index] = aTurns &lt; bTurns ? 1 : 0;
+        return aTurns &lt; bTurns;
+    }
+
+    static private class Fighter {
+        int index;
+        String name;
+        int HP;
+        int AT;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Fighter fighter = (Fighter) o;
+            return Objects.equals(name, fighter.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(name);
+        }
+
+        int DF;
+
+        public Fighter(String name, int HP, int AT, int DF, int index) {
+            this.name = name;
+            this.HP = HP;
+            this.AT = AT;
+            this.DF = DF;
+            this.index = index;
+        }
+    }
+}
+</code>
+</pre>
+</body>
+</html>

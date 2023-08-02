@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+struct h {
+  int s, p;
+  bool operator&lt; (const h&amp; b) const { return p &lt; b.p; }
+};
+
+int N, B, T;
+vector&lt;h&gt; H;
+queue&lt;pair&lt;int, int&gt; &gt; q;
+
+int main () {
+  ios_base::sync_with_stdio(0);
+  T = numeric_limits&lt;int&gt;::max();
+  cin &gt;&gt; N &gt;&gt; B;
+  H.resize(N);
+  for (int i = 0; i &lt; N; ++i) cin &gt;&gt; H[i].s &gt;&gt; H[i].p;
+  sort(H.begin(), H.end());
+  h b; b.p = B;
+  int L, R = distance(H.begin(), lower_bound(H.begin(), H.end(), b));
+  //cout &lt;&lt; R &lt;&lt; endl;
+  if (R == 0 || R == N) {cout &lt;&lt; &quot;-1&quot; &lt;&lt; endl; return 0;}
+  L = R - 1;
+  int r = R;
+  for (int i = L; i &gt;= 0 &amp;&amp; r &lt; N; --i) {
+    if (i != L)
+      if (H[r].p - H[i + 1].p &lt;= H[i + 1].s) break;
+    for (; r &lt; N; ++r)
+      if (H[r].p - H[i].p &lt;= H[r].s) break;
+    if (r != N) T = min(T, max(0, H[r].p - H[i].p - H[i].s));
+    //cout &lt;&lt; T &lt;&lt; endl;
+  }
+  int l = L;
+  for (int i = R; i &lt; N &amp;&amp; l &gt;= 0; ++i) {
+    if (i != R)
+      if (H[i - 1].p - H[l].p &lt;= H[i - 1].s) break;
+    for (; l &gt;= 0; --l)
+      if (H[i].p - H[l].p &lt;= H[l].s) break;
+    if (l != -1) T = min(T, max(0, H[i].p - H[l].p - H[i].s));
+    //cout &lt;&lt; T &lt;&lt; endl;
+  }
+  if (T &gt;= numeric_limits&lt;int&gt;::max()) {
+    cout &lt;&lt; -1 &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; T &lt;&lt; endl;
+  }
+  return 0;
+}
+ </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

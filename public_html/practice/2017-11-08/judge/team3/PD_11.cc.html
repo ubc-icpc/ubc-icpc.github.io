@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+#define IN 1
+#define OUT 0
+#define ON 2
+#define nl &quot;\n&quot;
+
+using namespace std;
+typedef long long int ll;
+typedef long double ld;
+
+struct pt {
+	ld x, y;
+	int id;
+	pt() {}
+	pt(ld a, ld b) :x(a), y(b) {}
+	pt(ld a, ld b, int c) :x(a), y(b), id(c) {}
+	pt operator+ (const pt&amp; o) const { return pt(x+o.x, y+o.y); }
+	pt operator- (const pt&amp; o) const { return pt(x-o.x, y-o.y); }
+	pt operator* (const ld&amp; o) const { return pt(x*o, y*o); }
+	bool operator== (const pt&amp; o) const { return x==o.x &amp;&amp; y==o.y; }
+};
+
+ld midx, midy;
+int N, W, H;
+vector&lt;pt&gt; points;
+vector&lt;int&gt; status;
+int in;
+int on;
+int out;
+vector&lt;int&gt; currentlyOn;
+pt xhat(1,0); 
+pt midpoint;
+
+int init() {
+	currentlyOn = vector&lt;int&gt;();
+	on = 0; in = 0; out = 0;
+	status = vector&lt;int&gt;(N, OUT);
+	points = vector&lt;pt&gt;(N);
+	midx = (ld) W /2;
+	midy = (ld) H /2;
+	midpoint = pt(midx, midy);
+}
+
+
+ld dp(const pt&amp; a, const pt&amp; b) {return a.x*b.x+a.y*b.y; }
+ld cp(const pt&amp; a, const pt&amp; b) {return a.x*b.y-a.y*b.x; }
+ld norm(const pt&amp; a) {return sqrt(dp(a,a)); }
+pt unit(const pt&amp; a) {return a*(1./norm(a)); }
+
+pt ghost(const pt&amp; a) {
+	if(a.y == midy &amp;&amp; a.x &lt; midx) return pt((ld) W-a.x, midy);
+	if(a.y &lt; midy) return pt((ld) W-a.x, (ld) H-a.y);
+	return pt(a);
+}
+ld cosang(const pt&amp; a) {
+	pt dir = unit(a - midpoint);
+	return dp(dir, xhat);
+}
+
+struct co {
+	bool operator() (const pt&amp; a, const pt&amp; b) {
+		return cosang(ghost(a)) &gt; cosang(ghost(b));
+	}
+} comp;
+
+int main() {
+	ios_base::sync_with_stdio(0), cin.tie(0);
+	
+	while(true) {
+		cin &gt;&gt; N &gt;&gt; W &gt;&gt; H;
+		if(N == 0 &amp;&amp; W == 0 &amp;&amp; H == 0) break;
+		init();
+		for(int i=0;i&lt;N;++i) {
+			cin &gt;&gt; points[i].x &gt;&gt; points[i].y;
+		}
+		sort(points.begin(), points.end(), comp);
+		// update statuses
+		int start = 0;
+		for(int i=0;i&lt;N;++i) {
+			if(points[i].y &gt; midy) {
+				status[i] = IN;
+				++in;
+			} else if(points[i].y == midy) {
+				status[i] = ON;
+				++on;
+				currentlyOn.push_back(i);
+				start = i+1;
+			} else {
+				status[i] = OUT;
+				++out;
+			}
+		}
+		
+		bool found = (abs(in-out) &lt;= on);
+		
+		for(int i=start;i&lt;N &amp;&amp; !found;++i) {
+			while(currentlyOn.size() &gt; 0) {
+				int index = currentlyOn[currentlyOn.size()-1]; currentlyOn.pop_back();
+				--on;
+				if(points[index] == ghost(points[index])) {
+					++out;
+					status[index] = OUT;
+				} else {
+					++in;
+					status[index] = IN;
+				}
+			}
+			
+			int m;
+			for(m=i;m&lt;N &amp;&amp; cosang(ghost(points[m])) == cosang(ghost(points[i]));++m) {
+				currentlyOn.push_back(m);
+				on++;
+				if(status[m] == IN) {
+					--in;
+				} else {
+					--out;
+				}
+				status[m] = ON;
+			}
+
+			found = (abs(in-out) &lt;= on);
+
+			i=m-1;
+		}
+
+		// Add things that are in first
+		int f = 0;
+		for(int i=0;i&lt;N &amp;&amp; f &lt; N/2;++i) {
+			if(status[i] == IN) {
+				cout &lt;&lt; (int) points[i].x &lt;&lt; &quot; &quot; &lt;&lt; (int) points[i].y &lt;&lt; nl;
+				++f;
+			}
+		}
+		for(int i=0;i&lt;N &amp;&amp; f &lt; N/2;++i) {
+			if(status[i] == ON) {
+				cout &lt;&lt; (int) points[i].x &lt;&lt; &quot; &quot; &lt;&lt; (int) points[i].y &lt;&lt; nl;
+				++f;
+			}
+		}
+		
+
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

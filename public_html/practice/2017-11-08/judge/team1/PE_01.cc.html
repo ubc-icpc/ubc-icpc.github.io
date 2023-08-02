@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define _USE_MATH_DEFINES
+
+//#define DEBUG
+
+#define ll long long
+#define pii pair&lt;int,int&gt;
+#define pdd pair&lt;ldouble,ldouble&gt;
+#define ldouble long double
+#define pt complex&lt;ldouble&gt;
+#define ld ldouble
+#define nl '\n'
+const ll MOD = 1e9+7;
+const int INF = 0x3f3f3f3f;
+const ll INFLL = 0x3f3f3f3f3f3f3f3f;
+const ldouble EPS = 1e-9;
+
+bool validate(const vector&lt;vector&lt;int&gt;&gt; &amp;r, int rings) {
+	for (auto &amp;v : r)
+		for (int i : v)
+			if (i == 0) {
+				puts(&quot;INVALID: NULL RING&quot;);
+				return 0;
+			}
+	for (auto &amp;v : r)
+		for (int i : v)
+			if (i &gt; rings || i &lt; -rings) {
+				puts(&quot;INVALID: RING MISSING&quot;);
+				return 0;
+			}
+	for (auto &amp;v : r) {
+		vector&lt;bool&gt; vis(rings);
+		for (int i : v) {
+			if ((i &gt; 0 &amp;&amp; vis[i-1]) || (i &lt; 0 &amp;&amp; vis[-i-1])) {
+				puts(&quot;INVALID: RUNE CONTAINS A REPEATED RING&quot;);
+				return 0;
+			}
+			if (i &gt; 0)
+				vis[i-1] = 1;
+			else vis[-i-1] = 1;
+		}
+	}
+	return 1;
+}
+
+
+int main() {
+	ios::sync_with_stdio(0); 
+	cin.tie(0); cout.tie(0);
+
+	int g; cin &gt;&gt; g;
+	while (g--) {
+		int rings, runes; cin &gt;&gt; rings &gt;&gt; runes;
+		vector&lt;vector&lt;int&gt;&gt; r(runes, vector&lt;int&gt;(3));
+		for (int i = 0; i &lt; runes; i++) {
+			for (int j = 0; j &lt; 3; j++)
+				cin &gt;&gt; r[i][j];
+			int dumb; cin &gt;&gt; dumb;
+		}
+		if (!validate(r, rings)) continue;
+		bool good = 0;
+		for (int i = 0; i &lt; (1 &lt;&lt; rings); i++) {
+			bitset&lt;32&gt; b(i);
+			for (auto &amp;v : r) {
+				bool g = 0;
+				for (int j : v) {
+					if (j &lt; 0 &amp;&amp; !b[-j-1]) {
+						g = 1;
+					} else if (j &gt; 0 &amp;&amp; b[j-1]) {
+						g = 1;
+					}
+				}
+				if (!g) goto bd;
+			}
+			puts(&quot;RUNES SATISFIED!&quot;);
+			good = 1;
+			break;
+bd:
+			;
+		}
+		if (!good)
+			puts(&quot;RUNES UNSATISFIABLE! TRY ANOTHER GATE!&quot;);
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

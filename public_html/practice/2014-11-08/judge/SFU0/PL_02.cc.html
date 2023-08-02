@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+const int MAXL = 110;
+
+char s[MAXL];
+
+int ly = 6,lf = 20;
+
+char yuan0[6+1] = &quot;aiyeou&quot;;
+char yuan1[6+1] = &quot;AIYEOU&quot;;
+char fu0[20+1] = &quot;bkxznhdcwgpvjqtsrlmf&quot;;
+char fu1[20+1] = &quot;BKXZNHDCWGPVJQTSRLMF&quot;;
+
+int ty = -3,tf=-10;
+
+int find(char s[],char c){
+	for(int i=0;s[i];i++)
+		if(s[i]==c) return i;
+	return -1;
+}
+
+int main(){
+	while(gets(s)!=NULL){
+		//printf(&quot;%s\n&quot;,s);
+		for(int i=0;s[i];i++){
+			int p = find(yuan0,s[i]);
+			if(p!=-1) { s[i] = yuan0[(p+ty+ly)%ly]; continue; }
+			
+			p = find(yuan1,s[i]);
+			if(p!=-1) { s[i] = yuan1[(p+ty+ly)%ly]; continue; }
+
+			p = find(fu0,s[i]);
+			if(p!=-1) { s[i] = fu0[(p+tf+lf)%lf]; continue; }
+
+			p = find(fu1,s[i]);
+			if(p!=-1) { s[i] = fu1[(p+tf+lf)%lf]; continue; }
+
+			//printf(&quot;%c &quot;,s[i]);
+		}
+		//printf(&quot;\n&quot;);
+		printf(&quot;%s\n&quot;,s);
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

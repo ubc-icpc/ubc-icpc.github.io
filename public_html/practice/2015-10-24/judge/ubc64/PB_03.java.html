@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+public class b{
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		while(scan.hasNext()) {
+			int n = scan.nextInt();
+			List&lt;String&gt; l = recur(n);
+			for (String s : l) {
+				for (int i = 0; i &lt; s.length(); i++) {
+					System.out.print(s.charAt(i) + &quot; &quot;);
+				}
+				System.out.println();
+			}
+
+		}
+	}
+
+		public static List&lt;String&gt; recur(int n) {
+			List&lt;String&gt; nl = new ArrayList&lt;String&gt;();
+			if (n == 1) {
+				nl.add(&quot;1&quot;);
+				return nl;
+			}
+			if (n == 2) {
+				nl.add(&quot;12&quot;);
+				nl.add(&quot;21&quot;);
+				return nl;
+			}
+
+			List&lt;String&gt; l = recur(n-1);
+			for (int i = 0 ; i &lt; l.size(); i++) {
+				String s = l.get(i);
+				for (int j=0;j&lt;s.length()+1; j++) {
+					if (i%2 == 0) {
+						String s1 = s.substring(0,s.length() - j) + n + s.substring(s.length() - j);
+						nl.add(s1);
+					} else {
+						
+						String s1 = s.substring(0,j) + n + s.substring(j);
+						nl.add(s1);
+					}
+				}
+			}
+
+			return nl;
+		}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

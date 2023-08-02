@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+from fractions import Fraction
+t=int(input())
+for case in range(0,t):
+    Dic={}
+    m=int(input())
+    L=[]
+    for j in range(0,m):
+        t=tuple(list(map(int,raw_input().split())))
+        L.append(t)
+    for x in range(0,m):
+        for y in range(x+1,m):
+            if L[y][0]-L[x][0]!=0:
+                n=Fraction(L[y][1]-L[x][1],L[y][0]-L[x][0])
+                b=L[x][1]-n*L[x][0]
+                tup=(n,b)
+                if tup in Dic:
+                    Dic[tup]+=1
+                else:
+                    Dic[tup]=1
+            else:
+                n='i'
+                b=L[x][0]
+                tup=(n,b)
+                if tup in Dic:
+                    Dic[tup]+=1
+                else:
+                    Dic[tup]=1
+    ans=1
+    for key in Dic:
+        ans=max(int((2*Dic[key])**0.5)+1,ans)
+    print(&quot;Case #&quot;+str(case+1)+&quot;: &quot;+str(ans))
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

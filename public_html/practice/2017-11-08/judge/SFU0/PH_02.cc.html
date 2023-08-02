@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+
+
+using namespace std;
+
+const int MAXN = 100000+5;
+#define _cp(a,b) ((a) &lt;= (b))
+
+typedef int elemType;
+elemType tmp[MAXN];
+
+long long inv(int n,elemType *a){
+	int left = n &gt;&gt; 1 , r =n - left,i,j;
+	long long ret = (r&gt;1? (inv(left,a) + inv(r,a+left)):0);
+	for(i = j = 0;i&lt;=left;tmp[i+j] = a[i],i++){
+		for(ret +=j; j&lt;r &amp;&amp; (i==left || !_cp(a[i],a[left+j])); tmp[i+j] = a[left+j],j++);
+	}
+	memcpy(a,tmp,sizeof(elemType) * n);
+	return ret;
+}
+
+string name[MAXN];
+map&lt;string, int&gt; mm;
+
+int main(){
+	int n;
+	int a[MAXN];
+	string t;
+
+	scanf(&quot;%d&quot;,&amp;n);
+	while(n!=0){
+		mm.clear();
+		for(int i=0;i&lt;n;i++) {
+			cin &gt;&gt; name[i];
+			mm[name[i]] = i;
+		}
+		for(int i=0;i&lt;n;i++){
+			cin &gt;&gt; t;
+			a[i] = mm[t];
+		}
+
+		cout &lt;&lt; inv(n,a) &lt;&lt; endl;
+
+		scanf(&quot;%d&quot;,&amp;n);
+	}
+
+	return 0;
+
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

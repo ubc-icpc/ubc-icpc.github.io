@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+#define mp3(a,b,c) make_pair(make_pair(a,b),c)
+
+typedef pair&lt;int,int&gt; pii;
+typedef pair&lt;pii,int&gt; p3i;
+
+const int p[10] = {6,2,5,5,4,5,6,3,7,6};
+
+inline int P(int n) {
+  if (!n)
+    return 30;
+  int x = 0;
+  if (n &lt; 0) {
+    x++;
+    n *= -1;
+  }
+  while (n) {
+    x += p[n%10];
+    n /= 10;
+  }
+  return 5*x;
+}
+
+unordered_map&lt;int,int&gt; pu;
+map&lt;p3i,int&gt; m;
+
+int main() {
+  ios::sync_with_stdio(0);
+  for (int i = -999; i &lt; 1000; i++)
+    pu[i] = P(i);
+  for (int i = -999; i &lt; 1000; i++) {
+    for (int j = -999; j &lt; 1000; j++) {
+      int k;
+      k = i+j;
+      if (-999 &lt;= k &amp;&amp; k &lt;= 999)
+        m[mp3(pu[i],pu[j],pu[k])]++;
+      k = i-j;
+      if (-999 &lt;= k &amp;&amp; k &lt;= 999)
+        m[mp3(pu[i],pu[j],pu[k])]++;
+      k = i*j;
+      if (-999 &lt;= k &amp;&amp; k &lt;= 999)
+        m[mp3(pu[i],pu[j],pu[k])]++;
+      if (j != 0) {
+        k = i/j;
+        if (-999 &lt;= k &amp;&amp; k &lt;= 999)
+          m[mp3(pu[i],pu[j],pu[k])]++;
+      }
+    }
+  }
+  int x, y, z;
+  while (cin &gt;&gt; x &gt;&gt; y &gt;&gt; z &amp;&amp; x) {
+    int a = m[mp3(x,y,z)];
+    cout &lt;&lt; a &lt;&lt; &quot; solution&quot;;
+    if (a != 1)
+      cout &lt;&lt; &quot;s&quot;;
+    cout &lt;&lt; &quot; for &quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; &quot; &quot; &lt;&lt; z &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

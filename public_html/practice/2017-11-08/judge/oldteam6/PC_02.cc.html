@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+struct S {
+	int grid, cube, pos, step;
+	S(){}
+	S(int lg, int lc, int lpos, int lstep) {
+		grid = lg; cube = lc; pos = lpos; step = lstep;
+	}
+};
+
+int gridenc[(1 &lt;&lt; 20)];
+int griddec[100000];
+
+int encode(S s) {
+	int res = gridenc[s.grid];
+	res = (res &lt;&lt; 6) + s.cube;
+	res = (res &lt;&lt; 5) + s.pos;
+	return res;
+}
+
+int dx[4] = {-1, 1, 0, 0};
+int dy[4] = {0, 0, -1, 1};
+int relabeltmp[4][6] = {{1, 2, 3, 0, 4, 5},
+						{3, 0, 1, 2, 4, 5},
+						{5, 1, 4, 3, 0, 2},
+						{4, 1, 5, 3, 2, 0}};
+int relabel[63][4];
+int relabelcube(int cube, int dir) {
+	int res = 0;
+	for (int i = 0; i &lt; 6; i++) {
+		if ((cube &amp; (1 &lt;&lt; i)) &gt; 0) {
+			res |= (1 &lt;&lt; relabeltmp[dir][i]);
+		}
+	}
+	return res;
+}
+
+int main() {
+	// compute relabel cache
+	for (int i = 0; i &lt; 64; i++) {
+		for (int j = 0; j &lt; 4; j++) {
+			relabel[i][j] = relabelcube(i, j);
+		}
+	}
+	// compute grid encoding cache
+	int ind = 0;
+	for (int i = 0; i &lt; (1 &lt;&lt; 20); i++) {
+		if (__builtin_popcount(i) &lt;= 6) {
+			gridenc[i] = ind;
+			gridenc[ind] = i;
+			ind++;
+		}
+	}
+
+	// start reading input
+	string s1;
+	while (getline(cin, s1)) {
+		// read in grid
+		vector&lt;string&gt; grid(1, s1);
+		int xmax = 1;
+		int ymax = s1.length();
+		while (getline(cin, s1) &amp;&amp; s1.length() == ymax) {
+			grid.push_back(s1);
+			xmax++;
+		}
+
+		// find start, end, label cells, get initial grid paint
+		int sx = 0, sy = 0;
+		int gx = 0, gy = 0;
+		int initgrid = 0;
+		int cnt = 0;
+		int mapping[xmax][ymax];
+		for (int x = 0; x &lt; xmax; x++) {
+			for (int y = 0; y &lt; ymax; y++) {
+				char c = grid[x][y];
+				if (c == 'C') {
+					sx = x; sy = y;
+				}
+				if (c == 'G') {
+					gx = x; gy = y;
+				}
+				if (c != '#') {
+					mapping[x][y] = cnt;
+					if (c == 'P') {
+						initgrid |= (1 &lt;&lt; cnt);
+					}
+					cnt++;
+				} else {
+					mapping[x][y] = -1;
+				}
+			}
+		}
+
+		// compute inverse map from id to grid position
+		int invmapx[cnt];
+		int invmapy[cnt];
+		for (int x = 0; x &lt; xmax; x++) {
+			for (int y = 0; y &lt; ymax; y++) {
+				if (mapping[x][y] &gt;= 0) {
+					invmapx[mapping[x][y]] = x;
+					invmapy[mapping[x][y]] = y;
+				}
+			}
+		}
+
+		// initialize
+		queue&lt;S&gt; q;
+		set&lt;int&gt; visited;
+		q.push(S(initgrid, 0, mapping[sx][sy], 0)); // grid, cube, paint, x, y, step
+
+		// BFS!
+		bool possible = false;
+		int steps = 0;
+		while (!q.empty()) {
+			S s = q.front();
+			q.pop();
+
+			// check visited
+			int enc = encode(s);
+			if (visited.count(enc) &gt; 0) continue;
+			visited.insert(enc);
+
+			// check if goal
+			int cx = invmapx[s.pos];
+			int cy = invmapy[s.pos];
+			if (s.cube == 63 &amp;&amp; cx == gx &amp;&amp; cy == gy) {
+				possible = true;
+				steps = s.step;
+				break;
+			}
+
+			// roll in 4 directions
+			for (int i = 0; i &lt; 4; i++) {
+				int nx = cx + dx[i];
+				int ny = cy + dy[i];
+				int cubenext = relabel[s.cube][i];
+				if (nx &gt;= 0 &amp;&amp; nx &lt; xmax &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; ymax &amp;&amp; grid[nx][ny] != '#') {
+					S snext = s;
+					snext.pos = mapping[nx][ny];
+					snext.step = s.step + 1;
+					snext.cube = cubenext;
+
+					bool isgridpaint = (snext.grid &amp; (1 &lt;&lt; snext.pos)) &gt; 0;
+					bool iscubepaint = (snext.cube &amp; 4) &gt; 0;
+					if (isgridpaint &amp;&amp; !iscubepaint) {
+						snext.grid -= (1 &lt;&lt; snext.pos);
+						snext.cube += 4;
+					} else if (!isgridpaint &amp;&amp; iscubepaint) {
+						snext.grid += (1 &lt;&lt; snext.pos);
+						snext.cube -= 4;
+					}
+
+					q.push(snext);
+				}
+			}
+		}
+
+		// output answer
+		if (possible) cout &lt;&lt; steps &lt;&lt; endl;
+		else cout &lt;&lt; -1 &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

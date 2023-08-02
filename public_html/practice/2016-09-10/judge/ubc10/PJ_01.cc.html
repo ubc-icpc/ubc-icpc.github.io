@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;complex&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+const ld EPS = 1e-9;
+
+int main() {
+	int ncase; cin &gt;&gt; ncase;
+	while (ncase--) {
+		int r, n; cin &gt;&gt; r &gt;&gt; n;
+		pt pol[n];
+		for (int i = 0; i &lt; n; i++) {
+			int x, y; cin &gt;&gt; x &gt;&gt; y;
+			pol[i] = pt(x, y);
+		}
+
+		ld origlen = 0;
+		for (int i = 0; i &lt; n; i++) {
+			origlen += abs(pol[i] - pol[(i+1)%n]);
+		}
+		ld minlen = 2*acos(-1)*r;
+		if (origlen &lt; minlen - EPS) {
+			cout &lt;&lt; &quot;Not possible&quot; &lt;&lt; endl;
+		} else if (origlen &lt; minlen + EPS) {
+			cout &lt;&lt; 0 &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; setprecision(16) &lt;&lt; fixed &lt;&lt; (origlen - minlen)/origlen &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

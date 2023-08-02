@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+
+const int RAD = 5;
+int dx[] = {1, 1, 2, 2, -1, -1, -2, -2};
+int dy[] = {2, -2, 1, -1, 2, -2, 1, -1};
+
+const ll inf = 1e18;
+ll dist_est(pii p, pii q) {
+    if (p == q) return 0;
+    ll x = abs(p.first-q.first), y = abs(p.second-q.second);
+    
+    //guess: only two types of moves are needed
+    ll res = inf;
+    for (int i = 0; i &lt; 4; i++) {
+        for (int j = i+1; j &lt; 4; j++) {
+            // a b
+            // c d
+            int a = dx[i], b = dx[j];
+            int c = dy[i], d = dy[j];
+            int det = (a*d-b*c);
+            if (det == 0) continue;
+            // (1/det) * d -b
+            //           -c a
+            ll A = d*x - b*y;
+            ll B = -c*x + a*y;
+            if (A%det || B%det) continue;
+            res = min(res, abs(A/det) + abs(B/det));
+        }
+    }
+    return res;
+}
+
+int main() {
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        ll n; cin &gt;&gt; n;
+        pii s[2];
+        for (int i = 0; i &lt; 2; i++) {
+            cin &gt;&gt; s[i].first &gt;&gt; s[i].second;
+        }
+        
+        map&lt;pii, int&gt; dist[2];
+        for (int i = 0; i &lt; 2; i++) {
+            queue&lt;pii&gt; q({s[i]});
+            dist[i][s[i]] = 0;
+            while (!q.empty()) {
+                pii u = q.front(); q.pop();
+                if (dist[i][u] &gt; RAD) break;
+                for (int d = 0; d &lt; 8; d++) {
+                    pii nu = {u.first + dx[d], u.second + dy[d]};
+                    if (nu.first &lt;= 0 || nu.first &gt; n || nu.second &lt;= 0 || nu.second &gt; n) {
+                        continue;
+                    }
+                    if (dist[i].count(nu)) continue;
+                    dist[i][nu] = dist[i][u] + 1;
+                    q.push(nu);
+                }
+            }
+        }
+        
+        ll ans = inf;
+        for (auto p : dist[0]) {
+            for (auto q : dist[1]) {
+                /*
+                if (dist_est(p.first, q.first) + p.second + q.second &lt; ans) {
+                    cout &lt;&lt; p.first.first &lt;&lt; &quot; &quot; &lt;&lt; p.first.second &lt;&lt; &quot; &quot;;
+                    cout &lt;&lt; q.first.first &lt;&lt; &quot; &quot; &lt;&lt; q.first.second &lt;&lt; &quot; &quot;;
+                    cout &lt;&lt; p.second &lt;&lt; &quot; &quot; &lt;&lt; q.second &lt;&lt; endl;
+                }*/
+                if (n &lt;= RAD+1 &amp;&amp; p.first != q.first) continue;
+                ans = min(ans, dist_est(p.first, q.first) + p.second + q.second);
+            }
+        }
+        
+        cout &lt;&lt; &quot;Case #&quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot; &lt;&lt; ans &lt;&lt; endl &lt;&lt; endl; 
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

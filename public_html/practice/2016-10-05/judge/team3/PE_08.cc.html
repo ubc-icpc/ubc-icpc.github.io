@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; pipii;
+
+class DisjointSet {
+    vector&lt;int&gt; parent;
+    vector&lt;int&gt; rank;
+    int ssize;
+public:
+    DisjointSet(int n): ssize(n) {
+        for (int i = 0; i &lt; n; ++i) {
+            parent.push_back(i);
+        }
+        rank = vector&lt;int&gt;(n,0);
+    }
+
+    void makeSet(int x) {
+        parent.push_back(x);
+        rank.push_back(0);
+        ssize++;
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    void merge(int x, int y) {
+        int xRoot = find(x);
+        int yRoot = find(y);
+        if (xRoot == yRoot) return;
+        if (rank[xRoot] &lt; rank[yRoot]) {
+            parent[xRoot] = yRoot;
+        }
+        else if (rank[xRoot] &lt; rank[yRoot]) {
+            parent[yRoot] = xRoot;
+        }
+        else {
+            parent[yRoot] = xRoot;
+            rank[xRoot]++;
+        }
+    }
+
+    int size() { return ssize; }
+};
+
+int main() {
+  int N, M, L; cin &gt;&gt; N &gt;&gt; M &gt;&gt; L;
+  DisjointSet ds = DisjointSet(N);
+  vector&lt;pipii&gt; edges;
+  vector&lt;int&gt; existing;
+  int total_existing = 0;
+  for (int i = 0; i &lt; M; ++i) {
+    int a, b, c; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+    edges.push_back({c, {a-1,b-1}});
+    //if (i &lt; L) existing.push_back(c);
+    if (i &lt; L) total_existing += c;
+  }
+  //sort(existing.begin(), existing.end());
+  //cout &lt;&lt; existing.size() &lt;&lt; endl;
+  sort(edges.begin(), edges.end());
+  
+  int edges_used = 0;
+  int total_real = 0;
+  for (int i = 0; i &lt; M; ++i) {
+    int c = edges[i].first;
+    pii e = edges[i].second;
+    if (ds.find(e.first) != ds.find(e.second)) {
+      ds.merge(e.first, e.second);
+      /*while (edges_used &lt; L &amp;&amp; c &gt; existing[edges_used]) {
+        edges_used++;
+      }
+      if (edges_used &gt;= L) {
+        cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+        return 0;
+      }
+      edges_used++;*/
+      total_real += c;
+    }
+  }
+
+  for (int i = 1; i &lt; N; ++i) {
+    if (ds.find(i) != ds.find(0)) {
+      cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+      return 0;
+    }
+  }
+  if (total_real &lt;= total_existing) cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+  else cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+  //cout &lt;&lt; &quot;possible&quot; &lt;&lt; endl;
+  
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

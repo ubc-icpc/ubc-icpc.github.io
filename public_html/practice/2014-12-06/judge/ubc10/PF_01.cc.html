@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ld&gt; pp;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;pp&gt; ranks;
+	for (int i = 0; i &lt; n; i++) {
+		ll a; ld b;
+		cin &gt;&gt; a &gt;&gt; b;
+		ranks.push_back(pp(a, b));
+	}
+	sort(ranks.begin(), ranks.end());
+	reverse(ranks.begin(), ranks.end());
+	ll score; cin &gt;&gt; score;
+	ll next = 1;
+	for (int i = 0; i &lt; ranks.size(); i++) {
+		ll after = next + 2 * (ranks[i].second - next);
+		if (ranks[i].first == score) {
+			cout &lt;&lt; next &lt;&lt; endl;
+			cout &lt;&lt; after &lt;&lt; endl;
+			return 0;
+		}
+		next = after+1;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

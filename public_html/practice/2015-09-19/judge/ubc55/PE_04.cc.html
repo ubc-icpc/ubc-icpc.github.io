@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+typedef long double ld;
+int S, W, L;
+
+ld solve(int game, int win, int total_wins)
+{
+	if (total_wins == 4)
+	{
+		return 1;
+	}
+	if (game - total_wins == 4)
+	{
+		return 0;
+	}
+	ld percentage;
+	if (win == 1)
+	{
+		percentage = (ld)(20 + W) / (20 + W + S);
+	}
+	else if (win == -1)
+	{
+		percentage = (ld)20 / (20 + S);
+	}
+	else
+	{
+		percentage = (ld)(20 - L) / (20 - L + S);
+	}
+
+	if (game == 0)
+	{
+		return percentage * solve(game + 1, 1 ,1) + (1-percentage) * solve(game + 1, 0,0);
+	}
+	if (win)
+	{
+		return percentage *  solve(game + 1, 1, total_wins + 1) + (1 - percentage) * solve(game + 1,0,total_wins);
+	}
+	else
+	{
+		return percentage * solve(game + 1, 1, total_wins + 1) + (1 - percentage) * solve(game + 1, 0, total_wins);
+	}
+}
+
+
+int main()
+{
+	int t;
+	cin &gt;&gt; t;
+	while (t--)
+	{
+		string lol;
+		getline(cin, lol);
+		getline(cin, lol);
+		cin &gt;&gt; S &gt;&gt; W &gt;&gt; L;
+		cout.precision(5);
+		cout &lt;&lt; fixed &lt;&lt; solve(0,-1,0) &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

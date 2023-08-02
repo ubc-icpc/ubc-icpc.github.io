@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+int main(){
+	int n;
+	std::cin &gt;&gt; n;
+	int medals[n][6];
+	bool count[n];
+	bool color[n];
+
+	for(int i = 0; i &lt; n; i++){
+		count[i] = false;
+		color[i] = false;
+		for(int j = 0; j &lt; 6; j++){
+			std::cin &gt;&gt; medals[i][j];
+		}
+		if(medals[i][0] + medals[i][1] + medals[i][2] &gt; medals[i][3] + medals[i][4] + medals[i][5]){
+			count[i] = true;
+		}
+		if(medals[i][0] &gt; medals[i][3]){
+			color[i] = true;
+		} else if(medals[i][0] == medals[i][3]){
+			if(medals[i][1] &gt; medals[i][4]){
+				color[i] = true;
+			} else if(medals[i][1] == medals[i][4]){
+				if(medals[i][2] &gt; medals[i][5]){
+					color[i] = true;
+				}
+			}
+		}
+	}
+
+	for(int i = 0; i &lt; n; i++){
+		for(int j = 0; j &lt; 6; j++){
+			std::cout &lt;&lt; medals[i][j] &lt;&lt; &quot; &quot;;
+		}
+		std::cout &lt;&lt; &quot;\n&quot;;
+		if(count[i] &amp;&amp; color[i]){
+			std::cout &lt;&lt; &quot;both&quot;;
+		} else if(count[i]){
+			std::cout &lt;&lt; &quot;count&quot;;
+		} else if(color[i]){
+			std::cout &lt;&lt; &quot;color&quot;;
+		} else {
+			std::cout &lt;&lt; &quot;none&quot;;
+		}
+		std::cout &lt;&lt; &quot;\n\n&quot;;
+	}
+	
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

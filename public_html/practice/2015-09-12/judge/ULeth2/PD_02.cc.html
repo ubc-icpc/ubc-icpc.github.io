@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+
+int d, l, s;
+
+int main()
+{
+   int n;
+   cin &gt;&gt; n;
+   while(n--)
+   {
+      cin &gt;&gt; d &gt;&gt; l &gt;&gt; s;
+      int C, Pl=1000000, Ps=1000000, cost=0, currS=0;
+      for(int i=0; i&lt;d; i++)
+      {
+	 int tmpL, tmpS;
+	 cin &gt;&gt; C &gt;&gt; tmpL &gt;&gt; tmpS;
+	 Pl=min(tmpL, Pl);
+	 Ps=min(tmpS, Ps);
+	 int needL=C*l;
+	 cost+=needL*Pl;
+	 int needS=C*s - currS;
+	 if(needS&lt;=0)
+	    currS-=C*s;
+	 else
+	 {
+	    //int bags=(needS/(16*5))+1;
+	    int bags=0;
+	    while(needS&gt;0)
+	    {
+	       bags++;
+	       needS-=5*16;
+	    }
+	    //cout &lt;&lt; bags &lt;&lt; endl;
+	    cost+=bags*Ps;
+	    currS+=bags*16*5;
+	    currS-=C*s;
+	 }
+      }
+      cout &lt;&lt; cost &lt;&lt; endl;
+   }
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

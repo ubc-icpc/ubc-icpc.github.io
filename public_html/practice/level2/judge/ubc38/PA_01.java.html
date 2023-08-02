@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+import java.util.List;
+import java.util.*;
+
+public class HalfCircle {
+    public static void main(String[] args) {
+      Scanner scanner = new Scanner( System.in );
+
+      String firstString = scanner.nextLine();
+      //System.out.println(&quot;first line is&quot; + firstString);
+      // int firstNumber = Integer.parseInt(firstString);
+      // String sencondString = scanner.nextLine();
+      // //System.out.println(&quot;first line is&quot; + firstString);
+      // int secondNumber = Integer.parseInt(sencondString);
+      // String thirdString = scanner.nextLine();
+      // //System.out.println(&quot;first line is&quot; + firstString);
+      // int thirdNumber = Integer.parseInt(thirdString);
+      String[] splited = firstString.split(&quot;\\s+&quot;);
+      int firstNumber = Integer.parseInt(splited[0]);
+      int secondNumber = Integer.parseInt(splited[1]);
+      int thirdNumber = Integer.parseInt(splited[2]);
+
+      System.out.println(calculateLeash(firstNumber, secondNumber, thirdNumber));
+
+      //System.out.println(&quot;third line is&quot; + thirdString);
+    }
+
+    public static Double calculateLeash(int radius, int x, int y){
+      System.out.println(&quot;the radius is &quot;+ radius+&quot; the x is &quot;+ x+&quot; the y is &quot;+y);
+      Double distance = Math.min(y,radius - Math.sqrt((x*x)+(y*y)));
+      return distance;
+    }
+}
+</code>
+</pre>
+</body>
+</html>

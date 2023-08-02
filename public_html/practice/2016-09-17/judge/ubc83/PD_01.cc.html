@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main(){
+	ios::sync_with_stdio(0);
+
+	vector&lt;vector&lt;int&gt;&gt; idToConfig;
+
+	map&lt;vector&lt;int&gt;, int&gt; configToId;
+
+	for(int a = 0; a &lt;= 15; a++) {
+		for(int b = 0; b &lt;= 15; b++) {
+			for(int c = 0; c &lt;= 15; c++) {
+				for(int d = 0; d &lt;= 15; d++) {
+					for(int e = 0; e &lt;= 15; e++) {
+						for(int f = 0; f &lt;= 15; f++) {
+							if(a + b + c + d + e + f == 15) {
+								idToConfig.push_back({a, b, c, d, e, f});
+								configToId[{a, b, c, d, e, f}] = idToConfig.size() - 1;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	char s; cin &gt;&gt; s;
+	int idx = 1;
+	while(s != 'e') {
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; idx &lt;&lt; &quot;: &quot;;
+		if(s == 'm') {
+			vector&lt;int&gt; nums;
+			for(int i = 0; i &lt; 6; i++) {
+				int a; cin &gt;&gt; a; nums.push_back(a);
+			}
+			cout &lt;&lt; configToId[nums] &lt;&lt; endl;
+		} else if (s == 'u') {
+			int id; cin &gt;&gt; id;
+
+			for(int num : idToConfig[id]) {
+				cout &lt;&lt; num &lt;&lt; &quot; &quot;;
+			}
+			cout &lt;&lt; endl;
+		}
+		idx++;
+		cin &gt;&gt; s;
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

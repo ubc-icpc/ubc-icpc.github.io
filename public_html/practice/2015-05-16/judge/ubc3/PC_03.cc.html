@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+using namespace std;
+typedef long long ll;
+typedef vector&lt;ll&gt; vll;
+typedef vector&lt;int&gt; vi;
+
+int main() {
+  ll N;
+  string word;
+  int K;
+  cin &gt;&gt; N &gt;&gt; word &gt;&gt; K;
+
+  int n = word.size();
+  vector&lt;vi&gt; count(n, vi(26, 0));
+  count[n-1][word[n-1] - 'A'] = 1;
+  for (int i = n-2; i &gt;= 0; --i) {
+    for (int j = 0; j &lt; 26; ++j) {
+      count[i][j] = count[i+1][j];
+      if (j == word[i] - 'A')
+        count[i][j]++;
+    }
+  }
+
+  vll result(K, 0);
+  for (int i = 0; i &lt; K; ++i) {
+    ll line_no;
+    char letter;
+    cin &gt;&gt; line_no &gt;&gt; letter;
+
+    ll complete = line_no / n;
+    result[i] += complete * count[0][letter - 'A'];
+
+    int starting = 0;
+    if (line_no % 2 == 0)
+      starting = (((line_no - 1) % n) * ((line_no / 2)  % n)) % n;
+    else
+      starting = ((((line_no - 1) / 2) % n) * (line_no  % n)) % n;
+
+    ll re = 0;
+    int ind = letter - 'A';
+    int ending = (starting + line_no % n) % n;
+    if (starting &lt; ending)
+      re = count[starting][ind] - count[ending][ind];
+    else if (starting &gt; ending)
+      re = count[starting][ind] + (count[0][ind] - count[ending][ind]);
+
+    // ll test_re = 0;
+    // for (int j = 0; j &lt; line_no % n; ++j)
+      // if (word[(starting + j) % n] == letter)
+        // test_re++;
+    // cout &lt;&lt; test_re &lt;&lt; ' ' &lt;&lt; re &lt;&lt; endl;
+    // cout &lt;&lt; complete &lt;&lt; ' ' &lt;&lt; re &lt;&lt; ' ' &lt;&lt; starting &lt;&lt; endl;
+    result[i] += re;
+  }
+
+  for (auto re : result)
+    cout &lt;&lt; re &lt;&lt; endl;
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

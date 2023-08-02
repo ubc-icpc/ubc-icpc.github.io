@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html><head>
+
+<script type="text/javascript"
+src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+  
+  <meta name="author" content="Michael Goldwasser and Ryan Marshall">
+  <title>Problem E: Word Cloud</title>
+
+  
+  
+  <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    @media print {
+      .page {
+        page-break-before: always;
+      }
+    }
+    </style>
+</head><body>
+<h1>Problem E: Word Cloud</h1>
+
+<table class="files">
+
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td> <tt>cloud.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+      </td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>cloud.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>
+<center>
+<img width="675px" alt="sample cloud" src="teams.png">
+</center>
+A word cloud (or tag cloud) is a visual representation of textual
+data based on a weighted metric. In the above cloud (which is
+based on this year's list of Mid-Central teams), the font size of
+each word is based on its number of occurrences in the data set.
+Tagg Johnson is a man obsessed with counting words that appear
+in online documents. On his computer, he keeps a spreadsheet
+of all the sites he visits, along with a list of words that
+appear on each site and the number of times such word
+appears. Tagg would like to generate word clouds
+based on the data he has collected.
+</p>
+
+<p>
+Before describing the algorithm Tagg uses for generating clouds, we
+digress for a quick lesson in typography. The basic unit of measure is
+known as a <em>point</em> (typically abbreviated as <em>pt</em>). A
+font's size is described based on the vertical number of points from
+one line to the next, including any interline spacing. For example,
+with a 12pt font, the vertical space from the top of one character to
+the top of a character below it is 12 points. We assume that a
+character's height is precisely equal to the font's point size (regardless of whether the character is upper or lower case).
+</p>
+<p>
+For this problem, we focus on a fixed-width font, such as Courier, in
+which each character of the alphabet is also given the same amount of
+width. The character width for  such a font depends on the font
+size and the aspect ratio. For Courier, a word with
+<em>t</em> characters rendered in a font of size <em>P</em> has a total width of
+<nobr>$\left\lceil \frac{9}{16} \cdot t \cdot P \right\rceil$</nobr>
+when measured in points. Note well the use of the ceiling operator,
+which converts any noninteger to the next highest integer. For
+example, a 5-letter word in a 20pt font would be rendered with a
+height of 20 points and a width
+equal to <nobr>$\left\lceil \frac{900}{16} \right\rceil = \left\lceil
+56.25 \right\rceil = 57$</nobr> points.
+</p>
+
+<p>
+Now we can describe Tagg's algorithm for creating a word cloud. He
+pre-sorts his word list into alphabetical order and removes
+words that do not occur at least five times. For each word&nbsp;<em>w</em>, he
+computes a point size based on the formula
+<nobr>$P = 8 + \left\lceil \frac{40(c_w - 4)}{(c_{max}-4)} \right\rceil$,</nobr>
+where
+$c_w$ is the number of occurrences of the word, and
+$c_{max}$ is the number of occurrences
+of the most frequent word in the data set. Note that by this
+formula, every word will be rendered with anywhere from a 9pt font to
+a 48pt font. He then places the words in rows, with a 10pt horizontal
+space between adjacent words, placing as many words as fit in
+the row, subject to a maximum width&nbsp;<em>W</em> for his entire
+cloud. The height of a given row is equal to the <em>maximum</em> font
+size of any word rendered in that row.
+</p>
+
+<p>
+As a tangible example, consider the following data set and word cloud.
+<table>
+  <tr><td><b>word</b></td><td align="right"><b>count</b></td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      <td rowspan=7><img width="250px" alt="fruit cloud" src="fruits260.png"></td>
+      <td rowspan=7><img width="250px" alt="fruit cloud" src="fruits260Boxed.png"></td>
+</tr>
+  <tr><td>apple</td><td align="right">10</td></tr>
+  <tr><td>banana</td><td align="right">5</td></tr>
+  <tr><td>grape</td><td align="right">20</td></tr>
+  <tr><td>kiwi</td><td align="right">18</td></tr>
+  <tr><td>orange</td><td align="right">12</td></tr>
+  <tr><td>strawberry</td><td align="right">10</td></tr>
+  <!-- remaining rows are to fine tune print layout -->
+  <tr></tr>
+  <tr></tr>
+  <tr></tr>
+  <tr></tr>
+  <tr></tr>
+</table>
+In this example, <tt>apple</tt> is rendered with 23pt font using 
+width&nbsp;65pt, <tt>banana</tt> is rendered with 11pt font using
+width&nbsp;38pt, and <tt>grape</tt> is rendered with 48pt font and
+width&nbsp;135pt. If the overall word cloud is constrained to have
+width at most 260, those three words fit in a row and the overall
+height of that row is 48pt (due to <tt>grape</tt>). On the second row
+<tt>kiwi</tt> is rendered with height 43pt and width 97pt, and
+<tt>orange</tt> is rendered with height 28pt and width 95pt. A third
+row has <tt>strawberry</tt> with height 23pt and width 130pt. The
+overall height of this word cloud is 114pt.
+</p>
+
+
+
+<p><b>Input:</b>
+Each data set begins with a line containing two integers:
+<nobr><em>W</em> and <em>N</em></nobr>. The value <em>W</em> denotes the maximum
+width of the cloud; <nobr><em>W</em> &le; 5000</nobr> will be at least
+as wide as any word at its desired font size. The value
+<nobr>1 &le; <em>N</em> &le; 100</nobr> denotes the
+number of words that appear in the cloud. Following the first line
+are <em>N</em> additional lines, each having a
+string <em>S</em> that is the word (with no whitespace), and an integer <em>C</em> that is a
+count of the number of occurrences of that word in the original data
+set, with <nobr>5 &le; <em>C</em> &le; 1000</nobr>.
+Words will be given in the same order that they are to be
+displayed within the cloud.
+</p>
+
+
+<p><b>Output:</b> For each data set, output the word <kbd>CLOUD</kbd>
+followed by a space, a serial number indicating the data set, a colon, another space, and
+the integer height of the cloud, measured in font points.
+</p>
+
+<table class="example">
+
+  <thead> <tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+<kbd>
+260 6<br/>
+apple  10<br/>
+banana 5<br/>
+grape  20<br/>
+kiwi   18<br/>
+orange 12<br/>
+strawberry 10<br/>
+250 6<br/>
+apple  10<br/>
+banana 5<br/>
+grape  20<br/>
+kiwi   18<br/>
+orange 12<br/>
+strawberry 10<br/>
+610 6<br/>
+apple  10<br/>
+banana 5<br/>
+grape  20<br/>
+kiwi   18<br/>
+orange 12<br/>
+strawberry 10<br/>
+0 0	  
+</kbd>
+      </td>
+      <td>
+<kbd>
+CLOUD 1: 114<br/>
+CLOUD 2: 99<br/>
+CLOUD 3: 48
+</kbd>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- hide the following to keep print version to 2 pages
+ -->
+<br>
+<small><i>ACM Mid-Central Programming Competition 2014</i></small><br>
+
+</body></html>

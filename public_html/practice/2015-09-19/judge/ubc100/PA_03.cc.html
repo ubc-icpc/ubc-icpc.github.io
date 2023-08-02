@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+#include&lt;queue&gt;
+
+using namespace std;
+
+
+int main(void){
+  int n;
+  while(cin&gt;&gt;n) {
+	if(n==0) break;
+	int arr[n];
+	for(int i=0; i&lt;n;i++){
+	  int x; cin&gt;&gt;x; arr[i]=x;
+	}
+	sort(arr,arr+n);
+	int d=0;
+	int total=0;
+	for(int i=n-1;i&gt;=0;i--){
+	  if(d&lt;=30) {
+		total+=30;
+		d=arr[i];
+	  } else {
+		total+=30;
+		d-=30;
+		d+=arr[i];
+	  }
+	}
+	total+=d;
+	cout &lt;&lt; total/60 &lt;&lt; &quot;:&quot;;
+	if(total%60 &lt; 10) cout &lt;&lt; &quot;0&quot;;
+	cout &lt;&lt; total%60 &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

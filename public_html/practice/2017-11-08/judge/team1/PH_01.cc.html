@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+#define endl '\n'
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+const int MOD = 1e9 + 7;
+const int MAXN = 1e5+10;
+
+struct BITree { ll freq[MAXN+1]; BITree() { memset(freq, 0, sizeof freq); }
+  void insert(int x, ll cnt=1) {
+    for ( ; x &lt;= MAXN; x += x &amp; -x) freq[x] += cnt;
+      //for (int y = argy; y &lt;= MAXN; y += y &amp; -y) freq[x][y] += cnt;
+  }
+  ll query(int x) { ll sum = 0;
+    for ( ; x; x -= x &amp; -x) sum += freq[x];
+      //for (int y = argy; y; y -= y &amp; -y) sum += freq[x][y];
+    return sum; }
+  void insert_range(int xl,int xr,ll cnt=1) {insert(xl,cnt); insert(xr+1,-cnt);}
+  ll query_range(int xl, int xr) { return query(xr) - query(xl-1); }
+  int get_nth(ll n) { int x = 1&lt;&lt;30; // assumes non-negative frequencies
+    for (int step = x&gt;&gt;1; step; step &gt;&gt;= 1)
+      if (x-step &gt; MAXN || freq[x-step] &gt;= n) x -= step; else n -= freq[x-step];
+    return x; } };
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	int N;
+	while (cin &gt;&gt; N) {
+		if (!N) return 0;
+		map&lt;string, int&gt; id;
+		for (int i = 0; i &lt; N; i++) {
+			string s; cin &gt;&gt; s;
+			id[s] = i+1;
+		}
+		BITree b;
+		vector&lt;int&gt; k(N);
+		for (int i = 0; i &lt; N; i++) {
+			string s; cin &gt;&gt; s;
+			k[i] = id[s];
+		}
+		ll ans = 0;
+		for (int i = N-1; i &gt;= 0; i--) {
+			ans += b.query(k[i]);
+			b.insert(k[i]);
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

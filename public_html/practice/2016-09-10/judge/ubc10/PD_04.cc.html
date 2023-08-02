@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+const int N = 256;
+
+void print(const vector&lt;vector&lt;pii&gt;&gt; &amp;dfa) {
+	cerr &lt;&lt; &quot;begin dfa with &quot; &lt;&lt; dfa.size() &lt;&lt; &quot; states&quot; &lt;&lt; endl;
+	for (int i = 0; i &lt; dfa.size(); i++) {
+		cerr &lt;&lt; i &lt;&lt; &quot;:&quot;;
+		for (int j = 0; j &lt; dfa[i].size(); j++) {
+			cerr &lt;&lt; &quot; &quot; &lt;&lt; dfa[i][j].first &lt;&lt; &quot;-&gt;&quot; &lt;&lt; dfa[i][j].second;
+		}
+		cerr &lt;&lt; endl;
+	}
+	cerr &lt;&lt; endl;
+}
+
+vector&lt;vector&lt;pii&gt;&gt; revEdges(const vector&lt;vector&lt;pii&gt;&gt; &amp;dfa) {
+	int n = dfa.size();
+	vector&lt;vector&lt;pii&gt;&gt; res(n, vector&lt;pii&gt;());
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = 0; j &lt; dfa[i].size(); j++) {
+			pii z = dfa[i][j];
+			res[z.second].push_back(pii(z.first, i));
+		}
+	}
+	return res;
+}
+
+int repr[N], repr2[N];
+bool visited[N], visited1[N], visited2[N], diff[N][N];
+vector&lt;vector&lt;pii&gt;&gt; reduce(vector&lt;vector&lt;pii&gt;&gt; dfa) {
+	int n = dfa.size();
+	memset(repr, 0, sizeof repr);
+
+	// bfs to erase nodes unreachable from start
+	memset(visited, 0, sizeof visited);
+	queue&lt;int&gt; q;
+	q.push(0);
+	while (!q.empty()) {
+		int curr = q.front(); q.pop();
+		if (visited[curr]) continue;
+		visited[curr] = true;
+		for (int i = 0; i &lt; dfa[curr].size(); i++) {
+			q.push(dfa[curr][i].second);
+		}
+	}
+	for (int i = 0; i &lt; n; i++) if (!visited[i]) repr[i] = -1;
+
+	// bfs to erase nodes that cannot reach end
+	int endNode = n-1;
+	vector&lt;vector&lt;pii&gt;&gt; rev = revEdges(dfa);
+	memset(visited, 0, sizeof visited);
+	q.push(endNode);
+	while (!q.empty()) {
+		int curr = q.front(); q.pop();
+		if (visited[curr]) continue;
+		visited[curr] = true;
+		for (int i = 0; i &lt; rev[curr].size(); i++) {
+			q.push(rev[curr][i].second);
+		}
+	}
+	for (int i = 0; i &lt; n; i++) if (!visited[i]) repr[i] = -1;
+	if (repr[0] &lt; 0 || repr[endNode] &lt; 0) return vector&lt;vector&lt;pii&gt;&gt;();
+
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = 0; j &lt; dfa[i].size(); j++) {
+			if (repr[dfa[i][j].second] &lt; 0) {
+				dfa[i].erase(dfa[i].begin()+j); j--;
+			}
+		}
+	}
+
+	// minimize dfa states
+	// step 1: split into two partitions: {{rest}, {endNode}} and exclude useless nodes
+	vector&lt;vector&lt;int&gt;&gt; parts;
+	if (n == 1) {
+		parts.resize(1);
+		parts[0].push_back(0);
+		repr[0] = 0;
+	} else {
+		parts.resize(2);
+		for (int i = 0; i &lt; n; i++) {
+			if (repr[i] &gt;= 0) {
+				if (i != endNode) {
+					repr[i] = 0;
+					parts[0].push_back(i);
+				} else {
+					repr[i] = 1;
+					parts[1].push_back(i);
+				}
+			}
+		}
+	}
+
+	//cerr &lt;&lt; &quot;repr: &quot;; for (int i = 0; i &lt; n; i++) cerr &lt;&lt; repr[i] &lt;&lt; &quot; &quot;; cerr &lt;&lt; endl;
+
+	// step 2: while true, divide each set into distinct sets until end
+	bool done = false;
+	while (!done) {
+		vector&lt;vector&lt;int&gt;&gt; nxt(parts.size(), vector&lt;int&gt;());
+		for (int i = 0; i &lt; n; i++) repr2[i] = repr[i];
+
+		// for each set
+		for (int i = 0; i &lt; parts.size(); i++) {
+			int j0 = parts[i][0];
+			nxt[i].push_back(j0);
+			repr2[j0] = i;
+			if (parts[i].size() == 1) continue;
+
+			// test if each pair is different
+			// pair of nodes is different iff for some transition
+			// they transition to nodes that are in different sets
+			int nn = parts[i].size();
+			for (int j = 0; j &lt; nn; j++) {
+				diff[j][j] = false;
+				for (int k = j+1; k &lt; nn; k++) {
+					int jj = parts[i][j];
+					int kk = parts[i][k];
+					bool currDiff = false;
+					if (dfa[jj].size() != dfa[kk].size()) currDiff = true;
+					for (int z = 0; !currDiff &amp;&amp; z &lt; dfa[jj].size(); z++) {
+						if (dfa[jj][z].first != dfa[kk][z].first ||
+							repr[dfa[jj][z].second] != repr[dfa[kk][z].second]) {
+							currDiff = true;
+						}
+					}
+					diff[j][k] = diff[k][j] = currDiff;
+				}
+			}
+
+			// separate into different sets
+			for (int j = 1; j &lt; nn; j++) {
+				int jj = parts[i][j];
+				int k = 0; while (k &lt; j &amp;&amp; diff[j][k]) k++;
+				int z;
+				if (k == j) {
+					z = nxt.size();
+					nxt.push_back(vector&lt;int&gt;());
+				} else {
+					z = repr2[parts[i][k]];
+				}
+				nxt[z].push_back(jj);
+				repr2[jj] = z;
+			}
+		}
+
+		done = true;
+		parts = nxt;
+		for (int i = 0; i &lt; n; i++) {
+			if (repr[i] != repr2[i]) done = false;
+			repr[i] = repr2[i];
+		}
+
+		//cerr &lt;&lt; &quot;repr: &quot;; for (int i = 0; i &lt; n; i++) cerr &lt;&lt; repr[i] &lt;&lt; &quot; &quot;; cerr &lt;&lt; endl;
+
+	}
+
+	//cerr &lt;&lt; endl;
+
+	// for each set, choose one representative and make that a node
+	vector&lt;vector&lt;pii&gt;&gt; res(parts.size(), vector&lt;pii&gt;());
+	for (int i = 0; i &lt; parts.size(); i++) {
+		int ii = parts[i][0];
+		for (int j = 0; j &lt; dfa[ii].size(); j++) {
+			int c = dfa[ii][j].first;
+			int dst = repr[dfa[ii][j].second];
+			if (dst &gt;= 0) {
+				res[repr[ii]].push_back(pii(c, dst));
+			}
+		}
+	}
+	return res;
+}
+
+int map21[N];
+bool equiv(const vector&lt;vector&lt;pii&gt;&gt; &amp;dfa1, const vector&lt;vector&lt;pii&gt;&gt; &amp;dfa2) {
+	if (dfa1.size() != dfa2.size()) return false;
+	if (dfa1.size() == 0) return true;
+
+	// bfs to test if graph is completely equal
+	memset(visited1, 0, sizeof visited1);
+	memset(visited2, 0, sizeof visited2);
+
+	queue&lt;int&gt; q1, q2;
+	q1.push(0); q2.push(0);
+	while (!q1.empty() &amp;&amp; !q2.empty()) {
+		int u1 = q1.front(); q1.pop();
+		int u2 = q2.front(); q2.pop();
+
+		if (visited1[u1]) continue;
+		visited1[u1] = true;
+		visited2[u2] = true;
+		map21[u2] = u1;
+
+		if (dfa1[u1].size() != dfa2[u2].size()) return false;
+
+		for (int i = 0; i &lt; dfa1[u1].size(); i++) {
+			int c1 = dfa1[u1][i].first;
+			int c2 = dfa2[u2][i].first;
+			if (c1 != c2) return false;
+
+			int v1 = dfa1[u1][i].second;
+			int v2 = dfa2[u2][i].second;
+			if (visited1[v1] != visited2[v2]) return false;
+			if (visited1[v1] &amp;&amp; map21[v2] != v1) return false;
+			q1.push(v1); q2.push(v2);
+		}
+	}
+	if (q1.empty() != q2.empty()) return false;
+	return true;
+}
+
+bool seen1[N][N], seen2[N][N];
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+
+	int ncase; cin &gt;&gt; ncase;
+	for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+		int m1, n1, k1, m2, n2, k2; cin &gt;&gt; m1 &gt;&gt; n1 &gt;&gt; k1 &gt;&gt; m2 &gt;&gt; n2 &gt;&gt; k2;
+		vector&lt;vector&lt;pii&gt;&gt; adj1(n1, vector&lt;pii&gt;());
+		vector&lt;vector&lt;pii&gt;&gt; adj2(n2, vector&lt;pii&gt;());
+		memset(seen1, 0, sizeof seen1);
+		memset(seen2, 0, sizeof seen2);
+		for (int i = 0; i &lt; m1; i++) {
+			int tin, tout, s; cin &gt;&gt; tin &gt;&gt; tout &gt;&gt; s;
+			if (!seen1[tin][s]) {
+				adj1[tin].push_back(pii(s, tout));
+				seen1[tin][s] = true;
+			}
+		}
+		for (int i = 0; i &lt; m2; i++) {
+			int tin, tout, s; cin &gt;&gt; tin &gt;&gt; tout &gt;&gt; s;
+			if (!seen2[tin][s]) {
+				adj2[tin].push_back(pii(s, tout));
+				seen2[tin][s] = true;
+			}
+		}
+		for (int i = 0; i &lt; n1; i++) sort(adj1[i].begin(), adj1[i].end());
+		for (int i = 0; i &lt; n2; i++) sort(adj2[i].begin(), adj2[i].end());
+
+		//print(adj1); print(adj2);
+
+		adj1 = reduce(adj1);
+		adj2 = reduce(adj2);
+
+		//print(adj1); print(adj2);
+
+		if (equiv(adj1, adj2)) {
+			cout &lt;&lt; &quot;eligible&quot; &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;not eligible&quot; &lt;&lt; endl;
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

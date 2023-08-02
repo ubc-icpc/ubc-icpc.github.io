@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class abnormal {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String ed = sc.nextLine();
+		int places = Integer.parseInt(sc.nextLine());
+		String word = sc.nextLine();
+		StringBuilder newword = new StringBuilder();
+		String alph = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+		for(char c : word.toCharArray()) {
+			int index = alph.indexOf(c);
+			if(ed.equals(&quot;E&quot;)) {
+				index = (index + places) % 26;
+			} else {
+				index = (index - places);
+				if(index &lt; 0)
+					index += 26;
+			}
+			newword.append(alph.substring(index, index+1));
+		}
+		System.out.print(newword.toString());
+	}
+	
+}
+</code>
+</pre>
+</body>
+</html>

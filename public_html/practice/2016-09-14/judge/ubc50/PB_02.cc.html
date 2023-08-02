@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll arr[100] = {0, 1, 4, 1, 9, 37, 16, 101, 425, 226, 1261, 5342, 3185, 16661, 70624, 45397, 227925, 964702, 654589, 3192707, 13483514, 9533591, 45499169, 191695011, 140024274, 656975671, 2761415749, 2071251366, 9585067029, 40197719157, 30823385424, 141022545077, 590174378453, 461076613802, 2089303926185, 8726567622555, 6928035002534, 31135655962227, 129811259033521, 104507122669576, 466323616692283, 1940942711798053, 1581897746416066, 7014487515180361, 29150498233064655, 24018140388709152, 105912301155194501, 439511434241632076, 365668377576409175, 1604517292705494701};
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  int p; cin &gt;&gt; p;
+  while(p--) {
+    int k, s; cin &gt;&gt; k &gt;&gt; s;
+    cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; arr[s/2 - 1] &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

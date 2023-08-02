@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define _USE_MATH_DEFINES
+
+//#define DEBUG
+
+#define ll long long
+#define pii pair&lt;int,int&gt;
+#define pdd pair&lt;ldouble,ldouble&gt;
+#define ldouble long double
+#define pt complex&lt;ldouble&gt;
+#define ld ldouble
+#define nl '\n'
+const ll MOD = 1e9+7;
+const int INF = 0x3f3f3f3f;
+const ll INFLL = 0x3f3f3f3f3f3f3f3f;
+const ldouble EPS = 1e-13;
+
+const int D = 2;
+typedef vector&lt;ld&gt; ndpt;
+typedef list&lt;ndpt&gt;::iterator It;
+struct Miniball { list&lt;ndpt&gt; L; int m; vector&lt;vector&lt;ld&gt;&gt; v, a; vector&lt;ndpt&gt; c;
+	ndpt q0; vector&lt;ld&gt; r2, z, f; It end; ndpt c_c; ld c_r2;
+	Miniball() : m(0), v(D+1,vector&lt;ld&gt;(D)), a(D+1,vector&lt;ld&gt;(D)), c(D+1, ndpt(D,0)),
+			q0(D), r2(D+1), z(D+1), f(D+1), end(L.begin()), c_c(c[0]), c_r2(-1.L) {}
+	void add(ndpt p) { L.push_back(p); }
+	void move_to_front(It i) { m--; if (end == i) end++; L.splice(L.begin(), L, i); }
+	void mtf_mb(It i) { end = L.begin(); if (m == D+1) return;
+		for (It k = L.begin(), j; (j=k++) != i; ) { ld e = get_e(j); 
+			if (e &gt; 0 &amp;&amp; push(*j)) mtf_mb(j), move_to_front(j); }}
+	void pivot_mb(It i) {
+		It t = ++L.begin(), pivot; mtf_mb(t); ld max_e, old_r2 = -1;
+		do { if ((max_e = max_excess(t, i, pivot)) &gt; 0) {
+			if ((t=end)==pivot) ++t;
+			old_r2 = c_r2; push(*pivot); mtf_mb(end); move_to_front(pivot); }
+		} while (max_e &gt; 0 &amp;&amp; c_r2 &gt; old_r2); }
+	ld max_excess(It j, It i, It&amp; pivot) { ld max_e = 0, e;
+		for (; j!= i; ++j) if ((e=get_e(j)) &gt; max_e) max_e=e, pivot=j; return max_e; }
+	ld get_e(It j) { ld e=-c_r2; for (int i=0; i &lt; D; i++) e += pow((*j)[i]-c_c[i], 2);
+		return e; }
+	bool push(const ndpt&amp; p) { int i, j; if (!m) c[0]=q0=p, r2[0]=0; else {
+		for (i = 0; i &lt; D; i++) v[m][i] = p[i]-q0[i];
+		for (i = 1; i &lt; m; ++i) { a[m][i] = 0;
+			for (j = 0; j &lt; D; j++) a[m][i] += v[i][j]*v[m][j];
+			a[m][i] *= (2/z[i]); }
+		for (i = 1; i &lt; m; i++) for (j = 0; j &lt; D; j++) v[m][j] -= a[m][i]*v[i][j];
+		z[m] = 0; for (j = 0; j &lt; D; j++) z[m] += 2*pow(v[m][j], 2);
+		if (z[m] &lt; c_r2*EPS) return false;
+		ld e = -r2[m-1]; for (i = 0; i &lt; D; i++) e+= pow(p[i]-c[m-1][i], 2);
+		f[m] = e/z[m];
+		for (i = 0; i &lt; D; i++) c[m][i] = c[m-1][i] + f[m]*v[m][i];
+		r2[m] = r2[m-1] + e*f[m]/2;
+	} c_c = c[m]; c_r2=r2[m]; m++; return true; }
+	void build() { pivot_mb(L.end()); } } ;
+
+#define sqr(X) (X)*(X)
+
+ndpt to_ndpt(const pt&amp; p) {
+	return {real(p), imag(p)};
+}
+
+ostream&amp; operator &lt;&lt; (ostream&amp; os, const pt&amp; p) {
+	os &lt;&lt; &quot;(&quot; &lt;&lt; real(p) &lt;&lt; &quot;,&quot; &lt;&lt; imag(p) &lt;&lt; &quot;)&quot;; return os;
+}
+bool by_angle(const pt&amp; a, const pt&amp; b) {
+	return arg(a) &lt; arg(b);
+}
+
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+inline ld sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : x/abs(x); }
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b) {
+	return real(a) &lt; real(b) - EPS || real(a) &lt; real(b) + EPS &amp;&amp; imag(a) &lt; imag(b) - EPS;
+}
+bool seg_x_seg(pt a1, pt a2, pt b1, pt b2) {
+	ld za = abs(a2-a1), zb = abs(b2-b1); za=za&gt;EPS?1/za:0; zb=zb&gt;EPS?1/zb:0;
+	int s1 = sgn(cp(a2-a1,b1-a1)*za), s2 = sgn(cp(a2-a1,b2-a1)*za);
+	int s3 = sgn(cp(b2-b1,a1-b1)*zb), s4 = sgn(cp(b2-b1,a2-b1)*zb);
+	if (!s1 &amp;&amp; !s2 &amp;&amp; !s3) {
+		if (cmp_lex(a2,a1)) swap(a1,a2); if (cmp_lex(b2,b1)) swap(b1,b2);
+		return !cmp_lex(b2,a1) &amp;&amp; !cmp_lex(a2,b1);
+	} return s1*s2 &lt;= 0 &amp;&amp; s3*s4 &lt;= 0;
+}
+
+// ccw orientation
+ld check_arc(pt a, pt b, pt old_center, ld radius2, const vector&lt;pt&gt;&amp; bad, pt&amp; new_center) {
+	//cerr &lt;&lt; &quot;check arc &quot; &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b &lt;&lt; nl;
+	ld x, y, z, s, K, tempr2;
+	ld largest_r = 0;
+	for (const pt&amp; p : bad) {
+		//cerr &lt;&lt; &quot;check bad: &quot; &lt;&lt; p &lt;&lt; nl;
+		if (sqr(abs(p - old_center)) &lt; radius2 + EPS &amp;&amp; seg_x_seg(a, b, old_center, p)) {
+			pt pp = p + 10*EPS*(old_center-p);
+			z = abs(a-b);
+			x = abs(a-pp);
+			y = abs(b-pp);
+			s = (x+y+z)/2;
+			K = s*(s-x)*(s-y)*(s-z);
+			tempr2 = sqr(x*y*z) / (16*K);
+			pt midp = 0.5L*(a+b);
+			pt perp = perp = exp(pt(0,1))*(b-a);
+			if (tempr2 &gt; largest_r) {
+				ld left = EPS;
+				ld right = 1e7;
+				ld mid;
+				for (int i = 0; i &lt; 1000 &amp;&amp; right - left &gt; EPS; i++) {
+					mid = (left+right)/2;
+					if (sqr(abs((midp + mid*perp) - (pp))) &lt; tempr2)
+						left = mid;
+					else 
+						right = mid;
+				}
+				new_center = midp + mid*perp;
+				largest_r = tempr2;
+			}
+		}
+	}
+	//cerr &lt;&lt; &quot;returning largest_r: &quot; &lt;&lt; largest_r &lt;&lt; nl;
+	return largest_r;
+}
+
+int main() {
+	ios::sync_with_stdio(0); 
+	cin.tie(0); cout.tie(0);
+	//cerr &lt;&lt; fixed &lt;&lt; setprecision(20);
+	cout &lt;&lt; fixed &lt;&lt; setprecision(13);
+
+	vector&lt;pt&gt; good, bad, hull;
+	string s;
+	while (getline(cin, s)) {
+		// clear
+		//cerr &lt;&lt; nl;
+		good.clear();
+		bad.clear();
+		hull.clear();
+		// input
+		istringstream in(s);
+		string a; in &gt;&gt; a;
+		char garbage;
+		while (in &gt;&gt; garbage) {
+			if (garbage == 'n')
+				break;
+			int x, y; in &gt;&gt; x &gt;&gt; garbage &gt;&gt; y &gt;&gt; garbage;
+			good.push_back(pt(x, y));
+		}
+		getline(cin, s);
+		istringstream iin(s);
+		iin &gt;&gt; a;
+		while (iin &gt;&gt; garbage) {
+			if (garbage == 'n')
+				break;
+			int x, y; iin &gt;&gt; x &gt;&gt; garbage &gt;&gt; y &gt;&gt; garbage;
+			bad.push_back(pt(x, y));
+		}
+		//cerr &lt;&lt; &quot;good: &quot;; for (const pt&amp; p : good)
+			//cerr &lt;&lt; p &lt;&lt; &quot; &quot;;
+		//cerr &lt;&lt; nl;
+		//cerr &lt;&lt; &quot;bad: &quot;; for (const pt&amp; p : bad)
+			//cerr &lt;&lt; p &lt;&lt; &quot; &quot;;
+		//cerr &lt;&lt; nl;
+		// code here
+		// build miniball around good points
+		Miniball good_mb;
+		for (const pt&amp; p : good) {
+			//cerr &lt;&lt; &quot;add point &quot; &lt;&lt; p &lt;&lt; nl;
+			good_mb.add(to_ndpt(p));
+		}
+		good_mb.build();
+		ld radius2 = good_mb.c_r2;
+		pt center(good_mb.c_c[0], good_mb.c_c[1]);
+		//cerr &lt;&lt; &quot;radius2: &quot; &lt;&lt; radius2 &lt;&lt; nl;
+		// find points on miniball
+		for (const pt&amp; p : good) {
+			if (abs(sqr(abs(p - center)) - radius2) &lt; EPS) {
+				hull.push_back(p);
+			}
+		}
+		sort(hull.begin(), hull.end(), by_angle);
+		// check arcs
+		pt new_center, temp_center;
+		ld largest_r = 0;
+		int n = hull.size();
+		int bad_count = 0;
+		for (int i = 0; i &lt; n; i++) {
+			ld temp_r = check_arc(hull[i], hull[(i+1)%n], center, radius2, bad, temp_center);
+			if (temp_r &gt; 0) {
+				bad_count++;
+				largest_r = max(largest_r, temp_r);
+				new_center = temp_center;
+			}
+		}
+		if (bad_count &gt; 1) {
+			// too many bad arcs
+			cout &lt;&lt; &quot;The Orcs are close&quot; &lt;&lt; nl;
+		} else if (bad_count == 0) {
+			// no bad arcs
+			cout &lt;&lt; sqrt(radius2) &lt;&lt; nl;
+		} else {
+			//cerr &lt;&lt; nl &lt;&lt; &quot;one bad point found&quot; &lt;&lt; nl;
+			//cerr &lt;&lt; &quot;largest_r: &quot; &lt;&lt; largest_r &lt;&lt; &quot; with center &quot; &lt;&lt; new_center &lt;&lt; nl;
+			for (const pt&amp; p : bad) {
+				if (sqr(abs(p - new_center)) &lt; largest_r + EPS) {
+					//cerr &lt;&lt; &quot;bad point at &quot; &lt;&lt; p &lt;&lt; nl;
+					bad_count++;
+				}
+			}
+			if (bad_count == 1) {
+				cout &lt;&lt; sqrt(largest_r) &lt;&lt; nl;
+			} else {
+				cout &lt;&lt; &quot;The Orcs are close&quot; &lt;&lt; nl;
+			}
+		}
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

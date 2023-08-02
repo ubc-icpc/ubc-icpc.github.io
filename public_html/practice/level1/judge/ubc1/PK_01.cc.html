@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+int main() {
+	ios::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	map&lt;int, ll&gt; ans;
+	ll clvl = 0, csum = 0;
+	for (int i = 1; i &lt;= 1000; i++) {
+		clvl += i;
+		csum += clvl;
+		ans[i] = csum;
+		if (i &lt; 10) cerr &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; clvl &lt;&lt; &quot; &quot; &lt;&lt; csum &lt;&lt; endl;
+	}
+	
+	while (t--) {
+		static int ca = 0;
+		int x; cin &gt;&gt; x;
+		cout &lt;&lt; ++ca &lt;&lt; &quot;: &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;
+		cout &lt;&lt; ans[x] &lt;&lt; endl;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

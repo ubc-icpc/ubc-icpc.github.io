@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+while True:
+	K=int(raw_input())
+	if K==0:
+		break
+	else:
+		L=map(float,raw_input().split())
+		L.sort()
+		i=0
+		tot=0
+		found=False
+		for i in range(K-1):
+			tot+=L[i]
+			if tot&gt;=L[i+1]:
+				found=True
+			
+		if found:
+			print &quot;YES&quot;
+		else:
+			print &quot;NO&quot;
+
+&quot;&quot;&quot;
+1
+4.000
+2
+1.000 1.000
+3
+1.455 2.958 4.424
+7
+1.230 2.577 3.411 2.968 5.301 4.398 6.777
+0
+&quot;&quot;&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+int songs[50000];
+int INF = 2147483647;
+int dp[50000][100]; // dp[song i][m minutes left in block]
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	while (nc--) {
+		int n, m;
+		cin &gt;&gt; n &gt;&gt; m;
+		int a, b;
+		cin &gt;&gt; a &gt;&gt; b;
+
+		for (int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; songs[i];
+		}
+
+		// base case
+		for (int t = 0; t &lt; m; t++) {
+			dp[0][t] = INF;
+		}
+		if (songs[0] &lt;= m) {
+			dp[0][m - songs[0]] = 0;
+		} else {
+			dp[0][0] = (songs[0] - m)*a;
+		}
+
+		// fill table
+		for (int i = 1; i &lt; n; i++) {
+			for (int t = 0; t &lt; m; t++) {
+				dp[i][t] = INF;
+			}
+			for (int tt = 0; tt &lt; m; tt++) {
+				if (dp[i-1][tt] == INF) continue;
+				if (tt &gt;= songs[i]) {
+					// there is enough time for song i
+					int t = tt - songs[i];
+					dp[i][t] = min(dp[i][t], dp[i-1][tt]);
+				} else {
+					// there is not enough time
+					dp[i][0] = min(dp[i][0], dp[i-1][tt] + (songs[i] - tt)*a);
+				}
+				// new block
+				if (songs[i] &lt;= m) {
+					int t = m - songs[i];
+					dp[i][t] = min(dp[i][t], dp[i-1][tt] + tt*b);
+				} else {
+					dp[i][0] = min(dp[i][0], dp[i-1][tt] + tt*b + (songs[i] - m)*a);
+				}
+			}
+		}
+		/*
+		for (int i = 0; i &lt; n; i++) {
+			for (int t = m-1; t &gt; 0; t--) {
+				if (dp[i][t] == INF) {
+					cerr &lt;&lt; &quot;xx&quot; &lt;&lt; &quot; &quot;;
+				} else {
+					cerr &lt;&lt; dp[i][t] &lt;&lt; &quot; &quot;;
+				}
+			}
+			cerr &lt;&lt; endl;
+		}
+		*/
+		int best = 2147483647;
+		for (int t = 0; t &lt; m; t++) {
+			if (dp[n-1][t] == INF) continue;
+			best = min(best, dp[n-1][t] + t*b);
+		}
+		cout &lt;&lt; best &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

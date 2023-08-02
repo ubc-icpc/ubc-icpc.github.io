@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+typedef pair&lt;double, double&gt; pdd;
+
+double dp[128][128];
+int main() {
+	int ncase; cin &gt;&gt; ncase;
+	for (int cs = 1; cs &lt;= ncase; cs++) {
+		int k, p; cin &gt;&gt; k &gt;&gt; p;
+
+		double vals[p];
+		for (int i = 0; i &lt; p; i++) 
+			cin &gt;&gt; vals[i];
+
+		double tickets[p];
+		for (int i = 0; i &lt; p; i++) 
+			cin &gt;&gt; tickets[i];
+
+		vector&lt;pdd&gt; lol;
+		for (int i = 0; i&lt; p; i++) lol.push_back(pdd(vals[i], tickets[i]));
+		sort(lol.begin(), lol.end());
+		for (int i = 0; i &lt; p; i++) {
+			vals[i] = lol[i].first;
+			tickets[i] = lol[i].second;
+		}
+
+		// DP
+		for (int i = 0; i &lt; p; i++) 
+			dp[i][0] = 0;
+		for (int j = 1; j &lt;= k; j++) 
+			dp[0][j] = (double)j/(j+tickets[0])*vals[0];
+		for (int i = 1; i &lt; p; i++) {
+			for (int j = 0; j &lt;= k; j++) {
+				dp[i][j] = dp[i-1][j];
+				for (int z = 1; z &lt;= j; z++) {
+					double newval = tickets[i]/(z + tickets[i]) * dp[i-1][j-z]
+									+ (double)z / (z + tickets[i]) * vals[i];
+					dp[i][j] = max(dp[i][j], newval);
+				}
+			}
+		}
+		cout &lt;&lt; setprecision(5) &lt;&lt; fixed &lt;&lt; dp[p-1][k] &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

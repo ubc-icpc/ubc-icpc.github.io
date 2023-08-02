@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+public class a {
+
+	public static void main(String[] args) throws Exception {
+		Scanner sc = new Scanner(System.in);
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+		boolean enc = sc.next().equals(&quot;E&quot;);
+		int r = sc.nextInt();
+		if (!enc)
+			r = 26 - r;
+		String s = sc.next();
+		for (int i = 0; i &lt; s.length(); i++) {
+			char c = (char) ((s.charAt(i) + r - 'a') % 26 + 'a');
+			out.print(c);
+		}
+		out.println();
+		out.close();
+	}
+}
+</code>
+</pre>
+</body>
+</html>

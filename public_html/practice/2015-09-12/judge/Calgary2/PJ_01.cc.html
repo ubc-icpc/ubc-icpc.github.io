@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+double f;
+int s,t;
+vector&lt;vector&lt;double&gt; &gt; m;
+vector&lt;int&gt; p;
+
+void augment(int v, double mine) {
+	if (v == s) {
+		f = mine;
+		return;
+	} else if (p[v] != -1) {
+		augment(p[v], min(mine, m[p[v]][v]));
+		m[p[v]][v] -= f;
+		m[v][p[v]] += f;
+	}
+}
+
+int main() {
+	int T;
+	cin &gt;&gt; T;
+	while (T--) {
+		int n;
+		cin &gt;&gt; n;
+		double td=0;
+		m.assign(n + 2, vector&lt;double&gt;(n + 2, 0));
+		int s = 0, t = n + 1;
+		for (int i = 1; i &lt; n +1; i++) {
+			double d;
+			cin &gt;&gt; d;
+			m[s][i] = d;
+			m[i][s] = d;
+			td+=d;
+		}
+		for (int i = 1; i &lt; n +1; i++) {
+			double d;
+			cin &gt;&gt; d;
+			m[t][i] = d;
+			m[i][t] = d;
+			td+=d;
+		}
+		for(int i=1;i&lt;n+1;i++){
+			for(int j=1;j&lt;n+1;j++){
+				double d;cin&gt;&gt;d;
+				m[i][j]+=d;
+				m[j][i]+=d;
+				td+=d;
+			}
+		}
+		double mf = 0;
+		while (1) {
+			f = 0;
+			vector&lt;int&gt; dist(n+2, 10000);
+			dist[s] = 0;
+			queue&lt;int&gt; q;
+			q.push(s);
+			p.assign(n+2, -1);
+			while (!q.empty()) {
+				int u = q.front();
+				q.pop();
+				if (u == t) {
+					break;
+				}
+				for (int i = 0; i &lt; n+2; i++) {
+					if (m[u][i] &gt; 0 &amp;&amp; dist[i] == 10000) {
+						dist[i] = dist[u] + 1;
+						q.push(i);
+						p[i] = u;
+					}
+				}
+			}
+			augment(t, 10000);
+			if (f == 0) {
+				break;
+			}
+			mf += f;
+		}
+		printf(&quot;%.2f\n&quot;,td-mf);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

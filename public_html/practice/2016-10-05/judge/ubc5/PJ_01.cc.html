@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int mx[101], mx2[101];
+
+int main() {
+  ios::sync_with_stdio(0);
+  int c, m; cin &gt;&gt; c &gt;&gt; m;
+  for (int i = 0; i &lt; m; i++) {
+    for (int j = 1; j &lt;= c; j++) {
+      int x; cin &gt;&gt; x;
+      for (int k = c-j; k &gt;= 0; k--)
+        mx2[j+k] = max(mx2[j+k],mx[k]+x);
+    }
+    memcpy(mx, mx2, sizeof mx);
+  }
+  int mxx = 0;
+  for (int i = 1; i &lt;= c; i++)
+    mxx = max(mxx, mx[i]);
+  cout &lt;&lt; mxx &lt;&lt; &quot;\n&quot;;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

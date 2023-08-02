@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+__int128 f(int xx) {
+	__int128 res =1;
+	for(__int128 i = xx; i&gt;=1; i--) {
+		res *=i;
+	}
+	return res;
+}
+int main() {
+	int n; cin &gt;&gt;n;
+	int k,s;
+	for(int i = 0; i &lt; n; i++) {
+		cin &gt;&gt; k &gt;&gt;s;
+		__int128 res = 0;
+		for(int x = 0; x &lt;=25; x++) {
+			for(int j = x; j&gt;=0; j--) {
+				if (4*x + 2*j != s) continue;
+				__int128 tm = f(x+j)/(f(x)*f(j));
+				//cout &lt;&lt; tm &lt;&lt; endl;
+				res += (tm*tm);
+			}
+		}
+		cout &lt;&lt; k &lt;&lt; &quot; &quot; &lt;&lt;(long long) res &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

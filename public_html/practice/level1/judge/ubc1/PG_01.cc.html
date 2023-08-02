@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+int main() {
+	ios::sync_with_stdio(0);
+	vector&lt;ll&gt; nums;
+	for (ll i = 1; i &lt;= 100000; i++) {
+		ll t = i*(i+1)/2;
+		ll x = sqrt(t+1) + 1e-5;
+		if (x * x == t + 1) nums.push_back(t+1);
+	}
+	
+	for (int i = 0; i &lt; 10; i++) cerr &lt;&lt; nums[i] &lt;&lt; &quot; &quot;;
+	cerr &lt;&lt; endl;
+	
+	int a, b; 
+	while (cin &gt;&gt; a &gt;&gt; b) {
+		if (a+b == 0) break;
+		int ans = lower_bound(nums.begin(), nums.end(), b) - lower_bound(nums.begin(), nums.end(), a+1);
+		
+		static int ca = 0;
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++ca &lt;&lt; &quot;: &quot;;
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int t = sc.nextInt();
+		for(int k=0 ; k&lt;t ; k++){
+			int m = sc.nextInt();
+			int n = sc.nextInt();
+			ArrayList&lt;Integer&gt; x = new ArrayList&lt;&gt;();
+			ArrayList&lt;Integer&gt; y = new ArrayList&lt;&gt;();
+			int sx=0, sy=0;
+			for(int i=0 ; i&lt;m ; i++){
+				String s = sc.next();
+//				System.out.println(s);
+				for(int j=0 ; j&lt;s.length() ; j++){
+					if(s.charAt(j) == 'S'){
+						sx = i;
+						sy = j;
+					}
+					else if(s.charAt(j) == 'B'){
+						x.add(i);
+						y.add(j);
+					}
+				}
+			}
+//			System.out.println(sx);
+//			System.out.println(sy);
+			long ans = 0;
+			for(int i=0 ; i&lt;x.size(); i++){
+				ans += Math.abs(sx - x.get(i));
+				ans += Math.abs(sy - y.get(i));
+			}
+		
+			System.out.println(ans*2 + &quot; seconds to blocks get!&quot;);
+		}
+
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

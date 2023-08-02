@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+  int a, b, c, d, e, f; cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &gt;&gt; e &gt;&gt; f;
+  vector&lt;int&gt; v1 = {a,b,c};
+  vector&lt;int&gt; v2 = {d,e,f};
+  sort(v1.begin(), v1.end());
+  sort(v2.begin(), v2.end());
+  if (v1 == v2 &amp;&amp; (v1[0]*v1[0] + v1[1]*v1[1] == v1[2]*v1[2])) {
+    cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+  } else {
+    cout &lt;&lt; &quot;NO&quot; &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

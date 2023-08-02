@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;iomanip&gt;
+#include&lt;string&gt;
+using namespace std;
+
+float dfs(int str, int s, int w, int l, int nwon, int nlost) {
+  if (nwon==4) return 1;
+  if (nlost==4) return 0;
+  float p=(float) str/(float)(str+s);
+  return p*dfs(20+w,s,w,l,nwon+1,nlost)+(1-p)*dfs(20-l,s,w,l,nwon, nlost+1);
+}
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    string a;
+    getline(cin, a); getline(cin, a);
+    int s,w,l; cin &gt;&gt; s &gt;&gt; w &gt;&gt; l;
+    float res=dfs(20,s,w,l,0,0);
+    cout &lt;&lt; fixed &lt;&lt; setprecision(5) &lt;&lt; res &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

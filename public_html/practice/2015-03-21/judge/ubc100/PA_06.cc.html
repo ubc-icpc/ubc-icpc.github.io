@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;string&gt;
+#include&lt;algorithm&gt;
+
+using namespace std;
+
+void f(vector&lt;string&gt; arr, int n) {
+  for ( int i=0; i&lt;n-1; i++ ) {
+    string min = arr[i], max = arr[i+1];
+    max = max.substr(0, min.size());
+    if(max.compare(min) == 0) {
+      cout &lt;&lt; &quot;NO&quot;&lt;&lt; endl;
+      return;
+    }
+  }
+  cout &lt;&lt; &quot;YES&quot; &lt;&lt; endl;
+}
+int main ( void ) {
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    int n; cin &gt;&gt; n;
+    vector&lt;string&gt; arr;
+    for( int i=0; i&lt;n; i++) {
+      string t; cin &gt;&gt; t;
+      arr.push_back(t);
+    }
+    sort(arr.begin(), arr.end());
+    f(arr, n);
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

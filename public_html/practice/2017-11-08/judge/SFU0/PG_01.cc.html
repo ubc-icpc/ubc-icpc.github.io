@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+long long gao(long long k) { 
+    long long ans = 0;
+    while(k) {
+        if (k % 2) ans++;
+        k = k &gt;&gt; 1;
+    }
+    return ans;
+}
+
+
+long long gcd(long long a, long long b) {
+    if (a == 0) return b;
+    if (b == 0) return a;
+    return gcd(b % a, a);
+}
+
+
+long long work(long long n, long long m) { 
+    long long ans = 1;
+    long long temp, temp2;
+    if (m &gt; (n-m)) m = n-m;
+    for (long long i = 1; i &lt;= m; i++) {
+        temp = (n-i+1);
+        temp2 = gcd(temp, i);
+        ans = ans / (i/temp2) * (temp/temp2);
+    }
+    return ans;
+}
+
+long long gao2(long long n) {
+    long long ans = 0, temp = 0,k = ((long long)1) &lt;&lt; 60, r = 60;
+
+    while(k) {
+        if (k &amp; n) {
+            for (long long i = 0; i &lt;= r; i++) {
+                if (((i + temp) &gt; 0) &amp;&amp; ((i + temp) % 3 == 0)) {
+                    ans += work(r, i);
+                }
+            }
+            temp++;
+        }
+        k = k &gt;&gt; 1;
+        r--;
+    }
+    if ((temp &gt; 0) &amp;&amp; (temp % 3) == 0) ans++;
+    return ans;
+}
+
+int main () {
+    long long n;
+    while(cin &gt;&gt; n) {
+        cout &lt;&lt; &quot;Day &quot; &lt;&lt; n &lt;&lt; &quot;: Level = &quot; &lt;&lt; gao2(n) &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

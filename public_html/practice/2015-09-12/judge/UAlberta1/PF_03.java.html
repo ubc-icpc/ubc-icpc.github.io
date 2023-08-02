@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+import java.math.BigInteger;
+
+public class balance {
+
+	static Scanner in = new Scanner(System.in);
+	static String input;
+	public static void main(String[] args){
+		String G = in.nextLine();
+		for(int g = 0; g &lt; Integer.parseInt(G); g++){
+			input = in.nextLine();
+			int[] x = new int[input.length()];
+			int first = -1;
+			for(int i = 0; i &lt; input.length(); i++){
+				x[i] = getType(input.charAt(i));
+				if(first == -1 &amp;&amp; x[i] != -1)first = i;
+			}
+			BigInteger value = new BigInteger(&quot;1&quot;);
+			if(first == -1){
+				int half = input.length() / 2;
+				value = new BigInteger(&quot;6&quot;).pow(half).multiply(new BigInteger(&quot;20&quot;).pow(input.length()-half)).add(new BigInteger(&quot;20&quot;).pow(half).multiply(new BigInteger(&quot;6&quot;).pow(input.length()-half)));
+			}else{
+				boolean valid = true;
+				if(first!=0)for(int l = first-1; l &gt;= 0; l--){
+					if(x[l] == -1){
+						if(x[l+1] == 0){
+							x[l] = 1;
+							value = value.multiply(new BigInteger(&quot;6&quot;));
+						}else{
+							x[l] = 0;
+							value = value.multiply(new BigInteger(&quot;20&quot;));
+						}
+					}else if(x[l] == x[l+1]){
+						value = new BigInteger(&quot;0&quot;);
+						valid = false;
+						break;
+					}
+				}
+				if(valid &amp;&amp; first!=input.length()-1)for(int r = first+1; r &lt; input.length(); r++){
+					if(x[r] == -1){
+						if(x[r-1] == 0){
+							x[r] = 1;
+							value = value.multiply(new BigInteger(&quot;6&quot;));
+						}else{
+							x[r] = 0;
+							value = value.multiply(new BigInteger(&quot;20&quot;));
+						}
+					}else if(x[r] == x[r-1]){
+						value = new BigInteger(&quot;0&quot;);
+						break;
+					}
+				}
+			}
+			System.out.println(&quot;String #&quot; + (g+1) + &quot;: &quot; + value);
+			System.out.println();
+		}
+	}
+	public static int getType(char i){ //-1: ?, 0: consonant, 1: vowel
+		if(i == 63)return -1;
+		char[] odd = new char[] {97, 101, 105, 111, 117, 121};
+		for(int n = 0; n &lt; 6; n++)
+			if(i == odd[n])return 1;
+		return 0;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

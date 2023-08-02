@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef vector&lt;int&gt; vi;
+typedef pair&lt;vi, string&gt; pvis;
+
+int main() {
+  int N; cin &gt;&gt; N;
+  vector&lt;pvis&gt; names;
+  string l; getline(cin, l);
+  int msize = 0;
+  while (N--) {
+    getline(cin, l);
+    stringstream ss(l);
+    string s; ss &gt;&gt; s;
+    vi order;
+    string name = s.substr(0, s.size()-1);
+    while (ss &gt;&gt; s) {
+      if (s == &quot;upper&quot;) {
+        order.push_back(0);
+      } else if (s == &quot;middle&quot;) {
+        order.push_back(1);
+      } else if (s == &quot;lower&quot;) {
+        order.push_back(2);
+      }
+    }
+    reverse(order.begin(), order.end());
+    int ordersize = order.size();
+    msize = max(msize, ordersize);
+    names.push_back({order, name});
+  }
+  for (pvis &amp; p: names) {
+    int toadd = msize - p.first.size();
+    while (toadd--) {
+      p.first.push_back(1);
+    }
+  }
+  sort(names.begin(), names.end());
+  for (pvis &amp; p: names) {
+    cout &lt;&lt; p.second &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

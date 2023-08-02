@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#! C:\Python27
+# Filename: ProblemI.py
+
+def foo(c, l):
+	front = True
+	for command in c:
+		if command == 'R':
+			if front:
+				front = False
+			else:
+				front = True
+		else:
+			if len(l) == 0:
+				return 'error'
+			if front:
+				l.pop(0)
+			else:
+				l.pop()
+
+	if front:
+		return l
+	else:
+		return l[::-1]
+
+cases = int(raw_input())
+outputs = []
+
+for case in range(cases):
+	
+	commands = raw_input()
+	elements = int(raw_input())
+	L = raw_input()
+	L = L[1:-1].split(',')
+	
+	if elements == 0:
+		L = []
+	L = [ int(x) for x in L ]
+	
+	outputs.append(foo(commands, L))
+
+for output in outputs:
+	print output
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

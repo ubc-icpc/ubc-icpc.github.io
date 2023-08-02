@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;utility&gt;
+using namespace std;
+
+typedef set&lt;int&gt; si;
+typedef si::iterator sii;
+typedef vector&lt;si&gt; vsi;
+typedef pair&lt;int,int&gt; pii;
+
+int d[101];
+si a[101];
+int c[101];
+
+int main() {
+  int n, m, s, t, k;
+  while (cin &gt;&gt; n &amp;&amp; n != 1) {
+    cin &gt;&gt; m;
+    for (int i = 1; i &lt;= n; i++) {
+      d[i] = 0;
+      a[i].clear();
+      c[i] = 0;
+    }
+    for (int i = 0; i &lt; m; i++) {
+      cin &gt;&gt; s &gt;&gt; t &gt;&gt; k;
+      d[s] += k;
+      d[t] += k;
+      a[s].insert(t);
+      a[t].insert(s);
+    }
+    for (int i = 1; i &lt;= n; i++)
+      if (!d[i])
+        c[i] = -1;
+    int C = 1;
+    for (int i = 1; i &lt;= n; i++) {
+      if (!c[i]) {
+        queue&lt;int&gt; q;
+        q.push(i);
+        while (q.size()) {
+          int f = q.front();
+          q.pop();
+          for (sii it = a[f].begin(); it != a[f].end(); it++) {
+            if (!c[*it]) {
+              c[*it] = C;
+              q.push(*it);
+            }
+          }
+        }
+        C++;
+      }
+    }
+    C--;
+    int e = 0;
+    while (C &gt; 1) {
+      vector&lt;pii&gt; od;
+      for (int i = 1; i &lt;= n; i++)
+        if (d[i] % 2)
+          od.push_back(make_pair(i,c[i]));
+      int c1 = -1, c2 = -1;
+      if (od.size()) {
+        for (int i = 0; i &lt; od.size()-1; i++) {
+          for (int j = i+1; j &lt; od.size(); j++) {
+            if (od[i].second != od[j].second) {
+              c1 = od[i].first;
+              c2 = od[j].first;
+              goto VELOCIRAPTOR;
+            }
+          }
+        }
+        c1 = od[0].first;
+        for (int i = 2; i &lt;= n; i++) {
+          if (c[i] == -1)
+            continue;
+          if (c[i] != c[c1]) {
+            c2 = i;
+            break;
+          }
+        }
+      }
+      else {
+        c1 = 1;
+        for (int i = 2; i &lt;= n; i++) {
+          if (c[i] == -1)
+            continue;
+          if (c[i] != c[1]) {
+            c2 = i;
+            break;
+          }
+        }
+      }
+      VELOCIRAPTOR:
+      int oc = c[c2];
+      for (int i = 1; i &lt;= n; i++)
+        if (c[i] == oc)
+          c[i] = c[c1];
+      d[c1]++;
+      d[c2]++;
+      C--;
+      e++;
+    }
+    int od = 0;
+    for (int i = 1; i &lt;= n; i++)
+      if (d[i] % 2)
+        od++;
+    cout &lt;&lt; e+od/2 &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

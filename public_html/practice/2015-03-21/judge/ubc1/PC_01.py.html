@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+t = int(raw_input())
+
+for i in range(t):
+	n = int(raw_input())
+	lst = [int(x) for x in raw_input().split()]
+	lst.sort()
+	print 2*(lst[-1]-lst[0])
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

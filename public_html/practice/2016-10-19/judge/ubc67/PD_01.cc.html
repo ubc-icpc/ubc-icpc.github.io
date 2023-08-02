@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int main() {
+	int r, c; cin &gt;&gt; r &gt;&gt; c;
+	vector&lt;string&gt; sa; string temp;
+	int v[r][c];
+	for (int i=0; i&lt;r; i++) {
+		for (int j=0; j&lt;c; j++) {
+			v[i][j] = 0;
+		}
+	}
+	for (int i=0; i&lt;r; i++) {
+		cin &gt;&gt; temp;
+		sa.push_back(temp);
+	}
+	pair&lt;int,int&gt; cur; cur.first = 0; cur.second = 0; v[cur.first][cur.second] = 1;
+	int travelled = 0;
+	while (true) {
+		if (sa.at(cur.first).substr(cur.second,1) == &quot;E&quot;) {
+			cur.second++;
+		} else if (sa.at(cur.first).substr(cur.second,1) == &quot;S&quot;) {
+			cur.first++;
+		} else if (sa.at(cur.first).substr(cur.second,1) == &quot;W&quot;) {
+			cur.second--;
+		} else if (sa.at(cur.first).substr(cur.second,1) == &quot;N&quot;) {
+			cur.first--;
+		} else if (sa.at(cur.first).substr(cur.second,1) == &quot;T&quot;) {
+			cout &lt;&lt; travelled &lt;&lt; endl;
+			break;
+		}
+		travelled++;
+		if (cur.first &gt;= r || cur.first &lt; 0 || cur.second &gt;= c || cur.second &lt; 0) {
+			cout &lt;&lt; &quot;Out&quot; &lt;&lt; endl;
+			break;
+		}
+		if (v[cur.first][cur.second]) {
+			cout &lt;&lt; &quot;Lost&quot; &lt;&lt; endl;
+			break;
+		} else {
+			v[cur.first][cur.second] = 1;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

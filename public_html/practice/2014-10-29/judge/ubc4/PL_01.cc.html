@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;cstring&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;sstream&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+const int MAX_BUF = 1 &lt;&lt; 20;
+const int maxn = 100 + 10;
+char buf[MAX_BUF];
+int n;
+set&lt;string&gt; a[maxn];
+map&lt;string, int&gt; tmm;
+string b[maxn];
+
+string lowercase(string v) {
+	for (int i = 0; i &lt; v.size(); i++)
+		if (v[i] &gt;= 'A' &amp;&amp; v[i] &lt;= 'Z')
+			v[i] = v[i] - 'A' + 'a';
+	return v;
+}
+
+int main() {	
+	scanf(&quot;%d\n&quot;, &amp;n);
+	for (int i = 0; i &lt; n; i++) {
+		fgets(buf, MAX_BUF, stdin);
+		//printf(&quot;%s&quot;, buf);
+		stringstream ss(buf);		
+		string name = &quot;&quot;, token;
+		while (ss &gt;&gt; token) {
+			if (b[i] == &quot;&quot;) 
+				b[i] = token;
+			else tmm[lowercase(token)] = i;
+		}			
+	}
+	scanf(&quot;\n&quot;);
+	
+	while (fgets(buf, MAX_BUF, stdin) != NULL) {
+		//printf(&quot;%s&quot;, buf);
+		for (int i = 0; buf[i]; i++)
+			if (buf[i] == ',' 
+			|| buf[i] == '.'
+			|| buf[i] == '!'
+			|| buf[i] == ';'
+			|| buf[i] == '?'
+			|| buf[i] == '('
+			|| buf[i] == ')'
+			|| buf[i] == '['
+			|| buf[i] == ']'
+			|| buf[i] == '{'
+			|| buf[i] == '}')
+				buf[i] = ' ';
+		stringstream ss(buf);
+		
+		string token;		
+		while (ss &gt;&gt; token) {
+			token = lowercase(token);
+			if (tmm.find(token) != tmm.end()) {
+				printf(&quot;%s\n&quot;, b[tmm[token]].c_str());
+				break;
+			}
+		}
+	}
+}
+ </pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

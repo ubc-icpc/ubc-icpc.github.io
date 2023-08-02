@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+  int N; cin &gt;&gt; N;
+  while (N--) {
+    int ug, us, ub, rg, rs, rb;
+    cin &gt;&gt; ug &gt;&gt; us &gt;&gt; ub &gt;&gt; rg &gt;&gt; rs &gt;&gt; rb;
+    cout &lt;&lt; ug &lt;&lt; &quot; &quot; &lt;&lt; us &lt;&lt; &quot; &quot; &lt;&lt; ub &lt;&lt; &quot; &quot; &lt;&lt; rg &lt;&lt; &quot; &quot; &lt;&lt; rs &lt;&lt; &quot; &quot; &lt;&lt; rb &lt;&lt; endl;
+    bool count = ug + us + ub &gt; rg + rs + rb;
+    bool color = false;
+    if (ug &gt; rg) { color = true; }
+    else if (ug == rg) {
+      if (us &gt; rs) { color = true; }
+      else if (us == rs) { color = ub &gt; rb; }
+    }
+    if (count &amp;&amp; color) cout &lt;&lt; &quot;both&quot;;
+    else if (count) cout &lt;&lt; &quot;count&quot;;
+    else if (color) cout &lt;&lt; &quot;color&quot;;
+    else cout &lt;&lt; &quot;none&quot;;
+    cout &lt;&lt; endl &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

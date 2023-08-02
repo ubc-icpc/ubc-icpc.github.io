@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+
+using namespace std;
+    int n,s;
+    string na[100], ty;
+    int hp[100],at[100],df[100];
+bool win(int i,int j) {
+    int ri = max(0,at[j]-df[i]);
+    int rj = max(0,at[i]-df[j]);
+    if(rj==0) return false;
+    if(ri==0) return true;
+    return (hp[i]-1)/ri &gt; (hp[j]-1)/rj;
+}
+int main()
+{
+    cin&gt;&gt;n;
+    for(int i=0; i &lt;n;i++) cin&gt;&gt;na[i]&gt;&gt;hp[i]&gt;&gt;at[i]&gt;&gt;df[i];
+    for(int i=0;i&lt;n;i++) for(int j=i+1;j&lt;n;j++) for(int k=j+1;k&lt;n;k++) {
+        if((win(i,j)&amp;&amp;win(j,k)&amp;&amp;win(k,i)) || (win(j,i)&amp;&amp;win(k,j)&amp;&amp;win(i,k))) s++,ty+=(na[i]+' '+na[j]+' '+na[k]+&quot;\n&quot;);
+    }
+    cout&lt;&lt;s&lt;&lt;endl&lt;&lt;ty;
+
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+public class FlashMob {
+    private static int caseCounter = 0;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        fm(sc);
+    }
+
+    public static void fm(Scanner sc) {
+        caseCounter += 1;
+        int membersCount = sc.nextInt();
+        if (membersCount &gt; 0) {
+            int[] membersX = new int[membersCount];
+            int[] membersY = new int[membersCount];
+            for (int i = 0; i &lt; membersCount; i += 1) {
+                membersX[i] = sc.nextInt();
+                membersY[i] = sc.nextInt();
+            }
+            Arrays.sort(membersX);
+            Arrays.sort(membersY);
+            int resultX = membersX[(membersCount - 1) / 2];
+            int resultY = membersY[(membersCount - 1) / 2];
+            int blocksTravelled = 0;
+            for (int x : membersX) {
+                blocksTravelled += Math.abs(x - resultX);
+            }
+            for (int y : membersY) {
+                blocksTravelled += Math.abs(y - resultY);
+            }
+            System.out.println(&quot;Case &quot; + caseCounter + &quot;: (&quot; + resultX + &quot;,&quot; + resultY + &quot;) &quot; + blocksTravelled);
+        }
+        if (sc.hasNext()) fm(sc);
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

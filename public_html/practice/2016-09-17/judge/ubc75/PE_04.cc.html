@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define rep(i,n) for(int i=0; i&lt;(n); i++)
+
+typedef long long ll;
+typedef unsigned long long ull;
+typedef string st;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;ll&gt; vll;
+typedef vector&lt;st&gt; vs;
+typedef map&lt;int,int&gt; mii;
+typedef map&lt;st,int&gt; msi;
+typedef set&lt;int&gt; si;
+typedef set&lt;st&gt; ss;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;pii&gt; vpii;
+
+#define MOD 1e9+7
+
+int mini;
+int maxi;
+
+int ans(vi nums, string ops, int size, int maxormin, bool start){
+	int anss;
+	int tempans;
+	int ind = 0;
+
+	if (maxormin == 1)
+		anss = -2147483600;
+	else		
+		anss = 2147483600;
+
+	if(size==2){
+		char comp = ops[0];
+		int base;
+		if(comp=='+'){
+			base= nums[0] + nums[1];
+		}
+		else if(comp=='-')
+			base = nums[0]-nums[1];
+		else
+			base =  nums[0]*nums[1];
+		//cout &lt;&lt; &quot;BASE:&quot; &lt;&lt; base &lt;&lt;endl;
+		anss = base;
+	}
+	else{
+		rep(i,size-1){
+			vi temp(size-1);
+			string tempops(size-2, ' ');
+			char comp = ops[i];
+
+			rep(k,i){
+				temp[k] = nums[k];
+				tempops[k] = ops[k];
+			}
+
+			if (comp == '+'){
+				temp[i] = nums[i] + nums[i+1];
+				//for(int j = 0; i&lt;)
+
+			}
+			else if(comp=='*'){
+				temp[i] = nums[i] * nums[i+1];
+			}
+
+			else if(comp=='-'){
+				temp[i] = nums[i] - nums[i+1];
+			}
+
+			for(int j = i+1; j&lt;size-1; j++){
+				temp[j] = nums[j+1];
+				if(j&lt;size-1)
+					tempops[j-1] = ops[j];
+			}
+
+			tempans = ans(temp, tempops, size-1,!maxormin, false);
+			if(maxormin==1 &amp;&amp; tempans&gt;anss){
+				//cout &lt;&lt; &quot;STRS:&quot; &lt;&lt; tempops;
+				ind = i;
+				anss = tempans;
+			}
+
+			if(maxormin==0 &amp;&amp; tempans&lt;anss){
+				ind = i;
+				anss = tempans;
+			}		
+
+		}
+	}
+
+	if(start){
+		if (maxormin==1){
+			maxi = ind;
+		}
+		else
+			mini = ind;
+	}
+	
+	return anss;
+
+}
+
+int main() {
+	
+	ios_base::sync_with_stdio(0);
+	int n; cin &gt;&gt; n;
+	int m,r1,r2;
+	rep(i,n){
+		cin &gt;&gt; m;
+		m++;		//int temp;
+		vi nums(m);
+		string ops(m-1, ' ');
+
+		rep(j,m){
+			cin &gt;&gt; nums[j];
+			if(j!=m-1)
+				cin &gt;&gt; ops[j];
+		}
+
+		r1 = ans(nums, ops, m, 1, true);
+		r2 = ans(nums,ops, m, 0, true);
+
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; i+1 &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+		cout &lt;&lt; &quot;Player 1 (&quot; &lt;&lt; nums[maxi] &lt;&lt;ops[maxi] &lt;&lt; nums[maxi+1] &lt;&lt; &quot;) leads to &quot; &lt;&lt; r1 &lt;&lt; endl;
+		cout &lt;&lt; &quot;Player 2 (&quot; &lt;&lt; nums[mini] &lt;&lt;ops[mini] &lt;&lt; nums[mini+1] &lt;&lt; &quot;) leads to &quot; &lt;&lt; r2 &lt;&lt; endl;
+
+		if(r1&gt;-r2)
+			cout &lt;&lt; &quot;Player 1 wins&quot; &lt;&lt; endl;
+
+		else if(r1&lt;-r2)
+			cout &lt;&lt; &quot;Player 2 wins&quot; &lt;&lt; endl;
+
+		else
+			cout &lt;&lt; &quot;Tie&quot; &lt;&lt; endl;
+
+	}
+
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+double l, t, c;
+int main() {
+  while (cin &gt;&gt; l &gt;&gt; t &gt;&gt; c &amp;&amp; (l + t + c) &gt;= 0.0) {
+    double lp = (1 + t * c) * l;
+    double theta_lo = 0.0;
+    double theta_hi = M_PI;
+    double theta_m = (theta_lo + theta_hi) / 2.0;
+    double r = lp / theta_m;
+    double try_l;
+    if (abs(lp - l) &lt; 1e-8) {
+      cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; 0.000 &lt;&lt; endl;
+    } else {
+      int n = 100;
+      while (n--) {
+        theta_m = (theta_lo + theta_hi) / 2.0;
+        r = lp / theta_m;
+        try_l = 2.0 * r * cos((M_PI - theta_m) / 2.0);
+        if (try_l &gt; l) {
+          theta_lo = theta_m;
+        } else {
+          theta_hi = theta_m;
+        }
+      }
+      double result = r - r * sin((M_PI - theta_lo) / 2.0);
+
+      cout &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; result &lt;&lt; endl;
+    }
+  }
+
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;queue&gt;
+#include &lt;cstdio&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int n;
+string cmd;
+deque&lt;int&gt; d;
+
+int main(){
+
+	int ncases;
+	cin &gt;&gt; ncases;
+	while(ncases--){
+		
+		d.clear();
+		cmd.clear();
+		cin &gt;&gt; cmd;
+		
+		cin &gt;&gt; n;
+		
+		scanf(&quot; %*c&quot;);
+		
+		for(int i = 0;i &lt; n;i++){
+			
+			int x;
+			cin &gt;&gt; x;
+			
+			d.push_back(x);
+			if(i &lt; n-1) scanf(&quot; %*c&quot;);
+		}
+		
+		scanf(&quot; %*c&quot;);
+		
+		bool Error = 0;
+		
+		bool inverted = 0;
+		for(auto op : cmd){
+			
+			if(op == 'R') inverted ^= 1;
+			else{
+				if(d.empty()) Error = 1;
+				else if(inverted) d.pop_back();
+				else d.pop_front();
+			}
+		}
+		
+		vector&lt;int&gt; sol;
+		sol.clear();
+		
+		deque&lt;int&gt;::iterator itb, ite;
+		deque&lt;int&gt;::reverse_iterator ritb, rite;
+		
+		itb = d.begin(), ite = d.end();
+		ritb = d.rbegin(), rite = d.rend();
+		
+		deque&lt;int&gt;::iterator it;
+		deque&lt;int&gt;::reverse_iterator rit;
+		if(!inverted) for(it = itb;it != ite;it++) sol.push_back(*it);
+		else for(rit = ritb;rit != rite;rit++) sol.push_back(*rit);
+		
+		if(Error) printf(&quot;error\n&quot;);
+		else{
+			printf(&quot;[&quot;);
+			for(int i = 0;i &lt; (int)sol.size();i++){
+				printf(&quot;%d&quot;, sol[i]);
+				if(i != (int)sol.size() - 1) printf(&quot;,&quot;);
+			}
+			printf(&quot;]\n&quot;);
+		}
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

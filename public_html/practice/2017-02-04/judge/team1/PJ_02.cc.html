@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;set&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+typedef long long lli;
+
+#define MAXN 55
+
+int n;
+int v[MAXN];
+
+int main(){
+	
+	int ncases;
+	cin &gt;&gt; ncases;
+	
+	while(ncases--){
+		
+		cin &gt;&gt; n;
+		for(int i = 1;i &lt;= n;i++) cin &gt;&gt; v[i];
+		
+		lli answer = 0LL;
+		
+		lli qtd[1010];
+		for(int i = 2;i &lt;= n;i++){
+			
+			if(v[i] &gt;= v[i-1]) continue;
+			
+			int cont = 0;
+			for(int j = 1;j &lt; i;j++) if(v[j] &lt; v[i]) cont++;
+			
+			if(!cont){ 
+				answer++; 
+				sort(v+1, v+i+1);
+				continue; 
+			}
+			
+			//cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; cont &lt;&lt; endl;
+			
+			memset(qtd, 0, sizeof qtd);
+			
+			for(int k = 1;k &lt;= cont;k++) qtd[v[k]]++;
+			
+			lli prod = 1LL;
+			
+			answer++;
+			for(int k = 1;k &lt;= 1000;k++){
+				answer += prod*qtd[k];
+				prod *= qtd[k]+1LL;
+			}
+			
+			sort(v+1, v+i+1);
+		}
+		
+		cout &lt;&lt; answer &lt;&lt; endl;
+	}
+	
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

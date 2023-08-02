@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define pi 3.14159265358979
+int main(){
+	int n;cin&gt;&gt;n;
+	while(n--){
+		double s,r;
+		cin&gt;&gt;s&gt;&gt;r;
+		if(r*r&gt;=s*s/2){
+			printf(&quot;%.2f\n&quot;,s*s);
+			continue;
+		}
+		if(r&lt;=s/2){
+			printf(&quot;%.2f\n&quot;,pi*r*r);
+			continue;
+		}
+		double theta=acos(s/2/r);
+	//	cout&lt;&lt;theta;
+		double h=tan(theta)*s/2,ha=h*s/4;
+		double arca=pi*r*r*((pi/4-theta)/pi/2)*8;
+		printf(&quot;%.2f\n&quot;,ha*8+arca);
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

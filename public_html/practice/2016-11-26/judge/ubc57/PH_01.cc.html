@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+
+ll r[200005],l[200005];
+ll nxt[400005];
+ll DP[400005];
+map&lt;ll,int&gt; comp;
+vector&lt;ll&gt; v;
+ll dp(int i){
+    if (DP[i]!=-1) return DP[i];
+    if (i&gt;=(v.size()-1)) return 0;
+    ll ans=dp(i+1); 
+    if (nxt[i]) ans=max(ans,nxt[i]-v[i]+1+dp(comp[nxt[i]]+1));
+    return DP[i]=ans;
+}
+int main(){
+    ios::sync_with_stdio(0);
+    ll n; int k; cin&gt;&gt;n&gt;&gt;k;
+    set&lt;ll&gt; s;
+    for (int i=0;i&lt;k;i++){
+        cin&gt;&gt;l[i]&gt;&gt;r[i];
+        s.insert(r[i]);
+        s.insert(l[i]);
+    }
+    v.assign(s.begin(),s.end());
+    for (int i=0;i&lt;v.size();i++) comp[v[i]]=i;
+    for (int i=0;i&lt;k;i++) nxt[comp[l[i]]]=max(nxt[comp[l[i]]],r[i]);
+    //for (int i=0;i&lt;v.size();i++) cout&lt;&lt;v[i]&lt;&lt;' '&lt;&lt;nxt[i]&lt;&lt;endl;
+    memset(DP,-1,sizeof DP);
+    cout&lt;&lt;n-dp(0)&lt;&lt;endl;
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;code.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+  int d;
+  int p[365];
+  long long curr_money = 100;
+  long long curr_stock = 0;
+  cin &gt;&gt; d;
+  for (int i = 0; i &lt; d; i++)
+    cin &gt;&gt; p[i];
+
+  int min_price = p[0];
+  for (int i = 1; i &lt; d; i++) {
+    while (p[i] &lt;= min_price) {
+      if (i == d - 1) goto end;
+      min_price = p[i];
+      i++;
+    }
+    curr_stock = curr_money / min_price;
+    if (curr_stock &gt; 100000) curr_stock = 100000;
+    curr_money -= curr_stock * min_price;
+    curr_money += curr_stock * p[i];
+    min_price = p[i];
+  }
+end:
+  cout &lt;&lt; curr_money &lt;&lt; '\n';
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

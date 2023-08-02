@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cmath&gt;
+#include &lt;cstdio&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+typedef long long ll;
+
+int main() {
+	int n; cin &gt;&gt; n;
+	int tc = 1;
+	do {
+		int x[n], y[n];
+		for(int i = 0; i &lt; n; i++) {
+			cin &gt;&gt; x[i] &gt;&gt; y[i];
+		}
+		sort(x, x+n);
+		sort(y, y+n);
+		int xloc = x[(n+1)/2-1];
+		int yloc = y[(n+1)/2-1];
+		int dist = 0;
+		for(int i = 0; i &lt; n; i++) {
+			dist += abs(x[i] - xloc);
+			dist += abs(y[i] - yloc);
+		}
+		cout &lt;&lt; &quot;Case &quot; &lt;&lt; tc &lt;&lt; &quot;: (&quot; &lt;&lt; xloc &lt;&lt; ',' &lt;&lt; yloc &lt;&lt; &quot;) &quot; &lt;&lt; dist &lt;&lt; endl;
+		cin &gt;&gt; n;
+		tc++;
+	} while(n != 0);
+
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

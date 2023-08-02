@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+using namespace std;
+long long int loqarifm(long long int a)
+{
+    int x = 3;
+    while (x &lt;= 15)
+    {
+        if (a == pow(10, x))
+        {
+            return x;
+        }
+        x += 3;
+    }
+    return log(a) / log(10);
+}
+int main()
+{
+    long long int eded1, eded2;
+    int n;
+    cin &gt;&gt; n;
+    for (int z = 0; z &lt; n; z++)
+    {
+        cin &gt;&gt; eded1 &gt;&gt; eded2;
+        long long int  cem1 = 0, cem2 = 0;
+        long long int loqa;
+         long long int of;
+         long long int yol;
+        long long int temp = 0;
+        if (eded1 != 0)
+        {
+            --eded1;
+        }
+        while (eded1 != 0)
+        {
+            loqa = loqarifm(eded1);
+            of = eded1 / pow(10, loqa);
+            if (loqa == 0)
+            {
+                cem1 += (1 + eded1)*eded1 / 2;
+                eded1 = 0;
+            }
+            else
+            {
+
+                eded1 -= of*pow(10, loqa);
+                --of;
+                yol = 45 * loqa*pow(10, loqa - 1)*(of + 1); 
+                cem1 += yol + (of + 1)*(eded1 + 1);
+                if (of != 0)
+                {
+                    yol = pow(10, loqa)*(1 + of)*of / 2;
+                    cem1 += yol;
+                }
+            }
+        }
+        temp = 0;
+        while (eded2 != 0)
+        {
+            loqa = loqarifm(eded2);
+            of = eded2 / pow(10, loqa);
+            if (loqa == 0)
+            {
+                cem2 += (1 + eded2)*eded2 / 2;
+                eded2 = 0;
+            }
+            else
+            {
+                eded2 -= of*pow(10, loqa);
+                --of;
+                yol = 45 * loqa*pow(10, loqa - 1)*(of + 1);
+                cem2 += yol + (of+1)*(eded2+1);
+                if (of != 0)
+                {
+                    yol = pow(10, loqa)*(1 + of)*of / 2;
+                    cem2 += yol;
+                }
+            }
+        }
+        cout &lt;&lt; cem2 - cem1 &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

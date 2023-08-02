@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+
+using namespace std;
+
+int main() {
+	pair&lt;int, int&gt; g;
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		cin &gt;&gt; g.first &gt;&gt; g.second;
+		int numDivisors = 0;
+		int larger;
+		if (abs(g.first) &gt; abs(g.second)) {
+			larger = g.first;
+		} else {
+			larger = g.second;
+		}
+		if (pow(g.first,2) + pow(g.second,2) &gt; 1) {
+			for (int m= -abs(larger); m&lt;=abs(larger); m++) {
+				for (int n= -abs(larger); n&lt;=abs(larger); n++) {
+					int temp = pow(m,2)+pow(n,2);
+					if (temp &gt; 0) {
+						if ((m*g.first + n*g.second) % temp == 0 &amp;&amp; (m*g.second - n*g.first) % temp == 0) {
+							//cout &lt;&lt; m &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; endl;
+							numDivisors++;
+						}
+					}
+				}
+			}
+		}
+		//cout &lt;&lt; numDivisors &lt;&lt; endl;
+		if (numDivisors == 8) {
+			cout &lt;&lt; &quot;P&quot; &lt;&lt; endl;
+		} else {
+			cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+		}
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

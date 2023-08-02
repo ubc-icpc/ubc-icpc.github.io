@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;int,int&gt; pii;
+typedef vector&lt;int&gt; vi;
+
+#define endl '\n'
+
+int main() {
+	ios::sync_with_stdio(0);
+	string a; cin &gt;&gt; a;
+	int i=0;
+	while (i&lt;a.size()) {
+		if (a.size() - i &gt; 2) {
+			if ( (a[i] == 'R' || a[i+1] == 'R' || a[i+2] == 'R') &amp;&amp;
+			(a[i] == 'B' || a[i+1] == 'B' || a[i+2] == 'B') &amp;&amp;
+			(a[i] == 'L' || a[i+1] == 'L' || a[i+2] == 'L') ) {
+				i += 3;
+				cout &lt;&lt; &quot;C&quot;;
+				continue;
+			}
+		}
+		if (a[i] == 'R') cout &lt;&lt; &quot;S&quot;;
+		if (a[i] == 'B') cout &lt;&lt; &quot;K&quot;;
+		if (a[i] == 'L') cout &lt;&lt; &quot;H&quot;;
+		i++;
+	}
+	cout &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

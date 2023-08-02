@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef long long ll;
+int main(){
+    int T;
+    cin &gt;&gt; T;
+    int k=0;
+    int go[6] = {1,2,3,3,4,10};
+    int ev[7] = {1,2,2,2,3,5,11};
+    while(T--){
+        k++;
+        ll good=0, evil = 0, tmp;
+        for(int i=0;i&lt;6;i++){
+            cin &gt;&gt; tmp;
+            good += tmp * go[i];
+        }
+        for(int i=0;i&lt;7;i++){
+            cin &gt;&gt; tmp;
+            evil += tmp*ev[i];
+        }
+        if(good&gt;evil){
+            cout&lt;&lt;&quot;Battle &quot;&lt;&lt;k&lt;&lt;&quot;: Good triumphs over Evil&quot;&lt;&lt;endl;
+        }
+        else if(evil&gt;good){
+            cout&lt;&lt;&quot;Battle &quot;&lt;&lt;k&lt;&lt;&quot;: Evil eradicates all trace of Good&quot;&lt;&lt;endl;
+        }
+        else if(evil == good){
+            cout&lt;&lt;&quot;Battle &quot;&lt;&lt;k&lt;&lt;&quot;: No victor on this battle field&quot;&lt;&lt;endl;
+        }
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

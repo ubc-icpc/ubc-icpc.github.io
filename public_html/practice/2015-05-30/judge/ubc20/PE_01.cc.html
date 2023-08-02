@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+//http://www.cs.ubc.ca/~acm-web/practice/2015-05-30/problems/problems.pdf#page=7
+#include &lt;iostream&gt;
+using namespace std;
+
+#define MAX 300001
+int n,par[MAX][20],cc[MAX],is[MAX],h[MAX];
+
+int climb(int x, int steps){ x=is[x]; for (int k=0; steps&gt;=(1&lt;&lt;k); k++) if (steps&amp;(1&lt;&lt;k)) x=is[par[x][k]]; return x; }
+void addChild(int x, int y){ y=is[y]; par[x][0]=y; cc[x]=cc[y]+1; h[x]=h[y]+1; for (int k=1; (1&lt;&lt;k)&lt;=h[x]; k++) par[x][k]=climb(y,(1&lt;&lt;k)-1);}
+void symLink(int x, int y){ is[x]=is[y]; cc[x]=cc[y]; h[x]=h[y]; }
+
+int cnt(int x, int y){
+	x=is[x]; y=is[y]; if (h[x]&lt;h[y]) swap(x,y); x=climb(x,h[x]-h[y]);
+	if (x==y) return h[x];
+	int lo=0, hi=h[x];
+	while(lo&lt;hi-1){ int mid=(lo+hi)/2; 
+		int xx=climb(x,hi-mid),yy=climb(y,hi-mid);
+		if (xx==yy) lo=mid; else {x=xx; y=yy; hi=mid;}
+	}
+	return lo;
+}
+
+int main(){
+	int i,j,k,v,w;
+	char s[2];
+	cin&gt;&gt;n;	for (i=1; i&lt;=n; i++){
+		is[i]=i;
+		cin&gt;&gt;s&gt;&gt;v;
+		if (s[0]=='a') addChild(i,v);
+		else if (s[0]=='b'){
+			symLink(i,par[is[v]][0]);
+			cout&lt;&lt;is[v]&lt;&lt;endl;
+		}
+		else{
+			cin&gt;&gt;w;
+			symLink(i,v);
+			cout&lt;&lt;cnt(i,w)&lt;&lt;endl;
+		}
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

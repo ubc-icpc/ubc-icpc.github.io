@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdio.h&gt;
+#include &lt;set&gt;
+#include &lt;math.h&gt;
+using namespace std;
+int main() {
+	int g,m;
+	scanf(&quot;%d&quot;,&amp;g);
+	multiset&lt;int&gt; lines[10001];
+	for(int i=0;i&lt;g;i++) {
+		int x,y;
+		scanf(&quot;%d %d&quot;,&amp;x,&amp;y);
+		lines[x].insert(y);
+	}
+	int count=0;
+	//for(int i=0;i&lt;10001;i++) count+=(int)lines[i].size();
+	//printf(&quot;%d\n&quot;,count);
+
+	scanf(&quot;%d&quot;,&amp;m);
+	for(int i=0;i&lt;m;i++) {
+		int X,Y,r;
+		scanf(&quot;%d %d %d&quot;,&amp;X,&amp;Y,&amp;r);
+		int x1=X-r,x2=X+r;
+		if(x1&lt;0) x1=0;
+		if(x2&gt;10000)x2=10000;
+		for(int x=x1;x&lt;=x2;x++) {
+			int w=X-x;
+			int h=(int)floor(sqrt(r*r-w*w));
+			int y1=Y-h;
+			int y2=Y+h;
+			multiset&lt;int&gt;&amp; s=lines[x];
+			s.erase(s.lower_bound(y1),s.upper_bound(y2));
+			//printf(&quot;erase x=%d, y: [%d,%d)\n&quot;,x,y1,y2);
+		}
+	}
+	count=0;
+	for(int i=0;i&lt;10001;i++) count+=(int)lines[i].size();
+	printf(&quot;%d\n&quot;,count);
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define ll long long
+
+ll decode(string val, int base) {
+    if (base == 1) return val.length();
+
+    if (base &lt;= 10) {
+        ll result = 0;
+        for (int i = 0; i &lt; val.length(); ++i) {
+            result *= base;
+            result += (val[i] - 48);
+        }
+        return result;
+    }
+
+    if (base &lt;= 36) {
+        ll result = 0;
+        for (int i = 0; i &lt; val.length(); ++i) {
+            result *= base;
+            char c = val[i];
+            if (c &lt; 60) {
+                result += (c - 48);
+            } else {
+                result += (c - 87);
+            }
+        }
+        return result;
+    }
+
+    return 0;
+}
+
+bool valid(string val, int base) {
+    if (base == 1) {
+        for (int i = 0; i &lt; val.length(); ++i) {
+            char c = val[i];
+            if (c != '1') return false;
+        }
+    }
+    else if (base &lt;= 10) {
+        for (int i = 0; i &lt; val.length(); ++i) {
+            char c = val[i];
+            if (c &lt; 48 || c &gt; 47 + base) return false;
+        }
+    }
+    else if (base &lt;= 36) {
+        for (int i = 0; i &lt; val.length(); ++i) {
+            char c = val[i];
+            if ((c &lt; 48 || c &gt; 57) &amp;&amp; (c &lt; 97 || c &gt; 86 + base)) return false;
+        }
+    }
+    else {
+        return false;
+    }
+    return true;
+}
+
+int main() {
+    int t; cin &gt;&gt; t;
+    while (t--) {
+        string a, op, b, eq, c;
+        cin &gt;&gt; a &gt;&gt; op &gt;&gt; b &gt;&gt; eq &gt;&gt; c;
+
+        int good = 0;
+
+        bool correct[64];
+        memset(correct, 0, sizeof(correct));
+
+        for (int i = 1; i &lt;= 36; ++i) {
+            if (valid(a, i) &amp;&amp; valid(b, i) &amp;&amp; valid(c, i)) {
+                ll aa = decode(a, i);
+                ll bb = decode(b, i);
+                ll cc = decode(c, i);
+
+                bool crt = false;
+
+                switch (op[0]) {
+                    case '+':
+                        crt = aa + bb == cc;
+                        break;
+                    case '-':
+                        crt = aa - bb == cc;
+                        break;
+                    case '*':
+                        crt = aa * bb == cc;
+                        break;
+                    case '/':
+                        crt = (aa / bb == cc) &amp;&amp; (aa % bb == 0);
+                        break;
+                }
+
+                if (crt) {
+                    correct[i] = true;
+                    good = true;
+                }
+            }
+        }
+
+        if (good) {
+            for (int i = 1; i &lt;= 36; ++i) {
+                if (correct[i]) {
+                    if (i &lt; 10) cout &lt;&lt; i;
+                    else if (i &lt; 36) cout &lt;&lt; (char)(i + 87);
+                    else cout &lt;&lt; 0;
+                }
+            }
+            cout &lt;&lt; &quot;\n&quot;;
+        } else {
+            cout &lt;&lt; &quot;invalid\n&quot;;
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

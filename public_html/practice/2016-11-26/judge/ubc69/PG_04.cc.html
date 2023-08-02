@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;stack&gt;
+
+using namespace std;
+
+int main() {
+	int r, c;
+	cin &gt;&gt; r &gt;&gt; c;
+	char map[r][c];
+	for(int i = 0 ; i &lt; r; i++) {
+		for(int j = 0; j &lt; c; j++) {
+			cin &gt;&gt; map[i][j];
+		}
+	}
+
+	stack&lt;pair&lt;int, int&gt; &gt; todo;
+	bool seen[r][c];
+	for(int i = 0 ; i &lt; r; i++) {
+		for(int j = 0; j &lt; c; j++) {
+			seen[i][j] = false;
+			if(map[i][j] == 'L') {
+				todo.push(make_pair(i,j));
+			}
+		}
+	}
+
+	while(!todo.empty()) {
+		pair&lt;int, int&gt; curr = todo.top();
+		int x = curr.first; int y = curr.second;
+		todo.pop();
+		if(seen[x][y])
+			continue;
+		seen[x][y] = true;
+		
+		if(x &gt; 0 &amp;&amp; map[x-1][y] == 'C') {
+			map[x-1][y] = 'L';
+			todo.push(make_pair(x-1,y));
+		}
+		if(y &gt; 0 &amp;&amp; map[x][y-1] == 'C') {
+			map[x][y-1] = 'L';
+			todo.push(make_pair(x,y-1));
+		}
+		if(x &lt; r-1 &amp;&amp; map[x+1][y] == 'C') {
+			map[x+1][y] = 'L';
+			todo.push(make_pair(x+1,y));
+		}
+		if(y &lt; c-1 &amp;&amp; map[x][y+1] == 'C') {
+			map[x][y+1] = 'L';
+			todo.push(make_pair(x,y+1));
+		}
+	}
+
+	int uf[r][c];
+	vector&lt;int&gt; labels;
+	labels.push_back(0);
+	int curr = 1;
+	for(int i = 0 ; i &lt; r; i++) {
+		for(int j = 0; j &lt; c; j++) {
+			uf[i][j] = 3000;
+			if(map[i][j] == 'L') {
+				if((i &gt; 0 &amp;&amp; map[i-1][j] == 'L') || (j &gt; 0 &amp;&amp; map[i][j-1] == 'L')) {
+					if(i &gt; 0 &amp;&amp; map[i-1][j] == 'L')
+						uf[i][j] = labels[uf[i-1][j]];
+					if(j &gt; 0 &amp;&amp; map[i][j-1] == 'L')
+						uf[i][j] = min(labels[uf[i][j-1]], uf[i][j]);
+					if(i &gt; 0 &amp;&amp; map[i-1][j] == 'L' &amp;&amp; j &gt; 0 &amp;&amp; map[i][j-1] == 'L') {
+						for(int fff = 0; fff &lt; labels.size(); fff++) {
+							if(labels[fff] == uf[i][j] ||
+							   labels[fff] == uf[i-1][j] ||
+							   labels[fff] == uf[i][j-1] ||
+							   labels[fff] == labels[uf[i][j]] ||
+							   labels[fff] == labels[uf[i-1][j]] || 
+							   labels[fff] == labels[uf[i][j-1]]) {
+								labels[fff] = min(labels[uf[i-1][j]], labels[uf[i][j-1]]);
+							}
+						}
+						labels[uf[i][j]] = labels[uf[i-1][j]] = labels[uf[i][j-1]] = min(labels[uf[i-1][j]], labels[uf[i][j-1]]);
+					}
+				}
+				else {
+					uf[i][j] = curr;
+					labels.push_back(curr);
+					curr++;
+				}
+			}
+		}
+	}
+	/*
+	for(int i = 0 ; i &lt; r; i++) {
+		for(int j = 0; j &lt; c; j++) {
+			cout&lt;&lt;uf[i][j] &lt;&lt; '\t';
+		}
+		cout&lt;&lt;endl;
+	}
+	for(int i = 0 ; i &lt; labels.size(); i++) {
+		cout &lt;&lt; labels[i] &lt;&lt; ' ';
+	}
+	cout &lt;&lt; endl;
+	*/
+	if(labels.size() == 1) {
+		cout &lt;&lt; 0 &lt;&lt; endl;
+		return 0;
+	}
+	int count = 0;
+	sort(labels.begin(), labels.end());
+	for(int i = 1 ; i &lt; labels.size(); i++) {
+		if(labels[i] != labels[i-1])
+			count++;
+	}
+	cout &lt;&lt; count &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

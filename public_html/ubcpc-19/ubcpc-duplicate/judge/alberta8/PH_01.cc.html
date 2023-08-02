@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+typedef unsigned long long ull;
+
+int main() {
+  ull n, d = 1;
+  cin &gt;&gt; n;
+
+  for (ull k = 2; k*k*k &lt;= n; ++k) {
+    int cnt = 0;
+    while (n%k == 0) {
+      n /= k;
+      ++cnt;
+    }
+    if (cnt&amp;1) d *= k;
+  }
+
+  ull rt = sqrt((double) n);
+  while ((rt+1)*(rt+1) &lt;= n) ++rt;
+  while (rt*rt &gt; n) --rt;
+
+  if (rt*rt != n) d *= n;
+
+  cout &lt;&lt; d &lt;&lt; endl;
+
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

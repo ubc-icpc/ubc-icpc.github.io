@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+
+int size(int n) {
+	if (n &gt;= 21) return 2;
+	else if (n &gt;= 16) return 3;
+	else if (n &gt;= 11) return 4;
+	else return 5;
+}
+
+int main() {
+	int rank = 25, star = 0, streak = 0;
+	char s[10001]; scanf(&quot;%s&quot;, s);
+	for (int i = 0; s[i] != 0; i++) {
+		char c = s[i];
+		if (rank == 0)
+			continue;
+		if (c == 'W') {
+			streak += 1;
+			star += (streak &gt;= 3 &amp;&amp; rank &gt;= 6) ? 2 : 1;
+			if (star &gt; size(rank)) {
+				star -= size(rank);
+				rank -= 1;
+			}
+		} else {
+			streak = 0;
+			if (rank &lt;= 20) {
+				star -= 1;
+				if (star == -1) {
+					if (rank == 20) {
+						star = 0;
+					} else {
+						rank += 1;
+						star = size(rank) - 1;
+					}
+				}
+			}
+		}
+	}
+	if (rank == 0)
+		printf(&quot;Legend\n&quot;);
+	else
+		printf(&quot;%d\n&quot;, rank);
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

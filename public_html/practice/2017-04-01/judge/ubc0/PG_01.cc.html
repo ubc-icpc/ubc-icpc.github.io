@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef complex&lt;ll&gt; pt;
+
+int n;
+pt A[55];
+ll DP[55][55][55][55];
+bool empty[55][55][55];
+ll cross(pt x, pt y){ return imag(conj(x)*y);}
+bool inTriangle(int s, int c, int i, int j){
+    if (cross(A[j]-A[s],A[c]-A[s])&lt;0) return false;
+    if (cross(A[j]-A[c],A[i]-A[c])&lt;0) return false;
+    if (cross(A[j]-A[i],A[s]-A[i])&lt;0) return false;
+    return true;
+}
+
+ll dp(int s, int t, int p, int c){
+    if (DP[s][t][p][c]!=-1) return DP[s][t][p][c];
+    //cout&lt;&lt;s&lt;&lt;&quot; &quot;&lt;&lt;t&lt;&lt;&quot; &quot;&lt;&lt;p&lt;&lt;&quot; &quot;&lt;&lt;c&lt;&lt;&quot;: &quot;&lt;&lt;endl;
+    ll ans=0;
+    for (int i=0;i&lt;n;i++) if (((i!=s)&amp;&amp;(i!=p))&amp;&amp;((i!=t)&amp;&amp;(i!=c))){
+        //check if i is on the right side 
+        if (((cross(A[i]-A[s],A[c]-A[s])&gt;=0)&amp;&amp;(cross(A[i]-A[s],A[p]-A[s])&gt;=0))&amp;&amp;
+        ((cross(A[i]-A[p],A[c]-A[p])&gt;=0)&amp;&amp;(cross(A[i]-A[s],A[t]-A[s])&gt;=0)))
+        if (cross(A[i]-A[t],A[p]-A[t])&gt;=0)
+        {
+            if (empty[s][c][i]) ans=max(ans,dp(s,t,c,i));
+        }
+    }
+    //cout&lt;&lt;s&lt;&lt;&quot; &quot;&lt;&lt;t&lt;&lt;&quot; &quot;&lt;&lt;p&lt;&lt;&quot; &quot;&lt;&lt;c&lt;&lt;&quot; &quot;&lt;&lt;ans&lt;&lt;&quot; &quot;&lt;&lt;abs(cross(A[c]-A[s],A[p]-A[s]))&lt;&lt;endl;
+    return DP[s][t][p][c]=ans+abs(cross(A[c]-A[s],A[p]-A[s]));
+}
+int main(){
+    ios::sync_with_stdio(0);
+    cin&gt;&gt;n;
+    for (int i=0;i&lt;n;i++){
+        ll x,y; cin&gt;&gt;x&gt;&gt;y;
+        A[i]=pt(x,y);
+    }
+    ll ans=0;
+    memset(DP,-1,sizeof DP);
+    
+    for (int s=0;s&lt;n;s++) for (int p=0;p&lt;n;p++) if (p!=s){
+        for (int c=0;c&lt;n;c++) if (((c!=s)&amp;&amp;(c!=p))&amp;&amp;(cross(A[c]-A[s],A[p]-A[s])&gt;0)){
+            bool good=true;
+            for (int j=0;j&lt;n;j++) if (((j!=s)&amp;&amp;(j!=p))&amp;&amp;(j!=c)){
+                if (inTriangle(s,p,c,j)) {
+                    good=false;
+                }
+            }
+            empty[s][p][c]=good;
+        }
+    }
+    
+    for (int s=0;s&lt;n;s++) for (int t=0;t&lt;n;t++) if (t!=s) {
+        for (int p=0;p&lt;n;p++) if (((p!=s)&amp;&amp;(p!=t))&amp;&amp;((empty[s][t][p])&amp;&amp;(cross(A[s]-A[t],A[p]-A[t])&gt;0))){
+            ans=max(ans,dp(s,t,p,p)+abs(cross(A[t]-A[s],A[p]-A[s])));
+            //if (ans==dp(s,t,p,p)) cout&lt;&lt;s&lt;&lt;&quot; &quot;&lt;&lt;t&lt;&lt;&quot; &quot;&lt;&lt;p&lt;&lt;endl;
+        }
+    }
+    cout&lt;&lt;ll(ans/2); 
+    if (ans%2==0) cout&lt;&lt;&quot;.0&quot;&lt;&lt;endl;
+    else cout&lt;&lt;&quot;.5&quot;&lt;&lt;endl;
+    return 0;
+}
+
+//g++ -std=c++11 -O2 -Wfatal-errors -Im -Wall -Wextra -o &quot;output.txt&quot; &quot;code.cpp&quot;</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

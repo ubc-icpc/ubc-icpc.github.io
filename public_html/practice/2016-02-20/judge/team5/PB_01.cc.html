@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+typedef long long ll;
+typedef pair&lt;string, string&gt; pss;
+
+int n, q;
+vector&lt;pss&gt; v;
+
+bool cmp(const pss &amp;a, const pss &amp;b) {
+    if (a.second == b.second)
+        return a.first &lt; b.first;
+    return a.second &lt; b.second;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin &gt;&gt; n;
+    for (int i=0; i&lt;n; i++) {
+        string f, l; cin &gt;&gt; f &gt;&gt; l;
+        v.push_back({f,l});
+    }
+    sort(v.begin(), v.end(), cmp);
+    cin &gt;&gt; q;
+    while (q--) {
+        string f, l;
+        cin &gt;&gt; f &gt;&gt; l;
+        auto it = lower_bound(v.begin(), v.end(), make_pair(f,l), cmp);
+        int pos = it - v.begin();
+        if (pos%3==0) {
+            cout &lt;&lt; v[pos+1].first &lt;&lt; &quot; &quot; &lt;&lt; v[pos+1].second &lt;&lt; '\n';
+            cout &lt;&lt; v[pos+2].first &lt;&lt; &quot; &quot; &lt;&lt; v[pos+2].second &lt;&lt; '\n';
+        }
+        else if (pos%3==1) {
+            cout &lt;&lt; v[pos-1].first &lt;&lt; &quot; &quot; &lt;&lt; v[pos-1].second &lt;&lt; '\n';
+            cout &lt;&lt; v[pos+1].first &lt;&lt; &quot; &quot; &lt;&lt; v[pos+1].second &lt;&lt; '\n';
+        }
+        else {
+            cout &lt;&lt; v[pos-2].first &lt;&lt; &quot; &quot; &lt;&lt; v[pos-2].second &lt;&lt; '\n';
+            cout &lt;&lt; v[pos-1].first &lt;&lt; &quot; &quot; &lt;&lt; v[pos-1].second &lt;&lt; '\n';
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

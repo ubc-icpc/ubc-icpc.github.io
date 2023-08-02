@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int blah[100000000];
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
+    memset(blah, 0, sizeof blah);
+
+    int ncase; cin &gt;&gt; ncase;
+    for (int csnum = 1; csnum &lt;= ncase; csnum++) {
+        int k, w; cin &gt;&gt; k &gt;&gt; w;
+        string tmp; getline(cin, tmp);
+
+        int n = 0;
+        blah[0] = csnum;
+        vector&lt;int&gt; npos;
+        for (int i = 0; i &lt; k; i++) {
+            string line;
+            getline(cin, line);
+            npos.resize(0);
+            for (int j = 0; j &lt; line.length(); j++) {
+                if ('1' &lt;= line[j] &amp;&amp; line[j] &lt;= '9') {
+                    npos.push_back(j);
+                }
+            }
+            bool done = false;
+            while (!done) {
+                done = true;
+                for (int jj = 0; jj &lt; npos.size(); jj++) {
+                    int j = npos[jj];
+                    int z = 0;
+                    for (int k = j; k &lt; line.length(); k++) {
+                        if ('0' &lt;= line[k] &amp;&amp; line[k] &lt;= '9') {
+                            z = z*10 + (int)(line[k] - '0');
+                            if (z &gt; n+w) break;
+                            if (n &lt;= z &amp;&amp; z &lt;= n+w &amp;&amp; blah[z] != csnum) {
+                                blah[z] = csnum;
+                                while (blah[n+1] == csnum) n++;
+                                done = false;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        int nn = n+w;
+        while (blah[nn] != csnum) nn--;
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; csnum &lt;&lt; &quot;: &quot; &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; nn &lt;&lt; endl;
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

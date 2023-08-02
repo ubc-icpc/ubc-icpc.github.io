@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, R, C, M[105][105];
+string s;
+
+int toint(const string&amp; s) {
+    int i;
+    stringstream ss(s);
+    ss &gt;&gt; i;
+    return i;
+}
+
+int main () {
+    cin &gt;&gt; N;
+    for (int n = 1; n &lt;= N; ++n) {
+        cin &gt;&gt; R &gt;&gt; C;
+        for (int r = 0; r &lt; R; ++r)
+            for (int c = 0; c &lt; C; ++c) {
+                cin &gt;&gt; s;
+                M[r][c] = (s == &quot;E&quot; || s == &quot;P&quot;) ? 0 : toint(s);
+            }
+        for (int i = 1; i &lt; C; ++i) M[0][i] += M[0][i-1];
+        for (int i = 1; i &lt; R; ++i) M[i][0] += M[i-1][0];
+        for (int i = 1; i &lt; R; ++i)
+            for (int j = 1; j &lt; C; ++j)
+                M[i][j] += max(M[i-1][j], M[i][j-1]);
+        cout &lt;&lt; &quot;Game Board #&quot; &lt;&lt; n &lt;&lt; &quot;: &quot; &lt;&lt; M[R-1][C-1] &lt;&lt; endl &lt;&lt; endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

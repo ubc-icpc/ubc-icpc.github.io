@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+
+long long int dp[1000001];
+
+int main() {
+    long long H, B, T, c1, c2, c3;
+    while(cin &gt;&gt; H &gt;&gt; B &gt;&gt; T &gt;&gt; c1 &gt;&gt; c2 &gt;&gt; c3) {
+        memset(dp, 0, sizeof dp);
+        long long start = min(c1, min(c2,c3));
+        for (long long h = start; h &lt;= H; ++h) {
+            long long v1 = 0, v2 = 0, v3 = 0;
+            if (c1 &lt;= h) {
+                long long n = ((B-T)*(H-h) + T*H) / (c1*H);
+                long long v = n*n*c1*c1*c1;
+                v1 = dp[h-c1] + v;
+            }
+            if (c2 &lt;= h) {
+                long long n = ((B-T)*(H-h) + T*H) / (c2*H);
+                long long v = n*n*c2*c2*c2;
+                v2 = dp[h-c2] + v;
+            }
+            if (c3 &lt;= h) {
+                long long n = ((B-T)*(H-h) + T*H) / (c3*H);
+                long long v = n*n*c3*c3*c3;
+                v3 = dp[h-c3] + v;
+            }
+            dp[h] = max(dp[h-1], max(v1, max(v2, v3)));
+        }
+        cout &lt;&lt; dp[H] &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

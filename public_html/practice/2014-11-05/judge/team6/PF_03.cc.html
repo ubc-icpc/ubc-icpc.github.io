@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;cstring&gt;
+#include &lt;queue&gt;
+#include &lt;map&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+
+bool blah[52][52][4];
+bool visited[52][52];
+bool tmparr[52][52];
+pii parent[52][52];
+
+int dec(char c) {
+	if (c &gt;= '0' &amp;&amp; c &lt;= '9') {
+		return (int)(c - '0');
+	}
+	return 10 + (int)(c - 'A');
+}
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int nr, nc; cin &gt;&gt; nr &gt;&gt; nc;
+	while (nr &gt; 0 || nc &gt; 0) {
+		string grid[nr];
+		for (int i = 0; i &lt; nr; i++) {
+			cin &gt;&gt; grid[i];
+		}
+		for (int a = 0; a &lt; nr+2; a++) 
+			for (int b = 0; b &lt; nc+2; b++)
+				for (int k = 0; k &lt; 4; k++) 
+					blah[a][b][k] = false;
+		int dr[4] = {0, 1, 0, -1};
+		int dc[4] = {-1, 0, 1, 0};
+		for (int i = 1; i &lt;= nr; i++) {
+			for (int j = 1; j &lt;= nc; j++) {
+				int val = dec(grid[i-1][j-1]);
+				for (int k = 0; k &lt; 4; k++) {
+					if ((val &amp; (1 &lt;&lt; k)) &gt; 0) {
+						blah[i][j][k] = true;
+					}
+				}
+			}
+		}
+		// find start
+		memset(tmparr, 0, sizeof tmparr);
+		for (int i = 1; i &lt;= nr; i++) {
+			if (!blah[i][1][0]) tmparr[i][1] = true;
+			if (!blah[i][nc][2]) tmparr[i][nc] = true;
+		}
+		for (int i = 1; i &lt;= nc; i++) {
+			if (!blah[1][i][3]) tmparr[1][i] = true;
+			if (!blah[nr][i][1]) tmparr[nr][i] = true;
+		}
+		vector&lt;int&gt; sr, sc;
+		for (int i = 1; i &lt;= nr; i++) {
+			for (int j = 1; j &lt;= nc; j++) {
+				if (tmparr[i][j]) {
+					sr.push_back(i); sc.push_back(j);
+				}
+			}
+		}
+		// bfs
+		memset(visited, 0, sizeof visited);
+		memset(parent, -1, sizeof parent);
+		queue&lt;pii&gt; q;
+		q.push(pii(sr[0], sc[0]));
+		bool multiplePaths = false;
+		while (!q.empty()) {
+			pii curr = q.front();
+			q.pop();
+			if (visited[curr.first][curr.second]) {
+				multiplePaths = true;
+				continue;
+			}
+			visited[curr.first][curr.second] = true;
+			for (int i = 0; i &lt; 4; i++) {
+				int newr = curr.first + dr[i];
+				int newc = curr.second + dc[i];
+				if (parent[curr.first][curr.second] == pii(newr, newc)) continue;
+				if (blah[curr.first][curr.second][i]) continue;
+				if (newr &gt;= 1 &amp;&amp; newr &lt;= nr &amp;&amp; newc &gt;= 1 &amp;&amp; newc &lt;= nc) {
+					if (visited[newr][newc]) {
+						multiplePaths = true;
+					} else {
+						parent[newr][newc] = curr;
+						q.push(pii(newr, newc));
+					}
+				}
+			}
+		}
+		// no solution
+		if (!visited[sr[1]][sc[1]]) {
+			cout &lt;&lt; &quot;NO SOLUTION&quot; &lt;&lt; endl;
+			goto fail;
+		}
+		// unreachable
+		for (int i = 1; i &lt;= nr; i++) {
+			for (int j = 1; j &lt;= nc; j++) {
+				if (!visited[i][j]) {
+					cout &lt;&lt; &quot;UNREACHABLE CELL&quot; &lt;&lt; endl;
+					goto fail;
+				}
+			}
+		}
+		// multiple
+		if (multiplePaths) {
+			cout &lt;&lt; &quot;MULTIPLE PATHS&quot; &lt;&lt; endl;
+			goto fail;
+		}
+		// success
+		cout &lt;&lt; &quot;MAZE OK&quot; &lt;&lt; endl;
+fail:
+		cin &gt;&gt; nr &gt;&gt; nc;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

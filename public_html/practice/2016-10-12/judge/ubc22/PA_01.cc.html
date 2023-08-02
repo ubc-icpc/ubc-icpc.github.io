@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int N, R, I;
+string A[55];
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; N;
+  getline(cin, A[54]);
+  for (int i = 0; i &lt; N; ++i) {
+    getline(cin, A[i]);
+  }
+  cin &gt;&gt; R;
+  for (int i = 0; i &lt; R; ++i) {
+    cin &gt;&gt; I;
+    if (I &lt; 1 || I &gt; N) {
+      cout &lt;&lt; &quot;Rule &quot; &lt;&lt; I &lt;&lt; &quot;: No such rule&quot; &lt;&lt; endl;
+    } else {
+      cout &lt;&lt; &quot;Rule &quot; &lt;&lt; I &lt;&lt; &quot;: &quot; &lt;&lt; A[I-1] &lt;&lt; endl;
+    }
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

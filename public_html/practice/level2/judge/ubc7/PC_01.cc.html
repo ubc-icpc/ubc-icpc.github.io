@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+const char nl = '\n';
+typedef long double ld;
+typedef complex&lt;ld&gt; pt;
+
+// define an epsilon for floating point comparisons
+const ld EPS = 1e-11;
+
+namespace CodeArchive {
+	typedef vector&lt;pt&gt; pol;
+
+	// cross product
+	ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+
+	// dot product
+	ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+
+	// checks whether a point lies in the interior of a segment
+	// Does NOT include points on the ends of the segment.
+	inline bool on_segment(const pt &amp;a, const pt &amp;b, const pt &amp;p) {
+		return abs(cp(b-a, p-a)) &lt; EPS &amp;&amp; dp(b-a, p-a) &gt; 0 &amp;&amp; dp(a-b, p-b) &gt; 0; }
+
+	// Checks if p lies on the boundary of a polygon v.
+	inline bool on_boundary(const pol &amp;v, const pt &amp;p) { bool res = false;
+		for(int i=v.size()-1,j=0;j&lt;v.size();i=j++)
+			res |= on_segment(v[i], v[j], p) | (abs(p-v[i]) &lt; EPS); return res; }
+
+	// checks whether a point lies in the interior or boundary of a polygon
+	// orientation does not matter !!!
+	bool pt_in_polygon(const pt &amp;p, const pol &amp;v){ if(on_boundary(v,p)) return true;
+		ld res = 0; for(int i = v.size() - 1, j = 0; j &lt; v.size(); i = j++)
+			res += atan2(cp(v[i] - p, v[j] - p), dp(v[i] - p, v[j] - p));
+		return abs(res) &gt; 1; } // will be either 2*PI or 0
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+
+	int T;
+	cin &gt;&gt; T;
+	while (T--) {
+
+		int n;
+		cin &gt;&gt; n;
+
+		// get the triangle
+		vector&lt;pt&gt; triangle;
+		for (int i = 0; i &lt; 3; i++) {
+			int x, y;
+			cin &gt;&gt; x &gt;&gt; y;
+			triangle.push_back(pt(x, y));
+		}
+
+		// Remember to check for (edge) cases.
+		// Can the triangle be degenerate? Does the orientation matter?
+
+		// for each point, we check whether it lies inside the triangle
+		for (int i = 0; i &lt; n; i++) {
+			int x, y;
+			cin &gt;&gt; x &gt;&gt; y;
+
+			if (CodeArchive::pt_in_polygon(pt(x, y), triangle)) {
+				cout &lt;&lt; &quot;DANGER&quot; &lt;&lt; nl;
+			} else {
+				cout &lt;&lt; &quot;SAFE&quot; &lt;&lt; nl;
+			}
+		}
+
+	}
+
+	return 0;
+}
+</code>
+</pre>
+</body>
+</html>

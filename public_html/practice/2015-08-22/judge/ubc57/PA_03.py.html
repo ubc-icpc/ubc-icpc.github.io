@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+a=0
+i=1
+while True:
+    n=int(input())
+    if n==0: break
+    a=a+n
+    if a&gt;=50 and a&lt;100:
+        print(&quot;Input #&quot;+str(i)+&quot;: Sweet!&quot;)
+        a=a-50
+    if a&gt;=100:
+        print(&quot;Input #&quot;+str(i)+&quot;: Totally Sweet!&quot;)
+        a=a%50
+    i=i+1
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+#define N 50005
+
+typedef pair&lt;int, int&gt; pii;
+typedef vector&lt;int&gt; vi;
+typedef vector&lt;pii&gt; vii;
+typedef vector&lt;vii&gt; vvii;
+typedef long long ll;
+
+vvii G;
+ll D[N];
+int v[N];
+int pp[N];
+
+int main() {
+  ios::sync_with_stdio(0);
+  int k;
+  cin &gt;&gt; k;
+  int n, m, t, s, g, h;
+  while (k--) { 
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; t;
+    cin &gt;&gt; s &gt;&gt; g &gt;&gt; h;
+    s--; g--; h--;
+
+    vvii gg(n);
+    memset(D, 0x7e, sizeof (D));
+    memset(v, 0, sizeof (v));
+    memset(pp, 0, sizeof (pp));
+    D[s] = 0;
+
+    for (int i = 0; i &lt; m; i++) {
+      int a, b, d;
+      cin &gt;&gt; a &gt;&gt; b &gt;&gt; d;
+      a--; b--;
+      if ((a == g &amp;&amp; b == h) || (b == g &amp;&amp; a == h)) {
+        gg[a].push_back({b, d * 32 - 1});
+        gg[b].push_back({a, d * 32 - 1});
+      } else {
+        gg[a].push_back({b, d * 32});
+        gg[b].push_back({a, d * 32});
+      }
+    }
+    priority_queue&lt;pii&gt; q;
+    q.push({0, s});
+
+    while (!q.empty()) {
+      auto p = q.top();
+      q.pop();
+      int node = p.second;
+      if (v[node]) {
+        continue;
+      }
+      v[node] = 1;
+      for (auto n : gg[node]) {
+        int nei = n.first;
+        int dist = n.second;
+        if (!v[nei]) {
+          if (D[node] + dist &lt; D[nei]) {
+            D[nei] = D[node] + dist;
+            pp[nei] = node;
+          }
+          q.push({-D[nei], nei});
+        }
+      }
+    }
+    int dgh = 0;
+    for (auto e : gg[g]) {
+      if (e.first == h) {
+        dgh = e.second; 
+      }
+    }
+    set&lt;int&gt; r;
+    for (int i = 0; i &lt; t; i++) {
+      int x;
+      cin &gt;&gt; x;
+      x--;
+      
+      if (D[x] % 2 == 1) {
+        r.insert(x + 1);
+      }
+    }
+    for (auto e : r) {
+      cout &lt;&lt; e &lt;&lt; ' ';
+    }
+    cout &lt;&lt; '\n';
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

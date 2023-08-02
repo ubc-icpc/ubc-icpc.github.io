@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+/**
+ * Created by Razvan1995 on 10/8/2016.
+ */
+public class Main {
+    public static void main(String[] args){
+
+        class Pair implements Comparable&lt;Pair&gt;{
+            private Long sum;
+            private String eq;
+            private Boolean aGreaterThanC;
+
+            private Pair(long sum, String eq, boolean isAGreaterThanC){
+                this.sum = sum;
+                this.eq = eq;
+                this.aGreaterThanC = isAGreaterThanC;
+            }
+
+            @Override
+            public int compareTo(Pair o) {
+                if(this.sum.equals(o.sum)){
+                    return -this.aGreaterThanC.compareTo(o.aGreaterThanC);
+                }
+
+                return this.sum.compareTo(o.sum);
+            }
+        }
+
+        Scanner in = new Scanner(System.in);
+        long a, b, c, n, apc, beforeCube;
+        double equation;
+        //PriorityQueue&lt;Pair&gt; q = new PriorityQueue&lt;&gt;();
+        Pair min;
+        Pair myPair;
+
+        while((n = in.nextInt()) != 0) {
+
+            if(n == 1){
+                System.out.println(&quot;No value.&quot;);
+                continue;
+            }
+
+            min = new Pair(4000, &quot;&quot;, false);
+
+            for(c = 1; c &lt; 4000; c += 1) {
+                for(a = c; a &lt; 4000; a += 1) {
+                    equation = a*a*a + c*c*c;
+
+                    apc = a+c;
+                    if(apc &gt;= 4000){
+                        break;
+                    }
+
+                    if(equation % n == 0){
+                        equation /= ((double)n);
+                        equation += 1e-8;
+                        beforeCube = (long) equation;
+
+                        if(Math.cbrt(beforeCube) % 1 == 0){
+                            b = (long)(Math.cbrt(equation)+ 1e-8);
+
+                            if(b &lt;= 0){
+                                continue;
+                            }
+
+                            if(apc + 2*b &gt;= 4000){
+                                continue;
+                            }
+
+                            myPair = new Pair(apc + 2*b, String.format(&quot;(%d/%d)^3 + (%d/%d)^3 = %d&quot;, a, b, c, b, n), ((double)a)/b&gt;((double)c)/b);
+
+                            if(myPair.compareTo(min) &lt; 0){
+                                min = new Pair(myPair.sum, myPair.eq, myPair.aGreaterThanC);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(min.eq.isEmpty()){
+                System.out.println(&quot;No value.&quot;);
+            }
+            else {
+                System.out.println(min.eq);
+            }
+        }
+        in.close();
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

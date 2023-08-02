@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import sys
+def N(): return [ int(s) for s in sys.stdin.next().split(' ') if s != '' ]
+
+
+def K():
+    #print &quot;----------------&quot;
+
+    n, c = N()
+    values = sorted(N(), key=lambda n:-n)
+    others = sorted(N())
+    others.append(sum(others) + 10000)
+    prizes = sorted(N(), key=lambda n:-n)
+    prizes.reverse()
+
+    #print &quot;n={0} c={1}&quot;.format(n, c)
+    #print &quot;values={0}&quot;.format(values)
+    #print &quot;prizes={0}&quot;.format(prizes)
+    #print &quot;others={0}&quot;.format(others)
+
+    best = -1000000000
+    for bribes in xrange(n+1):
+        cost = 420 * bribes
+        #print &quot;{0} Bribes, Cost={1}&quot;.format(bribes, cost)
+        listPoints = values[0:bribes]
+        points = sum(listPoints)
+        #print &quot;Points: sum({0}) = {1}&quot;.format(listPoints, points)
+
+        rank = 0
+        for other in others:
+            #print &quot;---{0} {1}---&quot;.format(rank, other)
+            if points &lt;= other: break
+            rank += 1
+
+        assert rank &gt;= 0
+
+        behind = others[rank]
+        #print &quot;Rank: {0}, behind: {1}&quot;.format(rank, behind)
+
+        prize = prizes[rank]
+        result = prize - cost
+        #print &quot;Prize: {0}, Result: {1}&quot;.format(prize, result)
+        #print &quot;&quot;
+        
+        if result &gt; best:
+            best = result
+
+    print best
+
+t, = N()
+for i in xrange(t):
+    K()
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

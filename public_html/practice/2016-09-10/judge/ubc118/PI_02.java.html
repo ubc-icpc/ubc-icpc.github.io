@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+import java.util.Scanner;
+
+public class I {
+
+	public static void main(String[] args) {
+		Scanner c = new Scanner(System.in);
+
+		int[] a = new int[27];
+		a[1] = 201;
+		a[2] = 305;
+		a[3] = 303;
+		a[4] = 203;
+		a[5] = 103;
+		a[6] = 204;
+		a[7] = 205;
+		a[8] = 206;
+		a[9] = 108;
+		a[10] = 207;
+		a[11] = 208;
+		a[12] = 209;
+		a[13] = 307;
+		a[14] = 306;
+		a[15] = 109;
+		a[16] = 110;
+		a[17] = 101;
+		a[18] = 104;
+		a[19] = 202;
+		a[20] = 105;
+		a[21] = 107;
+		a[22] = 304;
+		a[23] = 102;
+		a[24] = 302;
+		a[25] = 106;
+		a[26] = 301;
+		int t = c.nextInt();
+		c.nextLine();
+
+		for (int i = 0; i &lt; t; i++) {
+			String[] temp = c.nextLine().split(&quot; &quot;);
+			String test = temp[0];
+			int n = Integer.parseInt(temp[1]);
+			String[] cases = new String[n];
+			int[] dis = new int[n];
+			for (int j = 0; j &lt; n; j++) {
+				cases[j] = c.nextLine();
+				int sum = 0;
+				for (int k = 0; k &lt; test.length(); k++) {
+					int x = a[test.charAt(k) - 'a' + 1] / 100 - a[cases[j].charAt(k) - 'a' + 1] / 100;
+					int y = a[test.charAt(k) - 'a' + 1] % 100 - a[cases[j].charAt(k) - 'a' + 1] % 100;
+					sum += Math.abs(x) + Math.abs(y);
+
+				}
+				dis[j] = sum;
+			}
+			for (int j = 0; j &lt; n - 1; j++) {
+				for (int j1 = j + 1; j1 &lt; n; j1++) {
+					if (dis[j] &gt; dis[j1]) {
+						String t1 = cases[j];
+						cases[j] = cases[j1];
+						cases[j1] = t1;
+						int t2 = dis[j];
+						dis[j] = dis[j1];
+						dis[j1] = t2;
+					}
+					if (dis[j] == dis[j1] &amp;&amp; compare(cases[j], cases[j1])) {
+						String t1 = cases[j];
+						cases[j] = cases[j1];
+						cases[j1] = t1;
+						int t2 = dis[j];
+						dis[j] = dis[j1];
+						dis[j1] = t2;
+					}
+				}
+			}
+			for (int j = 0; j &lt; n; j++)
+				System.out.println(cases[j] + &quot; &quot; + dis[j]);
+
+		}
+
+	}
+
+	private static boolean compare(String string, String string2) {
+		int t = 0;
+		while (t &lt; string.length()) {
+			if (string.charAt(t) &gt; string2.charAt(t))
+				return true;
+			if (string.charAt(t) &lt; string2.charAt(t))
+				return false;
+			t++;
+		}
+		return false;
+	}
+
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

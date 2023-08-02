@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">//
+//  main.cpp
+//  A-abnormal_words
+//
+//  Created by david chong on 9/28/19.
+//  Copyright &copy; 2019 david chong. All rights reserved.
+//
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+
+void solve(char mode, int shift, string str) {
+    
+    const int cap = 123;
+    int x, temp;
+    
+    
+    if(mode == 'D') {
+        for(int i = 0; i &lt; str.length(); i++) {
+            x = str[i];
+            x -= shift;
+            temp = x;
+            
+            if(x &lt; 97) {
+                temp = 97 - x;
+                printf(&quot;%c&quot;, cap - temp);
+            } else {
+                printf(&quot;%c&quot;, temp % cap);
+            }
+            
+        }
+    }
+    
+    if(mode == 'E') {
+        
+        for(int i = 0; i &lt; str.length(); i++) {
+            x = str[i];
+            x += shift;
+            
+            if(x &gt;= cap) {
+                x -= cap;
+                x += 97;
+            }
+            printf(&quot;%c&quot;, x);
+        }
+    }
+    printf(&quot;\n&quot;);
+    
+}
+
+int main(int argc, const char * argv[]) {
+    
+//    freopen(&quot;input.in&quot;, &quot;r&quot;, stdin);
+    
+    char mode;
+    int shift;
+    string str;
+    
+    
+    cin &gt;&gt; mode &gt;&gt; shift &gt;&gt; str;
+    
+    
+//    printf(&quot;%c %i %s\n&quot;, mode, shift, str.c_str());
+    
+    solve(mode, shift, str);
+    
+    
+    
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

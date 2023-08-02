@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+#define int long long
+  ios_base::sync_with_stdio(0);
+  int n, x, y, dist, mx, my, cs = 0;
+  cin &gt;&gt; n;
+  vector&lt;int&gt; X, Y;
+  while (n) {
+    X.clear(); Y.clear();
+    dist = 0;
+    for (int i = 0; i &lt; n; i++) {
+      cin &gt;&gt; x &gt;&gt; y;
+      X.push_back(x); Y.push_back(y);
+    }
+    sort(X.begin(), X.end());
+    sort(Y.begin(), Y.end());
+    if (n % 2 == 0) {
+      mx = X[n/2 -1];
+      my = Y[n/2 - 1];
+    } else {
+      mx = X[n/2];
+      my = Y[n/2];
+    }
+    for (const int &amp;p : X) {
+      dist += abs(p-mx);
+    }
+    for (const int &amp;p : Y) {
+      dist += abs(p-my);
+    }
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++cs &lt;&lt; &quot;: (&quot; &lt;&lt; mx &lt;&lt; &quot;,&quot; &lt;&lt; my &lt;&lt; &quot;) &quot; &lt;&lt; dist &lt;&lt; endl;
+    cin &gt;&gt; n;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

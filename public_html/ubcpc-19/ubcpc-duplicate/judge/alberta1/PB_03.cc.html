@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+struct Fighter {
+  int id;
+  std::string name;
+  int hp, at, df;
+  // List of fighters this one beats.
+  std::vector&lt;Fighter *&gt; losers;
+};
+
+/**
+ * Returns +1 Fighter A would win, 0 if tie,
+ * and -1 if Fighter B would win.
+ */
+int winner(Fighter &amp;a, Fighter &amp;b) {
+  bool aCanLose = (b.at - a.df) &gt; 0;
+  bool bCanLose = (a.at - b.df) &gt; 0;
+  if (!aCanLose and !bCanLose) {
+    return 0;
+  }
+  if (!aCanLose) {
+    return 1;
+  }
+  if (!bCanLose) {
+    return -1;
+  }
+
+  // n is number of attacks that can be survived.
+  int n_a = std::ceil(a.hp / (double)(b.at - a.df));
+  int n_b = std::ceil(b.hp / (double)(a.at - b.df));
+  if (n_a &gt; n_b) {
+    return 1;
+  }
+  if (n_b &gt; n_a) {
+    return -1;
+  }
+  return 0;
+}
+
+int main() {
+  int n;
+  std::cin &gt;&gt; n;
+
+  if (n &lt; 3) {
+    // No intransitive triples.
+    std::cout &lt;&lt; 0 &lt;&lt; std::endl;
+    return 0;
+  }
+
+  std::vector&lt;Fighter&gt; fighters;
+  for (int i = 0; i &lt; n; i++) {
+    Fighter f;
+    f.id = i;
+    std::cin &gt;&gt; f.name;
+    std::cin &gt;&gt; f.hp &gt;&gt; f.at &gt;&gt; f.df;
+    fighters.push_back(f);
+  }
+
+  for (Fighter &amp;f1 : fighters) {
+    for (Fighter &amp;f2 : fighters) {
+      if (winner(f1, f2) &gt; 0) {
+        f1.losers.push_back(&amp;f2);
+      }
+    }
+  }
+
+  // Debug output. Shows which fighters beat which.
+  // for (Fighter &amp;f1 : fighters) {
+  //   for (Fighter *f2 : f1.losers) {
+  //     std::cout &lt;&lt; f1.name &lt;&lt; &quot; beats &quot; &lt;&lt; f2-&gt;name &lt;&lt; std::endl;
+  //   }
+  // }
+
+  std::unordered_set&lt;int&gt; found;
+  std::vector&lt;std::string&gt; results;
+  // Finds all triples.
+  for (Fighter &amp;f1 : fighters) {
+    for (Fighter *f2 : f1.losers) {
+      // std::cout &lt;&lt; &quot;1. &quot; &lt;&lt; f1.name &lt;&lt; &quot; beats &quot; &lt;&lt; f2-&gt;name &lt;&lt; std::endl;
+      for (Fighter *f3 : f2-&gt;losers) {
+        // std::cout &lt;&lt; &quot;2. &quot; &lt;&lt; f2-&gt;name &lt;&lt; &quot; beats &quot; &lt;&lt; f3-&gt;name &lt;&lt; std::endl;
+        for (Fighter *f4 : f3-&gt;losers) {
+          // std::cout &lt;&lt; &quot;3. &quot; &lt;&lt; f3-&gt;name &lt;&lt; &quot; beats &quot; &lt;&lt; f4-&gt;name &lt;&lt;
+          // std::endl;
+          if (f1.id == f4-&gt;id) {
+            auto hash_func = std::hash&lt;std::string&gt;();
+            int id =
+                hash_func(f1.name) + hash_func(f2-&gt;name) + hash_func(f3-&gt;name);
+            if (found.find(id) == found.end()) {
+              std::string result = f1.name + &quot; &quot; + f2-&gt;name + &quot; &quot; + f3-&gt;name;
+              results.push_back(result);
+              found.insert(id);
+            }
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  std::cout &lt;&lt; results.size() &lt;&lt; std::endl;
+  for (std::string &amp;result : results) {
+    std::cout &lt;&lt; result &lt;&lt; std::endl;
+  }
+
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

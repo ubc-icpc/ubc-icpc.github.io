@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+vector&lt;int&gt; adj[10005];
+
+int main() {
+	int t; cin &gt;&gt; t;
+	while(t--) {
+		int nz, nr; cin &gt;&gt; nz &gt;&gt; nr;
+		vector&lt;int&gt; dist(10005);
+		vector&lt;int&gt; path;
+
+		for (int i=0; i&lt;10005; i++) {
+			adj[i].clear();
+		}
+
+		while(nz--) {
+			int curr, nadj; cin &gt;&gt; curr &gt;&gt; nadj;
+			while(nadj--) {
+				int next; cin &gt;&gt; next;
+				adj[curr].push_back(next);
+			}
+		}
+		while(nr--) {
+			int r; cin &gt;&gt; r;
+			while(r--) {
+				int tmp; cin &gt;&gt; tmp;
+				path.push_back(tmp);
+			}
+		}
+		for (int i=0; i&lt;path.size(); i++) {
+			int start = path[i];
+			vector&lt;int&gt; v(10000);
+			v[start] = 1;
+			queue&lt;int&gt; q;
+			queue&lt;int&gt; d;
+			int cd = 1;
+			int cur;
+			q.push(start);
+			d.push(cd);
+			while(!q.empty()) {
+				cur = q.front(); q.pop();
+				cd = d.front(); d.pop();
+				dist[cur] = max(dist[cur],cd);
+				for (int i=0; i&lt;adj[cur].size(); i++) {
+					int node = adj[cur][i];
+					if (v[node] == 0) {
+						v[node] = 1;
+						q.push(node);
+						d.push(cd + 1);
+					}
+				}
+			}
+		}
+		int maxd=10005;
+		int center;
+		for (int i=0; i&lt;10000; i++) {
+			if (dist[i] != 0) {
+				if (dist[i] &lt; maxd) {
+					maxd = dist[i];
+					center = i;
+				}
+				if (dist[i] == maxd) {
+					center = min(center,i);
+				}
+			}
+		}
+		cout &lt;&lt; maxd &lt;&lt; &quot; &quot; &lt;&lt; center &lt;&lt; &quot;\n&quot;;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

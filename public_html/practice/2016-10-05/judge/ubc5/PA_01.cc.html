@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+map&lt;string,int&gt; s2i;
+set&lt;int&gt; adj[10000], radj[10000];
+int c[10000];
+
+bool dfs(int x) {
+  c[x] = 1;
+  for (int a : adj[x]) {
+    if (c[a] == 1)
+      return false;
+    else if (!c[a]) {
+      if (!dfs(a))
+        return false;
+    }
+  }
+  c[x] = 2;
+  return true;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  int n;
+  while (cin &gt;&gt; n) {
+    s2i.clear();
+    for (int i = 0; i &lt; 10000; i++) {
+      adj[i].clear();
+      radj[i].clear();
+      c[i] = 0;
+    }
+    for (int i = 0; i &lt; n; i++) {
+      string s1, s2, s3;
+      cin &gt;&gt; s1 &gt;&gt; s2 &gt;&gt; s3;
+      int i1, i3;
+      if (!s2i.count(s1))
+        s2i[s1] = s2i.size()-1;
+      i1 = s2i[s1];
+      if (!s2i.count(s3))
+        s2i[s3] = s2i.size()-1;
+      i3 = s2i[s3];
+      if (s2 == &quot;&lt;&quot;) {
+        adj[i1].insert(i3);
+        radj[i3].insert(i1);
+      }
+      else {
+        adj[i3].insert(i1);
+        radj[i1].insert(i3);
+      }
+    }
+    bool p = true;
+    for (int i = 0; i &lt; s2i.size(); i++) {
+      if (!c[i]) {
+        if (!dfs(i)) {
+          p = false;
+          break;
+        }
+      }
+    }
+    if (!p)
+      cout &lt;&lt; &quot;im&quot;;
+    cout &lt;&lt; &quot;possible\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int a, b, c, d;
+int case_num;
+// make operators negative numbers
+int ops[4] = {'+' | (1 &lt;&lt; 31), '-' | (1 &lt;&lt; 31), '*' | (1 &lt;&lt; 31), '/' | (1 &lt;&lt; 31)};
+
+int evalRPN(vector&lt;int&gt; x) {
+  stack&lt;int&gt; s;
+  for (int op : x) {
+    if (op &lt; 0) {
+      int a = s.top();
+      s.pop();
+      int b = s.top();
+      s.pop();
+      char oper = (char) (op &amp; 0xff);
+      if (oper == '+') {
+        s.push(a + b);
+      } else if (oper == '-') {
+        s.push(b - a);
+      } else if (oper == '*') {
+        s.push(a * b);
+      } else {
+        if (a == 0 || b % a) {
+          throw invalid_argument(&quot;&quot;);
+        }
+        s.push(b / a);
+      }
+    } else {
+      s.push(op);
+    }
+  }
+  return s.top();
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  while (cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d &amp;&amp; (a || b || c || d) ) {
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++case_num &lt;&lt; &quot;: &quot;;
+    int nums[] = {a, b, c, d};
+    int index[] = {0, 1, 2, 3};
+    set&lt;int&gt; results;
+    do {
+      int u, v, x, y;
+      u = nums[index[0]];
+      v = nums[index[1]];
+      x = nums[index[2]];
+      y = nums[index[3]];
+      for (auto op0 : ops) {
+        for (auto op1 : ops) {
+          for (auto op2 : ops) {
+            try {
+              results.insert(evalRPN({u, v, x, y, op0, op1, op2}));
+            } catch(const invalid_argument&amp; e) { /* we are fine */ }
+            try {
+              results.insert(evalRPN({u, v, x, op0, y, op1, op2}));
+            } catch(const invalid_argument&amp; e) { /* we are fine */ }
+            try {
+              results.insert(evalRPN({u, v, x, op0, op1, y, op2}));
+            } catch(const invalid_argument&amp; e) { /* we are fine */ }
+            try {
+              results.insert(evalRPN({u, v, op0, x, op1, y, op2}));
+            } catch(const invalid_argument&amp; e) { /* we are fine */ }
+            try {
+              results.insert(evalRPN({u, v, op0, x, y, op1, op2}));
+            } catch(const invalid_argument&amp; e) { /* we are fine */ }
+          }
+        }
+      }
+    } while (next_permutation(index, index + 4));
+    
+    vector&lt;int&gt; r;
+
+    for (auto x : results) {
+      r.push_back(x);
+    }
+
+    int lower = 0;
+    int ml = r.size() - 1;
+    int mu = r.size() - 1;
+    int length = 1;
+    int maxlength = 1;
+    for (int i = 1; i &lt; r.size(); i++) {
+      if (r[i - 1] + 1 == r[i]) {
+        length++;
+        if (length &gt;= maxlength) {
+          ml = lower;
+          mu = i;
+          maxlength = length;
+        }
+      } else {
+        lower = i;
+        length = 1;
+      }
+    }
+    cout &lt;&lt; r[ml] &lt;&lt; &quot; to &quot; &lt;&lt; r[mu] &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

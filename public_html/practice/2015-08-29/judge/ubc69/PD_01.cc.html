@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+string trials[50];
+int t;
+
+bool included(string s){
+	for(int i=0;i&lt;t;i++){
+		if(s.compare(trials[i])==0)
+			return true;
+	}
+	return false;
+}
+
+int main() {
+	int m;
+	cin&gt;&gt;m;
+	for(int i=1;i&lt;=m;i++){
+		cin&gt;&gt;t;
+		for(int j=0;j&lt;t;j++){
+			cin&gt;&gt;trials[j];
+		}
+		int n,e;
+		cin&gt;&gt;n&gt;&gt;e;
+		bool map[n][n];
+		for(int j=0;j&lt;n;j++)
+			for(int k=0;k&lt;n;k++){
+				map[j][k]=false;
+			}
+		for(int j=1;j&lt;=e;j++){
+			int a,b; string s;
+			cin&gt;&gt;a&gt;&gt;b&gt;&gt;s;
+			if(included(s)) continue;
+			map[a][b]=map[b][a]=true;;
+		}
+		
+		for(int j=0;j&lt;n;j++)
+			for(int k=0;k&lt;n;k++)
+				for(int l=0;l&lt;n;l++){
+					if(map[j][k]&amp;&amp;map[k][l])
+						map[j][l]=map[l][j]=true;
+				}
+		if(map[0][n-1])
+			cout&lt;&lt;1&lt;&lt;endl;
+		else
+			cout&lt;&lt;0&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

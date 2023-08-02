@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;string&gt;
+#include&lt;sstream&gt;
+using namespace std;
+
+string line;
+stringstream ss1;
+stringstream ss2;
+
+int main () {
+  
+  map&lt;string, string&gt; m;
+  int N;
+  getline(cin, line);
+  ss1 &lt;&lt; line;
+  ss1 &gt;&gt; N;
+  ss1.clear();
+  string l1, l2;
+  getline(cin, l1);
+  getline(cin, l2);
+  ss1 &lt;&lt; l1;
+  ss2 &lt;&lt; l2;
+  while (N--) {
+    string t1, t2;
+    ss1 &gt;&gt; t1;
+    ss2 &gt;&gt; t2;
+    m[t1] = t2;
+  }
+  bool f = true;
+  for (map&lt;string, string&gt;::iterator it = m.begin(); f &amp;&amp; it != m.end(); ++it) {
+    if (it-&gt;first != m[it-&gt;second] || it-&gt; first == it -&gt;second) {
+      f = false;
+    }
+  }
+  if (f) cout &lt;&lt; &quot;good&quot; &lt;&lt; endl;
+  else cout &lt;&lt; &quot;bad&quot; &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

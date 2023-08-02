@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;climits&gt;
+using namespace std;
+
+const int MAXN=22000,MAXM=440000;
+struct Dinic {
+struct edge {
+int x,y;
+int c;
+int f;
+edge *next,*back;
+edge(int x,int y,int c,edge *next):x(x),y(y),c(c),f(0),next(next),back(0) {}
+void *operator new(size_t, void *p) {
+return p;
+}
+}*E[MAXN],*data;
+char storage[2*MAXM *sizeof(edge)];
+int S,T;
+
+int Q[MAXN];
+int D[MAXN];
+void DFS() {
+memset(D,-1,sizeof(D));
+int head=0,tail=0;
+Q[tail++]=S;
+D[S]=0;
+for(;;) {
+int i=Q[head++];
+for(edge *e=E[i]; e; e=e-&gt;next) {
+if(e-&gt;c==0)continue;
+int j=e-&gt;y;
+if(D[j]==-1) {
+D[j]=D[i]+1;
+Q[tail++]=j;
+if(j==T)return;
+}
+}
+if(head==tail)break;
+}
+}
+edge *cur[MAXN];
+edge *path[MAXN];
+int flow() {
+int res=0;
+int path_n;
+for(;;) {
+DFS();
+if(D[T]==-1)break;
+memcpy(cur,E,sizeof(E));
+path_n=0;
+int i=S;
+for(;;) {
+if(i==T) {
+int mink=0;
+int delta=INT_MAX;
+for(int k=0; k&lt;path_n; ++k) {
+if(path[k]-&gt;c &lt; delta) {
+delta = path[k]-&gt;c;
+mink=k;
+}
+}
+for(int k=0; k&lt;path_n; ++k) {
+path[k]-&gt;c -= delta;
+path[k]-&gt;back-&gt;c += delta;
+}
+path_n=mink;
+i=path[path_n]-&gt;x;
+res+=delta;
+}
+edge *e;
+for(e=cur[i]; e; e=e-&gt;next) {
+if(e-&gt;c==0)continue;
+int j=e-&gt;y;
+if(D[i]+1==D[j])break;
+}
+cur[i]=e;
+if(e) {
+path[path_n++]=e;
+i=e-&gt;y;
+} else {
+D[i]=-1;
+if(path_n==0)break;
+path_n--;
+i=path[path_n]-&gt;x;
+}
+}
+}
+return res;
+}
+int cut(int *s) {
+int rst=0;
+for(int i=0; i&lt;MAXN; ++i)
+if(D[i]==-1&amp;&amp;E[i])
+s[rst++]=i;
+return rst;
+}
+void init(int _S,int _T) {
+S=_S,T=_T;
+data=(edge *)storage;
+memset(E,0,sizeof(E));
+}
+void add_edge(int x,int y,int w) {
+E[x]=new((void *)data++) edge(x,y,w,E[x]);
+E[y]=new((void *)data++) edge(y,x,0,E[y]);
+E[x]-&gt;back = E[y];
+E[y]-&gt;back = E[x];
+}
+};
+
+char s[40][40];
+int n, m;
+
+int dx[4] = {0, 0, 1, -1};
+int dy[4] = {1, -1, 0, 0};
+
+bool valid(int x, int y) {
+	return x &gt;= 0 &amp;&amp; x &lt; n &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; m;
+}
+
+Dinic dinic;
+
+int main() {
+	while (gets(s[0])) {
+		n = 0, m = strlen(s[0]);
+		while (1) {
+			n++;
+			gets(s[n]);
+			if (strlen(s[n]) == 0) break;
+		}
+		int S = n * m * 2, T = n * m * 2 + 1;
+		dinic.init(S,T);
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; m; j++) {
+				int X = i * m + j;
+				dinic.add_edge(X, X + n * m, 1);
+				if (s[i][j] == 'W') {
+					dinic.add_edge(S, X, 1);
+				}
+				if (s[i][j] == 'N') {
+					dinic.add_edge(X + n * m, T, 1);
+					continue;
+				}
+				for (int k = 0; k &lt; 4; k++) {
+					int x = i + dx[k], y = j + dy[k];
+					if (!valid(x, y)) continue;
+					if (s[i][j] == 'W' &amp;&amp; s[x][y] == 'I' ||
+						s[i][j] == 'I' &amp;&amp; s[x][y] == 'N') {
+						dinic.add_edge(X + n * m, x * m + y, 1);
+					} 
+				}
+			}
+		}
+		int ans = dinic.flow();
+		printf(&quot;%d\n&quot;, ans);
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

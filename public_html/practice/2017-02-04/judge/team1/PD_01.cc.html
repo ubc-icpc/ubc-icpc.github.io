@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+ll T;
+string A;
+
+ll gete(int i) {
+  if (i == 0) return 1;
+  return gete(i-1) * 10;
+}
+
+ll calc() {
+  ll total = 0;
+  ll tmp = 0;
+  for (int i = 0; i &lt; (int)A.size(); ++i) {
+    for (int j = 0; j &lt; (int)A[i]-'0'; ++j) {
+      total += (tmp + j) * gete(A.size()-i-1);
+      if (i &lt; (int)A.size()-1)
+        total += gete(A.size()-i-1) * (A.size()-i-1) * 9 / 2;
+
+    //cout &lt;&lt; total &lt;&lt; endl;
+    }
+    tmp += A[i] - '0';
+  }
+  for (int i = 0; i &lt; (int)A.size(); ++i)
+    total += A[i]-'0';
+  return total;
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  cin &gt;&gt; T;
+  while (T--) {
+    ll total = 0;
+    cin &gt;&gt; A;
+    //ll temp = calc();
+    //cout &lt;&lt; temp &lt;&lt; endl;
+    total -= calc();
+    for (int i = 0; i &lt; (int)A.size(); ++i) {
+      total += A[i]-'0';
+    }
+    cin &gt;&gt; A;
+    //temp = calc();
+    //cout &lt;&lt; temp &lt;&lt; endl;
+    total += calc();
+    cout &lt;&lt; total &lt;&lt; endl;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.*;
+
+/**
+ * Created by Peter on 2015-09-03.
+ */
+public class Minion {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int noOfMaps = Integer.parseInt(s.nextLine());
+        HashSet&lt;String&gt; routesUnableToAccomplish;
+        HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; mapOfRoutes;
+
+        /*routesUnableToAccomplish = new HashSet&lt;String&gt;();
+        routesUnableToAccomplish.add(&quot;stairs&quot;);
+        routesUnableToAccomplish.add(&quot;talking&quot;);
+        routesUnableToAccomplish.add(&quot;staring&quot;);
+
+        mapOfRoutes = new HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt;();
+
+        ArrayList&lt;Integer&gt; zero = new ArrayList&lt;Integer&gt;();
+        zero.add(1);
+        zero.add(2);
+        mapOfRoutes.put(0,zero);
+
+        ArrayList&lt;Integer&gt; one = new ArrayList&lt;Integer&gt;();
+        one.add(0);
+        mapOfRoutes.put(1,one);
+
+        ArrayList&lt;Integer&gt; two = new ArrayList&lt;Integer&gt;();
+        two.add(0);
+        mapOfRoutes.put(2,two);
+
+       /* ArrayList&lt;Integer&gt; zero = new ArrayList&lt;Integer&gt;();
+        zero.add(1);
+        mapOfRoutes.put(0,zero);
+
+        ArrayList&lt;Integer&gt; one = new ArrayList&lt;Integer&gt;();
+        one.add(0);
+        one.add(3);
+        mapOfRoutes.put(1,one);
+
+        ArrayList&lt;Integer&gt; two = new ArrayList&lt;Integer&gt;();
+        two.add(3);
+        mapOfRoutes.put(2,two);
+
+        ArrayList&lt;Integer&gt; three = new ArrayList&lt;Integer&gt;();
+        three.add(1);
+        three.add(2);
+        mapOfRoutes.put(3,three);
+        System.out.println(AbleToAccomplish(0, 3, new HashSet&lt;Integer&gt;(), mapOfRoutes));
+*/
+
+        for(int i = 0; i &lt; noOfMaps; i++){
+            int noOfRoutesUnableToAccomplish = Integer.parseInt(s.nextLine());
+
+            //Add Routes unable to accomplish
+            routesUnableToAccomplish = new HashSet&lt;String&gt;();
+            for(int j = 0; j &lt; noOfRoutesUnableToAccomplish; j++){
+                routesUnableToAccomplish.add(s.nextLine());
+            }
+
+            String[] line = s.nextLine().split(&quot;\\s+&quot;);
+            int noOfLocations = Integer.parseInt(line[0]);
+            int noOfRoutes = Integer.parseInt(line[1]);
+
+            //Add Routes that can be accomplished
+            mapOfRoutes = new HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt;();
+            for(int k = 0; k &lt; noOfRoutes; k++){
+                String[] routeString = s.nextLine().split(&quot;\\s+&quot;);
+                if(!routesUnableToAccomplish.contains(routeString[2])){
+                    int a = Integer.parseInt(routeString[0]);
+                    int b = Integer.parseInt(routeString[1]);
+
+                    ArrayList&lt;Integer&gt; valuesA = mapOfRoutes.get(a);
+                    if(valuesA == null){
+                        valuesA = new ArrayList&lt;Integer&gt;();
+                    }
+                    valuesA.add(b);
+                    mapOfRoutes.put(a,valuesA);
+
+                    ArrayList&lt;Integer&gt; valuesB = mapOfRoutes.get(b);
+                    if(valuesB == null){
+                        valuesB = new ArrayList&lt;Integer&gt;();
+                    }
+                    valuesB.add(a);
+                    mapOfRoutes.put(b,valuesB);
+
+                }
+            }
+            /*Set&lt;Integer&gt; test = mapOfRoutes.keySet();
+            for(Integer l : test){
+                ArrayList&lt;Integer&gt; testList = mapOfRoutes.get(l);
+                System.out.println(&quot;Origin: &quot; + l);
+                for(Integer m : testList){
+                    System.out.print(m + &quot; &quot;);
+                }
+                System.out.println();
+                System.out.println();
+            }*/
+           // System.out.println(AbleToAccomplish(0, noOfLocations - 1, mapOfRoutes));
+            if(AbleToAccomplish(0, noOfLocations - 1, new HashSet&lt;Integer&gt;(), mapOfRoutes)) {
+                System.out.println(1);
+            }
+            else {
+                System.out.println(0);
+            }
+        }
+
+    }
+
+    private static boolean AbleToAccomplish(int origin, int destination, HashSet&lt;Integer&gt; visited, HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; mapOfRoutes){
+        visited.add(origin);
+        if(origin == destination){
+            return true;
+        }
+        else if (mapOfRoutes.isEmpty()){
+            return false;
+        }
+        else {
+            ArrayList&lt;Integer&gt; possibleRoutes = mapOfRoutes.remove(origin);
+            if(possibleRoutes == null){
+                return false;
+            }
+           // visited.add(origin);
+            //mapOfRoutes.remove(origin);
+            boolean foundRoute = false;
+            for(Integer newOrigin : possibleRoutes){
+                if(!visited.contains(newOrigin)) {
+                    foundRoute = AbleToAccomplish(newOrigin, destination, visited, mapOfRoutes);
+                    if (foundRoute)
+                        break;
+                }
+            }
+            return foundRoute;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

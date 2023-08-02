@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+class DisjointSet {
+    vector&lt;int&gt; parent;
+    vector&lt;int&gt; rank;
+    vector&lt;int&gt; setsizes;
+    int ssize;
+public:
+    DisjointSet(int n): ssize(n) {
+        for (int i = 0; i &lt; n; ++i) {
+            parent.push_back(i);
+        }
+        rank = vector&lt;int&gt;(n,0);
+        setsizes = vector&lt;int&gt;(n,1);
+    }
+
+    void makeSet(int x) {
+        parent.push_back(x);
+        rank.push_back(0);
+        ssize++;
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    void merge(int x, int y) {
+        int xRoot = find(x);
+        int yRoot = find(y);
+        if (xRoot == yRoot) return;
+        if (rank[xRoot] &lt; rank[yRoot]) {
+            parent[xRoot] = yRoot;
+            setsizes[yRoot] += setsizes[xRoot];
+        }
+        else if (rank[xRoot] &lt; rank[yRoot]) {
+            parent[yRoot] = xRoot;
+            setsizes[xRoot] += setsizes[yRoot];
+        }
+        else {
+            parent[yRoot] = xRoot;
+            setsizes[xRoot] += setsizes[yRoot];
+            rank[xRoot]++;
+        }
+    }
+
+    int size() { return ssize; }
+    int setsize(int x) {
+      return setsizes[find(x)];
+    }
+};
+
+int main() {
+  int T; cin &gt;&gt; T;
+  int curr = 0;
+  map&lt;string, int&gt; nm;
+  while (T--) {
+    int F; cin &gt;&gt; F;
+    DisjointSet ds(2*F+1);
+    while (F--) {
+      string name1, name2; cin &gt;&gt; name1 &gt;&gt; name2;
+      if (nm.find(name1) == nm.end()) {
+        nm[name1] = curr++;
+      }
+      if (nm.find(name2) == nm.end()) {
+        nm[name2] = curr++;
+      }
+      int n1 = nm[name1], n2 = nm[name2];
+      if (ds.find(n1) != ds.find(n2)) {
+        ds.merge(n1, n2);
+        /*for (int i = 0; i &lt; curr; ++i) {
+          cout &lt;&lt; ds.setsize(i) &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;*/
+      }
+      cout &lt;&lt; ds.setsize(n1) &lt;&lt; endl;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

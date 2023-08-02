@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+typedef complex&lt;ll&gt; pt;
+
+struct edge {
+	int u, v; ll w;
+	edge() {};
+	edge(int u, int v, ll w) : u(u), v(v), w(w) {};
+};
+
+int a[2005];
+int main() {
+	int n; cin &gt;&gt; n;
+	vector&lt;pt&gt; p;
+	for (int i = 0; i &lt; n; i++) {
+		ll x, y; cin &gt;&gt; x &gt;&gt; y;
+		p.push_back(pt(x,y));
+		a[i+1] = 1;
+	}
+
+	vector&lt;edge&gt; edges;
+	map&lt;ll, vector&lt;edge&gt; &gt; emap;
+	for (int i = 0; i &lt; n; i++) {
+		for (int j = i+1; j &lt; n; j++) {
+			edges.push_back(edge(i+1, j+1, norm(p[i]-p[j])));
+		}
+		edges.push_back(edge(0, i+1, norm(p[i])));
+	}
+	for (edge e : edges) {
+		emap[e.w].push_back(e);
+	}
+
+	int ans = 0;
+	for (auto&amp; it : emap) {
+		map&lt;int, int&gt; ta;
+		for (edge e : it.second) {
+			if (e.u == 0) {
+				ans = max(ans, a[e.v]);
+			} else {
+				ta[e.v] = max(ta[e.v], max(a[e.v], 1+a[e.u]));
+				ta[e.u] = max(ta[e.u], max(a[e.u], 1+a[e.v]));
+			}
+		}
+
+		for (auto keyval : ta) {
+			a[keyval.first] = keyval.second;
+		}
+	}
+	cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

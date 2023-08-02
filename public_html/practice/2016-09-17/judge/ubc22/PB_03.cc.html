@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+int T, N, X[1005], Y[1005];
+
+int main () {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  while (true) {
+    ++T;
+    cin &gt;&gt; N;
+    if (!N) break;
+    for (int i = 0; i &lt; N; ++i) {
+      cin &gt;&gt; X[i] &gt;&gt; Y[i];
+    }
+    sort(X, X+N);
+    sort(Y, Y+N);
+    int rx = X[N/2 - !(N%2)];
+    int ry = Y[N/2 - !(N%2)];
+    long long res = 0;
+    for (int i = 0; i &lt; N; ++i) {
+      res += abs(X[i] - rx);
+      res += abs(Y[i] - ry);
+    }
+    cout &lt;&lt; &quot;Case &quot; &lt;&lt; T &lt;&lt; &quot;: (&quot; &lt;&lt; rx &lt;&lt; &quot;,&quot; &lt;&lt; ry &lt;&lt; &quot;) &quot; &lt;&lt; res &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

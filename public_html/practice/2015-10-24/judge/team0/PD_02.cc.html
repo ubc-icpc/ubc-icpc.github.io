@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+
+using namespace std;
+
+const int sz = 1e5 + 2000;
+int a[sz];
+int main() {
+	int n, k; cin &gt;&gt; n &gt;&gt; k;
+	for (int i = 0; i &lt; n; i++) {
+		int t; cin &gt;&gt; t;
+		a[t] += 1;
+		a[t+1000] -= 1;
+	}
+	
+	int ans = 0;
+	for (int i = 0; i &lt; sz; i++) {
+		if (i &gt; 0) a[i] += a[i-1];
+		ans = max(ans, (a[i]+k-1)/k);
+	}
+	cout &lt;&lt; ans &lt;&lt; endl;
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

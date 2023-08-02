@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;algorithm&gt;
+#include&lt;cstring&gt;
+using namespace std;
+
+int n,s;
+int v[501];
+int memo[501][501];
+
+int solve(int i, int j) {
+  // evaluated all n indices
+  if (i==s) return 0;
+  if (memo[i][j]!=-1) return memo[i][j];
+  // i+1th index, choose j items (can't choose more than (i+1)/2)
+  if (i!=0 &amp;&amp; j+1&gt;(i+1)/2) return solve(i+1,j);
+  // else either take ith item or don't
+  memo[i][j] = max(v[i]+solve(i+1,j+1), solve(i+1,j));
+  return memo[i][j];
+}
+
+int main() {
+  cin &gt;&gt; n;
+  for (int d=1; d&lt;=n; d++) {
+    memset(v, 0, sizeof v);
+    memset(memo, -1, sizeof memo);
+    cin &gt;&gt; s;
+    for (int i=0; i&lt;s; i++) {
+      cin &gt;&gt; v[i];
+    }
+    int ans = 0;
+    ans = solve(0,0);
+    cout &lt;&lt; &quot;Spree #&quot; &lt;&lt; d &lt;&lt; &quot;: &quot; &lt;&lt; ans &lt;&lt; endl;
+  }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+#include&lt;vector&gt;
+#include&lt;cstring&gt;
+
+using namespace std;
+
+int arr[4][4], t, g;
+vector&lt;int&gt; x, y;
+
+int solve (int start) {
+  // if I have filled up all empty spots
+  if (start == x.size()) {
+    int temp[4];
+    memset(temp,0,sizeof temp);
+    for (int i=0; i&lt;4; i++) {
+      for (int j=i+1; j&lt;4; j++) {
+	if (arr[i][j]==1) temp[i]+=3;
+	else if (arr[i][j]==2) temp[j]+=3;
+	else { temp[i]++; temp[j]++;}
+      }
+    }
+    for (int i=0; i&lt;4; i++) {
+      if (i==t) continue;
+      if (temp[i]&gt;=temp[t])
+	return 0;
+    }
+    return 1;
+  }
+
+  int ans=0;
+  for (int i=0; i&lt;3; i++) {
+    arr[x[start]][y[start]]=i;
+    ans+=solve(start+1);
+    arr[x[start]][y[start]]=-1;
+  }
+  return ans;
+}
+
+int main() {
+  cin &gt;&gt; t; t--;
+  cin &gt;&gt; g;
+  // so that games which have not been played yet
+  // are indicated by -1
+  memset(arr, -1, sizeof arr);
+  for (int i=0; i&lt;g; i++) {
+    int a,b,sa,sb;
+    cin &gt;&gt; a &gt;&gt; b &gt;&gt; sa &gt;&gt; sb;
+    // 1 means row team won, 2 means column team won
+    // 3 means tie
+    if (sa&gt;sb) arr[a-1][b-1]=1;
+    else if (sa&lt;sb) arr[a-1][b-1]=2;
+    else arr[a-1][b-1]=0;
+  }
+  for (int i=0; i&lt;4; i++) {
+    for (int j=i+1; j&lt;4; j++) {
+      if (arr[i][j]==-1) {
+	x.push_back(i);
+	y.push_back(j);
+      }
+    }
+  }
+  cout &lt;&lt; solve(0) &lt;&lt; endl;
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

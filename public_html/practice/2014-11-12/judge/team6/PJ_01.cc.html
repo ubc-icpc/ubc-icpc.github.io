@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bitset&gt;
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+double dp[8][128];
+
+double dfs(int round, int remain, vector&lt;int&gt; &amp;num) {
+	if (remain == 0) return 1;
+	if (dp[round][remain] &gt; -1e-8) return dp[round][remain];
+	double res = 0;
+	int n = num.size();
+	int nn = (1 &lt;&lt; n);
+	for (int i = 1; i &lt; nn; i++) {
+		if ((i &amp; (~remain)) == 0) {
+			double prob = 1;
+			for (int j = 0; j &lt; n; j++) { 
+				if ((remain &amp; (1 &lt;&lt; j)) &gt; 0) {
+					if ((i &amp; (1 &lt;&lt; j)) &gt; 0) {
+						prob *= 1.0/num[j];
+					} else {
+						prob *= 1.0 - 1.0/num[j];
+					}
+					num[j]--;
+				}
+			}
+			if (prob &gt; 0) res += prob * dfs(round+1, remain - i, num);
+			for (int j = 0; j &lt; n; j++) {
+				if ((remain &amp; (1 &lt;&lt; j)) &gt; 0) {
+					num[j]++;
+				}
+			}
+		}
+	}
+	dp[round][remain] = res;
+	return res;
+}
+
+int main() {
+	int nc; cin &gt;&gt; nc;
+	for (int cs = 1; cs &lt;= nc; cs++) {
+		int d; cin &gt;&gt; d;
+		vector&lt;int&gt; c;
+		for (int i = 0; i &lt; d; i++) {
+			string s; cin &gt;&gt; s;
+			c.push_back(s.length());
+		}
+		for (int i = 0; i &lt; 8; i++)
+			for (int j = 0; j &lt; 128; j++)
+				dp[i][j] = -1;
+		cout &lt;&lt; setprecision(3) &lt;&lt; fixed &lt;&lt; dfs(0, (1 &lt;&lt; d) - 1, c) &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

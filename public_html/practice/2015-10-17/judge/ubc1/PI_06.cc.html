@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+struct evt {
+    int id, x, t;
+    evt() {}
+    evt(int id, int x, int t) : id(id), x(x), t(t) {}
+    bool operator&lt;(const evt&amp; o) const {
+        if (x == o.x) {
+            if (t == o.t) {
+                return id &lt; o.id;
+            }
+            return t &gt; o.t;
+        }
+        return x &lt; o.x;
+    }
+};
+
+evt e[200005];
+int main() {
+    ios::sync_with_stdio(0);
+    int t, ca = 0; cin &gt;&gt; t;
+    while (t--) {
+        int n; cin &gt;&gt; n;
+        int c = 0;
+        for (int i = 0; i &lt; n; i++) {
+            int l, r; cin &gt;&gt; l &gt;&gt; r;
+            e[c++] = evt(i, l, -1);
+            e[c++] = evt(i, r, 1);
+        }
+        sort(e, e+c);
+        
+        set&lt;int&gt; s;
+        vector&lt;set&lt;int&gt; &gt; ans(n);
+        for (int i = 0; i &lt; c; ) {
+            int j = i;
+            while (j &lt; c &amp;&amp; e[j].x == e[i].x) {
+                if (e[j].t == -1) s.insert(e[j].id);
+                if (e[j].t == 1) s.erase(e[j].id);
+                j++;
+            }
+            
+            for (int k = i; k &lt; j; k++) {
+                if (e[k].t == -1) {
+                    auto it = s.find(e[k].id);
+                    if (it != s.begin()) ans[*it].insert(*prev(it));
+                    if (next(it) != s.end()) ans[*next(it)].insert(*it);
+                } else if (e[k].t == 1) {
+                    auto it = s.lower_bound(e[k].id);
+                    if (it != s.begin() &amp;&amp; it != s.end()) {
+                        ans[*it].insert(*prev(it));
+                    }
+                }
+            }
+            i = j;
+        }
+        
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; ++ca &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+        for (int i = 0; i &lt; n; i++) {
+            cout &lt;&lt; ans[i].size();
+            for (int j : ans[i]) cout &lt;&lt; &quot; &quot; &lt;&lt; j+1;
+            cout &lt;&lt; endl;
+        }
+    }
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

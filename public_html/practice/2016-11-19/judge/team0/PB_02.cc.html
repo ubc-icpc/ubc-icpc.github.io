@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+
+typedef long long ll;
+ll N;
+string S, R;
+int num[30], res[30];
+
+void fill(int i, int cur) {
+  if (R.size() != S.size()) R = string(S.size(), '?');
+  for (int j = 0;; ++j) {
+    int k = (1 &lt;&lt; i) - 1 + (1 &lt;&lt; (i + 1)) * j;
+    if (k &gt;= (int)S.size()) break;
+    R[k] = char(cur + '0');
+  }
+}
+
+ll count(int i, int n, int j) {
+  ll ress = 1;
+  for (; i &lt; n; ++i) {
+    if (num[i] == -2 || num[i] == j)
+      ress *= 0;
+    else if (num[i] == -1)
+      ress *= 9;
+  }
+  return ress;
+}
+
+void solve() {
+  int n = 1;
+  for (;(((1&lt;&lt;n)-1) ^ S.size()) &amp;&amp; n &lt; 30; ++n);
+  if (n == 30) return;
+  for (int i = 0; i &lt; n; ++i) {
+    for (int j = 0;; ++j) {
+      int k = (1 &lt;&lt; i) - 1 + (1 &lt;&lt; (i + 1)) * j;
+      if (k &gt;= (int)S.size()) break;
+      if (S[k] == '?')
+        continue;
+      else if (num[i] == -1) {
+        num[i] = S[k] - '0';
+      } else if (num[i] != int(S[k] - '0')) {
+        num[i] = -2;
+      }
+    }
+  }
+  N--;
+  bool lol = true;
+  for (int i = 0; i &lt; n; ++i) {
+    if (num[i] == -2) return;
+    if (num[i] &gt;= 0) {
+      if (!i &amp;&amp; !num[i]) return;
+      if (num[i] == res[0]) return;
+      res[i] = num[i];
+    } else {
+      bool good = false;
+      for (int j = 0; j &lt;= 9; ++j) {
+        if (!i &amp;&amp; !j) continue;
+        if (i &amp;&amp; j == res[0]) continue;
+        ll inc = count(i+1, n, (i?res[0]:j));
+        if (inc &gt; N) {
+          res[i] = j;
+          good = true;
+          break;
+        } else {
+          N -= inc;
+        }
+      }
+      if (!good) lol = false;
+    }
+  }
+  if (lol &amp;&amp; N == 0) {
+    for (int i = 0; i &lt; n; ++i)
+      fill(i, res[i]);
+  }
+}
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie();
+
+  while (cin &gt;&gt; N) {
+    if (N == 0) break;
+    cin &gt;&gt; S;
+    memset(num, -1, sizeof num);
+    memset(res, 0, sizeof res);
+    R = &quot;-1&quot;;
+    solve();
+    cout &lt;&lt; R &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

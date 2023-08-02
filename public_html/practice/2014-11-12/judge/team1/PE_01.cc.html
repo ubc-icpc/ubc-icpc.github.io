@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+// throwback to october 15, 2011
+// this solution was 10% me and 90% vim macros
+
+#include &lt;iostream&gt;
+using namespace std;
+
+void rotate(char* a, char* b, char* c, char* d)
+{
+    char temp = *d;
+    *d = *c;
+    *c = *b;
+    *b = *a;
+    *a = temp;
+}
+
+void rotate_8(char* a, char* b, char* c, char* d, char* e, char* f, char* g, char* h)
+{
+    char temp = *a;
+    *a = *f;
+    *f = *h;
+    *h = *c;
+    *c = temp;
+    temp = *b;
+    *b = *d;
+    *d = *g;
+    *g = *e;
+    *e = temp;
+}
+
+char white_tl, white_tm, white_tr, white_ml, white_mm, white_mr, white_bl, white_bm, white_br, orange_tl, orange_tm, orange_tr, orange_ml, orange_mm, orange_mr, orange_bl, orange_bm, orange_br, red_tl, red_tm, red_tr, red_ml, red_mm, red_mr, red_bl, red_bm, red_br, blue_tl, blue_tm, blue_tr, blue_ml, blue_mm, blue_mr, blue_bl, blue_bm, blue_br, green_tl, green_tm, green_tr, green_ml, green_mm, green_mr, green_bl, green_bm, green_br, yellow_tl, yellow_tm, yellow_tr, yellow_ml, yellow_mm, yellow_mr, yellow_bl, yellow_bm, yellow_br;
+
+void r_white()
+{
+    rotate(&amp;green_tl, &amp;orange_tl, &amp;red_tl, &amp;blue_tl);
+    rotate(&amp;green_ml, &amp;orange_ml, &amp;red_ml, &amp;blue_ml);
+    rotate(&amp;green_bl, &amp;orange_bl, &amp;red_bl, &amp;blue_bl);
+    rotate_8(&amp;white_tl, &amp;white_tm, &amp;white_tr, &amp;white_ml, &amp;white_mr, &amp;white_bl, &amp;white_bm, &amp;white_br);
+}
+
+void r_orange()
+{
+    rotate(&amp;green_bl, &amp;yellow_bl, &amp;red_tr, &amp;white_br);
+    rotate(&amp;green_bm, &amp;yellow_bm, &amp;red_tm, &amp;white_mr);
+    rotate(&amp;green_br, &amp;yellow_br, &amp;red_tl, &amp;white_tr);
+    rotate_8(&amp;orange_tl, &amp;orange_tm, &amp;orange_tr, &amp;orange_ml, &amp;orange_mr, &amp;orange_bl, &amp;orange_bm, &amp;orange_br);
+}
+
+void r_red()
+{
+    rotate(&amp;orange_bl, &amp;yellow_br, &amp;blue_tr, &amp;white_bl);
+    rotate(&amp;orange_bm, &amp;yellow_mr, &amp;blue_tm, &amp;white_bm);
+    rotate(&amp;orange_br, &amp;yellow_tr, &amp;blue_tl, &amp;white_br);
+    rotate_8(&amp;red_tl, &amp;red_tm, &amp;red_tr, &amp;red_ml, &amp;red_mr, &amp;red_bl, &amp;red_bm, &amp;red_br);
+}
+
+void r_blue()
+{
+    rotate(&amp;red_bl, &amp;yellow_tr, &amp;green_tr, &amp;white_tl);
+    rotate(&amp;red_bm, &amp;yellow_tm, &amp;green_tm, &amp;white_ml);
+    rotate(&amp;red_br, &amp;yellow_tl, &amp;green_tl, &amp;white_bl);
+    rotate_8(&amp;blue_tl, &amp;blue_tm, &amp;blue_tr, &amp;blue_ml, &amp;blue_mr, &amp;blue_bl, &amp;blue_bm, &amp;blue_br);
+}
+
+void r_green()
+{
+    rotate(&amp;blue_bl, &amp;yellow_tl, &amp;orange_tr, &amp;white_tr);
+    rotate(&amp;blue_bm, &amp;yellow_ml, &amp;orange_tm, &amp;white_tm);
+    rotate(&amp;blue_br, &amp;yellow_bl, &amp;orange_tl, &amp;white_tl);
+    rotate_8(&amp;green_tl, &amp;green_tm, &amp;green_tr, &amp;green_ml, &amp;green_mr, &amp;green_bl, &amp;green_bm, &amp;green_br);
+}
+
+void r_yellow()
+{
+    rotate(&amp;blue_br, &amp;red_br, &amp;orange_br, &amp;green_br);
+    rotate(&amp;blue_mr, &amp;red_mr, &amp;orange_mr, &amp;green_mr);
+    rotate(&amp;blue_tr, &amp;red_tr, &amp;orange_tr, &amp;green_tr);
+    rotate_8(&amp;yellow_tl, &amp;yellow_tm, &amp;yellow_tr, &amp;yellow_ml, &amp;yellow_mr, &amp;yellow_bl, &amp;yellow_bm, &amp;yellow_br);
+}
+
+int main()
+{
+    int t;
+    cin &gt;&gt; t;
+
+    for (int i = 0; i &lt; t; i++)
+    {
+        cin &gt;&gt; white_tl &gt;&gt; white_tm &gt;&gt; white_tr &gt;&gt; orange_tl &gt;&gt; orange_tm &gt;&gt; orange_tr &gt;&gt; red_tl &gt;&gt; red_tm &gt;&gt; red_tr &gt;&gt; blue_tl &gt;&gt; blue_tm &gt;&gt; blue_tr &gt;&gt; green_tl &gt;&gt; green_tm &gt;&gt; green_tr &gt;&gt; yellow_tl &gt;&gt; yellow_tm &gt;&gt; yellow_tr;
+        cin &gt;&gt; white_ml &gt;&gt; white_mm &gt;&gt; white_mr &gt;&gt; orange_ml &gt;&gt; orange_mm &gt;&gt; orange_mr &gt;&gt; red_ml &gt;&gt; red_mm &gt;&gt; red_mr &gt;&gt; blue_ml &gt;&gt; blue_mm &gt;&gt; blue_mr &gt;&gt; green_ml &gt;&gt; green_mm &gt;&gt; green_mr &gt;&gt; yellow_ml &gt;&gt; yellow_mm &gt;&gt; yellow_mr;
+        cin &gt;&gt; white_bl &gt;&gt; white_bm &gt;&gt; white_br &gt;&gt; orange_bl &gt;&gt; orange_bm &gt;&gt; orange_br &gt;&gt; red_bl &gt;&gt; red_bm &gt;&gt; red_br &gt;&gt; blue_bl &gt;&gt; blue_bm &gt;&gt; blue_br &gt;&gt; green_bl &gt;&gt; green_bm &gt;&gt; green_br &gt;&gt; yellow_bl &gt;&gt; yellow_bm &gt;&gt; yellow_br;
+        string commands;
+        cin &gt;&gt; commands;
+        for (int i = 0; i &lt; commands.size(); i++)
+        {
+            char com = commands[i];
+            switch (com)
+            {
+                case 'W': r_white(); break;
+                case 'O': r_orange(); break;
+                case 'R': r_red(); break;
+                case 'B': r_blue(); break;
+                case 'G': r_green(); break;
+                case 'Y': r_yellow(); break;
+                default: cout &lt;&lt; &quot;uhoh\n&quot;;
+            }
+        }
+        cout &lt;&lt; white_tl &lt;&lt; &quot; &quot; &lt;&lt; white_tm &lt;&lt; &quot; &quot; &lt;&lt; white_tr &lt;&lt; &quot; &quot; &lt;&lt; orange_tl &lt;&lt; &quot; &quot; &lt;&lt; orange_tm &lt;&lt; &quot; &quot; &lt;&lt; orange_tr &lt;&lt; &quot; &quot; &lt;&lt; red_tl &lt;&lt; &quot; &quot; &lt;&lt; red_tm &lt;&lt; &quot; &quot; &lt;&lt; red_tr &lt;&lt; &quot; &quot; &lt;&lt; blue_tl &lt;&lt; &quot; &quot; &lt;&lt; blue_tm &lt;&lt; &quot; &quot; &lt;&lt; blue_tr &lt;&lt; &quot; &quot; &lt;&lt; green_tl &lt;&lt; &quot; &quot; &lt;&lt; green_tm &lt;&lt; &quot; &quot; &lt;&lt; green_tr &lt;&lt; &quot; &quot; &lt;&lt; yellow_tl &lt;&lt; &quot; &quot; &lt;&lt; yellow_tm &lt;&lt; &quot; &quot; &lt;&lt; yellow_tr &lt;&lt; endl &lt;&lt; white_ml &lt;&lt; &quot; &quot; &lt;&lt; white_mm &lt;&lt; &quot; &quot; &lt;&lt; white_mr &lt;&lt; &quot; &quot; &lt;&lt; orange_ml &lt;&lt; &quot; &quot; &lt;&lt; orange_mm &lt;&lt; &quot; &quot; &lt;&lt; orange_mr &lt;&lt; &quot; &quot; &lt;&lt; red_ml &lt;&lt; &quot; &quot; &lt;&lt; red_mm &lt;&lt; &quot; &quot; &lt;&lt; red_mr &lt;&lt; &quot; &quot; &lt;&lt; blue_ml &lt;&lt; &quot; &quot; &lt;&lt; blue_mm &lt;&lt; &quot; &quot; &lt;&lt; blue_mr &lt;&lt; &quot; &quot; &lt;&lt; green_ml &lt;&lt; &quot; &quot; &lt;&lt; green_mm &lt;&lt; &quot; &quot; &lt;&lt; green_mr &lt;&lt; &quot; &quot; &lt;&lt; yellow_ml &lt;&lt; &quot; &quot; &lt;&lt; yellow_mm &lt;&lt; &quot; &quot; &lt;&lt; yellow_mr &lt;&lt; endl &lt;&lt; white_bl &lt;&lt; &quot; &quot; &lt;&lt; white_bm &lt;&lt; &quot; &quot; &lt;&lt; white_br &lt;&lt; &quot; &quot; &lt;&lt; orange_bl &lt;&lt; &quot; &quot; &lt;&lt; orange_bm &lt;&lt; &quot; &quot; &lt;&lt; orange_br &lt;&lt; &quot; &quot; &lt;&lt; red_bl &lt;&lt; &quot; &quot; &lt;&lt; red_bm &lt;&lt; &quot; &quot; &lt;&lt; red_br &lt;&lt; &quot; &quot; &lt;&lt; blue_bl &lt;&lt; &quot; &quot; &lt;&lt; blue_bm &lt;&lt; &quot; &quot; &lt;&lt; blue_br &lt;&lt; &quot; &quot; &lt;&lt; green_bl &lt;&lt; &quot; &quot; &lt;&lt; green_bm &lt;&lt; &quot; &quot; &lt;&lt; green_br &lt;&lt; &quot; &quot; &lt;&lt; yellow_bl &lt;&lt; &quot; &quot; &lt;&lt; yellow_bm &lt;&lt; &quot; &quot; &lt;&lt; yellow_br &lt;&lt; &quot;\n===================================\n&quot;;
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

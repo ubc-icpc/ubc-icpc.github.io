@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;algorithm&gt;
+
+
+using namespace std;
+
+long long int map[1001][1001];
+bool flag[1001][1001];
+int N;
+bool obstacles[1001][1001];
+long long mod = 2147483647;
+
+void bfs(int i, int j){
+	if(i&gt;N||j&gt;N||i&lt;1||j&lt;1) return;
+	if(obstacles[i][j]) return;
+	if(flag[i][j]) return;
+	flag[i][j] = true;
+	bfs(i+1,j);
+	bfs(i-1,j);
+	bfs(i,j+1);
+	bfs(i,j-1);
+}
+
+void count(){
+	map[1][1] = 1;
+	for(int i=1;i&lt;=N;i++){
+		for(int j=1;j&lt;=N;j++){
+			if(!obstacles[i][j]&amp;&amp;(i&gt;1||j&gt;1)){
+				map[i][j] = (map[i-1][j]+map[i][j-1])%mod;
+			}
+		}
+	}
+}
+
+int main() {
+	cin&gt;&gt;N;
+	for(int i=0;i&lt;=N;i++)
+		for(int j=0;j&lt;=N;j++){
+			map[i][j]=0;
+			flag[i][j]=false;
+			obstacles[i][j]=false;
+		}
+	char c;
+	for(int i=1;i&lt;=N;i++)
+		for(int j=1;j&lt;=N;j++){
+			cin&gt;&gt;c;
+			if(c=='#')
+				obstacles[i][j]=true;
+			else
+				obstacles[i][j]=false;
+		}
+	
+	count();
+	if(map[N][N]&gt;0){
+		cout&lt;&lt;map[N][N]&lt;&lt;endl;
+	}
+	else{
+		bfs(1,1);
+		if(!flag[N][N])
+			cout&lt;&lt;&quot;INCONCEIVABLE&quot;&lt;&lt;endl;
+		else
+			cout&lt;&lt;&quot;THE GAME IS A LIE&quot;&lt;&lt;endl;
+	}
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

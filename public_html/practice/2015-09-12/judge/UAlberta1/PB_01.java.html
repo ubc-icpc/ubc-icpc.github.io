@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+public class medal {
+
+	public static void main(String[] args){
+		Scanner in = new Scanner(System.in);
+		String G = in.nextLine();
+		for(int i = 0; i &lt; Integer.parseInt(G); i++){
+			String input = in.nextLine();
+			System.out.println(input);
+			int[] m = new int[6];
+			for(int j = 0; j &lt; 6; j++)
+				m[j] = Integer.parseInt(input.split(&quot; &quot;)[j]);
+			boolean color = (m[0] != m[3]) ? (m[0] &gt; m[3]) : ((m[1] != m[4]) ? (m[1] &gt; m[4]) : (m[2] &gt; m[5]));
+			boolean count = (m[0] + m[1] + m[2] &gt; m[3] + m[4] + m[5]);
+			if(color &amp;&amp; count)System.out.println(&quot;both&quot;);
+			else if(color)System.out.println(&quot;color&quot;);
+			else if(count)System.out.println(&quot;count&quot;);
+			else System.out.println(&quot;none&quot;);
+			System.out.println();
+		}
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

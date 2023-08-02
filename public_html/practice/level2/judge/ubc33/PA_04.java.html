@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.Scanner;
+
+public class HalfCircle {
+    public static Scanner sc = new Scanner(System.in);
+    public static int x;
+    public static int y;
+    public static int r;
+
+    public static void main(String[] args) {
+        r = sc.nextInt();
+        x = sc.nextInt();
+        y = sc.nextInt();
+        sc.nextLine();
+        double shortestC = Math.abs(Math.sqrt(x*x + y*y) - r) ;
+        double shortestD = shortestC &gt; ((double) y) ? y : shortestC;
+        System.out.printf(&quot;%.11f&quot;,shortestD);
+
+    }
+}
+</code>
+</pre>
+</body>
+</html>

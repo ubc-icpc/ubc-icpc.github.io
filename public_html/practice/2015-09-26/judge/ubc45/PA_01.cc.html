@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+using namespace std;
+
+int s[4];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int hcp = 0;
+    for (int i = 0; i &lt; 4; i++)
+      s[i] = 0;
+    for (int i = 0; i &lt; 13; i++) {
+      string S; cin &gt;&gt; S;
+      char v = S[0], u = S[1];
+      if (v == 'A')
+        hcp += 4;
+      else if (v == 'K')
+        hcp += 3;
+      else if (v == 'Q')
+        hcp += 2;
+      else if (v == 'J')
+        hcp++;
+      if (u == 'D')
+        s[0]++;
+      else if (u == 'C')
+        s[1]++;
+      else if (u == 'H')
+        s[2]++;
+      else if (u == 'S')
+        s[3]++;
+    }
+    bool pass = true;
+    if (hcp &gt;= 15 &amp;&amp; hcp &lt;= 17) {
+      int two = 0;
+      for (int i = 0; i &lt; 4; i++) {
+        if (s[i] &lt; 2) {
+          two = -1;
+          break;
+        }
+        if (s[i] == 2)
+          two++;
+      }
+      if (two == 1 || two == 0)
+        pass = false;
+    }
+    cout &lt;&lt; (pass ? &quot;Pass&quot; : &quot;1NT&quot;) &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

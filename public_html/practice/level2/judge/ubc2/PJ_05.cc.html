@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+const char nl = '\n';
+using namespace std;
+using ll = long long;
+using ld = long double;
+using pt = complex&lt;ld&gt;;
+using pol = vector&lt;pt&gt;;
+const int N = 111, TOP = 101, BOT = 102;
+const ld INF = 1e18, EPS = 1e-8;
+
+int uf[N];
+int find(int x) { return uf[x] &lt; 0 ? x : uf[x] = find(uf[x]); }
+void merge(int a, int b) { a = find(a); b = find(b); if (a != b) uf[a] = b; }
+
+ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); }
+ld dp(const pt&amp; a, const pt&amp; b) { return real(conj(a)*b); }
+inline ld sgn(const ld&amp; x) { return abs(x) &lt; EPS ? 0 : x/abs(x); }
+inline bool cmp_lex(const pt&amp; a, const pt&amp; b) {
+  return a.real()&lt;b.real()-EPS||(a.real()&lt;b.real()+EPS&amp;&amp;a.imag()&lt;b.imag()-EPS);}
+bool seg_x_seg(pt a1, pt a2, pt b1, pt b2) {
+  //if (eq(a1,a2) || eq(b1,b2)) return false; // uncomment to exclude endpoints
+  ld za = abs(a2-a1), zb = abs(b2-b1); za=za&gt;EPS?1/za:0; zb=zb&gt;EPS?1/zb:0;
+  int s1 = sgn(cp(a2-a1, b1-a1)*za), s2 = sgn(cp(a2-a1, b2-a1)*za);
+  int s3 = sgn(cp(b2-b1, a1-b1)*zb), s4 = sgn(cp(b2-b1, a2-b1)*zb);
+  if(!s1 &amp;&amp; !s2 &amp;&amp; !s3) { // collinear
+    if (cmp_lex(a2, a1)) swap(a1, a2); if (cmp_lex(b2, b1)) swap(b1, b2);
+    //return cmp_lex(a1, b2) &amp;&amp; cmp_lex(b1, a2);//uncomment to exclude endpoints
+    return !cmp_lex(b2, a1) &amp;&amp; !cmp_lex(a2, b1);
+  } return s1*s2 &lt;= 0 &amp;&amp; s3*s4 &lt;= 0; } //change to &lt; to exclude endpoints
+inline bool on_segment(const pt &amp;a, const pt &amp;b, const pt &amp;p) {
+  return abs(cp(b-a, p-a)) &lt; EPS &amp;&amp; dp(b-a, p-a) &gt; 0 &amp;&amp; dp(a-b, p-b) &gt; 0; }
+inline bool on_boundary(const pol &amp;v, const pt &amp;p) { bool res = false;
+  for(int i=v.size()-1,j=0;j&lt;v.size();i=j++)
+    res |= on_segment(v[i], v[j], p) | (abs(p-v[i]) &lt; EPS); return res; }
+bool pt_in_polygon(const pt &amp;p, const pol &amp;v){ if(on_boundary(v,p)) return true;
+  ld res = 0; for(int i = v.size() - 1, j = 0; j &lt; v.size(); i = j++)
+    res += atan2(cp(v[i] - p, v[j] - p), dp(v[i] - p, v[j] - p));
+  return abs(res) &gt; 1; } // will be either 2*PI or 0
+inline ld lsp_dist(const pt &amp;a, const pt &amp;b, const pt &amp;p) {
+  return dp(b - a, p - a) &gt; 0 &amp;&amp; dp(a - b, p - b) &gt; 0 ?
+    abs(cp(b - a, p - a) / abs(b - a)) : min(abs(a - p), abs(b - p)); }
+
+ld ss_dist(const pt&amp; a, const pt&amp; b, const pt&amp; c, const pt&amp; d) {
+  if (seg_x_seg(a, b, c, d)) return 0;
+  return min({lsp_dist(a, b, c), lsp_dist(a, b, d), lsp_dist(c, d, a), lsp_dist(c, d, b)});
+}
+
+ld pp_dist(const pol&amp; a, const pol&amp; b) {
+  const int n = a.size(), m = b.size();
+  ld ans = INF;
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; m; j++) {
+      ans = min(ans, ss_dist(a[i], a[(i+1)%n], b[j], b[(j+1)%m]));
+    }
+  }
+  return ans;
+}
+
+ld d[N][N];
+
+bool check(const vector&lt;pol&gt;&amp; v, int w, ld r) {
+  memset(uf, -1, sizeof uf);
+  const int n = v.size();
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = i+1; j &lt; n; j++) {
+      if (d[i][j] &lt;= 2*r) {
+        merge(i, j);
+      }
+    }
+  }
+  pol top = {pt(-1000, w/2), pt(2000, w/2)};
+  pol bot = {pt(-1000, -w/2), pt(2000, -w/2)};
+  for (int i = 0; i &lt; n; i++) {
+    if (pp_dist(v[i], top) &lt;= 2*r) {
+      merge(i, TOP);
+    }
+    if (pp_dist(v[i], bot) &lt;= 2*r) {
+      merge(i, BOT);
+    }
+  }
+  return find(TOP) != find(BOT);
+}
+
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int T; cin &gt;&gt; T;
+  while (T--) {
+    int w, n; cin &gt;&gt; w &gt;&gt; n;
+    vector&lt;pol&gt; v;
+    for (int i = 0; i &lt; n; i++) {
+      int k; cin &gt;&gt; k;
+      pol p;
+      for (int j = 0; j &lt; k; j++) {
+        int x, y; cin &gt;&gt; x &gt;&gt; y;
+        p.emplace_back(x, y);
+      }
+      v.push_back(move(p));
+    }
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = i+1; j &lt; n; j++) {
+        d[i][j] = pp_dist(v[i], v[j]);
+      }
+    }
+    ld l = 0, r = w/2;
+    for (int i = 0; i &lt; n; i++) {
+      for (int j = 0; j &lt; v[i].size(); j++) {
+        r = min(r, lsp_dist(v[i][j], v[i][(j+1)%v[i].size()], pt(0, 0)));
+      }
+    }
+    if (!check(v, w, 0)) {
+      cout &lt;&lt; &quot;Impossible\n&quot;;
+      goto end;
+    }
+    for (int i = 0; i &lt; 70; i++) {
+      ld m = (l+r)/2;
+      if (check(v, w, m)) l = m;
+      else r = m;
+    }
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; l &lt;&lt; nl;
+    end:;
+  }
+  return 0;
+}
+</code>
+</pre>
+</body>
+</html>

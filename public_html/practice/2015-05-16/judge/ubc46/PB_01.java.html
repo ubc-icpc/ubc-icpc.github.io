@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.util.Scanner;
+
+/**
+ * Created by Peter on 2015-05-17.
+ */
+public class Klopka {
+    public static void main(String[] args) {
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxY = Integer.MIN_VALUE;
+        Scanner s = new Scanner(System.in);
+        int noOfFlies = Integer.parseInt(s.nextLine());
+        for(int i = 0; i &lt; noOfFlies; i++){
+            String[] ints = s.nextLine().split(&quot;\\s+&quot;);
+            int x = Integer.parseInt(ints[0]);
+            int y = Integer.parseInt(ints[1]);
+            if(x &lt; minX)
+                minX = x;
+            if(y &lt; minY)
+                minY = y;
+            if(x &gt; maxX)
+                maxX = x;
+            if(y &gt; maxY)
+                maxY = y;
+        }
+        System.out.println(Math.max((maxX-minX)*(maxX-minX), (maxY-minY)*(maxY-minY)));
+
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

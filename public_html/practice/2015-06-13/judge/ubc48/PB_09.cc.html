@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main(){
+	int r, s; cin &gt;&gt; r &gt;&gt; s;
+	vector &lt; vector &lt; char &gt; &gt; m(r, vector&lt;char&gt;(s));
+	vector &lt; vector &lt; int &gt; &gt; p(r, vector&lt;int&gt;(2, -1));
+	for (int i = 0; i &lt; r; ++i){
+		for (int j = 0; j &lt; s; ++j){
+			cin &gt;&gt; m[r - i - 1][j];
+			if (m[r - i - 1][j] == 'J'){
+				if (p[r - i - 1][0] == -1) p[r - i - 1][0] = j;
+				p[r - i - 1][1] = j;
+			}
+		}
+	}
+	int dir = -1, cur = 0, op = 0, last = 0;
+	for (int i = 0; i &lt; r; ++i){
+		if (p[i][0] != -1){
+			if (dir == 1){
+				op += abs(p[i][1] - cur) + p[i][1] - p[i][0];
+				cur = p[i][0];
+			}
+			else{
+				op += abs(p[i][0] - cur) + p[i][1] - p[i][0];
+				cur = p[i][1];
+			}
+			last = i;
+		}
+		dir *= -1;
+	}
+	if (p[r - 1][0] != -1) op += r - 1;
+	else op += last;
+	cout &lt;&lt; op &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

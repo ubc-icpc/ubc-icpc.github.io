@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long double ld;
+typedef pair&lt;ld,ld&gt; pt;
+
+ld x[10005],y[10005];
+int main(){
+    ios::sync_with_stdio(0);
+    int t; cin&gt;&gt;t;
+    while (t--){
+        ld r; int n; cin&gt;&gt;r&gt;&gt;n;
+        for (int i=0;i&lt;n;i++) cin&gt;&gt;x[i]&gt;&gt;y[i];
+        ld p=0; x[n]=x[0],y[n]=y[0];
+        for (int i=0;i&lt;n;i++) p+=sqrt((x[i]-x[i+1])*(x[i]-x[i+1])+(y[i]-y[i+1])*(y[i]-y[i+1]));
+        ld s=(p-2*acos(-1.0)*r)/p;
+        if (s&lt;1e-6) cout&lt;&lt;&quot;Not possible&quot;&lt;&lt;endl;
+        else cout&lt;&lt;fixed&lt;&lt;setprecision(10)&lt;&lt;s&lt;&lt;endl;
+    }
+    return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

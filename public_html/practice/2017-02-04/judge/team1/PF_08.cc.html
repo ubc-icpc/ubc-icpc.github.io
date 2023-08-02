@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef pair&lt;int, int&gt; pii;
+typedef pair&lt;int, pii&gt; piii;
+const int N = 1005;
+
+int dr[4] = {-1, 1, 0, 0};
+int dc[4] = {0, 0, -1, 1};
+
+string grid[N];
+int fire[N][N];
+int dist[N][N];
+
+int ncols, nrows, sr, sc;
+inline bool is_good(int r, int c) {
+    return r &gt;= 0 &amp;&amp; r &lt; nrows &amp;&amp; c &gt;= 0 &amp;&amp; c &lt; ncols &amp;&amp; grid[r][c] != '#';
+}
+
+inline bool is_outside(int r, int c) {
+    return r == 0 || c == 0 || r == nrows-1 || c == ncols-1;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int ncase; cin &gt;&gt; ncase;
+    while (ncase--) {
+        cin &gt;&gt; ncols &gt;&gt; nrows;
+        queue&lt;piii&gt; q;
+        for (int i = 0; i &lt; nrows; i++) {
+            cin &gt;&gt; grid[i];
+            for (int j = 0; j &lt; ncols; j++) {
+                if (grid[i][j] == '@') {
+                    sr = i; sc = j;
+                }
+                if (grid[i][j] == '*') {
+                    q.push(piii(0, pii(i, j)));
+                }
+                fire[i][j] = -1;
+                dist[i][j] = -1;
+            }
+        }
+        while (!q.empty()) {
+            piii cur = q.front(); q.pop();
+            int t = cur.first;
+            int r = cur.second.first;
+            int c = cur.second.second;
+
+            if (fire[r][c] &gt;= 0) continue;
+            fire[r][c] = t;
+            //cerr &lt;&lt; &quot;fire: &quot; &lt;&lt; r &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; &quot; &quot; &lt;&lt; fire[r][c] &lt;&lt; endl;
+
+            for (int k = 0; k &lt; 4; k++) {
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+                if (is_good(nr, nc)) {
+                    q.push(piii(t+1, pii(nr, nc)));
+                }
+            }
+        }
+        int ans = -1;
+        queue&lt;pii&gt; qq;
+        qq.push(pii(sr, sc));
+        dist[sr][sc] = 0;
+        while (!qq.empty()) {
+            pii cur = qq.front(); qq.pop();
+            int r = cur.first;
+            int c = cur.second;
+            //cerr &lt;&lt; &quot;visit: &quot; &lt;&lt; r &lt;&lt; &quot; &quot; &lt;&lt; c &lt;&lt; &quot; &quot; &lt;&lt; dist[r][c] &lt;&lt; endl;
+            if (is_outside(r, c)) {
+                ans = dist[r][c];
+                break;
+            }
+            for (int k = 0; k &lt; 4; k++) {
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+                if (is_good(nr, nc) &amp;&amp; (fire[nr][nc] == -1 || fire[nr][nc] &gt; dist[r][c] + 1) &amp;&amp; dist[nr][nc] == -1) {
+                    dist[nr][nc] = dist[r][c] + 1;
+                    qq.push(pii(nr, nc));
+                }
+            }
+        }
+        if (ans == -1) {
+            cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; ans+1 &lt;&lt; endl;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

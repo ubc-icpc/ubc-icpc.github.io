@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+typedef pair&lt;string, int&gt;	psi;
+typedef map&lt;string, int&gt;	msi;
+typedef vector&lt;int&gt;			vi;
+
+struct cmpV {
+	bool operator() (const int &amp;x, const int &amp;y) const {
+		return x &lt; y;
+	}
+};
+
+int main() {
+	int n;
+	cin &gt;&gt; n;
+	while (n &gt; 0) {
+		msi cheeses;
+		for (int i=0; i&lt;n; i++) {
+			string cname;
+			cin &gt;&gt; cname;
+			cheeses[cname]++;
+		}
+		vi cc;
+		for (msi::iterator it = cheeses.begin(); it != cheeses.end(); it++) {
+			cc.push_back(it-&gt;second);
+		}
+		sort (cc.begin(), cc.end(), cmpV());
+		int max = 0;
+		int cSi = cheeses.size();
+		int i = 1;
+		for (vi::iterator it = cc.begin(); it != cc.end(); it++) {
+			if (max &lt; *it*(cSi-i+1))
+				max = *it*(cSi-i+1);
+			i++;
+		}
+		cout &lt;&lt; max &lt;&lt; endl;
+		cin &gt;&gt; n;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

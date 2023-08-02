@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+using namespace std;
+int main() {
+	int n; cin &gt;&gt; n;
+	
+	vector&lt;string&gt; tri[11];
+	
+	tri[1] = {&quot;XX&quot;,&quot;XX&quot;};
+	int spaces = 1;
+	
+	for (int i=2; i&lt;=10; i++) {
+		int l = tri[i-1].size();
+		
+		for (int j=0; j&lt;l; j++) {
+			string s(spaces,' ');
+			string o = tri[i-1][j];
+			tri[i].push_back(s + o + s);
+		}
+		
+		for (int j=0; j&lt;l; j++) {
+			string o = tri[i-1][j];
+			tri[i].push_back(o+o);
+		}
+		spaces *=2;
+	}
+
+	for (int N=1; N&lt;=n; N++) {
+		cout &lt;&lt; &quot;Triangle #&quot; &lt;&lt; N &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+
+		int k; cin &gt;&gt; k;
+		for (int i=0; i&lt;tri[k].size(); i++) {
+			for (int j=0; j&lt;tri[k][i].size(); j++) {
+				cout &lt;&lt; tri[k][i][j];
+			}
+			cout &lt;&lt; endl;
+		}
+		cout &lt;&lt; endl;
+	}
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

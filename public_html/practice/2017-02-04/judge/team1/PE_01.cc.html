@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int n;
+char s[10010];
+char ns[10010];
+char tab[505][505];
+char ntab[505][505];
+
+int main(){
+
+    int ncases;
+    cin &gt;&gt; ncases;
+
+    while(ncases--){
+
+        cin &gt;&gt; s;
+
+        int sz = strlen(s);
+
+        for(n = 1;n*n &lt; sz;n++);
+
+        int last = 0;
+        for(int i = 1;i &lt;= n;i++)
+        for(int j = 1;j &lt;= n;j++)
+            tab[i][j] = s[last++];
+
+        for(int i = 1;i &lt;= n;i++)
+        for(int j = 1;j &lt;= n;j++)
+            ntab[i][j] = tab[j][n-i+1];
+
+
+        last = 0;
+        for(int i = 1;i &lt;= n;i++)
+        for(int j = 1;j &lt;= n;j++)
+            ns[last++] = ntab[i][j];
+
+        ns[last] = '\0';
+
+        printf(&quot;%s\n&quot;, ns);
+
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

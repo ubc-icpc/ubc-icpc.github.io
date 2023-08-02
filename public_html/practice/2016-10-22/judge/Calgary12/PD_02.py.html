@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+d = int(input())
+
+money = 100
+shares = 0
+days = []
+
+for x in range(d):
+    days.append(int(input()))
+
+##print(days)
+actions = [0] * d
+
+lookingtobuy = True
+lookingtosell = False
+for day, price in enumerate(days):
+    if day == 0:
+        previouslowest = price
+    
+    if lookingtobuy:
+        if price &lt; previouslowest:
+            previouslowest = price
+        elif price &gt; previouslowest:
+            actions[day-1] = &quot;buy&quot;
+            lookingtobuy = False
+            lookingtosell = True
+            previoushighest = price
+    elif lookingtosell:
+        if price &gt; previoushighest:
+            previoushighest = price
+        elif price &lt; previoushighest:
+            actions[day-1] = &quot;sell&quot;
+            lookingtobuy = True
+            lookingtosell = False
+            previouslowest = price
+    if lookingtosell and day == d-1:
+        actions[day] = &quot;sell&quot;
+
+##print(actions)
+for i, action in enumerate(actions):
+    if action == &quot;buy&quot;:
+        num_shares = money // days[i]
+        if num_shares &gt; 100000:
+            shares = 100000
+            money -= 100000 * days[i]
+        else:
+            shares += num_shares
+            money -= num_shares * days[i]
+    elif action == &quot;sell&quot;:
+        money += shares * days[i]
+        shares = 0
+
+print(money)
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
+import java.util.*;
+
+
+public class acm {
+    public static void main (String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int round = scan.nextInt();
+        double pi = 3.14159265358979;
+        while (round &gt; 0) {
+            double l = scan.nextInt();
+            double r = scan.nextInt();
+            DecimalFormat df = new DecimalFormat(&quot;#.00&quot;);
+            if (Math.sqrt(2)*l &lt;= 2.0 *r) {
+                System.out.println(df.format(Math.pow(l,2)));
+            } else if (2.0* r &lt;= l ){
+                System.out.println(df.format(pi * Math.pow(r, 2)));
+            } else {
+                double hLength = l /2;
+                double tArea = Math.sqrt(Math.pow(r, 2)- Math.pow(hLength, 2)) * hLength;
+
+                double angle = Math.acos(hLength/r);
+                double arcAngle = (pi /2.0) - 2.0*angle;
+                double arcArea = arcAngle * Math.pow(r, 2) /2.0;
+                System.out.println(df.format((arcArea + tArea) * 4.0));
+            }
+            round --;
+        }
+    }
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

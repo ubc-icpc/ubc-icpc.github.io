@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef long long ll;
+typedef pair&lt;ll, ll&gt; pii;
+typedef complex&lt;ld&gt; pt;
+
+const int N = 2005;
+struct edge {
+	int v, w;
+};
+
+vector&lt;edge&gt; G[N];
+int dist[N], dist2[N], dist3[N];
+
+int* d;
+struct comp {
+	bool operator()(int l, int r) const {
+		if (d[l] == d[r]) return l &lt; r;
+		return d[l] &lt; d[r];
+	}
+};
+
+void dijkstra(int s, int* dd) {
+	d = dd;
+	d[s] = 0;
+	set&lt;int&gt; q({s});
+	while (!q.empty()) {
+		int u = *q.begin();
+		q.erase(q.begin());
+		for (auto e : G[u]) {
+			if (d[e.v] &gt; d[u] + e.w) {
+				q.erase(e.v);
+				d[e.v] = d[u] + e.w;
+				q.insert(e.v);
+			}
+		}
+	}
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	int T; cin &gt;&gt; T;
+	while (T--) {
+		int n, m, t; cin &gt;&gt; n &gt;&gt; m &gt;&gt; t;
+		int s, g, h; cin &gt;&gt; s &gt;&gt; g &gt;&gt; h;
+		s--, g--, h--;
+		
+		for (int i = 0; i &lt; N; i++) {
+			G[i].clear();
+		}
+		
+		int W;
+		for (int i = 0; i &lt; m; i++) {
+			int u, v, w; cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;
+			u--; v--;
+			
+			if (min(u, v) == min(g, h) &amp;&amp; max(u, v) == max(g, h)) W = w;
+			G[u].push_back({v, w});
+			G[v].push_back({u, w});
+		}
+		//cerr &lt;&lt; W &lt;&lt; endl;
+		
+		memset(dist, 0x3f, sizeof dist);
+		memset(dist2, 0x3f, sizeof dist2);
+		memset(dist3, 0x3f, sizeof dist3);
+		dijkstra(s, dist);
+		dijkstra(g, dist2);
+		dijkstra(h, dist3);
+		
+		vector&lt;int&gt; dest;
+		for (int i = 0; i &lt; t; i++) {
+			int x; cin &gt;&gt; x;
+			x--;
+			dest.push_back(x);
+			//cerr &lt;&lt; s &lt;&lt; &quot; &quot; &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; dist[x] &lt;&lt; &quot; &quot; &lt;&lt; dist[g] + dist3[x] + W &lt;&lt; &quot; &quot; &lt;&lt; dist[h] + dist2[x] + W &lt;&lt; endl;
+		}
+		sort(dest.begin(), dest.end());
+		
+		for (int x : dest) {
+			if (dist[g] + dist3[x] + W == dist[x]) cout &lt;&lt; x+1 &lt;&lt; &quot; &quot;;
+			if (dist[h] + dist2[x] + W == dist[x]) cout &lt;&lt; x+1 &lt;&lt; &quot; &quot;;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</code>
+</pre>
+</body>
+</html>

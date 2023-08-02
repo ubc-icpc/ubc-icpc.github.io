@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+const int ss = 0.000000001;
+
+int cal (int data[][2], int index, int n) {
+	int calculated[400][2] = {}, max = 0, temp_max = 1;
+	for (int i = 0; i&lt;n; i++) {
+		if (i != index) {
+			calculated[i][0] = (data[i][0] - data[index][0]);
+			calculated[i][1] = (data[i][1] - data[index][1]);
+		}
+	}
+	double slope, temp;
+	double slopes[400] = {};
+	for (int i = 0; i&lt;n; i++) {
+		if (i != index) {
+			slopes[i] = (double) calculated[i][1]/(calculated[i][0]+ss);
+		}
+	}
+	slopes[index] = slopes[n-1];
+	slopes[n-1] = 0;
+	sort(slopes, slopes+n-1);
+	temp = slopes[0];
+	for (int i = 1; i&lt;n-1; i++) {
+		if (temp == slopes[i]) {
+			temp_max++;
+		}
+		else {
+			temp = slopes[i];
+			if (temp_max &gt; max)
+				max = temp_max;
+			temp_max = 1;
+		}
+	}
+	if (temp_max &gt; max)
+				max = temp_max;
+	return max+1;
+}
+
+int main () {
+	int T; cin &gt;&gt; T;
+	for (int j = 1; j &lt;= T; j++) {
+		int n, data[400][2], m = 0; cin &gt;&gt; n;
+		for (int i = 0; i &lt; n; i++)
+			cin &gt;&gt; data[i][0] &gt;&gt; data[i][1];
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; j &lt;&lt; &quot;: &quot;;
+		if (n &lt;= 2)
+			cout &lt;&lt; n;
+		else {
+			for (int i = 0; i &lt; n; i++)
+				m = max(m, cal(data, i, n));
+			cout &lt;&lt; m;
+		}
+		cout &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

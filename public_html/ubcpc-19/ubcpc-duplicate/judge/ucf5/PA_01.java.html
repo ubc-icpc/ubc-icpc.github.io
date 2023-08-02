@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">import java.util.*;
+public class a {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		char in = sc.next().charAt(0);
+		int off = 1;
+		if(in == 'D') off = -1;
+		off *= sc.nextInt();
+		char[] arr = sc.next().toCharArray();
+		for(char a : arr) {
+			int b = (int)(a - 'a') + off;
+			if(b &lt; 0) b += 26;
+			else if(b &gt;= 26) b -= 26;
+			
+			char c = (char)(b + 'a');
+			System.out.print(c);
+		}
+		System.out.println();
+	}
+}</code>
+</pre>
+</body>
+</html>

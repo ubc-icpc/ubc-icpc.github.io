@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+typedef pair&lt;ld, ld&gt; pdd;
+typedef pair&lt;ld, int&gt; pdi;
+
+struct Shade {
+  ld x;
+  ld y;
+  ld r;
+};
+
+ld adj[52][52];
+bool visited[52];
+
+int main() {
+  int C; cin &gt;&gt; C;
+  for (int c = 1; c &lt;= C; ++c) {
+    cout &lt;&lt; &quot;Campus #&quot; &lt;&lt; c &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    int S; cin &gt;&gt; S;
+    vector&lt;Shade&gt; shades;
+    for (int s = 0; s &lt; S; ++s) {
+      ld x, y, r; cin &gt;&gt; x &gt;&gt; y &gt;&gt; r;
+      shades.push_back({x, y, r});
+    }
+    for (int s1 = 0; s1 &lt; S; ++s1) {
+      for (int s2 = s1 + 1; s2 &lt; S; ++s2) {
+        Shade sh1 = shades[s1], sh2 = shades[s2];
+        ld dx = sh1.x - sh2.x, dy = sh1.y - sh2.y;
+        ld dist = sqrtl(dx*dx + dy*dy) - sh1.r - sh2.r;
+        adj[s1][s2] = adj[s2][s1] = max(0.0L, dist);
+      }
+    }
+    int G; cin &gt;&gt; G;
+    for (int g = 1; g &lt;= G; ++g) {
+      ld x1, y1, x2, y2; cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+      vector&lt;pdd&gt; pts = {{x1, y1}, {x2, y2}};
+      for (int i = 0; i &lt; 2; ++i) {
+        for (int s = 0; s &lt; S; ++s) {
+          Shade sh = shades[s];
+          pdd pt = pts[i];
+          ld dx = pt.first - sh.x, dy = pt.second - sh.y;
+          ld dist = sqrtl(dx*dx + dy*dy) - sh.r;
+          adj[S+i][s] = adj[s][S+i] = max(0.0L, dist);
+        }
+      }
+      ld dx = x1 - x2, dy = y1 - y2;
+      ld dist = sqrtl(dx*dx + dy*dy);
+      adj[S][S+1] = adj[S+1][S] = max(0.0L, dist);
+      // Dijkstra
+      memset(visited, false, sizeof(visited));
+      priority_queue&lt;pdi, vector&lt;pdi&gt;, greater&lt;pdi&gt; &gt; pq;
+      pq.push({0, S});
+      ld total = 0.0L;
+      while(!pq.empty()) {
+        pdi p = pq.top(); pq.pop();
+        if (visited[p.second]) continue;
+        visited[p.second] = true;
+        if (p.second == S+1) {
+          total = p.first;
+          break;
+        }
+        for (int i = 0; i &lt; S+2; ++i) {
+          if (!visited[i]) {
+            pq.push({p.first + adj[p.second][i], i});
+          }
+        }
+      }
+      cout.precision(1);
+      cout &lt;&lt; &quot; Path #&quot; &lt;&lt; g &lt;&lt; &quot;: Shortest sun distance is &quot;
+           &lt;&lt; fixed &lt;&lt; total &lt;&lt; &quot;.&quot; &lt;&lt; endl;
+    }
+  }
+  return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

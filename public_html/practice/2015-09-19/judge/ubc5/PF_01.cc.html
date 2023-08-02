@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int b[100000];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++)
+      cin &gt;&gt; b[i];
+    sort(b,b+n);
+    int ind = 0;
+    while (ind &lt; n-1) {
+      int ind2 = ind;
+      while (ind2 &lt; n-1 &amp;&amp; b[ind2] == b[ind])
+        ind2++;
+      if (b[ind2]-b[ind])
+        cout &lt;&lt; b[ind2]-b[ind] &lt;&lt; &quot; &quot; &lt;&lt; ind2 &lt;&lt; &quot;\n&quot;;
+      ind = ind2;
+    }
+    cout &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

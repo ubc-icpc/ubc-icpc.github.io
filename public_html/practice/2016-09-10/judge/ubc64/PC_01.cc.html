@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+typedef long long ll;
+ll egcd(ll a, ll b, ll&amp; x, ll &amp;y) {
+  if (!b) {x = 1; y = 0; return a;}//to ensure d&gt;=0: x=sgn(a);y=0;return abs(a);
+    ll d = egcd(b, a%b, y, x); y -= x * (a/b); return d; }
+bool canon_egcd(ll a, ll b, ll c, ll&amp; x, ll&amp; y) {
+  ll d = egcd(a, b, x, y), z = abs(a/d); if (c%d) return false;
+    y = (y*(c/d)%z + z)%z, x = (c - b*y)/a; return true; }
+int main() {
+	int ts; cin &gt;&gt; ts;
+	int k, c;
+	for(int i = 0; i &lt; ts; i++) {
+		cin &gt;&gt; k &gt;&gt;c;
+	
+	if(c ==1) {
+		cout &lt;&lt; 1 + k &lt;&lt; endl;
+		continue;
+	}
+	if ( k ==1) {
+		cout &lt;&lt; 1 &lt;&lt; endl;
+		continue;
+	}
+	int a = __gcd(k,c);
+	if (a != 1) {
+		cout &lt;&lt;&quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+		continue;
+	}
+	long long x,y;
+	canon_egcd(c,-1*k,1,x,y);
+	cout &lt;&lt; x &lt;&lt; endl;
+	}
+	
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

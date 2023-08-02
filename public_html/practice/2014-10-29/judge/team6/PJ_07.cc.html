@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+typedef double ld;
+typedef complex&lt;ld&gt; pt;
+
+pt p[2005];
+ld r[2005], PI = acos(-1.0L), EPS = 1e-6;
+
+inline ld cp(const pt&amp; a, const pt&amp; b) { return imag(conj(a)*b); };
+inline pair&lt;pt, pt&gt; circle_tangent(ld r1, ld r2, ld d, int k) { // use the fcn below
+  ld dr = (k &amp; 2) ? (-r1-r2) : (r2-r1); ld t = asin(dr / d);
+  pt p1=polar(r1, PI/2+t), p2=polar(r2, PI/2+t); if(k&amp;2) p2*=-1; p2+=pt(d,0);
+  if(k&amp;1){ p1=pt(p1.real(),-p1.imag()); p2=pt(p2.real(),-p2.imag()); }
+  return make_pair(p1, p2); }
+// tested 2008wf conveyor; tangent of 2 circles; CAUTION: INTERSECTION IS BAD
+// k=0 top-top, k=1 bot-bot, k=2 top-bot, k=3 bot-top. Also works for points.
+inline pair&lt;pt, pt&gt; circle_tangent(pt p1, ld r1, pt p2, ld r2, int k) {
+  // translate/rotate so c1 at (0,0), c2 at x-axis
+  pt d = p2-p1; pair&lt;pt, pt&gt; p = circle_tangent(r1, r2, abs(d), k); d /= abs(d);
+  p.first *= d; p.second *= d; p.first += p1; p.second += p1; return p; }
+  
+struct event {
+	ld ang; int id;
+	event() {}
+	event(ld ang, int id) : ang(ang), id(id) {}
+	const bool operator&lt;(const event&amp; o) const {
+		if (ang == o.ang) return id &gt; o.id;
+		return ang &lt; o.ang;
+	}
+};
+
+int main() {
+	ios_base::sync_with_stdio(0);
+	int t; cin &gt;&gt; t;
+	while (t--) {
+		int n; cin &gt;&gt; n;
+		for (int i = 0; i &lt; n; i++) {
+			ld x, y, R; cin &gt;&gt; x &gt;&gt; y &gt;&gt; R;
+			p[i] = pt(x,y); r[i] = R;
+		}
+		
+		//segment sweep based on circular tangents
+		vector&lt;event&gt; ev;
+		int ans = 1;
+		for (int i = 0; i &lt; n; i++) {
+			ev.clear();
+			int tans = 0, cnt = 1;
+			for (int j = 0; j &lt; n; j++) {
+				if (i == j) continue;
+				//bot-bot and bot-top or top-bot and top-top
+				pair&lt;pt, pt&gt; x = circle_tangent(p[i], r[i], p[j], r[j], 1);
+				pair&lt;pt, pt&gt; y = circle_tangent(p[i], r[i], p[j], r[j], 3);
+				pt dir0 = x.second-x.first, dir1 = y.second-y.first;
+				if (cp(dir0, dir1) &lt; 0) swap(dir0, dir1);
+				ev.push_back(event(arg(dir0)-EPS, cnt));
+				ev.push_back(event(arg(dir1)+EPS, -cnt));
+				
+				x = circle_tangent(p[i], r[i], p[j], r[j], 0);
+				y = circle_tangent(p[i], r[i], p[j], r[j], 2);
+				dir0 = x.second-x.first, dir1 = y.second-y.first;
+				dir0 *= polar(1.0, PI), dir1 *= polar(1.0, PI);
+				if (cp(dir0, dir1) &lt; 0) swap(dir0, dir1);
+				ev.push_back(event(arg(dir0)-EPS, cnt));
+				ev.push_back(event(arg(dir1)+EPS, -cnt));
+				cnt++;
+			}
+			
+			//angular sweep time
+			sort(ev.begin(), ev.end());
+			//sweep twice to account for segments that span the principal cut of arg
+			set&lt;int&gt; s;
+			for (int k = 0; k &lt; 2; k++) {
+				for (int j = 0; j &lt; ev.size(); j++) {
+					if (ev[j].id &lt; 0) s.erase(-ev[j].id);
+					else s.insert(ev[j].id);
+					tans = max(tans, int(s.size()));
+				}
+			}
+			ans = max(ans, tans+1);
+		}
+		cout &lt;&lt; ans &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

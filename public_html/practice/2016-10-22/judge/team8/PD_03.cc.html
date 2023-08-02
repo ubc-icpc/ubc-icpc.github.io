@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main() {
+	long long money = 100;
+	int shares = 0;
+	int d; cin &gt;&gt; d;
+	vector&lt;int&gt; prices;
+	vector&lt;bool&gt; locMin = vector&lt;bool&gt;(d, false);
+	vector&lt;bool&gt; locMax = vector&lt;bool&gt;(d, false);
+	for (int i = 0; i &lt; d; i++) {
+		int a; cin &gt;&gt; a;
+		prices.push_back(a);
+	}
+
+	for (int i = 1; i &lt; d; i++) {
+		if (prices[0] &lt; prices[i]) {
+			locMin[0] = true;
+			break;
+		} else if (prices[0] &gt; prices[i]) {
+			locMax[0] = true;
+			break;
+		}
+	}
+	for (int i = 1; i &lt; d-1; i++) {
+		if ((prices[i-1] &gt; prices[i] &amp;&amp; prices[i] &lt;= prices[i+1])
+			|| (prices[i-1] &gt;= prices[i] &amp;&amp; prices[i] &lt; prices[i+1])) locMin[i] = true;
+		else if ((prices[i-1] &lt; prices[i] &amp;&amp; prices[i] &gt;= prices[i+1])
+			|| (prices[i-1] &lt;= prices[i] &amp;&amp; prices[i] &gt; prices[i+1])) locMax[i] = true;
+	}
+	for (int i = d-2; i &gt;= 0; i--) {
+		if (prices[i] &gt; prices[d-1]) {
+			locMin[d-1] = true;
+			break;
+		} else if (prices[i] &lt; prices[d-1]) {
+			locMax[d-1] = true;
+			break;
+		}
+	}
+
+/*	for (bool b : locMin) {
+		cout &lt;&lt; b &lt;&lt; &quot; &quot;;
+	}
+	cout &lt;&lt; endl;
+	for (bool b : locMax) {
+		cout &lt;&lt; b &lt;&lt; &quot; &quot;;
+	}
+	cout &lt;&lt; endl;*/
+
+	for (int i = 0; i &lt; d; i++) {
+		if (locMin[i]) {
+			int numShares = (int) min((long long) 100000 - shares, (money / prices[i]));
+			shares += numShares;
+			money -= numShares * prices[i];
+		} else if (locMax[i]) {
+			money += shares * prices[i];
+			shares = 0;
+		}
+	}
+	cout &lt;&lt; money + shares * prices[d-1] &lt;&lt; endl;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

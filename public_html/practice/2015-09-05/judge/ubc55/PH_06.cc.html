@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+#include &lt;tuple&gt;
+#include &lt;vector&gt;
+#include &lt;functional&gt;
+#include &lt;cstring&gt;
+
+using namespace std;
+typedef tuple&lt;int, int, int&gt; iii;
+int dx[8] = { -2, -2, -1, -1, 1, 1, 2, 2 };
+int dy[8] = { -1, 1, -2, 2, -2, 2, -1, 1 };
+bool board[30][30];
+int main()
+{
+	int n;
+	cin &gt;&gt; n;
+	int count = 0;
+	while (n--)
+	{
+		count++;
+		memset(board, 0, sizeof(board));
+		int size, x1, y1, x2, y2;
+		int max = 0;
+		cin &gt;&gt; size &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+		x1--;
+		x2--;
+		y1--;
+		y2--;
+		priority_queue&lt;iii, vector&lt;iii&gt;, greater&lt;iii&gt;&gt; queue;
+		queue.push(iii(0, x1, y1));
+		board[x1][y1] = true;
+		while (!queue.empty())
+		{
+			int x, y, score;
+			x = get&lt;1&gt;(queue.top());
+			y = get&lt;2&gt;(queue.top());
+			score = get&lt;0&gt;(queue.top());
+			if (x == x2 &amp;&amp; y == y2)
+			{
+				max = score;
+				break;
+			}
+			queue.pop();
+			for (int i = 0; i &lt; 8; i++)
+			{
+				if (x + dx[i] &gt;= 0 &amp;&amp; x + dx[i] &lt; size &amp;&amp; y + dy[i] &gt;= 0 &amp;&amp; y + dy[i] &lt; size)
+				{
+					if (!board[x + dx[i]][y + dy[i]])
+					{
+						queue.push(iii(score + 1, x + dx[i], y + dy[i]));
+						board[x + dx[i]][y + dy[i]] = true;
+					}
+				}
+			}
+		}
+		cout &lt;&lt; &quot;Case #&quot; &lt;&lt; count &lt;&lt; &quot;: &quot; &lt;&lt; max &lt;&lt; endl &lt;&lt; endl;
+	}
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

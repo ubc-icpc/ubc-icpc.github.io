@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+using sc = signed char;
+using uc = unsigned char;
+using ui = unsigned int;
+using ull = unsigned long long;
+using ll = long long;
+using vs = vector&lt;string&gt;;
+using vi = vector&lt;int&gt;;
+using vull = vector&lt;ull&gt;;
+using vll = vector&lt;ll&gt;;
+using ss = set&lt;string&gt;;
+using si = set&lt;int&gt;;
+using sll = set&lt;ll&gt;;
+using sull = set&lt;ull&gt;;
+using uss = unordered_set&lt;string&gt;;
+using usi = unordered_set&lt;int&gt;;
+using usll = unordered_set&lt;ll&gt;;
+using usull = unordered_set&lt;ull&gt;;
+
+sc dx[] = { 0, 1, 0, -1 };
+sc dy[] = { 1, 0, -1, 0 };
+
+struct S
+{
+	sc x, y, dir;
+	ui dist;
+
+	S() { }
+	S(sc x, sc y, sc dir) : x(x), y(y), dir(dir) { }
+
+	ui hash() { return dir | y &lt;&lt; 2 | x &lt;&lt; 7; }
+	bool check(vector&lt;string&gt;&amp; map)
+	{
+		if (x &gt;= map.size() - 1 || y &gt;= map.front().size() - 1) return false;
+		if (x &lt; 0 || y &lt; 0) return false;
+		switch (dir)
+		{
+			case 0: return (map[x][y] != 'X' &amp;&amp; map[x + 1][y] != 'X' &amp;&amp; map[x + 1][y + 1] != 'X');
+			case 1: return (map[x][y] != 'X' &amp;&amp; map[x][y + 1] != 'X' &amp;&amp; map[x + 1][y] != 'X');
+			case 2: return (map[x][y] != 'X' &amp;&amp; map[x][y + 1] != 'X' &amp;&amp; map[x + 1][y + 1] != 'X');
+			case 3: return (map[x][y + 1] != 'X' &amp;&amp; map[x + 1][y] != 'X' &amp;&amp; map[x + 1][y + 1] != 'X');
+			default: return false;
+		}
+	}
+};
+
+int main()
+{
+	while (1)
+	{
+		int c, r; cin &gt;&gt; r &gt;&gt; c;
+		if (c == 0 &amp;&amp; r == 0) return 0;
+
+		vector&lt;string&gt; map(r);
+
+		S ss, ee;
+		for (int i = 0; i &lt; r; i++)
+		{
+			string s; cin &gt;&gt; s;
+			map[i] = s;
+		}
+
+		for (int i = 0; i &lt; r - 1; i++)
+		{
+			for (int j = 0; j &lt; c - 1; j++)
+			{
+				if (map[i][j] == 'S' &amp;&amp; map[i + 1][j] == 'S' &amp;&amp; map[i + 1][j + 1] == 'S')
+				{
+					ss = S(i, j, 0);
+				}
+				else if (map[i][j] == 'S' &amp;&amp; map[i][j + 1] == 'S' &amp;&amp; map[i + 1][j] == 'S')
+				{
+					ss = S(i, j, 1);
+				}
+				else if (map[i][j] == 'S' &amp;&amp; map[i][j + 1] == 'S' &amp;&amp; map[i + 1][j + 1] == 'S')
+				{
+					ss = S(i, j, 2);
+				}
+				else if (map[i][j + 1] == 'S' &amp;&amp; map[i + 1][j] == 'S' &amp;&amp; map[i + 1][j + 1] == 'S')
+				{
+					ss = S(i, j, 3);
+				}
+
+				if (map[i][j] == 'E' &amp;&amp; map[i + 1][j] == 'E' &amp;&amp; map[i + 1][j + 1] == 'E')
+				{
+					ee = S(i, j, 0);
+				}
+				else if (map[i][j] == 'E' &amp;&amp; map[i][j + 1] == 'E' &amp;&amp; map[i + 1][j] == 'E')
+				{
+					ee = S(i, j, 1);
+				}
+				else if (map[i][j] == 'E' &amp;&amp; map[i][j + 1] == 'E' &amp;&amp; map[i + 1][j + 1] == 'E')
+				{
+					ee = S(i, j, 2);
+				}
+				else if (map[i][j + 1] == 'E' &amp;&amp; map[i + 1][j] == 'E' &amp;&amp; map[i + 1][j + 1] == 'E')
+				{
+					ee = S(i, j, 3);
+				}
+			}
+		}
+
+		unordered_set&lt;ui&gt; visited;
+		queue&lt;S&gt; q;
+		visited.insert(ss.hash());
+		q.push(ss);
+
+		bool ok = false;
+		while (!q.empty())
+		{
+			S cc = q.front();
+			q.pop();
+			// cout &lt;&lt; (ui) cc.x &lt;&lt; &quot; &quot; &lt;&lt; (ui) cc.y &lt;&lt; &quot; &quot; &lt;&lt; (ui) cc.dir &lt;&lt; endl;
+			if (cc.hash() == ee.hash())
+			{
+				ok = true;
+				cout &lt;&lt; cc.dist &lt;&lt; endl;
+				break;
+			}
+
+			S temp = cc;
+			temp.dist++;
+			temp.dir = (cc.dir + 1) % 4;
+			if (temp.check(map) &amp;&amp; visited.find(temp.hash()) == visited.end())
+			{
+				visited.insert(temp.hash());
+				q.push(temp);
+			}
+			temp.dir = (cc.dir + 3) % 4;
+			if (temp.check(map) &amp;&amp; visited.find(temp.hash()) == visited.end())
+			{
+				visited.insert(temp.hash());
+				q.push(temp);
+			}
+
+			for (int i = 0; i &lt; 4; i++)
+			{
+				temp = cc;
+				temp.dist++;
+				temp.x += dx[i];
+				temp.y += dy[i];
+				if (temp.check(map) &amp;&amp; visited.find(temp.hash()) == visited.end())
+				{
+					visited.insert(temp.hash());
+					q.push(temp);
+				}
+			}
+		}
+		if (!ok)
+		{
+			cout &lt;&lt; &quot;IMPOSSIBLE&quot; &lt;&lt; endl;
+		}
+	}
+
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main() {
+    int points[2000][2];
+    int area, maxi, mini;
+	int n, i, j, k;
+    scanf(&quot;%d&quot;, &amp;n);
+	while(n != 0) {
+        maxi = 0;
+        mini = 1e9;
+		for(i = 0; i &lt; n; i++)
+            scanf(&quot;%d %d&quot;, &amp;points[i][0], &amp;points[i][1]);
+		for(i = 0; i &lt; n; i++) {
+			for(j = i + 1; j &lt; n; j++) {
+				for(k = j + 1; k &lt; n; k++) {
+					area = (points[i][0] - points[k][0])*(points[j][1] - points[i][1]) - (points[i][0] - points[j][0])*(points[k][1] - points[i][1]);
+                    if (area &lt; 0) area *= -1;
+                    if (area &lt; mini) {
+                        mini = area;
+                    }
+                    if (area &gt; maxi) {
+                        maxi = area;
+                    }
+				}
+			}
+		}
+        printf(&quot;%.1f %.1f\n&quot;, mini / 2.0, maxi / 2.0);
+        scanf(&quot;%d&quot;, &amp;n);
+	}
+	return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;iostream&gt;
+using namespace std;
+
+int main()
+{
+   int n;
+   cin &gt;&gt; n;
+   for(int k=0; k&lt;n; k++)
+   {
+      //if(k!=0)
+//	 cout &lt;&lt; endl;
+      int tmp;
+      bool Z=false, M=false;
+      for(int i=0; i&lt;10; i++)
+      {
+	 cin &gt;&gt; tmp;
+	 if(tmp==18)
+	    M=true;
+	 else if(tmp==17)
+	    Z=true;
+	 if(i==0)
+	    cout &lt;&lt; tmp;
+	 else
+	    cout &lt;&lt; &quot; &quot; &lt;&lt; tmp;
+      }
+      cout &lt;&lt; endl;
+      if(Z and M)
+	 cout &lt;&lt; &quot;both&quot; &lt;&lt; endl;
+      else if(Z and !M)
+	 cout &lt;&lt; &quot;zack&quot; &lt;&lt; endl;
+      else if(M and !Z)
+	 cout &lt;&lt; &quot;mack&quot; &lt;&lt; endl;
+      else
+	 cout &lt;&lt; &quot;none&quot; &lt;&lt; endl;
+      cout &lt;&lt; endl;
+   }
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

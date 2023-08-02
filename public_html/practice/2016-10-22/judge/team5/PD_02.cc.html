@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+int main() {
+#define int long long
+  ios_base::sync_with_stdio(0);
+  int d; cin &gt;&gt; d;
+  vector&lt;int&gt; v(d);
+  for (int i = 0; i &lt; d; i++)
+    cin &gt;&gt; v[i];
+  bool buy = true;
+  int amt = 100;
+  int shares = 0;
+  for (int i = 0; i &lt; d; i++) {
+    if (buy) {
+      if (i != d-1 &amp;&amp; v[i+1] &gt; v[i]) {
+        buy = false;
+        int num_shares = min(100000-shares, amt/v[i]);
+        if (num_shares == 0) {
+          buy = true;
+          continue;
+        }
+        shares += num_shares;
+        amt -= (v[i] * num_shares);
+      }
+    } else {
+      if (shares &gt; 0 &amp;&amp; (i == d-1 || v[i+1] &lt; v[i])) {
+        buy = true;
+        amt += (shares * v[i]);
+        shares = 0;
+      }
+    }
+  }
+  cout &lt;&lt; amt &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

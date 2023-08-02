@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+bool compPair(pair&lt;int,int&gt; a, pair&lt;int,int&gt; b) {
+    if (a.first == b.first) {
+        return a.second &lt; b.second;
+    }
+    return a.first &gt; b.first;
+}
+
+int main(){
+    int N, fid, uid;
+    string s;
+    cin &gt;&gt; N;
+    for (int n = 0; n &lt; N; ++n){
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; n+1 &lt;&lt; endl;
+        map&lt;int, vector&lt;int&gt;, greater&lt;int&gt; &gt; mp;
+        while (cin&gt;&gt;fid){
+            if(fid == -1) break;
+            getline(cin, s);
+            stringstream ss(s);
+            
+            int num;
+            while (ss &gt;&gt; num) {
+                if (mp.find(num) != mp.end()) {
+                    mp[num].push_back(fid);
+                }
+                else {
+                    vector&lt;int&gt; v;
+                    v.push_back(fid);
+                    mp[num] = v;
+                }
+            }
+        }
+        for (auto it = mp.begin(); it != mp.end(); it++) {
+            stable_sort(it-&gt;second.begin(), it-&gt;second.end());
+        }
+        vector&lt;pair&lt;vector&lt;int&gt;,int&gt; &gt; vpii;
+        for (auto it = mp.begin(); it != mp.end(); it++) {
+            vpii.push_back(make_pair(it-&gt;second, it-&gt;first));
+        }
+        stable_sort(vpii.begin(), vpii.end());
+        vector&lt;pair&lt;int, int&gt; &gt; results;
+        int min, count;
+        for (int i = 0; i &lt; vpii.size(); ++i) {
+            if(i == 0) {
+                min = vpii[i].second;
+                count = 1;
+            } else if(vpii[i].first != vpii[i-1].first){
+                if (count &gt; 1) {
+                    results.push_back(make_pair(count, min));
+                }
+                min = vpii[i].second;
+                count = 1;
+            } else {
+                count++;
+            }     
+        }
+        if (count &gt; 1) {
+            results.push_back(make_pair(count, min));
+        }
+        sort(results.begin(), results.end(), compPair);
+        if (results.size() &gt; 0) {
+            for (int i=0; i &lt; results.size(); ++i) {
+                cout &lt;&lt; results[i].first &lt;&lt; &quot; &quot; &lt;&lt; results[i].second &lt;&lt; endl;
+            }
+        }
+        else {
+            cout &lt;&lt; &quot;no prototypes found&quot; &lt;&lt; endl;
+        }
+    }
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

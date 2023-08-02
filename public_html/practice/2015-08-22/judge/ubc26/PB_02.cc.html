@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;set&gt;
+#include &lt;list&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+#define printf(...);
+#define I(x) x; cin &gt;&gt; x;
+#define L(qq,m) for (int qq=0;qq&lt;(m);qq++)
+#define SL(ss, mmm) \
+  vector&lt;string&gt; ss; \
+  int I(mmm); ss.reserve(mmm); \
+  L(iiii, mmm) {string I(tt);ss.push_back(tt);}
+
+#define CC(cc) ((int)((cc)-'a'))
+#define uCC(cc) ((char)((cc)+'a'))
+
+typedef struct T {
+  T* ts[26];
+} T;
+
+inline T* nt(char c) {
+  T* t = new T;
+  L(s, 26) t-&gt;ts[s] = 0;
+  return t;
+}
+
+int test(vector&lt;string&gt;&amp; ss, int m);
+typedef struct lli {
+  char car;
+  lli* cdr;
+} lli;
+typedef lli * ll;
+
+inline ll cons(char car, ll cdr) {
+  ll lll = new lli;
+  lll-&gt;car = car; lll-&gt;cdr = cdr;
+  return lll;
+}
+
+#define nil 0
+
+void search(T*(&amp;ts)[26], list&lt;ll&gt;&amp;rs, string t, int i, ll xs) {
+  if (t.size()==i){
+    long long ss = 0;
+    L(j,26) ss += (long long) ts[j];
+    if (!ss) rs.push_back(xs);
+    return;
+  }
+  char c = t[i];
+  if (c == '-') {
+    L(j, 26) {
+      char cc = uCC(j);
+      if (ts[j])
+        search(ts[j]-&gt;ts, rs, t, i+1, cons(cc, xs));
+    }
+  } else {
+    auto j = CC(c);
+    if (ts[j])
+      search(ts[j]-&gt;ts, rs, t, i+1, cons(c, xs));
+  }
+}
+
+void add(T*ts[26], string s, int oo) {
+  printf(&quot;ts=%ld\n&quot;, (long) ts);
+  for (const char c : s) {
+    T*&amp;t = ts[CC(c)];
+    printf(&quot;c=%c %d %ld\n&quot;, c, (int) CC(c), (long) t);
+    if (!t) t = nt(c);
+    printf(&quot;%d %ld\n&quot;,(int) CC(c), (long) t);
+    printf(&quot;---\n&quot;);
+    ts = t-&gt;ts;
+  }
+  printf(&quot;-------------------------\n&quot;);
+}
+
+void p(T* ts[26], int k = 0) {
+  L(i, 26) {
+    T* t = ts[i];
+    if (!t) continue;
+    L(q, k) cout &lt;&lt; &quot;|-&quot;;
+    cout &lt;&lt; (char)(i + 'a') &lt;&lt; endl;
+    p(t-&gt;ts, k + 1);
+  }
+}
+
+#define TT &quot;Total number of candidate words = &quot;
+int main(int _, char**__) {
+  SL(ss, m);
+  return test(ss, m);
+  vector&lt;string&gt; ss0;
+  ss0.reserve(m);L(q,m) ss0[q]=ss[q];
+  sort(ss.begin(), ss.end());
+  T* ts[26] = {};
+  int oo = 0;
+  for (auto s : ss) add(ts, s, oo++);
+  //p(ts);
+  int I(n); L(i, n) {
+    string I(t);
+    cout &lt;&lt; &quot;Word #&quot; &lt;&lt; (i+1) &lt;&lt; &quot;: &quot; &lt;&lt; t &lt;&lt; endl;
+
+    list&lt;ll&gt; rs;
+    search(ts, rs, t, 0, nil);
+    vector&lt;string&gt; rss;
+    for (auto r : rs) {
+      ll rr = r;
+      list&lt;char&gt; rrl;
+      while (rr != nil) {
+        rrl.push_front(rr-&gt;car);
+        rr = rr-&gt;cdr;
+      }
+      string sssss(rrl.begin(), rrl.end());
+      rss.push_back(sssss);
+
+    }
+    sort(rss.begin(), rss.end(), [m , &amp;ss0](string s, string t) {
+       int iii = 0;
+       L(ii, m) if (iii=ii,ss0[ii] == s) break;
+       int jjj = 0;
+       L(ii, m) if (jjj=ii,ss0[ii] == t) break;
+       return iii&lt;jjj;
+        });
+    for (string ssssss :rss) cout &lt;&lt; ssssss &lt;&lt; endl;
+    cout &lt;&lt; TT &lt;&lt; rs.size() &lt;&lt; endl &lt;&lt; endl;
+  }
+}
+
+bool same(string s, string sss) {
+  if (s.size() != sss.size()) return false;
+  int ss = s.size();
+  L(ssss, ss)
+    if (s[ssss] != sss[ssss] &amp;&amp; s[ssss] != '-') return false;
+  return true;
+}
+
+int test(vector&lt;string&gt;&amp; ss, int m) {
+  int I(n); L(i, n) {
+    string I(s);
+    cout &lt;&lt; &quot;Word #&quot; &lt;&lt; (i+1) &lt;&lt; &quot;: &quot; &lt;&lt; s &lt;&lt; endl;
+    int j = 0;
+    for (string sss : ss) {
+    if (same(s, sss)) {
+      cout&lt;&lt;sss&lt;&lt;endl;
+      j++;
+    }
+    }
+    cout &lt;&lt; TT &lt;&lt; j &lt;&lt; endl &lt;&lt; endl;
+  }
+  return 0;
+}
+
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

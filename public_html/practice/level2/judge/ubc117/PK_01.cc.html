@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://localhost/~acm-web/themes/prism-white.css" rel="stylesheet" type="text/css" />
+<script src="http://localhost/~acm-web/themes/prism.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre>
+<code class="line-numbers language-cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+typedef pair&lt;ll, ll&gt; pii;
+
+int bs_left(int n) {
+    int lo = 0, hi = n;
+    while (lo &lt; hi) {
+        int m = (lo+hi+1)/2;
+        cout &lt;&lt; &quot;Q &quot; &lt;&lt; 0 &lt;&lt; &quot; &quot; &lt;&lt; 0 &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; endl;
+        int z;
+        cin &gt;&gt; z;
+        if (z) {
+            hi = m-1;
+        } else {
+            lo = m;
+        }
+    }
+    return lo;
+}
+
+int bs_right(int n) {
+    int lo = 0, hi = n;
+    while (lo &lt; hi) {
+        int m = (lo+hi)/2;
+        cout &lt;&lt; &quot;Q &quot; &lt;&lt; m &lt;&lt; &quot; &quot; &lt;&lt; 0 &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; endl;
+        int z;
+        cin &gt;&gt; z;
+        if (z) {
+            lo = m+1;
+        } else {
+            hi = m;
+        }
+    }
+    return lo;
+}
+
+int bs_bottom(int n) {
+    int lo = 0, hi = n;
+    while (lo &lt; hi) {
+        int m = (lo+hi+1)/2;
+        cout &lt;&lt; &quot;Q &quot; &lt;&lt; 0 &lt;&lt; &quot; &quot; &lt;&lt; 0 &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; endl;
+        int z;
+        cin &gt;&gt; z;
+        if (z) {
+            hi = m-1;
+        } else {
+            lo = m;
+        }
+    }
+    return lo;
+}
+
+int bs_top(int n) {
+    int lo = 0, hi = n;
+    while (lo &lt; hi) {
+        int m = (lo+hi)/2;
+        cout &lt;&lt; &quot;Q &quot; &lt;&lt; 0 &lt;&lt; &quot; &quot; &lt;&lt; m &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; &quot; &quot; &lt;&lt; n &lt;&lt; endl;
+        int z;
+        cin &gt;&gt; z;
+        if (z) {
+            lo = m+1;
+        } else {
+            hi = m;
+        }
+    }
+    return lo;
+}
+
+void solve() {
+    int n;
+    cin &gt;&gt; n;
+    int x1 = bs_left(n);
+    int x2 = bs_right(n);
+    int y1 = bs_bottom(n);
+    int y2 = bs_top(n);
+    cout &lt;&lt; &quot;A &quot; &lt;&lt; x1 &lt;&lt; &quot; &quot; &lt;&lt; y1 &lt;&lt; &quot; &quot; &lt;&lt; x2 &lt;&lt; &quot; &quot; &lt;&lt; y2 &lt;&lt; endl;
+}
+
+int main() {
+    ios_base::sync_with_stdio(0), cin.tie(0);
+    int TT;
+    cin &gt;&gt; TT;
+    while (TT--) {
+        solve();
+    }
+    return 0;
+}
+</code>
+</pre>
+</body>
+</html>

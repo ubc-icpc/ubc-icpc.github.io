@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;utility&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+typedef vector&lt;int&gt; VI;
+typedef vector&lt;VI&gt; VVI;
+
+typedef pair&lt;long,long&gt; pii;
+
+VI studentsX;
+VI studentsY;
+VI tutorsX;
+VVI weights;
+VI tutorsY;
+vector&lt;pii&gt; edges;
+
+int dist(int i, int j) {
+  return abs(studentsX[i] - tutorsX[j]) + abs(studentsY[i] - tutorsY[j]); 
+}
+
+bool cmp(pii a, pii b) {
+  int i = a.first;
+  int j = a.second;
+  int k = b.first;
+  int l = b.second;
+
+  return dist(i, j) &lt; dist(k, l);
+}
+
+bool FindMatch(int i, const VVI &amp;w, VI &amp;mr, VI &amp;mc, VI &amp;seen) {
+  for(int j = 0; j &lt; w[i].size(); j++) {
+    if(w[i][j] &amp;&amp; !seen[j]) {
+      seen[j] = true;
+      if(mc[j] &lt; 0 || FindMatch(mc[j], w, mr, mc, seen)) {
+        mr[i] = j;
+        mc[j] = i;
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+int bipartiteMatching(const VVI &amp;w, VI &amp;mr, VI &amp;mc) {
+  mr = VI(w.size(), -1);
+  mc = VI(w[0].size(), -1);
+
+  int ct = 0;
+  for(int i = 0; i &lt; w.size(); i++) {
+    VI seen(w[0].size());
+    if (FindMatch(i, w, mr, mc, seen)) ct++;
+  }
+  return ct;
+}
+
+void build_graph(int k) {
+  for(pii e : edges) {
+    if(dist(e.first, e.second) &lt;= k) {
+      weights[e.first][e.second] = 1; 
+    } else {
+      weights[e.first][e.second] = 0; 
+    }
+  }
+}
+
+int main() {
+  int n;
+  cin &gt;&gt; n;
+  long tmp;
+  for(int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; tmp;
+    studentsX.push_back(tmp); 
+    cin &gt;&gt; tmp;
+    studentsY.push_back(tmp); 
+  }
+  for(int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; tmp;
+    tutorsX.push_back(tmp); 
+    cin &gt;&gt; tmp;
+    tutorsY.push_back(tmp); 
+  }
+  for(int i = 0; i &lt; n; i++) {
+    weights.push_back(VI(n, 0));
+    for(int j = 0; j &lt; n; j++) {
+      edges.push_back(pair&lt;int,int&gt;(i,j));
+    }
+  }
+  sort(edges.begin(), edges.end(), cmp);
+  VI mr;
+  VI mc;
+  int lo = 0;
+  int hi = 1e9;
+  int mid = (lo + hi)/2;
+  while(lo &lt; hi) {
+    mid = (lo + hi)/2;
+    build_graph(mid);
+    if(bipartiteMatching(weights, mr, mc) &gt;= n) {
+      hi = mid;
+    } else {
+      lo = mid + 1;
+    }
+  }
+  cout &lt;&lt; hi &lt;&lt; endl;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

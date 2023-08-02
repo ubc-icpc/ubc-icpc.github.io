@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n, m;
+
+vector&lt;vector&lt;int&gt;&gt; x;
+int main(){
+    cin &gt;&gt; n &gt;&gt;m;
+    int a;
+    for(int i=0;i&lt;n;i++){
+        vector&lt;int&gt; tmp;
+        for(int j=0;j&lt;m;j++){
+            cin &gt;&gt;a;
+            tmp.push_back(a);
+        }
+        x.push_back(tmp);
+    }
+    set&lt;int&gt; b;
+    for(int j=0;j&lt;m;j++){
+        for(int i=0;i&lt;n;i++){
+            b.insert(x[i][j]);
+        }
+        if (j+1==(int) b.size()){
+            cout &lt;&lt; b.size() &lt;&lt; endl;
+            for(auto k: b){
+                cout &lt;&lt; k &lt;&lt; &quot; &quot;;
+            }
+            return 0;
+        }
+    }
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

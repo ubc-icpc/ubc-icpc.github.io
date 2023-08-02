@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int N, A[400000][19], B[400000][19];
+
+int main() {
+	while (cin &gt;&gt; N &amp;&amp; N != 1) {
+		for (int n = 0; n &lt; N; n++) {
+			cin &gt;&gt; A[n][0];
+			B[n][0] = A[n][0];
+		}
+		for (int a = 1; a &lt; 19; a++) {
+			for (int n = 0; n+(1&lt;&lt;a) &lt;= N; n++) {
+				A[n][a] = min(A[n][a-1], A[n+(1&lt;&lt;a-1)][a-1]);
+				B[n][a] = max(B[n][a-1], B[n+(1&lt;&lt;a-1)][a-1]);
+			}
+		}
+		int bd = INT_MAX, bx;
+		for (int x = 1; x &lt; N; x++) {
+			int n = 31 - __builtin_clz(x);
+			int d1 = max(B[0][n], B[x-(1&lt;&lt;n)][n])-min(A[0][n], A[x-(1&lt;&lt;n)][n]);
+			n = 31 - __builtin_clz(N-x);
+			int d2 = max(B[x][n], B[N-(1&lt;&lt;n)][n])-min(A[x][n], A[N-(1&lt;&lt;n)][n]);
+			int d = max(d1, d2);
+			if (d &lt; bd) {
+				bd = d;
+				bx = x;
+			}
+		}
+		cout &lt;&lt; bx &lt;&lt; endl;
+	}
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

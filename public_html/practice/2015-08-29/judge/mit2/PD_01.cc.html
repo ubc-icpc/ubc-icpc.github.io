@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+const int MAXT = 55, MAXL = 22, MAXN = 33;
+
+int T, ntrials, nnodes, nedges;
+char trials[MAXT][MAXL];
+bool vis[MAXN];
+vector&lt;int&gt; adj[MAXN];
+
+void dfs(int n) {
+    if (vis[n]) return;
+    vis[n] = true;
+
+    for (int i = 0; i &lt; adj[n].size(); ++i) {
+        dfs(adj[n][i]);
+    }
+}
+
+int main() {
+    scanf(&quot;%d&quot;, &amp;T);
+
+    for (int t = 1; t &lt;= T; ++t) {
+        scanf(&quot;%d&quot;, &amp;ntrials);
+        for (int i = 0; i &lt; ntrials; ++i) {
+            scanf(&quot;%s&quot;, trials[i]);
+        }
+        scanf(&quot;%d %d&quot;, &amp;nnodes, &amp;nedges);
+        for (int i = 0; i &lt; nnodes; ++i) {
+            adj[i].clear();
+            vis[i] = false;
+        }
+        for (int i = 0; i &lt; nedges; ++i) {
+            char trial[MAXL];
+            int a, b;
+            scanf(&quot;%d %d %s&quot;, &amp;a, &amp;b, trial);
+
+            bool match = false;
+            for (int j = 0; j &lt; ntrials; ++j) {
+                if (strcmp(trials[j], trial) == 0) {
+                    match = true;
+                }
+            }
+
+            if (!match) {
+                adj[a].push_back(b);
+                adj[b].push_back(a);
+            }
+        }
+
+        dfs(0);
+
+        if (vis[nnodes - 1]) {
+            printf(&quot;1\n&quot;);
+        } else {
+            printf(&quot;0\n&quot;);
+        }
+    }
+
+    return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

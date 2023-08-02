@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long double ld;
+
+ld PI = 3.14159265358979L;
+
+int main() {
+  int N; cin &gt;&gt; N;
+  while (N--) {
+    ld s, r;
+    cin &gt;&gt; s &gt;&gt; r;
+    if (2*s*s &lt;= 4*r*r) cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; s*s &lt;&lt; endl;
+    else if (s &gt;= 2*r) cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; PI*r*r &lt;&lt; endl;
+    else {
+      ld theta = 2*acos(s/2/r);
+      ld base = 2*sqrtl(r*r - s*s/4);
+      ld tri = base * s/4;
+      ld diff = r*r*theta/2 - tri;
+      ld area = PI*r*r - 4*diff;
+      cout &lt;&lt; setprecision(2) &lt;&lt; fixed &lt;&lt; area &lt;&lt; endl;
+    }
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

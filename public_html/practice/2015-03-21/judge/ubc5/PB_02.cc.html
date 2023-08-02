@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+#include &lt;set&gt;
+#include &lt;utility&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+typedef pair&lt;int,int&gt; pii;
+
+pii h[10000], v[10000];
+
+int main() {
+  int t; cin &gt;&gt; t;
+  while (t--) {
+    int m, n;
+    cin &gt;&gt; m &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++)
+      h[i].first = h[i].second = -1;
+    for (int i = 0; i &lt; m; i++)
+      v[i].first = v[i].second = -1;
+    bool loop = false;
+    for (int i = 0; i &lt; m; i++) {
+      cin &gt;&gt; v[i].first &gt;&gt; v[i].second;
+      set&lt;pii&gt; ins;
+      pii cur;
+      if (h[v[i].first].first != -1 &amp;&amp; h[v[i].second].first == -1)
+        cur = make_pair(i,1);
+      else
+        cur = make_pair(i,0);
+      while (true) {
+        if (ins.count(cur)) {
+          loop = true;
+          break;
+        }
+        ins.insert(cur);
+        if (cur.second) {
+          if (h[v[cur.first].second].first == -1) {
+            h[v[cur.first].second] = cur;
+            break;
+          }
+          else {
+            pii temp = h[v[cur.first].second];
+            h[v[cur.first].second] = cur;
+            cur = temp;
+          }
+        }
+        else {
+          if (h[v[cur.first].first].first == -1) {
+            h[v[cur.first].first] = cur;
+            break;
+          }
+          else {
+            pii temp = h[v[cur.first].first];
+            h[v[cur.first].first] = cur;
+            cur = temp;
+          }
+        }
+        cur.second ^= 1;
+      }
+    }
+    cout &lt;&lt; (loop ? &quot;rehash necessary&quot; : &quot;successful hashing&quot;) &lt;&lt; &quot;\n&quot;;
+  }
+  return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

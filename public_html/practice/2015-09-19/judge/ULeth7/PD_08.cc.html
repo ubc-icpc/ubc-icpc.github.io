@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;iostream&gt;
+//#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;cassert&gt;
+using namespace std;
+typedef long long int dataType;
+
+class Fraction{
+public:
+  Fraction(dataType num=0,dataType denom=1);
+	
+  double toDouble() const;
+	
+  void reduce();
+	
+  // Changes the fraction itself.
+  void selfReciprocal();
+	
+  // Returns a new fraction, leaving the original.
+  Fraction reciprocal() const;
+	
+  Fraction&amp; operator+=(const Fraction&amp; x);
+  Fraction&amp; operator-=(const Fraction&amp; x);
+  Fraction&amp; operator*=(const Fraction&amp; x);
+  Fraction&amp; operator/=(const Fraction&amp; x);
+	
+  bool operator&lt;(const Fraction&amp; x) const;
+  bool operator==(const Fraction&amp; x) const;
+	
+  dataType num,denom;
+};
+
+Fraction operator+(const Fraction&amp; x,const Fraction&amp; y);
+Fraction operator-(const Fraction&amp; x,const Fraction&amp; y);
+Fraction operator*(const Fraction&amp; x,const Fraction&amp; y);
+Fraction operator/(const Fraction&amp; x,const Fraction&amp; y);
+
+istream&amp; operator&gt;&gt;(istream&amp; is,Fraction&amp; x);
+ostream&amp; operator&lt;&lt;(ostream&amp; os,const Fraction&amp; x);
+
+Fraction::Fraction(dataType n,dataType d){
+  if(d &lt; 0){
+    num = -n;
+    denom = -d;
+  } else {
+    num = n;
+    denom = d;
+  }
+  reduce();
+}
+
+double Fraction::toDouble() const{
+  return 1.0*num/denom;
+}
+
+// Howard's GCD function with no checks
+dataType gcd(dataType a, dataType b)
+{
+  dataType r;
+  while (b) {
+    r = a % b;
+    a = b;
+    b = r;
+  }
+  return a;
+}
+
+void Fraction::reduce(){
+  dataType g = gcd(abs(num),denom);
+  num /= g;
+  denom /= g;
+}
+
+void Fraction::selfReciprocal(){
+  swap(num,denom);
+  if (denom &lt; 0) {
+    num = -num;
+    denom = -denom;
+  }
+}
+
+Fraction Fraction::reciprocal() const{
+  return Fraction(denom,num);
+}
+
+// Overflow potential in the denominator.
+// I've tried to factor out as much as possible before,
+//   But be careful.
+//
+//   (w)/(a*g) + (z)/(b*g)
+// = (w*b)/(a*g*b) + (a*z)/(a*g*b)
+// = (w*b + a*z)/(a*g*b)
+Fraction&amp; Fraction::operator+=(const Fraction&amp; x){
+  dataType g = gcd(denom,x.denom);
+	
+  dataType a = denom / g;
+  dataType b = x.denom / g;
+	
+  num = num * b + x.num * a;
+  denom *= b;
+	
+  reduce();
+	
+  return (*this);
+}
+
+Fraction&amp; Fraction::operator-=(const Fraction&amp; x){
+  dataType g = gcd(denom,x.denom);
+  dataType a = denom / g;
+  dataType b = x.denom / g;
+	
+  num = num * b - x.num * a;
+  denom *= b;
+	
+  reduce();
+  return (*this);
+}
+
+Fraction&amp; Fraction::operator*=(const Fraction&amp; x){
+  num *= x.num;
+  denom *= x.denom;
+  reduce();
+  return (*this);
+}
+
+Fraction&amp; Fraction::operator/=(const Fraction&amp; x){
+  num *= x.denom;
+  denom *= x.num;
+	
+  if(denom &lt; 0){
+    num = -num;
+    denom = -denom;
+  }
+  reduce();
+  return (*this);
+}
+
+// Careful with overflow. If it is an issue, you can compare the
+// double values, but you SHOULD check for equality BEFORE converting
+bool Fraction::operator&lt;(const Fraction&amp; x) const{
+  return (num*x.denom) &lt; (x.num*denom);
+}
+
+bool Fraction::operator==(const Fraction&amp; x) const{
+  return (num == x.num) &amp;&amp; (denom == x.denom);
+}
+
+Fraction operator+(const Fraction&amp; x,const Fraction&amp; y){
+  Fraction a(x);
+  a += y;
+  return a;
+}
+
+Fraction operator-(const Fraction&amp; x,const Fraction&amp; y){
+  Fraction a(x);
+  a -= y;
+  return a;
+}
+
+Fraction operator*(const Fraction&amp; x,const Fraction&amp; y){
+  Fraction a(x);
+  a *= y;
+  return a;
+}
+
+Fraction operator/(const Fraction&amp; x,const Fraction&amp; y){
+  Fraction a(x);
+  a /= y;
+  return a;
+}
+
+// Note that you can read in Fractions of two forms:
+// a/b (With any number of space between a,/,b) - The input &quot;points&quot; to
+//      the NEXT character after the denom (White space or not)
+// c   (Just an integer - The input &quot;points&quot; to the next NON-WHITE SPACE
+//      character. Careful when mixing this with getline.)
+istream&amp; operator&gt;&gt;(istream&amp; is,Fraction&amp; x){
+  is &gt;&gt; x.num;
+	
+  char ch;
+  is &gt;&gt; ch;
+  if(ch != '/'){
+    is.putback(ch);
+    x.denom = 1;
+  } else {
+    is &gt;&gt; x.denom;
+    if(x.denom &lt; 0){
+      x.num = -x.num;
+      x.denom = -x.denom;
+    }
+    x.reduce();
+  }
+	
+  return is;
+}
+
+// Will output 5 for 5/1 and 0 for 0/1. If you want always
+//    fractions, get rid of the if statement
+ostream&amp; operator&lt;&lt;(ostream&amp; os,const Fraction&amp; x){
+  os &lt;&lt; x.num;
+  if(x.num != 0 &amp;&amp; x.denom != 1)
+    os &lt;&lt; '/' &lt;&lt; x.denom;
+  return os;
+}
+
+
+struct point {
+   int x;
+   int y;
+   Fraction slope;  
+};
+
+bool operator&lt;(const point&amp; a, const point&amp; b) {
+      return (a.slope &lt; b.slope);
+}
+
+bool operator==(const point&amp; a, const point&amp; b) {
+      return (a.slope == b.slope);
+   }
+
+int main() {
+   int cases;
+   cin&gt;&gt;cases;
+   int numCase=1;
+   while(cases--) {
+      point points[405];
+      point inpoints[405];
+       int num;
+       cin&gt;&gt;num;
+       
+
+
+       //read in point
+       for(int i=0; i&lt;num; i++)
+	       cin &gt;&gt; inpoints[i].x &gt;&gt; inpoints[i].y;
+
+       //0 case
+       if(num==0) {
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; numCase++ &lt;&lt; &quot;: &quot; &lt;&lt; &quot;0&quot; &lt;&lt; endl;
+    continue;
+       }
+
+       if(num==1) {
+    cout &lt;&lt; &quot;Case #&quot; &lt;&lt; numCase++ &lt;&lt; &quot;: &quot; &lt;&lt; &quot;1&quot; &lt;&lt; endl;
+    continue;
+       }
+       //best
+       int best=2;
+
+       //for each point
+       for(int i=0; i&lt;num; i++) {
+        copy(inpoints, inpoints+num, points);
+	  //generate slopes
+	  for(int j=0; j&lt;num; j++) {
+	     if(j==i)
+		      points[j].slope = Fraction(20000000, 1);
+	     else
+	     points[j].slope = Fraction(points[i].y-points[j].y,points[i].x-points[j].x);
+	  }
+
+	  //sort on slope
+	  sort(points, points+num);
+
+  //  assert(points[num-1].slope == Fraction(20000000, 1));
+	  int count = 2;
+	  for(int j=1; j&lt;num-1; j++) {
+
+      if(points[j]==points[j-1]) {
+
+		      count++;
+           best = max(best, count);
+	     
+       } else {
+		    best = max(best, count);
+		    count=2;	  
+	       }
+	       
+	  }
+
+
+       }
+
+       cout &lt;&lt; &quot;Case #&quot; &lt;&lt; numCase++ &lt;&lt; &quot;: &quot; &lt;&lt; best &lt;&lt; endl;
+
+   }
+
+
+   return 0;
+}
+</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>

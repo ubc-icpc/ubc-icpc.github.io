@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js" type="text/javascript"></script>
+<style type="text/css">.syntaxhighlighter{overflow-y: hidden !important; overflow-x: auto !important;}</style></head>
+<body>
+<pre class="brush: cpp">
+#include &lt;bits/stdtr1c++.h&gt;
+
+using namespace std;
+
+string bessie = &quot;BESSIE&quot;, goes = &quot;GOES&quot;, moo = &quot;MOO&quot;;
+char c[] = {'B', 'E', 'S', 'I', 'G', 'O', 'M'};
+map&lt;char, map&lt;int, int&gt; &gt; vals;
+long long dfs(int i, map&lt;char, int&gt;&amp; m) {
+    if (i == 7) {
+        int A = 0, B = 0, C = 0;
+        for (char ch : bessie) A += m[ch];
+        for (char ch : goes) B += m[ch];
+        for (char ch : moo) C += m[ch];
+        if ((A*B*C)%7 == 0) return 1;
+        else return 0;
+    }
+    
+    long long ans = 0;
+    for (int v = 0; v &lt; 7; v++) {
+        m[c[i]] = v;
+        ans += vals[c[i]][v]*dfs(i+1, m);
+    }
+    return ans;
+}
+
+int main() {
+    int n; cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++) {
+        char ch; int x;
+        cin &gt;&gt; ch &gt;&gt; x;
+        vals[ch][(x%7+7)%7]++;
+    }
+    
+    map&lt;char, int&gt; m;
+    cout &lt;&lt; dfs(0, m) &lt;&lt; endl;
+	return 0;
+}</pre>
+</body>
+<script type="text/javascript">SyntaxHighlighter.all()</script></html>
